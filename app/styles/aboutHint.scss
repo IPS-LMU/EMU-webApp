@@ -1,7 +1,5 @@
-$overlayColor: grey;
-// imports
+@import 'EMUwebAppDesign';
 @import 'mixins';
-@import 'EMUwebAppColors';
 
 @include keyframes(shrinkToAboutButton) {
   25% 
@@ -70,7 +68,7 @@ $overlayColor: grey;
 
 .emuwebapp-aboutHint-arrowOverlay{
 	position: absolute;
-	color: $EMUwebApp-blue;
+	color: $color-blue;
 	font-size: 200%;
 	top: 40px;
 	right: 8px;
@@ -90,7 +88,7 @@ $overlayColor: grey;
 .emuwebapp-aboutHint-svgOverlay{
 	position: absolute;
 	top: 40%;
-	color: $overlayColor;
+	color: grey;
 	font-size: 200%;
 	-webkit-transform: rotate(20deg);
 }

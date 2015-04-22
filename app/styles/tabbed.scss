@@ -1,4 +1,5 @@
-@import 'EMUwebAppColors';
+@import 'EMUwebAppDesign';
+@import 'mixins';
 
 .emuwebapp-tabbed {
     margin: 0px;
@@ -149,7 +150,7 @@
 }
 
 .emuwebapp-tabbed ::-webkit-scrollbar-track {
-    background: $EMUwebApp-blue;
+    background: $color-blue;
 }
 
 .emuwebapp-tabbed ::-webkit-scrollbar-thumb {
@@ -215,7 +216,7 @@
 }
 .emuwebapp-tabbed-input-bold {
     font-size: 1.1em;
-    border: 1px solid $EMUwebApp-blue;
+    border: 1px solid $color-blue;
 }
 .emuwebapp-tabbed-input-small {
     width: 50%;
@@ -231,7 +232,7 @@
 }
 .emuwebapp-tabbed-orderitem {
     background: #fff;
-    border: 1px solid $EMUwebApp-blue;
+    border: 1px solid $color-blue;
     margin: 4px;
     padding: 4px;
     cursor: move;

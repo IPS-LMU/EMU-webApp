@@ -11,29 +11,35 @@
         "darkGrey": "#38363e",
         "transparent": {
             "grey": "rgba(22, 22, 22, 0.1)",
+            "lightGrey": "rgba(152, 152, 152, 0.18)",
             "black": "rgba(0, 0, 0, 0.7)",
-            "darkBlack": "rgba(255, 0, 0, 0.95)",
+            "red": "rgba(255, 0, 0, 0.95)",
             "yellow": "rgba(255, 255, 22, 0.5)"
         }
     },
     "animation": {
-        "duration": "400"
+        "period": "400"
     },
     "font": {
         "small": {
             "family": "HelveticaNeue",
-            "size": "14px",
+            "size": "12px",
             "weight": "400"
         },
         "medium": {
             "family": "HelveticaNeue",        
-            "size": "16px",
+            "size": "15px",
             "weight": "600"
         },
         "large": {
             "family": "HelveticaNeue",        
             "size": "18px",
             "weight": "900"
-        }                
+        },              
+        "code": {
+            "family": "Consolas, 'Liberation Mono', Menlo, Courier, monospace",
+            "size": "14px",
+            "weight": "600"
+        }
     }
 }

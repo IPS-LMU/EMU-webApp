@@ -1,4 +1,6 @@
-@import 'EMUwebAppColors';
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
 
 .emuwebapp-modal-wrap {
     width:  100%;
@@ -14,7 +16,7 @@
 
 .emuwebapp-modal-header {
     position: absolute;
-    background-color: $EMUwebApp-blue;
+    background-color: $color-blue;
     height: 60px;
     left:0;
     top:0;
@@ -143,7 +145,7 @@
     height: 60px;
     width:100%;
     position: absolute;
-    background-color: $EMUwebApp-blue;
+    background-color: $color-blue;
     left: 0;
     bottom: 0; 
 }

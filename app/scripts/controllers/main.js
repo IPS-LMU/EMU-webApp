@@ -114,7 +114,7 @@ angular.module('emuwebApp')
 
 					//hide menu
 					if (viewState.getsubmenuOpen()) {
-						viewState.togglesubmenuOpen(ConfigProviderService.design.animation.duration);
+						viewState.togglesubmenuOpen(ConfigProviderService.design.animation.period);
 					}
 
 					viewState.somethingInProgressTxt = 'Loading DB config...';
@@ -277,7 +277,7 @@ angular.module('emuwebApp')
 		$scope.handleDefaultConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
-				viewState.togglesubmenuOpen(ConfigProviderService.design.animation.duration);
+				viewState.togglesubmenuOpen(ConfigProviderService.design.animation.period);
 			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
@@ -301,7 +301,7 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors);
 
 			// setting transition values
-			viewState.setTransitionTime(ConfigProviderService.design.animation.duration);
+			viewState.setTransitionTime(ConfigProviderService.design.animation.period);
 
 		};
 
@@ -351,41 +351,41 @@ angular.module('emuwebApp')
 		$scope.innerHandleConnectedToWSserver = function () {
 			viewState.somethingInProgressTxt = 'Loading DB config...';
 			// then get the DBconfigFile
-			Iohandlerservice.getDBconfigFile().then(function (data) {
 				Iohandlerservice.httpGetDefaultDesign().success(function (data) {
 				    ConfigProviderService.setDesign(data);
-					// first element of perspectives is default perspective
-					viewState.curPerspectiveIdx = 0;
-					ConfigProviderService.setVals(data.EMUwebAppConfig);
-					// FOR DEVELOPMENT
-					//$scope.showEditDBconfigBtnClick();
+					Iohandlerservice.getDBconfigFile().then(function (data) {
+						// first element of perspectives is default perspective
+						viewState.curPerspectiveIdx = 0;
+						ConfigProviderService.setVals(data.EMUwebAppConfig);
+						// FOR DEVELOPMENT
+						//$scope.showEditDBconfigBtnClick();
 				
-					delete data.EMUwebAppConfig; // delete to avoid duplicate
-					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
-					if (validRes === true) {
-						ConfigProviderService.curDbConfig = data;
-						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-						validRes = Validationservice.validateJSO('DBconfigFileSchema', data);
+						delete data.EMUwebAppConfig; // delete to avoid duplicate
+						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 						if (validRes === true) {
-							// then get the DBconfigFile
-							viewState.somethingInProgressTxt = 'Loading bundle list...';
-							Iohandlerservice.getBundleList().then(function (bdata) {
-								validRes = loadedMetaDataService.setBundleList(bdata);
-								if (validRes === true) {
-									// then load first bundle in list
-									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
-								} else {
-									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-										appStateService.resetToInitState();
-									});
-								}
-							});
+							ConfigProviderService.curDbConfig = data;
+							viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+							validRes = Validationservice.validateJSO('DBconfigFileSchema', data);
+							if (validRes === true) {
+								// then get the DBconfigFile
+								viewState.somethingInProgressTxt = 'Loading bundle list...';
+								Iohandlerservice.getBundleList().then(function (bdata) {
+									validRes = loadedMetaDataService.setBundleList(bdata);
+									if (validRes === true) {
+										// then load first bundle in list
+										dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+									} else {
+										modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+											appStateService.resetToInitState();
+										});
+									}
+								});
 
-						} else {
-							modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-								appStateService.resetToInitState();
-							});
-						}
+							} else {
+								modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+									appStateService.resetToInitState();
+								});
+							}
 
 					} else {
 						modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
@@ -451,7 +451,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.openSubmenu = function () {
-			viewState.togglesubmenuOpen(ConfigProviderService.design.animation.duration);
+			viewState.togglesubmenuOpen(ConfigProviderService.design.animation.period);
 		};
 
 		/////////////////////////////////////////

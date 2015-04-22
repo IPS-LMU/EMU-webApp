@@ -1,4 +1,6 @@
-@import 'EMUwebAppColors';
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
 
 .emuwebapp-text {
     text-align: left;
@@ -29,7 +31,7 @@
 		border-radius: 3px;
 		word-wrap: normal;
 		font-size: 0.9em;
-		font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+		@extend .emuwebapp-font-code;
     }
     img {
 		display: block;
@@ -72,10 +74,9 @@
 		margin-bottom: 25px;	
 	}
 	toc {
-        @extend .emuwebapp-font-menu;
+        @extend .emuwebapp-font-medium;
         text-align: center;
 		li {
-			font-family: $EMUwebApp-font-family;
 			font-size: 1.2em;
 			text-align: left;
 			list-style-type: circle;

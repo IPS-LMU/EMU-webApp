@@ -336,8 +336,8 @@ angular.module('emuwebApp')
 			    var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 
 				// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-				ctx.strokeStyle = ConfigProviderService.design.color.transparent.darkBlack;
-				ctx.fillStyle = ConfigProviderService.design.color.transparent.darkBlack;
+				ctx.strokeStyle = ConfigProviderService.design.color.transparent.red;
+				ctx.fillStyle = ConfigProviderService.design.color.transparent.red;
 
 				// see if Chrome -> dashed line
 				if (navigator.vendor === 'Google Inc.') {
@@ -361,8 +361,8 @@ angular.module('emuwebApp')
 				var tW = ctx.measureText(mouseFreq + unit).width;
 				var s1 = Math.round(viewState.curViewPort.sS + mouseX / ctx.canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 				var s2 = mathHelperService.roundToNdigitsAfterDecPoint(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
-				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.darkBlack, true);
-				var verticalText = fontScaleService.getTextImageTwoLines(ctx, s1, s2, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.darkBlack, true);
+				var horizontalText = fontScaleService.getTextImage(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.red, true);
+				var verticalText = fontScaleService.getTextImageTwoLines(ctx, s1, s2, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.red, true);
 
 
 				if (max !== undefined || min !== undefined) {
@@ -397,7 +397,7 @@ angular.module('emuwebApp')
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
 						mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
-						horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.darkBlack, true);
+						horizontalText = fontScaleService.getTextImage(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.red, true);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, mouseY, horizontalText.width, horizontalText.height);
 						ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, horizontalText.width, horizontalText.height);
 						ctx.beginPath();

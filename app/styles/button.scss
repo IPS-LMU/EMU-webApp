@@ -1,18 +1,16 @@
-@import 'EMUwebAppColors';
+@import 'EMUwebAppDesign';
+@import 'font';
 @import 'mixins';
 
 .emuwebapp-nav-wrap {
 	z-index: 99999;
-	
 	ul {
 		list-style:none;
 		position:relative;
-		
 		li:hover > ul {
 			display:block;
 			z-index: 99999;
 		}
-		
 		ul {
 			display:none;
 			position:absolute;
@@ -54,12 +52,12 @@
 	overflow: scroll;
 	padding:0;
 	margin:0;
-	border: 1px $EMUwebApp-dark-grey;
+	border: 1px $color-darkGrey;
 	outline: none;
 	resize: none;
 	white-space: nowrap;
-	background-color: $EMUwebApp-yellow;
-	box-shadow: 0px 0px 15px $EMUwebApp-dark-grey;
+	background-color: $color-yellow;
+	box-shadow: 0px 0px 15px $color-darkGrey;
 	vertical-align: middle !important; 
 	overflow-x: hidden;
 	overflow-y: hidden;
@@ -68,8 +66,8 @@
 .emuwebapp-mini-btn {
     background: transparent;
     border-radius: 0px;
-    border: 1px solid $EMUwebApp-white;
-    color: $EMUwebApp-white;
+    border: 1px solid $color-white;
+    color: $color-white;
     text-decoration:none;
     text-align:center;
     margin: 0px;
@@ -77,19 +75,18 @@
     text-align:center;
     width: 120px;
     height: 30px;
-    @extend .emuwebapp-font-menu;
-}
-
-.emuwebapp-mini-btn:hover:enabled {
-    background-color:white;
-    color:#000;
-}
-
-.emuwebapp-mini-btn:disabled {
-    color:rgb(33,217,255);
-    border:1px solid rgb(33,217,255);
-}
-
-.emuwebapp-mini-btn:active {
-    top:1px;
+    @extend .emuwebapp-font-small;
+    
+    &:hover:enabled {
+		background-color:white;
+		color:#000;
+	}
+	&:disabled {
+	    pointer-events: none;
+		color:rgb(33,217,255);
+		border:1px solid rgb(33,217,255);
+	}
+	&:active {
+		top:1px;
+	}
 }

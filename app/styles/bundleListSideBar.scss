@@ -1,4 +1,5 @@
-@import 'EMUwebAppColors';
+@import 'EMUwebAppDesign';
+@import 'font';
 @import 'mixins';
 
 /** 
@@ -10,58 +11,45 @@
 .emuwebapp-bundle-outer {
     height: 100%;
     width:240px;
-    background: $EMUwebApp-dark-grey;
-    color: $EMUwebApp-white;
-    @extend .emuwebapp-font-small;
+    background: $color-darkGrey;
+    color: $color-white;
+    @extend .emuwebapp-font-medium;
+    line-height: 0.85;
     h3 {
 		font-size: 1.4em;
 		padding-top: 6px;
 		padding-bottom: 6px;
 		margin: 0;
-		border-bottom:thin solid $EMUwebApp-white;
+		border-bottom:thin solid $color-white;
     }
-
-}
-
-.emuwebapp-bundle-inner {
-    height: 100%;
-    @extend .emuwebapp-font-small;
-}
-
-/**
- * ng-hide animation
- */
-
-.emuwebapp-bundle-outer.ng-hide-add.ng-hide-add-active,
-.emuwebapp-bundle-outer.ng-hide-remove.ng-hide-remove-active {
-  @include vendor-prefix(transition, $EMUwebApp-animation-duration);
-}
-
-.emuwebapp-bundle-outer.ng-hide {
-    margin-left: -240px;
+    &.ng-hide-add.ng-hide-add-active{
+        @include vendor-prefix(transition, "margin-left "+$animation-period+"ms");
+    }
+    &.ng-hide-remove.ng-hide-remove-active {
+	    @include vendor-prefix(transition, "margin-left "+$animation-period+"ms");
+	}
+	&.ng-hide {
+		margin-left: -240px;
+	}
+	> div {
+		height: 100%;
+		@extend .emuwebapp-font-small;
+	}
 }
 
 
 
-.emuwebapp-bundle-outer 
 .emuwebapp-bundleFilter input[type="text"]{
-    background: url(../img/search-dark.png) no-repeat 10px 6px $EMUwebApp-white;
+    background: url(../img/search-dark.png) no-repeat 10px 6px $color-white;
+    outline: none;
     border: 0 none;
-    font: bold 12px Arial,Helvetica,Sans-serif;
-    color: #777;
+    color: $color-grey;
     width: 75%;
-    padding: 6px 15px 6px 35px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
-    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
-    -webkit-transition: all 0.7s ease 0s;
-    -moz-transition: all 0.7s ease 0s;
-    -o-transition: all 0.7s ease 0s;
-    transition: all 0.7s ease 0s;
+    padding: 6px 15px 7px 35px;
+    @include vendor-prefix(box-shadow, "0 1px 0 "+$color-transparent-grey+", 0 1px 3px "+$color-transparent-black+" inset");
+    @include vendor-prefix(transition, "all 100ms ease 0s");
+    @include vendor-prefix(border-radius, "20px");
+    @extend .emuwebapp-font-small;
 }
 
 
@@ -80,34 +68,24 @@
     border-style:none;
     position: relative;
     cursor: default;
+    &:hover{
+		background-color:rgba(152, 152, 152, 0.18);
+	}
 }
 
 .emuwebapp-bundleListSessionBndlsContainer {
-  max-height: 25000px;
+    max-height: 25000px;
+    
+    &.ng-hide-add.ng-hide-add-active {
+        @include vendor-prefix(transition, "100ms ease-out");
+    }
+    &.ng-hide-remove.ng-hide-remove-active {
+		@include vendor-prefix(transition, "100ms ease-in");
+	}
+	&.ng-hide {
+		max-height: 0;
+	}
 }
-
-
-/**
- * ng-hide animation
- */
-
-.emuwebapp-bundleListSessionBndlsContainer.ng-hide-add.ng-hide-add-active{
-  -webkit-transition: max-height 0.05s ease-out;
-  -moz-transition: max-height 0.05s ease-out;
-  transition: max-height 0.05s ease-out;
-
-}
-
-.emuwebapp-bundleListSessionBndlsContainer.ng-hide-remove.ng-hide-remove-active {
-  -webkit-transition: max-height 0.25s ease-in;
-  -moz-transition: max-height 0.25s ease-in;
-  transition: max-height 0.25s ease-in;
-}
-
-.emuwebapp-bundleListSessionBndlsContainer.ng-hide {
-  max-height: 0;
-}
-
 
 .emuwebapp-bundleListSessionPager{
     margin: 0px;
@@ -116,34 +94,27 @@
     position: relative;
     text-align: center;
     cursor: default;
-
-}
-
-.emuwebapp-bundleListSessionPager button{
-    background: transparent;
-    color: white;
-    border-radius: 25%;
-    border:2px solid white;
-    font-size: 15px;
-}
-.emuwebapp-bundleListSessionPager button:hover{
-    background-color: rgba(152, 152, 152, 0.25);
-}
-
-.emuwebapp-bundleListSessionPager button:focus{
-    outline:0;
-}
-
-
-.emuwebapp-bundleListSessionPager button:disabled{
-    color: rgba(152, 152, 152, 0.25);
-    border:2px solid rgba(152, 152, 152, 0.25);
+    button{
+		background: transparent;
+		color: white;
+		border-radius: 25%;
+		border:2px solid $color-white;
+		font-size: 15px;
+		&:hover{
+			background-color: $color-transparent-grey;
+		}
+		&:focus{
+			outline:0;
+		}
+		:disabled{
+			color: $color-transparent-grey;
+			border:2px solid $color-transparent-grey;
+		}
+	}
 }
 
 
-.emuwebapp-bundleListSession:hover{
-    background-color:rgba(152, 152, 152, 0.18);
-}
+
 
 .emuwebapp-bundleListItem{
     margin: 0px;
@@ -153,49 +124,42 @@
     position: relative;
     cursor: default;
     width: 200px !important; 
-}
-
-.emuwebapp-bundleListItem:hover {
-    background-color:rgba(152, 152, 152, 0.28);
-}
-
-
-.emuwebapp-bundleListItem input[type='text'] {
-    width: 170px;
-    height: 25px;
-    font-size: 1.4em;
-}
-
-.emuwebapp-bundleListItem b {
-    display: block;
-    font-size: 1.4em;
-    font-weight: 500;
-    cursor: default;
-    width: 100%;
-    height: 28px;
+    &:hover {
+		background-color:rgba(152, 152, 152, 0.28);
+	}
+	input[type='text'] {
+		width: 170px;
+		height: 25px;
+		font-size: 1.4em;
+	}
+	b {
+		display: block;
+		font-size: 1.4em;
+		font-weight: 500;
+		cursor: default;
+		width: 100%;
+		height: 28px;
+	}
 }
 
 .emuwebapp-saveBundleButton {
-   position: absolute;
-   /*background-color:rgb(56,54,62);*/
-   background-color:transparent;
-   border-style:none;
-   top: 2px;
-   right: 2px;
-}
-
-.emuwebapp-saveBundleButton img {
-    height: 25px;
-    width:  25px;
-    border-radius: 12.5px;
+    position: absolute;
     background-color:transparent;
-    vertical-align: middle;
+    border-style:none;
+    top: 2px;
+    right: 2px;
+    img {
+		height: 25px;
+		width:  25px;
+		border-radius: 12.5px;
+		background-color:transparent;
+		vertical-align: middle;
+		&:hover{
+			background-color: $color-blue;
+		}
+	}
 }
-
-.emuwebapp-saveBundleButton img:hover{
-    background-color: $EMUwebApp-blue;
-}
-
+ 
 .emuwebapp-shrinkWidthTo0px{
   width: 0px;
   -webkit-transition: width 0.4s;

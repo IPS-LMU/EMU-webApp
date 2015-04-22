@@ -1,10 +1,12 @@
-@import 'EMUwebAppColors';
+@import 'EMUwebAppDesign';
+@import 'mixins';
 
 /** 
-###################################
-Level CSS
-see: level directive and template
+    ###################################
+        level directive css
+    ###################################
 */
+
 
 .emuwebapp-levelOuter {
 	width: 100%;
@@ -109,7 +111,7 @@ see: level directive and template
 }
 
 .emuwebapp-levelDeleteBtn img:hover{
-    background-color: $EMUwebApp-blue;
+    background-color: $color-blue;
 }
 
 /*resize*/
@@ -129,7 +131,7 @@ see: level directive and template
 }
 
 .emuwebapp-levelResizeBtn img:hover{
-    background-color: $EMUwebApp-blue;
+    background-color: $color-blue;
 }
 
 /*save*/
@@ -149,7 +151,7 @@ see: level directive and template
 }
 
 .emuwebapp-levelSaveBtn img:hover{
-    background-color: $EMUwebApp-blue;
+    background-color: $color-blue;
 }
 
 /*emuwebapp-selectAttrDef*/
@@ -196,7 +198,7 @@ see: level directive and template
 }
 
 .emuwebapp-selectAttrDef button:hover{
-    border:1px solid $EMUwebApp-blue;
+    border:1px solid $color-blue;
 }
 
 .emuwebapp-selectAttrDef button:focus{

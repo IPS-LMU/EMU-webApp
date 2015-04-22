@@ -1,4 +1,5 @@
-@import 'EMUwebAppColors';
+@import 'EMUwebAppDesign';
+@import 'mixins';
 
 .emuwebapp-tutorial-intro {
     position: absolute; 
@@ -76,8 +77,8 @@
     height:12%; 
     width:100%; 
     margin: 0px;
-    background-color: $EMUwebApp-blue;
-    border-bottom: 1px solid $EMUwebApp-dark-grey;
+    background-color: $color-blue;
+    border-bottom: 1px solid $color-darkGrey;
 }
 
 .emuwebapp-tutorial-head img {

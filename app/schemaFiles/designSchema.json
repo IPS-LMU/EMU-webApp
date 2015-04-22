@@ -33,17 +33,20 @@
 						"grey": {
 							"type": "string"
 						},
+						"lightGrey": {
+							"type": "string"
+						},
 						"black": {
 							"type": "string"
 						},
-						"darkBlack": {
+						"red": {
 							"type": "string"
 						},
 						"yellow": {
 							"type": "string"
 						}
 				    },
-					"required": ["grey", "black", "darkBlack", "yellow"],
+					"required": ["grey", "lightGrey", "black", "red", "yellow"],
 					"additionalProperties": false
 				}
 			},
