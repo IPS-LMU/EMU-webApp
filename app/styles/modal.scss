@@ -24,6 +24,27 @@
 		margin-top: 3%;
 		background: #fff;
 	}
+	.emuwebapp-close {
+		background: $color-blue;
+		position: absolute;
+		right: -12px;
+		text-align: center;
+		top: -10px;
+		width: 30px;
+		height: 30px;
+		text-decoration: none;
+		font-weight: bold;
+		-webkit-border-radius: 12px;
+		-moz-border-radius: 12px;
+		border-radius: 12px;
+		@include vendor-prefix(box-shadow, "1px 1px 3px  "+$color-transparent-grey);
+		z-index: 99999;
+		&:hover { 
+			background: $color-white;
+			text-decoration: none;
+		}
+	}
+	
 }
 
 .emuwebapp-modal-wrap {
@@ -66,28 +87,6 @@
 	pointer-events: auto;
 } 
 
-.emuwebapp-close {
-	background: $color-blue;
-	position: absolute;
-	right: -12px;
-	text-align: center;
-	top: -10px;
-	width: 30px;
-	height: 30px;
-	text-decoration: none;
-	font-weight: bold;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
-	-moz-box-shadow: 1px 1px 3px $color-transparent-grey;
-	-webkit-box-shadow: 1px 1px 3px $color-transparent-grey;
-	box-shadow: 1px 1px 3px $color-transparent-grey;
-	z-index: 99999;
-	&:hover { 
-		background: $color-white;
-		text-decoration: none;
-	}
-}
 
 .emuwebapp-modalDialog-inner {
     position: absolute;
@@ -99,7 +98,7 @@
 
 .emuwebapp-modal-body {
     width: 100%;
-    height: inherit;
+    height: calc(100% - 60px);
     position: absolute;
     top: 60px;
     bottom: 60px;

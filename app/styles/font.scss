@@ -5,11 +5,6 @@
     font-size: $font-small-size;
     font-weight: $font-small-weight;
 }
-.emuwebapp-font-medium {
-    font-family: $font-medium-family;
-    font-size: $font-medium-size;
-    font-weight: $font-medium-weight;
-}
 .emuwebapp-font-large {
     font-family: $font-large-family;
     font-size: $font-large-size;
@@ -20,4 +15,8 @@
     font-size: $font-code-size;
     font-weight: $font-code-weight;
 }
-
+.emuwebapp-font-input {
+    font-family: $font-input-family;
+    font-size: $font-input-size;
+    font-weight: $font-input-weight;
+}

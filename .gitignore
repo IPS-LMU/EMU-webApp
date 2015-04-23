@@ -74,3 +74,5 @@ test/coverage
 *.sassc
 
 --verbose
+
+--_modernizr.defaults=[object Object]

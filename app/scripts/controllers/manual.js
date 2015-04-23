@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 			url: 'manual/Labeling-articulatory-data.md'
 		}];
 
-		$scope.curMdFile = $scope.listOfMarkdownFiles[1];
+		$scope.curMdFile = $scope.listOfMarkdownFiles[0];
 
 		$scope.setCurrentMdFile = function (mdFile) {
 			$scope.curMdFile = mdFile;

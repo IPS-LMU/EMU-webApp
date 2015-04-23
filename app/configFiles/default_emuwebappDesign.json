@@ -14,7 +14,7 @@
             "lightGrey": "rgba(152, 152, 152, 0.18)",
             "black": "rgba(0, 0, 0, 0.7)",
             "red": "rgba(255, 0, 0, 0.95)",
-            "yellow": "rgba(255, 255, 22, 0.5)"
+            "yellow": "rgba(255, 255, 22, 0.35)"
         }
     },
     "animation": {
@@ -26,16 +26,16 @@
             "size": "12px",
             "weight": "400"
         },
-        "medium": {
+        "large": {
             "family": "HelveticaNeue",        
+            "size": "16px",
+            "weight": "400"
+        },
+        "input": {
+            "family": "HelveticaNeue",
             "size": "15px",
             "weight": "600"
         },
-        "large": {
-            "family": "HelveticaNeue",        
-            "size": "18px",
-            "weight": "900"
-        },              
         "code": {
             "family": "Consolas, 'Liberation Mono', Menlo, Courier, monospace",
             "size": "14px",

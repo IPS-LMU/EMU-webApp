@@ -82,7 +82,7 @@
 						"additionalProperties": false
 					}
 				},
-				"medium": {
+				"large": {
 					"type": "object",
 					"properties": {
 						"family": {
@@ -98,7 +98,23 @@
 						"additionalProperties": false					
 					}
 				},
-				"large": {
+				"input": {
+					"type": "object",
+					"properties": {
+						"family": {
+							"type": "string"
+						},
+						"size": {
+							"type": "string"
+						},
+						"weight": {
+							"type": "string"
+						},
+						"required": ["family", "size", "weight"],
+						"additionalProperties": false					
+					}
+				},
+				"code": {
 					"type": "object",
 					"properties": {
 						"family": {
@@ -115,7 +131,7 @@
 					}
 				}
 			},
-			"required": ["small", "medium", "large"],
+			"required": ["small", "large", "input", "code"],
 			"additionalProperties": false
 		}
 	},

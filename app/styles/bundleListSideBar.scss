@@ -13,7 +13,7 @@
     width:240px;
     background: $color-darkGrey;
     color: $color-white;
-    @extend .emuwebapp-font-medium;
+    @extend .emuwebapp-font-input;
     line-height: 0.85;
     h3 {
 		font-size: 1.4em;
@@ -43,7 +43,7 @@
 		width: 75%;
 		padding: 6px 15px 7px 35px;
 		@include vendor-prefix(box-shadow, "0 1px 0 "+$color-transparent-grey+", 0 1px 3px "+$color-transparent-black+" inset");
-		@include vendor-prefix(transition, "all 100ms ease 0s");
+		@include vendor-prefix(transition, "all "+$animation-period/4+"ms ease 0s");
 		@include vendor-prefix(border-radius, "20px");
 		@extend .emuwebapp-font-small;
 	}
@@ -54,7 +54,7 @@
 		text-align: left;
 		padding: 10px;
 		font-size: 0.8em;
-		@extend .emuwebapp-font-medium;
+		@extend .emuwebapp-font-input;
 		.emuwebapp-bundle-session {
 			margin: 0px;
 			padding: 5px 0 5px 0;
@@ -68,6 +68,11 @@
 	}		
 }
 
+/** animate left submenu **/
+.emuwebapp-shrinkWidthTo0px{
+  width: 0px;
+  @include vendor-prefix(transition, "width "+$animation-period+"ms");
+}
 
 
 
@@ -156,9 +161,3 @@
 	}
 }
  
-.emuwebapp-shrinkWidthTo0px{
-  width: 0px;
-  -webkit-transition: width 0.4s;
-  -moz-transition: width 0.4s;
-  transition: width 0.4s;
-}

@@ -3,25 +3,47 @@
 @import 'mixins';
 
 .emuwebapp-text {
-    text-align: left;
     padding-left: 18px;
     padding-right: 18px;
     word-wrap: break-word;
     padding-bottom: 120px;
     @extend .emuwebapp-font-small;
     
+    input {
+        @extend .emuwebapp-font-input;
+    }
+    
     div {
         margin-left: 25px;
-        margin-right: 25px;            
+        margin-right: 25px;
+        p {
+            text-align: left;
+        }  
+        span {
+            text-align: center;
+            @extend .emuwebapp-font-small;
+        }                  
     }
-    h1, h2, h3, h4 {
+    h1, h2, h3 {
 		position: relative;
 		margin-top: 1em;
 		margin-bottom: 16px;
 		padding-bottom: 0.3em;
 		line-height: 1.255;
 		border-bottom: 1px solid #eee;
-		display: block;    
+		display: block; 
+		@extend .emuwebapp-font-large;   
+    }
+    h4 {
+		position: relative;
+		margin-top: 1em;
+		margin-bottom: 5px;
+		padding-bottom: 0.3em;
+		line-height: 1.255;
+		border-bottom: 1px solid #eee;
+		display: block; 
+		text-align: center;
+		@extend .emuwebapp-font-large;   
     }
     pre{
 		padding: 16px;
@@ -74,7 +96,7 @@
 		margin-bottom: 25px;	
 	}
 	toc {
-        @extend .emuwebapp-font-medium;
+        @extend .emuwebapp-font-input;
         text-align: center;
 		li {
 			font-size: 1.2em;
