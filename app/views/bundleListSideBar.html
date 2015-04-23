@@ -2,14 +2,14 @@
     {{filterText}}
     <div ng-controller="bundleListSideBarCtrl">
         <h3>
-            <div class="emuwebapp-bundleFilter">
-                <input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)"/>
+            <div>
+                <input type="text" ng-model="filterText" placeholder="Bundle Filter" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)" class="emuwebapp-filter"/>
             </div>
         </h3>
         <my-drop-zone ng-show="vs.showDropZone"></my-drop-zone>
-        <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundleListContainer" ng-show="!vs.showDropZone">
+        <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundle-container" ng-show="!vs.showDropZone">
             <ul ng-repeat="(key, value) in lmds.getRendOptBndlList()">
-                <div class="emuwebapp-bundleListSession" ng-show="isSessionDefined(key)" ng-click="lmds.toggleCollapseSession(key)">
+                <div class="emuwebapp-bundle-session" ng-show="isSessionDefined(key)" ng-click="lmds.toggleCollapseSession(key)">
                     <div ng-if="lmds.getSessionCollapseState(key)">
                         ▷{{key}}
                     </div>

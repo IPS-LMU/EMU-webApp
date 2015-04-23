@@ -35,43 +35,42 @@
 		height: 100%;
 		@extend .emuwebapp-font-small;
 	}
-}
-
-
-
-.emuwebapp-bundleFilter input[type="text"]{
-    background: url(../img/search-dark.png) no-repeat 10px 6px $color-white;
-    outline: none;
-    border: 0 none;
-    color: $color-grey;
-    width: 75%;
-    padding: 6px 15px 7px 35px;
-    @include vendor-prefix(box-shadow, "0 1px 0 "+$color-transparent-grey+", 0 1px 3px "+$color-transparent-black+" inset");
-    @include vendor-prefix(transition, "all 100ms ease 0s");
-    @include vendor-prefix(border-radius, "20px");
-    @extend .emuwebapp-font-small;
-}
-
-
-.emuwebapp-bundleListContainer {
-    width: 100%;
-    height: calc(100% - 40px);
-    overflow-y:auto;
-    text-align: left;
-    padding: 10px;
-    font-size: 0.8em;
-}
-
-.emuwebapp-bundleListSession{
-    margin: 0px;
-    padding: 5px 0 5px 0;
-    border-style:none;
-    position: relative;
-    cursor: default;
-    &:hover{
-		background-color:rgba(152, 152, 152, 0.18);
+	.emuwebapp-filter {
+		background: url(../img/search.svg) no-repeat 10px 6px $color-white;
+		outline: none;
+		border: 0 none;
+		color: $color-grey;
+		width: 75%;
+		padding: 6px 15px 7px 35px;
+		@include vendor-prefix(box-shadow, "0 1px 0 "+$color-transparent-grey+", 0 1px 3px "+$color-transparent-black+" inset");
+		@include vendor-prefix(transition, "all 100ms ease 0s");
+		@include vendor-prefix(border-radius, "20px");
+		@extend .emuwebapp-font-small;
 	}
+	.emuwebapp-bundle-container {
+		width: 100%;
+		height: calc(100% - 40px);
+		overflow-y:auto;
+		text-align: left;
+		padding: 10px;
+		font-size: 0.8em;
+		@extend .emuwebapp-font-medium;
+		.emuwebapp-bundle-session {
+			margin: 0px;
+			padding: 5px 0 5px 0;
+			border-style:none;
+			position: relative;
+			cursor: pointer;
+			&:hover{
+				background-color: $color-transparent-lightGrey;
+			}
+		}
+	}		
 }
+
+
+
+
 
 .emuwebapp-bundleListSessionBndlsContainer {
     max-height: 25000px;
@@ -112,9 +111,6 @@
 		}
 	}
 }
-
-
-
 
 .emuwebapp-bundleListItem{
     margin: 0px;
