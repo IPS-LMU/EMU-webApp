@@ -65,7 +65,7 @@
 				background-color: $color-transparent-lightGrey;
 			}
 		}
-	}		
+	}
 }
 
 /** animate left submenu **/
@@ -117,13 +117,13 @@
 	}
 }
 
-.emuwebapp-bundleListItem{
+.emuwebapp-bundle-item {
     margin: 0px;
     padding: 10px;
     border-style:none;
     border-bottom:thin solid rgba(152, 152, 152, 0.25);
     position: relative;
-    cursor: default;
+    cursor: pointer;
     width: 200px !important; 
     &:hover {
 		background-color:rgba(152, 152, 152, 0.28);
@@ -137,7 +137,7 @@
 		display: block;
 		font-size: 1.4em;
 		font-weight: 500;
-		cursor: default;
+		cursor: pointer;
 		width: 100%;
 		height: 28px;
 	}
