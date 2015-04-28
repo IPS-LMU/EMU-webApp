@@ -29,12 +29,16 @@ angular.module('emuwebApp')
 				return {
 					'background-color': ConfigProviderService.design.color.white,
 					'color': ConfigProviderService.design.color.black,
+					'font-family': ConfigProviderService.design.font.large.family,
+					'font-size': ConfigProviderService.design.font.large.size,
 					'font-weight': '500'
 				};
 			}
 			return {
 					'background-color': ConfigProviderService.design.color.blue,
 					'color': ConfigProviderService.design.color.white,
+					'font-family': ConfigProviderService.design.font.large.family,
+					'font-size': ConfigProviderService.design.font.large.size,					
 					'font-weight': '400'
 				};
 		};

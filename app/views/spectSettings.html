@@ -5,7 +5,7 @@
 	<div class="emuwebapp-modal-body">
 	    <div class="emuwebapp-text">
 	        <div>
-	            <h4>View Range (Hz)</h4>
+	            <h2>View Range (Hz)</h2>
 	            From: <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(2,4)" ng-model="modalVals.rangeFrom" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 	            To: <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(1,3)"  ng-model="modalVals.rangeTo" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/><br />
 	            <div ng-show="htmlError(1)"><b style="color: #f00;">Error:</b> Upper Range is bigger then {{upperBoundary}}</div>
@@ -14,28 +14,28 @@
 	            <div ng-show="htmlError(4)"><b style="color: #f00;">Error:</b> Only Integers allowed inside 'From'.</div>
 	        </div>
 	        <div>
-	            <h4>Window Size (seconds)</h4>
+	            <h2>Window Size (seconds)</h2>
 	            <span>resulting number of samples <em>{{modalVals._windowSizeInSamples}}</em> zero-padded to <em>{{modalVals._fftN}} (min. = 512)</em></span>
 	            <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(6)" ng-model="modalVals.windowSizeInSecs" ng-change="calcWindowSizeVals()" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> <br />
 	            <div ng-show="htmlError(6)"><b style="color: #f00;">Error:</b> Only Floats are allowed.</div>
 	        </div>
 	        <div>
-	            <h4>Dynamic Range for Maximum (dB)</h4>
+	            <h2>Dynamic Range for Maximum (dB)</h2>
 	            <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(5)" ng-model="modalVals.dynamicRange" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> <br />
 	            <div ng-show="htmlError(5)"><b style="color: #f00;">Error:</b> Only Integers are allowed.</div>
 	        </div>
 	        <div>
-	            <h4>Pre-emphasis filter factor</h4> 
+	            <h2>Pre-emphasis filter factor</h2> 
 	            <span>resulting high pass filter function: <em>ŝ(k) = s(k)-{{modalVals.preEmphasisFilterFactor}}*s(k-1)</em></span>
 	            <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(7)" ng-model="modalVals.preEmphasisFilterFactor" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/> <br />
 	            <div ng-show="htmlError(7)"><b style="color: #f00;">Error:</b> Only Floats are allowed.</div>
 	        </div>
 	        <div>
-	            <h4>Window Function</h4>
+	            <h2>Window Function</h2>
 	            <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
 	        </div>
 	        <div>
-	            <h4>Color Options</h4>
+	            <h2>Color Options</h2>
 	            <span>Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors"></span>
 	            <table class='emuwebapp-modalTable' ng-style="cssError(8)">
 	                <tr>

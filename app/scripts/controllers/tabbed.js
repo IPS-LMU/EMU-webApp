@@ -64,12 +64,16 @@ angular.module('emuwebApp')
 			if (tabUrl === $scope.currentTabUrl) {
 				return {
 					'background-color': ConfigProviderService.design.color.white,
-					'color': ConfigProviderService.design.color.black
+					'color': ConfigProviderService.design.color.black,
+					'font-family': ConfigProviderService.design.font.large.family,
+					'font-size': ConfigProviderService.design.font.large.size		
 				};
 			}
 			return {
 					'background-color': ConfigProviderService.design.color.blue,
-					'color': ConfigProviderService.design.color.white
+					'color': ConfigProviderService.design.color.white,
+					'font-family': ConfigProviderService.design.font.large.family,
+					'font-size': ConfigProviderService.design.font.large.size					
 				};
 		};			
 		

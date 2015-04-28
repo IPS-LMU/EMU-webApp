@@ -37,7 +37,7 @@
 		-webkit-border-radius: 12px;
 		-moz-border-radius: 12px;
 		border-radius: 12px;
-		@include vendor-prefix(box-shadow, "1px 1px 3px  "+$color-transparent-grey);
+		@include vendor-prefix(box-shadow, "1px 1px 3px "+$color-transparent-grey);
 		z-index: 99999;
 		&:hover { 
 			background: $color-white;
@@ -50,7 +50,7 @@
 		bottom:0;
 		left:0;
 		right:0;
-	}	
+	}
 }
 
 .emuwebapp-modal-wrap {
@@ -100,14 +100,14 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 	&::-webkit-scrollbar {
-		width: 20px;  /* for vertical scrollbars */
+		width: 17px;  /* for vertical scrollbars */
 		height: 0px; /* for horizontal scrollbars */
 	}
 	&::-webkit-scrollbar-track {
 		background: $color-blue;
 	}
 	&::-webkit-scrollbar-thumb {
-		background: rgba(255, 255, 255, 0.75);
+		background: $color-lightGrey;
 	}
 }
 
