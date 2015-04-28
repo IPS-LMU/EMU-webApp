@@ -287,7 +287,7 @@ angular.module('emuwebApp')
 								// draw sampleStart numbers
 								//check for enough space to stroke text
 								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length && isOpen) {
-									var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
+									var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
 								}
 
@@ -295,7 +295,7 @@ angular.module('emuwebApp')
 
 								//check for enough space to stroke text
 								if (posE - posS > zeroTxtImgWidth * (5 + curEvt.sampleDur.toString().length) && isOpen) {
-									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
+									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur + ' ', fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 									var hst2 = fontScaleService.getLastImageWidth();
 									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);
 								}
