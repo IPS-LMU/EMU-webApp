@@ -70,13 +70,7 @@ app/testData/ignoredData
 test/coverage
 
 *.scssc
-
 *.sassc
 
---verbose
-
---_modernizr.defaults=[object Object]
-
 autoprefixer
-
---_modernizr.defaults=[object Object]
+--*
