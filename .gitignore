@@ -76,3 +76,7 @@ test/coverage
 --verbose
 
 --_modernizr.defaults=[object Object]
+
+autoprefixer
+
+--_modernizr.defaults=[object Object]

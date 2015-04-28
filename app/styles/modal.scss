@@ -109,22 +109,17 @@
 	&::-webkit-scrollbar-thumb {
 		background: $color-lightGrey;
 	}
+	select {
+	    margin: 3px;
+	}
+	hr {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
 }
 
-.emuwebapp-modal-bodyHierarchy {
-    width: 100%;
-    height: 80%;
-    height: calc(100% - 120px); /* The spaces around the operator are important */
-    position: absolute;
-    top: 60px;
-    overflow: hidden;
-    padding-top: 0px;
-    /*padding-bottom: 60px;*/
-}
-
-.emuwebapp-modal-body hr {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.emuwebapp-modal-hierarchy {
+    background: $color-lightGrey;
 }
 
 .emuwebapp-modal-footer {
@@ -134,10 +129,9 @@
     background-color: $color-blue;
     left: 0;
     bottom: 0; 
-}
-
-.emuwebapp-modal-footer button {
-    margin-top: 15px;
+    button {
+		margin-top: 15px;
+	}
 }
 
 .emuwebapp-exportdata {

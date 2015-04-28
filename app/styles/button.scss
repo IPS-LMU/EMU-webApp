@@ -4,6 +4,10 @@
 
 .emuwebapp-nav-wrap {
 	z-index: 99999;
+	.emuwebapp-dropdown-container:hover .emuwebapp-mini-btn {
+	    background: $color-white;
+	    color: $color-black;
+	}
 	ul {
 		list-style:none;
 		position:relative;
@@ -16,10 +20,9 @@
 			position:absolute;
 			top:100%;
 			left:0;
-			background:#fff;
+			background: $color-white;
 			margin:0px;
 			margin-left: 2px;
-			
 			ul {
 				top: 0px;
 				left: 100%;
@@ -27,13 +30,12 @@
 			}			
 			li {
 				float:none;
-				width:150px
+				width:150px;
 			}	
 			a {
 				z-index: 99999;	
-			}					
+			}	
 		}		
-		
 		li {
 			position:relative;
 			float:left;
@@ -75,11 +77,12 @@
     text-align:center;
     width: 120px;
     height: 30px;
+    outline: none;
     @extend .emuwebapp-font-small;
     
     &:hover:enabled {
-		background-color:white;
-		color:#000;
+		background-color: $color-white;
+		color: $color-black;
 	}
 	&:disabled {
 	    pointer-events: none;
