@@ -44,7 +44,13 @@
 			text-decoration: none;
 		}
 	}
-	
+	.emuwebapp-modal-inner {
+		position: absolute;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+	}	
 }
 
 .emuwebapp-modal-wrap {
@@ -57,67 +63,52 @@
     right:0;
     margin: auto;
     @extend .emuwebapp-font-small;
+    
+    > .emuwebapp-modal-header {
+		position: absolute;
+		background-color: $color-blue;
+		height: 60px;
+		left:0;
+		top:0;
+		width: 100%;
+		h2 {
+			padding-top: 17px;
+			color: #fff;
+			@extend .emuwebapp-font-large;
+		}
+		h3 {
+			padding-top: 17px;
+			color: #fff;
+			@extend .emuwebapp-font-large;
+		}
+	}
 }
 
-.emuwebapp-modal-header {
-    position: absolute;
-    background-color: $color-blue;
-    height: 60px;
-    left:0;
-    top:0;
-    width: 100%;
-}
-
-.emuwebapp-modal-header h2 {
-    padding-top: 17px;
-    color: #fff;
-    @extend .emuwebapp-font-large;
-}
-
-.emuwebapp-modal-header h3 {
-    padding-top: 17px;
-    color: #fff;
-    @extend .emuwebapp-font-large;
-}
-
-
-
-.emuwebapp-modalDialog-isOpen {
+.emuwebapp-modal-open {
 	opacity:1;
 	pointer-events: auto;
 } 
 
-
-.emuwebapp-modalDialog-inner {
-    position: absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-}
-
 .emuwebapp-modal-body {
+    height: calc(100% - 120px);
     width: 100%;
-    height: calc(100% - 60px);
-    position: absolute;
     top: 60px;
+    padding: 0px;
     bottom: 60px;
-    overflow: auto;
-    padding: 0px;
-    margin-top: 20px;
-    @extend .emuwebapp-font-small;
-}
-
-.emuwebapp-modal-bodyConfig {
-    height: calc(100% - 60px);
-    width: 100%;
-    top: 60px;
-    padding: 0px;
     position: relative;
-}
-
-.emuwebapp-modal-bodyConfig:before {
-    content: '';
+	clear: both;
+	overflow-y: auto;
+	overflow-x: hidden;
+	&::-webkit-scrollbar {
+		width: 20px;  /* for vertical scrollbars */
+		height: 0px; /* for horizontal scrollbars */
+	}
+	&::-webkit-scrollbar-track {
+		background: $color-blue;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.75);
+	}
 }
 
 .emuwebapp-modal-bodyHierarchy {

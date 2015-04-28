@@ -33,8 +33,8 @@
         },
         "input": {
             "family": "HelveticaNeue",
-            "size": "15px",
-            "weight": "600"
+            "size": "14px",
+            "weight": "400"
         },
         "code": {
             "family": "Consolas, 'Liberation Mono', Menlo, Courier, monospace",

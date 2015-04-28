@@ -4,11 +4,11 @@
 		Connect to Server
 	  </h3>
 	</div>
-	<div class="emuwebapp-modal-bodyConfig" ng-controller="ModalCtrl">
+	<div class="emuwebapp-modal-body" ng-controller="ModalCtrl">
 	    <div class="emuwebapp-text">
 	        <div>
-	            &nbsp;<br />	
 	            Please enter URL: <br />
+	            &nbsp;<br />
 	            <input type="text" ng-model="modal.dataOut" ng-init="modal.dataOut=cps.vals.main.serverUrl" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"><br />
 				{{connectionError}}
 			</div>

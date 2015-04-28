@@ -11,11 +11,14 @@
     
     input {
         @extend .emuwebapp-font-input;
-    }
-    
+        @include vendor-prefix(user-select, "none");
+        @include vendor-prefix(box-sizing, "content-box");
+        outline: none;
+    }    
     div {
         margin-left: 25px;
         margin-right: 25px;
+        margin-top: 25px;
         p {
             text-align: left;
         }  
