@@ -115,6 +115,14 @@
         color: $color-black;
     }
     
+    #emuwebapp-dropdown-arrow:after { 
+        content: '\25B8';
+    }     
+    
+    .emuwebapp-dropdown-container:hover #emuwebapp-dropdown-arrow:after {
+        content: '\25BE';
+    }    
+    
     .emuwebapp-dropdown-menu {
         background: $color-white;
         list-style: none outside none;

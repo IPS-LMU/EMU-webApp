@@ -294,7 +294,7 @@ angular.module('emuwebApp')
 								// draw sampleDur numbers.
 
 								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * (5 + curEvt.sampleDur.toString().length) && isOpen) {
+								if (posE - posS > zeroTxtImgWidth * (6 + curEvt.sampleDur.toString().length) && isOpen) {
 									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur + ' ', fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 									var hst2 = fontScaleService.getLastImageWidth();
 									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);
