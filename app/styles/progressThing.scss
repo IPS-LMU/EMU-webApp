@@ -1,73 +1,69 @@
-/**###############################
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+/** ###############################
     progress thing CSS
     see: progress thing directive
-*/
-
+    ############################### */
 
 .emuwebapp-progressThing {
-    background-color: black;
-    color: white;
+    background-color: $color-black;
+    color: $color-white;
     width: 100%;
     height: 20px;
+    @extend .emuwebapp-font-input;
 
     background-image:
         -webkit-linear-gradient(
         -45deg,
-        rgba(150, 150, 150, 1) 25%,
+        $color-transparent-yellow 25%,
         transparent 25%,
         transparent 50%,
-        rgba(150, 150, 150, 1) 50%,
-        rgba(150, 150, 150, 1) 75%,
+        $color-transparent-yellow 50%,
+        $color-transparent-yellow 75%,
         transparent 75%,
         transparent
     );
     background-image:
         -moz-linear-gradient(
         -45deg,
-        rgba(150, 150, 150, 1) 25%,
+        $color-transparent-yellow 25%,
         transparent 25%,
         transparent 50%,
-        rgba(150, 150, 150, 1) 50%,
-        rgba(150, 150, 150, 1) 75%,
+        $color-transparent-yellow 50%,
+        $color-transparent-yellow 75%,
         transparent 75%,
         transparent
     );
     background-image:
         -ms-linear-gradient(
         -45deg,
-        rgba(150, 150, 150, 1) 25%,
+        $color-transparent-yellow 25%,
         transparent 25%,
         transparent 50%,
-        rgba(150, 150, 150, 1) 50%,
-        rgba(150, 150, 150, 1) 75%,
+        $color-transparent-yellow 50%,
+        $color-transparent-yellow 75%,
         transparent 75%,
         transparent
     );
     background-image:
         linear-gradient(
         -45deg,
-        rgba(150, 150, 150, 1) 25%,
+        $color-transparent-yellow 25%,
         transparent 25%,
         transparent 50%,
-        rgba(150, 150, 150, 1) 50%,
-        rgba(150, 150, 150, 1) 75%,
+        $color-transparent-yellow 50%,
+        $color-transparent-yellow 75%,
         transparent 75%,
         transparent
     );
-    -webkit-background-size:50px 50px;
-    -moz-background-size:50px 50px;
-    -ms-background-size:50px 50px;
-    background-size:50px 50px;
-    -webkit-animation:emuwebapp-move 2s linear infinite;
-    -moz-animation:emuwebapp-move 2s linear infinite;
-    -ms-animation:emuwebapp-move 2s linear infinite;
-    animation:emuwebapp-move 2s linear infinite;
+    @include vendor-prefix(background-size, "50px 50px");
+    @include vendor-prefix(animation, "emuwebapp-move 2s linear infinite");
+    @include vendor-prefix(box-shadow, "inset 0 6px 6px "+$color-transparent-lightGrey);
     overflow: hidden;
-    -webkit-box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
-    -moz-box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
-    -ms-box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
-    box-shadow:inset 0 10px 0 rgba(255,255,255,.2);
 }
+
 /*
 Animate the stripes
 */   
@@ -105,26 +101,19 @@ Animate the stripes
 }  
 
 .emuwebapp-expandHeightTo20px{
-  height: 20px;
-  -webkit-transition: height 0.4s;
-  -moz-transition: height 0.4s;
-  transition: height 0.4s;
+    height: 20px;
+    @include vendor-prefix(transition, "height "+$animation-period+"ms");
 }
 
 .emuwebapp-shrinkHeightTo0px{
-  height: 0;
-  -webkit-transition: height 0.4s;
-  -moz-transition: height 0.4s;
-  transition: height 0.4s;
+    height: 0;
+    @include vendor-prefix(transition, "height "+$animation-period+"ms");
 }  
 
 .emuwebapp-animationRunning {
-    -webkit-animation-play-state: running;
-    animation-play-state: running;
-
+    @include vendor-prefix(animation-play-state, "running");
 }
 
 .emuwebapp-animationStopped {
-    -webkit-animation-play-state: paused;
-    animation-play-state: paused;
+    @include vendor-prefix(animation-play-state, "paused");
 }
