@@ -7,22 +7,22 @@
 .emuwebapp-right-menu {
     position: absolute;
     top: 40px;
-    right: 0px;
-    height: -moz-calc(100% - 127px);
-    height: -webkit-calc(100% - 127px);
-    height: calc(100% - 127px);
-    width: 0;
-    background-color: #fff;
+    right: -200px;
+    height: -moz-calc(100% - 133px);
+    height: -webkit-calc(100% - 133px);
+    height: calc(100% - 133px);
+    width: 199px;
+    margin-left: -200px;
+    background-color: $color-white;
     color: #000;
-    box-shadow: 0 0 5px 2px #ccc;
-    border-radius: 2px;
+    border-left: thin solid $color-black;
     z-index: 1000;
     font-size: 0.9em;
     h3{
         font-size: 1.5em;
         padding-top: 15px;
         padding-bottom: 15px;
-        border-bottom:thin solid black;
+        border-bottom: thin solid $color-black;
         overflow: hidden;
     }
     ul{
@@ -36,44 +36,44 @@
         left: -15px;
         height: 25px;
         width: 15px;
-        background: #FFF;
-        box-shadow: -3px 0 5px 1px #ccc;
+        background: $color-white;
+        box-shadow: -3px 0 5px 1px $color-black;
         border-style: none;
         z-index: 2001;
         img{
             width: 100%;
             height: 80%;
-            padding: 2px  ;
+            padding: 2px;
             border-style: none;
             border: 0px;
             border-radius: 0px;
         }
         &:active {
-            background: #fff;
+            background: $color-white;
         }
         &:focus {
             outline: none;
         } 
     }
     .emuwebapp-curSelPerspLi{
-        border-bottom:thin solid rgba(152, 152, 152, 0.25);;
+        border-bottom:thin solid $color-transparent-grey;
         padding: 8px !important;
         margin: 4px !important;
-        background-color: #999;
+        background-color: $color-grey;
     }
     .emuwebapp-perspLi{
-        border-bottom:thin solid rgba(152, 152, 152, 0.25);;
+        border-bottom:thin solid $color-transparent-grey;
         padding: 8px !important;
         margin: 4px !important;
         overflow: hidden;
         &:hover{
-            background-color: rgba(152, 152, 152, 0.28);
+            background-color: $color-transparent-lightGrey;
         }
     }
 }
 
 .emuwebapp-expandWidthTo200px{
-    width: 200px;
-    @include vendor-prefix(transition, "width "+$animation-period+"ms");
+    right: 0px;
+    @include vendor-prefix(transition, "right "+$animation-period+"ms");
 }
 

@@ -70,8 +70,8 @@
 
 /** animate left submenu **/
 .emuwebapp-shrinkWidthTo0px{
-  width: 0px;
-  @include vendor-prefix(transition, "width "+$animation-period+"ms");
+  right: -200px;
+  @include vendor-prefix(transition, "right "+$animation-period+"ms");
 }
 
 
