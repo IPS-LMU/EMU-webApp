@@ -17,7 +17,7 @@
     color: #000;
     border-left: thin solid $color-black;
     z-index: 1000;
-    font-size: 0.9em;
+    @extend .emuwebapp-font-small;
     h3{
         font-size: 1.5em;
         padding-top: 15px;

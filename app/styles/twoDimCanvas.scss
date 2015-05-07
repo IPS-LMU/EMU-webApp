@@ -1,23 +1,27 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
 /*2D + overtime canvases*/
 
 .emuwebapp-twoDimCanvasContainer {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-    height: calc(100% - 10px);
-    width: calc(100% - 10px);
-    padding: 5px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: calc(100% - 15px);
+    width: calc(100% - 15px);
+    padding: 0px;
     background-color: white;
+    canvas {
+        float: left;
+        z-index: 1;   
+        width: 100%;
+        height: 100%;
+        background-color: #E7E7E7;
+        border: 1px solid gray;
+    }
 }
 
-.emuwebapp-twoDimCanvasContainer canvas {
-    float: left;
-    z-index: 1;   
-    width: 100%;
-    height: 100%;
-    background-color: #E7E7E7;
-    border: 1px solid gray;
-}
 
 .emuwebapp-bottomRightResizePane {
   position: absolute;
