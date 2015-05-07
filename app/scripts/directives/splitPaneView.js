@@ -24,8 +24,6 @@ angular.module('emuwebApp')
         };
       },
       link: function (scope, element, attrs) {
-
-
         var dragBottomRightResizePaneTopResizer = false;
         var dragBottomRightResizePaneLeftResizer = false;
         var dragBottomRightResizePaneCornerResizer = false;

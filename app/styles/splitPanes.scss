@@ -1,0 +1,164 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+/* emuwebapp-split-panes CSS */
+
+.emuwebapp-bottomRightResizePane {
+    position: absolute;
+    right: 0px;
+    top: calc(100% - 200px);
+    height: 200px;
+    width: 200px;
+    background-color: $color-lightGrey;
+    color: $color-black;
+    box-shadow: 0 0 5px 2px $color-grey;
+    border-radius: 0px;
+    z-index: 1000000;
+}
+
+.emuwebapp-bottomRightResizePaneCornerResizer{
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    border-top: 1px solid $color-grey;
+    border-left: 1px solid $color-grey;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg,
+        $color-white 30%,
+        $color-black 30%, $color-black 40%,
+        $color-white 40%, $color-white 50%,
+        $color-black 50%, $color-black 60%,
+        $color-white 60%, $color-white 70%,
+        $color-black 70%, $color-black 80%,
+        $color-white 80%
+    );
+}
+
+.emuwebapp-bottomRightResizePaneTopResizer{
+    position: absolute;
+    left: 10px;
+    height: 10px;
+    width: calc(100% - 10px);
+    background-color: $color-white;
+    border-top: 1px solid $color-grey;
+    border-bottom: 1px solid $color-grey;
+    cursor: ns-resize;
+}
+
+.emuwebapp-bottomRightResizePaneLeftResizer{
+    position: absolute;
+    height: calc(100% - 10px);
+    top: 10px;
+    width: 10px;
+    background-color: $color-white;
+    border-left: 1px solid $color-grey;
+    border-right: 1px solid $color-grey;
+    cursor: ew-resize;
+}
+
+.emuwebapp-split-panes {
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    position: absolute;
+    > .emuwebapp-split-handler {
+        background: white;
+        position: absolute;
+        z-index: 999;
+    }
+} 
+
+/* Horizontal */ 
+
+.emuwebapp-split-panes.horizontal > .emuwebapp-split-handler
+{
+  width: 4px;
+  top: 0px; 
+  left: 50%;
+  bottom: 0px;
+  cursor: ew-resize;
+}
+
+.emuwebapp-split-panes.horizontal > .split-pane1,
+.emuwebapp-split-panes.horizontal > .split-pane2 {
+  position: absolute;
+  height: 100%;
+}
+
+.emuwebapp-split-panes.horizontal > .split-pane1 {
+  width: 50%; 
+}
+
+.emuwebapp-split-panes.horizontal > .split-pane2 {
+  left: 50%;
+  right: 0px;
+  border-left: 1px solid #aaa;
+}
+
+
+/* Vertical */
+
+.emuwebapp-split-panes.vertical > .emuwebapp-split-handler
+{
+  height: 10px;
+  width: 100%;
+  top: 50%; 
+  left: 0px;
+  right: 0px;
+  cursor: ns-resize;
+  /*border: 1px solid gray;*/
+  vertical-align: middle;
+}
+
+.emuwebapp-split-panes.vertical > .split-pane1,
+.emuwebapp-split-panes.vertical > .split-pane2
+{
+  position: absolute;
+  width: 100%;
+}
+
+.emuwebapp-split-panes.vertical > .split-pane1
+{
+  height: 50%; 
+}
+
+.emuwebapp-split-panes.vertical > .split-pane2
+{ z-index: 100;
+  top: 50%;
+  bottom: 0px;
+  /*border-top: 10px solid #aaf;*/
+}
+
+.emuwebapp-split-panes {
+    .vertical {
+        z-index: 0 !important;
+    }
+}
+
+.emuwebapp-split-panes.vertical > .emuwebapp-split-handler {
+    height: 14px !important;
+    text-align: center;
+    border-top: 1px solid #111;
+    border-bottom: 1px solid #111;
+    border-left: 0px;
+    border-right: 0px;
+    &:before {
+        content: "";
+        position: absolute;
+        left: calc(50%-20px);
+        top: 0.21em;
+        bottom: 0.21em;
+        width: 20px;
+        background: linear-gradient(180deg,
+            black, black 20%, 
+            white 20%, white 40%, 
+            black 40%, black 60%, 
+            white 60%, white 80%, 
+            black 80%, black 100%
+        );
+    }
+}
+
+
