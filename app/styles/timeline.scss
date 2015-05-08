@@ -5,12 +5,8 @@
     see: osci directive and template
 */
 
+
 .emuwebapp-timeline {
-    height: 100%;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-.emuwebapp-timelineCanvasOuter {
     background-color: white;
     position: absolute;  
     padding: 0;
@@ -19,6 +15,7 @@
     bottom: 0;
     height: 100%;
 }
+
 .emuwebapp-timelineCanvasContainer {
     position: relative;
     float:left;
@@ -29,6 +26,7 @@
     padding-top: 0px;
     padding-bottom: 0px;    
 }
+
 .emuwebapp-timelineCanvasContainer div {
     width: 100%;
 }

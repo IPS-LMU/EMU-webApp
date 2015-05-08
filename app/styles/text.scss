@@ -88,26 +88,26 @@
 		font-size: 0.7em;
 	}
 	alert {
-	    display: block;
-		text-align: center;
-		color: #a94442;
-		background-color: #f2dede;
-		border: 3px dashed #ebccd1;
-		border-radius: 3px;
-		margin: 5px;
-		margin-top: 25px;
-		margin-bottom: 25px;	
+            display: block;
+            text-align: center;
+            color: #a94442;
+            background-color: #f2dede;
+            border: 3px dashed #ebccd1;
+            border-radius: 3px;
+            margin: 5px;
+            margin-top: 25px;
+            margin-bottom: 25px;	
 	}
 	toc {
-        @extend .emuwebapp-font-input;
-        text-align: center;
-		li {
-			font-size: 1.2em;
-			text-align: left;
-			list-style-type: circle;
-			margin-left: 25px;
-			margin-top: 0px;
-			margin-bottom: 5px;
-		}        
+            @extend .emuwebapp-font-input;
+            text-align: center;
+	    li {
+	        font-size: 1.2em;
+	        text-align: left;
+	        list-style-type: circle;
+	        margin-left: 25px;
+	        margin-top: 0px;
+	        margin-bottom: 5px;
+	    }        
 	}
 }

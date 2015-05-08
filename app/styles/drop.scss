@@ -4,37 +4,33 @@
 
 .emuwebapp-dropzone {
     height: 80%;
-    border: 1px dashed white;
-    border-radius: 4px;
+    border: 1px dashed $color-grey;
+    border-radius: 8px;
     text-align: center;
-    color: #BBB;
+    color: $color-grey;
     padding: 15px;
     margin: 15px;
-}
-.emuwebapp-dropzone.not-available {
-    background-color: #f00;
-}
-.emuwebapp-dropzone.over {
-    background-color: #bfb;
-}
-.emuwebapp-dropzone.error {
-    background-color: #f00;
-}
-.emuwebapp-dropzone.waiting {
-    background-color: #0ff;
-}
-.emuwebapp-dropzone.hidden {
-    display: none;
+    line-height: 1.5;
+    @extend .emuwebapp-font-small;
+    &.not-available {
+        background-color: #f00;
+    }
+    &.over {
+        background-color: #bfb;
+    }
+    &.error {
+        background-color: #f00;
+    }
+    &.waiting {
+        background-color: #0ff;
+    }
+    &.hidden {
+        display: none;
+    }
 }
 
-/* Prevent the text contents of draggable elements from being selectable. */
 [draggable] {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  -khtml-user-drag: element;
-  -webkit-user-drag: element;
+    @include vendor-prefix(user-select, "none");
 }
 
 .drag {

@@ -68,18 +68,15 @@
 	}
 }
 
-/** animate left submenu **/
+
 .emuwebapp-shrinkWidthTo0px{
   right: -200px;
   @include vendor-prefix(transition, "right "+$animation-period+"ms");
 }
 
 
-
-
 .emuwebapp-bundleListSessionBndlsContainer {
     max-height: 25000px;
-    
     &.ng-hide-add.ng-hide-add-active {
         @include vendor-prefix(transition, "100ms ease-out");
     }
