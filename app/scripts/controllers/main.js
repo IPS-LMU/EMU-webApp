@@ -302,7 +302,6 @@ angular.module('emuwebApp')
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.design.animation.period);
-
 		};
 
 		/**
@@ -371,6 +370,10 @@ angular.module('emuwebApp')
 								viewState.somethingInProgressTxt = 'Loading bundle list...';
 								Iohandlerservice.getBundleList().then(function (bdata) {
 									validRes = loadedMetaDataService.setBundleList(bdata);
+                        // show standard buttons
+                        ConfigProviderService.vals.activeButtons.clear = true;
+                        ConfigProviderService.vals.activeButtons.specSettings = true;
+
 									if (validRes === true) {
 										// then load first bundle in list
 										dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
@@ -664,6 +667,10 @@ angular.module('emuwebApp')
 									// validRes = Validationservice.validateJSO('bundleListSchema', bdata);
 									// if (validRes === true) {
 									loadedMetaDataService.setBundleList(bdata);
+                        // show standard buttons
+                        ConfigProviderService.vals.activeButtons.clear = true;
+                        ConfigProviderService.vals.activeButtons.specSettings = true;
+
 									// then load first bundle in list
 									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
 								}, function (err) {

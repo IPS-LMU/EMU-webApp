@@ -21,12 +21,12 @@ angular.module('emuwebApp')
 				var cur = changeObj[key];
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
-						viewState.historyActionTxt = 'UNDO: SSFF manipulation';
+                                                sServObj.setHistoryActionText(true, 'SSFF manipulation');
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 					} else {
-						viewState.historyActionTxt = 'REDO: SSFF manipulation';
+						sServObj.setHistoryActionText(false, 'SSFF manipulation');
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
@@ -35,10 +35,12 @@ angular.module('emuwebApp')
 					switch (cur.action) {
 						case 'MOVEBOUNDARY':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: MOVEBOUNDARY';
+                                                                var name = LevelService.getItemFromLevelById(cur.name, cur.id).labels[0].value;
+                                                                sServObj.setHistoryActionText(true, 'move Boundary before ' + name);
 								LevelService.moveBoundary(cur.name, cur.id, -cur.movedBy, cur.isFirst, cur.isLast);
-							} else {
-								viewState.historyActionTxt = 'REDO: MOVEBOUNDARY';
+							} else { 
+                                                                var name = LevelService.getItemFromLevelById(cur.name, cur.id).labels[0].value;
+                                                                sServObj.setHistoryActionText(true, 'move Boundary before ' + name);
 								LevelService.moveBoundary(cur.name, cur.id, cur.movedBy, cur.isFirst, cur.isLast);
 							}
 							break;
@@ -371,6 +373,15 @@ angular.module('emuwebApp')
 				'undo': undoStack,
 				'redo': redoStack
 			};
+		};
+
+		// set the displayed text of the historyActionPopup
+		sServObj.setHistoryActionText = function (isUndo, text) {
+		    var front = 'UNDO: '
+                    if(!isUndo) {
+                        front = 'REDO: '
+                    }
+                    viewState.historyActionTxt = front + text;
 		};
 
 		// resetToInitState
