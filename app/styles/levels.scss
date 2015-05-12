@@ -7,154 +7,65 @@
     ###################################
 */
 
-
-.emuwebapp-levelOuter {
-	width: 100%;
-	height: 64px;
-	perspective: 800px;
-}
-
-.emuwebapp-levelCanvasContainer {
-	position: relative;
-	float:left;
-	width: calc(100% - 30px);
-	height: 100%;
-	padding: 5px;
-}
-
-@-webkit-keyframes emuwebapp-levelCanvasContainer{
-	from { -webkit-transform: rotateX(0deg);    }
-	to   { -webkit-transform: rotateX(-180deg); }
-}
-
-/* all other browsers */
-@keyframes emuwebapp-levelCanvasContainer{
-	from {
-	  -moz-transform: rotateX(0deg);
-	  -ms-transform: rotateX(0deg);
-	  transform: rotateX(0deg);
-  }
-  to {
-	  -moz-transform: rotateX(-180deg);
-	  -ms-transform: rotateX(-180deg);
-	  transform: rotateX(-180deg);
-  }
-}
-
-
-.emuwebapp-levelCanvasContainer-animate{
-	-webkit-animation-name: emuwebapp-levelCanvasContainer;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-iteration-count: 1;
-	-webkit-animation-duration: 0.3s;
-
-	animation-name: emuwebapp-levelCanvasContainer;
-	animation-timing-function: linear;
-	animation-iteration-count: 1;
-	animation-duration: 0.3s;
-
-	-webkit-transform-style: preserve-3d;
-	-moz-transform-style: preserve-3d;
-	-ms-transform-style: preserve-3d;
-	transform-style: preserve-3d;
-
-	/*animation-play-state: running;*/
-}
-
-
-.emuwebapp-levelCanvas {
-    float: left;
-    margin: 0px;
-    border: 1px solid gray;
+.emuwebapp-level {
     width: 100%;
-    height: 100%;
-    z-index: 1; 
+    height: 64px;
+    perspective: 800px;
+    .emuwebapp-level-container {
+        position: relative;
+        float:left;
+        width: calc(100% - 30px);
+        height: 100%;
+        padding: 5px;
+    }
+    .emuwebapp-level-canvas {
+        float: left;
+        margin: 0px;
+        border: 1px solid gray;
+        width: 100%;
+        height: 100%;
+        z-index: 1; 
+    }
+    .emuwebapp-level-markup {
+        position: absolute;
+        top: 5px; 
+        left: 5px;
+        background-color: transparent;
+        width:calc(100% - 10px);
+        height: calc(100% - 10px);
+        z-index: 2; 
+    }
+    .emuwebapp-level-buttons {
+        float: left;
+        width: 10px;
+        height: 100%;
+    }
 }
 
-
-.emuwebapp-levelMarkupCanvas {
-    /*float: left;*/
-    position: absolute;
-    top: 5px; 
-    left: 5px;
-    /*border: 1px solid red;*/
-    background-color: transparent;
-    width:calc(100% - 10px);
-    height: calc(100% - 10px);
-    z-index: 2; 
+@include keyframes(rotate-the-object) {
+  0%   { @include vendor-prefix(transform, "rotateX(0deg)"); }
+  100% { @include vendor-prefix(transform, "rotateX(-180deg)"); }
 }
 
-.emuwebapp-levelButtonsContainer {
-    /*position: relative;*/
-    float: left;
-    width: 10px;
-    height: 100%;
-    /*background-color: #0a0;*/
-}
+.emuwebapp-level-animation {
+    @include animation('rotate-the-object .2s 1');
+} 
 
-/*levelButtons*/
-
-/*delete*/
-.emuwebapp-levelDeleteBtn {
+.emuwebapp-level-button {
     float:left;
     width: 20px;
     height: calc(100%/3);
     background-color: white;
-    /*border: 1px solid black;*/
+    img {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        vertical-align: middle;
+        &:hover{
+            background-color: $color-blue;
+        }
+    }
 }
-
-.emuwebapp-levelDeleteBtn img {
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    vertical-align: middle;
-}
-
-.emuwebapp-levelDeleteBtn img:hover{
-    background-color: $color-blue;
-}
-
-/*resize*/
-.emuwebapp-levelResizeBtn {
-    float:left;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    /*border: 1px solid black;*/
-}
-
-.emuwebapp-levelResizeBtn img {
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    vertical-align: middle;
-}
-
-.emuwebapp-levelResizeBtn img:hover{
-    background-color: $color-blue;
-}
-
-/*save*/
-.emuwebapp-levelSaveBtn {
-    float:left;
-    width: 20px;
-    height: calc(100%/3);
-    background-color: white;
-    /*border: 1px solid black;*/
-}
-
-.emuwebapp-levelSaveBtn img {
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    vertical-align: middle;
-}
-
-.emuwebapp-levelSaveBtn img:hover{
-    background-color: $color-blue;
-}
-
-/*emuwebapp-selectAttrDef*/
 
 .emuwebapp-selectAttrDef{
     width: calc(100% - 40px);

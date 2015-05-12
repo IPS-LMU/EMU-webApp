@@ -8,7 +8,7 @@
 		<!-- tabbed header -->
 		<div id="tabs" class="emuwebapp-tabbed" ng-controller="TabbedHelpCtrl">
 			<ul class="emuwebapp-grid">
-				<li ng-repeat="tab in tabs" ng-style="isActiveTab(tab.url)" class="emuwebapp-grid-cell emuwebapp-grid-cell--center emuwebapp-grid-button emuwebapp-link" ng-click="onClickTab(tab)">{{tab.title}}</li>
+				<li ng-repeat="tab in tabs" ng-style="isActiveTab(tab.url)" class="emuwebapp-grid-cell emuwebapp-grid-center emuwebapp-grid-button emuwebapp-link" ng-click="onClickTab(tab)">{{tab.title}}</li>
 			</ul>
 			<div ng-include="currentTabUrl" class="emuwebapp-tabbed-view"></div>
 		</div>
