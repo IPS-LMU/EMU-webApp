@@ -1,0 +1,51 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+.emuwebapp-hierarchy-container{
+    width: 100%;
+    height: calc(100% - 34px);
+}
+
+.emuhierarchy-node, .emuhierarchy-addbutton {
+    cursor: pointer;
+    circle {
+        stroke-width: 1.5px;
+    }
+    text {
+        @extend .emuwebapp-font-small;
+    }
+}
+
+.emuhierarchy-link {
+	fill: none;
+	stroke-width: 1.5px;
+}
+
+/* Invisible, thick background for every link to provide easier mouse-over */
+.emuhierarchy-ghostlink {
+	fill: none;
+	stroke-width: 15px;
+	/* The stroke color will never be visible due to the opacity of 0 */
+	stroke: white;
+	opacity: 0;
+}
+
+.emuhierarchy-newlinkpreview {
+    fill: none;
+    stroke-width: 2px;
+    stroke-dasharrtoay: 5 5;
+}
+
+.emuwebapp-modal-hierarchy select {
+    border: 0px !important;
+    @include vendor-prefix(appearance, "none");
+    background: $color-lightGrey;
+    width: auto;
+    color: $color-black;
+    padding: 3px;
+    margin: 3px;
+    box-shadow: 0px;
+    cursor: pointer;
+}
+

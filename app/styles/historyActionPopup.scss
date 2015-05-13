@@ -6,7 +6,7 @@
 .emuwebapp-history {
     position: absolute;
     display: flex;
-    font-size: 150%;
+    font-size: 200%;
     align-items: center;
     justify-content: center;
     left: 30%;
@@ -17,11 +17,10 @@
     color: $color-white;
     z-index: 999999;
     opacity: 0;
-    @extend .emuwebapp-font-large;
     font-weight: 900;
     @include vendor-prefix(bottom-left-radius, "20px");
     @include vendor-prefix(bottom-right-radius, "20px");
-    @include vendor-prefix(transition, "0.5s ease all");
+    @include vendor-prefix(transition, "0.8s ease all");
     div {
         max-height: 100%;
         max-width: 100%;
@@ -29,7 +28,7 @@
     }
 }
 .emuwebapp-history-fade {
-	opacity: 1;
+    opacity: 1;
 }
 
 
