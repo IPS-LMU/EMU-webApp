@@ -32,7 +32,6 @@ angular.module('emuwebApp')
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'ANNOT') {
-                                        var name = LevelService.getItemFromLevelById(cur.name, cur.id).labels[0].value;
                                         var action = false;
 					switch (cur.action) {
 						case 'MOVEBOUNDARY':
@@ -172,7 +171,7 @@ angular.module('emuwebApp')
 							}
 							break;
 					}
-                                        sServObj.setHistoryActionText(action, cur.action +' at "' + name + '"');
+                                        sServObj.setHistoryActionText(action, cur.action);
 				} else if (cur.type === 'HIERARCHY') {
                                         var action = false;
 					switch (cur.action) {
