@@ -18,17 +18,17 @@
 }
 
 .emuhierarchy-link {
-	fill: none;
-	stroke-width: 1.5px;
+    fill: none;
+    stroke-width: 1.5px;
 }
 
 /* Invisible, thick background for every link to provide easier mouse-over */
 .emuhierarchy-ghostlink {
-	fill: none;
-	stroke-width: 15px;
-	/* The stroke color will never be visible due to the opacity of 0 */
-	stroke: white;
-	opacity: 0;
+    fill: none;
+    stroke-width: 15px;
+    /* The stroke color will never be visible due to the opacity of 0 */
+    stroke: white;
+    opacity: 0;
 }
 
 .emuhierarchy-newlinkpreview {

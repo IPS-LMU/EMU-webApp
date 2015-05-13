@@ -14,11 +14,11 @@
 
 .emuwebapp-tabbed-view {
     border: 0px;
-	clear: both;
-	overflow-y: -moz-scrollbars-vertical;
-	overflow-y: scroll;
-	overflow-x: hidden;	
-	padding-top: 0px;
+    clear: both;
+    overflow-y: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+    overflow-x: hidden;	
+    padding-top: 0px;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -36,7 +36,7 @@
 }
 
 .emuwebapp-roundedBorderFrame {
-	border: 1px solid;
+    border: 1px solid;
     border-radius: 10px;
     text-align: left;
     background: #fff;    
@@ -49,7 +49,7 @@
 }
 
 .emuwebapp-roundedBorderFrame-new {
-	border: 1px solid;
+    border: 1px solid;
     border-radius: 10px;
     text-align: left;
     background: #bbb;    
@@ -62,8 +62,8 @@
 }
 
 .emuwebapp-borderDashed {
-	border-style: dashed;
-	padding-top: 25px;
+    border-style: dashed;
+    padding-top: 25px;
 }
 
 .emuwebapp-tabbed-attributeSpace {
