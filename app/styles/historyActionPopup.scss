@@ -6,7 +6,7 @@
 .emuwebapp-history {
     position: absolute;
     display: flex;
-    font-size: 200%;
+    font-size: 200% !important;
     align-items: center;
     justify-content: center;
     left: 30%;
@@ -17,9 +17,14 @@
     color: $color-white;
     z-index: 999999;
     opacity: 0;
-    font-weight: 900;
-    @include vendor-prefix(bottom-left-radius, "20px");
-    @include vendor-prefix(bottom-right-radius, "20px");
+    font-weight: 900 !important;
+    border: 0px;
+    border-left: 1px solid $color-black;
+    border-right: 1px solid $color-black;
+    border-bottom: 1px solid $color-black;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    color: $color-white;
     @include vendor-prefix(transition, "0.8s ease all");
     div {
         max-height: 100%;
