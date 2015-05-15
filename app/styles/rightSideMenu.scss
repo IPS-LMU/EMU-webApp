@@ -72,8 +72,3 @@
     }
 }
 
-.emuwebapp-expandWidthTo200px{
-    right: 0px;
-    @include vendor-prefix(transition, "right "+$animation-period+"ms");
-}
-

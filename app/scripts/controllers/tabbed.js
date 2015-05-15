@@ -126,26 +126,28 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.classDefinition = function (typeOfDefinition, key) {
-		    var style = 'emuwebapp-roundedBorderFrame';
+		$scope.highlight = function (typeOfDefinition, key) {
+                    var ret = {'background-color': $scope.cps.design.color.lightGrey };
 		    switch(typeOfDefinition) {
 		        case 'level':
 		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
+		                return ret;
 		            }
 		            break;
 		        case 'ssff':
 		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
+		                return ret;
 		            }
 		            break;		
 		        case 'link':
 		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
+		                return ret;
 		            }
-		            break;			                        
+		            break;
+                        default:
+			        return '';
+                            break;               
 		    }
-		    return style;
 		};
 		
 		
@@ -153,21 +155,21 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.classBorderDefinition = function (typeOfDefinition, key) {
-		    var style = 'emuwebapp-borderTitle';
+		    var style = 'emuwebapp-tabbed-border';
 		    switch(typeOfDefinition) {
 		        case 'level':
 		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
+		                style = 'emuwebapp-tabbed-border highlight';
 		            }
 		            break;
 		        case 'ssff':
 		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
+		                style = 'emuwebapp-tabbed-border highlight';
 		            }
 		            break;		
 		        case 'link':
 		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
+		                style = 'emuwebapp-tabbed-border highlight';
 		            }
 		            break;			                        
 		    }

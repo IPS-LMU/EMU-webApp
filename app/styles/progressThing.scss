@@ -96,16 +96,6 @@ Animate the stripes
   }
 }  
 
-.emuwebapp-expandHeightTo20px{
-    height: 20px;
-    @include vendor-prefix(transition, "height "+$animation-period+"ms");
-}
-
-.emuwebapp-shrinkHeightTo0px{
-    height: 0;
-    @include vendor-prefix(transition, "height "+$animation-period+"ms");
-}  
-
 .emuwebapp-animationRunning {
     @include vendor-prefix(animation-play-state, "running");
 }

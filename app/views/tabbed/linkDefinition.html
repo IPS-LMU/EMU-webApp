@@ -1,5 +1,5 @@
 <!-- linkDefinitions -->
-<div ng-class="classDefinition('link', key)" ng-repeat="(key, value) in cps.curDbConfig.linkDefinitions">
+<div ng-style="highlight('link', key)" class="emuwebapp-tabbed-rounded" ng-repeat="(key, value) in cps.curDbConfig.linkDefinitions">
     <a ng-if="value.added" href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('link', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">

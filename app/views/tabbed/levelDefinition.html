@@ -1,5 +1,5 @@
 <!-- levelDefinitions -->
-<div ng-class="classDefinition('level', key)" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
+<div ng-style="highlight('level', key)" class="emuwebapp-tabbed-rounded" ng-repeat="(key, value) in cps.curDbConfig.levelDefinitions">
     <a href ng-show="value.added" title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('level', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">
@@ -12,7 +12,7 @@
 	    </span>
 	</div>
 	<br />
-	<div ng-class="classDefinition('level', key)" class="emuwebapp-borderDashed">
+	<div ng-style="highlight('level', key)" class="emuwebapp-tabbed-rounded dashed">
 		<div ng-class="classBorderDefinition('level', key)">Attribute Definitions</div>
 			<div class="emuwebapp-tabbed-table" ng-repeat="(keyAttribute, valueAttribute) in value.attributeDefinitions">
 				<span ng-if="keyAttribute == 0" class="emuwebapp-tabbed-cell4">

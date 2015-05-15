@@ -1,5 +1,5 @@
 <!-- ssffTrackDefinitions -->
-<div ng-class="classDefinition('ssff', key)" ng-repeat="(key, value) in cps.curDbConfig.ssffTrackDefinitions">
+<div ng-style="highlight('ssff', key)" class="emuwebapp-tabbed-rounded" ng-repeat="(key, value) in cps.curDbConfig.ssffTrackDefinitions">
     <a ng-if="value.added" href title="Close" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('ssff', key)">X</a>
     <div class="emuwebapp-tabbed-table">
         <span class="emuwebapp-tabbed-cell3">

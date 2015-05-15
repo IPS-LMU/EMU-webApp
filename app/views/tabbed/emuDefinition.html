@@ -1,5 +1,5 @@
 <!-- emu app config -->
-<div class="emuwebapp-roundedBorderFrame" >
+<div class="emuwebapp-tabbed-rounded">
     <!-- spectrogram Settings -->
 	<div class="emuwebapp-tabbed-table">
 	    <div class="emuwebapp-tabbed-title">Spectrogram Settings</div>
@@ -58,12 +58,12 @@
 </div>
 <br />
 
-<div class="emuwebapp-roundedBorderFrame">
+<div class="emuwebapp-tabbed-rounded">
     <!-- perspectives Settings -->
     <div class="emuwebapp-tabbed-table">
 		<div class="emuwebapp-tabbed-title">Perspectives Settings</div>
 		<div>&nbsp;</div>
-		<div class="emuwebapp-roundedBorderFrame emuwebapp-borderDashed emuwebapp-tabbed-table" ng-repeat="(key, value) in cps.vals.perspectives track by $index">
+		<div class="emuwebapp-tabbed-rounded dashed emuwebapp-tabbed-table" ng-repeat="(key, value) in cps.vals.perspectives track by $index">
 			<a href title="Delete" class="emuwebapp-tabbed-close" ng-click="deleteDefinition('perspective', key)">X</a>
 			<div class="emuwebapp-tabbed-row">
 			    <span class="emuwebapp-tabbed-cell">
