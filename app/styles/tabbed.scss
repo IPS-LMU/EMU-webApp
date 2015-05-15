@@ -85,12 +85,12 @@
         right: -9px; 
         top: -9px;
         &:hover {
-            background: #00d9ff;
+            background: $color-transparent-red;
             text-decoration: none;
         }
         &:active {
-            background: #f00;
-            color: #000;
+            background: $color-transparent-red;
+            color: $color-black;
             text-decoration: none;
         }
     } 
@@ -99,12 +99,12 @@
         display: inline-block;
         margin-left: 20px;
         &:hover {
-            background: #00d9ff;
+            background: $color-transparent-red;
             text-decoration: none;
         }
         &:active {
-            background: #f00;
-            color: #000;
+            background: $color-transparent-red;
+            color: $color-black;
             text-decoration: none;
         }
     }
@@ -133,54 +133,44 @@
         left: 5px;
         background-color: $color-white;
     }
+    .emuwebapp-tabbed-table {
+        display:table;
+        width: 100%;
+        .emuwebapp-tabbed-row {
+            display:table-row;
+            width: 100%;
+            vertical-align: top;    
+        }
+        .emuwebapp-tabbed-cell {
+            display:table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .emuwebapp-tabbed-cell3 {
+            display:table-cell;
+            width: 33%;
+            vertical-align: top;
+        }
+        .emuwebapp-tabbed-cell4 {
+            display:table-cell;
+            width: 25%;
+            vertical-align: top;
+        }
+        .emuwebapp-tabbed-cell5 {
+            display:table-cell;
+            width: 20%;
+            vertical-align: top;
+        }
+        .emuwebapp-align-right {
+            text-align: right;
+            padding-right: 10px;
+        }
+    }
 }
 
-.emuwebapp-tabbed-table {
-    display:table;
-    width: 100%;
 
-}
-.header {
-    display:table-header-group;
-    font-weight:bold;
-}
-.emuwebapp-tabbed-rowGroup {
-    display:table-row-group;
-}
-.emuwebapp-tabbed-row {
-    display:table-row;
-    width: 100%;
-    vertical-align: top;    
-}
-.emuwebapp-tabbed-cellfull {
-    display:table-cell;
-    width: 100%;
-    vertical-align: top;
-}
-.emuwebapp-tabbed-cell {
-    display:table-cell;
-    width: 50%;
-    vertical-align: top;
-}
-.emuwebapp-tabbed-cell3 {
-    display:table-cell;
-    width: 33%;
-    vertical-align: top;
-}
-.emuwebapp-tabbed-cell4 {
-    display:table-cell;
-    width: 25%;
-    vertical-align: top;
-}
-.emuwebapp-tabbed-cell5 {
-    display:table-cell;
-    width: 20%;
-    vertical-align: top;
-}
-.emuwebapp-align-right {
-    text-align: right;
-    padding-right: 10px;
-}
+/** TODO: **/
+
 .emuwebapp-tabbed-input, .emuwebapp-tabbed-input-bold, .emuwebapp-tabbed-input-small {
     overflow: hidden;
 	-webkit-box-sizing: border-box;
