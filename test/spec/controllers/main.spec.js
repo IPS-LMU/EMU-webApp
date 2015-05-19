@@ -51,6 +51,7 @@ describe('Controller: MainController', function () {
     scope.valid = Validationservice;
     scope.shs.wavJSO.Data = new Array(testSizeAll);
     scope.cps.setVals(defaultEmuwebappConfig);
+    scope.cps.design = defaultEmuwebappDesign;
     scope.cps.curDbConfig = aeDbConfig;
     scope.history = HistoryService;
     scope.txtgrid = Textgridparserservice;
@@ -72,6 +73,7 @@ describe('Controller: MainController', function () {
     $httpBackend.whenGET("views/connectModal.html").respond('');
     $httpBackend.whenGET("views/export.html").respond('');
     $httpBackend.whenGET("configFiles/default_emuwebappConfig.json").respond(defaultEmuwebappConfig);
+    $httpBackend.whenGET("configFiles/default_emuwebappDesign.json").respond(defaultEmuwebappDesign);
   }));
 
   it('should react to $broadcast connectionDisrupted', inject(function ($rootScope) {
@@ -144,7 +146,7 @@ describe('Controller: MainController', function () {
   it('should openSubmenu', function () {
     spyOn(scope.vs, 'togglesubmenuOpen');
     scope.openSubmenu();
-    expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.vals.colors.transitionTime);
+    expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.design.animation.period);
   });
 
   it('should clear', inject(function ($q) {
@@ -176,13 +178,13 @@ describe('Controller: MainController', function () {
     expect(scope.modal.open).toHaveBeenCalledWith('views/help.html');
   }); 
 
-  it('should openDemoDB ae', inject(function ($q) {
+  it('should openDemoDB ae', inject(function ($q, $httpBackend) {
     var ioDeferredDBConfig = $q.defer();
     ioDeferredDBConfig.resolve({
       data: {
         EMUwebAppConfig: {}
       }
-    });
+    });    
     var ioDeferredBundleList = $q.defer();
     ioDeferredBundleList.resolve({
       data: ae_bundleList
@@ -198,9 +200,10 @@ describe('Controller: MainController', function () {
     expect(scope.lmds.getDemoDbName()).toEqual('ae');
     expect(scope.cps.vals.main.comMode).toEqual('DEMO');
     expect(scope.vs.somethingInProgressTxt).toEqual('Loading DB config...');
-    expect(scope.io.getDBconfigFile).toHaveBeenCalledWith('ae');
     ioDeferredDBConfig.resolve();
     scope.$digest();
+    $httpBackend.flush();
+    expect(scope.io.getDBconfigFile).toHaveBeenCalledWith('ae');
     expect(scope.valid.validateJSO).toHaveBeenCalled();
     expect(scope.io.getBundleList).toHaveBeenCalledWith('ae');
     ioDeferredBundleList.resolve();
@@ -533,7 +536,7 @@ describe('Controller: MainController', function () {
     scope.showEditDBconfigBtnClick();
     editDef.resolve(false);
     scope.$apply();
-    expect(scope.modal.open).toHaveBeenCalledWith('views/editDBconfigModal.html');
+    expect(scope.modal.open).toHaveBeenCalledWith('views/tabbed.html');
   })); 
 
   it('should addLevelPoint on BtnClick', function () {

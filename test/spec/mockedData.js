@@ -8,6 +8,11 @@ jasmine.getFixtures().fixturesPath = 'base/app/configFiles/';
 var f = readFixtures('default_emuwebappConfig.json');
 var defaultEmuwebappConfig = JSON.parse(f)
 
+// designEmuwebapp config
+jasmine.getFixtures().fixturesPath = 'base/app/configFiles/';
+var f = readFixtures('default_emuwebappDesign.json');
+var defaultEmuwebappDesign = JSON.parse(f)
+
 // ae
 jasmine.getFixtures().fixturesPath = 'base/app/demoDBs/ae/';
 var f = readFixtures('ae_DBconfig.json');

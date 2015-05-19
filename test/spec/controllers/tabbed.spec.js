@@ -11,6 +11,7 @@ describe('Controller: TabbedCtrl', function () {
      beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, modalService, viewState, Validationservice, Websockethandler) {
        // initiate the controller and mock the scope
        var tmpEmuwebappConfig = angular.copy(defaultEmuwebappConfig);
+       var tmpEmuwebappDesign = angular.copy(defaultEmuwebappDesign);
        var tmpaeDbConfig = angular.copy(aeDbConfig);
        scope = $rootScope.$new();
        scope.valid = Validationservice;
@@ -21,6 +22,7 @@ describe('Controller: TabbedCtrl', function () {
        scope.cps = ConfigProviderService;
        scope.cps.setVals(tmpEmuwebappConfig);
        scope.cps.curDbConfig = tmpaeDbConfig;
+       scope.cps.design = tmpEmuwebappDesign;
        scope.modal = modalService;
        scope.vs = viewState;
      }));  
@@ -48,35 +50,35 @@ describe('Controller: TabbedCtrl', function () {
 
    it('should check if isActiveTab', function () {
      scope.currentTabUrl = 'test';
-     expect(scope.isActiveTab('test')).toEqual({ 'background-color' : '#FFF', color : '#000' });
-     expect(scope.isActiveTab('nothing')).toEqual({ 'background-color' : '#0DC5FF', color : '#FFF' });
+     expect(scope.isActiveTab('test')).toEqual({  'background-color' : '#fff', color : '#000', 'font-family' : 'HelveticaNeue', 'font-size' : '16px' });
+     expect(scope.isActiveTab('nothing')).toEqual({ 'background-color' : '#0DC5FF', color : '#fff', 'font-family' : 'HelveticaNeue', 'font-size' : '16px'  });
    }); 
 
-   it('should return classDefinition', function () {
-     expect(scope.classDefinition('level',0)).toEqual('emuwebapp-roundedBorderFrame');
-     expect(scope.classDefinition('ssff',0)).toEqual('emuwebapp-roundedBorderFrame');
-     expect(scope.classDefinition('link',0)).toEqual('emuwebapp-roundedBorderFrame');
+   it('should return highlight', function () {
+     expect(scope.highlight('level',0)).toEqual('');
+     expect(scope.highlight('ssff',0)).toEqual('');
+     expect(scope.highlight('link',0)).toEqual('');
      scope.cps.curDbConfig.levelDefinitions[0].added = true;
      scope.cps.curDbConfig.ssffTrackDefinitions[0].added = true;
      scope.cps.curDbConfig.linkDefinitions[0].added = true;
-     expect(scope.classDefinition('level',0)).toEqual('emuwebapp-roundedBorderFrame-new');
-     expect(scope.classDefinition('ssff',0)).toEqual('emuwebapp-roundedBorderFrame-new');
-     expect(scope.classDefinition('link',0)).toEqual('emuwebapp-roundedBorderFrame-new');     
+     expect(scope.highlight('level',0)).toEqual({'background-color': '#E7E7E7' });
+     expect(scope.highlight('ssff',0)).toEqual({'background-color': '#E7E7E7' });
+     expect(scope.highlight('link',0)).toEqual({'background-color': '#E7E7E7' });     
      delete scope.cps.curDbConfig.levelDefinitions[0].added;
      delete scope.cps.curDbConfig.ssffTrackDefinitions[0].added;
      delete scope.cps.curDbConfig.linkDefinitions[0].added;
    });  
 
    it('should return classBorderDefinition', function () {
-     expect(scope.classBorderDefinition('level',0)).toEqual('emuwebapp-borderTitle');
-     expect(scope.classBorderDefinition('ssff',0)).toEqual('emuwebapp-borderTitle');
-     expect(scope.classBorderDefinition('link',0)).toEqual('emuwebapp-borderTitle');
+     expect(scope.classBorderDefinition('level',0)).toEqual('emuwebapp-tabbed-border');
+     expect(scope.classBorderDefinition('ssff',0)).toEqual('emuwebapp-tabbed-border');
+     expect(scope.classBorderDefinition('link',0)).toEqual('emuwebapp-tabbed-border');
      scope.cps.curDbConfig.levelDefinitions[0].added = true;
      scope.cps.curDbConfig.ssffTrackDefinitions[0].added = true;
      scope.cps.curDbConfig.linkDefinitions[0].added = true;
-     expect(scope.classBorderDefinition('level',0)).toEqual('emuwebapp-borderTitle-new');
-     expect(scope.classBorderDefinition('ssff',0)).toEqual('emuwebapp-borderTitle-new');
-     expect(scope.classBorderDefinition('link',0)).toEqual('emuwebapp-borderTitle-new'); 
+     expect(scope.classBorderDefinition('level',0)).toEqual('emuwebapp-tabbed-border highlight');
+     expect(scope.classBorderDefinition('ssff',0)).toEqual('emuwebapp-tabbed-border highlight');
+     expect(scope.classBorderDefinition('link',0)).toEqual('emuwebapp-tabbed-border highlight'); 
      delete scope.cps.curDbConfig.levelDefinitions[0].added;
      delete scope.cps.curDbConfig.ssffTrackDefinitions[0].added;
      delete scope.cps.curDbConfig.linkDefinitions[0].added;         
