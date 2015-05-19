@@ -96,13 +96,13 @@
 					        <table class="emuwebapp-tabbed-order">
 					            <tbody ng-model="subvalue">
 					                <tr>
-					                    <td width="45%" class="emuwebapp-tabbed-assignitem"><u>Signal Canvas</u></td>
-					                    <td width="5%" class="emuwebapp-tabbed-assignitem">&nbsp;</td>
-					                    <td width="45%" class="emuwebapp-tabbed-assignitem"><u>Track Name</u></td>
-					                    <td width="5%" class="emuwebapp-tabbed-assignitem">&nbsp;</td>
+					                    <td width="45%" style="vertical-align: top;"><u>Signal Canvas</u></td>
+					                    <td width="5%" style="vertical-align: top;">&nbsp;</td>
+					                    <td width="45%" style="vertical-align: top;"><u>Track Name</u></td>
+					                    <td width="5%" style="vertical-align: top;">&nbsp;</td>
 					                </tr>
 					                <tr ng-repeat="(itemkey, item) in subvalue track by $index" class="emuwebapp-tabbed-rowframe">
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
 					                        <select ng-model="item.signalCanvasName" class="emuwebapp-tabbed-input-bold">
 					                            <option>SPEC</option>
 					                            <option>OSCI</option>
@@ -111,7 +111,7 @@
 					                    <td>
 					                        &rarr; 
 					                    </td>
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
 					                        <select ng-model="item.ssffTrackName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.ssffTrackDefinitions" class="emuwebapp-tabbed-input-bold"></select>
 					                    </td>
 					                    <td>
@@ -126,22 +126,22 @@
 					        <table class="emuwebapp-tabbed-order">
 					            <tbody ng-model="subvalue">
 					                <tr>
-					                    <td width="32%" class="emuwebapp-tabbed-assignitem"><u>Track Name</u></td>
-					                    <td width="32%" class="emuwebapp-tabbed-assignitem"><u>minContourIdx</u></td>
-					                    <td width="32%" class="emuwebapp-tabbed-assignitem"><u>maxContourIdx</u></td>
-					                    <td width="32%" class="emuwebapp-tabbed-assignitem">&nbsp;</td>
+					                    <td width="32%" style="vertical-align: top;"><u>Track Name</u></td>
+					                    <td width="32%" style="vertical-align: top;"><u>minContourIdx</u></td>
+					                    <td width="32%" style="vertical-align: top;"><u>maxContourIdx</u></td>
+					                    <td width="32%" style="vertical-align: top;">&nbsp;</td>
 					                </tr>
 					                <tr ng-repeat="(itemkey, item) in subvalue track by $index" class="emuwebapp-tabbed-rowframe">
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
 					                        <select ng-model="item.ssffTrackName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.ssffTrackDefinitions" class="emuwebapp-tabbed-input-bold"></select>
 					                    </td>
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
 					                        <input type="text" ng-model="item.minContourIdx" size="15" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 					                    </td>
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
 					                        <input type="text" ng-model="item.maxContourIdx" size="15" class="emuwebapp-tabbed-input" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
 					                    </td>
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
     					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveContourLims', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
 					                    </td>					                    
 					                </tr>
@@ -153,14 +153,14 @@
 					        <table class="emuwebapp-tabbed-order">
 					            <tbody ng-model="subvalue">
 					                <tr>
-					                    <td width="50%" class="emuwebapp-tabbed-assignitem"><u>Track Name</u></td>
-					                    <td width="50%" class="emuwebapp-tabbed-assignitem"><u>Colors</u></td>
+					                    <td width="50%" style="vertical-align: top;"><u>Track Name</u></td>
+					                    <td width="50%" style="vertical-align: top;"><u>Colors</u></td>
 					                </tr>
 					                <tr ng-repeat="(itemkey, item) in subvalue track by $index" class="emuwebapp-tabbed-rowframe">
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
 					                        <select ng-model="item.ssffTrackName" ng-options="opt.name as opt.name for opt in cps.curDbConfig.ssffTrackDefinitions" class="emuwebapp-tabbed-input-bold"></select>
 					                    </td>
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
 										    <small>
 											  <div class="emuwebapp-tabbed-title" ng-repeat="color in item.colors track by $index">
 												<div class="emuwebapp-tabbed-row">
@@ -175,7 +175,7 @@
 											  <a href title="Add new" ng-click="addDefinition('perspectiveContourColorColor', key, itemkey)"><span class="emuwebapp-tabbed-add-small">+</span> add new</a>
 											</small>
 					                    </td>
-					                    <td class="emuwebapp-tabbed-assignitem">
+					                    <td style="vertical-align: top;">
     					                    <a href style="align:right" title="Delete" ng-click="deleteDefinition('perspectiveContourColor', key, itemkey)"><span class="emuwebapp-tabbed-delete" >X</span></a>
 					                    </td>
 					                </tr>

@@ -17,7 +17,7 @@
         cursor: pointer;
     }
     ::-webkit-scrollbar {
-        width: 18px;  /* for vertical scrollbars */
+        width: 20px;  /* for vertical scrollbars */
         height: 0px; /* for horizontal scrollbars */
     }
     ::-webkit-scrollbar-track {
@@ -166,59 +166,47 @@
             padding-right: 10px;
         }
     }
-}
-
-
-/** TODO: **/
-
-.emuwebapp-tabbed-input, .emuwebapp-tabbed-input-bold, .emuwebapp-tabbed-input-small {
-    overflow: hidden;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding: 2px;
-	background: #fff;
-}
-.emuwebapp-tabbed-input {
-    font-size: 0.9em;
-    border: 1px solid #666;
-}
-.emuwebapp-tabbed-input-bold {
-    font-size: 1.1em;
-    border: 1px solid $color-blue;
-}
-.emuwebapp-tabbed-input-small {
-    width: 50%;
-    font-size: 0.8em;
-    border: 1px solid #666;    
-}
-.emuwebapp-tabbed-order {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding: 2px;
-    width: 100%;
-}
-.emuwebapp-tabbed-orderitem {
-    background: #fff;
-    border: 1px solid $color-blue;
-    margin: 4px;
-    padding: 4px;
-    cursor: move;
-    width: 300px !important;
-}
-.emuwebapp-tabbed-orderitemdelete {
-    top: -5px;
-    right: -5px;
-}
-.emuwebapp-tabbed-assignitem {
-    vertical-align: top;
-}
-.emuwebapp-tabbed-rowframe {
-	border: 0px;
-    border-radius: 10px;
-    text-align: left;
-    background: linear-gradient(#f1f1f1, #e2e2e2);    
-    margin-bottom: 5px;
-    padding: 5px;
+    .emuwebapp-tabbed-rowframe {
+        border: 0px;
+        border-radius: 10px;
+        text-align: left;
+        background: linear-gradient($color-lightGrey, $color-white);    
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+    .emuwebapp-tabbed-orderitem {
+        background: $color-white;
+        border: 1px solid $color-blue;
+        margin: 4px;
+        padding: 4px;
+        cursor: move;
+        width: 300px !important;
+    }
+    .emuwebapp-tabbed-order {
+        @include vendor-prefix(box-sizing, "border-box");
+        padding: 2px;
+        width: 100%;
+    }
+    .emuwebapp-tabbed-text {
+        overflow: hidden;
+        @include vendor-prefix(box-sizing, "border-box");
+        padding: 2px;
+        background: $color-white;
+    }
+    .emuwebapp-tabbed-input-small {
+        @extend .emuwebapp-tabbed-text;
+        width: 50%;
+        font-size: 75%;
+        border: 1px solid $color-grey;    
+    }
+    .emuwebapp-tabbed-input {
+        @extend .emuwebapp-tabbed-text;
+        font-size: 90%;
+        border: 1px solid $color-grey;
+    }
+    .emuwebapp-tabbed-input-bold {
+        @extend .emuwebapp-tabbed-text;
+        font-size: 115%;
+        border: 1px solid $color-blue;
+    }
 }
