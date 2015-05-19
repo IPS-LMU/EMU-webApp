@@ -31,7 +31,7 @@
     }
     > button {
         position: absolute;
-        top: 120px;
+        top: calc(50% - 35px);
         left: -15px;
         height: 25px;
         width: 15px;

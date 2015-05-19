@@ -18,6 +18,6 @@
 }
 
 .emuwebapp-shrinkWidthTo0px{
-    right: -200px;
+    right: -201px;
     @include vendor-prefix(transition, "right "+$animation-period+"ms");
 }
