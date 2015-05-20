@@ -20,7 +20,7 @@ describe('Directive: historyActionPopup', function() {
     
     it('should be replaced correctly', function() {
         compileDirective(true);
-        expect(elm.hasClass('emuwebapp-historyActionPopup')).toBe(true);
+        expect(elm.hasClass('emuwebapp-history')).toBe(true);
     });
    
    it('should watch vs.historyActionTxt', inject(function ($timeout, $animate) {
@@ -29,6 +29,6 @@ describe('Directive: historyActionPopup', function() {
         scope.vs.historyActionTxt = 'warning';
         scope.$apply();
         $timeout.flush();
-        expect(elm.hasClass('emuwebapp-historyActionPopupThere')).toBe(false);
+        expect(elm.hasClass('emuwebapp-history')).toBe(true);
    }));
 });

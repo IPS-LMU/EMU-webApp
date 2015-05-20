@@ -191,6 +191,7 @@ describe('Directive: trackmouseinlevel', function () {
      spyOn(scope.vs, 'setEditing');
      spyOn(scope.vs, 'getX').and.returnValue(1);
      spyOn(scope.vs, 'getSamplesPerPixelVal').and.returnValue(1);
+     spyOn(scope.vs, 'getPermission').and.returnValue(true);
      spyOn(scope.lvl, 'getClosestItem').and.returnValue({current: testitem, nearest: testitem});
      spyOn(scope.lvl, 'openEditArea');
      elm.isolateScope().setLastDblClick(0);
@@ -211,6 +212,7 @@ describe('Directive: trackmouseinlevel', function () {
      spyOn(scope.vs, 'setEditing');
      spyOn(scope.vs, 'getX').and.returnValue(1);
      spyOn(scope.vs, 'getSamplesPerPixelVal').and.returnValue(1);
+     spyOn(scope.vs, 'getPermission').and.returnValue(true);
      spyOn(scope.lvl, 'getClosestItem').and.returnValue({current: testitem, nearest: testitem});
      spyOn(scope.lvl, 'openEditArea');
      elm.isolateScope().setLastDblClick(0);

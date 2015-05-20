@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('trackMouseInLevel', function (viewState, LevelService, ConfigProviderService, HistoryService, Soundhandlerservice) {
+  .directive('trackMouseInLevel', function ($document, viewState, LevelService, ConfigProviderService, HistoryService, Soundhandlerservice) {
     return {
       restrict: 'A',
       replace:true,
@@ -235,7 +235,7 @@ angular.module('emuwebApp')
           var isOpen = element.parent().css('height') === '25px' ? false : true;
           // expand to full size on dbl click if level is in small size
           if(!isOpen) {
-              element.parent().parent().find('div.emuwebapp-levelResizeBtn').click();
+              $document.find('#emuwebapp-level-button-resize').click();
           }
           if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined  && viewState.getPermission('labelAction')) {
             if (scope.levelType === 'SEGMENT') {

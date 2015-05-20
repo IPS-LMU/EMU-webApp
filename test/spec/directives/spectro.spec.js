@@ -17,6 +17,7 @@ describe('Directive: spectro', function () {
         scope.dhs = Drawhelperservice;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.curDbConfig = aeDbConfig;
+        scope.cps.design = defaultEmuwebappDesign;
         scope.vs = viewState;
         scope.data.setData(msajc003_bndl.annotation);
         scope.level = curLvl;           

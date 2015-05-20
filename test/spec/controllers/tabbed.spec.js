@@ -55,9 +55,9 @@ describe('Controller: TabbedCtrl', function () {
    }); 
 
    it('should return highlight', function () {
-     expect(scope.highlight('level',0)).toEqual('');
-     expect(scope.highlight('ssff',0)).toEqual('');
-     expect(scope.highlight('link',0)).toEqual('');
+     expect(scope.highlight('level',0)).toEqual({  });
+     expect(scope.highlight('ssff',0)).toEqual({  });
+     expect(scope.highlight('link',0)).toEqual({  });
      scope.cps.curDbConfig.levelDefinitions[0].added = true;
      scope.cps.curDbConfig.ssffTrackDefinitions[0].added = true;
      scope.cps.curDbConfig.linkDefinitions[0].added = true;

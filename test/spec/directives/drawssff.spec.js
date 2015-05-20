@@ -10,6 +10,7 @@ describe('Directive: drawssff', function() {
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
+        scope.cps.design = defaultEmuwebappDesign;
         scope.vs = viewState;
         scope.data = DataService;
         scope.ssffds = Ssffdataservice; 

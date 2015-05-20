@@ -22,7 +22,7 @@ describe('Directive: emuhierarchy', function() {
     
      it('should have correct html', inject(function (ConfigProviderService) {
          compileDirective();
-         expect(elm.html()).toEqual('<svg width="100%" height="100%" style="background-color: rgb(221, 221, 221); "><g><g style="z-index: 5; "></g><g><text>time →</text></g><g style="z-index: 1; "></g></g></svg>');
+         expect(elm.html()).toContain('<g><text>time →</text></g>');
      }));   
     
     // it('should centerNode', function () {

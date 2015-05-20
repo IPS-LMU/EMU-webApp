@@ -15,6 +15,7 @@ describe('Directive: ssffTrack', function () {
         scope.ssffds = Ssffdataservice;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.curDbConfig = aeDbConfig;
+        scope.cps.design = defaultEmuwebappDesign;
         scope.vs = viewState;
         scope.data.setData(msajc003_bndl.annotation);
         scope.level = curLvl;           

@@ -127,27 +127,28 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.highlight = function (typeOfDefinition, key) {
-                    var ret = {'background-color': $scope.cps.design.color.lightGrey };
-		    switch(typeOfDefinition) {
+		    var bg = {'background-color': $scope.cps.design.color.lightGrey };
+                    switch(typeOfDefinition) {
 		        case 'level':
 		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
-		                return ret;
+		                return bg;
 		            }
 		            break;
 		        case 'ssff':
 		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
-		                return ret;
+		                return bg;
 		            }
 		            break;		
 		        case 'link':
 		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
-		                return ret;
+		                return bg;
 		            }
 		            break;
                         default:
-			        return '';
+			        return {};
                             break;               
 		    }
+                    return {};
 		};
 		
 		

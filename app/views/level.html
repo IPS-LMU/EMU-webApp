@@ -4,13 +4,13 @@
     <canvas class="emuwebapp-level-markup" id="levelMarkupCanvas" width="2048" height="64" track-mouse-in-level level-name="level.name" level-type="level.type" ></canvas>
   </div>
   <div class="emuwebapp-level-buttons">
-   <div class="emuwebapp-level-button" ng-show="cps.vals.activeButtons.deleteSingleLevel" delete="{{idx}}">
+   <div class="emuwebapp-level-button" id="emuwebapp-level-button-delete" ng-show="cps.vals.activeButtons.deleteSingleLevel" delete="{{idx}}">
      <img style="cursor: pointer;" src="img/deleteBtn.png" />
    </div>
-   <div class="emuwebapp-level-button" ng-show="cps.vals.activeButtons.resizeSingleLevel" resize="{{idx}}">
+   <div class="emuwebapp-level-button" id="emuwebapp-level-button-resize" ng-show="cps.vals.activeButtons.resizeSingleLevel" resize="{{idx}}">
      <img style="cursor: pointer;" src="img/resizeBtn.png" />
    </div>
-   <div class="emuwebapp-level-button" ng-show="cps.vals.activeButtons.saveSingleLevel" save="{{idx}}">
+   <div class="emuwebapp-level-button" id="emuwebapp-level-button-save" ng-show="cps.vals.activeButtons.saveSingleLevel" save="{{idx}}">
      <img style="cursor: pointer;" src="img/saveBtn.png" />
    </div> 
  </div>

@@ -16,6 +16,7 @@ describe('Directive: level', function () {
         scope.vs = viewState;
         scope.data = DataService;
         scope.data.setData(msajc003_bndl.annotation);
+        scope.cps.design = defaultEmuwebappDesign;
         scope.font = fontScaleService;
         curLvl = scope.lvl.getLevelDetails(lvlName).level;
         curLvlE = scope.lvl.getLevelDetails(lvlNameE).level;

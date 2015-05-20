@@ -30,7 +30,7 @@ describe('Directive: resize', function() {
         compileDirective();
         elm.triggerHandler('click');
         expect(scope.open).not.toBeTruthy();
-        expect(elm.prevObject.css('height')).toEqual('30px');
+        expect(elm.prevObject.css('height')).toEqual('25px');
         expect(elm.prevObject.children().children()[0].style.display).toEqual('none');
         expect(elm.prevObject.children().children()[2].style.display).toEqual('none');
     })); 
@@ -46,7 +46,7 @@ describe('Directive: resize', function() {
         elm.triggerHandler('click');
         elm.triggerHandler('click');
         expect(scope.open).toBeTruthy();
-        expect(elm.prevObject.css('height')).not.toEqual('30px');
+        expect(elm.prevObject.css('height')).not.toEqual('25px');
         expect(elm.prevObject.children().children()[0].style.display).not.toEqual('none');
         expect(elm.prevObject.children().children()[2].style.display).not.toEqual('none');
     })); 

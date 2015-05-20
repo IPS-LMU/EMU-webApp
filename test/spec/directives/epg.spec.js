@@ -12,6 +12,7 @@ describe('Directive: epg', function () {
         scope.cps = ConfigProviderService;
         scope.ssffds = Ssffdataservice;
         scope.cps.setVals(defaultEmuwebappConfig);
+        scope.cps.design = defaultEmuwebappDesign;
         scope.shs = Soundhandlerservice;
         scope.shs.wavJSO = {};
         scope.shs.wavJSO.SampleRate = 1000;
