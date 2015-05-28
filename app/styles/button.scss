@@ -27,15 +27,15 @@
 				top: 0px;
 				left: 100%;
 				z-index: 99999;
-			}			
+			}
 			li {
 				float:none;
 				width:150px;
-			}	
+			}
 			a {
-				z-index: 99999;	
-			}	
-		}		
+				z-index: 99999;
+			}
+		}
 		li {
 			position:relative;
 			float:left;
@@ -60,38 +60,37 @@
 	white-space: nowrap;
 	background-color: $color-yellow;
 	box-shadow: 0px 0px 15px $color-darkGrey;
-	vertical-align: middle !important; 
+	vertical-align: middle !important;
 	overflow-x: hidden;
 	overflow-y: hidden;
-}	
+}
 
 .emuwebapp-mini-btn {
     background: transparent;
     border-radius: 0px;
     border: 1px solid $color-white;
     color: $color-white;
-    text-decoration:none;
-    text-align:center;
+    text-decoration: none;
+    text-align: center;
     margin: 0px;
     padding: 0px;
-    text-align:center;
+    text-align: center;
     width: 120px;
     height: 30px;
     outline: none;
     @extend .emuwebapp-font-small;
-    
     &:hover:enabled {
-		background-color: $color-white;
-		color: $color-black;
-	}
-	&:disabled {
-	    pointer-events: none;
-		color:rgb(33,217,255);
-		border:1px solid rgb(33,217,255);
-	}
-	&:active {
-		top:1px;
-	}
+		    background-color: $color-white;
+	    	color: $color-black;
+		}
+		&:disabled {
+	      pointer-events: none;
+	    	color:rgb(33,217,255);
+	    	border:1px solid rgb(33,217,255);
+    }
+		&:active {
+		    top:1px;
+    }
 }
 
 .emuwebapp-button-icon {
@@ -104,17 +103,17 @@
     text-align: center;
     top: 0px;
     > ._20px {
-		width: 20px;
-		height:20px;
-	}
+			width: 20px;
+			height:20px;
+		}
     > ._35px {
-		width: 35px;
-		height:35px;
-	}
-	&:active {
-		background: $color-white;
-	}
-	&:focus {
-		outline: none;
-	}
+			width: 35px;
+			height:35px;
+		}
+		&:active {
+			background: $color-white;
+		}
+		&:focus {
+			outline: none;
+		}
 }

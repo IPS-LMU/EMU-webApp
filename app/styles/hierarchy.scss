@@ -37,15 +37,29 @@
     stroke-dasharrtoay: 5 5;
 }
 
+.emuwebapp-modal-select {
+  padding: 0;
+  margin: 0;
+  border: 1px solid $color-blue;
+  width: auto;
+  overflow: hidden;
+  background-color: transparent;
+  background: transparent url('data:image/gif;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==') no-repeat 90% 50%;
+}
+
 .emuwebapp-modal-hierarchy select {
-    border: 0px !important;
     @include vendor-prefix(appearance, "none");
-    background: $color-lightGrey;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
     width: auto;
     color: $color-black;
     padding: 3px;
     margin: 3px;
     box-shadow: 0px;
     cursor: pointer;
+    &:focus {
+      outline: none;
+    }
 }
-

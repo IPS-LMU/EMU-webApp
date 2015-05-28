@@ -5,7 +5,7 @@
 				<ul class="emuwebapp-dropdown-container">
 					<li class="left">
 						<button class="emuwebapp-mini-btn full">
-							{{levelName}} <span id="emuwebapp-dropdown-arrow"></span> 
+							{{levelName}} <span id="emuwebapp-dropdown-arrow"></span>
 						</button>
 						<ul class="emuwebapp-dropdown-menu">
 							<li class="divider"></li>
@@ -19,7 +19,9 @@
 		</div>
 	</div>
 	<div class="emuwebapp-modal-body emuwebapp-modal-hierarchy">
-		<select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr"></select>
+    <div class="emuwebapp-modal-select">
+        <select class="form-control" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr"></select>
+    </div>
 		<history-action-popup ng-show="vs.historyActionTxt !=''"></history-action-popup>
 		<emuhierarchy playing="getPlaying();" vertical="getRotation();"></emuhierarchy>
 	</div>
@@ -29,7 +31,3 @@
 		<button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn">close</button>
 	</div>
 </div>
-
-
-
-
