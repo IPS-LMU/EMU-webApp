@@ -44,10 +44,10 @@
   width: auto;
   overflow: hidden;
   background-color: transparent;
-  background: transparent url('data:image/gif;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==') no-repeat 90% 50%;
+  background: transparent url('data:image/gif;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==') no-repeat 100% 50%;
 }
 
-.emuwebapp-modal-hierarchy select {
+.emuwebapp-modal-select select {
     @include vendor-prefix(appearance, "none");
     border: none;
     box-shadow: none;
@@ -62,4 +62,8 @@
     &:focus {
       outline: none;
     }
+}
+.emuwebapp-modal-select select option {
+  padding-left: 40px;
+  padding-right: 40px;
 }

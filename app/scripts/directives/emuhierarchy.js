@@ -29,10 +29,10 @@ angular.module('emuwebApp')
 	// The same when in rotated mode
 	scope.vertOffsetX = 150;
 	scope.vertOffsetY = 25;
-	
+
 	// Possible zoom range
 	scope.scaleExtent = [0.5, 10];
-	
+
 	// Settings for CSS transitions
 	scope.transition = {
 		duration: 750,
@@ -46,7 +46,7 @@ angular.module('emuwebApp')
 	//////////////////////
 
         //////////////////////
-        // watches 
+        // watches
 
 	scope.viewState = viewState;
 	scope.hierarchyState = viewState.hierarchyState;
@@ -62,14 +62,14 @@ angular.module('emuwebApp')
 	}, false);
 
 	scope.$watch('vertical', function (newValue, oldValue) {
-		if (newValue !== oldValue) {	
+		if (newValue !== oldValue) {
 			console.debug('Rendering due to rotation: ', newValue);
 			scope.render();
 		}
 	}, false);
 
 	scope.$watch('viewState.curLevelAttrDefs', function (newValue, oldValue) {
-		if (newValue !== oldValue) {	
+		if (newValue !== oldValue) {
 			console.debug('Rendering due to attribute change: ', newValue);
 			scope.render();
 		}
@@ -154,7 +154,7 @@ angular.module('emuwebApp')
 		scope.zoomListener.translate([x, y]);
 	};
 	*/
-	
+
 	/**
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
@@ -210,7 +210,7 @@ angular.module('emuwebApp')
 			} else {
 				return '←';
 			}
-		}	
+		}
 	};
 
 	scope.getOrientatedTextAnchor = function (d) {
@@ -288,7 +288,7 @@ angular.module('emuwebApp')
 	scope.getPreviewPath = function () {
 		var from = { x: scope.newLinkSrc._x, y: scope.newLinkSrc._y };
 		var to = { x: scope.selectedItem._x, y: scope.selectedItem._y };
-		
+
 		return 'M'+from.x+' '+from.y+'Q'+from.x+' '+to.y+' '+to.x+' '+to.y;
 	};
 
@@ -347,10 +347,10 @@ angular.module('emuwebApp')
 			});
 		}
 	};
-	
+
 	scope.nodeOnClick = function (d) {
 		console.debug('Clicked node', d);
-		
+
 		if (viewState.hierarchyState.contextMenuID === undefined) {
 			d3.event.stopPropagation();
 			viewState.hierarchyState.contextMenuID = d.id;
@@ -386,8 +386,8 @@ angular.module('emuwebApp')
 		// looking for
 		var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
 		viewState.hierarchyState.setEditValue(dom.value);
-		
-		// Give feedback on legalness 
+
+		// Give feedback on legalness
 		dom.style.backgroundColor = scope.getLabelLegalnessColor(d);
 	};
 
@@ -416,7 +416,7 @@ angular.module('emuwebApp')
 		}
 		scope.$apply();
 	};
-		
+
 
 	scope.play = function (d) {
 		var timeInfoLevel = viewState.hierarchyState.path[0];
@@ -437,7 +437,7 @@ angular.module('emuwebApp')
 				if (lastTimeItem === null) {
 					lastTimeItem = currentItem;
 				}
-				
+
 				firstTimeItem = currentItem;
 			}
 			itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, viewState.hierarchyState.path));
@@ -532,7 +532,7 @@ angular.module('emuwebApp')
 	// work
 
 
-	/** 
+	/**
 	 * Adjust the colors of all nodes and links to reflect the user's
 	 * selection.
 	 *
@@ -651,17 +651,17 @@ angular.module('emuwebApp')
 			.style('fill', scope.cps.design.color.blue)
 			.attr('r', 8)
 			;
-		
+
 		addItemButtons
 			.append('path')
 			.style('stroke', scope.cps.design.color.white)
 			.attr('d', 'M0,-6 V6 M-6,0 H6')
 			;
-		
+
 		levelCaptionSet
 			.attr('transform', scope.getOrientatedLevelCaptionTransform)
 			;
-		
+
 		if (scope.transition.rotation) {
 			oldLevelCaptions = oldLevelCaptions.transition()
 				.duration(scope.transition.duration)
@@ -693,7 +693,7 @@ angular.module('emuwebApp')
 				}
 			}
 		}
-		
+
 
 
 		////////
@@ -712,7 +712,7 @@ angular.module('emuwebApp')
 			for (var i=0; i<viewState.hierarchyState.path.length-1; ++i) {
 				var element = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i], allLinks[l].toID);
 				var parentElement = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i+1], allLinks[l].fromID);
-				
+
 				if (element === null) {
 					continue;
 				}
@@ -725,14 +725,14 @@ angular.module('emuwebApp')
 				if (viewState.getCollapsed(parentElement.id) || !parentElement._visible) {
 					continue;
 				}
-				
+
 				links.push(allLinks[l]);
 			}
 		}
 
 
 		// Transform relative coordinates (_posInLevel and _depth) to actual coordinates (_x and _y)
-		
+
 
 		nodes.forEach(function (d) {
 			d._x = scope.depthToX(d._depth);
@@ -748,7 +748,7 @@ angular.module('emuwebApp')
 
 
 
-		
+
 		//////
 		// Now that all actual coordinates have been calculated, we
 		// update our SVG using d3js data joins
@@ -773,9 +773,9 @@ angular.module('emuwebApp')
 		// Any node will consist of an svg group ("g"), a circle, a
 		// text and a second, invisible circle for mouseover handling.
 		//
-		// Note that properties that can be changed after the node is 
+		// Note that properties that can be changed after the node is
 		// added will be set further below
-		
+
 
 		newNodes = newNodes.append('g')		// append() will return a set of all appended elements
 			.attr('class', 'emuhierarchy-node')
@@ -859,7 +859,7 @@ angular.module('emuwebApp')
 				})
 				.remove();
 		}
-		
+
 		oldNodes.select('text')
 			.style('fill-opacity', 0);
 
@@ -912,7 +912,7 @@ angular.module('emuwebApp')
 					return 'translate(' + d._x + ',' + d._y + ')'+scope.getOrientatedNodeTransform();
 				});
 		}
-	
+
 
 		/////
 		// Create context menu
@@ -926,7 +926,7 @@ angular.module('emuwebApp')
 
 		// If the context menu does not yet exist, create it
 		var contextMenu = scope.svg.select('.emuhierarchy-contextmenu');
-		
+
 		if (contextMenu[0][0] === null) {
 			contextMenu = dataSet
 				.filter(function(d) {
@@ -996,8 +996,8 @@ angular.module('emuwebApp')
 				.attr('y', -15)
 				.attr('width', 0)
 				;
-			
-			if (scope.transition.contextMenu) { 
+
+			if (scope.transition.contextMenu) {
 				foreignObject
 					.transition()
 					.duration(scope.transition.duration)
@@ -1078,7 +1078,7 @@ angular.module('emuwebApp')
 				.style('opacity', 1)
 				;
 		}
-			
+
 
 		// Remove old links
 		if (scope.transition.links) {
@@ -1103,7 +1103,7 @@ angular.module('emuwebApp')
 				}
 			})
 			;
-		
+
 		// Transition links to their new position.
 
 		if (scope.transition.rotation) {
@@ -1126,7 +1126,7 @@ angular.module('emuwebApp')
 			.attr('d', scope.getPath)
 			;
 
-		
+
 
 		// If the user is trying to add a new link,
 		// visualise what he's doing
@@ -1145,7 +1145,7 @@ angular.module('emuwebApp')
 				.style('stroke', scope.getPreviewColor)
 				;
 		}
-		
+
 	};
 
         /**
