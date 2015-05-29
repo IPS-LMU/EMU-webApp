@@ -31,12 +31,12 @@
     }
     > button {
         position: absolute;
-        top: 45px;
+        top: 125px;
         left: -15px;
         height: 25px;
         width: 15px;
         background: $color-white;
-        box-shadow: -3px -2px 4px 1px $color-black;
+        @include vendor-prefix(box-shadow, "-2px 0px 3px 2px "+$color-transparent-black);
         border-style: none;
         z-index: 2001;
         img{
@@ -52,7 +52,7 @@
         }
         &:focus {
             outline: none;
-        } 
+        }
     }
     .emuwebapp-curSelPerspLi{
         border-bottom:thin solid $color-transparent-grey;
@@ -70,4 +70,3 @@
         }
     }
 }
-

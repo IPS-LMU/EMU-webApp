@@ -2,7 +2,7 @@
 @import 'font';
 @import 'mixins';
 
-/** 
+/**
     ###################################
         emuwebapp directive css
     ###################################
@@ -28,28 +28,25 @@
     background-color: $color-white;
     text-align: center;
     overflow:hidden;
-    @extend .emuwebapp-font-small;   
-
+    @extend .emuwebapp-font-small;
     > .emuwebapp-main {
-		flex: 1;
-		display: flex;
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		
-		> .emuwebapp-window {
+      flex: 1;
+      display: flex;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      > .emuwebapp-window {
 		    flex: 1;
 		    display: flex;
 		    flex-direction: column;
-		    
-			> .emuwebapp-top-menu {
-				height:40px;
+        > .emuwebapp-top-menu {
+          height:40px;
 				background: $color-blue;
 				@include vendor-prefix(touch-callout, none);
 				text-align:left;
 				z-index: 5;
-			}	
-			
+			}
+
 			> .emuwebapp-bottom-menu {
 				width:100%;
 				height:87px;
@@ -59,8 +56,8 @@
 				padding-left:5px;
 				padding-bottom:5px;
 				z-index: 5;
-			}				    
-		    
+			}
+
 		    > .emuwebapp-canvas {
 		        flex: 1;
 		        position:relative;
@@ -69,34 +66,34 @@
 		    }
 		}
     }
-    
+
     .left {
         float: left;
         margin-right: 6px;
         margin-top: 4px;
     }
-    
+
     .full {
         width: 100%;
     }
 
-	table { 
-		border-collapse: collapse; 
+	table {
+		border-collapse: collapse;
 	}
-        
+
     ul {
         margin: 0;
         padding: 0;
-        width: 100%; 
-        list-style-type: none;   
+        width: 100%;
+        list-style-type: none;
     }
-    
+
     li {
         margin: 0;
         padding: 0;
-        width: 100%;    
-    }    
-    
+        width: 100%;
+    }
+
     button {
         border-spacing: 0;
         @extend .emuwebapp-font-small;
@@ -106,23 +103,23 @@
         padding: 0;
         text-align: center;
         text-decoration: none;
-        text-indent: 0;  
+        text-indent: 0;
         cursor: pointer;
     }
-    
-    .emuwebapp-dropdown-container:hover #demoDB { 
+
+    .emuwebapp-dropdown-container:hover #demoDB {
         background-color: $color-white;
         color: $color-black;
     }
-    
-    #emuwebapp-dropdown-arrow:after { 
+
+    #emuwebapp-dropdown-arrow:after {
         content: '\25B8';
-    }     
-    
+    }
+
     .emuwebapp-dropdown-container:hover #emuwebapp-dropdown-arrow:after {
         content: '\25BE';
-    }    
-    
+    }
+
     .emuwebapp-dropdown-menu {
         background: $color-white;
         list-style: none outside none;
@@ -133,18 +130,17 @@
         border-left: 1px solid $color-blue;
         border-right: 1px solid $color-blue;
         border-bottom: 1px solid $color-blue;
-        
+
         li {
             @extend .emuwebapp-font-small;
             padding: 5px;
             margin: 0px;
             max-width: 90px;
         }
-        
+
         li:hover {
             color: $color-blue;
             cursor: pointer;
         }
     }
 }
-
