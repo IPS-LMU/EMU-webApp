@@ -16,7 +16,7 @@
 	<div>
 	<h4>About</h4>
 	<p>
-	    The EMU-webApp is an online and offline web application for labeling, visualizing 
+	    The EMU-webApp is an online and offline web application for labeling, visualizing
 	    and correcting speech and derived speech data.
 	</p>
 	<!-- ///////////////////////////////////////////// -->
@@ -27,9 +27,9 @@
 	    preselects it (indicated by marking it blue).
 	</p>
 	<p ng-show="cps.vals.restrictions.editItemSize">
-		To move the currently preselected boundary hold down the <b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> key and 
+		To move the currently preselected boundary hold down the <b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> key and
 		move the mouse to the desired position. The boundary will track the
-		mouse movement. A event is preselected by left-clicking it  (indicated by marking it yellow), holding down 
+		mouse movement. A event is preselected by left-clicking it  (indicated by marking it yellow), holding down
 		<b>{{cps.getStrRep(cps.vals.keyMappings.alt)}}</b> will move the entire event.
 	</p>
 	<!-- ///////////////////////////////////////////// -->
@@ -85,8 +85,8 @@
 			<div class="emuwebapp-grid-head">Keyboard Shortcut</div>
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></div>
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></div>
-			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></div>
-			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted"><b>select event </b>or<b> segment</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></div>
+			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted light"><b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></div>
+			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted dark"><b>select event </b>or<b> segment</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></div>
 			<div ng-show="cps.vals.restrictions.deleteItemBoundary" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></div>
 			<div ng-show="cps.vals.restrictions.deleteItem" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></div>
 			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}</b></div>
@@ -136,9 +136,9 @@
 			<div class="emuwebapp-grid-dotted">play/pause in view (also use as general stop for playback)</div>
 		  </div>
 		</div>
-	</p>	    
+	</p>
 	<!-- ///////////////////////////////////////////// -->
-	<h2 ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts</h4>	    
+	<h2 ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts</h4>
 	<p ng-show="cps.vals.restrictions.correctionTool">
 		<div class="emuwebapp-grid">
 		  <div class="emuwebapp-grid-cell">
@@ -147,7 +147,7 @@
 			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectSecondContourCorrectionTool)}}</b></div>
 			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectThirdContourCorrectionTool)}}</b></div>
 			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectFourthContourCorrectionTool)}}</b></div>
-			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}</b></div>						
+			<div class="emuwebapp-grid-dotted"><b>{{cps.getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}</b></div>
 		  </div>
 		  <div class="emuwebapp-grid-cell">
 		    <div class="emuwebapp-grid-head">Function</div>
@@ -160,7 +160,7 @@
 		</div>
 	</p>
 	<!-- ///////////////////////////////////////////// -->
-	<h4>Hierarchy Tool shortcuts</h4>	    
+	<h4>Hierarchy Tool shortcuts</h4>
 	<p>
 		<div class="emuwebapp-grid">
 		  <div class="emuwebapp-grid-cell">
@@ -181,10 +181,10 @@
 			<div class="emuwebapp-grid-dotted">draw a new link (press and hold)</div>
 			<div class="emuwebapp-grid-dotted">delete the currently preselected item</div>
 			<div class="emuwebapp-grid-dotted">delete the currently preselected link</div>
-			<div class="emuwebapp-grid-dotted">play back the portion defined by the currently preselected item</div>						
+			<div class="emuwebapp-grid-dotted">play back the portion defined by the currently preselected item</div>
 		  </div>
 		</div>
 	</p>
 	<div>
-	<div style="height: 100px;">&nbsp;</div>	
+	<div style="height: 100px;">&nbsp;</div>
 </div>

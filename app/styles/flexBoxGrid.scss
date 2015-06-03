@@ -10,10 +10,10 @@
         border: 0px;
         border-left: 1px solid $color-white;
         border-right: 1px solid $color-white;
-        &:first-child { 
+        &:first-child {
             border-left: 0px;
         }
-        &:last-child { 
+        &:last-child {
             border-right: 0px;
         }
     }
@@ -53,17 +53,25 @@
         margin-bottom: 12px;
         margin-top: 12px;
         text-align: left;
-        padding-left: 20%;
+        padding: 0;
         text-decoration: underline;
         @extend .emuwebapp-font-large;
-        .emuwebapp-grid-dotted {
-            border: 0px;
-            border-bottom: 1px dotted $color-grey;
-            margin-bottom: 3px;
-            margin-top: 6px;
-            text-align: left;
-            padding-left: 20%;
-            @extend .emuwebapp-font-small;
-        }
+    }
+    .emuwebapp-grid-dotted {
+      &:nth-child(even) {
+        background: $color-white;
+      }
+      &:nth-child(odd) {
+        background: $color-lightGrey;
+      }
+      border: 0px;
+      margin: 0px;
+      padding: 2px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      text-align: left;
+      padding-left: 8%;
+      @extend .emuwebapp-font-small;
+      white-space: nowrap;
     }
 }
