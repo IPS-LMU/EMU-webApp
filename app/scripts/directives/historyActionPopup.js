@@ -13,9 +13,10 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.historyActionTxt', function () {
 					if (scope.vs.historyActionTxt !== '') {
-						$animate.addClass(element, 'emuwebapp-history-fade').then(function () {
+						console.log(scope.vs.historyActionTxt);
+						$animate.addClass(element, 'emuwebapp-history-fade', 1000)).then(function () {
 							scope.vs.historyActionTxt = '';
-							$animate.removeClass(element, 'emuwebapp-history-fade');
+							$animate.removeClass(element, 'emuwebapp-history-fade', 1000);
 							scope.$apply();
 						});
 					}

@@ -25,7 +25,7 @@
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     color: $color-white;
-    @include vendor-prefix(transition, "0.8s ease all");
+    @include vendor-prefix(transition, "all 0.8s ease");
     div {
         max-height: 100%;
         max-width: 100%;
@@ -34,6 +34,5 @@
 }
 .emuwebapp-history-fade {
     opacity: 1;
+    @include vendor-prefix(transition, "all 0.8s ease");
 }
-
-

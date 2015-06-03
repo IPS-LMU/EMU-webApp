@@ -12,17 +12,17 @@ angular.module('emuwebApp')
         scope.cps = ConfigProviderService;
         var el = element[0];
         var dragIcon = document.createElement('img');
-            dragIcon.src = 'img/exportBtn.png';
+            dragIcon.src = 'img/export.svg';
         var dataString = '';
-        
+
         scope.generateURL = function () {
             return scope.getURL(angular.toJson(DataService.getData(), true));
         };
-        
+
         scope.isActive = function () {
             return (attrs.name === loadedMetaDataService.getCurBndl().name && scope.cps.vals.main.comMode === 'embedded');
         };
-        
+
         scope.getURL = function (data) {
 		    var objURL;
 		    if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
@@ -30,9 +30,9 @@ angular.module('emuwebApp')
 		    } else {
 		        objURL = URL.createObjectURL(scope.getBlob(data));
 		    }
-		    return objURL;     
+		    return objURL;
         };
-        
+
         scope.getBlob = function (data) {
 		    var blob;
 		    try {
@@ -43,9 +43,9 @@ angular.module('emuwebApp')
 		        blob.append(data);
 		        blob = blob.getBlob();
 		    }
-		    return blob;        
+		    return blob;
         };
-        
+
         el.addEventListener(
             'dragstart',
 			function(e) {
@@ -57,9 +57,9 @@ angular.module('emuwebApp')
 					    e.dataTransfer.effectAllowed = 'move';
 					    e.dataTransfer.setData('DownloadURL', 'application/json:'+attrs.name+'_annot.json:' + url);
 					}
-                } 
+                }
                 else {
-					console.log('dropping inactive bundles is not allowed');			        
+					console.log('dropping inactive bundles is not allowed');
                 }
                 return false;
             },
@@ -69,7 +69,7 @@ angular.module('emuwebApp')
         el.addEventListener(
             'dragend',
             function(e) {
-                if(scope.isActive()) {	
+                if(scope.isActive()) {
                     this.classList.remove('drag');
                 }
                 return false;
@@ -80,7 +80,7 @@ angular.module('emuwebApp')
         el.addEventListener(
             'mousedown',
             function(e) {
-                if(scope.isActive()) {	
+                if(scope.isActive()) {
                     el.setAttribute('draggable', true);
                 }
                 else {
