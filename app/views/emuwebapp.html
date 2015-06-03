@@ -13,20 +13,20 @@
                 <div class="emuwebapp-aboutHint-overlay">
                     click on this icon in the top menu bar for more information (incl. manual)
                 </div>
-                
+
             </div>
             <p>
                 <button class="emuwebapp-aboutHint-hidden" ng-click="showAboutHint = !showAboutHint; aboutBtnClick();"></button>
                 <button class="" ng-click="showAboutHint = !showAboutHint">Close message</button>
             </p>
         </div>
-        
+
     </div>
-    
+
     <!-- left side menu bar start -->
     <bundle-list-side-bar ng-show="cps.vals.activeButtons.openMenu && vs.submenuOpen"></bundle-list-side-bar>
     <!-- left side menu bar end -->
-    
+
     <!-- main window start -->
     <div class="emuwebapp-window" id="mainWindow">
         <progress-thing show-thing="{{vs.somethingInProgress}}"></progress-thing>
@@ -34,17 +34,17 @@
         <!-- top menu bar start -->
         <div class="emuwebapp-top-menu">
             <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-button-icon" style="float:left"><img src="img/menu.svg" class="_20px" /></button>
-            <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelSegBtnClick();">add level (SEG.)</button> 
-            <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelPointBtnClick();">add level (EVENT)</button> 
-            <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn left" ng-click="renameSelLevelBtnClick();">rename sel. level</button> 
-            <button id="downloadTextgrid" ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn left" ng-click="downloadTextGridBtnClick();">download TextGrid</button> 
-            <button id="downloadAnnotation" ng-show="cps.vals.activeButtons.downloadAnnotation" ng-disabled="!vs.getPermission('downloadAnnotationBtnClick')" class="emuwebapp-mini-btn left" ng-click="downloadAnnotationBtnClick();">download Annotation</button> 
+            <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelSegBtnClick();">add level (SEG.)</button>
+            <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelPointBtnClick();">add level (EVENT)</button>
+            <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn left" ng-click="renameSelLevelBtnClick();">rename sel. level</button>
+            <button id="downloadTextgrid" ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn left" ng-click="downloadTextGridBtnClick();">download TextGrid</button>
+            <button id="downloadAnnotation" ng-show="cps.vals.activeButtons.downloadAnnotation" ng-disabled="!vs.getPermission('downloadAnnotationBtnClick')" class="emuwebapp-mini-btn left" ng-click="downloadAnnotationBtnClick();">download Annotation</button>
             <button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn left" ng-click="spectSettingsBtnClick();">spec. settings</button>
             <div class="emuwebapp-nav-wrap" ng-show="cps.vals.activeButtons.openDemoDB">
                 <ul class="emuwebapp-dropdown-container">
                     <li class="left">
                         <button id="demoDB" type="button" class="emuwebapp-mini-btn full" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">
-                            open demo <span id="emuwebapp-dropdown-arrow"></span> 
+                            open demo <span id="emuwebapp-dropdown-arrow"></span>
                         </button>
                         <ul class="emuwebapp-dropdown-menu" ng-show="cps.vals.activeButtons.openDemoDB">
 							<li class="divider"></li>
@@ -62,10 +62,10 @@
             <button id="aboutBtn" class="emuwebapp-button-icon" style="float: right;" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" class="_35px" /></button>
         </div>
         <!-- top menu bar end -->
-        
+
         <!-- vertical split layout that contains top and bottom pane -->
         <div class="emuwebapp-canvas">
-            <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}"> 
+            <bg-splitter show-two-dim-cans="{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}">
                 <bg-pane type="topPane" min-size="80" max-size="500">
                     <ul class="emuwebapp-timeline-flexcontainer">
                         <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
@@ -95,7 +95,7 @@
         </bg-splitter>
         <history-action-popup></history-action-popup>
     </div>
-    
+
     <!-- bottom menu bar -->
     <div class="emuwebapp-bottom-menu">
         <div><preview id="preview" class="preview" current-bundle-name="{{getCurBndlName()}}"></preview></div>
@@ -109,7 +109,7 @@
         <button id="playSelBtn" ng-show="cps.vals.restrictions.playback" ng-click="cmdPlaySel();" ng-disabled="!vs.getPermission('playaudio')" class="emuwebapp-mini-btn left" id="cmd_playSelected">play selected</button>
         <button id="playAllBtn" ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayAll();" ng-disabled="!vs.getPermission('playaudio')" class="emuwebapp-mini-btn left" id="cmd_playAll">play entire file</button>
     </div>
-    
+
     <!-- perspectives menu bar (right) -->
     <nav class="emuwebapp-right-menu" ng-show="cps.vals.restrictions.showPerspectivesSidebar" show-menu="vs.getRightsubmenuOpen()">
         <button ng-click="vs.setRightsubmenuOpen(!vs.getRightsubmenuOpen());">

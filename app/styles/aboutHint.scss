@@ -19,25 +19,25 @@
         color: $color-white;
         overflow:hidden;
         button {
-            color: $color-white;
-            background-color: transparent;
-            padding: 10px;
-            border-radius: 0px;
-            border:1px solid $color-white;
-            &:hover{
-	        color: $color-black;
-                background-color: $color-white;
-            }
-        }
-        > div {
-	    position: relative;
-	    height: 60%;
-            overflow:hidden;
-            > img {
+          color: $color-white;
+          background-color: transparent;
+          padding: 10px;
+          border-radius: 0px;
+          border:1px solid $color-white;
+          &:hover{
+            color: $color-black;
+            background-color: $color-white;
+          }
+      }
+      > div {
+        position: relative;
+        height: 60%;
+        overflow:hidden;
+        > img {
 	        height: 100%;
 	        width: 100%;
-            }
         }
+    }
     }
     .emuwebapp-aboutHint-arrow {
         position: absolute;
@@ -70,16 +70,16 @@
 }
 
 @include keyframes(shrinkToAboutButton) {
-    25% { 
+    25% {
   	top: 25px;
   	right: 25px;
   	border-radius: 10% 0 10% 10%;
     }
     50% {
-  	border-radius: 100% 0 100% 100%;	
+  	border-radius: 100% 0 100% 100%;
     }
 
-    100% { 
+    100% {
   	top: 25px;
   	right: 25px;
   	border-radius: 100% 0 100% 100%;

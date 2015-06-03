@@ -34,15 +34,13 @@
         height: 30px;
         text-decoration: none;
         font-weight: bold;
-        -webkit-border-radius: 12px;
-        -moz-border-radius: 12px;
-        border-radius: 12px;
         @include vendor-prefix(box-shadow, "1px 1px 3px "+$color-transparent-grey);
+        @include vendor-prefix(border-radius, "15px");
         z-index: 99999;
-        &:hover { 
+        &:hover {
             background: $color-white;
             text-decoration: none;
-	}
+            }
     }
     .emuwebapp-modal-inner {
         position: absolute;
@@ -63,7 +61,7 @@
     right:0;
     margin: auto;
     @extend .emuwebapp-font-small;
-    
+
     > .emuwebapp-modal-header {
 		position: absolute;
 		background-color: $color-blue;
@@ -87,7 +85,7 @@
 .emuwebapp-modal-open {
 	opacity:1;
 	pointer-events: auto;
-} 
+}
 
 .emuwebapp-modal-body {
     height: calc(100% - 120px);
@@ -128,7 +126,7 @@
     position: absolute;
     background-color: $color-blue;
     left: 0;
-    bottom: 0; 
+    bottom: 0;
     button {
 		margin-top: 15px;
 	}

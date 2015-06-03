@@ -6,9 +6,9 @@
     padding: 0px;
     text-align: center;
     position: relative;
-    overflow: hidden;	
+    overflow: hidden;
     top: 0;
-    left: 0;  
+    left: 0;
     height: 100%;
     a {
         color: $color-black;
@@ -17,8 +17,8 @@
         cursor: pointer;
     }
     ::-webkit-scrollbar {
-        width: 20px;  /* for vertical scrollbars */
-        height: 0px; /* for horizontal scrollbars */
+      width: 14px;  /* for vertical scrollbars */
+      height: 0px;  /* for horizontal scrollbars */
     }
     ::-webkit-scrollbar-track {
         background: $color-blue;
@@ -31,7 +31,7 @@
         clear: both;
         overflow-y: -moz-scrollbars-vertical;
         overflow-y: scroll;
-        overflow-x: hidden;	
+        overflow-x: hidden;
         padding-top: 0px;
         position: absolute;
         width: 100%;
@@ -39,10 +39,10 @@
         height: calc(100% - 30px);
         overflow: auto;
         padding: 0px;
-        max-width: 100%;   
+        max-width: 100%;
     }
     .emuwebapp-tabbed-error {
-        color: $color-red; 
+        color: $color-red;
         margin-left: 10px;
         width: 100%;
         font-size: 1.1em;
@@ -51,7 +51,7 @@
         border: 1px solid;
         border-radius: 10px;
         text-align: left;
-        background: $color-white;    
+        background: $color-white;
         margin: 10px;
         padding: 10px;
         padding-left: 20px;
@@ -82,7 +82,7 @@
     .emuwebapp-tabbed-close {
         @extend .emuwebapp-tabbed-button;
         position: absolute;
-        right: -9px; 
+        right: -9px;
         top: -9px;
         &:hover {
             background: $color-transparent-red;
@@ -93,7 +93,7 @@
             color: $color-black;
             text-decoration: none;
         }
-    } 
+    }
     .emuwebapp-tabbed-delete {
         @extend .emuwebapp-tabbed-button;
         display: inline-block;
@@ -125,7 +125,7 @@
         display: inline-block;
         width: 9px;
         line-height: 9px;
-        font-size: 0.5em;    
+        font-size: 0.5em;
     }
     .emuwebapp-tabbed-border {
         position: absolute;
@@ -139,7 +139,7 @@
         .emuwebapp-tabbed-row {
             display:table-row;
             width: 100%;
-            vertical-align: top;    
+            vertical-align: top;
         }
         .emuwebapp-tabbed-cell {
             display:table-cell;
@@ -170,7 +170,7 @@
         border: 0px;
         border-radius: 10px;
         text-align: left;
-        background: linear-gradient($color-lightGrey, $color-white);    
+        background: linear-gradient($color-lightGrey, $color-white);
         margin-bottom: 5px;
         padding: 5px;
     }
@@ -197,7 +197,7 @@
         @extend .emuwebapp-tabbed-text;
         width: 50%;
         font-size: 75%;
-        border: 1px solid $color-grey;    
+        border: 1px solid $color-grey;
     }
     .emuwebapp-tabbed-input {
         @extend .emuwebapp-tabbed-text;
