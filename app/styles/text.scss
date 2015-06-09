@@ -8,24 +8,26 @@
     word-wrap: break-word;
     padding-bottom: 120px;
     @extend .emuwebapp-font-small;
-    
+    .red {
+      color: #f00;
+    }
     input {
         @extend .emuwebapp-font-input;
         @include vendor-prefix(user-select, "none");
         @include vendor-prefix(box-sizing, "content-box");
         outline: none;
-    }    
+    }
     div {
         margin-left: 25px;
         margin-right: 25px;
         margin-top: 25px;
         p {
             text-align: left;
-        }  
+        }
         span {
             text-align: center;
             @extend .emuwebapp-font-small;
-        }                  
+        }
     }
     h1, h2, h3 {
 		position: relative;
@@ -34,8 +36,8 @@
 		padding-bottom: 0.3em;
 		line-height: 1.255;
 		border-bottom: 1px solid #eee;
-		display: block; 
-		@extend .emuwebapp-font-large;   
+		display: block;
+		@extend .emuwebapp-font-large;
     }
     h4 {
 		position: relative;
@@ -44,9 +46,9 @@
 		padding-bottom: 0.3em;
 		line-height: 1.255;
 		border-bottom: 1px solid #eee;
-		display: block; 
+		display: block;
 		text-align: center;
-		@extend .emuwebapp-font-large;   
+		@extend .emuwebapp-font-large;
     }
     pre{
 		padding: 16px;
@@ -96,7 +98,7 @@
             border-radius: 3px;
             margin: 5px;
             margin-top: 25px;
-            margin-bottom: 25px;	
+            margin-bottom: 25px;
 	}
 	toc {
             @extend .emuwebapp-font-input;
@@ -108,13 +110,12 @@
 	        margin-left: 25px;
 	        margin-top: 0px;
 	        margin-bottom: 5px;
-	    }        
+	    }
 	}
 }
 .emuwebapp-link {
     cursor: pointer;
 }
-
 .emuwebapp-markdown{
     width: 90%;
 }
