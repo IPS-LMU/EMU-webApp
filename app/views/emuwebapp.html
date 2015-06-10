@@ -1,28 +1,7 @@
 <!-- container EMU-webApp start -->
 <div ng-controller="MainController" class="emuwebapp-main" id="MainCtrl" handleglobalkeystrokes>
     <modal></modal>
-    <div ng-show="showAboutHint" class="emuwebapp-aboutHint">
-        <div class="emuwebapp-aboutHint-arrow">⇧</div>
-        <div class="emuwebapp-aboutHint-content">
-            <h1>Welcome to the EMU-webApp</h1>
-            <p>
-                an online and offline web application for labeling, visualizing and correcting speech and derived speech data.
-            </p>
-            <div>
-                <img src="assets/EMU-webAppEmu.svg" />
-                <div class="emuwebapp-aboutHint-overlay">
-                    click on this icon in the top menu bar for more information (incl. manual)
-                </div>
-
-            </div>
-            <p>
-                <button class="emuwebapp-aboutHint-hidden" ng-click="showAboutHint = !showAboutHint; aboutBtnClick();"></button>
-                <button class="" ng-click="showAboutHint = !showAboutHint">Close message</button>
-            </p>
-        </div>
-
-    </div>
-
+    <hint show="showAboutHint"></hint>
     <!-- left side menu bar start -->
     <bundle-list-side-bar ng-show="cps.vals.activeButtons.openMenu && vs.submenuOpen"></bundle-list-side-bar>
     <!-- left side menu bar end -->
@@ -47,10 +26,10 @@
                             open demo <span id="emuwebapp-dropdown-arrow"></span>
                         </button>
                         <ul class="emuwebapp-dropdown-menu" ng-show="cps.vals.activeButtons.openDemoDB">
-							<li class="divider"></li>
-                            <li ng-repeat="curDB in cps.vals.demoDBs" ng-click="openDemoDBbtnClick(curDB);" id="demo{{$index}}">
-                                {{curDB}}
-                            </li>
+                          <li class="divider"></li>
+                          <li ng-repeat="curDB in cps.vals.demoDBs" ng-click="openDemoDBbtnClick(curDB);" id="demo{{$index}}">
+                            {{curDB}}
+                          </li>
                         </ul>
                     </li>
                 </ul>
@@ -113,7 +92,7 @@
     <!-- perspectives menu bar (right) -->
     <nav class="emuwebapp-right-menu" ng-show="cps.vals.restrictions.showPerspectivesSidebar" show-menu="vs.getRightsubmenuOpen()">
         <button ng-click="vs.setRightsubmenuOpen(!vs.getRightsubmenuOpen());">
-            <img src="styles/images/rightSideMenuBtn.png" />
+          <img src="img/menu.svg" class="_20px _inverted" />
         </button>
         <h3>Perspectives</h3>
         <ul>

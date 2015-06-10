@@ -30,7 +30,6 @@ angular.module('emuwebApp')
 		$scope.is2dCancasesHidden = true;
 		$scope.windowWidth = $window.outerWidth;
 
-		$scope.showAboutHint = false;
 
 		// check for new version
 		$scope.ach.checkForNewVersion();
@@ -225,7 +224,7 @@ angular.module('emuwebApp')
 						if (validRes === true) {
 							ConfigProviderService.setVals(data);
 							$scope.handleDefaultConfigLoaded();
-							// loadFilesForEmbeddedApp if these are set 
+							// loadFilesForEmbeddedApp if these are set
 							$scope.loadFilesForEmbeddedApp();
 							$scope.checkIfToShowWelcomeModal();
 							// FOR DEVELOPMENT
@@ -246,7 +245,7 @@ angular.module('emuwebApp')
 					modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
 						appStateService.resetToInitState();
 					});
-				});	
+				});
 			}, function (errMess) {
 				modalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
 					appStateService.resetToInitState();
@@ -256,20 +255,22 @@ angular.module('emuwebApp')
 
 		// call function on init
 		$scope.loadDefaultConfig();
-		
+
 		$scope.checkIfToShowWelcomeModal = function (argument) {
+			$scope.showAboutHint = false;
 			var curVal = localStorage.getItem("haveShownWelcomeModal");
-			if(curVal === undefined){
+			if(curVal === null){
 				localStorage.setItem("haveShownWelcomeModal", "true");
 				$scope.showAboutHint = true;
 			}
 			// FOR DEVELOPMENT
 			// $scope.showAboutHint = true;
+			// console.log(curVal);
 		};
 
 		$scope.getCurBndlName = function () {
  			return loadedMetaDataService.getCurBndlName();
- 		};		
+ 		};
 
 		/**
 		 * function called after default config was loaded
@@ -310,7 +311,7 @@ angular.module('emuwebApp')
 		 * and loads the first bundle in the bundle list (= default behavior).
 		 */
 		$scope.handleConnectedToWSserver = function () {
-			// hide drop zone 
+			// hide drop zone
 			viewState.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'WS';
 			ConfigProviderService.vals.activeButtons.openDemoDB = false;
@@ -325,7 +326,7 @@ angular.module('emuwebApp')
 						if (doUsrData === 'NO') {
 							$scope.innerHandleConnectedToWSserver();
 						} else {
-							// show user management error 
+							// show user management error
 							modalService.open('views/loginModal.html').then(function (res) {
 								if (res) {
 									$scope.innerHandleConnectedToWSserver();
@@ -358,7 +359,7 @@ angular.module('emuwebApp')
 						ConfigProviderService.setVals(data.EMUwebAppConfig);
 						// FOR DEVELOPMENT
 						//$scope.showEditDBconfigBtnClick();
-				
+
 						delete data.EMUwebAppConfig; // delete to avoid duplicate
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 						if (validRes === true) {
@@ -395,7 +396,7 @@ angular.module('emuwebApp')
 							appStateService.resetToInitState();
 						});
 					}
-			    });					
+			    });
 			});
 		};
 
@@ -405,7 +406,7 @@ angular.module('emuwebApp')
 		$scope.toggleCollapseSession = function (ses) {
 			$scope.uniqSessionList[ses].collapsed = !$scope.uniqSessionList[ses].collapsed;
 		};
-		
+
 		/**
 		 *
 		 */
@@ -505,7 +506,7 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
-				
+
 			} else {
 				//console.log('action currently not allowed');
 			}
@@ -571,7 +572,7 @@ angular.module('emuwebApp')
 				} else {
 					modalService.open('views/error.html', 'Rename Error : Please choose a Level first !');
 				}
-			} 
+			}
 		};
 
 		/**
@@ -582,7 +583,7 @@ angular.module('emuwebApp')
 				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
 					modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
 				});
-			} 
+			}
 		};
 
 		/**
@@ -600,7 +601,7 @@ angular.module('emuwebApp')
 		$scope.spectSettingsBtnClick = function () {
 			if (viewState.getPermission('spectSettingsChange')) {
 			    modalService.open('views/spectSettings.html')
-			} 
+			}
 		};
 
 		/**
@@ -635,7 +636,7 @@ angular.module('emuwebApp')
 			if (viewState.getPermission('openDemoBtnDBclick')) {
 			    ConfigProviderService.vals.activeButtons.openDemoDB = false;
 				loadedMetaDataService.setDemoDbName(nameOfDB);
-				// hide drop zone 
+				// hide drop zone
 				viewState.showDropZone = false;
 
 				viewState.somethingInProgress = true;
@@ -696,8 +697,8 @@ angular.module('emuwebApp')
 							appStateService.resetToInitState();
 						});
 					});
-				});					
-			} 
+				});
+			}
 		};
 
 		/**

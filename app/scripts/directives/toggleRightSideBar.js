@@ -7,10 +7,9 @@ angular.module('emuwebApp')
 			restrict: 'A',
 			link: function postLink(scope, element, attrs) {
 				scope.$watch(attrs.showMenu, function (newVal) {
-                                        console.log(newVal);
 					if (newVal) {
 						$animate.addClass(element, 'emuwebapp-expandWidthTo200px');
-                                                $animate.removeClass(element, 'emuwebapp-shrinkWidthTo0px');
+						$animate.removeClass(element, 'emuwebapp-shrinkWidthTo0px');
 					} else {
 						$animate.removeClass(element, 'emuwebapp-expandWidthTo200px');
 						$animate.addClass(element, 'emuwebapp-shrinkWidthTo0px');
