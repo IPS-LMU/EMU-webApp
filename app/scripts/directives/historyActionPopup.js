@@ -7,10 +7,8 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			replace: true,
 			link: function postLink(scope, element, attrs) {
-
 				////////////////
 				//watches
-
 				scope.$watch('vs.historyActionTxt', function () {
 					if (scope.vs.historyActionTxt !== '') {
 						$animate.addClass(element, 'emuwebapp-history-fade').then(function () {
@@ -19,16 +17,13 @@ angular.module('emuwebApp')
 								$animate.removeClass(element, 'emuwebapp-history-fade').then(function () {
 									$timeout(function () {
 										scope.vs.historyActionTxt = '';
-									}, scope.cps.design.animation.period * 2);
+									}, scope.cps.design.animation.period);
 									scope.$apply();
 								})
-							}, scope.cps.design.animation.period * 2);
+							}, scope.cps.design.animation.period);
 						});
 					}
-
-
 				}, true);
-
 			}
 		};
 	});
