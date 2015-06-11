@@ -2,4 +2,4 @@ The pictures in this folder are standalone tikz: http://www.texample.net/tikz/ l
 They where compiled to SVGs by the following two commands:
 
 	- `pdflatex nameOfFile.tex`
-	- `svg nameOfFile.pdf` 
+	- `pdf2svg nameOfFile.pdf nameOfFile.svg` 

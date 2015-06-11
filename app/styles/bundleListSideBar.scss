@@ -1,0 +1,151 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+/**
+    ######################################
+        bundleListSideBar directive css
+    ######################################
+*/
+
+
+.emuwebapp-bundle-outer {
+    height: 100%;
+    width: 240px;
+    background: $color-darkGrey;
+    color: $color-white;
+    margin-left: 0px;
+    @extend .emuwebapp-font-input;
+    line-height: 0.85;
+    @include vendor-prefix(transition, "all "+$animation-period+"ms ease-out");
+    &.ng-hide:not(.ng-hide-animate) {
+      visibility: visible !important;
+      display: block !important;
+      margin-left: -240px;
+    }
+    h3 {
+        font-size: 1.4em;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        margin: 0;
+        border-bottom:thin solid $color-white;
+    }
+    > div {
+        height: 100%;
+        @extend .emuwebapp-font-small;
+    }
+    .emuwebapp-filter {
+        background: url(../img/search.svg) no-repeat 10px 6px $color-white;
+        outline: none;
+        border: 0 none;
+        color: $color-grey;
+        width: 75%;
+        padding: 6px 15px 7px 35px;
+        @include vendor-prefix(box-shadow, "0 1px 0 "+$color-transparent-grey+", 0 1px 3px "+$color-transparent-black+" inset");
+        @include vendor-prefix(transition, "all "+$animation-period+"ms ease 0s");
+        @include vendor-prefix(border-radius, "20px");
+        @extend .emuwebapp-font-small;
+    }
+    .emuwebapp-bundle-container {
+        width: 100%;
+        height: calc(100% - 40px);
+        overflow-y:auto;
+        text-align: left;
+        padding: 10px;
+        font-size: 0.8em;
+        @extend .emuwebapp-font-input;
+        .emuwebapp-bundle-session {
+            margin: 0px;
+            padding: 5px 0 5px 0;
+            border-style:none;
+            position: relative;
+            cursor: pointer;
+            &:hover{
+                background-color: $color-transparent-lightGrey;
+            }
+        }
+    }
+}
+
+.emuwebapp-bundleListSessionBndlsContainer {
+    max-height: 25000px;
+    &.ng-hide-add.ng-hide-add-active {
+        @include vendor-prefix(transition, "all "+$animation-period+"ms ease-out");
+    }
+    &.ng-hide-remove.ng-hide-remove-active {
+        @include vendor-prefix(transition, "all "+$animation-period+"ms ease-in");
+    }
+    &.ng-hide {
+        max-height: 0;
+    }
+}
+
+.emuwebapp-bundleListSessionPager{
+    margin: 0px;
+    padding: 5px 0 5px 0;
+    border-style:none;
+    position: relative;
+    text-align: center;
+    cursor: default;
+    button{
+        background: transparent;
+        color: white;
+        border-radius: 25%;
+        border:2px solid $color-white;
+        font-size: 15px;
+        &:hover{
+            background-color: $color-transparent-grey;
+        }
+        &:focus{
+            outline:0;
+        }
+        &:disabled{
+            color: $color-transparent-grey;
+            border:2px solid $color-transparent-grey;
+        }
+    }
+}
+
+.emuwebapp-bundle-item {
+    margin: 0px;
+    padding: 10px;
+    border-style:none;
+    border-bottom:thin solid rgba(152, 152, 152, 0.25);
+    position: relative;
+    cursor: pointer;
+    width: 200px !important;
+    &:hover {
+        background-color:rgba(152, 152, 152, 0.28);
+    }
+    input[type='text'] {
+        width: 170px;
+        height: 25px;
+        font-size: 1.4em;
+    }
+    b {
+        display: block;
+        font-size: 1.4em;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        height: 28px;
+    }
+}
+
+.emuwebapp-saveBundleButton {
+    position: absolute;
+    background-color:transparent;
+    border-style:none;
+    top: 2px;
+    right: 2px;
+    img {
+        height: 25px;
+        width:  25px;
+        border-radius: 12.5px;
+        background-color:transparent;
+        vertical-align: middle;
+        &:hover{
+            background-color: $color-blue;
+        }
+    }
+}

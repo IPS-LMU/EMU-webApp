@@ -1,0 +1,142 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+.emuwebapp-modal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $color-transparent-black;
+    z-index: 99998;
+    opacity:0;
+    pointer-events: none;
+    @include vendor-prefix(transition, "opacity "+$animation-period/2+"ms ease-in");
+    > div {
+        width: 84%;
+        height: 90%;
+        position: relative;
+        margin-left: 8%;
+        margin-right: 8%;
+        margin-top: 3%;
+        background: #fff;
+    }
+    .emuwebapp-close {
+        background: $color-blue;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 30px;
+        height: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        @include vendor-prefix(box-shadow, "1px 1px 3px "+$color-transparent-grey);
+        @include vendor-prefix(border-radius, "15px");
+        z-index: 99999;
+        &:hover {
+            background: $color-white;
+            text-decoration: none;
+            }
+    }
+    .emuwebapp-modal-inner {
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+    }
+}
+
+.emuwebapp-modal-wrap {
+    width:  100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin: auto;
+    @extend .emuwebapp-font-small;
+
+    > .emuwebapp-modal-header {
+		position: absolute;
+		background-color: $color-blue;
+		height: 60px;
+		left:0;
+		top:0;
+		width: 100%;
+		h2 {
+			padding-top: 17px;
+			color: #fff;
+			@extend .emuwebapp-font-large;
+		}
+		h3 {
+			padding-top: 17px;
+			color: #fff;
+			@extend .emuwebapp-font-large;
+		}
+	}
+}
+
+.emuwebapp-modal-open {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.emuwebapp-modal-body {
+    height: calc(100% - 120px);
+    width: 100%;
+    top: 60px;
+    padding: 0px;
+    bottom: 60px;
+    position: relative;
+	clear: both;
+	overflow-y: auto;
+	overflow-x: hidden;
+	&::-webkit-scrollbar {
+		width: 17px;  /* for vertical scrollbars */
+		height: 0px; /* for horizontal scrollbars */
+	}
+	&::-webkit-scrollbar-track {
+		background: $color-blue;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: $color-lightGrey;
+	}
+	select {
+	    margin: 3px;
+	}
+	hr {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+}
+
+.emuwebapp-modal-hierarchy {
+    background: $color-lightGrey;
+}
+
+.emuwebapp-modal-footer {
+    height: 60px;
+    width:100%;
+    position: absolute;
+    background-color: $color-blue;
+    left: 0;
+    bottom: 0;
+    button {
+		margin-top: 15px;
+	}
+}
+
+.emuwebapp-exportdata {
+    margin: 50px;
+    text-align: left;
+}
+
+.emuwebapp-modalUl{
+	padding: 10px;
+}

@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('emuwebApp', ['ui', 'ui.sortable', 'ngAnimate', 'angular.filter'])
+angular.module('emuwebApp', ['ui', 'ui.sortable', 'ngAnimate', 'angular.filter', 'btford.markdown'])
   .config(function($locationProvider) {
     $locationProvider.html5Mode(true);
   });   

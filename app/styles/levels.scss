@@ -1,0 +1,97 @@
+@import 'EMUwebAppDesign';
+@import 'mixins';
+
+/** 
+    ###################################
+        level directive css
+    ###################################
+*/
+
+.emuwebapp-level {
+    width: 100%;
+    height: 64px;
+    .emuwebapp-level-container {
+        position: relative;
+        float:left;
+        width: calc(100% - 30px);
+        height: 100%;
+        padding: 5px;
+    }
+    .emuwebapp-level-canvas {
+        float: left;
+        margin: 0px;
+        border: 1px solid $color-grey;
+        width: 100%;
+        height: 100%;
+        z-index: 1; 
+    }
+    .emuwebapp-level-markup {
+        position: absolute;
+        top: 5px; 
+        left: 5px;
+        background-color: transparent;
+        width:calc(100% - 10px);
+        height: calc(100% - 10px);
+        z-index: 2; 
+    }
+    .emuwebapp-level-buttons {
+        float: left;
+        width: 10px;
+        height: 100%;
+    }
+}
+@include keyframes(rotate-the-object) {
+  0%   { @include vendor-prefix(transform, "rotateX(0deg)"); }
+  100% { @include vendor-prefix(transform, "rotateX(180deg)"); }
+}
+.emuwebapp-level-animation {
+    @include animation('rotate-the-object .2s 1');
+} 
+.emuwebapp-level-button {
+    float:left;
+    width: 20px;
+    height: calc(100%/3);
+    background-color: $color-white;
+    img {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        vertical-align: middle;
+        &:hover{
+            background-color: $color-blue;
+        }
+    }
+}
+.emuwebapp-selectAttrDef {
+    width: calc(100% - 40px);
+    text-align: center;
+    padding: 0;
+    margin-left: 5px;
+    div{
+        display: inline-block;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    ul{
+        list-style:none;
+        padding: 0px;
+        margin: 0 0 0 0;
+        li{
+            display: inline;
+            margin: 0 0 0 0;
+        }
+    }
+    button{
+        padding: 0px;
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        border:1px solid $color-grey;
+        &:hover{
+            border:1px solid $color-blue;
+        }
+        &:focus{
+            outline: none;
+        }
+    }
+}

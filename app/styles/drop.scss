@@ -1,0 +1,38 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+.emuwebapp-dropzone {
+    height: 80%;
+    border: 1px dashed $color-grey;
+    border-radius: 8px;
+    text-align: center;
+    color: $color-grey;
+    padding: 15px;
+    margin: 15px;
+    line-height: 1.5;
+    @extend .emuwebapp-font-small;
+    &.not-available {
+        background-color: #f00;
+    }
+    &.over {
+        background-color: #bfb;
+    }
+    &.error {
+        background-color: #f00;
+    }
+    &.waiting {
+        background-color: #0ff;
+    }
+    &.hidden {
+        display: none;
+    }
+}
+
+[draggable] {
+    @include vendor-prefix(user-select, "none");
+}
+
+.drag {
+    cursor: move;  
+}

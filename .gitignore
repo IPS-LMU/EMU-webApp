@@ -70,3 +70,7 @@ app/testData/ignoredData
 test/coverage
 
 *.scssc
+*.sassc
+
+autoprefixer
+--*

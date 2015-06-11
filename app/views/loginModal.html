@@ -7,7 +7,7 @@
 	<div class="emuwebapp-modal-body">
 		Please enter:
 		<hr>
-		<table class="emuwebapp-loginModalTable">
+		<table style="width: 100%; text-align:center;">
 			<tr>
 				<td>User name:</td>
 				<td><input type="text" ng-model="loginData.username" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
@@ -21,7 +21,7 @@
 		<p style="color:red">{{loginData.errorMsg}}</p>
 	</div>
 	<div class="emuwebapp-modal-footer">
-	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Cancel</button>
-	  <button ng-click="tryLogin();" class="emuwebapp-mini-btn-dialog emuwebapp-dialogButton">Login</button>
+	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn">Cancel</button>
+	  <button ng-click="tryLogin();" class="emuwebapp-mini-btn">Login</button>
 	</div>
 </div>

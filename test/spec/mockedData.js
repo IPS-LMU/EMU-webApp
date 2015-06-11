@@ -8,6 +8,11 @@ jasmine.getFixtures().fixturesPath = 'base/app/configFiles/';
 var f = readFixtures('default_emuwebappConfig.json');
 var defaultEmuwebappConfig = JSON.parse(f)
 
+// designEmuwebapp config
+jasmine.getFixtures().fixturesPath = 'base/app/configFiles/';
+var f = readFixtures('default_emuwebappDesign.json');
+var defaultEmuwebappDesign = JSON.parse(f)
+
 // ae
 jasmine.getFixtures().fixturesPath = 'base/app/demoDBs/ae/';
 var f = readFixtures('ae_DBconfig.json');
@@ -75,6 +80,11 @@ var globalDBSchema = JSON.parse(f);
 jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
 var f = readFixtures('emuwebappConfigSchema.json');
 var emuwebappConfigSchema = JSON.parse(f);
+
+// emuwebappConfigSchema
+jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
+var f = readFixtures('designSchema.json');
+var designSchema = JSON.parse(f);
 
 
 ////////////////////////////

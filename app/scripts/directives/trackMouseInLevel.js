@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('trackMouseInLevel', function (viewState, LevelService, ConfigProviderService, HistoryService, Soundhandlerservice) {
+  .directive('trackMouseInLevel', function ($document, viewState, LevelService, ConfigProviderService, HistoryService, Soundhandlerservice) {
     return {
       restrict: 'A',
       replace:true,
@@ -232,7 +232,12 @@ angular.module('emuwebApp')
         scope.setLastDblClick = function (x) {
           scope.curMouseSampleNrInView = viewState.getX(x) * viewState.getSamplesPerPixelVal(x);
           scope.lastEventClick = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
-          if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined) {
+          var isOpen = element.parent().css('height') === '25px' ? false : true;
+          // expand to full size on dbl click if level is in small size
+          if(!isOpen) {
+              $document.find('#emuwebapp-level-button-resize').click();
+          }
+          if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined  && viewState.getPermission('labelAction')) {
             if (scope.levelType === 'SEGMENT') {
               if (scope.lastEventClick.current.sampleStart >= viewState.curViewPort.sS) {
                 if ((scope.lastEventClick.current.sampleStart + scope.lastEventClick.current.sampleDur) <= viewState.curViewPort.eS) {

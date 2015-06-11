@@ -9,6 +9,7 @@ angular.module('emuwebApp')
 				scope.$watch(attrs.showMenu, function (newVal) {
 					if (newVal) {
 						$animate.addClass(element, 'emuwebapp-expandWidthTo200px');
+						$animate.removeClass(element, 'emuwebapp-shrinkWidthTo0px');
 					} else {
 						$animate.removeClass(element, 'emuwebapp-expandWidthTo200px');
 						$animate.addClass(element, 'emuwebapp-shrinkWidthTo0px');

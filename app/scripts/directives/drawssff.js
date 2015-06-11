@@ -69,14 +69,14 @@ angular.module('emuwebApp')
         //
         scope.$watch('vs.submenuOpen', function (oldValue, newValue) {
           if (oldValue !== newValue) {
-            $timeout(scope.handleUpdate, scope.cps.vals.colors.transitionTime);
+            $timeout(scope.handleUpdate, ConfigProviderService.design.animation.duration);
           }
         });
 
         //
         scope.$watch('vs.timelineSize', function (oldValue, newValue) {
           if (oldValue !== newValue) {
-            $timeout(scope.handleUpdate, scope.cps.vals.colors.transitionTime / 10);
+            $timeout(scope.handleUpdate, ConfigProviderService.design.animation.duration / 10);
           }
         });
 
@@ -189,8 +189,8 @@ angular.module('emuwebApp')
                   // mark selected
                   // console.log(viewState.curCorrectionToolNr);
                   if (viewState.curCorrectionToolNr - 1 === contourNr && scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
-                    ctx.strokeStyle = ConfigProviderService.vals.colors.selectedContourColor;
-                    ctx.fillStyle = ConfigProviderService.vals.colors.selectedContourColor;
+                    ctx.strokeStyle = ConfigProviderService.design.color.green;
+                    ctx.fillStyle = ConfigProviderService.design.color.green;
                   }
 
                   ctx.beginPath();
@@ -227,7 +227,7 @@ angular.module('emuwebApp')
                     var rightVal = rightBorder[contourNr];
 
                     curSampleInCol = colEndSampleNr + 1;
-                    curSampleInColTime = (1 / sR * curSampleInCol) + sT;
+                    curSampleInColTime = (1 / sR * curSampleInCol) + sT ;
 
                     x = (curSampleInColTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
                     y = canvas.height - ((rightVal - minVal) / (maxVal - minVal) * canvas.height);
@@ -244,14 +244,15 @@ angular.module('emuwebApp')
               var txt;
               // var tW;
               var horizontalText;
+              
               if (nrOfSamples <= 2) {
-                horizontalText = fontScaleService.getTextImageTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor);
+                horizontalText = fontScaleService.getTextImageTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0,-2) / 1.05 , ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.red);
                 // ctx.fillStyle = ConfigProviderService.vals.colors.levelColor;
                 // ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, 25, horizontalText.width, horizontalText.height);
+                ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width/2 - horizontalText.width / 2, 25, horizontalText.width, horizontalText.height);
               } else {
                 txt = 'Zoom in to see contour(s)';
-                horizontalText = fontScaleService.getTextImageTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.vals.font.fontPxSize, ConfigProviderService.vals.font.fontType, ConfigProviderService.vals.colors.crossHairsColor);
+                horizontalText = fontScaleService.getTextImageTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0,-2) / 1.05, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.red);
                 // ctx.fillStyle = ConfigProviderService.vals.colors.levelColor;
                 // ctx.fillRect(0, 0, canvas.width, canvas.height);              
                 ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, 25, horizontalText.width, horizontalText.height);

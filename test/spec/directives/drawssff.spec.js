@@ -10,9 +10,10 @@ describe('Directive: drawssff', function() {
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
         scope.cps.setVals(defaultEmuwebappConfig);
+        scope.cps.design = defaultEmuwebappDesign;
         scope.vs = viewState;
         scope.data = DataService;
-        scope.ssffds = Ssffdataservice;   
+        scope.ssffds = Ssffdataservice; 
     }));
     
     afterEach(function() {
@@ -40,7 +41,7 @@ describe('Directive: drawssff', function() {
         compileDirective('OSCI');
         expect(elm.isolateScope()).toBeDefined();
         expect(elm.isolateScope().trackName).toBe('OSCI');
-    });
+    }); 
     
     it('should watch vs.spectroSettings', function() {
         compileDirective('OSCI');
@@ -51,7 +52,7 @@ describe('Directive: drawssff', function() {
         expect(elm.isolateScope().handleUpdate).toHaveBeenCalled();
     });  
     
-    it('should watch vs.curViewPort', function() {
+    it('should watch vs.curViewPort (sS,eS)', function() {
         compileDirective('OSCI');
         scope.vs.curViewPort.eS = 10;
         scope.$apply();        
@@ -61,6 +62,28 @@ describe('Directive: drawssff', function() {
         scope.$apply();
         expect(elm.isolateScope().handleUpdate).toHaveBeenCalled();
     }); 
+    
+    it('should watch vs.curViewPort (windowWidth)', function() {
+        compileDirective('OSCI');
+        scope.vs.curViewPort.windowWidth = 10;
+        scope.$apply();        
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(elm.isolateScope(), 'handleUpdate').and.returnValue();
+        scope.vs.curViewPort.windowWidth = 20;
+        scope.$apply();
+        expect(elm.isolateScope().handleUpdate).toHaveBeenCalled();
+    }); 
+    
+    it('should watch vs.curViewPort (dragBarHeight)', function() {
+        compileDirective('OSCI');
+        scope.vs.curViewPort.dragBarHeight = 10;
+        scope.$apply();        
+        expect(elm.isolateScope()).toBeDefined();
+        spyOn(elm.isolateScope(), 'handleUpdate').and.returnValue();
+        scope.vs.curViewPort.dragBarHeight = 20;
+        scope.$apply();
+        expect(elm.isolateScope().handleUpdate).toHaveBeenCalled();
+    });         
 
     it('should handleUpdate', function() {
         setData(); 

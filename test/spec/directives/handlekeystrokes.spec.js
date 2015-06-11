@@ -15,7 +15,7 @@ describe('Directive: handleglobalkeystrokes', function() {
                                 LevelService, 
                                 HistoryService,
                                 modalService,
-                                DataService,
+                                DataService, 
                                 Binarydatamaniphelper) {
         // scopes
         scope = $rootScope.$new();
@@ -30,6 +30,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         
         // load data
         scope.cps.setVals(defaultEmuwebappConfig);
+        scope.cps.design = defaultEmuwebappDesign;
         scope.data.setData(msajc003_bndl.annotation);
         scope.shs.wavJSO.Data = msajc003_bndl.mediaFile.data;
         
@@ -696,7 +697,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         spyOn(scope.vs, 'togglesubmenuOpen');
         spyOn(scope.lvl, 'deleteEditArea');
         trigEvent(scope.cps.vals.keyMappings.toggleSideBarLeft, false);
-        expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.vals.colors.transitionTime);        
+        expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.design.animation.period);        
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();        
     });
 

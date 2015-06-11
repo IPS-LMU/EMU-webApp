@@ -13,9 +13,9 @@ describe('Directive: splitPaneView', function() {
     function compileDirective(toggle) {
         inject(function($compile) {
             elm = $compile('<bg-splitter show-two-dim-cans="'+toggle+'">'+
-                                '<bg-pane type="topPane" min-size="80" max-size="500" class="emuwebapp-topPane">top</<bg-pane>'+
-                                '<bg-pane type="bottomPane" min-size="80" class="emuwebapp-bottomPane"> bottom </bg-pane>'+
-                                '<bg-pane type="emuwebapp-bottomRightResizePane"> </bg-pane>'+
+                                '<bg-pane type="topPane" min-size="80" max-size="500">top</<bg-pane>'+
+                                '<bg-pane type="bottomPane" min-size="80"> bottom </bg-pane>'+
+                                '<bg-pane type="emuwebapp-2d-map"> </bg-pane>'+
                             '</bg-splitter>')(scope);
         });
         scope.$digest();

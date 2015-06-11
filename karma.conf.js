@@ -25,6 +25,9 @@ module.exports = function (config) {
       'app/bower_components/d3/d3.js',
       'app/bower_components/tv4/tv4.js',
       'app/bower_components/angular-ui-sortable/sortable.js',
+      'app/bower_components/showdown/src/showdown.js',
+      'app/bower_components/angular-markdown-directive/markdown.js',
+      'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/scripts/!(prototypeexpansions).js',
       'app/scripts/filters/*.js',
       'app/scripts/controllers/*.js',
@@ -41,7 +44,7 @@ module.exports = function (config) {
         watched: true,
         served: true,
         included: false
-      }, 
+      },
 
       // configFiles JSON fixtures
       {
@@ -123,7 +126,7 @@ module.exports = function (config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: ['PhantomJS'],
-    
+
     captureTimeout: 60000,
 
 

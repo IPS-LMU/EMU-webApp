@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc directive
- * @name emuWebAppApp.directive:lineChart
+ * @name emuWebApp.directive:lineChart
  * @description
  * # lineChart
  */

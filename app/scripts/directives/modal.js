@@ -20,10 +20,10 @@ angular.module('emuwebApp')
 			    scope.dataIn = modalService.dataIn;
 			    scope.force = modalService.force;
 				if(newValue) {
-				    element[0].classList.add('emuwebapp-modalDialog-isOpen');
+				    element[0].classList.add('emuwebapp-modal-open');
 				}
 				else {
-				    element[0].classList.remove('emuwebapp-modalDialog-isOpen');
+				    element[0].classList.remove('emuwebapp-modal-open');
 				}
 			}
 		});

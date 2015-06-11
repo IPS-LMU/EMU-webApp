@@ -5,7 +5,7 @@ angular.module('emuwebApp')
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-		scope.$watch('viewState.curPerspectiveIdx', function () {
+		  scope.$watch('viewState.curPerspectiveIdx', function () {
 		    if (!$.isEmptyObject(ConfigProviderService.vals.perspectives)) {
 		        if (!$.isEmptyObject(viewState.curPerspectiveIdx)) {
 					if(ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length===1) {
@@ -16,9 +16,7 @@ angular.module('emuwebApp')
 					}
 				}
             }
-		}, true);      
-      
-
+		}, true);
         var open = false;
         element.bind('click', function () {
           if (open) {
@@ -27,7 +25,7 @@ angular.module('emuwebApp')
           } else {
             open = true;
             viewState.setenlarge(attrs.enlarge);
-          } 
+          }
           $rootScope.$apply();
         });
       }

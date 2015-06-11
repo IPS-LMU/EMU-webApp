@@ -1,0 +1,121 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+.emuwebapp-text {
+    padding-left: 18px;
+    padding-right: 18px;
+    word-wrap: break-word;
+    padding-bottom: 120px;
+    @extend .emuwebapp-font-small;
+    .red {
+      color: #f00;
+    }
+    input {
+        @extend .emuwebapp-font-input;
+        @include vendor-prefix(user-select, "none");
+        @include vendor-prefix(box-sizing, "content-box");
+        outline: none;
+    }
+    div {
+        margin-left: 25px;
+        margin-right: 25px;
+        margin-top: 25px;
+        p {
+            text-align: left;
+        }
+        span {
+            text-align: center;
+            @extend .emuwebapp-font-small;
+        }
+    }
+    h1, h2, h3 {
+		position: relative;
+		margin-top: 1em;
+		margin-bottom: 16px;
+		padding-bottom: 0.3em;
+		line-height: 1.255;
+		border-bottom: 1px solid #eee;
+		display: block;
+		@extend .emuwebapp-font-large;
+    }
+    h4 {
+		position: relative;
+		margin-top: 1em;
+		margin-bottom: 5px;
+		padding-bottom: 0.3em;
+		line-height: 1.255;
+		border-bottom: 1px solid #eee;
+		display: block;
+		text-align: center;
+		@extend .emuwebapp-font-large;
+    }
+    pre{
+		padding: 16px;
+		overflow: auto;
+		line-height: 1.45;
+		background-color: #f7f7f7;
+		border-radius: 3px;
+		word-wrap: normal;
+		font-size: 0.9em;
+		@extend .emuwebapp-font-code;
+    }
+    img {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+    }
+    p img {
+        text-align: center;
+    }
+    pre {
+        text-align: left;
+    }
+    p, h3, pre {
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+    ul li, p, h3 {
+		text-align: left;
+	}
+	span {
+	    display: block;
+	    font-size: 1.2em;
+	    text-align: center;
+	    line-height: 0.85;
+	}
+	small {
+		@extend .emuwebapp-font-small;
+		text-align: center;
+		font-size: 0.7em;
+	}
+	alert {
+            display: block;
+            text-align: center;
+            color: #a94442;
+            background-color: #f2dede;
+            border: 3px dashed #ebccd1;
+            border-radius: 3px;
+            margin: 5px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+	}
+	toc {
+            @extend .emuwebapp-font-input;
+            text-align: center;
+	    li {
+	        font-size: 1.2em;
+	        text-align: left;
+	        list-style-type: circle;
+	        margin-left: 25px;
+	        margin-top: 0px;
+	        margin-bottom: 5px;
+	    }
+	}
+}
+.emuwebapp-link {
+    cursor: pointer;
+}
+.emuwebapp-markdown{
+    width: 90%;
+}

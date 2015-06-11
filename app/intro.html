@@ -35,31 +35,36 @@
     <meta name="msapplication-TileColor" content="#0DC5FF">
     <meta name="msapplication-TileImage" content="assets/mstile-144x144.png">
     <!-- endicons -->
-   
+
     <!-- build:css styles/emuwebAppExternal.min.css -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="bower_components/angular/angular-csp.css" rel="stylesheet">
     <!-- endbuild -->
-    
+
 
     <!-- build:css(.tmp) styles/emuwebApp.min.css -->
-    <link rel="stylesheet" href="styles/main.css">
+		<link rel="stylesheet" href="styles/font.css">
+    <link rel="stylesheet" href="styles/text.css">
+    <link rel="stylesheet" href="styles/button.css">
+    <link rel="stylesheet" href="styles/media-query.css">
+    <link rel="stylesheet" href="styles/emuwebapp.css">
+    <link rel="stylesheet" href="styles/preview.css">
+    <link rel="stylesheet" href="styles/modal.css">
     <link rel="stylesheet" href="styles/bundleListSideBar.css">
-    <link rel="stylesheet" href="styles/topBottomMenu.css">
-    <link rel="stylesheet" href="styles/drop.css">
-    <link rel="stylesheet" href="styles/customAngularuiModal.css">
     <link rel="stylesheet" href="styles/rightSideMenu.css">
-    <link rel="stylesheet" href="styles/timelineCanvas.css">
-    <link rel="stylesheet" href="styles/levels.css">
-    <link rel="stylesheet" href="styles/splitPanes.css">
     <link rel="stylesheet" href="styles/twoDimCanvas.css">
+    <link rel="stylesheet" href="styles/print.css">
     <link rel="stylesheet" href="styles/progressThing.css">
+    <link rel="stylesheet" href="styles/aboutHint.css">
+    <link rel="stylesheet" href="styles/drop.css">
+    <link rel="stylesheet" href="styles/timeline.css">
+    <link rel="stylesheet" href="styles/flexBoxGrid.css">
+    <link rel="stylesheet" href="styles/levels.css">
     <link rel="stylesheet" href="styles/historyActionPopup.css">
     <link rel="stylesheet" href="styles/hierarchy.css">
-    <link rel="stylesheet" href="styles/print.css">
-    <link rel="stylesheet" href="styles/modal.css">
-    <link rel="stylesheet" href="styles/flexBoxGrid.css">
+    <link rel="stylesheet" href="styles/splitPanes.css">
     <link rel="stylesheet" href="styles/tabbed.css">
+    <link rel="stylesheet" href="styles/animation.css">
     <link rel="stylesheet" href="styles/intro.css">
     <!-- endbuild -->
 
@@ -73,10 +78,10 @@
     <div class="emuwebapp-tutorial-head">
         <img src="http://ips-lmu.github.io/images/emuIcon.png">
     </div>
-    
+
    <div class="emuwebapp-tutorial-intro">
         <emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/oldFormat/msajc003/msajc003.TextGrid" label-type="TEXTGRID"></emuwebapp>
-    </div>    
+    </div>
 
    <div class="emuwebapp-tutorial">
        <tutorial></tutorial>
@@ -93,12 +98,15 @@
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/showdown/src/showdown.js"></script>
+    <script src="bower_components/angular-markdown-directive/markdown.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/emuwebApp.min.js -->
     <script src="scripts/prototypeexpansions.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="scripts/services/ConfigProviderService.js"></script>        
+    <script src="scripts/services/ConfigProviderService.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/directives/level.js"></script>
     <script src="scripts/directives/osci.js"></script>
@@ -108,8 +116,8 @@
     <script src="scripts/controllers/export.js"></script>
     <script src="scripts/services/viewState.js"></script>
     <script src="scripts/directives/trackMouseInLevel.js"></script>
-    <script src="scripts/directives/handlekeystrokes.js"></script> 
-    <script src="scripts/directives/delete.js"></script> 
+    <script src="scripts/directives/handlekeystrokes.js"></script>
+    <script src="scripts/directives/delete.js"></script>
     <script src="scripts/directives/resize.js"></script>
     <script src="scripts/directives/enlarge.js"></script>
     <script src="scripts/directives/save.js"></script>
@@ -175,6 +183,11 @@
     <script src="scripts/directives/modal.js"></script>
     <script src="scripts/services/modalService.js"></script>
     <script src="scripts/controllers/tabbed.js"></script>
+    <script src="scripts/controllers/TabbedHelp.js"></script>
+    <script src="scripts/services/HierarchyManipulationService.js"></script>
+    <script src="scripts/services/StandardFuncsService.js"></script>
+    <script src="scripts/filters/startfromfilter.js"></script>
+    <script src="scripts/controllers/manual.js"></script>
     <!-- endbuild -->
 
 

@@ -1,0 +1,21 @@
+<div ng-show="showAboutHint" class="emuwebapp-aboutHint">
+    <div class="emuwebapp-aboutHint-arrow">⇧</div>
+    <div class="emuwebapp-aboutHint-content">
+        <h1>Welcome to the EMU-webApp</h1>
+        <p>
+            an online and offline web application for labeling, visualizing and correcting speech and derived speech data.
+        </p>
+        <div>
+            <img src="assets/EMU-webAppEmu.svg" />
+            <div class="emuwebapp-aboutHint-overlay">
+                click on this icon in the top menu bar for more information (incl. manual)
+            </div>
+
+        </div>
+        <p>
+            <button class="emuwebapp-aboutHint-hidden" ng-click="hideMe();"></button>
+            <button class="" ng-click="showAboutHint = !showAboutHint">Close message</button>
+        </p>
+    </div>
+
+</div>

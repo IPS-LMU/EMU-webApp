@@ -1,0 +1,73 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+/* rightSideMenu CSS */
+
+.emuwebapp-right-menu {
+    position: absolute;
+    top: 40px;
+    right: -200px;
+    height: -moz-calc(100% - 133px);
+    height: -webkit-calc(100% - 133px);
+    height: calc(100% - 133px);
+    width: 200px;
+    background-color: $color-white;
+    color: #000;
+    border-left: thin solid $color-black;
+    z-index: 1000;
+    @extend .emuwebapp-font-small;
+    h3{
+        font-size: 1.5em;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: thin solid $color-black;
+        overflow: hidden;
+    }
+    ul{
+        margin: 10px;
+        text-align: left;
+        overflow: hidden;
+    }
+    > button {
+        position: absolute;
+        top: 125px;
+        left: -15px;
+        height: 25px;
+        width: 25px;
+        background: $color-white;
+        @include vendor-prefix(box-shadow, "-4px 0px 10px 1px "+$color-transparent-black);
+        border-style: none;
+        z-index: 2001;
+        img{
+            width: 20px;
+            height: 20px;
+            padding: 2px;
+            border-style: none;
+            border: 0px;
+            border-radius: 0px;
+            filter: invert(100%);
+        }
+        &:active {
+            background: $color-white;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+    .emuwebapp-curSelPerspLi{
+        border-bottom:thin solid $color-transparent-grey;
+        padding: 8px !important;
+        margin: 4px !important;
+        background-color: $color-grey;
+    }
+    .emuwebapp-perspLi{
+        border-bottom:thin solid $color-transparent-grey;
+        padding: 8px !important;
+        margin: 4px !important;
+        overflow: hidden;
+        &:hover{
+            background-color: $color-transparent-lightGrey;
+        }
+    }
+}

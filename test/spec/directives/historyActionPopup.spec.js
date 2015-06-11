@@ -13,22 +13,14 @@ describe('Directive: historyActionPopup', function() {
 
     function compileDirective(tpl) {
         inject(function($compile) {
-            elm = $compile('<history-action-popup ng-show="vs.historyActionTxt !=\'\'"></history-action-popup>')(scope);
+            elm = $compile('<history-action-popup></history-action-popup>')(scope);
         });
         scope.$digest();
     }
-    
+
     it('should be replaced correctly', function() {
         compileDirective(true);
-        expect(elm.hasClass('emuwebapp-historyActionPopup')).toBe(true);
+        expect(elm.hasClass('emuwebapp-history')).toBe(true);
     });
-   
-   it('should watch vs.historyActionTxt', inject(function ($timeout, $animate) {
-        scope.vs.historyActionTxt = '';
-        compileDirective();
-        scope.vs.historyActionTxt = 'warning';
-        scope.$apply();
-        $timeout.flush();
-        expect(elm.hasClass('emuwebapp-historyActionPopupThere')).toBe(false);
-   }));
+
 });

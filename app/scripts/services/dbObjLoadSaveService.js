@@ -42,8 +42,10 @@ angular.module('emuwebApp')
 					// reset history
 					HistoryService.resetToInitState();
 					// set state
+                    LevelService.deleteEditArea();
+                    viewState.setEditing(false);					
 					viewState.setState('loadingSaving');
-
+					
 					viewState.somethingInProgress = true;
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
 					// empty ssff files
@@ -76,11 +78,6 @@ angular.module('emuwebApp')
 								viewState.curClickLevelType = undefined;
 
 								viewState.resetSelect();
-								// FOR DEVELOPMENT:
-								// viewState.curViewPort.sS = 52063;
-								// viewState.curViewPort.eS = 52100;
-								// viewState.curViewPort.selectS = 27575;
-								// viewState.curViewPort.selectE = 34538;
 								Soundhandlerservice.wavJSO = wavJSO;
 
 								// set all ssff files

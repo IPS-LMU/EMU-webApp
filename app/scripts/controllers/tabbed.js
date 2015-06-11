@@ -51,8 +51,31 @@ angular.module('emuwebApp')
 				url: 'views/tabbed/globalDefinition.html'
 		}];
 		
+		$scope.cps = ConfigProviderService;
+		
 		// current open tab
-		$scope.currentTab = 'views/tabbed/levelDefinition.html';
+		$scope.currentTabUrl = $scope.tabs[0].url;
+		
+		$scope.onClickTab = function (tab) {
+			$scope.currentTabUrl = tab.url;
+		};
+		
+		$scope.isActiveTab = function (tabUrl) {
+			if (tabUrl === $scope.currentTabUrl) {
+				return {
+					'background-color': ConfigProviderService.design.color.white,
+					'color': ConfigProviderService.design.color.black,
+					'font-family': ConfigProviderService.design.font.large.family,
+					'font-size': ConfigProviderService.design.font.large.size		
+				};
+			}
+			return {
+					'background-color': ConfigProviderService.design.color.blue,
+					'color': ConfigProviderService.design.color.white,
+					'font-family': ConfigProviderService.design.font.large.family,
+					'font-size': ConfigProviderService.design.font.large.size					
+				};
+		};			
 		
 		$scope.setup = function () {
 		    // read db config file for enum types
@@ -62,10 +85,6 @@ angular.module('emuwebApp')
 		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
 		    $scope.spectroDefinitionProperties = webappFileSchema.data.properties.spectrogramSettings.properties;
 		    $scope.resetSelections();
-		}
-		
-		$scope.onClickTab = function (tab) {
-			$scope.currentTab = tab.url;
 		}
 		
 		$scope.resetSelections = function () {
@@ -87,16 +106,6 @@ angular.module('emuwebApp')
 			$scope.addTwoDimSelect = $scope.twoDimSelect[0];
 			
 		}
-		
-		$scope.isActiveTab = function(tabUrl) {
-			if(tabUrl == $scope.currentTab) {
-				return {
-					'background-color': '#FFF',
-					'color': '#000'
-				}
-			}
-			return {};
-		}
 
 		/**
 		 *
@@ -117,26 +126,29 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.classDefinition = function (typeOfDefinition, key) {
-		    var style = 'emuwebapp-roundedBorderFrame';
-		    switch(typeOfDefinition) {
+		$scope.highlight = function (typeOfDefinition, key) {
+		    var bg = {'background-color': $scope.cps.design.color.lightGrey };
+                    switch(typeOfDefinition) {
 		        case 'level':
 		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
+		                return bg;
 		            }
 		            break;
 		        case 'ssff':
 		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
+		                return bg;
 		            }
 		            break;		
 		        case 'link':
 		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
-		                style = 'emuwebapp-roundedBorderFrame-new';
+		                return bg;
 		            }
-		            break;			                        
+		            break;
+                        default:
+			        return {};
+                            break;               
 		    }
-		    return style;
+                    return {};
 		};
 		
 		
@@ -144,21 +156,21 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.classBorderDefinition = function (typeOfDefinition, key) {
-		    var style = 'emuwebapp-borderTitle';
+		    var style = 'emuwebapp-tabbed-border';
 		    switch(typeOfDefinition) {
 		        case 'level':
 		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
+		                style = 'emuwebapp-tabbed-border highlight';
 		            }
 		            break;
 		        case 'ssff':
 		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
+		                style = 'emuwebapp-tabbed-border highlight';
 		            }
 		            break;		
 		        case 'link':
 		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
-		                style = 'emuwebapp-borderTitle-new';
+		                style = 'emuwebapp-tabbed-border highlight';
 		            }
 		            break;			                        
 		    }

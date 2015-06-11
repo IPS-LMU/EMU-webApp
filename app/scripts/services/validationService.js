@@ -6,7 +6,7 @@ angular.module('emuwebApp')
 		//shared service object to be returned
 		var sServObj = {};
 		var schemasJsos = [];
-		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema', 'bundleListSchema', 'bundleSchema'];
+		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema', 'bundleListSchema', 'bundleSchema', 'designSchema'];
 
 
 		/**

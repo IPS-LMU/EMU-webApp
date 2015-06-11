@@ -342,17 +342,15 @@ angular.module('emuwebApp')
 			var textid = '_' + labelid;
 			element.prepend($('<textarea>').attr({
 				id: textid,
-				'class': textid + ' emuwebapp-labelEdit',
+				'class': textid + ' emuwebapp-label-edit',
 				'ng-model': 'message',
 				'autofocus': 'true'
 			}).css({
 				'left': Math.round(x + 2) + 'px',
-				'top': Math.round(y) + 'px',
-				'width': Math.round(width) - 4 + 'px',
-				'height': Math.round(height) - 1 + 'px',
-				'padding-top': Math.round(height / 3 + 1) + 'px',
-				'overflow-x': 'hidden',
-				'overflow-y': 'hidden'
+				'top': Math.round(y + 1) + 'px',
+				'width': Math.round(width) - 2 + 'px',
+				'height': Math.round(height) - 20 + 'px',
+				'padding-top': Math.round(height / 3 + 1) + 'px'
 			}).text(label));
 		};
 
