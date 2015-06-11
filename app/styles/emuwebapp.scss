@@ -100,6 +100,9 @@
         text-indent: 0;
         cursor: pointer;
     }
+    .emuwebapp-dropdown-container {
+      z-index: 99999 !important;
+    }
     .emuwebapp-dropdown-container:hover #demoDB {
         background-color: $color-white;
         color: $color-black;
