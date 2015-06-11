@@ -4,10 +4,10 @@ describe('Service: LevelService', function () {
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
-  
+
   var item;
   var aetmpDBconfig, epgdorsaltmpDbConfig, ematmpDbConfig, defaultEmuwebappConfigTmp;
-  
+
   beforeEach(inject(function () {
     aetmpDBconfig = angular.copy(aeDbConfig);
     epgdorsaltmpDbConfig = angular.copy(epgdorsalDbConfig);
@@ -139,7 +139,7 @@ describe('Service: LevelService', function () {
   it('should get last element details by passing name', inject(function (DataService, LevelService) {
     // test on JDR10_bndl.annotation
     DataService.setData(JDR10_bndl.annotation);
-    // last item has id 4 
+    // last item has id 4
     item = getItemFromJSON(JDR10_bndl.annotation, 4);
     expect(LevelService.getLastItem('Phonetic').id).toEqual(item.id);
     expect(LevelService.getLastItem('Phonetic').sampleStart).toEqual(item.sampleStart);
@@ -162,7 +162,7 @@ describe('Service: LevelService', function () {
   it('should get next element details by passing name and id', inject(function (DataService, LevelService) {
     // test on JDR10_bndl.annotation
     DataService.setData(JDR10_bndl.annotation);
-    // next item has id 4 
+    // next item has id 4
     item = getItemFromJSON(JDR10_bndl.annotation, 4);
     expect(LevelService.getNextItem('Phonetic', 1).id).toEqual(item.id);
     expect(LevelService.getNextItem('Phonetic', 1).sampleStart).toEqual(item.sampleStart);
@@ -346,7 +346,7 @@ describe('Service: LevelService', function () {
   it('should getClosestItem (surrounding details) for a given sampleNr', inject(function (DataService, Binarydatamaniphelper, LevelService) {
     // test on msajc003_bndl.annotation
     DataService.setData(msajc003_bndl.annotation);
-    // Soundhandlerservice.wavJSO.Data.length = 58089 
+    // Soundhandlerservice.wavJSO.Data.length = 58089
     // before any element isFirst should be true
     expect(LevelService.getClosestItem(10, 'Phonetic', 58089).isFirst).toEqual(true);
     // after any element isLast should be true
@@ -374,7 +374,7 @@ describe('Service: LevelService', function () {
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    // Soundhandlerservice.wavJSO.Data.length = 96002  
+    // Soundhandlerservice.wavJSO.Data.length = 96002
     // before any element isFirst should be true
     expect(LevelService.getClosestItem(10, 'TT', 96002).isFirst).toEqual(true);
     // after any element isLast should be true
@@ -401,7 +401,7 @@ describe('Service: LevelService', function () {
 
     //test on JDR10_bndl.annotation
     DataService.setData(JDR10_bndl.annotation);
-    // Soundhandlerservice.wavJSO.Data.length = 112000 
+    // Soundhandlerservice.wavJSO.Data.length = 112000
     // before any element isFirst should be true
     expect(LevelService.getClosestItem(10, 'Phonetic', 112000).isFirst).toEqual(true);
     // after any element isLast should be true
@@ -583,12 +583,12 @@ describe('Service: LevelService', function () {
     }
     else {
 		timeLeft = Math.ceil(timeLeft / 2);
-		timeRight = timeLeft - 1;    
+		timeRight = timeLeft - 1;
     }
     var newSampleDur = getItemFromJSON(msajc003_bndl.annotation, 147).sampleDur + timeLeft;
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(1389 + timeLeft);
     // check new sampleDur and sampleStart of 150
-    // to be length of 150 + (148+149)/2  
+    // to be length of 150 + (148+149)/2
     expect(LevelService.getItemFromLevelById('Phonetic', 150).sampleDur).toEqual(1134 + timeRight);
     // and to be at position
     expect(LevelService.getItemFromLevelById('Phonetic', 150).sampleStart).toEqual(8535 - timeRight);
@@ -598,7 +598,7 @@ describe('Service: LevelService', function () {
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
     LevelService.deleteSegments('TB', 40, 1);
-    // check new length 2-1=1  
+    // check new length 2-1=1
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);
     timeLeft = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 40).sampleDur+1;
     timeRight = 0;
@@ -608,10 +608,10 @@ describe('Service: LevelService', function () {
     }
     else {
 		timeLeft = Math.ceil(timeLeft / 2);
-		timeRight = timeLeft - 1;    
+		timeRight = timeLeft - 1;
     }
-    // check new sampleDur  
-    newSampleDur = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 41).sampleDur + timeRight;   
+    // check new sampleDur
+    newSampleDur = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 41).sampleDur + timeRight;
     expect(LevelService.getItemFromLevelById('TB', 41).sampleDur).toEqual(newSampleDur);
 
     // test on JDR10_bndl.annotation
@@ -619,7 +619,7 @@ describe('Service: LevelService', function () {
     DataService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
     LevelService.deleteSegments('Phonetic', 4, 1);
-    // check new length 4-1=3  
+    // check new length 4-1=3
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);
     timeLeft = getItemFromJSON(JDR10_bndl.annotation, 4).sampleDur+1;
     timeRight = 0;
@@ -629,9 +629,9 @@ describe('Service: LevelService', function () {
     }
     else {
 		timeLeft = Math.ceil(timeLeft / 2);
-		timeRight = timeLeft - 1;    
-    }    
-    // check new sampleDur and sampleStart   
+		timeRight = timeLeft - 1;
+    }
+    // check new sampleDur and sampleStart
     newSampleDur = getItemFromJSON(JDR10_bndl.annotation, 1).sampleDur + timeRight;
     expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(newSampleDur);
   }));
@@ -668,7 +668,7 @@ describe('Service: LevelService', function () {
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 41);
     expect(LevelService.getItemFromLevelById('TB', 41).sampleDur).toEqual(item.sampleDur);
     expect(LevelService.getItemFromLevelById('TB', 41).sampleStart).toEqual(item.sampleStart);
-    
+
 
     // test on JDR10_bndl.annotation
     // 1 elements on right side
@@ -682,12 +682,13 @@ describe('Service: LevelService', function () {
     item = getItemFromJSON(JDR10_bndl.annotation, 4);
     expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(item.sampleDur);
     expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
-    
+
   }));
 
   /**
    *
    */
+
   it('should insertSegment', inject(function (DataService, LevelService, viewState, ConfigProviderService) {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
@@ -704,14 +705,14 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemFromLevelById('Phonetic', ret1.ids[0]).labels[0].value).toEqual('test1');
     expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[0]).labels[0].value).toEqual('test2');
     expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
-
+    /**
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     ConfigProviderService.curDbConfig = ematmpDbConfig;
     viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
 
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
-    // insert 1 new segment on the right side    
+    // insert 1 new segment on the right side
     var ret1 = LevelService.insertSegment('TB', 58000, 58000, 'test1');
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
     // insert 2 new segments on the left side
@@ -727,7 +728,7 @@ describe('Service: LevelService', function () {
 
     DataService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
-    // insert 1 new segment in the middle   
+    // insert 1 new segment in the middle
     var ret1 = LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
     // insert 2 new segments in the middle
@@ -736,6 +737,7 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemFromLevelById('Phonetic', ret1.ids[0]).labels[0].value).toEqual('test1');
     expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[0]).labels[0].value).toEqual('test2');
     expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
+    */
   }));
 
   /**
@@ -764,7 +766,7 @@ describe('Service: LevelService', function () {
 
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
-    // insert 1 new segment on the right side    
+    // insert 1 new segment on the right side
     LevelService.insertSegment('TB', 58000, 58000, 'test1');
     LevelService.insertSegmentInvers('TB', 58000, 58000, 'test1');
     expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
@@ -779,7 +781,7 @@ describe('Service: LevelService', function () {
 
     DataService.setData(JDR10_bndl.annotation);
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
-    // insert 1 new segment in the middle   
+    // insert 1 new segment in the middle
     LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
     LevelService.insertSegmentInvers('Phonetic', 90000, 90000, 'test1');
     expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
@@ -941,12 +943,12 @@ describe('Service: LevelService', function () {
     item = getItemFromJSON(msajc003_bndl.annotation, 158);
     expect(LevelService.getItemFromLevelById('Phonetic', 158).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 158).sampleDur).toEqual(item.sampleDur - 10);
-    // move left most (-1) boundary of segment with id 147 on level 'Phonetic' by 10 samples   
+    // move left most (-1) boundary of segment with id 147 on level 'Phonetic' by 10 samples
     LevelService.moveBoundary('Phonetic', 147, 10, true, false);
     item = getItemFromJSON(msajc003_bndl.annotation, 147);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(item.sampleDur - 10);
-    // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
+    // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples
     Soundhandlerservice.wavJSO.Data = new Array(58089);
     LevelService.moveBoundary('Phonetic', 180, 10, false, true);
     item = getItemFromJSON(msajc003_bndl.annotation, 180);
@@ -972,12 +974,12 @@ describe('Service: LevelService', function () {
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 2);
     expect(LevelService.getItemFromLevelById('Segment', 2).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Segment', 2).sampleDur).toEqual(item.sampleDur - 10);
-    // move left most (-1) boundary of segment with id 0 on level 'Segment' by 10 samples   
+    // move left most (-1) boundary of segment with id 0 on level 'Segment' by 10 samples
     LevelService.moveBoundary('Segment', 0, 10, true, false);
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 0);
     expect(LevelService.getItemFromLevelById('Segment', 0).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Segment', 0).sampleDur).toEqual(item.sampleDur - 10);
-    // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
+    // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples
     Soundhandlerservice.wavJSO.Data = new Array(96002);
     LevelService.moveBoundary('Segment', 37, 10, false, true);
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 37);
@@ -1003,12 +1005,12 @@ describe('Service: LevelService', function () {
     item = getItemFromJSON(JDR10_bndl.annotation, 1);
     expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 1).sampleDur).toEqual(item.sampleDur - 10);
-    // move left most (-1) boundary of segment with id 0 on level 'Phonetic' by 10 samples   
+    // move left most (-1) boundary of segment with id 0 on level 'Phonetic' by 10 samples
     LevelService.moveBoundary('Phonetic', 3, 10, true, false);
     item = getItemFromJSON(JDR10_bndl.annotation, 3);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur - 10);
-    // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples 
+    // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples
     Soundhandlerservice.wavJSO.Data = new Array(112000);
     LevelService.moveBoundary('Phonetic', 4, 10, false, true);
     item = getItemFromJSON(JDR10_bndl.annotation, 4);
@@ -1059,13 +1061,13 @@ describe('Service: LevelService', function () {
 
     ////////////////
     // last event
-    ////////////////    
+    ////////////////
 
     // add temporary link to last event
     LinkService.insertLink(113, 187);
 
     item = getItemFromJSON(msajc003_bndl.annotation, 187);
-    
+
     // last event (allowed move)
     // move point with id 187 on level 'Tone' by 10 samples
     LevelService.moveEvent('Tone', 187, 10);
@@ -1088,7 +1090,7 @@ describe('Service: LevelService', function () {
     LinkService.deleteLink(113, 187);
 
     /////////////////////
-    // in-between event 
+    // in-between event
     /////////////////////
     item = getItemFromJSON(msajc003_bndl.annotation, 185);
 
@@ -1182,7 +1184,7 @@ describe('Service: LevelService', function () {
    *
    */
   it('should expandSegment', inject(function (DataService, LevelService) {
-    
+
     // test on msajc003_bndl.annotation
     // expand segment
     DataService.setData(msajc003_bndl.annotation);
@@ -1223,8 +1225,8 @@ describe('Service: LevelService', function () {
   }));
 
   // calcDistanceToNearestZeroCrossing
-  // TODO openEditArea && deleteEditArea && createSelection && createEditArea 
-  // --> maybe move to directive in order to make it testable   
+  // TODO openEditArea && deleteEditArea && createSelection && createEditArea
+  // --> maybe move to directive in order to make it testable
 
   /**
    *
@@ -1253,8 +1255,8 @@ describe('Service: LevelService', function () {
     var levels = LevelService.getLevelsByType('SEGMENT');
     expect(levels.length).toEqual(1);
     expect(levels[0].name).toEqual('Phonetic');
-  }));  
-  
+  }));
+
   /**
    *
    */
@@ -1265,8 +1267,8 @@ describe('Service: LevelService', function () {
     var items = LevelService.getItemsFromLevelByIdAndLength('Phonetic', 148, 1);
     expect(items.length).toEqual(1);
     expect(items[0].sampleStart).toEqual(5140);
-  }));  
-  
+  }));
+
   /**
    *
    */
@@ -1288,8 +1290,8 @@ describe('Service: LevelService', function () {
     Soundhandlerservice.wavJSO.Data[511] = -1;
     var shift = LevelService.calcDistanceToNearestZeroCrossing(500);
     expect(shift).toBe(11);
-  }));    
-  
+  }));
+
   /**
    *
    */
@@ -1299,11 +1301,11 @@ describe('Service: LevelService', function () {
     input.value = 'test';
     LevelService.createSelection(input, 0, 4);
   }));
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
 });

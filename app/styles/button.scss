@@ -11,12 +11,8 @@
 	ul {
 		list-style:none;
 		position:relative;
-		li:hover > ul {
-			display:block;
-			z-index: 99999;
-		}
 		ul {
-			display:none;
+			
 			position:absolute;
 			top:100%;
 			left:0;

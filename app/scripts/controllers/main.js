@@ -264,7 +264,7 @@ angular.module('emuwebApp')
 				$scope.showAboutHint = true;
 			}
 			// FOR DEVELOPMENT
-			// $scope.showAboutHint = true;
+			 $scope.showAboutHint = false;
 			// console.log(curVal);
 		};
 
@@ -634,7 +634,8 @@ angular.module('emuwebApp')
 		 */
 		$scope.openDemoDBbtnClick = function (nameOfDB) {
 			if (viewState.getPermission('openDemoBtnDBclick')) {
-			    ConfigProviderService.vals.activeButtons.openDemoDB = false;
+				$scope.dropdown = false;
+			  ConfigProviderService.vals.activeButtons.openDemoDB = false;
 				loadedMetaDataService.setDemoDbName(nameOfDB);
 				// hide drop zone
 				viewState.showDropZone = false;

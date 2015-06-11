@@ -44,7 +44,7 @@ module.exports = function (config) {
         watched: true,
         served: true,
         included: false
-      }, 
+      },
 
       // configFiles JSON fixtures
       {
@@ -126,7 +126,7 @@ module.exports = function (config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: ['PhantomJS'],
-    
+
     captureTimeout: 60000,
 
 
