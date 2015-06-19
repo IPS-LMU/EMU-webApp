@@ -25,7 +25,7 @@
         background: #fff;
     }
     .emuwebapp-close {
-        background: $color-blue;
+        background: $color-white;
         position: absolute;
         right: -12px;
         text-align: center;
@@ -38,7 +38,7 @@
         @include vendor-prefix(border-radius, "15px");
         z-index: 99999;
         &:hover {
-            background: $color-white;
+            background: $color-blue;
             text-decoration: none;
             }
     }
