@@ -33,16 +33,18 @@
         position: absolute;
         top: 125px;
         left: -15px;
-        height: 25px;
-        width: 25px;
+        height: 22px;
+        width: 15px;
         background: $color-white;
-        @include vendor-prefix(box-shadow, "-4px 0px 10px 1px "+$color-transparent-black);
-        border-style: none;
+        @include vendor-prefix(box-shadow, "-2px 1px 5px "+$color-transparent-black);
+        border-style: solid;
+        border-width: 1px 0 1px 1px;
+        border-color: black;
         z-index: 2001;
         img{
-            width: 20px;
+            width: 10px;
             height: 20px;
-            padding: 2px;
+            padding-bottom: 0;
             border-style: none;
             border: 0px;
             border-radius: 0px;
