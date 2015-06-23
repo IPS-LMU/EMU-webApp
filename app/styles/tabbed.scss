@@ -1,4 +1,5 @@
 @import 'EMUwebAppDesign';
+@import 'font';
 @import 'mixins';
 
 .emuwebapp-tabbed {
@@ -10,6 +11,17 @@
     top: 0;
     left: 0;
     height: 100%;
+    ul {
+      height: 100%;
+      width: 240px !important;
+      background: $color-darkGrey;
+      color: $color-white;
+      margin-left: 0px;
+      @extend .emuwebapp-font-input;
+      line-height: 0.85;
+      left: 0;
+      top: 0;
+    }
     a {
         color: $color-black;
         text-decoration: underline;
@@ -32,14 +44,14 @@
         overflow-y: -moz-scrollbars-vertical;
         overflow-y: scroll;
         overflow-x: hidden;
-        padding-top: 0px;
         position: absolute;
         width: 100%;
+        width: calc(100% - 240px);
         height: 100%;
-        height: calc(100% - 30px);
         overflow: auto;
         padding: 0px;
-        max-width: 100%;
+        top: 0;
+        right: 0;
     }
     .emuwebapp-tabbed-error {
         color: $color-red;

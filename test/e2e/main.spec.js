@@ -18,18 +18,26 @@ describe('E2E: main page', function () {
 		element(by.id('fileDialog')).sendKeys(absolutePath2);
 		element(by.id('fileDialog')).sendKeys(absolutePath1);
 		ptor.sleep(600);
-		var elem = element.all(by.css('.emuwebapp-level'));
+		var elem = element.all(by.css('emuwebapp-level-container'));
 		expect(elem.count()).toBe(11);
 		element(by.id('clear')).click();
 		element(by.id('emuwebapp-modal-confirm')).click();
 	});
 
-	it('should clear view and open demo1', function() {
-		element(by.id('demoDB')).click();
-		element(by.id('demo1')).click();
-		ptor.sleep(1500);
-		var elems = element.all(by.css('.emuwebapp-level'));
-		expect(elems.count()).toBe(3);
+	it('should open demo1', function() {
+		var elem1 = element.all(by.id('demoDB'));
+		var elem2 = element.all(by.id('demo0'));
+		ptor.actions()
+			.mouseMove(elem1.get(0))
+			.perform();
+		ptor.sleep(100);
+		ptor.actions()
+			.mouseMove(elem2.get(0))
+			.click()
+			.perform();
+		ptor.sleep(600);
+		var elems = element.all(by.css('emuwebapp-level-container'));
+		expect(elems.count()).toBe(2);
 	});
 
 
