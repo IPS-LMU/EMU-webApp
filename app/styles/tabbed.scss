@@ -21,6 +21,10 @@
       line-height: 0.85;
       left: 0;
       top: 0;
+      li {
+        text-align: left;
+        padding: 5px;
+      }
     }
     a {
         color: $color-black;
@@ -29,8 +33,12 @@
         cursor: pointer;
     }
     ::-webkit-scrollbar {
-      width: 14px;  /* for vertical scrollbars */
-      height: 0px;  /* for horizontal scrollbars */
+      width: 15px;
+      height: 0px;
+      right: 0;
+      padding: 0;
+      margin: 0;
+      clear: both;
     }
     ::-webkit-scrollbar-track {
         background: $color-blue;

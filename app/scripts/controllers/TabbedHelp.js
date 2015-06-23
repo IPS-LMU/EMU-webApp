@@ -14,12 +14,12 @@ angular.module('emuwebApp')
 			title: 'FAQ',
 			url: 'views/helpTabs/FAQs.html'
 		}];
-		
+
 		$scope.cps = ConfigProviderService;
 
 		// current open tab
 		$scope.currentTabUrl = $scope.tabs[0].url;
-		
+
 		$scope.onClickTab = function (tab) {
 			$scope.currentTabUrl = tab.url;
 		};
@@ -27,19 +27,16 @@ angular.module('emuwebApp')
 		$scope.isActiveTab = function (tabUrl) {
 			if (tabUrl === $scope.currentTabUrl) {
 				return {
-					'background-color': ConfigProviderService.design.color.white,
+					'background-color': ConfigProviderService.design.color.transparent.lightGrey,
 					'color': ConfigProviderService.design.color.black,
 					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size,
-					'font-weight': '500'
+					'font-size': ConfigProviderService.design.font.large.size
 				};
 			}
 			return {
-					'background-color': ConfigProviderService.design.color.blue,
 					'color': ConfigProviderService.design.color.white,
 					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size,					
-					'font-weight': '400'
+					'font-size': ConfigProviderService.design.font.large.size
 				};
 		};
 
