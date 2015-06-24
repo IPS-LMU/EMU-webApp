@@ -20,7 +20,7 @@
     div {
         margin-left: 25px;
         margin-right: 25px;
-        margin-top: 25px;
+        margin-top: 0px;
         p {
             text-align: left;
         }
@@ -61,7 +61,18 @@
       text-align: left;
       @extend .emuwebapp-font-large;
     }
-    pre{
+    news {
+      position: relative;
+      line-height: 1.255;
+      border-bottom: 0px;
+      display: block;
+      text-align: left;
+      @extend .emuwebapp-font-large;
+      font-size: 1.2em;
+      text-decoration: underline;
+      padding-bottom: 8px;
+    }
+    pre {
 		padding: 16px;
 		overflow: auto;
 		line-height: 1.45;
@@ -112,8 +123,8 @@
             margin-bottom: 25px;
 	}
 	toc {
-            @extend .emuwebapp-font-input;
-            text-align: center;
+      @extend .emuwebapp-font-input;
+      text-align: center;
 	    li {
 	        font-size: 1.2em;
 	        text-align: left;

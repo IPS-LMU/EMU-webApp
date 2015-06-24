@@ -18,7 +18,24 @@ angular.module('emuwebApp')
 					expanded: false,
 					nodes: [{
 						title: 'Manual',
-						url: 'views/helpTabs/manual.html',
+						url: false,
+						expanded: false,
+						nodes: [{
+							title: 'Introduction',
+							url: 'views/helpTabs/test.html',
+							expanded: false,
+						}, {
+							title: 'WebSocket Protocol',
+							url: 'views/helpTabs/test.html',
+							expanded: false,
+						}, {
+							title: 'Labeling atriculatory data',
+							url: 'views/helpTabs/test.html',
+							expanded: false,
+						}]
+					},{
+						title: 'Key Bindings',
+						url: 'views/helpTabs/keys.html',
 						expanded: false,
 					}, {
 						title: 'FAQ',

@@ -1,3 +1,7 @@
+<script type="text/ng-template" id="node_template.html">
+<div ng-if="node.expanded">{{hasChildren(node) ? '&#9662;' : '&nbsp;&nbsp;'}} &nbsp;<a class="emuwebapp-tabbed-link" href="#" ng-click="onClickTab(node)">{{node.title}}</a><ul><li data-ng-repeat="node in node.nodes" data-ng-include="'node_template.html'" ></li></ul></div>
+<div ng-if="!node.expanded">{{hasChildren(node) ? '&#9656;' : '&nbsp;&nbsp;'}} &nbsp;<a class="emuwebapp-tabbed-link" href="#" ng-click="onClickTab(node)">{{node.title}}</a></div>
+</script>
 <div class="emuwebapp-modal-wrap">
 	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
 		<h3 id="modalHeading">EMU-webApp Help</h3>
@@ -5,17 +9,6 @@
 	<div class="emuwebapp-modal-body">
 		<!-- tabbed header -->
 		<div id="tabs" class="emuwebapp-tabbed" data-ng-controller="TabbedHelpCtrl">
-			<script type="text/ng-template" id="node_template.html">
-			<div ng-if="node.expanded">
-			{{hasChildren(node) ? '&#9662;' : '&nbsp;&nbsp;'}}
-			<a class="emuwebapp-tabbed-link" href="#" ng-click="onClickTab(node)">{{node.title}}</a>
-			<ul><li data-ng-repeat="node in node.nodes" data-ng-include="'node_template.html'" ></li></ul>
-			</div>
-			<div ng-if="!node.expanded">
-			{{hasChildren(node) ? '&#9656;' : '&nbsp;&nbsp;'}}
-			<a class="emuwebapp-tabbed-link" href="#" ng-click="onClickTab(node)">{{node.title}}</a>
-			</div>
-    	</script>
 			<div ng-include src="currentTabUrl" class="emuwebapp-tabbed-view"></div>
 			<ul class="emuwebapp-tabbed-menu">
         <li data-ng-repeat="node in tree" data-ng-include="'node_template.html'"></li>

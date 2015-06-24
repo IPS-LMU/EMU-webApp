@@ -17,13 +17,14 @@
       background: $color-darkGrey;
       color: $color-white;
       margin-left: 0px;
-      @extend .emuwebapp-font-input;
       line-height: 1;
       left: 0;
       top: 0;
       li {
         text-align: left;
-        padding: 6px;
+        padding-left: 10px;
+        padding-top: 2px;
+        padding-bottom: 2px;
       }
     }
     a {
@@ -36,6 +37,7 @@
       text-decoration: none;
       cursor: pointer;
       background: transparent;
+      @extend .emuwebapp-font-input;
     }
     ::-webkit-scrollbar {
       width: 15px;
