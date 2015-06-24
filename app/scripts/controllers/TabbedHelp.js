@@ -4,41 +4,50 @@ angular.module('emuwebApp')
 	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService) {
 
 		// all available tabs
-		$scope.tabs = [{
-			title: 'About',
-			url: 'views/helpTabs/about.html'
-		}, {
-			title: 'Manual',
-			url: 'views/helpTabs/manual.html'
-		}, {
-			title: 'FAQ',
-			url: 'views/helpTabs/FAQs.html'
+		$scope.tree = [{
+			title: 'EMU-webApp',
+			url: 'views/helpTabs/intro.html',
+			expanded: true,
+			nodes: [{
+					title: 'What\'s new',
+					url: 'views/helpTabs/news.html',
+					expanded: false,
+				},{
+					title: 'Getting Help',
+					url: false,
+					expanded: false,
+					nodes: [{
+						title: 'Manual',
+						url: 'views/helpTabs/manual.html',
+						expanded: false,
+					}, {
+						title: 'FAQ',
+						url: 'views/helpTabs/FAQs.html',
+						expanded: false,
+					}]
+				}]
 		}];
 
 		$scope.cps = ConfigProviderService;
 
 		// current open tab
-		$scope.currentTabUrl = $scope.tabs[0].url;
+		$scope.currentTabUrl = $scope.tree[0].url;
 
-		$scope.onClickTab = function (tab) {
-			$scope.currentTabUrl = tab.url;
-		};
+		console.log($scope.currentTabUrl);
 
-		$scope.isActiveTab = function (tabUrl) {
-			if (tabUrl === $scope.currentTabUrl) {
-				return {
-					'background-color': ConfigProviderService.design.color.transparent.lightGrey,
-					'color': ConfigProviderService.design.color.black,
-					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size
-				};
+		$scope.onClickTab = function (node) {
+			node.expanded = !node.expanded;
+			if(node.url !== false) {
+				$scope.currentTabUrl = node.url;
 			}
-			return {
-					'color': ConfigProviderService.design.color.white,
-					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size
-				};
 		};
 
-
+		$scope.hasChildren = function (node) {
+			if(node.nodes !== undefined) {
+				if(node.nodes.length > 0) {
+					return true;
+				}
+			}
+			return false;
+		}
 	});

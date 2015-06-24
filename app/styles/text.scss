@@ -39,16 +39,27 @@
 		display: block;
 		@extend .emuwebapp-font-large;
     }
+    h3 {
+      position: relative;
+      margin-top: 1em;
+      margin-bottom: 5px;
+      padding-bottom: 0.3em;
+      line-height: 1.255;
+      border-bottom: 1px solid #eee;
+      display: block;
+      text-align: left;
+      @extend .emuwebapp-font-large;
+    }
     h4 {
-		position: relative;
-		margin-top: 1em;
-		margin-bottom: 5px;
-		padding-bottom: 0.3em;
-		line-height: 1.255;
-		border-bottom: 1px solid #eee;
-		display: block;
-		text-align: center;
-		@extend .emuwebapp-font-large;
+      position: relative;
+      margin-top: 1em;
+      margin-bottom: 5px;
+      padding-bottom: 0.3em;
+      line-height: 1.255;
+      border-bottom: 1px solid #eee;
+      display: block;
+      text-align: left;
+      @extend .emuwebapp-font-large;
     }
     pre{
 		padding: 16px;

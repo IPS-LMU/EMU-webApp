@@ -11,26 +11,31 @@
     top: 0;
     left: 0;
     height: 100%;
-    ul {
+    .emuwebapp-tabbed-menu {
       height: 100%;
       width: 240px !important;
       background: $color-darkGrey;
       color: $color-white;
       margin-left: 0px;
       @extend .emuwebapp-font-input;
-      line-height: 0.85;
+      line-height: 1;
       left: 0;
       top: 0;
       li {
         text-align: left;
-        padding: 5px;
+        padding: 6px;
       }
     }
     a {
         color: $color-black;
         text-decoration: underline;
-        font-weigth: 1200;
         cursor: pointer;
+    }
+    .emuwebapp-tabbed-link {
+      color: $color-white;
+      text-decoration: none;
+      cursor: pointer;
+      background: transparent;
     }
     ::-webkit-scrollbar {
       width: 15px;
