@@ -1,0 +1,39 @@
+{
+  "title": "EMU-webApp",
+  "url": "views/helpTabs/intro.html"
+  "nodes": [
+    {
+      "title": "What's new",
+      "url": "views/helpTabs/news.html"
+    },
+    {
+      "title": "Getting Help",
+      "url": false
+      "nodes": [
+        {
+          "title": "Manual",
+          "url": false
+          "nodes": [
+            {
+              "title": "Introduction",
+              "url": "views/helpTabs/test.html"
+            },
+            {
+              "title": "Labeling atriculatory data",
+              "url": "views/helpTabs/test.html"
+            },
+            {
+              "title": "WebSocket Protocol",
+              "url": "views/helpTabs/test.html"
+            }
+          ]
+        },
+        {
+          "title": "FAQ",
+          "url": "views/helpTabs/FAQs.html",
+          "expanded": false
+        }
+      ]
+    }
+  ]
+}
