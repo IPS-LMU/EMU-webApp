@@ -25,11 +25,11 @@ angular.module('emuwebApp')
 							url: 'views/helpTabs/test.html',
 							expanded: false,
 						}, {
-							title: 'WebSocket Protocol',
+							title: 'Labeling atriculatory data',
 							url: 'views/helpTabs/test.html',
 							expanded: false,
 						}, {
-							title: 'Labeling atriculatory data',
+							title: 'WebSocket Protocol',
 							url: 'views/helpTabs/test.html',
 							expanded: false,
 						}]
