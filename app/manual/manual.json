@@ -1,39 +1,42 @@
-{
+[{
   "title": "EMU-webApp",
-  "url": "views/helpTabs/intro.html"
+  "url": "views/helpTabs/intro.html",
   "nodes": [
     {
       "title": "What's new",
       "url": "views/helpTabs/news.html"
     },
     {
+      "title": "Key Bindings",
+      "url": "views/helpTabs/keys.html"
+    },
+    {
       "title": "Getting Help",
-      "url": false
+      "url": false,
       "nodes": [
         {
           "title": "Manual",
-          "url": false
+          "url": false,
           "nodes": [
             {
               "title": "Introduction",
-              "url": "views/helpTabs/test.html"
+              "url": "manual/Introduction.md"
             },
             {
               "title": "Labeling atriculatory data",
-              "url": "views/helpTabs/test.html"
+              "url": "manual/Labeling-articulatory-data.md"
             },
             {
               "title": "WebSocket Protocol",
-              "url": "views/helpTabs/test.html"
+              "url": "manual/EMU-webApp-websocket-protocol.md"
             }
           ]
         },
         {
           "title": "FAQ",
-          "url": "views/helpTabs/FAQs.html",
-          "expanded": false
+          "url": "views/helpTabs/FAQs.html"
         }
       ]
     }
   ]
-}
+}]

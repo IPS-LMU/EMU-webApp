@@ -112,15 +112,15 @@
 		font-size: 0.7em;
 	}
 	alert {
-            display: block;
-            text-align: center;
-            color: #a94442;
-            background-color: #f2dede;
-            border: 3px dashed #ebccd1;
-            border-radius: 3px;
-            margin: 5px;
-            margin-top: 25px;
-            margin-bottom: 25px;
+    display: block;
+    text-align: center;
+    color: #a94442;
+    background-color: #f2dede;
+    border: 3px dashed #ebccd1;
+    border-radius: 3px;
+    margin: 5px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 	}
 	toc {
       @extend .emuwebapp-font-input;
@@ -139,5 +139,6 @@
     cursor: pointer;
 }
 .emuwebapp-markdown{
-    width: 90%;
+  width: 100%;
+  width: calc(100% - 240px) !important;
 }

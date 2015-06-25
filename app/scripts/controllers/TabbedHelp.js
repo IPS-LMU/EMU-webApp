@@ -1,61 +1,28 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService) {
-
-		// all available tabs
-		$scope.tree = [{
-			title: 'EMU-webApp',
-			url: 'views/helpTabs/intro.html',
-			expanded: true,
-			nodes: [{
-					title: 'What\'s new',
-					url: 'views/helpTabs/news.html',
-					expanded: false,
-				},{
-					title: 'Getting Help',
-					url: false,
-					expanded: false,
-					nodes: [{
-						title: 'Manual',
-						url: false,
-						expanded: false,
-						nodes: [{
-							title: 'Introduction',
-							url: 'views/helpTabs/test.html',
-							expanded: false,
-						}, {
-							title: 'Labeling atriculatory data',
-							url: 'views/helpTabs/test.html',
-							expanded: false,
-						}, {
-							title: 'WebSocket Protocol',
-							url: 'views/helpTabs/test.html',
-							expanded: false,
-						}]
-					},{
-						title: 'Key Bindings',
-						url: 'views/helpTabs/keys.html',
-						expanded: false,
-					}, {
-						title: 'FAQ',
-						url: 'views/helpTabs/FAQs.html',
-						expanded: false,
-					}]
-				}]
-		}];
-
+	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService, Iohandlerservice) {
 		$scope.cps = ConfigProviderService;
+		$scope.tree = [];
+		Iohandlerservice.httpGetPath('manual/manual.json').then(function (resp) {
+			$scope.tree = resp.data;
+			console.log($scope.tree);
+			// current open tab
+			$scope.currentTabUrl = $scope.tree[0].url;
 
-		// current open tab
-		$scope.currentTabUrl = $scope.tree[0].url;
-
-		console.log($scope.currentTabUrl);
+		});
 
 		$scope.onClickTab = function (node) {
 			node.expanded = !node.expanded;
 			if(node.url !== false) {
-				$scope.currentTabUrl = node.url;
+				if(node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
+					$scope.isMDFile = true;
+					$scope.currentTabUrl = node.url;
+				}
+				else {
+					$scope.isMDFile = false;
+					$scope.currentTabUrl = node.url;
+				}
 			}
 		};
 
