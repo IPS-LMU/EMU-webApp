@@ -9,11 +9,13 @@
 	<div class="emuwebapp-modal-body">
 		<!-- tabbed header -->
 		<div id="tabs" class="emuwebapp-tabbed" data-ng-controller="TabbedHelpCtrl">
-			<btf-markdown ng-include src="currentTabUrl" class="emuwebapp-tabbed-view" ng-show="isMDFile"></btf-markdown>
-			<div ng-include src="currentTabUrl" class="emuwebapp-tabbed-view" ng-hide="isMDFile"></div>
 			<ul class="emuwebapp-tabbed-menu">
         <li data-ng-repeat="node in tree" data-ng-include="'node_template.html'"></li>
     	</ul>
+			<div class="emuwebapp-tabbed-view">
+				<btf-markdown ng-include src="currentTabUrl" class="emuwebapp-text" ng-show="isMDFile"></btf-markdown>
+				<div ng-include src="currentTabUrl" ng-hide="isMDFile"></div>
+			</div>
 		</div>
   </div>
 	<div class="emuwebapp-modal-footer">
