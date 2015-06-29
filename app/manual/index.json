@@ -1,6 +1,6 @@
 [{
   "title": "EMU-webApp",
-  "url": "views/helpTabs/intro.html",
+  "url": "manual/Introduction.md",
   "nodes": [
     {
       "title": "What's New",
@@ -23,22 +23,14 @@
           "url": false,
           "nodes": [
             {
-              "title": "Introduction",
-              "url": "manual/Introduction.md"
-            },
-            {
-              "title": "Labeling Atriculatory Data",
-              "url": "manual/Labeling-articulatory-data.md"
-            },
-            {
               "title": "WebSocket Protocol",
-              "url": "manual/EMU-webApp-websocket-protocol.md"
+              "url": "manual/EMU-webApp-websocket-protocol-0_0_2.md"
             }
           ]
         },
         {
           "title": "FAQ",
-          "url": "views/helpTabs/FAQs.html"
+          "url": "manual/FAQs.md"
         }
       ]
     }
