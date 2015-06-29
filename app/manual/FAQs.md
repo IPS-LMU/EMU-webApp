@@ -1,4 +1,6 @@
-# How to cite the EMU-webApp?
+# FAQs
+
+## How to cite the EMU-webApp?
 
 ```
 @InProceedings{WINKELMANN14.429,
@@ -16,15 +18,15 @@
 }
 ```
 
-# I think I have found a bug! What should I do now?
+## I think I have found a bug! What should I do now?
 
 The best thing to do is to head over to our <a href="https://github.com/IPS-LMU/EMU-webApp/issues">GitHub issues page</a> 
 and see if someone might have already posted an issue that describes the problem you are having / the bug you have found. 
 If you can't find an appropriate issue please feel free to open a new one and let us know what the problem is. However 
 keep in mind that posting a <a href="http://stackoverflow.com/help/how-to-ask">well formulated bug report / question</a>
-is benificial for the developers as well as other users that might have the same problem as you.
+is beneficial for the developers as well as other users that might have the same problem as you.
     
-# What is the official EMU-webApp url?
+## What is the official EMU-webApp url?
 
 The official EMU-webApp is hosted at: <a href="https://ips-lmu.github.io/EMU-webApp/">https://ips-lmu.github.io/EMU-webApp/</a>. 
 Chances are that you are already there anyway! But in case you are on a privately hosted version of the EMU-webApp you

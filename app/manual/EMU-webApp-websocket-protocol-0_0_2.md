@@ -1,5 +1,4 @@
-The EMU-webApp-websocket-protocol
-=============================================
+# The EMU-webApp-websocket-protocol
 <!---
 author: Raphael Winkelmann
 -->
@@ -9,8 +8,8 @@ This document describes the EMU-webApp-websocket-protocol in its current
 version.
 
 
-Version History
----------------
+## Version History
+
 
 -   **0.0.1**: Initial protocol version
 
@@ -19,8 +18,8 @@ Version History
     **(current version)**
 
 
-Protocol Overview
-------------------
+## Protocol Overview
+
 
 The EMU-webApp-websocket-protocol consists of a set of 
 request/response JSON files that control the interaction
@@ -32,8 +31,7 @@ the figure below.
 
 
 
-The Protocol Commands
-------------
+## The Protocol Commands
 
 ### GETPROTOCOL
 
@@ -257,8 +255,7 @@ Response:
     }
 
 
-Error handling
---------------
+## Error handling
 
 If an error occurs with any of the request types above a response should
 still be sent to the client. The status of this response should be set
