@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService) {
+	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService, StandardFuncsService) {
 		// shared service object
 		var sServObj = {};
 
@@ -177,6 +177,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
+
+			// clean to be save...
+			StandardFuncsService.traverseAndClean(DataService.getData());
 			// annotation
 			bundleData.annotation = DataService.getData();
 
