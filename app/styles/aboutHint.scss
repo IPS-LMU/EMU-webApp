@@ -18,7 +18,11 @@
         height: 90%;
         color: $color-white;
         overflow:hidden;
-        button {
+        h1 {
+          font-size: 2.75em;
+          padding-bottom: 20px;
+        }
+      button {
           color: $color-white;
           background-color: transparent;
           padding: 10px;
