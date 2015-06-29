@@ -39,7 +39,7 @@
       background: transparent;
       @extend .emuwebapp-font-input;
     }
-    ::-webkit-scrollbar {
+/*    ::-webkit-scrollbar {
       width: 15px;
       height: 0px;
       right: 0;
@@ -52,7 +52,7 @@
     }
     ::-webkit-scrollbar-thumb {
         background: $color-transparent-black;
-    }
+    }*/
     .emuwebapp-tabbed-view {
         border: 0px;
         clear: both;
