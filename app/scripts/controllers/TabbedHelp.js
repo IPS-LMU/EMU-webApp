@@ -4,11 +4,13 @@ angular.module('emuwebApp')
 	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService, Iohandlerservice) {
 		$scope.cps = ConfigProviderService;
 		$scope.tree = [];
-		Iohandlerservice.httpGetPath('manual/manual.json').then(function (resp) {
+		Iohandlerservice.httpGetPath('manual/index.json').then(function (resp) {
 			$scope.tree = resp.data;
 			console.log($scope.tree);
-			// current open tab
-			$scope.currentTabUrl = $scope.tree[0].url;
+			// load root element
+			$scope.onClickTab($scope.tree[0]);
+			// expand root element
+			$scope.tree[0].expanded = true;
 
 		});
 
