@@ -13,7 +13,7 @@
         <li data-ng-repeat="node in tree" data-ng-include="'node_template.html'"></li>
     	</ul>
 			<div class="emuwebapp-tabbed-view">
-				<btf-markdown ng-include src="currentTabUrl" class="emuwebapp-text" ng-show="isMDFile"></btf-markdown>
+				<div btf-markdown ng-include src="currentTabUrl" class="emuwebapp-text" ng-show="isMDFile"></div>
 				<div ng-include src="currentTabUrl" ng-hide="isMDFile"></div>
 			</div>
 		</div>
