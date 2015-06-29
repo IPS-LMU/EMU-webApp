@@ -30,8 +30,8 @@
 
     \node [cmd, above of=GETBUNDLE] (DISCONNECTWARNING) {\texttt{DISCONNECTWARNING}};
 
-    \node [cmd, below of=connected, node distance = 2cm] (GETDOEDITDBCONFIG) {\texttt{GETDOEDITDBCONFIG}};
-    \node [cmd, left of=GETDOEDITDBCONFIG, node distance = 4cm] (EDITDBCONFIG) {\texttt{EDITDBCONFIG$^{*1}$}};
+    % \node [cmd, below of=connected, node distance = 2cm] (GETDOEDITDBCONFIG) {\texttt{GETDOEDITDBCONFIG}};
+    % \node [cmd, left of=GETDOEDITDBCONFIG, node distance = 4cm] (EDITDBCONFIG) {\texttt{EDITDBCONFIG$^{*1}$}};
 
     % Draw edges
     \draw [->] (connect) -- (GETPROTOCOL);
@@ -45,10 +45,10 @@
     \draw [->] (DISCONNECTWARNING) to [bend right=25] (connect);
     \draw [<->] (connected) -- (GETBUNDLE);
     \draw [<->] (connected) -- (SAVEBUNDLE);
-    \draw [->] (connected) -- (GETDOEDITDBCONFIG);
-    \draw [->] (GETDOEDITDBCONFIG) -- node {yes} (EDITDBCONFIG);
-    \draw [->] (EDITDBCONFIG) |-  (connected);
-    \draw [->] (GETDOEDITDBCONFIG.west) to [bend left=45] node {no}  (connected);
+    % \draw [->] (connected) -- (GETDOEDITDBCONFIG);
+    % \draw [->] (GETDOEDITDBCONFIG) -- node {yes} (EDITDBCONFIG);
+    % \draw [->] (EDITDBCONFIG) |-  (connected);
+    % \draw [->] (GETDOEDITDBCONFIG.west) to [bend left=45] node {no}  (connected);
 
 \end{tikzpicture}
 \end{document}
