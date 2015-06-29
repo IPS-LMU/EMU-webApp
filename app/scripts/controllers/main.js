@@ -264,7 +264,7 @@ angular.module('emuwebApp')
 				$scope.showAboutHint = true;
 			}
 			// FOR DEVELOPMENT
-			 $scope.showAboutHint = false;
+			// $scope.showAboutHint = true;
 			// console.log(curVal);
 		};
 
