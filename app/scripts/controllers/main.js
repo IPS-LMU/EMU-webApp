@@ -228,7 +228,7 @@ angular.module('emuwebApp')
 							$scope.loadFilesForEmbeddedApp();
 							$scope.checkIfToShowWelcomeModal();
 							// FOR DEVELOPMENT
-							//$scope.aboutBtnClick();
+							$scope.aboutBtnClick();
 							viewState.somethingInProgress = false;
 						} else {
 							modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {

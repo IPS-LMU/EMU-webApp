@@ -3,12 +3,16 @@
   "url": "views/helpTabs/intro.html",
   "nodes": [
     {
-      "title": "What's new",
-      "url": "views/helpTabs/news.html"
+      "title": "What's New",
+      "url": "NEWS.md"
     },
     {
       "title": "Key Bindings",
       "url": "views/helpTabs/keys.html"
+    },
+    {
+      "title": "Gerneral Usage",
+      "url": "manual/General-Usage.md"
     },
     {
       "title": "Getting Help",
@@ -23,7 +27,7 @@
               "url": "manual/Introduction.md"
             },
             {
-              "title": "Labeling atriculatory data",
+              "title": "Labeling Atriculatory Data",
               "url": "manual/Labeling-articulatory-data.md"
             },
             {
