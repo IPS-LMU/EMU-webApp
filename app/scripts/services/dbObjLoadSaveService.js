@@ -178,7 +178,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
 
-			// clean to be save...
+			// clean to be safe...
 			StandardFuncsService.traverseAndClean(DataService.getData());
 			// annotation
 			bundleData.annotation = DataService.getData();
