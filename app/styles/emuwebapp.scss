@@ -13,7 +13,7 @@
     margin: 0;
     padding: 0;
     @extend .emuwebapp-font-small;
-    @include vendor-prefix(user-select, "none");
+    @include vendor-prefix(user-select, "text");
     @include vendor-prefix(touch-callout, "none");
 }
 
