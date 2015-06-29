@@ -11,6 +11,7 @@
   padding-right: 18px;
   word-wrap: break-word;
   padding-bottom: 120px;
+  font-size: 16px;
 
     @extend .emuwebapp-font-small;
     .red {
@@ -93,6 +94,9 @@
 		display: block;
 		margin-left: auto;
 		margin-right: auto;
+    }
+    p{
+      line-height: 150%;
     }
     p img {
         text-align: center;

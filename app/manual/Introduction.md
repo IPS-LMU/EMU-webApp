@@ -6,16 +6,18 @@ author: Raphael Winkelmann
 
 ![icon](assets/EMU-webAppIcon-roundCorners.svg)
 
-- EMU-webApp
-- Version: @@versionnr
+- **EMU-webApp**
+- **Version: @@versionnr**
 
-- Build time stamp: @@timestamp
-- Build GIT SHA-1: @@sha1
-- EMU-webApp-websocket-protocol version: 0.0.2
+- *Build time stamp: @@timestamp*
+- *Build GIT SHA-1: @@sha1*
+- *EMU-webApp-websocket-protocol version: 0.0.2*
 
 
 **Warning!** This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you 
 have any issues or you find a bug please create an issue on the GitHub project page.
+
+--------------------- 
 
 Welcome to the EMU-webApp! The EMU-webApp is a full fledged browser-based labeling and correction tool that offers a 
 multitude of labeling and visualization features. These features include unlimited undo/redo, formant correction 
@@ -28,5 +30,5 @@ enables it to be used as a labeling tool for collaborative annotation efforts.
 
 The EMU-webApp is part of the next iteration of the EMU speech database management system which aims to be as close to 
 an all-in-one solution for generating, manipulating, querying, analyzing and managing speech databases as possible. For 
-an overview of the system please visit this (URL)[http://ips-lmu.github.io/EMU.html].
+an overview of the system please visit this [URL](http://ips-lmu.github.io/EMU.html).
 
