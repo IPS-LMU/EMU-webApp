@@ -60,7 +60,7 @@ angular.module('emuwebApp')
 			return levelName;
 		}
 
-		
+
 		/**
 		 * returns level details (level object and sorting id) by passing in level Name
 		 */
@@ -276,7 +276,7 @@ angular.module('emuwebApp')
 			    else {
 			        editText = '';
 			    }
-			}    		
+			}
 			if (type === 'SEGMENT') {
 				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
 				var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
@@ -292,9 +292,9 @@ angular.module('emuwebApp')
 					    return;
 					}
 				}
-				
 
-				sServObj.createEditAreaElement(element, start, top, end - start, height, editText, lastEventClick.id);
+
+		sServObj.createEditAreaElement(element, start, top, end - start, height, editText, lastEventClick.id);
 			} else {
 				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
 				var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
@@ -419,7 +419,7 @@ angular.module('emuwebApp')
 	    					newElement.labels.push({
 		    					name: levelname,
 								value: labelname
-		    				});						
+		    				});
 						}
 					}
 					level.items.splice(position, 0, newElement);
@@ -495,13 +495,13 @@ angular.module('emuwebApp')
 		 *
 		 * @param level
 		 * @param sampleNr
-		 * @param maximum 
-		 * @returns object of the form {current: item, nearest: item, isFirst: boolean, isLast: boolean} where 
+		 * @param maximum
+		 * @returns object of the form {current: item, nearest: item, isFirst: boolean, isLast: boolean} where
 		 * - current is the actual item where the mouse is
 		 * - nearest is the item next to the current one depending on where the mouse is (ie if over 50% right element, under 50% left element)
 		 * - isFirst is true if the mouse is before the first item
 		 * - isLast is true if the mouse is after the last item
-		 *          
+		 *
 		 */
 		sServObj.getClosestItem = function (sampleNr, levelname, maximum) {
 			var level = sServObj.getLevelDetails(levelname).level;
@@ -509,7 +509,7 @@ angular.module('emuwebApp')
 			var nearest = undefined;
 			var isFirst = undefined;
 			var isLast = undefined;
-			
+
 			if (level.items.length > 0) {
 			    current = nearest = level.items[0];
 			    isFirst = true;
@@ -532,7 +532,7 @@ angular.module('emuwebApp')
 				    			    current = nearest = level.items[index];
 						    	}
     						}
-    					    isFirst = false;    						
+    					    isFirst = false;
 	    				}
 		    			if (sampleNr >= (itm.sampleStart - 0.5)) {
 			    			if (sampleNr <= (itm.sampleStart + itm.sampleDur + 0.5)) { // 0.5 sample correction
@@ -616,7 +616,7 @@ angular.module('emuwebApp')
 						}
 					});
 					viewState.curLevelAttrDefs.push({curAttrDefName: newname, levelName: newname});
-					// rename all first label names to match new 
+					// rename all first label names to match new
 					angular.forEach(level.items, function (item) {
 						item.labels[0].name = newname;
 					});
@@ -755,9 +755,9 @@ angular.module('emuwebApp')
 						});
 						if (ret) {
 							if (t.items[startOrder + 1] === undefined) { // if rightmost item
-								t.items.splice(startOrder - 1, 2);   						    
+								t.items.splice(startOrder - 1, 2);
 							} else if (t.items[startOrder - 1] === undefined) { // if leftmost item
-								t.items.splice(startOrder, 2);	    						    
+								t.items.splice(startOrder, 2);
 							} else { // in the middle
 								diff = t.items[startOrder].sampleDur + 1;
 								diff2 = t.items[startOrder + 1].sampleDur + 1;
@@ -793,11 +793,11 @@ angular.module('emuwebApp')
 							if (start < level.items[0].sampleStart) { // before first segment
 								var diff = level.items[0].sampleStart - start;
 								sServObj.insertItemDetails(ids[0], name, 0, newLabel, start, diff - 1);
-							} 
+							}
 							else if (start > (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur)) { // after last segment
 								var newStart = (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur + 1);
 								sServObj.insertItemDetails(ids[0], name, level.items.length, newLabel, newStart, start - newStart);
-							} 
+							}
 							else {
 								angular.forEach(level.items, function (evt, id) {
 									if (start >= evt.sampleStart && start <= (evt.sampleStart + evt.sampleDur)) {
@@ -825,7 +825,7 @@ angular.module('emuwebApp')
 						}
 						if (level.items.length == 0) { // if on an empty level
 							sServObj.insertItemDetails(ids[0], name, 0, newLabel, start, (end - start) - 1);
-						} else { // if not on an empty level				
+						} else { // if not on an empty level
 							if (end < level.items[0].sampleStart) { // before first segment
 								var diff = level.items[0].sampleStart - end - 1;
 								var diff2 = end - start - 1;
@@ -838,7 +838,7 @@ angular.module('emuwebApp')
 								var len = level.items.length;
 								sServObj.insertItemDetails(ids[0], name, len, newLabel, (level.items[level.items.length - 1].sampleStart + level.items[level.items.length - 1].sampleDur), diff);
 								sServObj.insertItemDetails(ids[1], name, len + 1, newLabel, start, diff2);
-							} else { // in the middle			
+							} else { // in the middle
 								var startID = -1;
 								var endID = -1;
 								angular.forEach(level.items, function (evt, id) {
@@ -949,16 +949,16 @@ angular.module('emuwebApp')
 								    level.items.splice(order, 1);
 								    retOrder = order;
 								    retEvt = evt;
-								    clickSeg = level.items[0];							    
+								    clickSeg = level.items[0];
 							    }
 							    else if(order===(level.items.length-1) && isLast) {
 								    level.items.splice(order, 1);
 								    retOrder = order;
 								    retEvt = evt;
-								    clickSeg = level.items[level.items.length-1];							    
+								    clickSeg = level.items[level.items.length-1];
 							    }
 							    else {
-							        for (var i = 0; i < last.labels.length; i++) { 
+							        for (var i = 0; i < last.labels.length; i++) {
 							            last.labels[i].value += evt.labels[i].value;
 							        }
 								    last.sampleDur += evt.sampleDur + 1;
@@ -1142,10 +1142,10 @@ angular.module('emuwebApp')
 					}else if(neighbour.left !== undefined && neighbour.right === undefined){ // if last event
 						// console.log('last event')
 						if((orig.samplePoint + changeTime) > neighbour.left.samplePoint && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length){
-							sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));	
+							sServObj.setPointDetails(name, orig.id, orig.labels[0].value, (orig.samplePoint + changeTime));
 						}
 					}
-				}			
+				}
 			}
 			else {
 				// console.log('unlinked event')
@@ -1160,7 +1160,7 @@ angular.module('emuwebApp')
 				});
 			}
 		};
-		
+
 		/**
 		 * reorder points on Event level after moving them. This is needed when Points are moved before or after each other
 		 *
@@ -1171,7 +1171,7 @@ angular.module('emuwebApp')
 		     if (a.samplePoint < b.samplePoint) return -1;
 		     return 0;
 		};
-		
+
 		/**
 		 *
 		 */
@@ -1322,7 +1322,7 @@ angular.module('emuwebApp')
 
 			return res;
 		};
-		
+
 		/**
 		 * get all labels (curAttr def applies) of a level and
 		 * return them as a flat array
@@ -1341,7 +1341,7 @@ angular.module('emuwebApp')
 			}
 			return labels;
 		};
-		
+
 		/**
 		 * returns level name of a given node id
 		 */
@@ -1355,7 +1355,7 @@ angular.module('emuwebApp')
 			    });
 			});
 			return levelName;
-		}		
+		}
 
 		/**
 		 * Returns a level object and an item object according to a given item id
@@ -1380,7 +1380,7 @@ angular.module('emuwebApp')
 					break;
 				}
 			}
-			
+
 			if (!found) {
 				// No item with id === eid has been found
 				return null;
@@ -1433,7 +1433,7 @@ angular.module('emuwebApp')
 		/**
 		 * Add an item next to the item with id === eid.
 		 * Do nothing if eid is not of type ITEM (ie, if it is on a level with time information)
-		 * 
+		 *
 		 * @param eid The ID of the element that will get a new sibling
 		 * @param before boolean to define whether the new sibling will be inserted before or after eid
 		 * @param newID optional, only used for redoing from within the history service. if given, no new id is requested from the DataService.
@@ -1454,7 +1454,7 @@ angular.module('emuwebApp')
 			var levelAndItem = sServObj.getLevelAndItem(eid);
 			if (levelAndItem === null) {
 				console.debug('Could not find item with id:', eid);
-				return -1; 
+				return -1;
 			}
 			var level = levelAndItem.level;
 			var item = levelAndItem.item;
@@ -1554,7 +1554,7 @@ angular.module('emuwebApp')
 			result.levelName = level.name;
 			result.position = level.items.indexOf(item);
 			level.items.splice(level.items.indexOf(item), 1);
-			
+
 			// Delete all links that lead from or to the item
 			// Iterate over the links array backwards so we can manipulate the array from within the loop
 			var links = DataService.getLinkData();

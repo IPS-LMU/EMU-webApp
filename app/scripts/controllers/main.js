@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 		LevelService, Textgridparserservice, Espsparserservice,
 		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
 		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
-		appStateService, DataService, modalService) {
+		appStateService, DataService, modalService, browserDetector) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -29,6 +29,7 @@ angular.module('emuwebApp')
 		$scope.dbLoaded = false;
 		$scope.is2dCancasesHidden = true;
 		$scope.windowWidth = $window.outerWidth;
+		$scope.showAboutHint = false;
 
 
 		// check for new version
@@ -228,7 +229,7 @@ angular.module('emuwebApp')
 							$scope.loadFilesForEmbeddedApp();
 							$scope.checkIfToShowWelcomeModal();
 							// FOR DEVELOPMENT
-							$scope.aboutBtnClick();
+							//$scope.aboutBtnClick();
 							viewState.somethingInProgress = false;
 						} else {
 							modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
@@ -257,14 +258,14 @@ angular.module('emuwebApp')
 		$scope.loadDefaultConfig();
 
 		$scope.checkIfToShowWelcomeModal = function (argument) {
-			$scope.showAboutHint = false;
 			var curVal = localStorage.getItem("haveShownWelcomeModal");
-			if(curVal === null){
+			if(!browserDetector.isBrowser.PhantomJS() && curVal === null){
 				localStorage.setItem("haveShownWelcomeModal", "true");
 				$scope.showAboutHint = true;
 			}
+			console.log($scope.showAboutHint);
 			// FOR DEVELOPMENT
-			// $scope.showAboutHint = true;
+			//$scope.showAboutHint = true;
 			// console.log(curVal);
 		};
 

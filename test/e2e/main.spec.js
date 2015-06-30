@@ -17,8 +17,8 @@ describe('E2E: main page', function () {
 		var absolutePath2 = path.resolve(__dirname, fileToUpload2);
 		element(by.id('fileDialog')).sendKeys(absolutePath2);
 		element(by.id('fileDialog')).sendKeys(absolutePath1);
-		ptor.sleep(600);
-		var elem = element.all(by.css('emuwebapp-level-container'));
+		ptor.sleep(1200);
+		var elem = element.all(by.css('.emuwebapp-level'));
 		expect(elem.count()).toBe(11);
 		element(by.id('clear')).click();
 		element(by.id('emuwebapp-modal-confirm')).click();
@@ -35,9 +35,9 @@ describe('E2E: main page', function () {
 			.mouseMove(elem2.get(0))
 			.click()
 			.perform();
-		ptor.sleep(600);
-		var elems = element.all(by.css('emuwebapp-level-container'));
-		expect(elems.count()).toBe(2);
+		ptor.sleep(1200);
+		var elem = element.all(by.css('.emuwebapp-level'));
+		expect(elem.count()).toBe(2);
 	});
 
 
