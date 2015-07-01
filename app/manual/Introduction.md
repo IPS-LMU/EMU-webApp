@@ -28,7 +28,7 @@ can also be used as a standalone labeling application as it does not require any
 Further it is designed to interact with any websocket server that implements the EMU-webApp websocket protocol which 
 enables it to be used as a labeling tool for collaborative annotation efforts.
 
-The EMU-webApp is part of the next iteration of the EMU speech database management system which aims to be as close to 
+The EMU-webApp is part of the next iteration of the EMU Speech Database Management System which aims to be as close to 
 an all-in-one solution for generating, manipulating, querying, analyzing and managing speech databases as possible. For 
 an overview of the system please visit this [URL](http://ips-lmu.github.io/EMU.html).
 

@@ -23,6 +23,9 @@
         @include vendor-prefix(box-sizing, "content-box");
         outline: none;
     }
+    strong{
+      font-weight: bold !important;
+    }
     div {
         margin-left: 25px;
         margin-right: 25px;
