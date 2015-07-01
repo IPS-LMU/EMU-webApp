@@ -68,7 +68,6 @@ angular.module('emuwebApp')
             }
             viewState.setlastKeyCode(code);
 
-
             // Handle key strokes for the hierarchy modal
             if (viewState.hierarchyShown) {
               if (viewState.hierarchyState.getInputFocus()) {
@@ -133,7 +132,7 @@ angular.module('emuwebApp')
 					 This block is currently obsoleted because e.preventDefault() is called above
 					 at the beginning of the hierarchy block
 					// This should only be called when certain keys are pressed that are known to trigger some browser behaviour.
-					// But what if the key code is reconfigured (possibly by the user)? 
+					// But what if the key code is reconfigured (possibly by the user)?
 					e.preventDefault();
 					*/
 
@@ -196,14 +195,13 @@ angular.module('emuwebApp')
                   }
                 }
 
-                // Add link
+                /* Add link
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyAddLink) {
                   if (viewState.hierarchyState.newLinkFromID === undefined) {
                     viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
                   } else {
                     var linkObj = HierarchyManipulationService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
                     viewState.hierarchyState.newLinkFromID = undefined;
-
                     if (linkObj !== null) {
                       HistoryService.addObjToUndoStack({
                         type: 'HIERARCHY',
@@ -212,7 +210,7 @@ angular.module('emuwebApp')
                       });
                     }
                   }
-                }
+                }*/
 
                 // undo
                 if (code === ConfigProviderService.vals.keyMappings.undo) {
