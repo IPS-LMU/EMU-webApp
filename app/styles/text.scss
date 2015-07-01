@@ -23,6 +23,8 @@
         @include vendor-prefix(box-sizing, "content-box");
         outline: none;
     }
+    @include vendor-prefix(user-select, "text !important");
+
     strong{
       font-weight: bold !important;
     }
