@@ -746,16 +746,27 @@ angular.module('emuwebApp')
                     var idRight = viewState.getcurClickItems()[viewState.getcurClickItems().length - 1].id;
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.right !== undefined) {
-                      // check if in view
-                      if ((lastNeighboursMove.right.sampleStart + lastNeighboursMove.right.sampleDur) < viewState.curViewPort.eS) {
-                        if (e.shiftKey) { // select multiple while shift
-                          viewState.setcurClickItemMultiple(lastNeighboursMove.right);
-                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
-                          viewState.selectBoundary();
-                        } else {
-
-                          viewState.setcurClickItem(lastNeighboursMove.right);
-                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                      var point = 0;
+                      var dur = 0;
+                      if (lastNeighboursMove.right.sampleStart !== undefined ) {
+                        point = lastNeighboursMove.right.sampleStart;
+                        dur = lastNeighboursMove.right.sampleDur;
+                      }
+                      if (lastNeighboursMove.right.samplePoint !== undefined ) {
+                        point = lastNeighboursMove.right.samplePoint;
+                        dur = 0;
+                      }
+                      if (point !== 0) {
+                        // check if in view
+                        if ((point + dur) < viewState.curViewPort.eS) {
+                          if (e.shiftKey) { // select multiple while shift
+                            viewState.setcurClickItemMultiple(lastNeighboursMove.right);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                            viewState.selectBoundary();
+                          } else {
+                            viewState.setcurClickItem(lastNeighboursMove.right);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                          }
                         }
                       }
                     } else {
@@ -777,7 +788,7 @@ angular.module('emuwebApp')
                         if (lastNeighboursMove.left.sampleStart !== undefined) {
                           // check if in view
                           if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
-                            viewState.setcurClickItem(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                            viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         } else {
@@ -794,13 +805,13 @@ angular.module('emuwebApp')
                         if (lastNeighboursMove.right.sampleStart !== undefined) {
                           // check if in view
                           if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
-                            viewState.setcurClickItem(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setcurClickItem(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         } else {
                           // check if in view
                           if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
-                            viewState.setcurClickItem(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setcurClickItem(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         }

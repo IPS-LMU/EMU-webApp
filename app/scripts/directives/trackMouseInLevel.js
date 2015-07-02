@@ -71,7 +71,7 @@ angular.module('emuwebApp')
               moveBy = Math.round(scope.curMouseSampleNrInView - scope.lastPCM);
             }
           }
-          
+
           var mbutton = 0;
           if (event.buttons === undefined) {
             mbutton = event.which;
@@ -218,7 +218,7 @@ angular.module('emuwebApp')
           scope.lastEventClick = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
           if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined) {
             viewState.setcurClickLevel(scope.levelName, scope.levelType, scope.$index);
-            viewState.setcurClickItemMultiple(scope.lastEventClick.current);
+            viewState.setcurClickItemMultiple(scope.lastEventClick.current, scope.levelType);
             viewState.selectBoundary();
           }
           scope.lastPCM = scope.curMouseSampleNrInView;
