@@ -15,8 +15,8 @@ coloring it blue:
 
 ![Alt text](manual/GeneralUsage/pics/preSelBoundary.gif)
 
-The user can perform various actions with these preselected boundaries/events. He/she can for example grab a
-preselected boundary/event by holding down the shift key and moving it to the desired position:
+The user can perform various actions with these preselected boundaries/event markers. He/she can for example grab a
+preselected boundary/event marker by holding down the shift key and moving it to the desired position:
 
 ![Alt text](manual/GeneralUsage/pics/moveBoundary.gif)
 
@@ -36,12 +36,12 @@ To add a new boundary/event marker one has to first select the desired level one
 ![Alt text](manual/GeneralUsage/pics/selectLevel.gif)
 
 The EMU-webApp indicates the currently selected level by coloring it a darker shade of grey. To add a boundary to the
-currently selected level one first has to select a point in time either in the Spectrogram or the Oscillogram by left clicking
+currently selected level one first has to select a point in time either in the Spectrogram or the Oscillogram by single-left-clicking
 on the desired location. Hitting the ⏎ Return Key adds a new boundary/event maker to the selected level at the selected time point:
 
 ![Alt text](manual/GeneralUsage/pics/addBoundary.gif)
 
-### `SEGMENT`s & `EVENT`s
+### SEGMENTs & EVENTs
 
 The EMU-webApp also allows for preselecting `SEGMENT`s and `EVENT`s by single-left-clicking the desired item:
 

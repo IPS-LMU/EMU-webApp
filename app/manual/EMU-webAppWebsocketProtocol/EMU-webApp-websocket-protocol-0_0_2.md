@@ -27,7 +27,7 @@ between the client (the EMU-webApp) and a server supporting
 the protocol. A graph depicting the protocol can be seen in 
 the figure below.
 
-![Alt text](manual/pics/protocol.svg) 
+![Alt text](manual/EMU-webAppWebsocketProtocol/pics/protocol.svg) 
 
 
 
