@@ -26,8 +26,8 @@ Or delete the current boundary/event marker by hitting the backspace key:
 
 Other actions that can be performed on preselected boundaries include:
 
-- snap to closest boundary / event marker in level above (Keyboard Shortcut `t`)
-- snap to closest boundary / event marker in level below (Keyboard Shortcut `b`)
+- snap to closest boundary/event marker in level above (Keyboard Shortcut `t`)
+- snap to closest boundary/event marker in level below (Keyboard Shortcut `b`)
 - snap to nearest zero crossing (Keyboard Shortcut `x`)
 
 To add a new boundary/event marker one has to first select the desired level one wishes to add it to by using the ↑ up and 
@@ -47,7 +47,7 @@ The EMU-webApp also allows for preselecting `SEGMENT`s and `EVENT`s by single-le
 
 ![Alt text](manual/GeneralUsage/pics/preSelSeg.gif)
 
-The web application colors the preselected `SEGMENT`s and `EVENT`s yellow. As with preselected boundaries / event
+The web application colors the preselected `SEGMENT`s and `EVENT`s yellow. As with preselected boundaries/event
 markers the user can now perform multiple actions with these preselected items. He/she can for example edit the item's label
 by hitting the ⏎ Return Key:
 
