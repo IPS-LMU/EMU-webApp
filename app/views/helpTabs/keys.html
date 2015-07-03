@@ -26,22 +26,22 @@
 		  </div>
 		  <div class="emuwebapp-grid-cell">
 		    <div class="emuwebapp-grid-head">Function</div>
-			<div class="emuwebapp-grid-dotted">open left submenu</div>
-			<div class="emuwebapp-grid-dotted">open right submenu</div>
+			<div class="emuwebapp-grid-dotted">open bundleList sidebar (left)</div>
+			<div class="emuwebapp-grid-dotted">open perspective sidebar (right)</div>
 			<div class="emuwebapp-grid-dotted">open hierarchy View</div>
-			<div class="emuwebapp-grid-dotted">zoom in</div>
-			<div class="emuwebapp-grid-dotted">zoom out</div>
+			<div class="emuwebapp-grid-dotted">zoom in <sup>1</sup></div>
+			<div class="emuwebapp-grid-dotted">zoom out <sup>1</sup></div>
 			<div class="emuwebapp-grid-dotted">move viewport left</div>
 			<div class="emuwebapp-grid-dotted">move viewport right</div>
 			<div class="emuwebapp-grid-dotted">view all</div>
-			<div class="emuwebapp-grid-dotted">zoom in to selected</div>
-			<div class="emuwebapp-grid-dotted">select next event</div>
-			<div class="emuwebapp-grid-dotted">select previous event</div>
-			<div class="emuwebapp-grid-dotted">select next event</div>
-			<div class="emuwebapp-grid-dotted">select previous event</div>
-			<div class="emuwebapp-grid-dotted">extend event selection right</div>
-			<div class="emuwebapp-grid-dotted">extend event selection left</div>
-			<div class="emuwebapp-grid-dotted">select all events in current viewport selection</div>
+			<div class="emuwebapp-grid-dotted">zoom in to selected area</div>
+			<div class="emuwebapp-grid-dotted">preselect next item</div>
+			<div class="emuwebapp-grid-dotted">preselect previous item</div>
+			<div class="emuwebapp-grid-dotted">preselect next item</div>
+			<div class="emuwebapp-grid-dotted">preselect previous item</div>
+			<div class="emuwebapp-grid-dotted">add next item to preselection</div>
+			<div class="emuwebapp-grid-dotted">add previous item to preselection</div>
+			<div class="emuwebapp-grid-dotted">select all items in marked area</div>
 		  </div>
 		</div>
 	    <small>1.) Zooming while a boundary is preselected will keep the position of that boundary fixed</small>
@@ -72,17 +72,17 @@
 		    <div class="emuwebapp-grid-head">Function</div>
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted">undo last action</div>
 			<div ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool" class="emuwebapp-grid-dotted">redo last action</div>
-			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted">add event or boundary at selected position</div>
-			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted">rename event</div>
-			<div ng-show="cps.vals.restrictions.deleteItemBoundary" class="emuwebapp-grid-dotted">delete selected event or segment boundary</div>
-			<div ng-show="cps.vals.restrictions.deleteItem" class="emuwebapp-grid-dotted">deleted selected event or segment(s) </div>
-			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary to closest boundary in level above</div>
-			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary to closest boundary in level below</div>
-			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary to nearest zero crossing</div>
-			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">add time to selected events (expand to right)</div>
-			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">remove time to selected events (shrink from right)</div>
-			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">add time to selected events (expand to left)</div>
-			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">remove time to selected events (shrink from left)</div>
+			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted">add boundary / event marker at marked position</div>
+			<div ng-show="cps.vals.restrictions.addItem" class="emuwebapp-grid-dotted">change label of item</div>
+			<div ng-show="cps.vals.restrictions.deleteItemBoundary" class="emuwebapp-grid-dotted">delete preselected boundary / event marker</div>
+			<div ng-show="cps.vals.restrictions.deleteItem" class="emuwebapp-grid-dotted">deleted selected event(s) or segment(s) </div>
+			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary / event marker to neares boundary / event marker in level above</div>
+			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary / event marker to closest boundary / event marker in level below</div>
+			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">snap preselected boundary / event marker to nearest zero crossing</div>
+			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">add time to preselected items (expand to right)</div>
+			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">remove time from preselected items (shrink from right)</div>
+			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">add time to preselected items (expand to left)</div>
+			<div ng-show="cps.vals.restrictions.editItemSize" class="emuwebapp-grid-dotted">remove time from preselected items (shrink from left)</div>
 			<div class="emuwebapp-grid-dotted">select level above</div>
 			<div class="emuwebapp-grid-dotted">select level below</div>
 		  </div>
@@ -120,10 +120,10 @@
 		  </div>
 		  <div class="emuwebapp-grid-cell">
 		    <div class="emuwebapp-grid-head">Function</div>
-			<div class="emuwebapp-grid-dotted">choose first correction tool</div>
-			<div class="emuwebapp-grid-dotted">choose second correction tool</div>
-			<div class="emuwebapp-grid-dotted">choose third correction tool</div>
-			<div class="emuwebapp-grid-dotted">choose fourth correction tool</div>
+			<div class="emuwebapp-grid-dotted">choose correction tool for first contour</div>
+			<div class="emuwebapp-grid-dotted">choose correction tool for second contour</div>
+			<div class="emuwebapp-grid-dotted">choose correction tool for third contour</div>
+			<div class="emuwebapp-grid-dotted">choose correction tool for fourth contour</div>
 			<div class="emuwebapp-grid-dotted">disable correction tool</div>
 		  </div>
 		</div>
