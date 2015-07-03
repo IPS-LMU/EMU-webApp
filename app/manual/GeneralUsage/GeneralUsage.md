@@ -47,13 +47,17 @@ The EMU-webApp also allows for preselecting `SEGMENT`s and `EVENT`s by single-le
 
 ![Alt text](manual/GeneralUsage/pics/preSelSeg.gif)
 
-The web application colors the preselected `SEGMENT`s and `EVENTS`s yellow. As with preselected boundaries / event
-markers the user can now perform multiple actions with these preselected items. He/she can for example edit the items label
+The web application colors the preselected `SEGMENT`s and `EVENT`s yellow. As with preselected boundaries / event
+markers the user can now perform multiple actions with these preselected items. He/she can for example edit the item's label
 by hitting the ⏎ Return Key:
 
-![Alt text](manual/GeneralUsage/pics/changeLabel.gif)
+![Alt text](manual/GeneralUsage/pics/editLabel.gif)
 
 Other actions that can be performed on preselected items include:
 
 - select next item in level (Keyboard Shortcut `TAB`)
 - select previous item in level (Keyboard Shortcut `SHIFT plus TAB`)
+- add time to selected item(s) (Keyboard Shortcut `+`)
+- move selected item(s) (hold down `ALT` Key and drag to desired position)
+
+**NOTE:** *by right-clicking adjacent items it is possible to select multiple items at once*

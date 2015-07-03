@@ -11,7 +11,6 @@
   padding-right: 18px;
   word-wrap: break-word;
   padding-bottom: 120px;
-  font-size: 16px;
 
     @extend .emuwebapp-font-small;
     .red {
@@ -123,7 +122,9 @@
       list-style-type: disc;
     }
     ul li, p, h3 {
-		text-align: left;
+	  text-align: left;
+      font-size: 16px !important;
+      @include vendor-prefix(user-select, "text !important");
 	}
 	span {
 	    display: block;
