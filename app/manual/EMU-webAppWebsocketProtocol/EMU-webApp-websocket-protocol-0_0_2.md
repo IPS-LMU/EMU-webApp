@@ -14,7 +14,7 @@ version.
 -   **0.0.1**: Initial protocol version
 
 -   **0.0.2**: Updated `_bundle.json` schema (`ssffTrackName`
-    → `fileExtention`) to remove SSFF file redundancy
+    → `fileExtension`) to remove SSFF file redundancy
     **(current version)**
 
 
