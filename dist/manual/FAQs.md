@@ -26,7 +26,7 @@ If you can't find an appropriate issue please feel free to open a new one and le
 keep in mind that posting a <a href="http://stackoverflow.com/help/how-to-ask">well formulated bug report / question</a>
 is beneficial for the developers as well as other users that might have the same problem as you.
     
-## What is the official EMU-webApp url?
+## What is the official EMU-webApp URL?
 
 The official EMU-webApp is hosted at: <a href="https://ips-lmu.github.io/EMU-webApp/">https://ips-lmu.github.io/EMU-webApp/</a>. 
 Chances are that you are already there anyway! But in case you are on a privately hosted version of the EMU-webApp you

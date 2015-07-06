@@ -1,8 +1,9 @@
 CACHE MANIFEST
-# rev 1 - 2015-07-06T12:03:17.850Z
+# rev 1 - 2015-07-06T12:16:09.809Z
 
 CACHE:
 404.html
+NEWS.md
 apple-touch-icon.png
 assets/EMU-webAppEmu.svg
 assets/EMU-webAppIcon-roundCorners.svg
@@ -85,6 +86,9 @@ views/emuwebapp.html
 views/error.html
 views/export.html
 views/help.html
+views/helpTabs/intro.html
+views/helpTabs/keys.html
+views/helpTabs/manual.html
 views/hint.html
 views/level.html
 views/loadFiles.html
