@@ -1,4 +1,4 @@
-<div ng-show="showAboutHint" class="emuwebapp-aboutHint">
+<div class="emuwebapp-aboutHint">
     <div class="emuwebapp-aboutHint-arrow">⇧</div>
     <div class="emuwebapp-aboutHint-content">
         <h1>Welcome to the EMU-webApp</h1>
@@ -13,8 +13,8 @@
 
         </div>
         <p>
-            <button class="emuwebapp-aboutHint-hidden" ng-click="hideMe();"></button>
-            <button class="" ng-click="showAboutHint = !showAboutHint">Close message</button>
+            <button class="emuwebapp-aboutHint-hidden" ng-click="hideMe()"></button>
+            <button class="" ng-click="internalVars.showAboutHint = !internalVars.showAboutHint">Close message</button>
         </p>
     </div>
 

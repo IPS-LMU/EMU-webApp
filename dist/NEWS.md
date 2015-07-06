@@ -8,3 +8,4 @@ What's New
 - startup hints added
 - improved and expanded manual/help
 - explicit remove of underscore attributes on bundle save
+- draw links in hierarchy view by SHIFT-down -> draw -> SHIFT-up instead of l -> draw -> l
