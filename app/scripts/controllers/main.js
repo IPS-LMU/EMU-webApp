@@ -29,7 +29,8 @@ angular.module('emuwebApp')
 		$scope.dbLoaded = false;
 		$scope.is2dCancasesHidden = true;
 		$scope.windowWidth = $window.outerWidth;
-		$scope.showAboutHint = false;
+		$scope.internalVars = {};
+		$scope.internalVars.showAboutHint = false;// this should probably be moved to viewState
 
 
 		// check for new version
@@ -261,12 +262,11 @@ angular.module('emuwebApp')
 			var curVal = localStorage.getItem("haveShownWelcomeModal");
 			if(!browserDetector.isBrowser.PhantomJS() && curVal === null){
 				localStorage.setItem("haveShownWelcomeModal", "true");
-				$scope.showAboutHint = true;
+				$scope.internalVars.showAboutHint = true;
 			}
-			console.log($scope.showAboutHint);
+
 			// FOR DEVELOPMENT
-			//$scope.showAboutHint = true;
-			// console.log(curVal);
+			//$scope.internalVars.showAboutHint = true;
 		};
 
 		$scope.getCurBndlName = function () {
