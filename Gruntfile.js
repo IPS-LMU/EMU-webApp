@@ -541,6 +541,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'json2sass',
+    'compass:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
