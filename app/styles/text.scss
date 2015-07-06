@@ -127,6 +127,9 @@
       font-size: 16px !important;
       @include vendor-prefix(user-select, "text !important");
 	}
+    div{
+      text-align: center;
+    }
 	span {
 	    display: block;
 	    font-size: 1.2em;
