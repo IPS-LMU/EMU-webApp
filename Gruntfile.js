@@ -367,7 +367,8 @@ module.exports = function (grunt) {
             'assets/EMU-webAppEmu.svg',
             'assets/EMU-webAppIcon-roundCorners.svg',
             // 'styles/external/bootstrap-combined.min.css',
-            'styles/images/rightSideMenuBtn.png'
+            'styles/images/rightSideMenuBtn.png',
+            'manual/{,*/}*.*'
           ]
         }, {
           expand: true,
@@ -473,8 +474,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: ['dist/views/about.html'],
-          dest: 'dist/views/'
+          src: ['dist/manual/Introduction.md'],
+          dest: 'dist/manual/'
         }]
       }
     },
