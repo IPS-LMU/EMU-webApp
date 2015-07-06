@@ -639,7 +639,7 @@ angular.module('emuwebApp')
         if ((item.sampleStart + item.sampleDur + 1) > max) {
           max = item.sampleStart + item.sampleDur + 1;
         }
-        sServObj.setcurClickItemMultiple(item);
+        sServObj.setcurClickItemMultiple(item, sServObj.curClickLevelType);
       });
       sServObj.curViewPort.selectS = min;
       sServObj.curViewPort.selectE = max;
