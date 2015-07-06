@@ -12,7 +12,7 @@ angular.module('emuwebApp')
         scope.cps = ConfigProviderService;
         var el = element[0];
         var dragIcon = document.createElement('img');
-            dragIcon.src = 'img/export.svg';
+            dragIcon.src = 'img/saveBtn.svg';
         var dataString = '';
 
         scope.generateURL = function () {

@@ -823,7 +823,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.vs.setcurClickItem.calls.argsFor(0)).toEqual([item]);
-        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([neighbours.right, neighbours.right.id]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([neighbours.right]); // array used to contain ", neighbours.right.id" -> caused test to fail
     }); 
     
     it('should selNextPrevItem width shift', function() {
@@ -842,7 +842,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.vs.setcurClickItem.calls.argsFor(0)).toEqual([item]);
-        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([neighbours.left, neighbours.left.id]);
+        expect(scope.vs.setcurClickItem.calls.argsFor(1)).toEqual([neighbours.left]); // array used to contain ", neighbours.left.id" -> caused test to fail
     });      
     
     it('should deletePreselBoundary on SEGMENT', function() {

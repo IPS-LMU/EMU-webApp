@@ -48,6 +48,8 @@
         bottom:0;
         left:0;
         right:0;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 }
 
@@ -97,9 +99,10 @@
 	clear: both;
 	overflow-y: auto;
 	overflow-x: hidden;
+    /*
 	&::-webkit-scrollbar {
-		width: 17px;  /* for vertical scrollbars */
-		height: 0px; /* for horizontal scrollbars */
+		width: 17px;  /!* for vertical scrollbars *!/
+		height: 0px; /!* for horizontal scrollbars *!/
 	}
 	&::-webkit-scrollbar-track {
 		background: $color-blue;
@@ -107,6 +110,7 @@
 	&::-webkit-scrollbar-thumb {
 		background: $color-lightGrey;
 	}
+    */
 	select {
 	    margin: 3px;
 	}

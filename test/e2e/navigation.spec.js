@@ -61,20 +61,22 @@ describe('navigation', function () {
 
 	it('should change loaded timeline view', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+		ptor.sleep(600);
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
-		ptor.sleep(300);
+		ptor.sleep(1200);
 	});
 
 	it('should change loaded timeline view back to orig', function () {
 		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+		ptor.sleep(600);
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
-		ptor.sleep(300);
+		ptor.sleep(1200);
 	});
 
 	it('should test all resize buttons', function () {
 		var elem = element.all(by.id('emuwebapp-level-button-resize'));
-		expect(elem.count()).toBe(5);
-		for (var i = 0; i < 5; i++) {
+		expect(elem.count()).toBe(2);
+		for (var i = 0; i < 2; i++) {
 			var button = elem.get(i);
 			button.click();
 			button.click();
@@ -254,7 +256,7 @@ describe('navigation', function () {
 		for (var i = 0; i < 3; i++) {
 			element(by.id('zoomRightBtn')).click();
 		};
-        var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+    var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove( { x: -200, y: 0 }).click()
@@ -296,7 +298,7 @@ describe('navigation', function () {
 		for (var i = 0; i < 3; i++) {
 			ptor.actions().sendKeys('w').perform();
 		}
-		var elem = element.all(by.css('.emuwebapp-previewMarkupCanvas'));
+		var elem = element.all(by.css('.emuwebapp-preview-canvas-markup'));
 		expect(elem.count()).toBe(1);
 		ptor.actions()
 			.mouseMove(elem.get(0))
@@ -418,7 +420,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.click()
@@ -436,7 +438,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.click()
@@ -450,7 +452,7 @@ describe('navigation', function () {
 	});
 
 	it('should move a element on EVENT level', function () {
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
 		ptor.actions()
 			.mouseMove(elem)
 			.click()
@@ -472,14 +474,14 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.doubleClick()
 			.perform();
-		var area = by.css('.emuwebapp-labelEdit');
+		var area = by.css('.emuwebapp-label-edit');
 		expect(ptor.isElementPresent(area)).toBe(true);
-		element(by.css('.emuwebapp-labelEdit')).sendKeys('TEST');
+		element(by.css('.emuwebapp-label-edit')).sendKeys('TEST');
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
@@ -547,7 +549,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
 		ptor.actions()
 			.mouseMove(elem)
 			.click()
@@ -569,7 +571,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({
@@ -578,9 +580,9 @@ describe('navigation', function () {
 			})
 			.doubleClick()
 			.perform();
-		var area = by.css('.emuwebapp-labelEdit');
+		var area = by.css('.emuwebapp-label-edit');
 		expect(ptor.isElementPresent(area)).toBe(true);
-		element(by.css('.emuwebapp-labelEdit')).sendKeys('testElem');
+		element(by.css('.emuwebapp-label-edit')).sendKeys('testElem');
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
@@ -589,7 +591,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(1);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({
@@ -606,7 +608,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({
@@ -623,7 +625,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-levelMarkupCanvas')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({

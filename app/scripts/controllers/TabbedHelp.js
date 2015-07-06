@@ -1,47 +1,39 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService) {
-
-		// all available tabs
-		$scope.tabs = [{
-			title: 'About',
-			url: 'views/helpTabs/about.html'
-		}, {
-			title: 'Manual',
-			url: 'views/helpTabs/manual.html'
-		}, {
-			title: 'FAQ',
-			url: 'views/helpTabs/FAQs.html'
-		}];
-		
+	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService, Iohandlerservice) {
 		$scope.cps = ConfigProviderService;
+		$scope.tree = [];
+		Iohandlerservice.httpGetPath('manual/index.json').then(function (resp) {
+			$scope.tree = resp.data;
+			console.log($scope.tree);
+			// load root element
+			$scope.onClickTab($scope.tree[0]);
+			// expand root element
+			$scope.tree[0].expanded = true;
 
-		// current open tab
-		$scope.currentTabUrl = $scope.tabs[0].url;
-		
-		$scope.onClickTab = function (tab) {
-			$scope.currentTabUrl = tab.url;
-		};
+		});
 
-		$scope.isActiveTab = function (tabUrl) {
-			if (tabUrl === $scope.currentTabUrl) {
-				return {
-					'background-color': ConfigProviderService.design.color.white,
-					'color': ConfigProviderService.design.color.black,
-					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size,
-					'font-weight': '500'
-				};
+		$scope.onClickTab = function (node) {
+			node.expanded = !node.expanded;
+			if(node.url !== false) {
+				if(node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
+					$scope.isMDFile = true;
+					$scope.currentTabUrl = node.url;
+				}
+				else {
+					$scope.isMDFile = false;
+					$scope.currentTabUrl = node.url;
+				}
 			}
-			return {
-					'background-color': ConfigProviderService.design.color.blue,
-					'color': ConfigProviderService.design.color.white,
-					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size,					
-					'font-weight': '400'
-				};
 		};
 
-
+		$scope.hasChildren = function (node) {
+			if(node.nodes !== undefined) {
+				if(node.nodes.length > 0) {
+					return true;
+				}
+			}
+			return false;
+		}
 	});
