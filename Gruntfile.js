@@ -356,7 +356,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'images/{,*/}*.{gif,webp}',
-            'img/*.png',
+            'img/*.svg',
             'styles/fonts/*',
             'configFiles/{,*/}*.*',
             'schemaFiles/*.json',
@@ -368,7 +368,8 @@ module.exports = function (grunt) {
             'assets/EMU-webAppIcon-roundCorners.svg',
             // 'styles/external/bootstrap-combined.min.css',
             'styles/images/rightSideMenuBtn.png',
-            'manual/{,*/}*.*'
+            'manual/**/*.*',
+            'NEWS.md'
           ]
         }, {
           expand: true,
