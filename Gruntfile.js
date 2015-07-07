@@ -368,7 +368,7 @@ module.exports = function (grunt) {
             'assets/EMU-webAppIcon-roundCorners.svg',
             // 'styles/external/bootstrap-combined.min.css',
             'styles/images/rightSideMenuBtn.png',
-            'manual/**/*.*',
+            'manual/**/*.{md,gif,svg,json}',
             'NEWS.md'
           ]
         }, {
