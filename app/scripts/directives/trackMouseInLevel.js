@@ -140,16 +140,18 @@ angular.module('emuwebApp')
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                 LevelService.deleteEditArea();
                 if (scope.levelType == 'SEGMENT') {
-                  seg = viewState.getcurClickItems()
-                  LevelService.moveSegment(scope.levelName, seg[0].id, seg.length, moveBy);
-                  HistoryService.updateCurChangeObj({
-                    'type': 'ANNOT',
-                    'action': 'MOVESEGMENT',
-                    'name': scope.levelName,
-                    'id': seg[0].id,
-                    'length': seg.length,
-                    'movedBy': moveBy
-                  });
+                  seg = viewState.getcurClickItems();
+                  if(seg[0] !== undefined) {
+                    LevelService.moveSegment(scope.levelName, seg[0].id, seg.length, moveBy);
+                    HistoryService.updateCurChangeObj({
+                      'type': 'ANNOT',
+                      'action': 'MOVESEGMENT',
+                      'name': scope.levelName,
+                      'id': seg[0].id,
+                      'length': seg.length,
+                      'movedBy': moveBy
+                    });
+                  }
                   scope.lastPCM = scope.curMouseSampleNrInView;
                   viewState.setLastPcm(scope.lastPCM);
                   viewState.selectBoundary();
