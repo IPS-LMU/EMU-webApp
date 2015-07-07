@@ -4,7 +4,7 @@
 angular.module('emuwebApp')
   .directive('emuhierarchy', function (viewState, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService) {
     return {
-      template: '<div class="emuwebapp-hierarchy-container"></div>',
+      template: '<div class="emuwebapp-hierarchy-container" ng-mousemove="checkLink($event)"></div>',
       restrict: 'E',
       scope: {
           vertical: '=',
@@ -509,6 +509,29 @@ angular.module('emuwebApp')
 	  .on('click', scope.svgOnClick)
           .append('g')
 	  ;
+
+  scope.shiftMode = false;
+
+  scope.checkLink = function (event) {
+    if(event.shiftKey && !scope.shiftMode) {
+      if (viewState.hierarchyState.newLinkFromID === undefined) {
+        viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
+        scope.shiftMode = true;
+      }
+    }
+    if(!event.shiftKey && scope.shiftMode) {
+      scope.shiftMode = false;
+      var linkObj = HierarchyManipulationService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
+      viewState.hierarchyState.newLinkFromID = undefined;
+      if (linkObj !== null) {
+        HistoryService.addObjToUndoStack({
+          type: 'HIERARCHY',
+          action: 'ADDLINK',
+          link: linkObj
+        });
+      }
+    }
+  }
 
 	// Append a group which holds all overlay captions and which do not react to zooming
 	scope.captionLayer = scope.svg.append('g').style('z-index', 5);

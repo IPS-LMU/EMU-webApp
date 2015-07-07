@@ -639,7 +639,7 @@ angular.module('emuwebApp')
         if ((item.sampleStart + item.sampleDur + 1) > max) {
           max = item.sampleStart + item.sampleDur + 1;
         }
-        sServObj.setcurClickItemMultiple(item);
+        sServObj.setcurClickItemMultiple(item, sServObj.curClickLevelType);
       });
       sServObj.curViewPort.selectS = min;
       sServObj.curViewPort.selectE = max;
@@ -725,7 +725,6 @@ angular.module('emuwebApp')
         sServObj.curClickItems = [];
         sServObj.curClickItems.push(item);
       }
-      console.log(sServObj.curClickItems);
     };
 
 
@@ -759,11 +758,21 @@ angular.module('emuwebApp')
        */
       sServObj.sortbypoint = function (a, b) {
         //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-        if (a.samplePoint > b.samplePoint) {
-          return 1;
+        if(a.samplePoint !== undefined) {
+          if (a.samplePoint > b.samplePoint) {
+            return 1;
+          }
+          if (a.sampleStart < b.sampleStart ) {
+            return -1;
+          }
         }
-        if (a.samplePoint < b.samplePoint ) {
-          return -1;
+        else {
+          if (a.sampleStart > b.sampleStart) {
+            return 1;
+          }
+          if (a.sampleStart < b.sampleStart ) {
+            return -1;
+          }
         }
         return 0;
       };

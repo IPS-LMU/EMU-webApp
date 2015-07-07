@@ -47,18 +47,19 @@
     }
 }
 .emuwebapp-grid-cell {
-    flex: 1;
-    .emuwebapp-grid-head {
-        border: 0px;
-        margin-bottom: 12px;
-        margin-top: 12px;
-        text-align: left;
-        padding: 0;
-        text-decoration: underline;
-        @extend .emuwebapp-font-large;
-    }
-    .emuwebapp-grid-dotted {
-      &:nth-child(even) {
+  flex: 1;
+  .emuwebapp-grid-head {
+    border: 0px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    text-align: left;
+    padding: 0;
+    text-decoration: underline;
+    @extend .emuwebapp-font-large;
+  }
+  .emuwebapp-grid-dotted {
+    overflow: auto;
+    &:nth-child(even) {
         background: $color-white;
       }
       &:nth-child(odd) {

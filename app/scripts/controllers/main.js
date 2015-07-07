@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 		LevelService, Textgridparserservice, Espsparserservice,
 		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
 		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
-		appStateService, DataService, modalService) {
+		appStateService, DataService, modalService, browserDetector) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -29,6 +29,8 @@ angular.module('emuwebApp')
 		$scope.dbLoaded = false;
 		$scope.is2dCancasesHidden = true;
 		$scope.windowWidth = $window.outerWidth;
+		$scope.internalVars = {};
+		$scope.internalVars.showAboutHint = false;// this should probably be moved to viewState
 
 
 		// check for new version
@@ -257,15 +259,14 @@ angular.module('emuwebApp')
 		$scope.loadDefaultConfig();
 
 		$scope.checkIfToShowWelcomeModal = function (argument) {
-			$scope.showAboutHint = false;
 			var curVal = localStorage.getItem("haveShownWelcomeModal");
-			if(curVal === null){
+			if(!browserDetector.isBrowser.PhantomJS() && curVal === null){
 				localStorage.setItem("haveShownWelcomeModal", "true");
-				$scope.showAboutHint = true;
+				$scope.internalVars.showAboutHint = true;
 			}
+
 			// FOR DEVELOPMENT
-			 $scope.showAboutHint = false;
-			// console.log(curVal);
+			//$scope.internalVars.showAboutHint = true;
 		};
 
 		$scope.getCurBndlName = function () {

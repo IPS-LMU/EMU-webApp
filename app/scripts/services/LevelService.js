@@ -294,7 +294,7 @@ angular.module('emuwebApp')
 				}
 
 
-				sServObj.createEditAreaElement(element, start, top, end - start, height, editText, lastEventClick.id);
+		sServObj.createEditAreaElement(element, start, top, end - start, height, editText, lastEventClick.id);
 			} else {
 				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
 				var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);

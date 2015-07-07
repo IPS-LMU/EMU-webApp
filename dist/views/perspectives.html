@@ -1,0 +1,11 @@
+<nav class="emuwebapp-right-menu" ng-show="cps.vals.restrictions.showPerspectivesSidebar" show-menu="vs.getRightsubmenuOpen()">
+    <button ng-click="vs.setRightsubmenuOpen(!vs.getRightsubmenuOpen());">
+      <img src="img/menu.svg" class="_20px _inverted">
+    </button>
+    <h3>Perspectives</h3>
+    <ul>
+        <li ng-repeat="persp in cps.vals.perspectives" ng-click="changePerspective(persp);" ng-class="getPerspectiveColor(persp);">
+            {{persp.name}}
+        </li>
+    </ul>
+</nav>

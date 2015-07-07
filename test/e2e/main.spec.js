@@ -3,6 +3,7 @@ describe('E2E: main page', function () {
 
 	var ptor;
 	browser.get('http://127.0.0.1:9000/');
+	browser.executeScript('localStorage.setItem("haveShownWelcomeModal", "true");')
 
 	// body...
 	beforeEach(function () {
@@ -17,19 +18,27 @@ describe('E2E: main page', function () {
 		var absolutePath2 = path.resolve(__dirname, fileToUpload2);
 		element(by.id('fileDialog')).sendKeys(absolutePath2);
 		element(by.id('fileDialog')).sendKeys(absolutePath1);
-		ptor.sleep(600);
+		ptor.sleep(1200);
 		var elem = element.all(by.css('.emuwebapp-level'));
 		expect(elem.count()).toBe(11);
 		element(by.id('clear')).click();
 		element(by.id('emuwebapp-modal-confirm')).click();
 	});
 
-	it('should clear view and open demo1', function() {
-		element(by.id('demoDB')).click();
-		element(by.id('demo1')).click();
-		ptor.sleep(1500);
-		var elems = element.all(by.css('.emuwebapp-level'));
-		expect(elems.count()).toBe(3);
+	it('should open demo1', function() {
+		var elem1 = element.all(by.id('demoDB'));
+		var elem2 = element.all(by.id('demo0'));
+		ptor.actions()
+			.mouseMove(elem1.get(0))
+			.perform();
+		ptor.sleep(100);
+		ptor.actions()
+			.mouseMove(elem2.get(0))
+			.click()
+			.perform();
+		ptor.sleep(1200);
+		var elem = element.all(by.css('.emuwebapp-level'));
+		expect(elem.count()).toBe(2);
 	});
 
 

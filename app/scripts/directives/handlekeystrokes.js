@@ -68,7 +68,6 @@ angular.module('emuwebApp')
             }
             viewState.setlastKeyCode(code);
 
-
             // Handle key strokes for the hierarchy modal
             if (viewState.hierarchyShown) {
               if (viewState.hierarchyState.getInputFocus()) {
@@ -133,7 +132,7 @@ angular.module('emuwebApp')
 					 This block is currently obsoleted because e.preventDefault() is called above
 					 at the beginning of the hierarchy block
 					// This should only be called when certain keys are pressed that are known to trigger some browser behaviour.
-					// But what if the key code is reconfigured (possibly by the user)? 
+					// But what if the key code is reconfigured (possibly by the user)?
 					e.preventDefault();
 					*/
 
@@ -196,14 +195,13 @@ angular.module('emuwebApp')
                   }
                 }
 
-                // Add link
+                /* Add link
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyAddLink) {
                   if (viewState.hierarchyState.newLinkFromID === undefined) {
                     viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
                   } else {
                     var linkObj = HierarchyManipulationService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
                     viewState.hierarchyState.newLinkFromID = undefined;
-
                     if (linkObj !== null) {
                       HistoryService.addObjToUndoStack({
                         type: 'HIERARCHY',
@@ -212,7 +210,7 @@ angular.module('emuwebApp')
                       });
                     }
                   }
-                }
+                }*/
 
                 // undo
                 if (code === ConfigProviderService.vals.keyMappings.undo) {
@@ -748,16 +746,27 @@ angular.module('emuwebApp')
                     var idRight = viewState.getcurClickItems()[viewState.getcurClickItems().length - 1].id;
                     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(viewState.getcurClickLevelName(), idLeft, idRight);
                     if (lastNeighboursMove.right !== undefined) {
-                      // check if in view
-                      if ((lastNeighboursMove.right.sampleStart + lastNeighboursMove.right.sampleDur) < viewState.curViewPort.eS) {
-                        if (e.shiftKey) { // select multiple while shift
-                          viewState.setcurClickItemMultiple(lastNeighboursMove.right);
-                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
-                          viewState.selectBoundary();
-                        } else {
-
-                          viewState.setcurClickItem(lastNeighboursMove.right);
-                          LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                      var point = 0;
+                      var dur = 0;
+                      if (lastNeighboursMove.right.sampleStart !== undefined ) {
+                        point = lastNeighboursMove.right.sampleStart;
+                        dur = lastNeighboursMove.right.sampleDur;
+                      }
+                      if (lastNeighboursMove.right.samplePoint !== undefined ) {
+                        point = lastNeighboursMove.right.samplePoint;
+                        dur = 0;
+                      }
+                      if (point !== 0) {
+                        // check if in view
+                        if ((point + dur) < viewState.curViewPort.eS) {
+                          if (e.shiftKey) { // select multiple while shift
+                            viewState.setcurClickItemMultiple(lastNeighboursMove.right);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                            viewState.selectBoundary();
+                          } else {
+                            viewState.setcurClickItem(lastNeighboursMove.right);
+                            LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
+                          }
                         }
                       }
                     } else {
@@ -779,7 +788,7 @@ angular.module('emuwebApp')
                         if (lastNeighboursMove.left.sampleStart !== undefined) {
                           // check if in view
                           if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
-                            viewState.setcurClickItem(lastNeighboursMove.left, lastNeighboursMove.left.id);
+                            viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         } else {
@@ -796,13 +805,13 @@ angular.module('emuwebApp')
                         if (lastNeighboursMove.right.sampleStart !== undefined) {
                           // check if in view
                           if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
-                            viewState.setcurClickItem(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setcurClickItem(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         } else {
                           // check if in view
                           if (lastNeighboursMove.right.samplePoint < viewState.curViewPort.eS) {
-                            viewState.setcurClickItem(lastNeighboursMove.right, lastNeighboursMove.right.id);
+                            viewState.setcurClickItem(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
                         }

@@ -302,7 +302,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['*.html', 'views/*.html'],
+          src: ['*.html', 'views/*.html', 'views/helpTabs/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -356,7 +356,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'images/{,*/}*.{gif,webp}',
-            'img/*.png',
+            'img/*.svg',
             'styles/fonts/*',
             'configFiles/{,*/}*.*',
             'schemaFiles/*.json',
@@ -367,7 +367,9 @@ module.exports = function (grunt) {
             'assets/EMU-webAppEmu.svg',
             'assets/EMU-webAppIcon-roundCorners.svg',
             // 'styles/external/bootstrap-combined.min.css',
-            'styles/images/rightSideMenuBtn.png'
+            'styles/images/rightSideMenuBtn.png',
+            'manual/**/*.{md,gif,svg,json}',
+            'NEWS.md'
           ]
         }, {
           expand: true,
@@ -473,8 +475,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: ['dist/views/about.html'],
-          dest: 'dist/views/'
+          src: ['dist/manual/Introduction.md'],
+          dest: 'dist/manual/'
         }]
       }
     },
@@ -540,6 +542,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'json2sass',
+    'compass:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
