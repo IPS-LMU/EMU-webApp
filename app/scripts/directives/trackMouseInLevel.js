@@ -16,7 +16,6 @@ angular.module('emuwebApp')
         scope.lastPCM = undefined;
         scope.curMouseSampleNrInView = undefined;
 
-
         /////////////////////////////
         // Bindings
 
@@ -71,7 +70,7 @@ angular.module('emuwebApp')
               moveBy = Math.round(scope.curMouseSampleNrInView - scope.lastPCM);
             }
           }
-          
+
           var mbutton = 0;
           if (event.buttons === undefined) {
             mbutton = event.which;
@@ -217,8 +216,11 @@ angular.module('emuwebApp')
           LevelService.deleteEditArea();
           scope.lastEventClick = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
           if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined) {
+            var clickItemOrder = LevelService.getOrderById(scope.levelName, scope.lastEventClick.current.id);
+            var next = LevelService.getItemDetails(scope.levelName, clickItemOrder + 1);
+            var prev = LevelService.getItemDetails(scope.levelName, clickItemOrder - 1);
             viewState.setcurClickLevel(scope.levelName, scope.levelType, scope.$index);
-            viewState.setcurClickItemMultiple(scope.lastEventClick.current);
+            viewState.setcurClickItemMultiple(scope.lastEventClick.current, next, prev);
             viewState.selectBoundary();
           }
           scope.lastPCM = scope.curMouseSampleNrInView;
