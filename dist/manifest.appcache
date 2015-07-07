@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2015-07-06T15:28:30.354Z
+# rev 1 - 2015-07-07T09:03:33.227Z
 
 CACHE:
 404.html
@@ -39,12 +39,7 @@ intro.html
 manifest.json
 manual/EMU-webAppWebsocketProtocol/EMU-webApp-websocket-protocol-0_0_2.md
 manual/EMU-webAppWebsocketProtocol/EMU-webApp-websocket-protocol-0_0_3.md
-manual/EMU-webAppWebsocketProtocol/pics/protocol.aux
-manual/EMU-webAppWebsocketProtocol/pics/protocol.fdb_latexmk
-manual/EMU-webAppWebsocketProtocol/pics/protocol.log
-manual/EMU-webAppWebsocketProtocol/pics/protocol.pdf
 manual/EMU-webAppWebsocketProtocol/pics/protocol.svg
-manual/EMU-webAppWebsocketProtocol/pics/protocol.tex
 manual/FAQs.md
 manual/GeneralUsage/GeneralUsage.md
 manual/GeneralUsage/pics/addBoundary.gif
