@@ -89,9 +89,9 @@ angular.module('emuwebApp')
             break;
           default:
             if (!viewState.getdragBarActive()) {
+              var curMouseItem = viewState.getcurMouseItem();
+              LevelService.deleteEditArea();
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
-                LevelService.deleteEditArea();
-                var curMouseItem = viewState.getcurMouseItem();
                 if (curMouseItem !== undefined) {
                   viewState.movingBoundary = true;
                   if (scope.levelType === 'SEGMENT') {
@@ -138,7 +138,6 @@ angular.module('emuwebApp')
                   moveLine = false;
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
-                LevelService.deleteEditArea();
                 if (scope.levelType == 'SEGMENT') {
                   seg = viewState.getcurClickItems();
                   if(seg[0] !== undefined) {
@@ -150,6 +149,24 @@ angular.module('emuwebApp')
                       'id': seg[0].id,
                       'length': seg.length,
                       'movedBy': moveBy
+                    });
+                  }
+                  scope.lastPCM = scope.curMouseSampleNrInView;
+                  viewState.setLastPcm(scope.lastPCM);
+                  viewState.selectBoundary();
+                }
+                else if (scope.levelType == 'EVENT') {
+                  seg = viewState.getcurClickItems();
+                  if(seg[0] !== undefined) {
+                    angular.forEach(seg, function (s) {
+                      LevelService.moveEvent(scope.levelName, s.id, moveBy);
+                      HistoryService.updateCurChangeObj({
+                        'type': 'ANNOT',
+                        'action': 'MOVEEVENT',
+                        'name': scope.levelName,
+                        'id': s.id,
+                        'movedBy': moveBy
+                      });
                     });
                   }
                   scope.lastPCM = scope.curMouseSampleNrInView;
