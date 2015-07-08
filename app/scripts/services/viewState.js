@@ -624,28 +624,6 @@ angular.module('emuwebApp')
     };
 
     /**
-     * selects all Segements on current level which are inside the selected viewport
-     * @param levelData current level Object
-     */
-    sServObj.selectItemsInSelection = function (levelData) {
-      sServObj.curClickItems = [];
-      var min = Infinity;
-      var max = -Infinity;
-      var itemInSel = this.getItemsInSelection(levelData);
-      angular.forEach(itemInSel, function (item) {
-        if (item.sampleStart < min) {
-          min = item.sampleStart;
-        }
-        if ((item.sampleStart + item.sampleDur + 1) > max) {
-          max = item.sampleStart + item.sampleDur + 1;
-        }
-        sServObj.setcurClickItemMultiple(item, sServObj.curClickLevelType);
-      });
-      sServObj.curViewPort.selectS = min;
-      sServObj.curViewPort.selectE = max;
-    };
-
-    /**
      * get all items of current level which are inside the selected viewport
      */
     sServObj.getItemsInSelection = function (levelData) {
