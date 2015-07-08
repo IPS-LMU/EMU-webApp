@@ -67,7 +67,6 @@ angular.module('emuwebApp')
               }
             }
             viewState.setlastKeyCode(code);
-            console.log(code);
 
             // Handle key strokes for the hierarchy modal
             if (viewState.hierarchyShown) {

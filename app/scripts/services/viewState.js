@@ -711,46 +711,11 @@ angular.module('emuwebApp')
      */
     sServObj.sortbystart = function (a, b) {
         //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-        if(a.sampleStart !== undefined) {
-          if (a.sampleStart > b.sampleStart) {
-            return 1;
-          }
-          if (a.sampleStart < b.sampleStart ) {
-            return -1;
-          }
+        if (a.sampleStart > b.sampleStart || a.samplePoint > b.samplePoint) {
+          return 1;
         }
-        else {
-          if (a.samplePoint > b.samplePoint) {
-            return 1;
-          }
-          if (a.samplePoint < b.samplePoint ) {
-            return -1;
-          }
-        }
-        return 0;
-      };
-
-
-      /**
-       *
-       */
-      sServObj.sortbypoint = function (a, b) {
-        //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-        if(a.samplePoint !== undefined) {
-          if (a.samplePoint > b.samplePoint) {
-            return 1;
-          }
-          if (a.sampleStart < b.sampleStart ) {
-            return -1;
-          }
-        }
-        else {
-          if (a.sampleStart > b.sampleStart) {
-            return 1;
-          }
-          if (a.sampleStart < b.sampleStart ) {
-            return -1;
-          }
+        if (a.sampleStart < b.sampleStart || a.samplePoint < b.samplePoint) {
+          return -1;
         }
         return 0;
       };
