@@ -163,6 +163,8 @@ angular.module('emuwebApp')
 
 		scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
 		scope.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
+
+		//scope.render();
 	};
 
 	scope.getOrientatedTransform = function () {
@@ -180,10 +182,24 @@ angular.module('emuwebApp')
 		// Parameter d is never used because this is independent from the node's position
 
 		if (scope.vertical) {
-			return 'scale(-1,1)rotate(90)';
+			return 'scale('+(1/scope.zoomListener.scale())+')scale(-1,1)rotate(90)';
 		} else {
-			return 'scale(1,1)rotate(0)';
+			return 'scale('+(1/scope.zoomListener.scale())+')rotate(0)';
 		}
+	};
+
+	// 
+	// This returns the stroke width for links
+	// It does not really depend on the orientation but rather on the zoom
+	// scale. It is named getORIENTATEDLinkStrokeWidth anyway because all
+	// functions are named like that, althoug they depend on both zoom
+	// scale and orientation.
+	scope.getOrientatedLinkStrokeWidth = function (d) {
+		return (1.5/scope.zoomListener.scale())+'px';
+	};
+
+	scope.getOrientatedGhostLinkStrokeWidth = function (d) {
+		return (15/scope.zoomListener.scale())+'px';
 	};
 
 	scope.getNodeText = function (d) {
@@ -1085,12 +1101,14 @@ angular.module('emuwebApp')
 		newLinks
 			.append('path')
 			.attr('class', 'emuhierarchy-ghostlink')
+			.style('stroke-width', scope.getOrientatedGhostLinkStrokeWidth)
 			.on('mouseover', scope.linkOnMouseOver)
 			;
 
 		newLinks
 			.append('path')
 			.attr('class', 'emuhierarchy-link')
+			.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 			;
 
 		if (scope.transition.links) {
@@ -1135,12 +1153,14 @@ angular.module('emuwebApp')
 				.transition()
 				.duration(scope.transition.duration)
 				.attr('d', scope.getPath )
+				.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 				.style('opacity', 1)
 				;
 		} else {
 			linkSet
 				.selectAll('.emuhierarchy-link')
 				.attr('d', scope.getPath )
+				.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 				;
 		}
 
@@ -1160,12 +1180,14 @@ angular.module('emuwebApp')
 			scope.svg.append('path')
 				.attr('class', 'emuhierarchy-newlink')
 				.style('stroke', 'black')
+				.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 				;
 
 			scope.svg.append('path')
 				.attr('class', 'emuhierarchy-newlinkpreview')
 				.attr('d', scope.getPreviewPath)
 				.style('stroke', scope.getPreviewColor)
+				.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 				;
 		}
 
