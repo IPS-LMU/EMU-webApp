@@ -37,9 +37,9 @@ angular.module('emuwebApp')
 	scope.transition = {
 		duration: 750,
 		links: false,
-		nodes: true,
-		rotation: true,
-		contextMenu: true
+		nodes: false,
+		rotation: false,
+		contextMenu: false
 	};
 
 	//
@@ -625,6 +625,11 @@ angular.module('emuwebApp')
 	 *
          */
         scope.render = function () {
+		// This is an undesired fix for #110
+		// We clean the SVG element on every re-render, thereby destroying the
+		// possibility of eye-candy transitions
+		scope.svg.selectAll('*').remove();
+
 		var i;
 
 		// Get current width and height of SVG
