@@ -164,7 +164,7 @@ angular.module('emuwebApp')
 		scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
 		scope.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
 
-		//scope.render();
+		scope.render();
 	};
 
 	scope.getOrientatedTransform = function () {
