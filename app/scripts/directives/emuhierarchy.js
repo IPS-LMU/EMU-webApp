@@ -1073,6 +1073,18 @@ angular.module('emuwebApp')
 			scope.svg.select('.emuhierarchy-contextmenu text').text(scope.getOrientatedNodeCollapseText);
 		}
 
+		// Make sure the node containing the context menu is the last
+		// one in the SVG, otherwise the succeeding elements are drawn
+		// visually on top of the context menu.
+		scope.svg.selectAll('.emuhierarchy-node').sort ( function(a,b){
+			if (a.id === viewState.hierarchyState.contextMenuID) {
+				return 1;
+			}
+			if (b.id === viewState.hierarchyState.contextMenuID) {
+				return -1;
+			}
+			return 0;
+		});
 
 
 		//
