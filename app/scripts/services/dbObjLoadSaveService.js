@@ -41,6 +41,8 @@ angular.module('emuwebApp')
 				if (bndl !== loadedMetaDataService.getCurBndl()) {
 					// reset history
 					HistoryService.resetToInitState();
+					// reset hierarchy
+					viewState.resetHierarchyState();
 					// set state
                     LevelService.deleteEditArea();
                     viewState.setEditing(false);					
