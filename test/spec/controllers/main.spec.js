@@ -16,7 +16,7 @@ describe('Controller: MainController', function () {
   var mockAppStateService = {
     resetToInitState: function () {}
   };
-  
+
   //Initialize the controller and a mock scope
   beforeEach(inject(function ($controller,
     $rootScope,
@@ -81,12 +81,12 @@ describe('Controller: MainController', function () {
     $rootScope.$broadcast('connectionDisrupted');
     expect(mockAppStateService.resetToInitState).toHaveBeenCalled();
   }));
-  
+
   it('should react to $broadcast resetToInitState', inject(function ($rootScope) {
     spyOn(scope, 'loadDefaultConfig');
     $rootScope.$broadcast('resetToInitState');
     expect(scope.loadDefaultConfig).toHaveBeenCalled();
-  }));  
+  }));
 
 
   it('should have all variables defined', function () {
@@ -143,14 +143,8 @@ describe('Controller: MainController', function () {
     expect(scope.vs.setcursorInTextField).toHaveBeenCalledWith(false);
   });
 
-  it('should openSubmenu', function () {
-    spyOn(scope.vs, 'togglesubmenuOpen');
-    scope.openSubmenu();
-    expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.design.animation.period);
-  });
-
   it('should clear', inject(function ($q) {
-    var txtDeferred = $q.defer(); 
+    var txtDeferred = $q.defer();
     spyOn(scope.modal, 'open').and.returnValue(txtDeferred.promise);
     scope.clearBtnClick();
     txtDeferred.resolve(true);
@@ -176,7 +170,7 @@ describe('Controller: MainController', function () {
     spyOn(scope.modal, 'open');
     scope.aboutBtnClick();
     expect(scope.modal.open).toHaveBeenCalledWith('views/help.html');
-  }); 
+  });
 
   it('should openDemoDB ae', inject(function ($q, $httpBackend) {
     var ioDeferredDBConfig = $q.defer();
@@ -184,7 +178,7 @@ describe('Controller: MainController', function () {
       data: {
         EMUwebAppConfig: {}
       }
-    });    
+    });
     var ioDeferredBundleList = $q.defer();
     ioDeferredBundleList.resolve({
       data: ae_bundleList
@@ -529,7 +523,7 @@ describe('Controller: MainController', function () {
     scope.cmdZoomAll();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
   });
-  
+
   it('should showEditDBconfig on BtnClick', inject(function ($q) {
     var editDef = $q.defer();
     spyOn(scope.modal, 'open').and.returnValue(editDef.promise);
@@ -537,7 +531,7 @@ describe('Controller: MainController', function () {
     editDef.resolve(false);
     scope.$apply();
     expect(scope.modal.open).toHaveBeenCalledWith('views/tabbed.html');
-  })); 
+  }));
 
   it('should addLevelPoint on BtnClick', function () {
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
@@ -547,8 +541,8 @@ describe('Controller: MainController', function () {
     expect(scope.lvl.insertLevel).toHaveBeenCalled();
     expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelPointBtnClick');
-  });  
-  
+  });
+
   it('should addLevelSeg on BtnClick', function () {
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
     spyOn(scope.lvl, 'insertLevel');
@@ -557,29 +551,29 @@ describe('Controller: MainController', function () {
     expect(scope.lvl.insertLevel).toHaveBeenCalled();
     expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelSegBtnClick');
-  });    
-  
+  });
+
    it('should getEnlarge (-1)', inject(function (viewState) {
     viewState.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getenlarge').and.returnValue(-1);
     var ret = scope.getEnlarge();
     expect(ret).toEqual('auto');
-  }));   
-    
+  }));
+
    it('should getEnlarge (2 / small)', inject(function (viewState) {
     viewState.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(2);
     expect(ret).toEqual('27%');
-  })); 
-  
+  }));
+
    it('should getEnlarge (2 / large)', inject(function (viewState) {
     viewState.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(3);
     expect(ret).toEqual('70%');
-  }));  
-  
+  }));
+
    it('should getEnlarge (3 / small)', inject(function (viewState, ConfigProviderService) {
     viewState.curPerspectiveIdx = 0;
     orig = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order;
@@ -587,16 +581,16 @@ describe('Controller: MainController', function () {
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(2);
     expect(ret).toEqual('22.5%');
-  })); 
-  
+  }));
+
    it('should getEnlarge (3 / large)', inject(function (viewState, ConfigProviderService) {
     viewState.curPerspectiveIdx = 0;
     ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(3);
     expect(ret).toEqual('50%');
-  }));        
-  
+  }));
+
    it('should getEnlarge (1)', inject(function (viewState, ConfigProviderService) {
     viewState.curPerspectiveIdx = 0;
     ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
@@ -606,25 +600,25 @@ describe('Controller: MainController', function () {
     var ret = scope.getEnlarge(2);
     expect(ret).toEqual('auto');
     ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order = orig;
-  }));    
-  
+  }));
+
    it('should toggleCollapseSession', function () {
     scope.uniqSessionList = [];
     scope.uniqSessionList[0] = {};
     scope.uniqSessionList[0].collapsed = true;
     scope.toggleCollapseSession(0);
     expect(scope.uniqSessionList[0].collapsed).toEqual(false);
-  });  
-  
+  });
+
    it('should react on resize window', function () {
      spyOn(scope.lvl, 'deleteEditArea');
      spyOn(scope.vs, 'setWindowWidth');
      var e = jQuery.Event('resize');
-     $(window).trigger(e); 
+     $(window).trigger(e);
      expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
      expect(scope.vs.setWindowWidth).toHaveBeenCalled();
-  });  
-  
+  });
+
    it('should loadFilesForEmbeddedApp', inject(function ($q) {
      var ioDeferred = $q.defer();
      var ioDeferred2 = $q.defer();
@@ -648,8 +642,8 @@ describe('Controller: MainController', function () {
      expect(scope.valid.validateJSO).toHaveBeenCalled();
      expect(scope.io.parseLabelFile).toHaveBeenCalled();
      expect(scope.data.setData).toHaveBeenCalled();
-  }));  
-  
+  }));
+
    it('should loadDefaultConfig', inject(function ($httpBackend, $q, Validationservice, Iohandlerservice) {
      var ioDeferred = $q.defer();
      var jsonDeferred = $q.defer();
@@ -661,8 +655,8 @@ describe('Controller: MainController', function () {
      $httpBackend.flush();
      jsonDeferred.resolve(true);
      scope.$apply();
-  }));  
-  
-  
-  
+  }));
+
+
+
 });

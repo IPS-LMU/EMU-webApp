@@ -694,10 +694,10 @@ describe('Directive: handleglobalkeystrokes', function() {
     it('should toggleSideBarLeft', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'togglesubmenuOpen');
+        spyOn(scope.vs, 'toggleSubmenu');
         spyOn(scope.lvl, 'deleteEditArea');
         trigEvent(scope.cps.vals.keyMappings.toggleSideBarLeft, false);
-        expect(scope.vs.togglesubmenuOpen).toHaveBeenCalledWith(scope.cps.design.animation.period);
+        expect(scope.vs.toggleSubmenu).toHaveBeenCalledWith(scope.cps.design.animation.period);
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
     });
 

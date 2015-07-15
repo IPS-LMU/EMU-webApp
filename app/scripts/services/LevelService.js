@@ -163,26 +163,28 @@ angular.module('emuwebApp')
 			var details = null;
 			var diffNow = Infinity;
 			var myItem = sServObj.getItemFromLevelById(name, id);
-			var myStart = myItem.sampleStart || myItem.samplePoint;
-			angular.forEach(DataService.getLevelData(), function (level) {
-				if (level.name === name) {
-					level.items.forEach(function (element) {
-						var start = element.sampleStart || element.samplePoint;
-						if(after) {
-							if (start > myStart && start-myStart < diffNow) {
-								diffNow = start-myStart;
-								details = element;
+			if(myItem !== null) {
+				var myStart = myItem.sampleStart || myItem.samplePoint;
+				angular.forEach(DataService.getLevelData(), function (level) {
+					if (level.name === name) {
+						level.items.forEach(function (element) {
+							var start = element.sampleStart || element.samplePoint;
+							if(after) {
+								if (start > myStart && start-myStart < diffNow) {
+									diffNow = start-myStart;
+									details = element;
+								}
 							}
-						}
-						else {
-							if (start < myStart && myStart-start < diffNow) {
-								diffNow = myStart-start;
-								details = element;
+							else {
+								if (start < myStart && myStart-start < diffNow) {
+									diffNow = myStart-start;
+									details = element;
+								}
 							}
-						}
-					});
-				}
-			});
+						});
+					}
+				});
+			}
 			return details;
 		};
 

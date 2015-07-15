@@ -114,7 +114,7 @@ angular.module('emuwebApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 			}
-			
+
 			return getProm;
 		};
 
@@ -171,6 +171,10 @@ angular.module('emuwebApp')
 				prom = Espsparserservice.asyncParseEsps(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedESPS');
 			} else if (fileType === 'TEXTGRID') {
 				prom = Textgridparserservice.asyncParseTextGrid(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTEXTGRID');
+			} else if (fileType === 'ANNOTATION') {
+				var def = $q.defer();
+				prom = def.promise;
+				def.resolve(angular.fromJson(string));
 			}
 
 			return prom;
