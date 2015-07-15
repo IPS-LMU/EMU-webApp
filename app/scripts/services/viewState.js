@@ -106,6 +106,7 @@ angular.module('emuwebApp')
       sServObj.curPerspectiveIdx = -1;
       sServObj.mouseInEmuWebApp = false;
       sServObj.lastKeyCode = undefined;
+      sServObj.lastUpdate = undefined;
       // possible general states of state machine
       sServObj.states = [];
       sServObj.states.noDBorFilesloaded = {
@@ -420,8 +421,12 @@ angular.module('emuwebApp')
     /**
      * toggle boolean if left submenu is open
      */
-    sServObj.togglesubmenuOpen = function (time) {
+    sServObj.toggleSubmenu = function (time) {
       this.submenuOpen = !this.submenuOpen;
+      $timeout(function() {
+        var d = new Date();
+        sServObj.lastUpdate = d.getTime();
+      }, time);
     };
 
     /**

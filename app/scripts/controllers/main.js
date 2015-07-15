@@ -115,7 +115,7 @@ angular.module('emuwebApp')
 
 					//hide menu
 					if (viewState.getsubmenuOpen()) {
-						viewState.togglesubmenuOpen(ConfigProviderService.design.animation.period);
+						viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
 					}
 
 					viewState.somethingInProgressTxt = 'Loading DB config...';
@@ -279,7 +279,7 @@ angular.module('emuwebApp')
 		$scope.handleDefaultConfigLoaded = function () {
 
 			if (!viewState.getsubmenuOpen()) {
-				viewState.togglesubmenuOpen(ConfigProviderService.design.animation.period);
+				viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
 			}
 
 			if (ConfigProviderService.vals.main.autoConnect) {
@@ -450,13 +450,6 @@ angular.module('emuwebApp')
 		 */
 		$scope.cursorOutOfTextField = function () {
 			viewState.setcursorInTextField(false);
-		};
-
-		/**
-		 *
-		 */
-		$scope.openSubmenu = function () {
-			viewState.togglesubmenuOpen(ConfigProviderService.design.animation.period);
 		};
 
 		/////////////////////////////////////////

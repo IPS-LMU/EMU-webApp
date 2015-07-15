@@ -27,7 +27,7 @@ angular.module('emuwebApp')
         scope.alpha = 0.16;
         scope.devicePixelRatio = window.devicePixelRatio || 1;
 
-        // Spectro Worker 
+        // Spectro Worker
         scope.primeWorker = new spectroDrawingWorker();
 
 
@@ -44,6 +44,14 @@ angular.module('emuwebApp')
         });
 
         //
+        scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.wavJSO)) {
+						scope.clearAndDrawSpectMarkup();
+					}
+				});
+
+
+
         scope.$watch('vs.submenuOpen', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
@@ -182,7 +190,7 @@ angular.module('emuwebApp')
             } else {
               // tolerate window/2 alignment issue if at beginning of file
               parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
-            }            
+            }
             scope.setupEvent();
             scope.primeWorker.tell({
               'windowSizeInSecs': scope.vs.spectroSettings.windowSizeInSecs,

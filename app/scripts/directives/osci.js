@@ -30,8 +30,10 @@ angular.module('emuwebApp')
 				// watches
 
 				//
-				scope.$watch('viewState.submenuOpen', function () {
-					$timeout(scope.redraw, ConfigProviderService.design.animation.duration);
+				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue) {
+						scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
+					}
 				});
 
 				//
