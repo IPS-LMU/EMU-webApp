@@ -235,13 +235,13 @@ angular.module('emuwebApp')
           LevelService.deleteEditArea();
           scope.lastEventClick = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
           if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined) {
-            var clickItemOrder = LevelService.getOrderById(scope.levelName, scope.lastEventClick.current.id);
-            var next = LevelService.getItemDetails(scope.levelName, clickItemOrder + 1);
-            var prev = LevelService.getItemDetails(scope.levelName, clickItemOrder - 1);
+            var next = LevelService.getItemInTime(viewState.getcurClickLevelName(), scope.lastEventClick.current.id, true);
+            var prev = LevelService.getItemInTime(viewState.getcurClickLevelName(), scope.lastEventClick.current.id, false);
             viewState.setcurClickLevel(scope.levelName, scope.levelType, scope.$index);
             viewState.setcurClickItemMultiple(scope.lastEventClick.current, next, prev);
             viewState.selectBoundary();
           }
+          console.log(viewState.curClickItems)
           scope.lastPCM = scope.curMouseSampleNrInView;
           viewState.setLastPcm(scope.lastPCM);
           scope.$apply();

@@ -630,7 +630,6 @@ angular.module('emuwebApp')
       var itemsInRange = [];
       var rangeStart = sServObj.curViewPort.selectS;
       var rangeEnd = sServObj.curViewPort.selectE;
-
       angular.forEach(levelData, function (t) {
         if (t.name === sServObj.getcurClickLevelName()) {
           angular.forEach(t.items, function (item) {
@@ -643,10 +642,7 @@ angular.module('emuwebApp')
           });
         }
       });
-
-      return itemsInRange;
-
-
+      return itemsInRange.sort(sServObj.sortbystart);
     };
 
 
@@ -685,23 +681,32 @@ angular.module('emuwebApp')
     };
 
     /**
-     * adds a item the currently selected items if left or right of current selected items
+     * adds an item to the currently selected items if the left or right one of current selected items
      * @param item representing the Object to be added to selection
+     * @param next Object next to the Object to be added to selection
+     * @param prev Object previous of the Object to be added to selection
      */
     sServObj.setcurClickItemMultiple = function (item, next, prev) {
-      var empty = true;
-      sServObj.curClickItems.forEach(function (entry) {
-        if (sServObj.curClickItems.indexOf(next) !== -1 || sServObj.curClickItems.indexOf(prev) !== -1) {
-          if(sServObj.curClickItems.indexOf(item) === -1) {
-            sServObj.curClickItems.push(item);
-            sServObj.curClickItems.sort(sServObj.sortbystart);
-            empty = false;
-          }
-        }
-      });
-      if (empty) {
+
+      if (sServObj.curClickItems.length == 0 || sServObj.curClickItems === undefined || sServObj.curClickItems === null) {
         sServObj.curClickItems = [];
         sServObj.curClickItems.push(item);
+      }
+      else {
+        if(sServObj.curClickItems.indexOf(item) === -1) {
+          if (sServObj.curClickItems.indexOf(next) >= 0 || sServObj.curClickItems.indexOf(prev) >= 0) {
+            sServObj.curClickItems.push(item);
+            sServObj.curClickItems.sort(sServObj.sortbystart);
+          }
+          else {
+            sServObj.curClickItems = [];
+            sServObj.curClickItems.push(item);
+          }
+        }
+        else {
+          sServObj.curClickItems = [];
+          sServObj.curClickItems.push(item);
+        }
       }
     };
 

@@ -695,20 +695,10 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickLevelName() === undefined) {
                     modalService.open('views/error.html', 'Selection Error : Please select a Level first');
                   } else {
-                    var curClickItems = [];
-                    var min = Infinity;
-                    var max = -Infinity;
-                    var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
-                    angular.forEach(itemInSel, function (item) {
-                      if ((item.sampleStart || item.samplePoint) < min) {
-                        min = item.sampleStart || item.samplePoint;
-                      }
-                      if (((item.sampleStart + item.sampleDur + 1) || item.samplePoint) > max) {
-                        max = (item.sampleStart + item.sampleDur + 1) || item.samplePoint;
-                      }
-                      var clickItemOrder = LevelService.getOrderById(viewState.getcurClickLevelName(), item.id);
-                      var next = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder + 1);
-                      var prev = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder - 1);
+                    viewState.curClickItems = [];
+                    angular.forEach(viewState.getItemsInSelection(DataService.data.levels), function (item) {
+                      var next = LevelService.getItemInTime(viewState.getcurClickLevelName(), item.id, true);
+                      var prev = LevelService.getItemInTime(viewState.getcurClickLevelName(), item.id, false);
                       viewState.setcurClickItemMultiple(item, next, prev);
                     });
                     viewState.selectBoundary();
