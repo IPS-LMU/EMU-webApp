@@ -15,6 +15,7 @@ angular.module('emuwebApp')
         scope.lastNeighboursMove = undefined;
         scope.lastPCM = undefined;
         scope.curMouseSampleNrInView = undefined;
+        scope.order = attr.trackMouseInLevel;
 
         /////////////////////////////
         // Bindings
@@ -256,7 +257,7 @@ angular.module('emuwebApp')
           var isOpen = element.parent().css('height') === '25px' ? false : true;
           // expand to full size on dbl click if level is in small size
           if(!isOpen) {
-              $document.find('#emuwebapp-level-button-resize').click();
+              element.parent().parent().find('div')[3].click();
           }
           if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined  && viewState.getPermission('labelAction')) {
             if (scope.levelType === 'SEGMENT') {
