@@ -102,8 +102,6 @@ angular.module('emuwebApp')
 				// Iterate through items to calculate their
 				// _weight and the level's _weight
 				for (ii = 0; ii < level.items.length; ++ii) {
-					var itemWeight = level.items[ii]._weight;
-
 					if (level.items[ii]._visible === false) {
 						level.items[ii]._weight = 0.35;
 					} else {

@@ -1,6 +1,11 @@
 What's New
 =============================================
 
+## Version 0.0.22
+
+- no line and font size increase in hierarchy view
+
+
 ## Version 0.0.21
 
 - complete rewrite of CSS (now using SCSS)

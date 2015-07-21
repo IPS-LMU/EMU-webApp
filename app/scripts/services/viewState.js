@@ -805,6 +805,17 @@ angular.module('emuwebApp')
       this.lastPcm = n;
     };
 
+    sServObj.resetHierarchyState = function () {
+      sServObj.hierarchyState.selectedItemID = undefined;
+      sServObj.hierarchyState.selectedLinkFromID = undefined;
+      sServObj.hierarchyState.selectedLinkToID = undefined;
+      sServObj.hierarchyState.editValue = undefined;
+      sServObj.hierarchyState.inputFocus = false;
+      sServObj.hierarchyState.collapseInfo = {};
+      sServObj.hierarchyState.contextMenuID = undefined;
+      sServObj.hierarchyState.newLinkFromID = undefined;
+    };
+
     /**
      *
      */
