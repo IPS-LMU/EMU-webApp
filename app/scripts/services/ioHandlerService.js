@@ -171,7 +171,7 @@ angular.module('emuwebApp')
 				prom = Espsparserservice.asyncParseEsps(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedESPS');
 			} else if (fileType === 'TEXTGRID') {
 				prom = Textgridparserservice.asyncParseTextGrid(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTEXTGRID');
-			} else if (fileType === 'ANNOTATION') {
+			} else if (fileType === 'annotJSON') {
 				var def = $q.defer();
 				prom = def.promise;
 				def.resolve(angular.fromJson(string));
