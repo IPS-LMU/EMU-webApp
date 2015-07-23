@@ -4,7 +4,7 @@ What's New
 ## Version 0.0.22
 
 - no line and font size increase in hierarchy view
-
+- flawed repaint in hierarchy when new bundle is loaded fixed
 
 ## Version 0.0.21
 
