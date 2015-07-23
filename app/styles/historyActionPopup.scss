@@ -15,7 +15,7 @@
     height: 30px;
     background: $color-darkGrey;
     color: $color-white;
-    z-index: 999999;
+    z-index: -10;
     opacity: 0;
     font-weight: 900 !important;
     border: 0px;
@@ -33,6 +33,7 @@
     }
 }
 .emuwebapp-history-fade {
+    z-index: 999999;
     opacity: 1;
     @include vendor-prefix(transition, "all "+$animation-period+"ms ease-out");
 }
