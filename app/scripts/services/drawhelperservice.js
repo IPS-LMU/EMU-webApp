@@ -192,9 +192,9 @@ angular.module('emuwebApp')
 				ctx.strokeStyle = ConfigProviderService.design.color.blue;
 				ctx.fillStyle = ConfigProviderService.design.color.blue;
 				// see if Chrome ->dashed line
-				if (navigator.vendor === 'Google Inc.') {
-					ctx.setLineDash([2]);
-				}
+				//if (navigator.vendor === 'Google Inc.') {
+				//	ctx.setLineDash([2]);
+				//}
 				if (allPeakVals.samplePerPx >= 1) {
 					ctx.beginPath();
 					ctx.moveTo(0, canvas.height / 2);
@@ -211,9 +211,9 @@ angular.module('emuwebApp')
 					ctx.fillText('0', 5, canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 5, canvas.width);
 				}
 				// see if Chrome ->dashed line
-				if (navigator.vendor === 'Google Inc.') {
-					ctx.setLineDash([0]);
-				}
+				//if (navigator.vendor === 'Google Inc.') {
+				//	ctx.setLineDash([0]);
+				//}
 			}
 		};
 
@@ -340,17 +340,17 @@ angular.module('emuwebApp')
 				ctx.fillStyle = ConfigProviderService.design.color.transparent.red;
 
 				// see if Chrome -> dashed line
-				if (navigator.vendor === 'Google Inc.') {
-					ctx.setLineDash([2]);
-				}
+				//if (navigator.vendor === 'Google Inc.') {
+				//	ctx.setLineDash([2]);
+				//}
 
 				// draw lines
 				var mouseX = viewState.getX(mouseEvt);
 				var mouseY = viewState.getY(mouseEvt);
 
-				if (navigator.vendor === 'Google Inc.') {
-					ctx.setLineDash([0]);
-				}
+				//if (navigator.vendor === 'Google Inc.') {
+				//	ctx.setLineDash([0]);
+				//}
 
 
 				// draw frequency / sample / time
