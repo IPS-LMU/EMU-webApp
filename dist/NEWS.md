@@ -1,6 +1,12 @@
 What's New
 =============================================
 
+## Version 0.0.23
+
+- repaint of OSCI problem due to setLineDash() fixed
+- improved alignment of keyboard shortcuts
+
+
 ## Version 0.0.22
 
 - no line and font size increase in hierarchy view

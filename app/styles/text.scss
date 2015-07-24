@@ -122,7 +122,7 @@
     ul li{
       list-style-type: disc;
     }
-    ul li, p, div, strong, em, a, code, h3 {
+    ul li, p, div, strong, em, a, code, h3, th, td, b {
 	  text-align: left;
       font-size: 16px !important;
       @include vendor-prefix(user-select, "text !important");
@@ -152,6 +152,33 @@
       margin-top: 25px;
       margin-bottom: 25px;
 	}
+  table{
+    margin: auto;
+    text-align: left;
+    max-width: 500px;
+    th{
+      background-color: $color-white;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: underline;
+      padding: 10px;
+      @extend .emuwebapp-font-large;
+    }
+    tr{
+      padding: 5px;
+      &:nth-child(even) {
+        background: $color-lightGrey;
+      }
+      &:nth-child(odd) {
+        background: $color-white;
+      }
+    }
+    td{
+      @extend .emuwebapp-font-large;
+      padding: 10px;
+    }
+
+  }
 
 }
 .emuwebapp-link {
