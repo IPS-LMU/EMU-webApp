@@ -1,6 +1,12 @@
 What's New
 =============================================
 
+## Version 0.0.23
+
+- OSCI repaint problem fix
+- time level alignment due to scroll bar issue fixed 
+- bundleList side bar scroll bar issue fixed
+
 ## Version 0.0.22
 
 - no line and font size increase in hierarchy view

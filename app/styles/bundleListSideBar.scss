@@ -47,7 +47,7 @@
         @extend .emuwebapp-font-small;
     }
     .emuwebapp-bundle-container {
-        width: 100%;
+        width: calc(100%-20px);
         height: calc(100% - 40px);
         overflow-y:auto;
         text-align: left;
