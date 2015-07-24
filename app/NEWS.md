@@ -1,6 +1,10 @@
 What's New
 =============================================
 
+## Version 0.0.24
+
+- fixed off by 1px problem due to boarder problem in levels
+
 ## Version 0.0.23
 
 - OSCI repaint problem fix
