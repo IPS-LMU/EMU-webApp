@@ -4,6 +4,7 @@ What's New
 ## Version 0.0.24
 
 - fixed off by 1px problem due to boarder problem in levels
+- checking if scroll bar in level panel -> if so adding scroll bar to track panel
 
 ## Version 0.0.23
 
