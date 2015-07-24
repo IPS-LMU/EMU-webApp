@@ -62,6 +62,14 @@ angular.module('emuwebApp')
 
         element.bind('mousemove', function (ev) {
           if (!drag) return;
+          
+          // check if scrollbar exists -> set scrollbar on pane1 to ensure equal indentation due to scrollbar width
+          if(pane2.elem[0].scrollHeight > pane2.elem[0].clientHeight + 1){
+            pane1.elem.css('overflow-y', 'scroll');
+          }else{
+            pane1.elem.css('overflow-y', 'hidden');
+          }
+
 
           var bounds = element[0].getBoundingClientRect();
           var pos = 0;
