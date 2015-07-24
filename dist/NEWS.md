@@ -3,9 +3,9 @@ What's New
 
 ## Version 0.0.23
 
-- repaint of OSCI problem due to setLineDash() fixed
-- improved alignment of keyboard shortcuts
-
+- OSCI repaint problem fix
+- time level alignment due to scroll bar issue fixed 
+- bundleList side bar scroll bar issue fixed
 
 ## Version 0.0.22
 

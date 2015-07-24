@@ -38,6 +38,14 @@
 	            <h2>Color Options</h2>
 	            <span>Draw spectrogram in heat map colors: <input type="checkbox" ng-model="modalVals.drawHeatMapColors"></span>
 	            <table class="emuwebapp-modalTable" ng-style="cssError(8)">
+					<tr>
+						<th></th>
+						<th>red</th>
+						<th>green</th>
+						<th>blue</th>
+						<th>resulting color</th>
+					</tr>
+
 	                <tr>
 	                    <td>First spectrogram color anchor:</td>
 	                    <td>r: <input ng-keyup="checkSpectroSettings()" class="emuwebapp-rgbTextInput" type="text" ng-model="modalVals.heatMapColorAnchors[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
