@@ -1,6 +1,17 @@
 What's New
 =============================================
 
+## Version 0.0.24
+
+- fixed off by 1px problem due to boarder problem in levels
+- checking if scroll bar in level panel -> if so adding scroll bar to track panel
+
+## Version 0.0.23
+
+- OSCI repaint problem fix
+- time level alignment due to scroll bar issue fixed 
+- bundleList side bar scroll bar issue fixed
+
 ## Version 0.0.22
 
 - no line and font size increase in hierarchy view

@@ -125,7 +125,7 @@
         z-index: 100;
         top: 50%;
         bottom: 0px;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
     &.vertical {
         z-index: 0 !important;
