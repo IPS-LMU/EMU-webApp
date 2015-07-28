@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 
 		/**
 		 * search for the according label field in labels
-		 * and return its index
+		 * and return its position
 		 *    @param attrDefName
 		 *    @param labels
 		 */
@@ -24,51 +24,48 @@ angular.module('emuwebApp')
 		}
 
 		/**
-		 * returns level details (level object and sorting id) by passing in level Name
+		 * returns level details by passing in level name
+		 * if the corresponding level exists
+		 * otherwise returns 'null'
+		 *    @param name
 		 */
 		sServObj.getLevelDetails = function (name) {
-			var curLevel = null;
-			var id = null;
-			angular.forEach(DataService.getLevelData(), function (level, num) {
+			var ret = null;
+			angular.forEach(DataService.getLevelData(), function (level) {
 				if (level.name === name) {
-					curLevel = level;
-					id = num;
+					ret = level;
 				}
 			});
-			return {
-				level: curLevel,
-				id: id
-			};
+			return ret;
 		};
 
 		/**
 		 * returns level name by passing in id of an element
 		 * this was moved here from HierarchyLayoutService
+		 *    @param id
 		 */
-		sServObj.getLevelNameByElementID = function (nodeID) {
-			var levelName = null;
-
+		sServObj.getLevelNameByElementID = function (id) {
+			var ret = null;
 			for (var i = 0; i < DataService.getData().levels.length; ++i) {
 				for (var ii = 0; ii < DataService.getData().levels[i].items.length; ++ii) {
-					if (DataService.getData().levels[i].items[ii].id === nodeID) {
-						levelName = DataService.getData().levels[i].name;
+					if (DataService.getData().levels[i].items[ii].id === id) {
+						ret = DataService.getData().levels[i].name;
 						break;
 					}
 				}
 			}
-
-			return levelName;
+			return ret;
 		}
 
 
 		/**
-		 * returns level details (level object and sorting id) by passing in level Name
+		 * returns all levels with details for a specific type
+		 *    @param types
 		 */
 		sServObj.getLevelsByType = function (types) {
 			var levels = [];
-			angular.forEach(DataService.getLevelData(), function (level, num) {
-			    var t = level.type;
-				if (types.indexOf(t) >= 0) {
+			angular.forEach(DataService.getLevelData(), function (level) {
+				if (types.indexOf(level.type) >= 0) {
 					levels.push(level);
 				}
 			});
@@ -76,14 +73,17 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * gets element order by passing in elemtent id
+		 * gets element position inside a level with 'name'
+		 * by passing in the element id
+		 *    @param name
+		 *    @param id
 		 */
-		sServObj.getOrderById = function (name, eid) {
-			var ret = undefined;
+		sServObj.getOrderById = function (name, id) {
+			var ret = null;
 			angular.forEach(DataService.getLevelData(), function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (e, num) {
-						if (e.id === eid) {
+						if (e.id === id) {
 							ret = num;
 						}
 					});
@@ -93,14 +93,17 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * gets element id by passing in element order
+		 * gets element id inside a level with 'name' by
+		 * passing in the element position/order
+		 *    @param name
+		 *    @param order
 		 */
 		sServObj.getIdByOrder = function (name, order) {
 			var ret = null;
 			angular.forEach(DataService.getLevelData(), function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
-						if (num == order) {
+						if (num === order) {
 							ret = element.id;
 						}
 					});
@@ -110,24 +113,24 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * gets item details by passing in levelName and item order
+		 * gets item details by passing in 'name' of level
+		 * and item position/order
+		 *    @param name
+		 *    @param order
 		 */
 		sServObj.getItemDetails = function (name, order) {
-			var details = null;
+			var ret = null;
 			angular.forEach(DataService.getLevelData(), function (level) {
 				if (level.name === name) {
-					level.items.forEach(function (element, num) {
-						if (num == order) {
-							details = element;
-						}
-					});
+					ret = level.items[order];
 				}
 			});
-			return details;
+			return ret;
 		};
 
 		/**
-		 * gets element details by passing in levelName and elemtent order
+		 * returns the last element inside a level with 'name'
+		 *    @param name
 		 */
 		sServObj.getLastItem = function (name) {
 			var details = null;
@@ -140,87 +143,96 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get next Element in order
+		 * get next element of element with id in order/position
+		 * inside a level with 'name'
+		 *    @param name
+		 *    @param id
 		 */
 		sServObj.getNextItem = function (name, id) {
-			var details = null;
+			var ret = null;
 			angular.forEach(DataService.getLevelData(), function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element, num) {
-						if (element.id == id) {
-							details = level.items[num + 1];
+						if (element.id === id) {
+							ret = level.items[num + 1];
 						}
 					});
 				}
 			});
-			return details;
+			return ret;
 		};
 
 		/**
-		 * get next or prev Element in time
+		 * get next or prev Element in time inside level with 'name'
+		 * after or bevore (boolean) an element with 'id'
+		 *    @param name
+		 *    @param id
+		 *    @param after
 		 */
 		sServObj.getItemInTime = function (name, id, after) {
-			var details = null;
-			var diffNow = Infinity;
-			var myItem = sServObj.getItemFromLevelById(name, id);
-			if(myItem !== null) {
-				var myStart = myItem.sampleStart || myItem.samplePoint;
+			var ret = null;
+			var timeDifference = Infinity;
+			var startItem = sServObj.getItemFromLevelById(name, id);
+			if(startItem !== null) {
+				var myStart = startItem.sampleStart || startItem.samplePoint;
 				angular.forEach(DataService.getLevelData(), function (level) {
 					if (level.name === name) {
 						level.items.forEach(function (element) {
 							var start = element.sampleStart || element.samplePoint;
 							if(after) {
-								if (start > myStart && start-myStart < diffNow) {
-									diffNow = start-myStart;
-									details = element;
+								if (start > myStart && start-myStart <= timeDifference) {
+									timeDifference = start-myStart;
+									ret = element;
 								}
 							}
 							else {
-								if (start < myStart && myStart-start < diffNow) {
-									diffNow = myStart-start;
-									details = element;
+								if (start < myStart && myStart-start <= timeDifference) {
+									timeDifference = myStart-start;
+									ret = element;
 								}
 							}
 						});
 					}
 				});
 			}
-			return details;
+			return ret;
 		};
 
 		/**
-		 * gets item from leve by passing in levelName and item id
-		 *
-		 * @return item
+		 * returns item from a level with 'name' by passing in the item 'id'
+		 *    @param name
+		 *    @param id
 		 */
-		sServObj.getItemFromLevelById = function (levelName, id) {
-			var foundItm = null;
+		sServObj.getItemFromLevelById = function (name, id) {
+			var ret = null;
 			angular.forEach(DataService.getLevelData(), function (level) {
-				if (level.name === levelName) {
+				if (level.name === name) {
 					level.items.forEach(function (element) {
 						if (element.id == id) {
-							foundItm = element;
+							ret = element;
 						}
 					});
 				}
 			});
-			return foundItm;
+			return ret;
 		};
 
 		/**
-		 * gets item from leve by passing in levelName and item id
-		 *
-		 * @return item
+		 * returns multiple item(s) from a level with 'name' by passing in
+		 * the start item 'id' and the length (how many objects to return)
+		 *    @param name
+		 *    @param id
+		 *    @param length
 		 */
-		sServObj.getItemsFromLevelByIdAndLength = function (levelName, id, length) {
-			var foundItms = [];
+		sServObj.getItemsFromLevelByIdAndLength = function (name, id, length) {
+			var ret = [];
 			var lastID = id;
 		    for(var j=0;j<length;j++) {
-		        var segment = sServObj.getItemFromLevelById(levelName, lastID);
-		        lastID = sServObj.getNextItem(levelName, segment.id);
-		        foundItms.push(segment);
+		        var segment = sServObj.getItemFromLevelById(name, lastID);
+		        lastID = sServObj.getNextItem(name, segment.id);
+		        ret.push(segment);
 		    }
-			return foundItms;
+			return ret;
 		};
 
 		/**
@@ -536,7 +548,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getClosestItem = function (sampleNr, levelname, maximum) {
-			var level = sServObj.getLevelDetails(levelname).level;
+			var level = sServObj.getLevelDetails(levelname);
 			var current = undefined;
 			var nearest = undefined;
 			var isFirst = undefined;
@@ -598,7 +610,7 @@ angular.module('emuwebApp')
     			}
     		}
 			return {
-			    current: current,
+			  current: current,
 				nearest: nearest,
 				isFirst: isFirst,
 				isLast: isLast
@@ -606,7 +618,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * deletes a level by its name
+		 * deletes a level by its index
 		 */
 		sServObj.deleteLevel = function (levelIndex, curPerspectiveIdx) {
 			var lvl = DataService.getLevelDataAt(levelIndex);
@@ -1363,12 +1375,12 @@ angular.module('emuwebApp')
 		 * @return array containing all labels (form==['x','y','z'])
 		 */
 		sServObj.getAllLabelsOfLevel = function (levelDetails) {
-			var curAttrDef = viewState.getCurAttrDef(levelDetails.level.name);
+			var curAttrDef = viewState.getCurAttrDef(levelDetails.name);
 			var labels = [];
-			for (var i = 0; i < levelDetails.level.items.length; i++) {
-				for (var j = 0; j < levelDetails.level.items[i].labels.length; j++) {
-					if (levelDetails.level.items[i].labels[j].name === curAttrDef) {
-						labels.push(levelDetails.level.items[i].labels[j].value);
+			for (var i = 0; i < levelDetails.items.length; i++) {
+				for (var j = 0; j < levelDetails.items[i].labels.length; j++) {
+					if (levelDetails.items[i].labels[j].name === curAttrDef) {
+						labels.push(levelDetails.items[i].labels[j].value);
 					}
 				}
 			}
@@ -1431,7 +1443,7 @@ angular.module('emuwebApp')
 		 * @returns id of the new item or -1 if no item has been added
 		 */
 		sServObj.pushNewItem = function (levelName, id) {
-			var level = sServObj.getLevelDetails (levelName).level;
+			var level = sServObj.getLevelDetails(levelName);
 			console.debug(levelName, level, id);
 
 			// Check whether the level has time information
@@ -1607,7 +1619,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.deleteItemWithLinksInvers = function (item, levelName, position, deletedLinks) {
 			// Re-add item
-			sServObj.getLevelDetails(levelName).level.items.splice(position, 0, item);
+			sServObj.getLevelDetails(levelName).items.splice(position, 0, item);
 
 			// Re-add deleted links
 			for (var i=0; i<deletedLinks.length; ++i) {

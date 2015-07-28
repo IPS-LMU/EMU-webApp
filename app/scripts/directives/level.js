@@ -26,15 +26,16 @@ angular.module('emuwebApp')
 					'background': ConfigProviderService.design.color.lightGrey
 				};
 
+
+
+				///////////////
+				// watches
+
 				scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
 					if(newValue != oldValue) {
 						scope.redraw();
 					}
 				});
-
-
-				///////////////
-				// watches
 
 				//
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {

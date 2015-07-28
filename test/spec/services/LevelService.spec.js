@@ -3,6 +3,7 @@
 describe('Service: LevelService', function () {
 
   // load the controller's module
+
   beforeEach(module('emuwebApp'));
 
   var item;
@@ -65,15 +66,15 @@ describe('Service: LevelService', function () {
   it('should return level details', inject(function (DataService, LevelService) {
     // test on JDR10_bndl.annotation
     DataService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.name).toEqual('Phonetic');
-    expect(LevelService.getLevelDetails('Phonetic').level.type).toEqual('SEGMENT');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    expect(LevelService.getLevelDetails('Phonetic').name).toEqual('Phonetic');
+    expect(LevelService.getLevelDetails('Phonetic').type).toEqual('SEGMENT');
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(4);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLevelDetails('TB').level.name).toEqual('TB');
-    expect(LevelService.getLevelDetails('TB').level.type).toEqual('SEGMENT');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    expect(LevelService.getLevelDetails('TB').name).toEqual('TB');
+    expect(LevelService.getLevelDetails('TB').type).toEqual('SEGMENT');
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(2);
   }));
 
   /**
@@ -231,8 +232,7 @@ describe('Service: LevelService', function () {
     viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
     DataService.setData(JDR10_bndl.annotation);
     LevelService.insertItemDetails(5, 'Phonetic', 0, 'test', 87610, 100);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
-    expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(5);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(5);
     expect(LevelService.getItemDetails('Phonetic', 0).sampleStart).toEqual(87610);
     expect(LevelService.getItemDetails('Phonetic', 0).sampleDur).toEqual(100);
     expect(LevelService.getItemDetails('Phonetic', 0).labels[0].name).toEqual('Phonetic');
@@ -242,7 +242,7 @@ describe('Service: LevelService', function () {
     viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
     LevelService.insertItemDetails(112, 'TB', 0, 'test', 29509, 100);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(3);
     expect(LevelService.getItemDetails('TB', 0).id).toEqual(112);
     expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(29509);
     expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(100);
@@ -545,21 +545,8 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     DataService.setData(msajc003_bndl.annotation);
     ConfigProviderService.setVals(defaultEmuwebappConfigTmp);
-    expect(LevelService.getLevelDetails('Phonetic').id).toEqual(6);
     LevelService.renameLevel('Phonetic', 'test', 0);
-    expect(LevelService.getLevelDetails('test').id).toEqual(6);
-
-    // test on dfgspp_mo1_prosody_0024_bndl.annotation
-    DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLevelDetails('TB').id).toEqual(3);
-    LevelService.renameLevel('TB', 'test', 0);
-    expect(LevelService.getLevelDetails('test').id).toEqual(3);
-
-    // test on JDR10_bndl.annotation
-    DataService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').id).toEqual(1);
-    LevelService.renameLevel('Phonetic', 'test', 0);
-    expect(LevelService.getLevelDetails('test').id).toEqual(1);
+    expect(LevelService.getLevelDetails('test').type).toEqual('SEGMENT');
   }));
 
   /**
@@ -569,10 +556,10 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // 2 elements in the middle
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     LevelService.deleteSegments('Phonetic', 148, 2);
     // check new length 34-2=32
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(32);
     // check new sampleDur of 147
     var timeLeft = getItemFromJSON(msajc003_bndl.annotation, 148).sampleDur+1
                    +getItemFromJSON(msajc003_bndl.annotation, 149).sampleDur+1;
@@ -596,10 +583,10 @@ describe('Service: LevelService', function () {
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     // 1 elements on left side
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(2);
     LevelService.deleteSegments('TB', 40, 1);
     // check new length 2-1=1
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(1);
     timeLeft = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 40).sampleDur+1;
     timeRight = 0;
     if (timeLeft % 2 == 0) {
@@ -617,10 +604,10 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     // 1 elements on right side
     DataService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(4);
     LevelService.deleteSegments('Phonetic', 4, 1);
     // check new length 4-1=3
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(3);
     timeLeft = getItemFromJSON(JDR10_bndl.annotation, 4).sampleDur+1;
     timeRight = 0;
     if (timeLeft % 2 == 0) {
@@ -644,11 +631,11 @@ describe('Service: LevelService', function () {
     // delete and deleteSegmentsInvers 2 segments
     viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions)
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     var deleted = LevelService.deleteSegments('Phonetic', 148, 2);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(32);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(32);
     LevelService.deleteSegmentsInvers('Phonetic', 148, 2, deleted);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     item = getItemFromJSON(msajc003_bndl.annotation, 148);
     expect(LevelService.getItemFromLevelById('Phonetic', 148).sampleDur).toEqual(item.sampleDur);
     expect(LevelService.getItemFromLevelById('Phonetic', 148).sampleStart).toEqual(item.sampleStart);
@@ -660,11 +647,11 @@ describe('Service: LevelService', function () {
     // 1 elements on left side
     viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions)
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(2);
     var deleted = LevelService.deleteSegments('TB', 41, 1);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(1);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(1);
     LevelService.deleteSegmentsInvers('TB', 41, 1, deleted);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(2);
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 41);
     expect(LevelService.getItemFromLevelById('TB', 41).sampleDur).toEqual(item.sampleDur);
     expect(LevelService.getItemFromLevelById('TB', 41).sampleStart).toEqual(item.sampleStart);
@@ -674,11 +661,11 @@ describe('Service: LevelService', function () {
     // 1 elements on right side
     viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions)
     DataService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(4);
     var deleted = LevelService.deleteSegments('Phonetic', 4, 1);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(3);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(3);
     LevelService.deleteSegmentsInvers('Phonetic', 4, 1, deleted);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(4);
     item = getItemFromJSON(JDR10_bndl.annotation, 4);
     expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleDur).toEqual(item.sampleDur);
     expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
@@ -695,49 +682,16 @@ describe('Service: LevelService', function () {
     ConfigProviderService.curDbConfig = aetmpDBconfig;
     viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     // insert 1 new segment on the left side
     var ret1 = LevelService.insertSegment('Phonetic', 100, 100, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(35);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(35);
     // insert 2 new segments on the left side
     var ret2 = LevelService.insertSegment('Phonetic', 10, 50, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(37);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(37);
     expect(LevelService.getItemFromLevelById('Phonetic', ret1.ids[0]).labels[0].value).toEqual('test1');
     expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[0]).labels[0].value).toEqual('test2');
     expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
-    /**
-    // test on dfgspp_mo1_prosody_0024_bndl.annotation
-    ConfigProviderService.curDbConfig = ematmpDbConfig;
-    viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
-
-    DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
-    // insert 1 new segment on the right side
-    var ret1 = LevelService.insertSegment('TB', 58000, 58000, 'test1');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(3);
-    // insert 2 new segments on the left side
-    var ret2 = LevelService.insertSegment('TB', 58100, 58200, 'test2');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(5);
-    expect(LevelService.getItemFromLevelById('TB', ret1.ids[0]).labels[0].value).toEqual('test1');
-    expect(LevelService.getItemFromLevelById('TB', ret2.ids[0]).labels[0].value).toEqual('test2');
-    expect(LevelService.getItemFromLevelById('TB', ret2.ids[1]).labels[0].value).toEqual('test2');
-
-    // test on JDR10_bndl.annotation
-    ConfigProviderService.curDbConfig = epgdorsaltmpDbConfig;
-    viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
-
-    DataService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
-    // insert 1 new segment in the middle
-    var ret1 = LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(5);
-    // insert 2 new segments in the middle
-    var ret2 = LevelService.insertSegment('Phonetic', 89000, 89500, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(7);
-    expect(LevelService.getItemFromLevelById('Phonetic', ret1.ids[0]).labels[0].value).toEqual('test1');
-    expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[0]).labels[0].value).toEqual('test2');
-    expect(LevelService.getItemFromLevelById('Phonetic', ret2.ids[1]).labels[0].value).toEqual('test2');
-    */
   }));
 
   /**
@@ -750,45 +704,45 @@ describe('Service: LevelService', function () {
     viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
 
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     // insert 1 new segment on the left side
     LevelService.insertSegment('Phonetic', 100, 100, 'test1');
     LevelService.insertSegmentInvers('Phonetic', 100, 100, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     // insert 2 new segments on the left side
     LevelService.insertSegment('Phonetic', 10, 50, 'test2');
     LevelService.insertSegmentInvers('Phonetic', 10, 50, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
 
     // test on dfgspp_mo1_prosody_0024_bndl.annotation
     ConfigProviderService.curDbConfig = ematmpDbConfig;
     viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
 
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(2);
     // insert 1 new segment on the right side
     LevelService.insertSegment('TB', 58000, 58000, 'test1');
     LevelService.insertSegmentInvers('TB', 58000, 58000, 'test1');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(2);
     // insert 2 new segments on the left side
     LevelService.insertSegment('TB', 58100, 58200, 'test2');
     LevelService.insertSegmentInvers('TB', 58100, 58200, 'test2');
-    expect(LevelService.getLevelDetails('TB').level.items.length).toEqual(2);
+    expect(LevelService.getLevelDetails('TB').items.length).toEqual(2);
 
     // test on JDR10_bndl.annotation
     ConfigProviderService.curDbConfig = epgdorsaltmpDbConfig;
     viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
 
     DataService.setData(JDR10_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(4);
     // insert 1 new segment in the middle
     LevelService.insertSegment('Phonetic', 90000, 90000, 'test1');
     LevelService.insertSegmentInvers('Phonetic', 90000, 90000, 'test1');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(4);
     // insert 2 new segments in the middle
     LevelService.insertSegment('Phonetic', 89000, 89500, 'test2');
     LevelService.insertSegmentInvers('Phonetic', 89000, 89500, 'test2');
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(4);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(4);
   }));
 
   /**
@@ -801,10 +755,10 @@ describe('Service: LevelService', function () {
     viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
 
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);
+    expect(LevelService.getLevelDetails('Tone').items.length).toEqual(7);
     // insert 1 new point
     var ret = LevelService.insertEvent('Tone', 100, 'test');
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(8);
+    expect(LevelService.getLevelDetails('Tone').items.length).toEqual(8);
     expect(LevelService.getItemFromLevelById('Tone', ret.id).labels[0].value).toEqual('test');
   }));
 
@@ -815,10 +769,10 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(7);
+    expect(LevelService.getLevelDetails('Tone').items.length).toEqual(7);
     // delete 1 point
     var ret = LevelService.deleteEvent('Tone', 181);
-    expect(LevelService.getLevelDetails('Tone').level.items.length).toEqual(6);
+    expect(LevelService.getLevelDetails('Tone').items.length).toEqual(6);
   }));
 
   /**
@@ -828,10 +782,10 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(33);
     item = getItemFromJSON(msajc003_bndl.annotation, 147);
     var testText = item.labels[0].value;
     var testLength = item.sampleDur;
@@ -849,10 +803,10 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 147, true, false);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(33);
   }));
 
   /**
@@ -862,10 +816,10 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 180, false, true);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(33);
   }));
 
   /**
@@ -875,13 +829,13 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     // delete 1 boundary
     var ret = LevelService.deleteBoundary('Phonetic', 148 , false, false);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(33);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(33);
     // undo delete 1 boundary
     LevelService.deleteBoundaryInvers('Phonetic', 148, false, false, ret);
-    expect(LevelService.getLevelDetails('Phonetic').level.items.length).toEqual(34);
+    expect(LevelService.getLevelDetails('Phonetic').items.length).toEqual(34);
     item = getItemFromJSON(msajc003_bndl.annotation, 147);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).labels).toEqual(item.labels);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(item.sampleDur);

@@ -47,7 +47,7 @@ angular.module('emuwebApp')
 			defer = $q.defer();
 			worker.tell({
 				'cmd': 'parseJSO',
-				'level': LevelService.getLevelDetails(name).level,
+				'level': LevelService.getLevelDetails(name),
 				'sampleRate': Soundhandlerservice.wavJSO.SampleRate
 			});
 			return defer.promise;

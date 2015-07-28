@@ -188,7 +188,7 @@ angular.module('emuwebApp')
 		}
 	};
 
-	// 
+	//
 	// This returns the stroke width for links
 	// It does not really depend on the orientation but rather on the zoom
 	// scale. It is named getORIENTATEDLinkStrokeWidth anyway because all
@@ -440,7 +440,7 @@ angular.module('emuwebApp')
 			console.debug('Likely a bug: There is no path selection. Not executing play():', d);
 			return;
 		}
-		var timeInfoType = LevelService.getLevelDetails(timeInfoLevel).level.type;
+		var timeInfoType = LevelService.getLevelDetails(timeInfoLevel).type;
 
 		var firstTimeItem = null;
 		var lastTimeItem = null;
@@ -681,7 +681,7 @@ angular.module('emuwebApp')
 
 		var addItemButtons = newLevelCaptions
 			.filter(function(d) {
-				var levelType = LevelService.getLevelDetails(d).level.type;
+				var levelType = LevelService.getLevelDetails(d).type;
 				return (levelType === 'ITEM');
 			})
 			.append('g')
@@ -730,7 +730,7 @@ angular.module('emuwebApp')
 
 		for (var i=0; i<viewState.hierarchyState.path.length; ++i) {
 			// Add all nodes that are not collapsed
-			var levelItems = LevelService.getLevelDetails(viewState.hierarchyState.path[i]).level.items;
+			var levelItems = LevelService.getLevelDetails(viewState.hierarchyState.path[i]).items;
 			for (var ii=0; ii<levelItems.length; ++ii) {
 				if (levelItems[ii]._visible) {
 					nodes.push(levelItems[ii]);

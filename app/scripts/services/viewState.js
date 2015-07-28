@@ -273,12 +273,12 @@ angular.module('emuwebApp')
         // select first if none prev. defined (up)
         // viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
         curLev = Levelserv.getLevelDetails(order[0]);
-        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+        sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
         return;
       } else if (now === undefined && next) {
         // select last if none prev. defined (down)
         curLev = Levelserv.getLevelDetails(order[order.length - 1]);
-        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.length - 1);
+        sServObj.setcurClickLevel(curLev.name, curLev.type, order.length - 1);
         return;
       }
 
@@ -290,8 +290,7 @@ angular.module('emuwebApp')
       });
       if(idxOfNow === undefined) {
 		  curLev = Levelserv.getLevelDetails(order[0]);
-		  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-		  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+		  sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
 		  sServObj.curClickItems = [];
 		  sServObj.selectBoundary();
       }
@@ -300,7 +299,7 @@ angular.module('emuwebApp')
 			if (idxOfNow + 1 < order.length) {
 			  curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
 			  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
+			  sServObj.setcurClickLevel(curLev.name, curLev.type, order.idxOfNow + 1);
 			  sServObj.curClickItems = [];
 			  sServObj.selectBoundary();
 			  //sServObj.resetSelect();
@@ -309,7 +308,7 @@ angular.module('emuwebApp')
 			if (idxOfNow - 1 >= 0) {
 			  curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
 			  // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
-			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
+			  sServObj.setcurClickLevel(curLev.name, curLev.type, order.idxOfNow - 1);
 			  sServObj.curClickItems = [];
 			  sServObj.selectBoundary();
 			  //sServObj.resetSelect();
