@@ -59,8 +59,12 @@ angular.module('emuwebApp')
 					var sInterv = 1 / sRaSt.sampleRate - sRaSt.startTime;
 					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
 					var binValStrArr;
-					angular.forEach(col.values[curFrame], function (el, elIdx) {
+					var curFrameVals = angular.copy(col.values[curFrame]);
+					curFrameVals.reverse();
+
+					angular.forEach(curFrameVals, function (el, elIdx) {
 						binValStrArr = el.toString(2).split('').reverse();
+						// pad with zeros
 						while (binValStrArr.length < 8) {
 							binValStrArr.push('0');
 						}
