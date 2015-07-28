@@ -178,8 +178,8 @@ angular.module('emuwebApp')
             // extract relavant data
             parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS);
 
-            var leftPadding = new Float32Array(fftN / 2);
-            var rightPadding = new Float32Array(fftN / 2 - 1);
+            var leftPadding = [];
+            var rightPadding = [];
 
             // check if any zero padding at LEFT edge is necessary
             var windowSizeInSamples = scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs;
