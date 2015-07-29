@@ -41,6 +41,8 @@ angular.module('emuwebApp')
 			};
 		};
 
+
+
 		/**
 		 * returns level name by passing in id of an element
 		 * this was moved here from HierarchyLayoutService
@@ -395,11 +397,19 @@ angular.module('emuwebApp')
 		    				});
 						}
 					} else if (level.type == 'EVENT') {
-						newElement = {
-							id: id,
-							samplePoint: start,
-							labels: []
-						};
+						if(start !== undefined) {
+							newElement = {
+								id: id,
+								samplePoint: start,
+								labels: []
+							};
+						}
+						else {
+							newElement = {
+								id: id,
+								labels: []
+							};
+						}
 						if(attrdefs.length>0) {
 							for (var i = 0; i < attrdefs.length; i++) {
 								if (attrdefs[i].name === curAttrDef) {
@@ -1342,6 +1352,10 @@ angular.module('emuwebApp')
 			return labels;
 		};
 
+		// SIC !!!
+		// redundant code
+		// why not use getLevelNameByElementID ??
+
 		/**
 		 * returns level name of a given node id
 		 */
@@ -1356,6 +1370,11 @@ angular.module('emuwebApp')
 			});
 			return levelName;
 		}
+
+		// SIC !!!
+		// redundant code
+		// why not use getLevelNameByElementID + getLevelDetails to get level
+		// and getItemFromLevelById to get item ???
 
 		/**
 		 * Returns a level object and an item object according to a given item id
@@ -1388,6 +1407,11 @@ angular.module('emuwebApp')
 				return {level: level, item: item};
 			}
 		};
+
+
+		// SIC !!!
+		// redundant code
+		// why not use insertItemDetails ???
 
 		/**
 		 * Add an item to the end of the specified level
@@ -1429,6 +1453,10 @@ angular.module('emuwebApp')
 				return -1;
 			}
 		};
+
+		// SIC !!!
+		// redundant code
+		// why not use insertItemDetails ???
 
 		/**
 		 * Add an item next to the item with id === eid.
@@ -1498,6 +1526,10 @@ angular.module('emuwebApp')
 
 			return -1;
 		};
+
+
+		// SIC !!!
+		// redundant code
 
 		/**
 		 * This is only used as an undo function for the above addItem() and pushNewItem()
@@ -1581,6 +1613,10 @@ angular.module('emuwebApp')
 				DataService.insertLinkData(deletedLinks[i]);
 			}
 		};
+
+		// SIC !!!
+		// redundant code
+		// why not use getItemFromLevelById ???
 
 		sServObj.getItemByID = function (id) {
 			var levels = DataService.getLevelData();
