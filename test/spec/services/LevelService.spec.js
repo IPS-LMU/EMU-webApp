@@ -257,7 +257,7 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     viewState.setCurLevelAttrDefs(epgdorsaltmpDbConfig.levelDefinitions);
     DataService.setData(JDR10_bndl.annotation);
-    LevelService.updateSegItemInLevel('Phonetic', 3, 'test', 0, 87700, 939);
+    LevelService.updateSegment('Phonetic', 3, 'test', 0, 87700, 939);
     expect(LevelService.getItemDetails('Phonetic', 0).id).toEqual(3);
     expect(LevelService.getItemDetails('Phonetic', 0).sampleStart).toEqual(87700);
     expect(LevelService.getItemDetails('Phonetic', 0).sampleDur).toEqual(939);
@@ -267,7 +267,7 @@ describe('Service: LevelService', function () {
     // // test on dfgspp_mo1_prosody_0024_bndl.annotation
     viewState.setCurLevelAttrDefs(ematmpDbConfig.levelDefinitions);
     DataService.setData(dfgspp_mo1_prosody_0024_bndl.annotation);
-    LevelService.updateSegItemInLevel('TB', 40, 'test', 0, 29604, 2700);
+    LevelService.updateSegment('TB', 40, 'test', 0, 29604, 2700);
     expect(LevelService.getItemDetails('TB', 0).id).toEqual(40);
     expect(LevelService.getItemDetails('TB', 0).sampleStart).toEqual(29604);
     expect(LevelService.getItemDetails('TB', 0).sampleDur).toEqual(2700);
@@ -281,7 +281,7 @@ describe('Service: LevelService', function () {
   it('should change element (point) details on level based on name and id', inject(function (DataService, LevelService) {
     // test on msajc003_bndl.annotation
     DataService.setData(msajc003_bndl.annotation);
-    LevelService.setPointDetails('Tone', 181, 'test', 100);
+    LevelService.updatePoint('Tone', 181, 'test', 0, 100);
     expect(LevelService.getItemDetails('Tone', 0).id).toEqual(181);
     expect(LevelService.getItemDetails('Tone', 0).samplePoint).toEqual(100);
     expect(LevelService.getItemDetails('Tone', 0).labels[0].name).toEqual('Tone');
