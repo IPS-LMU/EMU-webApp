@@ -7,7 +7,7 @@
   <hint ng-show="internalVars.showAboutHint"></hint>
   <!-- hint start -->
   <!-- left side menu bar start -->
-  <bundle-list-side-bar ng-show="cps.vals.activeButtons.openMenu && vs.submenuOpen"></bundle-list-side-bar>
+  <bundle-list-side-bar ng-show="vs.submenuOpen"></bundle-list-side-bar>
   <!-- left side menu bar end -->
 
   <!-- main window start -->
@@ -17,7 +17,7 @@
 
     <!-- top menu bar start -->
     <div class="emuwebapp-top-menu">
-      <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="openSubmenu();" class="emuwebapp-button-icon" style="float:left"><img src="img/menu.svg" class="_20px"></button>
+      <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="vs.toggleSubmenu(cps.design.animation.period);" class="emuwebapp-button-icon" style="float:left"><img src="img/menu.svg" class="_20px"></button>
       <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelSegBtnClick();">add level (SEG.)</button>
       <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelPointBtnClick();">add level (EVENT)</button>
       <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn left" ng-click="renameSelLevelBtnClick();">rename sel. level</button>

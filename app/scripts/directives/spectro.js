@@ -27,7 +27,7 @@ angular.module('emuwebApp')
         scope.alpha = 0.16;
         scope.devicePixelRatio = window.devicePixelRatio || 1;
 
-        // Spectro Worker 
+        // Spectro Worker
         scope.primeWorker = new spectroDrawingWorker();
 
 
@@ -44,6 +44,14 @@ angular.module('emuwebApp')
         });
 
         //
+        scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.wavJSO)) {
+						scope.clearAndDrawSpectMarkup();
+					}
+				});
+
+
+
         scope.$watch('vs.submenuOpen', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
@@ -185,23 +193,30 @@ angular.module('emuwebApp')
             var windowSizeInSamples = scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs;
             if(scope.vs.curViewPort.sS < windowSizeInSamples / 2){
               //should do something here... currently always padding with zeros!
-            }else{
+            }
+            else {
               leftPadding = buffer.subarray(scope.vs.curViewPort.sS - windowSizeInSamples / 2, scope.vs.curViewPort.sS);
             }
-
             // check if zero padding at RIGHT edge is necessary
             if(scope.vs.curViewPort.eS + fftN / 2 - 1 >= scope.shs.wavJSO.Data.length ){
               //should do something here... currently always padding with zeros!
-            }else{
+            }
+            else {
               rightPadding = buffer.subarray(scope.vs.curViewPort.eS, scope.vs.curViewPort.eS + fftN/ 2 - 1);
             }
-
             // add padding
             var paddedSamples = new Float32Array(leftPadding.length + parseData.length + rightPadding.length );
             paddedSamples.set(leftPadding);
             paddedSamples.set(parseData, leftPadding.length);
             paddedSamples.set(rightPadding, leftPadding.length + parseData.length);
 
+            if (scope.vs.curViewPort.sS >= fftN / 2) {
+              // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
+              parseData = buffer.subarray(scope.vs.curViewPort.sS - fftN / 2, scope.vs.curViewPort.eS + fftN);
+            } else {
+              // tolerate window/2 alignment issue if at beginning of file
+              parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
+            }
             scope.setupEvent();
             scope.primeWorker.tell({
               'windowSizeInSecs': scope.vs.spectroSettings.windowSizeInSecs,

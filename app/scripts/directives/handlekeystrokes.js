@@ -674,7 +674,7 @@ angular.module('emuwebApp')
                 if (viewState.getPermission('toggleSideBars')) {
                   // check if menu button in showing -> if not -> no submenu open
                   if (ConfigProviderService.vals.activeButtons.openMenu) {
-                    viewState.togglesubmenuOpen(ConfigProviderService.design.animation.period);
+                    viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
                   }
                 }
               }
@@ -695,7 +695,13 @@ angular.module('emuwebApp')
                   if (viewState.getcurClickLevelName() === undefined) {
                     modalService.open('views/error.html', 'Selection Error : Please select a Level first');
                   } else {
-                    viewState.selectItemsInSelection(DataService.data.levels);
+                    viewState.curClickItems = [];
+                    angular.forEach(viewState.getItemsInSelection(DataService.data.levels), function (item) {
+                      var next = LevelService.getItemInTime(viewState.getcurClickLevelName(), item.id, true);
+                      var prev = LevelService.getItemInTime(viewState.getcurClickLevelName(), item.id, false);
+                      viewState.setcurClickItemMultiple(item, next, prev);
+                    });
+                    viewState.selectBoundary();
                   }
                 }
               }

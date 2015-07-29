@@ -74,3 +74,9 @@ test/coverage
 
 autoprefixer
 --*
+
+.idea/.name
+
+*.iml
+
+.idea/EMU-webApp.iml

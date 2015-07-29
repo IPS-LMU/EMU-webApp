@@ -5,7 +5,7 @@ describe('Directive: trackmouseinlevel', function () {
     var elm, tpl, scope, curLvl, testitem;
     var lvlName = 'Phonetic';
     var lvlType = 'SEGMENT';
-    
+
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
 
     beforeEach(inject(function ($rootScope, $compile, Soundhandlerservice, DataService, LevelService, ConfigProviderService, viewState, HistoryService) {
@@ -31,27 +31,27 @@ describe('Directive: trackmouseinlevel', function () {
         });
         scope.$digest();
     }
-    
+
     it('should react to click', function() {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         spyOn(elm.isolateScope(), 'setLastClick');
         var e = jQuery.Event('click');
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastClick).toHaveBeenCalled();
-     });  
-    
+     });
+
     it('should react to contextmenu', function() {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         spyOn(elm.isolateScope(), 'setLastRightClick');
         var e = jQuery.Event('contextmenu');
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastRightClick).toHaveBeenCalled();
-     }); 
-    
+     });
+
     it('should react to dblclick when enabled', function() {
         compileDirective();
         scope.cps.vals.restrictions.editItemName = true;
@@ -59,12 +59,12 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(elm.isolateScope(), 'setLastDblClick');
         spyOn(elm.isolateScope(), 'setLastClick');
         var e = jQuery.Event('dblclick');
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastDblClick).toHaveBeenCalled();
         expect(elm.isolateScope().setLastClick).not.toHaveBeenCalled();
-     });   
-    
+     });
+
     it('should react to dblclick when disabled', function() {
         compileDirective();
         scope.cps.vals.restrictions.editItemName = false;
@@ -72,36 +72,36 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(elm.isolateScope(), 'setLastDblClick');
         spyOn(elm.isolateScope(), 'setLastClick');
         var e = jQuery.Event('dblclick');
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastDblClick).not.toHaveBeenCalled();
         expect(elm.isolateScope().setLastClick).toHaveBeenCalled();
-     }); 
-    
+     });
+
     it('should react to mousedown', function() {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         var e = jQuery.Event('mousedown');
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
-     });    
-    
+     });
+
     it('should react to mouseup', function() {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         var e = jQuery.Event('mouseup');
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
-     });   
-     
+     });
+
     it('should react to mouseout', function() {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         var e = jQuery.Event('mouseout');
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
-     });  
-     
+     });
+
     it('should react to mousemove with levelType == SEGMENT and samplesPerPixel == 0.1 and isFirst:true and isLast:false', function() {
         compileDirective(lvlName, lvlType);
         scope.vs.setdragBarActive(false);
@@ -119,7 +119,7 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(scope.history, 'updateCurChangeObj');
         var e = jQuery.Event('mousemove');
         e.shiftKey = true;
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(scope.vs.getSamplesPerPixelVal).toHaveBeenCalled();
         expect(scope.vs.getX).toHaveBeenCalled();
         expect(scope.lvl.getClosestItem).toHaveBeenCalled();
@@ -128,8 +128,8 @@ describe('Directive: trackmouseinlevel', function () {
         expect(scope.lvl.moveBoundary).toHaveBeenCalled();
         expect(scope.history.updateCurChangeObj).toHaveBeenCalled();
         expect(scope.vs.movingBoundarySample).toEqual(1);
-     });   
-    
+     });
+
     it('should react to mousemove with levelType == SEGMENT and samplesPerPixel == 0.1 and isFirst:false and isLast:true', function() {
         compileDirective(lvlName, lvlType);
         scope.vs.setdragBarActive(false);
@@ -143,13 +143,13 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(scope.lvl, 'getLastItem').and.returnValue({sampleStart: 0, sampleDur: 0});
         var e = jQuery.Event('mousemove');
         e.shiftKey = true;
-        elm.trigger(e); 
+        elm.trigger(e);
         expect(scope.vs.getSamplesPerPixelVal).toHaveBeenCalled();
         expect(scope.vs.getX).toHaveBeenCalled();
         expect(scope.lvl.getClosestItem).toHaveBeenCalled();
         expect(scope.lvl.getLastItem).toHaveBeenCalled();
-     });   
-     
+     });
+
    it('should setLastClick', function () {
      scope.shs.wavJSO.Data = new Array(58089);
      compileDirective();
@@ -158,9 +158,9 @@ describe('Directive: trackmouseinlevel', function () {
      spyOn(scope.lvl, 'getClosestItem').and.returnValue({current: testitem, nearest: testitem});
      elm.isolateScope().setLastClick(0);
      expect(scope.lvl.getClosestItem).toHaveBeenCalled();
-   });     
-     
-   it('should setLastRightClick', function () {
+   });
+
+   /*it('should setLastRightClick', function () {
      scope.shs.wavJSO.Data = new Array(58089);
      scope.vs.setcurClickLevelName('test');
      elm.isolateScope().levelName = lvlName;
@@ -180,9 +180,9 @@ describe('Directive: trackmouseinlevel', function () {
      expect(scope.vs.selectBoundary).toHaveBeenCalled();
      expect(scope.lvl.getClosestItem).toHaveBeenCalled();
      expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
-   });
-        
-    
+   });*/
+
+
   it('should setLastDblClick on Event', function () {
      scope.shs.wavJSO.Data = new Array(58089);
      compileDirective();
@@ -201,11 +201,11 @@ describe('Directive: trackmouseinlevel', function () {
      expect(scope.lvl.getClosestItem).toHaveBeenCalled();
      expect(scope.lvl.openEditArea).toHaveBeenCalled();
    });
-   
+
   it('should setLastDblClick on Segment', function () {
      scope.shs.wavJSO.Data = new Array(58089);
      compileDirective();
-     elm.isolateScope().levelType = lvlType; 
+     elm.isolateScope().levelType = lvlType;
      scope.vs.curViewPort.eS = (testitem.sampleStart + testitem.sampleDur + 1);
      spyOn(scope.vs, 'setcurClickLevel');
      spyOn(scope.vs, 'setcurClickItem');
@@ -252,6 +252,6 @@ describe('Directive: trackmouseinlevel', function () {
      expect(scope.vs.setcurMouseItem).toHaveBeenCalled();
      expect(scope.lvl.getClosestItem).toHaveBeenCalled();
    });
-   
+
 
 });

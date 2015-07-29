@@ -26,12 +26,16 @@ angular.module('emuwebApp')
 					'background': ConfigProviderService.design.color.lightGrey
 				};
 
-				scope.$watch('vs.submenuOpen', function (newValue, oldValue) {
-					$timeout(scope.redraw, ConfigProviderService.design.animation.duration);
-				});
+
 
 				///////////////
 				// watches
+
+				scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue) {
+						scope.redraw();
+					}
+				});
 
 				//
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
@@ -158,7 +162,7 @@ angular.module('emuwebApp')
 				scope.drawLevelDetails = function () {
 
 					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
-					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);					
+					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
 					var isOpen = element.parent().css('height') === '25px' ? false : true;
 
 					if ($.isEmptyObject(scope.level)) {

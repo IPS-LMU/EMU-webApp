@@ -27,9 +27,12 @@ angular.module('emuwebApp')
         // watches
 
         //
-        scope.$watch('vs.submenuOpen', function () {
-          $timeout(scope.drawSsffTrackMarkup, ConfigProviderService.design.animation.duration);
-        });
+        //
+        scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue) {
+						scope.drawSsffTrackMarkup();
+					}
+				});
 
         //
         scope.$watch('vs.timelineSize', function () {

@@ -28,12 +28,7 @@ module.exports = function (config) {
       'app/bower_components/showdown/src/showdown.js',
       'app/bower_components/angular-markdown-directive/markdown.js',
       'app/bower_components/angular-sanitize/angular-sanitize.js',
-      'app/scripts/!(prototypeexpansions).js',
-      'app/scripts/filters/*.js',
-      'app/scripts/controllers/*.js',
-      'app/scripts/directives/!(tutorial).js',
-      'app/scripts/services/*.js',
-      'app/scripts/workers/*.js',
+      'app/scripts/**/*.js',
       'test/spec/**/*.js',
       //include the directory where directive templates are stored.
       'app/views/**/*.html',
@@ -110,7 +105,7 @@ module.exports = function (config) {
 
     coverageReporter: {
       type: 'lcov',
-      dir: 'test/coverage/',
+      dir: 'test/coverage/'
     },
 
     // plugins: [
@@ -128,6 +123,8 @@ module.exports = function (config) {
     browsers: ['PhantomJS'],
 
     captureTimeout: 60000,
+
+    browserNoActivityTimeout: 3000,
 
 
     // Continuous Integration mode

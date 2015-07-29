@@ -1,5 +1,9 @@
 CACHE MANIFEST
+<<<<<<< HEAD
+# rev 1 - 2015-07-27T11:47:57.662Z
+=======
 # rev 1 - 2015-07-28T13:29:09.190Z
+>>>>>>> master
 
 CACHE:
 404.html
@@ -61,8 +65,13 @@ schemaFiles/bundleSchema.json
 schemaFiles/designSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
+<<<<<<< HEAD
+scripts/3c06877c.emuwebApp.min.js
+scripts/c3d1767b.emuwebAppExternal.min.js
+=======
 scripts/be56cc41.emuwebApp.min.js
 scripts/ce7a5a6c.emuwebAppExternal.min.js
+>>>>>>> master
 scripts/emuwebApp.min.js.map
 scripts/workers/espsParserWorkerClass.js
 scripts/workers/spectroDrawingWorkerClass.js
@@ -70,7 +79,11 @@ scripts/workers/ssffParserWorkerClass.js
 scripts/workers/textGridParserWorkerClass.js
 scripts/workers/wavParserWorkerClass.js
 styles/1c98af2c.emuwebAppExternal.min.css
+<<<<<<< HEAD
+styles/7e4ef85a.emuwebApp.min.css
+=======
 styles/6a77acdb.emuwebApp.min.css
+>>>>>>> master
 views/SelectLabelModal.html
 views/SelectThresholdModal.html
 views/bundleListSideBar.html

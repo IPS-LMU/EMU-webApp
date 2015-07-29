@@ -106,6 +106,7 @@ angular.module('emuwebApp')
       sServObj.curPerspectiveIdx = -1;
       sServObj.mouseInEmuWebApp = false;
       sServObj.lastKeyCode = undefined;
+      sServObj.lastUpdate = undefined;
       // possible general states of state machine
       sServObj.states = [];
       sServObj.states.noDBorFilesloaded = {
@@ -272,12 +273,12 @@ angular.module('emuwebApp')
         // select first if none prev. defined (up)
         // viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
         curLev = Levelserv.getLevelDetails(order[0]);
-        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+        sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
         return;
       } else if (now === undefined && next) {
         // select last if none prev. defined (down)
         curLev = Levelserv.getLevelDetails(order[order.length - 1]);
-        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.length - 1);
+        sServObj.setcurClickLevel(curLev.name, curLev.type, order.length - 1);
         return;
       }
 
@@ -289,8 +290,7 @@ angular.module('emuwebApp')
       });
       if(idxOfNow === undefined) {
 		  curLev = Levelserv.getLevelDetails(order[0]);
-		  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-		  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+		  sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
 		  sServObj.curClickItems = [];
 		  sServObj.selectBoundary();
       }
@@ -299,7 +299,7 @@ angular.module('emuwebApp')
 			if (idxOfNow + 1 < order.length) {
 			  curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
 			  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
+			  sServObj.setcurClickLevel(curLev.name, curLev.type, order.idxOfNow + 1);
 			  sServObj.curClickItems = [];
 			  sServObj.selectBoundary();
 			  //sServObj.resetSelect();
@@ -308,7 +308,7 @@ angular.module('emuwebApp')
 			if (idxOfNow - 1 >= 0) {
 			  curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
 			  // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
-			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
+			  sServObj.setcurClickLevel(curLev.name, curLev.type, order.idxOfNow - 1);
 			  sServObj.curClickItems = [];
 			  sServObj.selectBoundary();
 			  //sServObj.resetSelect();
@@ -420,8 +420,12 @@ angular.module('emuwebApp')
     /**
      * toggle boolean if left submenu is open
      */
-    sServObj.togglesubmenuOpen = function (time) {
+    sServObj.toggleSubmenu = function (time) {
       this.submenuOpen = !this.submenuOpen;
+      $timeout(function() {
+        var d = new Date();
+        sServObj.lastUpdate = d.getTime();
+      }, time);
     };
 
     /**
@@ -624,35 +628,12 @@ angular.module('emuwebApp')
     };
 
     /**
-     * selects all Segements on current level which are inside the selected viewport
-     * @param levelData current level Object
-     */
-    sServObj.selectItemsInSelection = function (levelData) {
-      sServObj.curClickItems = [];
-      var min = Infinity;
-      var max = -Infinity;
-      var itemInSel = this.getItemsInSelection(levelData);
-      angular.forEach(itemInSel, function (item) {
-        if (item.sampleStart < min) {
-          min = item.sampleStart;
-        }
-        if ((item.sampleStart + item.sampleDur + 1) > max) {
-          max = item.sampleStart + item.sampleDur + 1;
-        }
-        sServObj.setcurClickItemMultiple(item, sServObj.curClickLevelType);
-      });
-      sServObj.curViewPort.selectS = min;
-      sServObj.curViewPort.selectE = max;
-    };
-
-    /**
      * get all items of current level which are inside the selected viewport
      */
     sServObj.getItemsInSelection = function (levelData) {
       var itemsInRange = [];
       var rangeStart = sServObj.curViewPort.selectS;
       var rangeEnd = sServObj.curViewPort.selectE;
-
       angular.forEach(levelData, function (t) {
         if (t.name === sServObj.getcurClickLevelName()) {
           angular.forEach(t.items, function (item) {
@@ -665,10 +646,7 @@ angular.module('emuwebApp')
           });
         }
       });
-
-      return itemsInRange;
-
-
+      return itemsInRange.sort(sServObj.sortbystart);
     };
 
 
@@ -707,57 +685,45 @@ angular.module('emuwebApp')
     };
 
     /**
-     * adds a item the currently selected items if left or right of current selected items
+     * adds an item to the currently selected items if the left or right one of current selected items
      * @param item representing the Object to be added to selection
+     * @param next Object next to the Object to be added to selection
+     * @param prev Object previous of the Object to be added to selection
      */
-    sServObj.setcurClickItemMultiple = function (item, type) {
-      var empty = true;
-      if(type === 'SEGMENT') {
-        var start = item.sampleStart;
-        var end = start + item.sampleDur + 1;
-        sServObj.curClickItems.forEach(function (entry) {
-          var front = (entry.sampleStart === end) ? true : false;
-          var back = ((entry.sampleStart + entry.sampleDur + 1) === start) ? true : false;
-          if ((front || back) && sServObj.curClickItems.indexOf(item) === -1) {
+    sServObj.setcurClickItemMultiple = function (item, next, prev) {
+
+      if (sServObj.curClickItems.length == 0 || sServObj.curClickItems === undefined || sServObj.curClickItems === null) {
+        sServObj.curClickItems = [];
+        sServObj.curClickItems.push(item);
+      }
+      else {
+        if(sServObj.curClickItems.indexOf(item) === -1) {
+          if (sServObj.curClickItems.indexOf(next) >= 0 || sServObj.curClickItems.indexOf(prev) >= 0) {
             sServObj.curClickItems.push(item);
-            empty = false;
+            sServObj.curClickItems.sort(sServObj.sortbystart);
           }
-        });
-        if (empty) {
+          else {
+            sServObj.curClickItems = [];
+            sServObj.curClickItems.push(item);
+          }
+        }
+        else {
           sServObj.curClickItems = [];
           sServObj.curClickItems.push(item);
-        } else {
-          sServObj.curClickItems.sort(sServObj.sortbystart);
         }
-      } else {
-        
       }
     };
+
 
     /**
      *
      */
     sServObj.sortbystart = function (a, b) {
         //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-        if (a.sampleStart > b.sampleStart) {
+        if (a.sampleStart > b.sampleStart || a.samplePoint > b.samplePoint) {
           return 1;
         }
-        if (a.sampleStart < b.sampleStart ) {
-          return -1;
-        }
-        return 0;
-      };
-
-
-      /**
-       *
-       */
-      sServObj.sortbypoint = function (a, b) {
-        //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-        if (a.samplePoint > b.samplePoint) {
-          return 1;
-        }
-        if (a.samplePoint < b.samplePoint ) {
+        if (a.sampleStart < b.sampleStart || a.samplePoint < b.samplePoint) {
           return -1;
         }
         return 0;

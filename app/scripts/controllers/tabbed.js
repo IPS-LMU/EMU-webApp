@@ -2,18 +2,18 @@
 
 angular.module('emuwebApp')
 	.controller('TabbedCtrl', function ($scope, Websockethandler, viewState, ConfigProviderService, Validationservice, uuid, LevelService) {
-		
+
 		// service shortcuts
 		$scope.cps = ConfigProviderService;
 		$scope.vs = viewState;
 		$scope.valid = Validationservice;
 		$scope.lvl = LevelService;
-		
+
 		// definition shortcuts
 		$scope.levelDefinitionProperties = {};
 		$scope.linkDefinitionProperties = {};
 		$scope.spectroDefinitionProperties = {};
-		
+
 		// selection properties for "add signal canvases order"
 		$scope.signalSelect = [];
 		// selection properties for "add level canvases order"
@@ -26,10 +26,10 @@ angular.module('emuwebApp')
 		$scope.addLevelSelect = "";
 		// default selection for "add two dim canvases order"
 		$scope.addTwoDimSelect = "";
-		
+
 		// user feedback after saving data
 		$scope.response = [];
-		
+
 		// all available tabs
 		$scope.tabs = [{
 				title: 'level definitions',
@@ -50,33 +50,33 @@ angular.module('emuwebApp')
 				title: 'global DB',
 				url: 'views/tabbed/globalDefinition.html'
 		}];
-		
+
 		$scope.cps = ConfigProviderService;
-		
+
 		// current open tab
 		$scope.currentTabUrl = $scope.tabs[0].url;
-		
+
 		$scope.onClickTab = function (tab) {
 			$scope.currentTabUrl = tab.url;
 		};
-		
+
 		$scope.isActiveTab = function (tabUrl) {
 			if (tabUrl === $scope.currentTabUrl) {
 				return {
 					'background-color': ConfigProviderService.design.color.white,
 					'color': ConfigProviderService.design.color.black,
 					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size		
+					'font-size': ConfigProviderService.design.font.large.size
 				};
 			}
 			return {
 					'background-color': ConfigProviderService.design.color.blue,
 					'color': ConfigProviderService.design.color.white,
 					'font-family': ConfigProviderService.design.font.large.family,
-					'font-size': ConfigProviderService.design.font.large.size					
+					'font-size': ConfigProviderService.design.font.large.size
 				};
-		};			
-		
+		};
+
 		$scope.setup = function () {
 		    // read db config file for enum types
 		    var dbconfigFileSchema = $scope.valid.getSchema('DBconfigFileSchema');
@@ -86,7 +86,7 @@ angular.module('emuwebApp')
 		    $scope.spectroDefinitionProperties = webappFileSchema.data.properties.spectrogramSettings.properties;
 		    $scope.resetSelections();
 		}
-		
+
 		$scope.resetSelections = function () {
 			$scope.signalSelect = ['OSCI', 'SPEC'];
 			$scope.levelSelect = [];
@@ -99,12 +99,12 @@ angular.module('emuwebApp')
 			});
 			// the following will be rewritten : !
 			$scope.twoDimSelect.push('under development');
-			
+
 			////////////////////////////////
 			$scope.addSignalSelect = $scope.signalSelect[0];
 			$scope.addLevelSelect = $scope.levelSelect[0];
 			$scope.addTwoDimSelect = $scope.twoDimSelect[0];
-			
+
 		}
 
 		/**
@@ -138,7 +138,7 @@ angular.module('emuwebApp')
 		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
 		                return bg;
 		            }
-		            break;		
+		            break;
 		        case 'link':
 		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
 		                return bg;
@@ -146,12 +146,12 @@ angular.module('emuwebApp')
 		            break;
                         default:
 			        return {};
-                            break;               
+                            break;
 		    }
                     return {};
 		};
-		
-		
+
+
 		/**
 		 *
 		 */
@@ -167,17 +167,17 @@ angular.module('emuwebApp')
 		            if($scope.cps.curDbConfig.ssffTrackDefinitions[key].added === true) {
 		                style = 'emuwebapp-tabbed-border highlight';
 		            }
-		            break;		
+		            break;
 		        case 'link':
 		            if($scope.cps.curDbConfig.linkDefinitions[key].added === true) {
 		                style = 'emuwebapp-tabbed-border highlight';
 		            }
-		            break;			                        
+		            break;
 		    }
 		    return style;
 		};
-		
-		
+
+
         /**
 		 *
 		 */
@@ -191,7 +191,7 @@ angular.module('emuwebApp')
 				        case 'level':
 				            if(localData.added === true) {
 				                if(localData.name.length > 0) {
-				                    if($scope.lvl.getLevelDetails(localData.name).level === null) {
+				                    if($scope.lvl.getLevelDetails(localData.name) === null) {
 				                        if(localData.type !== '') {
 				                            allowed = true;
 				                        }
@@ -267,21 +267,21 @@ angular.module('emuwebApp')
 				}
 			});
 		};
-			
+
 		$scope.showResponse = function(key, text) {
 			$scope.response[key] = {};
             $scope.response[key].show = true;
 		    $scope.response[key].text = text;
-		}; 
-		
+		};
+
 		$scope.hideResponse = function(key) {
 			if($scope.response[key] !== undefined) {
 				if($scope.response[key].show === true) {
 					$scope.response[key].show = false;
 				}
 			}
-		}; 		
-			
+		};
+
 		$scope.addDefinition = function (typeOfDefinition, key, keyAttribute) {
 		    switch(typeOfDefinition) {
 		        case 'level':
@@ -295,35 +295,35 @@ angular.module('emuwebApp')
 		            break;
 		        case 'ssff':
 		            $scope.cps.curDbConfig.ssffTrackDefinitions.push({name: '', columnName: '', fileExtension: '', added: true})
-		            break;	
+		            break;
 		        case 'perspective':
 		            $scope.cps.vals.perspectives.push({name: '', signalCanvases: { order: [], assign: [], contourLims: [], contourColors: []}, levelCanvases: { order: [] }, twoDimCanvases: { order: [] }});
 		            break;
 		        case 'perspectiveAssign':
 		            $scope.cps.vals.perspectives[key].signalCanvases.assign.push({signalCanvasName: '', ssffTrackName: ''});
-		            break;	
+		            break;
 		        case 'perspectiveContourColor':
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourColors.push({colors: ['rgba(0,0,0,1)'], ssffTrackName: ''});
-		            break;	
+		            break;
 		        case 'perspectiveContourColorColor':
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourColors[keyAttribute].colors.push('rgba(0,0,0,1)');
-		            break;	
+		            break;
 		        case 'perspectiveContourLims':
 		            $scope.cps.vals.perspectives[key].signalCanvases.contourLims.push({ssffTrackName: '', minContourIdx: 0, maxContourIdx: 1});
-		            break;	
+		            break;
 		        case 'perspectiveOrderSignal':
 		            $scope.cps.vals.perspectives[key].signalCanvases.order.push(keyAttribute);
-		            break;	
+		            break;
 		        case 'perspectiveOrderLevel':
 		            $scope.cps.vals.perspectives[key].levelCanvases.order.push(keyAttribute);
-		            break;	
+		            break;
 		        case 'perspectiveOrderTwoDim':
 		            $scope.cps.vals.perspectives[key].twoDimCanvases.order.push(keyAttribute);
-		            break;	
+		            break;
 
 		    }
 		}
-		
+
 		$scope.deleteDefinition = function (typeOfDefinition, key, keyAttribute, subKeyAttribute) {
 		    switch(typeOfDefinition) {
 		        case 'level':
@@ -362,8 +362,8 @@ angular.module('emuwebApp')
 		        case 'perspectiveOrderTwoDim':
 		            $scope.cps.vals.perspectives[key].twoDimCanvases.order.splice(keyAttribute, 1);
 		            break;
-		    }		    
-		}		
-		
-		$scope.setup();	
+		    }
+		}
+
+		$scope.setup();
 });
