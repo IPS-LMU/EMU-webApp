@@ -494,6 +494,7 @@ spectroDrawingWorker.prototype = {
 		 * - (and saving the biggest value in totalMax)
 		 *
 		 * @param offset calculated offset in PCM Stream
+		 * @param windowSizeInSamples size of window in samples (actual samples -> not FFT length; rest zero-padded)
 		 * @return magnitude spectrum as Float32Array
 		 */
 		global.calcMagnitudeSpectrum = function (offset, windowSizeInSamples) {

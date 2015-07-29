@@ -5,6 +5,8 @@ What's New
 
 - fixed off by 1px problem due to boarder problem in levels
 - checking if scroll bar in level panel -> if so adding scroll bar to track panel
+- fixed slight alignment issue of OSCI and SPEC due to centering on FFT length and not the actual window length
+- vertical flip of EPG drawing
 
 ## Version 0.0.23
 

@@ -78,6 +78,7 @@ describe('Directive: spectro', function () {
 
     it('should startSpectroRenderingThread', function () {
         compileDirective();
+        scope.shs.wavJSO.Data = [1, 2, 3];
         scope.vs.curViewPort.sS = 4000;
         var buffer = new ArrayBuffer(58089);
         var view = new Uint8Array(buffer);
