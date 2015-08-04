@@ -11,13 +11,13 @@ angular.module('emuwebApp')
 
 		///////////////////////////////
 		// public api
-		
+
 		///////////////////
-		// drag n drop data 
+		// drag n drop data
 		sServObj.setData = function (bundles) {
 		    var prom = [];
 		    var count = 0;
-		    
+
 			angular.forEach(bundles, function (bundle, i) {
 			    sServObj.setDragnDropData(bundle[0], i, 'wav', bundle[1]);
 			    sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 				sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then( function() {
 					loadedMetaDataService.setBundleList(sServObj.bundleList);
 					loadedMetaDataService.setCurBndlName(sServObj.bundleList[DragnDropDataService.sessionDefault]);
-					loadedMetaDataService.setDemoDbName(sServObj.bundleList[DragnDropDataService.sessionDefault]);	
+					loadedMetaDataService.setDemoDbName(sServObj.bundleList[DragnDropDataService.sessionDefault]);
 					sServObj.handleLocalFiles();
 					return true;
 				});
@@ -36,12 +36,12 @@ angular.module('emuwebApp')
 			    return false;
 			}
 		};
-		
+
 		sServObj.resetToInitState = function () {
     		sServObj.drandropBundles = [];
 	    	sServObj.bundleList = [];
 		};
-		
+
 		/**
 		 * setter sServObj.drandropBundles
 		 */
@@ -52,7 +52,7 @@ angular.module('emuwebApp')
 			    DragnDropDataService.convertedBundles[i] = {};
 			    DragnDropDataService.convertedBundles[i].name = bundle;
 			    sServObj.bundleList.push({
-			        name: bundle, 
+			        name: bundle,
 			        session: sServObj.sessionName
 			    });
 			    DragnDropDataService.setDefaultSession(i);
@@ -64,7 +64,7 @@ angular.module('emuwebApp')
 			    sServObj.drandropBundles[i].annotation = data;
 			}
 		};
-		
+
 		/**
 		 * getter sServObj.drandropBundles
 		 */
@@ -79,17 +79,17 @@ angular.module('emuwebApp')
 			    return false;
 			}
 		};
-		
+
 		sServObj.generateDrop = function (data) {
 			var objURL;
 		    if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
 		        objURL = webkitURL.createObjectURL(sServObj.getBlob(data));
 		    } else {
 		        objURL = URL.createObjectURL(sServObj.getBlob(data));
-		    }	
+		    }
 		    return objURL;
 		};
-		
+
 		/**
 		 *
 		 */
@@ -105,7 +105,7 @@ angular.module('emuwebApp')
 		    }
 		    return blob;
 		};
-		
+
 		sServObj.convertDragnDropData = function (bundles, i) {
 		    var defer = $q.defer();
 		    var data = sServObj.drandropBundles[i];
@@ -121,12 +121,13 @@ angular.module('emuwebApp')
 								res = evt.target.result;
 							} else {
 								res = evt.currentTarget.result;
-							} 
-							Wavparserservice.parseWavArrBuf(res).then(function (wavJSO) { 
+							}
+							Wavparserservice.parseWavArrBuf(res).then(function (wavJSO) {
 								DragnDropDataService.convertedBundles[i].mediaFile = {};
 								Soundhandlerservice.wavJSO = wavJSO;
 								DragnDropDataService.convertedBundles[i].mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(wavJSO.origArrBuf);
-								DragnDropDataService.convertedBundles[i].ssffFiles =  {};
+								DragnDropDataService.convertedBundles[i].mediaFile.encoding = 'BASE64';
+								DragnDropDataService.convertedBundles[i].ssffFiles =  [];
 								var bundle = data.wav.name.substr(0, data.wav.name.lastIndexOf('.'));
 								if(data.annotation===undefined) {
 									DragnDropDataService.convertedBundles[i].annotation = {
@@ -150,7 +151,7 @@ angular.module('emuwebApp')
 													sServObj.convertDragnDropData(bundles, i+1).then( function () {
 														defer.resolve();
 													});
-												});                                                            
+												});
 											}
 										};
 								    }
@@ -161,20 +162,20 @@ angular.module('emuwebApp')
 												DragnDropDataService.convertedBundles[i].annotation = angular.fromJson(evt.currentTarget.result);
 												sServObj.convertDragnDropData(bundles, i+1).then( function () {
 													defer.resolve();
-												});                                                     
+												});
 											}
 										};
 								    }
 								}
 							});
 						}
-					}; 
-				}           
+					};
+				}
             }
             else {
                 defer.resolve();
                 return defer.promise;
-            }			
+            }
 			return defer.promise;
 		};
 
@@ -226,12 +227,12 @@ angular.module('emuwebApp')
 								}
 							});
 						});
-						
+
 						// set level defs
 						ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
 						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
 						ConfigProviderService.setPerspectivesOrder(viewState.curPerspectiveIdx, lNames);
-						//ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;							
+						//ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
 						Soundhandlerservice.wavJSO = wavJSO;
 
 						// set all ssff files
@@ -260,10 +261,10 @@ angular.module('emuwebApp')
             });
             viewState.somethingInProgress = false;
         };
-		
-		
-		
-		
-	
+
+
+
+
+
 		return sServObj;
 	});

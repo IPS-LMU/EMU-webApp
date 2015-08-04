@@ -19,7 +19,7 @@ angular.module('emuwebApp')
 		sServObj.loadBundle = function (bndl) {
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-				var curBndl = loadedMetaDataService.getCurBndl(); 
+				var curBndl = loadedMetaDataService.getCurBndl();
 				if (bndl !== curBndl) {
 					// $scope.lastclickedutt = bndl;
 					modalService.open('views/saveChanges.html', curBndl.session + ':' + curBndl.name).then(function (messModal) {
@@ -45,9 +45,9 @@ angular.module('emuwebApp')
 					viewState.resetHierarchyState();
 					// set state
                     LevelService.deleteEditArea();
-                    viewState.setEditing(false);					
+                    viewState.setEditing(false);
 					viewState.setState('loadingSaving');
-					
+
 					viewState.somethingInProgress = true;
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
 					// empty ssff files
