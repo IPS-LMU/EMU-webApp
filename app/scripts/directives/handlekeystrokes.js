@@ -75,7 +75,7 @@ angular.module('emuwebApp')
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyCommitEdit) {
                   var elementID = viewState.hierarchyState.getContextMenuID();
                   var element = LevelService.getItemByID(elementID);
-                  var levelName = LevelService.getLevelNameByElementID(elementID);
+                  var levelName = LevelService.getLevelName(elementID);
                   var attrIndex = viewState.getCurAttrIndex(levelName);
                   var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 

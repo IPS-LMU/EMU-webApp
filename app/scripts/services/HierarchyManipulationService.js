@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 
 		/**
 		 * Add a new link if it is valid and goes along the specfied path
-		 * 
+		 *
 		 * If the specified link is invalid but its reverse is valid,
 		 * the reverse is added.
 		 *
@@ -81,7 +81,7 @@ angular.module('emuwebApp')
 				return result;
 			}
 
-			
+
 			// Check whether link already exists
 			for (var i=0; i<links.length; ++i) {
 				if (links[i].fromID === from && links[i].toID === to) {
@@ -95,8 +95,8 @@ angular.module('emuwebApp')
 			// path (which implies that the DBconfig.linkDefinitions
 			// are met, apart from the link type that is specified
 			// there
-			var superlevelName = LevelService.getLevelNameByElementID(from);
-			var sublevelName = LevelService.getLevelNameByElementID(to);
+			var superlevelName = LevelService.getLevelName(from);
+			var sublevelName = LevelService.getLevelName(to);
 			var superlevelIndex = path.indexOf(superlevelName);
 			if (path[superlevelIndex-1] !== sublevelName) {
 				result.valid = false;
@@ -134,7 +134,6 @@ angular.module('emuwebApp')
 			}
 			if (linkType === 'ONE_TO_ONE') {
 				var fromElement = LevelService.getItemByID(from);
-				
 				var children = HierarchyLayoutService.findChildren(fromElement, path);
 				if (children.length > 0) {
 					result.valid = false;
@@ -176,16 +175,16 @@ angular.module('emuwebApp')
 			while (firstAllowedChildIndex === undefined) {
 				siblingRelativeIndex -= 1;
 				sibling = superlevel.items[parentOrder + siblingRelativeIndex];
-				
+
 				if (sibling === undefined) {
 					firstAllowedChildIndex = 0;
 					break;
 				}
-				
+
 				console.debug('found preceding sibling', sibling.id, sibling.labels[0]);
 
 				var children = HierarchyLayoutService.findChildren(sibling, path);
-				
+
 				for (var i=0; i<children.length; ++i) {
 					var index = LevelService.getOrderById(sublevelName, children[i].id);
 					if (firstAllowedChildIndex === undefined || index > firstAllowedChildIndex) {
@@ -233,4 +232,3 @@ angular.module('emuwebApp')
 
 		return sServObj;
 	});
-

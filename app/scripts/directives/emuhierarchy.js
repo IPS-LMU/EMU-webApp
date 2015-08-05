@@ -203,7 +203,7 @@ angular.module('emuwebApp')
 	};
 
 	scope.getNodeText = function (d) {
-		var level = viewState.getCurAttrDef(LevelService.getLevelNameByElementID(d.id));
+		var level = viewState.getCurAttrDef(LevelService.getLevelName(d.id));
 		for (var i=0; i<d.labels.length; ++i) {
 			if (d.labels[i].name === level) {
 				return d.labels[i].value;
@@ -332,7 +332,7 @@ angular.module('emuwebApp')
 
 	scope.getLabelLegalnessColor = function (d) {
 		var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
-		var levelName = LevelService.getLevelNameByElementID(d.id);
+		var levelName = LevelService.getLevelName(d.id);
 		var attrIndex = viewState.getCurAttrIndex(levelName);
 		var legalLabels = scope.cps.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 

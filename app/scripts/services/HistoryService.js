@@ -173,7 +173,7 @@ angular.module('emuwebApp')
 					}
           sServObj.setHistoryActionText(action, cur.action);
 				} else if (cur.type === 'HIERARCHY') {
-                                        var action = false;
+          var action = false;
 					switch (cur.action) {
 						case 'DELETELINK':
 							// The order of links is not preserved on undo

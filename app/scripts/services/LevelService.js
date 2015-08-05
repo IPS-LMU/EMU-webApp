@@ -39,27 +39,6 @@ angular.module('emuwebApp')
 			return ret;
 		};
 
-
-
-		/**
-		 * returns level name by passing in id of an element
-		 * this was moved here from HierarchyLayoutService
-		 *    @param id
-		 */
-		sServObj.getLevelNameByElementID = function (id) {
-			var ret = null;
-			for (var i = 0; i < DataService.getData().levels.length; ++i) {
-				for (var ii = 0; ii < DataService.getData().levels[i].items.length; ++ii) {
-					if (DataService.getData().levels[i].items[ii].id === id) {
-						ret = DataService.getData().levels[i].name;
-						break;
-					}
-				}
-			}
-			return ret;
-		}
-
-
 		/**
 		 * returns all levels with details for a specific type
 		 *    @param types
@@ -129,6 +108,7 @@ angular.module('emuwebApp')
 			});
 			return ret;
 		};
+
 
 		/**
 		 * returns the last element inside a level with 'name'
@@ -214,6 +194,73 @@ angular.module('emuwebApp')
 							ret = element;
 						}
 					});
+				}
+			});
+			return ret;
+		};
+
+
+
+		/**
+		 * get all labels (curAttr def applies) of a level and
+		 * return them as a flat array
+		 * @param levelDetails containing labels
+		 * @return array containing all labels (form==['x','y','z'])
+		 */
+		sServObj.getAllLabelsOfLevel = function (levelDetails) {
+			var curAttrDef = viewState.getCurAttrDef(levelDetails.name);
+			var labels = [];
+			angular.forEach(levelDetails.items, function (item) {
+				var pos = item.labels.map(function(e) { return e.name; }).indexOf(curAttrDef);
+				if(pos >= 0) {
+					labels.push(item.labels[pos].value);
+				}
+			});
+			return labels;
+		};
+
+		/**
+		 * returns level name of a given node id
+		 * @param nodeID id of the node
+		 * @return name of the containing level
+		 */
+		sServObj.getLevelName = function (nodeID) {
+			var ret = null;
+			angular.forEach(DataService.getLevelData(), function (level) {
+				var pos = level.items.map(function(e) { return e.id; }).indexOf(nodeID);
+				if(pos >= 0) {
+					ret = level.name;
+				}
+			});
+			return ret;
+		}
+
+		/**
+		 * Returns a level object and an item object according to a given item id
+		 * @param nodeID id of the node
+		 * @return object with level and item
+		 */
+		sServObj.getLevelAndItem = function (nodeID) {
+			var name = sServObj.getLevelName(nodeID);
+			if(name !== null) {
+				return {level: sServObj.getLevelDetails(name), item: sServObj.getItemByID(nodeID)};
+			}
+			else {
+				return null;
+			}
+		};
+
+		/**
+		 * Returns an item with a given id
+		 * @param nodeID id of the node
+		 * @return item with id
+		 */
+		sServObj.getItemByID = function (nodeID) {
+			var ret = undefined;
+			angular.forEach(DataService.getLevelData(), function (level) {
+				var pos = level.items.map(function(e) { return e.id; }).indexOf(nodeID);
+				if(pos >= 0) {
+					ret = level.items[pos];
 				}
 			});
 			return ret;
@@ -1387,86 +1434,6 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * get all labels (curAttr def applies) of a level and
-		 * return them as a flat array
-		 * @param levelName
-		 * @return array containing all labels (form==['x','y','z'])
-		 */
-		sServObj.getAllLabelsOfLevel = function (levelDetails) {
-			var curAttrDef = viewState.getCurAttrDef(levelDetails.name);
-			var labels = [];
-			for (var i = 0; i < levelDetails.items.length; i++) {
-				for (var j = 0; j < levelDetails.items[i].labels.length; j++) {
-					if (levelDetails.items[i].labels[j].name === curAttrDef) {
-						labels.push(levelDetails.items[i].labels[j].value);
-					}
-				}
-			}
-			return labels;
-		};
-
-		// SIC !!!
-		// redundant code
-		// why not use getLevelNameByElementID ??
-
-		/**
-		 * returns level name of a given node id
-		 */
-		sServObj.getLevelName = function (nodeID) {
-			var levelName = null;
-			angular.forEach(DataService.getLevelData(), function (level) {
-				angular.forEach(level.items, function (item) {
-					if (item.id === nodeID) {
-						levelName = level.name;
-					}
-			    });
-			});
-			return levelName;
-		}
-
-		// SIC !!!
-		// redundant code
-		// why not use getLevelNameByElementID + getLevelDetails to get level
-		// and getItemFromLevelById to get item ???
-
-		/**
-		 * Returns a level object and an item object according to a given item id
-		 */
-		sServObj.getLevelAndItem = function (eid) {
-			var i, ii;
-			var level, item;
-			var found = false;
-
-			// Iterate over all levels and their items
-			for (i=0; i<DataService.getLevelData().length; ++i) {
-				level = DataService.getLevelData()[i];
-				for (ii=0; ii<level.items.length; ++ii) {
-					item = level.items[ii];
-					if (item.id === eid) {
-						found = true;
-						break;
-					}
-				}
-
-				if (found) {
-					break;
-				}
-			}
-
-			if (!found) {
-				// No item with id === eid has been found
-				return null;
-			} else {
-				return {level: level, item: item};
-			}
-		};
-
-
-		// SIC !!!
-		// redundant code
-		// why not use insertItemDetails ???
-
-		/**
 		 * Add an item to the end of the specified level
 		 *
 		 * @param level Name of the level onto which to push the new item
@@ -1506,10 +1473,6 @@ angular.module('emuwebApp')
 				return -1;
 			}
 		};
-
-		// SIC !!!
-		// redundant code
-		// why not use insertItemDetails ???
 
 		/**
 		 * Add an item next to the item with id === eid.
@@ -1579,10 +1542,6 @@ angular.module('emuwebApp')
 
 			return -1;
 		};
-
-
-		// SIC !!!
-		// redundant code
 
 		/**
 		 * This is only used as an undo function for the above addItem() and pushNewItem()
@@ -1667,23 +1626,7 @@ angular.module('emuwebApp')
 			}
 		};
 
-		// SIC !!!
-		// redundant code
-		// why not use getItemFromLevelById ???
 
-		sServObj.getItemByID = function (id) {
-			var levels = DataService.getLevelData();
-
-			for (var i=0; i<levels.length; ++i) {
-				for (var ii=0; ii<levels[i].items.length; ++ii) {
-					if (levels[i].items[ii].id === id) {
-						return levels[i].items[ii];
-					}
-				}
-			}
-
-			return undefined;
-		};
 
 		return sServObj;
 	});

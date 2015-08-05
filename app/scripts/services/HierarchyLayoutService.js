@@ -152,7 +152,7 @@ angular.module('emuwebApp')
 
 			// Find the level that d is a part of
 			// Return empty array if that fails (which shouldn't happen at all)
-			var currentLevel = LevelService.getLevelNameByElementID(d.id);
+			var currentLevel = LevelService.getLevelName(d.id);
 			if (currentLevel === null) {
 				console.log('Likely a bug: failed to find a node\'s level', d)
 				return [];

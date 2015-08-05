@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('historyActionPopup', function ($animate, $timeout) {
+	.directive('historyActionPopup', function ($animate, $timeout, ConfigProviderService) {
 		return {
 			template: '<div class="emuwebapp-history"><div ng-bind-html="vs.historyActionTxt"></div></div>',
 			restrict: 'E',
@@ -9,6 +9,7 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attrs) {
 				////////////////
 				//watches
+				scope.cps = ConfigProviderService;
 				scope.$watch('vs.historyActionTxt', function () {
 					if (scope.vs.historyActionTxt !== '') {
 						$animate.addClass(element, 'emuwebapp-history-fade').then(function () {
