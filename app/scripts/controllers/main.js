@@ -4,7 +4,7 @@ angular.module('emuwebApp')
 	.controller('MainController', function ($scope, $rootScope, $log, $compile, $timeout,
 		$q, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
 		Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
-		LevelService, Textgridparserservice, Espsparserservice, Languages,
+		LevelService, Textgridparserservice, Espsparserservice,
 		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
 		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
 		appStateService, DataService, modalService, browserDetector) {
@@ -58,7 +58,7 @@ angular.module('emuwebApp')
 		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
 			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && loadedMetaDataService.getBundleList().length > 0 && !ConfigProviderService.vals.main.autoConnect) {
-				return Languages.dialog.exit[0];
+				return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
 			}
 		};
 
@@ -740,7 +740,7 @@ angular.module('emuwebApp')
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
 				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.'
 			} else {
-				modalText = Languages.dialog.clear[Languages.currentLanguage];
+				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.';
 			}
 			modalService.open('views/confirmModal.html', modalText).then(function (res) {
 				if (res) {
