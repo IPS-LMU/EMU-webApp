@@ -7,7 +7,8 @@ angular.module('emuwebApp')
       link: function (scope, element, attr) {
         element.bind('click', function () {
           scope.vs.setcurClickLevelName(scope.level.name, attr.delete);
-          modalService.open('views/deleteLevel.html',  name);
+          scope.vs.setcurClickLevel(scope.level.name, scope.level.type, scope.order);
+          modalService.open('views/deleteLevel.html',  scope.level.name);
         });
       }
     };
