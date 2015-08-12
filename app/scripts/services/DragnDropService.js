@@ -38,15 +38,17 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.resetToInitState = function () {
-    		sServObj.drandropBundles = [];
-	    	sServObj.bundleList = [];
+			sServObj.drandropBundles = [];
+			sServObj.bundleList = [];
+			sServObj.sessionName = 'File(s)';
+			sServObj.maxDroppedBundles = 10;
 		};
 
 		/**
 		 * setter sServObj.drandropBundles
 		 */
 		sServObj.setDragnDropData = function (bundle, i, type, data) {
-
+			DragnDropDataService.setDefaultSession(i);
 			if(sServObj.drandropBundles[i] === undefined) {
 			    sServObj.drandropBundles[i] = {};
 			    DragnDropDataService.convertedBundles[i] = {};
@@ -55,13 +57,13 @@ angular.module('emuwebApp')
 			        name: bundle,
 			        session: sServObj.sessionName
 			    });
-			    DragnDropDataService.setDefaultSession(i);
+
 			}
 			if(type === 'wav') {
-                sServObj.drandropBundles[i].wav = data;
+				sServObj.drandropBundles[i].wav = data;
 			}
 			else if(type === 'annotation') {
-			    sServObj.drandropBundles[i].annotation = data;
+				sServObj.drandropBundles[i].annotation = data;
 			}
 		};
 
@@ -187,9 +189,14 @@ angular.module('emuwebApp')
 		 */
         sServObj.handleLocalFiles = function () {
             var validRes;
+						console.log(DragnDropDataService.convertedBundles);
+						console.log(DragnDropDataService.sessionDefault);
             var wav = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].mediaFile.data;
             var ab = Binarydatamaniphelper.base64ToArrayBuffer(wav);
-            var annotation = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].annotation;
+						var annotation = { levels: [], links: []};
+						if(DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].annotation !== undefined) {
+							annotation = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].annotation;
+						}
             viewState.showDropZone = false;
             viewState.setState('loadingSaving');
             // reset history
@@ -204,60 +211,60 @@ angular.module('emuwebApp')
                 if (validRes === true) {
                     ConfigProviderService.curDbConfig = resp.data;
                     viewState.somethingInProgressTxt = 'Parsing WAV file...';
-					Wavparserservice.parseWavArrBuf(ab).then(function (messWavParser) {
-						var wavJSO = messWavParser;
-						viewState.curViewPort.sS = 0;
-						viewState.curViewPort.eS = wavJSO.Data.length;
-						viewState.curViewPort.selectS = -1;
-						viewState.curViewPort.selectE = -1;
-						viewState.curClickSegments = [];
-						viewState.curClickLevelName = undefined;
-						viewState.curClickLevelType = undefined;
-						loadedMetaDataService.setCurBndl(DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault]);
-						viewState.resetSelect();
-						viewState.curPerspectiveIdx = 0;
-						DataService.setLevelData(annotation.levels);
-						var lNames = [];
-						var levelDefs = [];
-						annotation.levels.forEach(function (l) {
-							lNames.push(l.name);
-							levelDefs.push({
-								'name': l.name,
-								'type': l.type,
-								'attributeDefinitions': {
-									'name': l.name,
-									'type': 'string'
-								}
-							});
-						});
+										Wavparserservice.parseWavArrBuf(ab).then(function (messWavParser) {
+											var wavJSO = messWavParser;
+											viewState.curViewPort.sS = 0;
+											viewState.curViewPort.eS = wavJSO.Data.length;
+											viewState.curViewPort.selectS = -1;
+											viewState.curViewPort.selectE = -1;
+											viewState.curClickSegments = [];
+											viewState.curClickLevelName = undefined;
+											viewState.curClickLevelType = undefined;
+											loadedMetaDataService.setCurBndl(DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault]);
+											viewState.resetSelect();
+											viewState.curPerspectiveIdx = 0;
+											DataService.setLevelData(annotation.levels);
+											var lNames = [];
+											var levelDefs = [];
+											annotation.levels.forEach(function (l) {
+												lNames.push(l.name);
+												levelDefs.push({
+													'name': l.name,
+													'type': l.type,
+													'attributeDefinitions': {
+														'name': l.name,
+														'type': 'string'
+													}
+												});
+											});
 
-						// set level defs
-						ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
-						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-						ConfigProviderService.setPerspectivesOrder(viewState.curPerspectiveIdx, lNames);
-						//ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-						Soundhandlerservice.wavJSO = wavJSO;
+											// set level defs
+											ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+											viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+											ConfigProviderService.setPerspectivesOrder(viewState.curPerspectiveIdx, lNames);
+											//ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+											Soundhandlerservice.wavJSO = wavJSO;
 
-						// set all ssff files
-						viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-						var validRes = Validationservice.validateJSO('annotationFileSchema', annotation);
-						if (validRes === true) {
-							DataService.setLinkData(annotation.links);
-							viewState.setState('labeling');
-							viewState.somethingInProgress = false;
-							viewState.somethingInProgressTxt = 'Done!';
-						} else {
-							modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
-								sServObj.resetToInitState();
-								appStateService.resetToInitState();
-							});
-						}
-				}, function (errMess) {
-						modalService.open('views/error.html', 'Error parsing wav file: ' + errMess).then(function () {
-							sServObj.resetToInitState();
-							appStateService.resetToInitState();
-						});
-					});
+											// set all ssff files
+											viewState.somethingInProgressTxt = 'Parsing SSFF files...';
+											var validRes = Validationservice.validateJSO('annotationFileSchema', annotation);
+											if (validRes === true) {
+												DataService.setLinkData(annotation.links);
+												viewState.setState('labeling');
+												viewState.somethingInProgress = false;
+												viewState.somethingInProgressTxt = 'Done!';
+											} else {
+												modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
+													appStateService.resetToInitState();
+													sServObj.resetToInitState();
+												});
+											}
+									}, function (errMess) {
+											modalService.open('views/error.html', 'Error parsing wav file: ' + errMess).then(function () {
+												appStateService.resetToInitState();
+												sServObj.resetToInitState();
+											});
+										});
 
                 }
 
