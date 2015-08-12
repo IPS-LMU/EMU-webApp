@@ -189,8 +189,6 @@ angular.module('emuwebApp')
 		 */
         sServObj.handleLocalFiles = function () {
             var validRes;
-						console.log(DragnDropDataService.convertedBundles);
-						console.log(DragnDropDataService.sessionDefault);
             var wav = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].mediaFile.data;
             var ab = Binarydatamaniphelper.base64ToArrayBuffer(wav);
 						var annotation = { levels: [], links: []};

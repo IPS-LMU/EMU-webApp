@@ -16,7 +16,6 @@ angular.module('emuwebApp')
         scope.lastPCM = undefined;
         scope.curMouseSampleNrInView = undefined;
         scope.order = attr.trackMouseInLevel;
-
         /////////////////////////////
         // Bindings
 
@@ -214,11 +213,12 @@ angular.module('emuwebApp')
           LevelService.deleteEditArea();
           viewState.setEditing(false);
           scope.lastEventClick = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.wavJSO.Data.length);
+          viewState.setcurClickLevel(scope.levelName, scope.levelType, scope.order);
           if (scope.lastEventClick.current !== undefined && scope.lastEventClick.nearest !== undefined) {
             LevelService.setlasteditArea('_' + scope.lastEventClick.current.id);
             LevelService.setlasteditAreaElem(element.parent());
-            viewState.setcurClickLevel(scope.levelName, scope.levelType, scope.$index);
             viewState.setcurClickItem(scope.lastEventClick.current);
+            viewState.selectBoundary();
           }
           scope.lastPCM = scope.curMouseSampleNrInView;
           viewState.setLastPcm(scope.lastPCM);
@@ -242,7 +242,6 @@ angular.module('emuwebApp')
             viewState.setcurClickItemMultiple(scope.lastEventClick.current, next, prev);
             viewState.selectBoundary();
           }
-          console.log(viewState.curClickItems)
           scope.lastPCM = scope.curMouseSampleNrInView;
           viewState.setLastPcm(scope.lastPCM);
           scope.$apply();
@@ -270,10 +269,10 @@ angular.module('emuwebApp')
                   viewState.setEditing(true);
                   LevelService.openEditArea(scope.lastEventClick.current, element.parent(), scope.levelType);
                 } else {
-                  console.log('Editing out of right bound !');
+                  //console.log('Editing out of right bound !');
                 }
               } else {
-                console.log('Editing out of left bound !');
+                //console.log('Editing out of left bound !');
               }
             } else {
               viewState.setcurClickLevel(scope.levelName, scope.levelType, scope.$index);

@@ -492,8 +492,8 @@ angular.module('emuwebApp')
      *
      */
     sServObj.setcurClickLevel = function (levelID, levelType, levelIndex) {
-      this.setcurClickLevelName(levelID, levelIndex);
-      this.setcurClickLevelType(levelType);
+      sServObj.setcurClickLevelName(levelID, levelIndex);
+      sServObj.setcurClickLevelType(levelType);
     };
 
 
