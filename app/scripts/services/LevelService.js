@@ -616,7 +616,7 @@ angular.module('emuwebApp')
 			var isFirst = undefined;
 			var isLast = undefined;
 
-			if (level.items.length > 0) {
+			if (level !== undefined && level !== null && level.items.length > 0) {
 			    current = nearest = level.items[0];
 			    isFirst = true;
 			    isLast = false;

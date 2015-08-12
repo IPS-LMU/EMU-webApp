@@ -123,6 +123,9 @@ angular.module('emuwebApp')
 								res = evt.currentTarget.result;
 							}
 							Wavparserservice.parseWavArrBuf(res).then(function (wavJSO) {
+								if(DragnDropDataService.convertedBundles[i] === undefined) {
+									DragnDropDataService.convertedBundles[i] = {};
+								}
 								DragnDropDataService.convertedBundles[i].mediaFile = {};
 								Soundhandlerservice.wavJSO = wavJSO;
 								DragnDropDataService.convertedBundles[i].mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(wavJSO.origArrBuf);
