@@ -144,12 +144,8 @@ textGridParserWorker.prototype = {
 				}
 				if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'SEGMENT' && (cL.indexOf('intervals') === 0) && (cL.indexOf('intervals:') !== 0)) {
 					// parse seg levels event
-					var eSt = Math.floor(lines[i + 1].split(/=/)[1] * sampleRate) + 1;
-					// correct to zero for first sample
-					if (eSt === 1) {
-						eSt = 0;
-					}
-					var eEt = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
+					var itemST = Math.floor(lines[i + 1].split(/=/)[1] * sampleRate);
+					var itemET = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
 					lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
 					var labs = [];
 					labs.push({
@@ -159,8 +155,8 @@ textGridParserWorker.prototype = {
 
 					labelJSO.levels[labelJSO.levels.length - 1].items.push({
 						id: global.localID,
-						sampleStart: eSt,
-						sampleDur: eEt - eSt + 1,
+						sampleStart: itemST,
+						sampleDur: itemET - itemST - 1,
 						labels: labs
 					});
 
