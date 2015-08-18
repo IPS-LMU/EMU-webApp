@@ -255,8 +255,8 @@ textGridParserWorker.prototype = {
 					tG = tG + t + t + t + t + 'text = "' + curLevel.items[j].labels[0].value + '"' + nl;
 				} else if (curLevel.type === 'EVENT') {
 					tG = tG + t + t + t + 'points[' + evtNr + ']:' + nl;
-					tG = tG + t + t + t + t + 'time = ' + curLevel.items[j].sampleStart / sampleRate + nl;
-					tG = tG + t + t + t + t + 'mark = "' + curLevel.items[j].label + '"' + nl;
+					tG = tG + t + t + t + t + 'time = ' + curLevel.items[j].samplePoint / sampleRate + nl;
+					tG = tG + t + t + t + t + 'mark = "' + curLevel.items[j].labels[0].value + '"' + nl;
 				}
 			}
 		}
