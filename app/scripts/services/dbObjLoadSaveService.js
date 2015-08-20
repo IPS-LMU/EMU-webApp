@@ -180,8 +180,21 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
 
+			// validate bundle
+			var validRes = Validationservice.validateJSO('bundleSchema', bundleData);
+			if (validRes !== true) {
+				console.log ('PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() will be called.');
+			}
+
 			// clean to be safe...
 			StandardFuncsService.traverseAndClean(DataService.getData());
+			
+			// validate bundle
+			var validRes = Validationservice.validateJSO('bundleSchema', bundleData);
+			if (validRes !== true) {
+				console.log ('GRAVE PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() HAS ALREADY BEEN CALLED.');
+			}
+
 			// annotation
 			bundleData.annotation = DataService.getData();
 
