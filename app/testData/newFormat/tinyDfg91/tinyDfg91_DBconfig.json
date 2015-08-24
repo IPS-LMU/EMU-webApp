@@ -157,7 +157,16 @@
 				  "toDot": "ll",
 				  "color": "rgb(0,0,0)"
 				}],
-				"staticDots": []
+				"staticDots": [],
+                "staticContours":[{
+                  "name": "tt",
+                  "xSsffTrack": "tt_posy",
+                  "xContourNr": 0,
+                  "ySsffTrack": "tt_posz",
+                  "yContourNr": 0,
+                  "color": "rgb(255,0,0)",
+                  "connect": true
+                }]
 			  }]
 			}
 		}],
