@@ -34,8 +34,8 @@ angular.module('emuwebApp')
         var pane2 = scope.panes[1];
         var pane3 = scope.bottomRightResizePane;
 
-        var bottomRightResizePaneTopResizer = angular.element('<div class="top"></div>');
-        var bottomRightResizePaneLeftResizer = angular.element('<div class="left"></div>');
+        var bottomRightResizePaneTopResizer = angular.element('<div class="topBorder"></div>');
+        var bottomRightResizePaneLeftResizer = angular.element('<div class="leftBorder"></div>');
         var bottomRightResizePaneCornerResizer = angular.element('<div class="corner"></div>');
         pane3.elem.prepend(bottomRightResizePaneLeftResizer);
         pane3.elem.prepend(bottomRightResizePaneTopResizer);
