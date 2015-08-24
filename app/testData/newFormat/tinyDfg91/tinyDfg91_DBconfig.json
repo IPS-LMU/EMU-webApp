@@ -7,10 +7,54 @@
 		"columnName": "tt_posz",
 		"fileExtension": "t_tip"
 	}, {
+	  "name": "tt_posy",
+	  "columnName": "tt_posy",
+	  "fileExtension": "t_tip"
+	}, {
+      "name": "tm_posz",
+      "columnName": "tm_posz",
+      "fileExtension": "t_mid"
+    }, {
+      "name": "tm_posy",
+      "columnName": "tm_posy",
+      "fileExtension": "t_mid"
+    }, {
+      "name": "tb_posz",
+      "columnName": "tb_posz",
+      "fileExtension": "t_back"
+    }, {
+      "name": "tb_posy",
+      "columnName": "tb_posy",
+      "fileExtension": "t_back"
+    }, {
 		"name": "t_tipTV",
 		"columnName": "t_tipTV",
 		"fileExtension": "vel"
-	}],
+	}, {
+      "name": "ulip_posz",
+      "columnName": "ulip_posz",
+      "fileExtension": "upper_lip"
+    }, {
+      "name": "ulip_posy",
+      "columnName": "ulip_posy",
+      "fileExtension": "upper_lip"
+    }, {
+      "name": "llip_posz",
+      "columnName": "llip_posz",
+      "fileExtension": "lower_lip"
+    }, {
+      "name": "llip_posy",
+      "columnName": "llip_posy",
+      "fileExtension": "lower_lip"
+    }, {
+      "name": "jaw_posz",
+      "columnName": "jaw_posz",
+      "fileExtension": "jaw"
+    }, {
+      "name": "jaw_posy",
+      "columnName": "jaw_posy",
+      "fileExtension": "jaw"
+    }],
 	"levelDefinitions": [{
 		"name": "ORT",
 		"type": "SEGMENT",
@@ -54,7 +98,67 @@
 				"order": ["ORT", "tongueTipGestures"]
 			},
 			"twoDimCanvases": {
-				"order": []
+			  "order": ["DOTS"],
+			  "twoDimDrawingDefinitions": [{
+				"name": "DOTS",
+				"dots": [{
+				  "name": "tt",
+				  "xSsffTrack": "tt_posy",
+				  "xContourNr": 0,
+				  "ySsffTrack": "tt_posz",
+				  "yContourNr": 0,
+				  "color": "rgb(255,0,0)"
+				}, {
+				  "name": "tm",
+				  "xSsffTrack": "tm_posy",
+				  "xContourNr": 0,
+				  "ySsffTrack": "tm_posz",
+				  "yContourNr": 0,
+				  "color": "rgb(0,0,0)"
+				}, {
+				  "name": "tb",
+				  "xSsffTrack": "tb_posy",
+				  "xContourNr": 0,
+				  "ySsffTrack": "tb_posz",
+				  "yContourNr": 0,
+				  "color": "rgb(0,0,0)"
+				}, {
+				  "name": "ul",
+				  "xSsffTrack": "ulip_posy",
+				  "xContourNr": 0,
+				  "ySsffTrack": "ulip_posz",
+				  "yContourNr": 0,
+				  "color": "rgb(0,0,0)"
+				}, {
+				  "name": "ll",
+				  "xSsffTrack": "llip_posy",
+				  "xContourNr": 0,
+				  "ySsffTrack": "llip_posz",
+				  "yContourNr": 0,
+				  "color": "rgb(0,0,0)"
+				}, {
+				  "name": "jw",
+				  "xSsffTrack": "jaw_posy",
+				  "xContourNr": 0,
+				  "ySsffTrack": "jaw_posz",
+				  "yContourNr": 0,
+				  "color": "rgb(0,0,0)"
+				}],
+				"connectLines": [{
+				  "fromDot": "tt",
+				  "toDot": "tm",
+				  "color": "rgb(0,0,0)"
+				}, {
+				  "fromDot": "tm",
+				  "toDot": "tb",
+				  "color": "rgb(0,0,0)"
+				}, {
+				  "fromDot": "ul",
+				  "toDot": "ll",
+				  "color": "rgb(0,0,0)"
+				}],
+				"staticDots": []
+			  }]
 			}
 		}],
 		"restrictions": {
