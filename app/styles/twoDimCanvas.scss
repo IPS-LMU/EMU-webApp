@@ -6,18 +6,35 @@
 
 .emuwebapp-twoDimCanvasContainer {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    height: calc(100% - 15px);
-    width: calc(100% - 15px);
+    top: 12px; // 10 + 2 px for border
+    left: 12px; // 10 + 2 px for border
+    height: calc(100% - 12px);
+    width: calc(100% - 12px);
     padding: 0px;
     background-color: $color-white;
     canvas {
         float: left;
-        z-index: 1;   
+        margin: 0px;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        //outline: 1px solid black;
+    }
+    .emuwebapp-twoDimCanvasStatic {
+        //float: left;
+        z-index: 1;
         width: 100%;
         height: 100%;
         background-color: $color-lightGrey;
-        border: 1px solid $color-grey;
+        //border: 1px solid $color-grey;
+    }
+
+    .emuwebapp-twoDimCanvasDots{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        z-index: 2;
+        background-color: transparent;
     }
 }

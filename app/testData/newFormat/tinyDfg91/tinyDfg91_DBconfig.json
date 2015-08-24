@@ -114,35 +114,35 @@
 				  "xContourNr": 0,
 				  "ySsffTrack": "tm_posz",
 				  "yContourNr": 0,
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(0,255,0)"
 				}, {
 				  "name": "tb",
 				  "xSsffTrack": "tb_posy",
 				  "xContourNr": 0,
 				  "ySsffTrack": "tb_posz",
 				  "yContourNr": 0,
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(0,0,255)"
 				}, {
 				  "name": "ul",
 				  "xSsffTrack": "ulip_posy",
 				  "xContourNr": 0,
 				  "ySsffTrack": "ulip_posz",
 				  "yContourNr": 0,
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(255,255,0)"
 				}, {
 				  "name": "ll",
 				  "xSsffTrack": "llip_posy",
 				  "xContourNr": 0,
 				  "ySsffTrack": "llip_posz",
 				  "yContourNr": 0,
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(0,255,255)"
 				}, {
 				  "name": "jw",
 				  "xSsffTrack": "jaw_posy",
 				  "xContourNr": 0,
 				  "ySsffTrack": "jaw_posz",
 				  "yContourNr": 0,
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(255,0,255)"
 				}],
 				"connectLines": [{
 				  "fromDot": "tt",
@@ -164,8 +164,48 @@
                   "xContourNr": 0,
                   "ySsffTrack": "tt_posz",
                   "yContourNr": 0,
-                  "color": "rgb(255,0,0)",
-                  "connect": true
+                  "color": "rgba(255,0,0,0.1)",
+                  "connect": false
+                },{
+                  "name": "tm",
+                  "xSsffTrack": "tm_posy",
+                  "xContourNr": 0,
+                  "ySsffTrack": "tm_posz",
+                  "yContourNr": 0,
+                  "color": "rgba(0,255,0,0.1)",
+                  "connect": false
+                },{
+                  "name": "tb",
+                  "xSsffTrack": "tb_posy",
+                  "xContourNr": 0,
+                  "ySsffTrack": "tb_posz",
+                  "yContourNr": 0,
+                  "color": "rgba(0,0,255,0.1)",
+                  "connect": false
+                },{
+                  "name": "ul",
+                  "xSsffTrack": "ulip_posy",
+                  "xContourNr": 0,
+                  "ySsffTrack": "ulip_posz",
+                  "yContourNr": 0,
+                  "color": "rgba(255,255,0,0.1)",
+                  "connect": false
+                },{
+                  "name": "ll",
+                  "xSsffTrack": "llip_posy",
+                  "xContourNr": 0,
+                  "ySsffTrack": "llip_posz",
+                  "yContourNr": 0,
+                  "color": "rgba(0,255,255,0.1)",
+                  "connect": false
+                },{
+                  "name": "jw",
+                  "xSsffTrack": "jaw_posy",
+                  "xContourNr": 0,
+                  "ySsffTrack": "jaw_posz",
+                  "yContourNr": 0,
+                  "color": "rgba(255,0,255,01)",
+                  "connect": false
                 }]
 			  }]
 			}

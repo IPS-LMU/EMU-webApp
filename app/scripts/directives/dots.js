@@ -3,7 +3,7 @@
 angular.module('emuwebApp')
 	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice, loadedMetaDataService, mathHelperService) {
 		return {
-			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
+			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas class="emuwebapp-twoDimCanvasStatic" width="512" height="512"></canvas><canvas class="emuwebapp-twoDimCanvasDots" width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
 			scope: {},
@@ -16,6 +16,7 @@ angular.module('emuwebApp')
 				scope.lmds = loadedMetaDataService;
 				scope.mhs = mathHelperService;
 				var canvas = element.find('canvas')[0];
+				var overl1canvas = element.find('canvas')[1];
 				var globalMinX = Infinity;
 				var globalMaxX = -Infinity;
 				var globalMinY = Infinity;
@@ -126,11 +127,62 @@ angular.module('emuwebApp')
 				};
 
 				/**
+				 * drawing to draw overlay1 i.e. static
+				 */
+				scope.drawStaticContour = function () {
+					var ctx = overl1canvas.getContext('2d');
+					ctx.clearRect(0, 0, overl1canvas.width, overl1canvas.height);
+
+					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0];
+
+					for (var i = 0; i < dD.staticContours.length; i++) {
+						// get xCol
+						var trConf = scope.cps.getSsffTrackConfig(dD.staticContours[i].xSsffTrack);
+						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+
+						// get yCol
+						trConf = scope.cps.getSsffTrackConfig(dD.staticContours[i].ySsffTrack);
+						var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+
+						for(var j = 0; j < xCol.values.length; j++){
+
+							var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.staticContours[i].xSsffTrack);
+							var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.staticContours[i].ySsffTrack);
+
+							//check if sampleRate and startTime is the same
+							if (xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample) {
+								alert('xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample'); // SIC should never get here!
+								return;
+							}
+
+							var x = ((xCol.values[j][dD.staticContours[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * overl1canvas.width);
+							var y = overl1canvas.height - ((yCol.values[j][dD.staticContours[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * overl1canvas.height);
+
+							var startPoint = (Math.PI / 180) * 0;
+							var endPoint = (Math.PI / 180) * 360;
+
+							ctx.strokeStyle = dD.staticContours[i].color;
+							ctx.fillStyle = dD.staticContours[i].color;
+							ctx.beginPath();
+							ctx.arc(x, y, 2, startPoint, endPoint, true);
+							ctx.fill();
+							ctx.closePath();
+
+
+						}
+					}
+
+				};
+
+				/**
 				 * drawing method to drawDots
 				 */
 				scope.drawDots = function () {
 					if (globalMinX === Infinity) {
 						scope.setGlobalMinMaxVals();
+						if(scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0].staticContours !== undefined){
+							scope.drawStaticContour();
+						}
 					}
 
 					var ctx = canvas.getContext('2d');
