@@ -269,19 +269,21 @@ angular.module('emuwebApp')
     sServObj.selectLevel = function (next, order, Levelserv) {
       var curLev;
       var now = sServObj.getcurClickLevelName();
-      if (now === undefined && !next) {
-        // select first if none prev. defined (up)
-        // viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
-        curLev = Levelserv.getLevelDetails(order[0]);
-        sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
-        return;
-      } else if (now === undefined && next) {
-        // select last if none prev. defined (down)
-        curLev = Levelserv.getLevelDetails(order[order.length - 1]);
-        sServObj.setcurClickLevel(curLev.name, curLev.type, order.length - 1);
-        return;
+      if (now === undefined) {
+        if(!next) {
+          // select first if none prev. defined (up)
+          // viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
+          curLev = Levelserv.getLevelDetails(order[0]);
+          sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
+          return;
+        }
+        else {
+          // select last if none prev. defined (down)
+          curLev = Levelserv.getLevelDetails(order[order.length - 1]);
+          sServObj.setcurClickLevel(curLev.name, curLev.type, order.length - 1);
+          return;
+        }
       }
-
       var idxOfNow;
       order.forEach(function (name, idx) {
         if (name === now) {

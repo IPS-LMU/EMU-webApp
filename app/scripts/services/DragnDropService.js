@@ -225,15 +225,17 @@ angular.module('emuwebApp')
 											var lNames = [];
 											var levelDefs = [];
 											annotation.levels.forEach(function (l) {
-												lNames.push(l.name);
-												levelDefs.push({
-													'name': l.name,
-													'type': l.type,
-													'attributeDefinitions': {
+												if(l.type === 'SEGMENT' || l.type === 'EVENT') {
+													lNames.push(l.name);
+													levelDefs.push({
 														'name': l.name,
-														'type': 'string'
-													}
-												});
+														'type': l.type,
+														'attributeDefinitions': {
+															'name': l.name,
+															'type': 'string'
+														}
+													});
+												}
 											});
 
 											// set level defs
