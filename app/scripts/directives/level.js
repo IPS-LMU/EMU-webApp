@@ -62,7 +62,9 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.movingBoundarySample', function () {
-					scope.drawLevelDetails();
+					if(scope.level.name === scope.vs.curMouseLevelName){
+						scope.drawLevelDetails();
+					}
 					scope.drawLevelMarkup();
 				}, true);
 
