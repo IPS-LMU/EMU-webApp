@@ -161,6 +161,7 @@ angular.module('emuwebApp')
 										};
 								    }
 								    else if(data.annotation.type === 'annotation') {
+										ConfigProviderService.vals.activeButtons.showHierarchy = true;
 										reader2.readAsText(data.annotation.file);
 										reader2.onloadend = function (evt) {
 											if (evt.target.readyState == FileReader.DONE) {
