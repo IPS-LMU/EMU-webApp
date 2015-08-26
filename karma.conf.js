@@ -83,7 +83,8 @@ module.exports = function (config) {
 
     proxies: {
       '/img/': 'http://ips-lmu.github.io/EMU-webApp/img/',
-      '/assets/': 'http://ips-lmu.github.io/EMU-webApp/assets/'
+      '/assets/': 'http://ips-lmu.github.io/EMU-webApp/assets/',
+      '/NEWS.md': 'http://ips-lmu.github.io/EMU-webApp/NEWS.md'
     },
 
     // list of files / patterns to exclude
