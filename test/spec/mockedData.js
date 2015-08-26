@@ -86,7 +86,6 @@ jasmine.getFixtures().fixturesPath = 'base/app/schemaFiles/';
 var f = readFixtures('designSchema.json');
 var designSchema = JSON.parse(f);
 
-
 ////////////////////////////
 // files for parsing tests
 
@@ -114,5 +113,3 @@ var msajc003TextGridFileNew = readFixtures('msajc003_new.TextGrid');
       }
       return ret;
   }
-
-

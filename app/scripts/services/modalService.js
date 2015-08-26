@@ -12,41 +12,41 @@ angular.module('emuwebApp')
 
 		// shared service object
 		var sServObj = {};
-		
+
 		sServObj.isOpen = false;
 		sServObj.templateUrl = '';
-		sServObj.defer = undefined; 
-		sServObj.deferChange = undefined; 
-		sServObj.force = false; 
-		sServObj.dataOut = undefined; 
-		sServObj.dataIn = undefined; 
-		sServObj.dataExport = undefined; 
-		
+		sServObj.defer = undefined;
+		sServObj.deferChange = undefined;
+		sServObj.force = false;
+		sServObj.dataOut = undefined;
+		sServObj.dataIn = undefined;
+		sServObj.dataExport = undefined;
+
 		/**
 		 * open modal normally
 		 */
 		sServObj.open = function (template, param1, param2, force) {
-		    if(param1!==undefined) {
-		        sServObj.dataIn = param1;
+			if(param1!==undefined) {
+				sServObj.dataIn = param1;
 				if(param1.y!==undefined) {
 					sServObj.dataIn.chartData = ArrayHelperService.convertArrayToXYjsoArray(param1.y);
 				}
-		    }
-		    if(param2!==undefined) {
-		        sServObj.dataExport = param2;
-		    }
-		    if(force!==undefined) { // force user to do sth
-		        sServObj.force = force;
-		    }
-		    sServObj.defer = $q.defer(); 
-    		sServObj.templateUrl = template;
+			}
+			if(param2!==undefined) {
+				sServObj.dataExport = param2;
+			}
+			if(force!==undefined) { // force user to do sth
+				sServObj.force = force;
+			}
+			sServObj.defer = $q.defer();
+			sServObj.templateUrl = template;
 			viewState.setState('modalShowing');
 			sServObj.isOpen = true;
 			return sServObj.defer.promise;
 		};
-		
-		
-	
+
+
+
 		/**
 		 *
 		 */
@@ -60,11 +60,11 @@ angular.module('emuwebApp')
 		    if(force!==undefined) { // force user to do sth
 		        sServObj.force = force;
 		    }
-		    sServObj.deferChange = $q.defer(); 
+		    sServObj.deferChange = $q.defer();
     		sServObj.templateUrl = template;
 			return sServObj.deferChange.promise;
 		};
-	
+
 		/**
 		 *
 		 */
@@ -73,7 +73,7 @@ angular.module('emuwebApp')
     		sServObj.templateUrl = 'views/error.html';
 			viewState.setState('modalShowing');
 		};
-		
+
 		/**
 		 *
 		 */
@@ -86,8 +86,8 @@ angular.module('emuwebApp')
 			}
 			sServObj.defer.resolve(false);
 		};
-		
-		
+
+
 		/**
 		 *
 		 */
@@ -97,8 +97,8 @@ angular.module('emuwebApp')
 			sServObj.isOpen = false;
 			sServObj.defer.resolve(status);
 		};
-		
-		
+
+
 		/**
 		 *
 		 */
@@ -107,16 +107,16 @@ angular.module('emuwebApp')
 			viewState.setState(viewState.prevState);
 			sServObj.isOpen = false;
 			sServObj.defer.resolve(true);
-		};	
-		
-		
+		};
+
+
 		/**
 		 *
 		 */
 		sServObj.select = function (idx) {
 			sServObj.closeAndResolve(idx);
-		};	
-		
+		};
+
 		/**
 		 *
 		 */
@@ -126,14 +126,14 @@ angular.module('emuwebApp')
 			sServObj.isOpen = false;
 			sServObj.defer.resolve(sServObj.dataOut);
 		};
-		
+
 		/**
 		 *
 		 */
 		sServObj.getTemplateUrl = function () {
 			return sServObj.templateUrl;
-		};	
-	
+		};
+
 
 		return sServObj;
 	});

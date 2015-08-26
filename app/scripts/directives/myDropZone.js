@@ -11,10 +11,11 @@ angular.module('emuwebApp')
 		link: function postLink(scope, element, attr) {
 		    /* --------- Messages -------- */
 			scope.dropTextDefault = 'Drop your files here or click here to open a file';
-			scope.dropTextErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID';
-			scope.dropTextErrorAPI = 'Sorry ! The File APIs are not fully supported in your browser.';
+			scope.dropTextErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID _annot.json';
+			scope.dropTextErrorAPI = 'Sorry ! The File APIs are not supported in your browser.';
 			scope.dropAllowed = 'Drop file(s) to start loading !';
 			scope.dropParsingWaiting = '.TextGrid loaded! Please load .WAV file in order to start!';
+			scope.dropParsingWAV = '.WAV loaded! Proceeding without annotation data.';
 			scope.dropParsingWaitingAnnot = 'Annotation file loaded! Please load .WAV file in order to start!';
 			scope.dropFirefoxWarning = 'Sorry ! Firefox does not support dropping folders ! please drop single or multiple files !';
 
@@ -27,96 +28,95 @@ angular.module('emuwebApp')
 			scope.handles = [];
 			scope.bundles = [];
 			scope.bundleNames = [];
-			
+
 			scope.updateQueueLength = function (quantity) {
 				scope.count += quantity;
 			}
- 
+
 			scope.enqueueFileAddition = function (file) {
-                var identifier = file.name.substring(file.name.lastIndexOf('_') + 1, file.name.lastIndexOf('.')).toUpperCase();
-                var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
-                var bundle = '';
-                if(identifier === 'ANNOT') {
-                    bundle = file.name.substr(0, file.name.lastIndexOf('_'));
-                }
-                else {
-                    bundle = file.name.substr(0, file.name.lastIndexOf('.'));
-                }
-                var j = scope.bundleNames.indexOf(bundle);
-                if(j === -1) {
-                    scope.bundleNames.push(bundle);
-                    j = scope.bundleNames.indexOf(bundle);
-                    scope.bundles[j] = [];
-                    scope.bundles[j][0] = bundle;
-                }
-                
+				var identifier = file.name.substring(file.name.lastIndexOf('_') + 1, file.name.lastIndexOf('.')).toUpperCase();
+				var extension = file.name.substr(file.name.lastIndexOf('.') + 1).toUpperCase();
+				var bundle = '';
+				if(identifier === 'ANNOT') {
+					bundle = file.name.substr(0, file.name.lastIndexOf('_'));
+				}
+				else {
+					bundle = file.name.substr(0, file.name.lastIndexOf('.'));
+				}
+				var j = scope.bundleNames.indexOf(bundle);
+				if(j === -1) {
+					scope.bundleNames.push(bundle);
+					j = scope.bundleNames.indexOf(bundle);
+					scope.bundles[j] = [];
+					scope.bundles[j][0] = bundle;
+				}
 				if(extension === 'WAV') {
-				    scope.bundles[j][1] = file;
-    			    scope.handles.push(file); 
-			        scope.dropClass = scope.dropClassDefault;
-			        scope.dropText = scope.dropTextDefault;
-			    }
-			    else if ( extension === 'TEXTGRID' ) {
-			        scope.bundles[j][2] = {};
-			        scope.bundles[j][2].file = file;
-			        scope.bundles[j][2].type = 'textgrid';
-			        scope.handles.push(file); 
-			        scope.dropClass = scope.dropClassDefault;
-			        scope.dropText = scope.dropParsingWaiting;
-			    }
-			    else if ( extension === 'JSON' && identifier === 'ANNOT') {
-			        scope.bundles[j][2] = {};
-			        scope.bundles[j][2].file = file;
-			        scope.bundles[j][2].type = 'annotation';
-			        scope.handles.push(file); 
-			        scope.dropClass = scope.dropClassDefault;
-			        scope.dropText = scope.dropParsingWaitingAnnot;
-			    }
-			    else {
-			        if(browserDetector.isBrowser.Firefox()) {
+					scope.bundles[j][1] = file;
+					scope.handles.push(file);
+					scope.dropClass = scope.dropClassDefault;
+					scope.dropText = scope.dropParsingWAV;
+				}
+				else if ( extension === 'TEXTGRID' ) {
+	        scope.bundles[j][2] = {};
+	        scope.bundles[j][2].file = file;
+	        scope.bundles[j][2].type = 'textgrid';
+	        scope.handles.push(file);
+	        scope.dropClass = scope.dropClassDefault;
+	        scope.dropText = scope.dropParsingWaiting;
+		    }
+		    else if ( extension === 'JSON' && identifier === 'ANNOT') {
+	        scope.bundles[j][2] = {};
+	        scope.bundles[j][2].file = file;
+	        scope.bundles[j][2].type = 'annotation';
+	        scope.handles.push(file);
+	        scope.dropClass = scope.dropClassDefault;
+	        scope.dropText = scope.dropParsingWaitingAnnot;
+		    }
+		    else {
+					if(browserDetector.isBrowser.Firefox()) {
 						if(file.size === 0) {
 							scope.dropClass = scope.dropClassError;
-							scope.dropText = scope.dropFirefoxWarning;			        
+							scope.dropText = scope.dropFirefoxWarning;
 						}
 						else {
 							scope.dropClass = scope.dropClassError;
 							scope.dropText = scope.dropTextErrorFileType;
 						}
-			        }
-			        else {
-		                scope.dropClass = scope.dropClassError;
-				        scope.dropText = scope.dropTextErrorFileType;
-			        }
+	        }
+	        else {
+						scope.dropClass = scope.dropClassError;
+		        scope.dropText = scope.dropTextErrorFileType;
+	        }
 					scope.handles = [];
 					scope.bundles = [];
 					scope.bundleNames = [];
 					scope.count = 0;
     			}
-			    if(!browserDetector.isBrowser.Firefox()) {
-			        scope.$digest();
-		        }
-		        if(scope.bundles[j] !== undefined) {
-					if(scope.bundles[j][2] !== undefined && scope.bundles[j][1] !== undefined) {
-						scope.startRendering();
-					}		
-		        }
+					if(!browserDetector.isBrowser.Firefox()) {
+						scope.$digest();
+					}
+					if(scope.bundles[j] !== undefined) {
+							scope.startRendering();
+					}
 			};
-			
-			scope.startRendering = function () { 
+
+			scope.startRendering = function () {
 				// If all the files we expect have shown up, then flush the queue.
 				if (scope.count === scope.handles.length) {
 					if(DragnDropService.setData(scope.bundles) === false) {
 					    modalService.open('views/error.html', 'Sorry you dropped too many bundles ('+scope.handles.length+'). The maximum currently allowed is: ' + DragnDropService.maxDroppedBundles).then(function () {
 					        appStateService.resetToInitState();
-					    });					
+					    });
 					}
 					scope.handles = [];
 					scope.bundles = [];
 					scope.bundleNames = [];
 					scope.count = 0;
+					scope.dropText = scope.dropTextDefault;
+					scope.dropClass = scope.dropClassDefault;					
 				}
 			};
-			
+
 			scope.loadFiles = function (files) {
 				scope.updateQueueLength(files.length);
 				for (var i = 0; i < files.length; i++) {
@@ -126,7 +126,7 @@ angular.module('emuwebApp')
 				    }
 				    else {
 						var entry, reader;
-		 
+
 						if (file.isFile || file.isDirectory) {
 							entry = file;
 						}
@@ -148,7 +148,7 @@ angular.module('emuwebApp')
 							scope.updateQueueLength(-1);
 							continue;
 						}
-		 
+
 						if (!entry) {
 							updateQueueLength(-1);
 						}
@@ -170,18 +170,18 @@ angular.module('emuwebApp')
 						}
 					}
 				}
-		  }  
-		  
+		  }
+
 		  scope.dropFiles = function(evt) {
 		    evt.stopPropagation();
 		    evt.preventDefault();
 		    scope.$apply(function () {
 		      if (window.File && window.FileReader && window.FileList && window.Blob) {
-		        if(evt.originalEvent !== undefined) {          
+		        if(evt.originalEvent !== undefined) {
                   if(browserDetector.isBrowser.Firefox()) {
                     var items = evt.originalEvent.dataTransfer.files;
                   }
-                  else {        
+                  else {
                     var items = evt.originalEvent.dataTransfer.items;
                   }
                   scope.loadFiles(items);
@@ -193,10 +193,10 @@ angular.module('emuwebApp')
                       scope.dropText = scope.dropTextDefault;
                       scope.dropClass = scope.dropClassDefault;
                       appStateService.resetToInitState();
-                  });   
+                  });
               }
             });
-		  }			    
+		  }
 
 		  scope.dragEnterLeave = function(evt) {
 		    evt.preventDefault();
@@ -205,38 +205,38 @@ angular.module('emuwebApp')
 		      scope.dropClass = scope.dropClassDefault;
 		    });
 		  }
-		  
+
 		  scope.handleDragOver = function(evt) {
 		    evt.preventDefault();
 		    scope.$apply(function () {
 		      scope.dropText = scope.dropAllowed;
 		      scope.dropClass = scope.dropClassOver;
 		    });
-		  }		  
+		  }
 
           element.bind('drop', function (event) {
             scope.dropFiles(event);
-          });	  
+          });
 
           element.bind('dragover', function (event) {
             scope.handleDragOver(event);
           });
-              		
+
           element.bind('dragenter', function (event) {
             scope.dragEnterLeave(event);
-          });	
-    		
+          });
+
           element.bind('dragleave', function (event) {
             scope.dragEnterLeave(event);
           });
-          
+
           element.bind('click', function (event) {
             element.context.children[1].children[0].click();
-          });	
-          
-          
-      	
-		
+          });
+
+
+
+
 		}
 	};
 });

@@ -27,7 +27,6 @@ describe('Directive: delete', function() {
         elm.triggerHandler('click');
         //scope.$digest();
         expect(scope.vs.curClickLevelName).toEqual('Utterance');
-        expect(scope.vs.curClickLevelIndex).toEqual('0');
         expect(scope.vs.curState).toBe(scope.vs.states.loadingSaving);
     });
 });

@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('emuwebApp')
 	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService) {
 		return {
@@ -21,12 +20,9 @@ angular.module('emuwebApp')
 				scope.lmds = loadedMetaDataService;
 				var levelCanvasContainer = element.find('div');
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
-
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.design.color.lightGrey
 				};
-
-
 
 				///////////////
 				// watches
@@ -168,15 +164,15 @@ angular.module('emuwebApp')
 					var isOpen = element.parent().css('height') === '25px' ? false : true;
 
 					if ($.isEmptyObject(scope.level)) {
-						console.log('undef levelDetails');
+						//console.log('undef levelDetails');
 						return;
 					}
 					if ($.isEmptyObject(scope.vs)) {
-						console.log('undef viewState');
+						//console.log('undef viewState');
 						return;
 					}
 					if ($.isEmptyObject(scope.cps)) {
-						console.log('undef config');
+						//console.log('undef config');
 						return;
 					}
 					if (!isOpen) {
@@ -184,7 +180,6 @@ angular.module('emuwebApp')
 					}
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
-
 
 					//predef vars
 					var sDist, posS, posE, horizontalText;
