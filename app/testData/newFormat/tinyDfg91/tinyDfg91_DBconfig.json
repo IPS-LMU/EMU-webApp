@@ -172,7 +172,7 @@
                   "xContourNr": 0,
                   "ySsffTrack": "palate_z",
                   "yContourNr": 0,
-                  "color": "rgba(0,0,0,0.1)",
+                  "color": "rgba(0,0,0,1)",
                   "connect": true
                 },{
                   "name": "tt",
@@ -220,7 +220,7 @@
                   "xContourNr": 0,
                   "ySsffTrack": "jaw_posz",
                   "yContourNr": 0,
-                  "color": "rgba(255,0,255,01)",
+                  "color": "rgba(255,0,255,0.1)",
                   "connect": false
                 }]
 			  }]
