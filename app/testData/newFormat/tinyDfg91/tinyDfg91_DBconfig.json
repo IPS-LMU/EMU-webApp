@@ -3,6 +3,14 @@
 	"UUID": "3412D5E3-E0EA-4E81-9F1C-E0A864D0D403",
 	"mediafileExtension": "wav",
 	"ssffTrackDefinitions": [{
+      "name": "palate_z",
+      "columnName": "palate_z",
+      "fileExtension": "palxyz"
+    }, {
+      "name": "palate_y",
+      "columnName": "palate_y",
+      "fileExtension": "palxyz"
+    }, {
 		"name": "tt_posz",
 		"columnName": "tt_posz",
 		"fileExtension": "t_tip"
@@ -159,13 +167,21 @@
 				}],
 				"staticDots": [],
                 "staticContours":[{
+                  "name": "palate",
+                  "xSsffTrack": "palate_y",
+                  "xContourNr": 0,
+                  "ySsffTrack": "palate_z",
+                  "yContourNr": 0,
+                  "color": "rgba(0,0,0,0.1)",
+                  "connect": true
+                },{
                   "name": "tt",
                   "xSsffTrack": "tt_posy",
                   "xContourNr": 0,
                   "ySsffTrack": "tt_posz",
                   "yContourNr": 0,
                   "color": "rgba(255,0,0,0.1)",
-                  "connect": false
+                  "connect": true
                 },{
                   "name": "tm",
                   "xSsffTrack": "tm_posy",
