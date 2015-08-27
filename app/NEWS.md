@@ -1,6 +1,11 @@
 What's New
 =============================================
 
+## Version 0.0.26
+
+- single wav files can now be dropped (without Textgrid/Annotation)
+- pressing 'enter' inside a dialog triggers the default action inside the dialog
+
 ## Version 0.0.25
 
 - conversion to samples fixed for TextGrids
@@ -9,6 +14,7 @@ What's New
 - performance improvement due to repainting level details on boundary move only for relevant level
 - showing news in welcome modal
 - TODO: 2D canvases may now include static shapes stored as contours in SSFF files
+
 
 ## Version 0.0.24
 
