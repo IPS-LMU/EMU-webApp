@@ -149,8 +149,8 @@ angular.module('emuwebApp')
           scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
           // draw current viewport selected
           scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
-          var horizontalText = fontScaleService.getTextImage(scope.context, 'rendering...', ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
-          scope.context.drawImage(horizontalText, 10, 50);
+          fontScaleService.getTextImage(scope.context, 'rendering...', ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, ConfigProviderService.design.font.small.family, 10, 50, ConfigProviderService.design.color.black, true);
+          //scope.context.drawImage(horizontalText, 10, 50);
 
           if (scope.primeWorker !== null) {
             scope.primeWorker.kill();

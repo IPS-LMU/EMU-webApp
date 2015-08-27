@@ -4,88 +4,54 @@ angular.module('emuwebApp')
 	.service('fontScaleService', function fontScaleService() {
 		// shared service object
 		var sServObj = {};
-
 		sServObj.lastTextWidth = null;
 		sServObj.spaceTop = 0;
+		sServObj.scaleY = 0;
+		sServObj.scaleX = 0;
 
 		/**
 		 *
 		 */
-		sServObj.getTextImage = function (ctxOriginal, text, fontPxSize, fontType, color) {
-			var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
-			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
-			fontPxSize = Math.floor(fontPxSize+2-(scaleY/2));
-			var img = document.createElement('canvas');
-			img.setAttribute('width',Math.round(scaleX*200));
-			img.setAttribute('height',Math.round(scaleY*100));
-			var ctx = img.getContext('2d');
-			ctx.save();
-			ctx.font = (fontPxSize + 'px' + ' ' + fontType);
-			ctx.fillStyle = color;
-			ctx.scale(scaleX, scaleY);
-			ctx.fillText(text, 0, fontPxSize + sServObj.spaceTop);
-			sServObj.lastTextWidth = ctx.measureText(text).width * scaleX;
-
-			// draw frame to see size
-			ctx.restore();
-
-			// ctx.fillStyle = "red";
-			// ctx.strokeStyle = "red";
-			// ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
-			// ctx.stroke();
-			return img;
-		};
-		/**
-		 *
-		 */
-		sServObj.getLastImageWidth = function () {
-			return sServObj.lastTextWidth;
+		sServObj.getTextImage = function (ctxOriginal, text, fontPxSize, fontType, x, y, color) {
+			sServObj.scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
+			sServObj.scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
+			//fontPxSize = Math.floor(fontPxSize+2-(sServObj.scaleY/2));
+			ctxOriginal.save();
+			ctxOriginal.font = (fontPxSize + 'px' + ' ' + fontType);
+			ctxOriginal.scale(sServObj.scaleX, sServObj.scaleY);
+			ctxOriginal.fillStyle = color;
+			ctxOriginal.fillText(text, x / sServObj.scaleX, (y + fontPxSize + sServObj.spaceTop) / sServObj.scaleY);
+			ctxOriginal.scale(1,1);
+			ctxOriginal.restore();
 		};
 
 		/**
 		 *
 		 */
-		sServObj.getTextImageTwoLines = function (ctxOriginal, text, text2, fontPxSize, fontType, color, alignLeft) {
-			var scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
-			var scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
-			fontPxSize = Math.floor(fontPxSize+2-(scaleY/2));
-			var img = document.createElement('canvas');
-			img.setAttribute('width',Math.round(scaleX*200));
-			img.setAttribute('height',Math.round(scaleY*100));
-			var ctx = img.getContext('2d');
-
-			ctx.save();
-			ctx.font = (fontPxSize + 'px' + ' ' + fontType);
-			ctx.fillStyle = color;
-			ctx.scale(scaleX, scaleY);
-			sServObj.lastTextWidth = ctx.measureText(text).width * scaleX;
-
+		sServObj.getTextImageTwoLines = function (ctxOriginal, text, text2, fontPxSize, fontType, x, y, color, alignLeft) {
+			sServObj.scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
+			sServObj.scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
+			//fontPxSize = Math.floor(fontPxSize+2-(sServObj.scaleY/2));
+			ctxOriginal.save();
+			ctxOriginal.font = (fontPxSize + 'px' + ' ' + fontType);
+			ctxOriginal.fillStyle = color;
+			ctxOriginal.scale(sServObj.scaleX, sServObj.scaleY);
 			if (alignLeft) {
-				ctx.fillText(text, 0, fontPxSize + sServObj.spaceTop);
-				ctx.fillText(text2, 0, 2 * (fontPxSize) + sServObj.spaceTop);
+				ctxOriginal.fillText(text, x / sServObj.scaleX, y + fontPxSize + sServObj.spaceTop);
+				ctxOriginal.fillText(text2, x / sServObj.scaleX, y + 2 * (fontPxSize) + sServObj.spaceTop);
 			} else {
-				var a = ctx.measureText(text).width;
-				var b = ctx.measureText(text2).width;
+				var a = ctxOriginal.measureText(text).width;
+				var b = ctxOriginal.measureText(text2).width;
 				// var c;
 				if (a > b) {
-					ctx.fillText(text, 0, fontPxSize + sServObj.spaceTop);
-					ctx.fillText(text2, (a - b), 2 * (fontPxSize) + sServObj.spaceTop);
+					ctxOriginal.fillText(text, x / sServObj.scaleX, y + fontPxSize + sServObj.spaceTop);
+					ctxOriginal.fillText(text2, (x + (a - b)) / sServObj.scaleX, y + 2 * (fontPxSize) + sServObj.spaceTop);
 				} else {
-					ctx.fillText(text, (b - a), fontPxSize + sServObj.spaceTop);
-					ctx.fillText(text2, 0, 2 * (fontPxSize) + sServObj.spaceTop);
+					ctxOriginal.fillText(text, (x + (b - a)) / sServObj.scaleX, y + fontPxSize + sServObj.spaceTop);
+					ctxOriginal.fillText(text2, x / sServObj.scaleX, y + 2 * (fontPxSize) + sServObj.spaceTop);
 				}
 			}
-
-			// draw frame to see size
-			ctx.restore();
-
-			// ctx.fillStyle = 'red';
-			// ctx.strokeStyle = 'red';
-			// ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
-			// ctx.stroke();
-
-			return img;
-
+			ctxOriginal.restore();
 		};
 		return sServObj;
 	});

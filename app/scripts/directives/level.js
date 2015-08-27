@@ -191,15 +191,14 @@ angular.module('emuwebApp')
 
 					if (scope.level.name === curAttrDef) {
 					    if(isOpen) {
-    						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
+    						fontScaleService.getTextImageTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black, true);
     					}
     					else {
-    					    horizontalText = fontScaleService.getTextImage(ctx, scope.level.name, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
+								fontScaleService.getTextImage(ctx, scope.level.name, fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black);
     					}
 					} else {
-						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
+						fontScaleService.getTextImageTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black, true);
 					}
-					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
 					var segMId = scope.vs.getcurMouseItem();
 					var segCId = scope.vs.getcurClickItems();
@@ -207,12 +206,15 @@ angular.module('emuwebApp')
 					var curID = -1;
 
 					// calculate generic max with of single char (m char used)
-					var mTxtImg = fontScaleService.getTextImage(ctx, 'm', fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
-					var mTxtImgWidth = fontScaleService.getLastImageWidth();
+					//var mTxtImg = fontScaleService.getTextImage(ctx, 'm', fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
+					var mTxtImgWidth = ctx.measureText('m').width * fontScaleService.scaleX;
 
 					// calculate generic max with of single digit (0 digit used)
-					var zeroTxtImg = fontScaleService.getTextImage(ctx, '0', fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
-					var zeroTxtImgWidth = fontScaleService.getLastImageWidth();
+					//var zeroTxtImg = fontScaleService.getTextImage(ctx, '0', fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
+					var zeroTxtImgWidth = ctx.measureText('0').width * fontScaleService.scaleX;
+
+					console.log(mTxtImgWidth);
+					console.log(zeroTxtImgWidth);
 
 					if (scope.level.type === 'SEGMENT') {
 						ctx.fillStyle = ConfigProviderService.design.color.black;
@@ -248,16 +250,14 @@ angular.module('emuwebApp')
 								ctx.fillStyle = ConfigProviderService.design.color.grey;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
+								ctx.font = (fontSize - 2 + 'px' + ' ' + ConfigProviderService.design.font.small.family);
 
 								//check for enough space to stroke text
 								if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
-									horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
-									var tW = fontScaleService.getLastImageWidth();
-									var tX = posS + (posE - posS) / 2 - tW / 2;
 									if (isOpen) {
-										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (fontSize - 2), horizontalText.width, horizontalText.height);
+										fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2, (canvas[0].height / 2) - (fontSize - 2), ConfigProviderService.design.color.black);
 									} else {
-										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - fontSize , horizontalText.width, horizontalText.height);
+										fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2, (canvas[0].height / 2) - fontSize, ConfigProviderService.design.color.black);
 									}
 								}
 
@@ -288,17 +288,14 @@ angular.module('emuwebApp')
 								// draw sampleStart numbers
 								//check for enough space to stroke text
 								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length && isOpen) {
-									var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
-									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
+									fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, posS + 3, 0, ConfigProviderService.design.color.grey);
 								}
 
 								// draw sampleDur numbers.
-
+								var durtext = 'dur: ' + curEvt.sampleDur + ' ';
 								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * (6 + curEvt.sampleDur.toString().length) && isOpen) {
-									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur + ' ', fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
-									var hst2 = fontScaleService.getLastImageWidth();
-									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);
+								if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
+									fontScaleService.getTextImage(ctx, durtext, fontSize - 2, ConfigProviderService.design.font.small.family, posE - (ctx.measureText(durtext).width * fontScaleService.scaleX) , canvas[0].height / 4 * 3, ConfigProviderService.design.color.grey);
 								}
 							}
 						});
@@ -321,13 +318,8 @@ angular.module('emuwebApp')
 								ctx.fillStyle = ConfigProviderService.design.color.black;
 								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
-								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
-
-								horizontalText = fontScaleService.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
-								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
-
-
+								fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, perc - 5, canvas[0].height / 3, ConfigProviderService.design.color.black);
+								fontScaleService.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, ConfigProviderService.design.font.small.family, perc + 5, 0, ConfigProviderService.design.color.grey);
 							}
 						});
 					}
