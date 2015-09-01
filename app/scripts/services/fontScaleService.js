@@ -12,10 +12,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getTextImage = function (ctxOriginal, text, fontPxSize, fontType, x, y, color) {
+		sServObj.drawUndistortedText = function (ctxOriginal, text, fontPxSize, fontType, x, y, color) {
 			sServObj.scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
 			sServObj.scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
-			//fontPxSize = Math.floor(fontPxSize+2-(sServObj.scaleY/2));
 			ctxOriginal.save();
 			ctxOriginal.font = (fontPxSize + 'px' + ' ' + fontType);
 			ctxOriginal.scale(sServObj.scaleX, sServObj.scaleY);
@@ -28,10 +27,10 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getTextImageTwoLines = function (ctxOriginal, text, text2, fontPxSize, fontType, x, y, color, alignLeft) {
+
+		sServObj.drawUndistortedTextTwoLines = function (ctxOriginal, text, text2, fontPxSize, fontType, x, y, color, alignLeft) {
 			sServObj.scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
 			sServObj.scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
-			//fontPxSize = Math.floor(fontPxSize+2-(sServObj.scaleY/2));
 			ctxOriginal.save();
 			ctxOriginal.font = (fontPxSize + 'px' + ' ' + fontType);
 			ctxOriginal.fillStyle = color;

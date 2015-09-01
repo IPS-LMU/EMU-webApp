@@ -127,10 +127,10 @@ describe('Directive: level', function () {
      scope.vs.curViewPort.sS = 10;
      scope.vs.curViewPort.eS = 58089;
      spyOn(scope.vs, 'getCurAttrDef').and.returnValue(lvlName);
-     spyOn(scope.font, 'getTextImage').and.callThrough();
+     spyOn(scope.font, 'drawUndistortedText').and.callThrough();
      expect(elm.isolateScope()).toBeDefined();
      elm.isolateScope().drawLevelDetails();
-     expect(scope.font.getTextImage).toHaveBeenCalled();
+     expect(scope.font.drawUndistortedText).toHaveBeenCalled();
    });
 
    it('should clear on mouseleave', function () {

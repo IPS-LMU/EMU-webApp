@@ -277,7 +277,7 @@ angular.module('emuwebApp')
 					if (viewState.curViewPort.sS !== viewState.curViewPort.selectS && viewState.curViewPort.selectS !== -1) {
 						scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 						space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
-						fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.black, true);
+						fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.black, true);
 					}
 				}
 			} else {
@@ -296,10 +296,10 @@ angular.module('emuwebApp')
 					// start values
 					scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 					space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
-					fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posS - space - 5, 0, ConfigProviderService.design.color.black, false);
+					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posS - space - 5, 0, ConfigProviderService.design.color.black, false);
 
 					// end values
-					fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.selectE, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectE / Soundhandlerservice.wavJSO.SampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.black, true);
+					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectE, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectE / Soundhandlerservice.wavJSO.SampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.black, true);
 					// dur values
 					// check if space
 					space = getScale(ctx, mathHelperService.roundToNdigitsAfterDecPoint((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate, 6), scaleX);
@@ -308,7 +308,7 @@ angular.module('emuwebApp')
 						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
 						var str2 = mathHelperService.roundToNdigitsAfterDecPoint(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.wavJSO.SampleRate), 6);
 						space = getScaleWidth(ctx, str1, str2, scaleX);
-						fontScaleService.getTextImageTwoLines(ctx, str1, str2, fontSize, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - space / 2, 0, ConfigProviderService.design.color.black, false);
+						fontScaleService.drawUndistortedTextTwoLines(ctx, str1, str2, fontSize, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - space / 2, 0, ConfigProviderService.design.color.black, false);
 					}
 				}
 
@@ -362,8 +362,8 @@ angular.module('emuwebApp')
 						ctx.lineTo(mouseX, ctx.canvas.height);
 						ctx.stroke();
 					} else if (trackname == "SPEC") {
-						fontScaleService.getTextImage(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);
-						fontScaleService.getTextImage(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, (ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth)), mouseY, ConfigProviderService.design.color.transparent.red, true);
+						fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);
+						fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, (ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth)), mouseY, ConfigProviderService.design.color.transparent.red, true);
 						ctx.beginPath();
 						ctx.moveTo(0, mouseY);
 						ctx.lineTo(5, mouseY + 5);
@@ -379,8 +379,8 @@ angular.module('emuwebApp')
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
 						mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
-						fontScaleService.getTextImage(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);
-						fontScaleService.getTextImage(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, ConfigProviderService.design.color.transparent.red, true);
+						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);
+						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, ConfigProviderService.design.color.transparent.red, true);
 						ctx.beginPath();
 						ctx.moveTo(0, mouseY);
 						ctx.lineTo(5, mouseY + 5);
@@ -392,7 +392,7 @@ angular.module('emuwebApp')
 						ctx.stroke();
 					}
 				}
-				fontScaleService.getTextImageTwoLines(ctx, s1, s2, fontSize, ConfigProviderService.design.font.small.family, mouseX + 5, 0, ConfigProviderService.design.color.transparent.red, true);
+				fontScaleService.drawUndistortedTextTwoLines(ctx, s1, s2, fontSize, ConfigProviderService.design.font.small.family, mouseX + 5, 0, ConfigProviderService.design.color.transparent.red, true);
 			}
 		};
 
@@ -429,16 +429,16 @@ angular.module('emuwebApp')
 
 			// draw trackName
 			if (trackName !== '') {
-				fontScaleService.getTextImage(ctx, trackName, fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY / 2, ConfigProviderService.design.color.black);
+				fontScaleService.drawUndistortedText(ctx, trackName, fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY / 2, ConfigProviderService.design.color.black);
 			}
 
 			// draw min/max vals
 			if (max !== undefined) {
-				fontScaleService.getTextImage(ctx, 'max: ' + mathHelperService.roundToNdigitsAfterDecPoint(max, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.grey);
+				fontScaleService.drawUndistortedText(ctx, 'max: ' + mathHelperService.roundToNdigitsAfterDecPoint(max, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.grey);
 			}
 			// draw min/max vals
 			if (min !== undefined) {
-				fontScaleService.getTextImage(ctx, 'min: ' + mathHelperService.roundToNdigitsAfterDecPoint(min, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, ctx.canvas.height - th - 5, ConfigProviderService.design.color.grey);
+				fontScaleService.drawUndistortedText(ctx, 'min: ' + mathHelperService.roundToNdigitsAfterDecPoint(min, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, ctx.canvas.height - th - 5, ConfigProviderService.design.color.grey);
 			}
 		};
 
@@ -475,12 +475,12 @@ angular.module('emuwebApp')
 				sTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate, 6);
 				eTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate, 6);
 
-				fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.sS, sTime, fontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.black, true);
+				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.sS, sTime, fontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.black, true);
 				// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
 				//ctx.drawImage(horizontalText, 5, 5);
 
 				space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
-				fontScaleService.getTextImageTwoLines(ctx, viewState.curViewPort.eS, eTime, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - space - 5, 0, ConfigProviderService.design.color.black, false);
+				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.eS, eTime, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - space - 5, 0, ConfigProviderService.design.color.black, false);
 				//ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 			}
 

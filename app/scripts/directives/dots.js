@@ -138,7 +138,7 @@ angular.module('emuwebApp')
 
 
 					//////////////////////////////
-					// markup to improve visualization 
+					// markup to improve visualization
 
 					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
@@ -156,17 +156,12 @@ angular.module('emuwebApp')
 
 					var smallFontSize = scope.cps.design.font.input.size.slice(0, -2) * 3 / 4;
 					// ymax
-					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black);
-					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
-
+					scope.fontImage.drawUndistortedText(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, 5, 5, scope.cps.design.color.black);
 					// xmin + y min
-					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black, true);
-					ctx.drawImage(labelTxtImg, 5, canvas.height - smallFontSize * scaleY * 2 - 5, labelTxtImg.width, labelTxtImg.height);
-
+					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, 5, canvas.height - smallFontSize * scaleY * 2 - 5, scope.cps.design.color.black, true);
 					// xmax
 					var tw = ctx.measureText('xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 5)).width * scaleX; // SIC why 5???
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black);
-					ctx.drawImage(labelTxtImg, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, labelTxtImg.width, labelTxtImg.height);
+					scope.fontImage.drawUndistortedText(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, scope.cps.design.color.black);
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 
@@ -192,11 +187,10 @@ angular.module('emuwebApp')
 					}
 
 					tw = ctx.measureText('frame: ' + curFrame).width * scaleX;
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, scope.cps.design.color.black);
 					var degrees = 90;
 					ctx.save();
 					ctx.rotate(degrees * Math.PI / 180);
-					ctx.drawImage(labelTxtImg, canvas.width / 2 - tw / 2, -canvas.height);
+					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, canvas.width / 2 - tw / 2, -canvas.height, scope.cps.design.color.black);
 					ctx.restore();
 
 					//////////////////////////////
@@ -250,10 +244,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 
 						// draw labels
-						var labelTxtImg = scope.fontImage.getTextImage(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, scope.cps.design.color.black);
-						ctx.drawImage(labelTxtImg, x, y - 5, labelTxtImg.width, labelTxtImg.height);
-
-
+						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, x, y - 5, scope.cps.design.color.black);
 
 						// append to all dots
 						allDots.push({
@@ -297,7 +288,7 @@ angular.module('emuwebApp')
 						var labelX = ((sD.xNameCoordinate - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var labelY = canvas.height - ((sD.yNameCoordinate - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
-						var labelTxtImg = scope.fontImage.getTextImage(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, sD.color);
+						var labelTxtImg = scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, sD.color);
 						ctx.drawImage(labelTxtImg, labelX, labelY, labelTxtImg.width, labelTxtImg.height);
 
 						sD.xCoordinates.forEach(function (xVal, xIdx) {

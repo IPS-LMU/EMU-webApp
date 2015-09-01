@@ -6,7 +6,7 @@ describe('Directive: epg', function () {
 
     var elm, scope, tpl;
     beforeEach(module('emuwebApp'));
-    
+
     beforeEach(inject(function ($rootScope, $compile, viewState, fontScaleService, ConfigProviderService, Ssffdataservice, Soundhandlerservice) {
         scope = $rootScope.$new();
         scope.cps = ConfigProviderService;
@@ -42,12 +42,12 @@ describe('Directive: epg', function () {
         spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
         spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({values: [[1, 2, 3]]});
         spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue({sampleRate: 2, startTime: 1});
-        spyOn(scope.fontImage, 'getTextImageTwoLines').and.returnValue(img);
+        spyOn(scope.fontImage, 'drawUndistortedTextTwoLines').and.returnValue(img);
         scope.vs.curViewPort.eS = 10;
         compileDirective();
         scope.vs.curViewPort.eS = 100;
         scope.$apply();
-        expect(scope.fontImage.getTextImageTwoLines).toHaveBeenCalled();
+        expect(scope.fontImage.drawUndistortedTextTwoLines).toHaveBeenCalled();
     }));
 
 });
