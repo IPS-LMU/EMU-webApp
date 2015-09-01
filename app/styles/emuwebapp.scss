@@ -99,6 +99,8 @@
         text-decoration: none;
         text-indent: 0;
         cursor: pointer;
+        overflow: hidden;
+        white-space: normal;
     }
     .emuwebapp-dropdown-container {
       z-index: 99999 !important;
@@ -123,11 +125,13 @@
         border-left: 1px solid $color-blue;
         border-right: 1px solid $color-blue;
         border-bottom: 1px solid $color-blue;
+        overflow: hidden;
         li {
             @extend .emuwebapp-font-small;
             padding: 5px;
             margin: 0px;
             max-width: 90px;
+            overflow: hidden;
         }
 
         li:hover {
