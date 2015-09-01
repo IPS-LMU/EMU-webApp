@@ -137,8 +137,15 @@
 }
 
 .emuwebapp-exportdata {
-    margin: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
     text-align: left;
+    color: #444;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    @include vendor-prefix(tab-size, "5");
 }
 
 .emuwebapp-modalUl{
