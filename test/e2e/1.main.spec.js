@@ -17,8 +17,9 @@ describe('E2E: main page', function () {
 		var absolutePath1 = path.resolve(__dirname, fileToUpload1);
 		var absolutePath2 = path.resolve(__dirname, fileToUpload2);
 		element(by.id('fileDialog')).sendKeys(absolutePath2);
+		ptor.sleep(100);
 		element(by.id('fileDialog')).sendKeys(absolutePath1);
-		ptor.sleep(1200);
+		ptor.sleep(500);
 		var elem = element.all(by.css('.emuwebapp-level'));
 		expect(elem.count()).toBe(11);
 		element(by.id('clear')).click();

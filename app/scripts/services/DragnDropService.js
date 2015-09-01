@@ -15,12 +15,12 @@ angular.module('emuwebApp')
 		///////////////////
 		// drag n drop data
 		sServObj.setData = function (bundles) {
-		    var prom = [];
-		    var count = 0;
-
+		  var count = 0;
 			angular.forEach(bundles, function (bundle, i) {
 			    sServObj.setDragnDropData(bundle[0], i, 'wav', bundle[1]);
-			    sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
+			    if(bundle[2] !== undefined) {
+						sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
+					}
 			    count = i;
 			});
 			if(count<=sServObj.maxDroppedBundles) {
@@ -38,10 +38,14 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.resetToInitState = function () {
+			delete sServObj.drandropBundles;
 			sServObj.drandropBundles = [];
+			delete sServObj.bundleList;
 			sServObj.bundleList = [];
 			sServObj.sessionName = 'File(s)';
 			sServObj.maxDroppedBundles = 10;
+			DragnDropDataService.resetToInitState();
+			loadedMetaDataService.resetToInitState();
 		};
 
 		/**
@@ -143,6 +147,8 @@ angular.module('emuwebApp')
 										name: bundle
 									};
 									sServObj.convertDragnDropData(bundles, i+1).then( function () {
+										delete sServObj.drandropBundles;
+										sServObj.drandropBundles = [];
 										defer.resolve();
 									});
 								}
@@ -192,9 +198,12 @@ angular.module('emuwebApp')
             var validRes;
             var wav = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].mediaFile.data;
             var ab = Binarydatamaniphelper.base64ToArrayBuffer(wav);
-						var annotation = { levels: [], links: []};
+						var annotation;
 						if(DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].annotation !== undefined) {
 							annotation = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].annotation;
+						}
+						else {
+							annotation = { levels: [], links: []};
 						}
             viewState.showDropZone = false;
             viewState.setState('loadingSaving');
