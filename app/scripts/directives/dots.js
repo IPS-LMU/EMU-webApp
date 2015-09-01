@@ -129,7 +129,7 @@ angular.module('emuwebApp')
 					});
 
 					// and staticContours
-					dD.staticContours.forEach(function (sC) {
+					angular.forEach(dD.staticContours, function (sC) {
 						// get xCol
 						var trConf = scope.cps.getSsffTrackConfig(sC.xSsffTrack);
 						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
