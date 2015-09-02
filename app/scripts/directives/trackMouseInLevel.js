@@ -90,8 +90,8 @@ angular.module('emuwebApp')
           default:
             if (!viewState.getdragBarActive()) {
               var curMouseItem = viewState.getcurMouseItem();
-              LevelService.deleteEditArea();
               if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
+                LevelService.deleteEditArea();
                 if (curMouseItem !== undefined) {
                   viewState.movingBoundary = true;
                   if (scope.levelType === 'SEGMENT') {
@@ -138,6 +138,7 @@ angular.module('emuwebApp')
                   moveLine = false;
                 }
               } else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
+                LevelService.deleteEditArea();
                 if (scope.levelType == 'SEGMENT') {
                   seg = viewState.getcurClickItems();
                   if(seg[0] !== undefined) {
