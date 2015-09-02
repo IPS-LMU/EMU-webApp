@@ -8,10 +8,10 @@ describe('Directive: emuwebapp', function() {
     beforeEach(inject(function($injector, $rootScope, $compile) {
         scope = $rootScope.$new();
         httpBackend = $injector.get('$httpBackend');
-        httpBackend.whenGET('schemaFiles/annotationFileSchema.json').respond(annotationFileSchema);  
-        httpBackend.whenGET('schemaFiles/emuwebappConfigSchema.json').respond(emuwebappConfigSchema);  
-        httpBackend.whenGET('schemaFiles/DBconfigFileSchema.json').respond(DBconfigFileSchema);  
-        httpBackend.whenGET('schemaFiles/bundleListSchema.json').respond(bundleListSchema);  
+        httpBackend.whenGET('schemaFiles/annotationFileSchema.json').respond(annotationFileSchema);
+        httpBackend.whenGET('schemaFiles/emuwebappConfigSchema.json').respond(emuwebappConfigSchema);
+        httpBackend.whenGET('schemaFiles/DBconfigFileSchema.json').respond(DBconfigFileSchema);
+        httpBackend.whenGET('schemaFiles/bundleListSchema.json').respond(bundleListSchema);
         httpBackend.whenGET('schemaFiles/bundleSchema.json').respond(bundleSchema);
         httpBackend.whenGET('schemaFiles/designSchema.json').respond(designSchema);
         httpBackend.whenGET('NEWS.md').respond('# I am the fake NEWS.md');
