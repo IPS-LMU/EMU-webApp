@@ -375,8 +375,8 @@ angular.module('emuwebApp')
 						var labelX = ((sD.xNameCoordinate - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var labelY = canvas.height - ((sD.yNameCoordinate - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
-						var labelTxtImg = scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, sD.color);
-						ctx.drawImage(labelTxtImg, labelX, labelY, labelTxtImg.width, labelTxtImg.height);
+						var labelTxtImg =
+						scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, labelX, labelY, sD.color);
 
 						sD.xCoordinates.forEach(function (xVal, xIdx) {
 							var x = ((xVal - globalMinX) / (globalMaxX - globalMinX) * canvas.width);

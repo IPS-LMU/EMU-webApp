@@ -81,8 +81,7 @@ angular.module('emuwebApp')
 					});
 
 					// draw labels
-					var horizontalText = scope.fontImage.drawUndistortedTextTwoLines(ctx, 'EPG', 'Frame:' + curFrame, scope.cps.design.font.input.size.slice(0, -2) * 3 / 4, scope.cps.design.font.input.family, scope.cps.design.font.input.family, scope.cps.design.color.black, true);
-					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
+					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'EPG', 'Frame:' + curFrame, scope.cps.design.font.input.size.slice(0, -2) * 3 / 4, scope.cps.design.font.input.family, 5, 0, scope.cps.design.color.black, true);
 				}
 			}
 		};

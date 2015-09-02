@@ -460,32 +460,20 @@ angular.module('emuwebApp')
 			ctx.lineTo(ctx.canvas.width - 5, 5);
 			ctx.closePath();
 			ctx.stroke();
-
 			var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 			var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
-
 			var sTime;
 			var eTime;
 			var horizontalText;
 			var space;
-
 			if (viewState.curViewPort) {
 				//draw time and sample nr
-
 				sTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate, 6);
 				eTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate, 6);
-
 				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.sS, sTime, fontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.black, true);
-				// ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 0, 0, horizontalText.width, horizontalText.height);
-				//ctx.drawImage(horizontalText, 5, 5);
-
 				space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
 				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.eS, eTime, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - space - 5, 0, ConfigProviderService.design.color.black, false);
-				//ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, ctx.canvas.width - space - 5, 0, horizontalText.width, horizontalText.height);
 			}
-
 		};
-
-
 		return sServObj;
 	});
