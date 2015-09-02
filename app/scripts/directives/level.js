@@ -175,9 +175,6 @@ angular.module('emuwebApp')
 						//console.log('undef config');
 						return;
 					}
-					if (!isOpen) {
-						fontSize -= 1;
-					}
 					var ctx = canvas[0].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
@@ -191,13 +188,14 @@ angular.module('emuwebApp')
 
 					if (scope.level.name === curAttrDef) {
 					    if(isOpen) {
-    						fontScaleService.drawUndistortedTextTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black, true);
+    						fontScaleService.drawUndistortedTextTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, 4, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black, true);
     					}
     					else {
-								fontScaleService.drawUndistortedText(ctx, scope.level.name, fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black);
+								fontSize -= 2;
+								fontScaleService.drawUndistortedText(ctx, scope.level.name, fontSize, ConfigProviderService.design.font.small.family, 4, ctx.canvas.height / 2 - (fontSize * scaleY / 2), ConfigProviderService.design.color.black);
     					}
 					} else {
-						fontScaleService.drawUndistortedTextTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black, true);
+						fontScaleService.drawUndistortedTextTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, 4, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black, true);
 					}
 
 					var segMId = scope.vs.getcurMouseItem();
@@ -315,7 +313,9 @@ angular.module('emuwebApp')
 								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, perc - 5, canvas[0].height / 3, ConfigProviderService.design.color.black);
-								fontScaleService.drawUndistortedText(ctx, curEvt.samplePoint, fontSize - 4, ConfigProviderService.design.font.small.family, perc + 5, 0, ConfigProviderService.design.color.grey);
+								if(isOpen) {
+									fontScaleService.drawUndistortedText(ctx, curEvt.samplePoint, fontSize - 2, ConfigProviderService.design.font.small.family, perc + 5, 0, ConfigProviderService.design.color.grey);
+								}
 							}
 						});
 					}
