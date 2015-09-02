@@ -80,3 +80,5 @@ autoprefixer
 *.iml
 
 .idea/EMU-webApp.iml
+
+app/testData/newFormat/ERC_SCATS_Polish/ERC_SCATS_Polish_emuDBcache.sqlite
