@@ -1,19 +1,20 @@
 <div class="emuwebapp-modal-wrap" ng-controller="ExportCtrl">
     <div class="emuwebapp-modal-header-large emuwebapp-modal-header">
         <h3 id="modalHeading">
-            Export {{dataIn}}
+            Download {{dataIn}}
         </h3>
 	</div>
 	<div class="emuwebapp-modal-body">
 	    <div class="emuwebapp-text">
 			<div>
-				Really <i>export</i> "{{dataIn}}" ?
+				Do you wish to download "{{dataIn}}" ?
 			</div>
-			<pre class="emuwebapp-exportdata">{{modal.dataExport}}</pre>
+      <pre class="emuwebapp-exportdata">{{modal.dataExport}}</pre>
 	    </div>
+
 	</div>
 	<div class="emuwebapp-modal-footer">
 	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn">Cancel</button>
-	  <button ng-click="export();" class="emuwebapp-mini-btn">Export</button>
+	  <button ng-click="export();" class="emuwebapp-mini-btn">Download</button>
 	</div>
 </div>

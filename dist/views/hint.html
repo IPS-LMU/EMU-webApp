@@ -1,7 +1,7 @@
 <div class="emuwebapp-aboutHint">
     <div class="emuwebapp-aboutHint-arrow">⇧</div>
     <div class="emuwebapp-aboutHint-content">
-        <h1>Welcome to the EMU-webApp</h1>
+        <h1>Welcome to the EMU-webApp Version 0.0.25</h1>
         <p>
             an online and offline web application for labeling, visualizing and correcting speech and derived speech data.
         </p>
@@ -10,8 +10,9 @@
             <div class="emuwebapp-aboutHint-overlay">
                 click on this icon in the top menu bar for more information (incl. manual)
             </div>
-
         </div>
+
+        <div class="news" btf-markdown ng-include="'NEWS.md'"></div>
         <p>
             <button class="emuwebapp-aboutHint-hidden" ng-click="hideMe()"></button>
             <button class="" ng-click="internalVars.showAboutHint = !internalVars.showAboutHint">Close message</button>
