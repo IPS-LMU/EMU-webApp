@@ -14,6 +14,7 @@ describe('Directive: emuwebapp', function() {
         httpBackend.whenGET('schemaFiles/bundleListSchema.json').respond(bundleListSchema);  
         httpBackend.whenGET('schemaFiles/bundleSchema.json').respond(bundleSchema);
         httpBackend.whenGET('schemaFiles/designSchema.json').respond(designSchema);
+        httpBackend.whenGET('NEWS.md').respond('# I am the fake NEWS.md');
     }));
 
     function compileDirective(tpl) {
