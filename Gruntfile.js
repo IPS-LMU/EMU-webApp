@@ -477,6 +477,11 @@ module.exports = function (grunt) {
           flatten: true,
           src: ['dist/manual/Introduction.md'],
           dest: 'dist/manual/'
+        },{
+          expand: true,
+          flatten: true,
+          src: ['dist/views/hint.html'],
+          dest: 'dist/views/'
         }]
       }
     },
