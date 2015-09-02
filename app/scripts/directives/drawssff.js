@@ -108,7 +108,7 @@ angular.module('emuwebApp')
                   var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
                   var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
                   var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
-                  // draw values  
+                  // draw values
                   scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
                 }
               });
@@ -121,7 +121,7 @@ angular.module('emuwebApp')
                 var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 
                 var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
-                // draw values  
+                // draw values
                 scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
               }
             }
@@ -241,21 +241,10 @@ angular.module('emuwebApp')
               });
             } else {
               ctx.strokeStyle = 'red';
-              var txt;
-              // var tW;
-              var horizontalText;
-              
               if (nrOfSamples <= 2) {
-                horizontalText = fontScaleService.getTextImageTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0,-2) / 1.05 , ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.red);
-                // ctx.fillStyle = ConfigProviderService.vals.colors.levelColor;
-                // ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width/2 - horizontalText.width / 2, 25, horizontalText.width, horizontalText.height);
+                fontScaleService.drawUndistortedTextTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0,-2) / 1.05 , ConfigProviderService.design.font.small.family, canvas.width/2 - (ctx.measureText('see contour(s)').width * ctx.canvas.width / ctx.canvas.offsetWidth / 2), 25, ConfigProviderService.design.color.transparent.red);
               } else {
-                txt = 'Zoom in to see contour(s)';
-                horizontalText = fontScaleService.getTextImageTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0,-2) / 1.05, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.transparent.red);
-                // ctx.fillStyle = ConfigProviderService.vals.colors.levelColor;
-                // ctx.fillRect(0, 0, canvas.width, canvas.height);              
-                ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, canvas.width / 2 - horizontalText.width / 2, 25, horizontalText.width, horizontalText.height);
+                fontScaleService.drawUndistortedTextTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0,-2) / 1.05, ConfigProviderService.design.font.small.family, canvas.width / 2 - (ctx.measureText('see contour(s)').width * ctx.canvas.width / ctx.canvas.offsetWidth / 2), 25, ConfigProviderService.design.color.transparent.red);
               }
             }
           } //function
