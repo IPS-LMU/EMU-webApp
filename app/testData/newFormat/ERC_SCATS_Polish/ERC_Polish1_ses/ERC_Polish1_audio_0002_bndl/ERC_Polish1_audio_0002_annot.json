@@ -1,0 +1,15 @@
+{
+	"name": "ERC_Polish1_audio_0002",
+	"annotates": "ERC_Polish1_audio_0002.wav",
+	"sampleRate": 25600,
+	"levels": [{
+		"name": "ORT",
+		"type": "SEGMENT",
+		"items": []
+	}, {
+		"name": "tongueTipGestures",
+		"type": "EVENT",
+		"items": []
+	}],
+	"links": []
+}
