@@ -30,7 +30,7 @@ describe('Directive: dots', function() {
 
     it('should be replaced correctly', function() {
         compileDirective();
-        expect(elm.html()).toContain('<canvas width="512" height="512"></canvas>');
+        expect(elm.html()).toContain('<canvas class="emuwebapp-twoDimCanvasStatic" width="512" height="512"></canvas><canvas class="emuwebapp-twoDimCanvasDots" width="512" height="512"></canvas>');
     });
     
     it('should setGlobalMinMaxVals', function() {
