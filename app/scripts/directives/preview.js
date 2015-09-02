@@ -22,7 +22,7 @@ angular.module('emuwebApp')
 				    'background': '#eee',
 				    'border': '1px solid gray',
 				    'width': '100%',
-                    'height': '100%'				    
+						'height': '100%'				    
 				}
 
 				/////////////////////
@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 				            'background': ConfigProviderService.design.color.lightGrey,
 				            'border': '1px solid gray',
 				            'width': '100%',
-                            'height': '100%'					            
+                            'height': '100%'
 				        }
 						scope.drawPreview();
 

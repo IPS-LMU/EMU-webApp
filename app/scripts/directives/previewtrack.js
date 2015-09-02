@@ -12,14 +12,14 @@ angular.module('emuwebApp')
         ///////////////
         // bindings
 
-        //
+
         element.bind('click', function (x) {
           if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
             var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
             startPCM = viewState.getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
             if (!viewState.isEditing()) {
               scope.$apply(function () {
-                viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
+                viewState.setViewPort((startPCM - (width / 2)) < 0 ? 0 : (startPCM - (width / 2)), (startPCM + (width / 2)) > Soundhandlerservice.wavJSO.Data.length ? Soundhandlerservice.wavJSO.Data.length: (startPCM + (width / 2)));
               });
             }
           }
