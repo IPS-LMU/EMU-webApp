@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2015-09-02T15:36:33.386Z
+# rev 1 - 2015-09-03T12:27:15.485Z
 
 CACHE:
 404.html
@@ -7,6 +7,20 @@ NEWS.md
 apple-touch-icon.png
 assets/EMU-webAppEmu.svg
 assets/EMU-webAppIcon-roundCorners.svg
+assets/apple-touch-icon-114x114.png
+assets/apple-touch-icon-120x120.png
+assets/apple-touch-icon-144x144.png
+assets/apple-touch-icon-152x152.png
+assets/apple-touch-icon-180x180.png
+assets/apple-touch-icon-57x57.png
+assets/apple-touch-icon-60x60.png
+assets/apple-touch-icon-72x72.png
+assets/apple-touch-icon-76x76.png
+assets/favicon-160x160.png
+assets/favicon-16x16.png
+assets/favicon-192x192.png
+assets/favicon-32x32.png
+assets/favicon-96x96.png
 background.js
 configFiles/default_emuwebappConfig.json
 configFiles/default_emuwebappDesign.json
@@ -61,16 +75,16 @@ schemaFiles/bundleSchema.json
 schemaFiles/designSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/03d2a785.emuwebApp.min.js
 scripts/508660d1.emuwebAppExternal.min.js
+scripts/5d0fefd3.emuwebApp.min.js
 scripts/emuwebApp.min.js.map
 scripts/workers/espsParserWorkerClass.js
 scripts/workers/spectroDrawingWorkerClass.js
 scripts/workers/ssffParserWorkerClass.js
 scripts/workers/textGridParserWorkerClass.js
 scripts/workers/wavParserWorkerClass.js
-styles/14fa01bc.emuwebApp.min.css
 styles/1c98af2c.emuwebAppExternal.min.css
+styles/ae376c97.emuwebApp.min.css
 views/SelectLabelModal.html
 views/SelectThresholdModal.html
 views/bundleListSideBar.html

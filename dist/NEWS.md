@@ -1,6 +1,11 @@
 What's New
 =============================================
 
+## Version 0.0.26
+
+- fixed broken scrolling in bundleListSideBar
+- better scrolling OSCI mini map
+
 ## Version 0.0.25
 
 - conversion to samples fixed for TextGrids

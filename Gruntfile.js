@@ -366,6 +366,8 @@ module.exports = function (grunt) {
             'manifest.json',
             'assets/EMU-webAppEmu.svg',
             'assets/EMU-webAppIcon-roundCorners.svg',
+              'assets/apple*.png',
+              'assets/favicon*.png',
             // 'styles/external/bootstrap-combined.min.css',
             'styles/images/rightSideMenuBtn.png',
             'manual/**/*.{md,gif,svg,json}',
