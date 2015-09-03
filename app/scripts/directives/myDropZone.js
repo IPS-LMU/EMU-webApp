@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 		},
 		link: function postLink(scope, element, attr) {
 		    /* --------- Messages -------- */
-			scope.dropTextDefault = 'Drop your files here or click here to open a file';
+			scope.dropTextDefault = 'Drop your files here (.wav files; .wav & annotJSON file pairs; .wav & TextGrid file pairs) or click here to do the same with a file dialog';
 			scope.dropTextErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID _annot.json';
 			scope.dropTextErrorAPI = 'Sorry ! The File APIs are not supported in your browser.';
 			scope.dropAllowed = 'Drop file(s) to start loading !';
