@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('appStateService', function appStateService($log, $rootScope, DragnDropDataService, viewState, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, DataService, Ssffdataservice, HistoryService) {
+	.service('appStateService', function appStateService($log, $rootScope, DragnDropService, DragnDropDataService, viewState, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, DataService, Ssffdataservice, HistoryService) {
 
 		// shared service object
 		var sServObj = {};
@@ -27,6 +27,7 @@ angular.module('emuwebApp')
 			Soundhandlerservice.wavJSO = {};
 			DataService.setData({});
 			DragnDropDataService.resetToInitState();
+			DragnDropService.resetToInitState();
 			Ssffdataservice.data = [];
 			HistoryService.resetToInitState();
 			viewState.setState('noDBorFilesloaded');
