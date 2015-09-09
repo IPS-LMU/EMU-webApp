@@ -10,9 +10,7 @@ angular.module('emuwebApp')
 				var curMouseSample;
 				var dragStartSample;
 				var dragEndSample;
-
 				var canvas = element[0];
-
 				var ctx = canvas.getContext('2d');
 				// var elem = element[0];
 				var tr, col, sRaSt;
@@ -170,7 +168,7 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 							if (!viewState.getdragBarActive()) {
 								if (viewState.getPermission('labelAction')) {
-									scope.switchMarkupContext(event, false);
+									//scope.switchMarkupContext(event, false);
 								}
 							}
 						}
@@ -196,7 +194,6 @@ angular.module('emuwebApp')
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
 						Drawhelperservice.drawMinMaxAndName(ctx, atts.ssffTrackname, col._minVal, col._maxVal, 2);
 					}
-
 					// draw crossHairs
 					if (leave !== false && ConfigProviderService.vals.restrictions.drawCrossHairs) {
 						Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz', atts.ssffTrackname);
