@@ -32,6 +32,8 @@ angular.module('emuwebApp')
         eS: 0,
         selectS: -1,
         selectE: -1,
+        movingS: -1,
+        movingE: -1,
         dragBarActive: false,
         dragBarHeight: -1,
         windowWidth: undefined,
