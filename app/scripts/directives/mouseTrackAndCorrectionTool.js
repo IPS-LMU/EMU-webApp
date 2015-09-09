@@ -201,7 +201,6 @@ angular.module('emuwebApp')
 					} else {
 						viewState.curViewPort.movingS = curMouseSample;
 					}
-					console.log(viewState.curViewPort.movingS);
 					viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
 					scope.$apply();
 				};

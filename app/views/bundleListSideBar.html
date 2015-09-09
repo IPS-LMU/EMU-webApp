@@ -8,7 +8,7 @@
         </h3>
         <my-drop-zone ng-show="vs.showDropZone"></my-drop-zone>
         <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundle-container" ng-show="!vs.showDropZone">
-            <ul ng-repeat="(key, value) in lmds.getRendOptBndlList()">
+            <ul ng-repeat="(key, value) in lmds.getRendOptBndlList()" class="emuwebapp-bundle-list">
                 <div class="emuwebapp-bundle-session" ng-show="isSessionDefined(key)" ng-click="lmds.toggleCollapseSession(key)">
                     <div ng-if="lmds.getSessionCollapseState(key)">
                         ▷{{key}}
