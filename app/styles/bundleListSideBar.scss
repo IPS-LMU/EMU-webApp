@@ -47,9 +47,6 @@
         @include vendor-prefix(border-radius, "20px");
         @extend .emuwebapp-font-small;
     }
-    .emuwebapp-bundle-list {
-      padding-bottom: 150px;
-    }
     .emuwebapp-bundle-container {
         width: calc(100% - 20px);
         height: 100%;
@@ -57,6 +54,7 @@
         overflow-y: scroll;
         text-align: left;
         padding: 10px;
+        padding-bottom: 150px;
         font-size: 0.8em;
         @extend .emuwebapp-font-input;
         .emuwebapp-bundle-session {
