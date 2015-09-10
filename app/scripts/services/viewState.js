@@ -2,7 +2,6 @@
 
 angular.module('emuwebApp')
   .factory('viewState', function ($rootScope, $timeout, $window, Soundhandlerservice, DataService, StandardFuncsService) {
-
     //shared service object to be returned
     var sServObj = {};
 
@@ -78,6 +77,7 @@ angular.module('emuwebApp')
 	playing: 0
       };
 
+      sServObj.showAboutHint = false; 
       sServObj.timelineSize = -1;
       sServObj.somethingInProgress = false;
       sServObj.somethingInProgressTxt = '';

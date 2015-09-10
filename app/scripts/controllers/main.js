@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('MainController', function ($scope, $rootScope, $log, $compile, $timeout,
-		$q, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
-		Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
-		LevelService, Textgridparserservice, Espsparserservice,
-		Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
-		Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
-		appStateService, DataService, modalService, browserDetector) {
+	.controller('MainController', function ($scope, $rootScope, $log, $compile,
+		$timeout, $q, $window, $document, $location, viewState, HistoryService,
+		Iohandlerservice,Soundhandlerservice, ConfigProviderService,
+		fontScaleService, Ssffdataservice, LevelService, Textgridparserservice,
+		Espsparserservice, Binarydatamaniphelper, Wavparserservice,
+		Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler,
+		loadedMetaDataService, dbObjLoadSaveService, appStateService, DataService,
+		modalService, browserDetector) {
+
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -22,16 +24,6 @@ angular.module('emuwebApp')
 		$scope.io = Iohandlerservice;
 		$scope.ach = Appcachehandler;
 		$scope.lmds = loadedMetaDataService;
-
-		// init vars
-		$scope.connectBtnLabel = 'connect';
-		$scope.tmp = {};
-		$scope.dbLoaded = false;
-		$scope.is2dCancasesHidden = true;
-		$scope.windowWidth = $window.outerWidth;
-		$scope.internalVars = {};
-		$scope.internalVars.showAboutHint = false;// this should probably be moved to viewState
-
 
 		// check for new version
 		$scope.ach.checkForNewVersion();
@@ -54,6 +46,9 @@ angular.module('emuwebApp')
 			}
 		});
 
+
+		////////////////////////
+		// window function
 
 		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
@@ -106,7 +101,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.loadFilesForEmbeddedApp = function () {
 			if (ConfigProviderService.embeddedVals.audioGetUrl) {
-			    ConfigProviderService.vals.activeButtons.openDemoDB = false;
+				ConfigProviderService.vals.activeButtons.openDemoDB = false;
 				Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 					viewState.showDropZone = false;
 					// set bundle name
@@ -262,11 +257,8 @@ angular.module('emuwebApp')
 			var curVal = localStorage.getItem("haveShownWelcomeModal");
 			if(!browserDetector.isBrowser.PhantomJS() && curVal === null){
 				localStorage.setItem("haveShownWelcomeModal", "true");
-				$scope.internalVars.showAboutHint = true;
+				viewState.showAboutHint = true;
 			}
-
-			// FOR DEVELOPMENT
-			//$scope.internalVars.showAboutHint = true;
 		};
 
 		$scope.getCurBndlName = function () {

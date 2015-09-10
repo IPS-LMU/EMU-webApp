@@ -1,9 +1,16 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('emuwebapp', function (viewState, Iohandlerservice, ConfigProviderService) {
+	.directive('emuwebapp', function (viewState, Iohandlerservice, ConfigProviderService, browserDetector) {
 		return {
-			templateUrl: 'views/emuwebapp.html',
+			templateUrl: function(elem,attrs) {
+				if(browserDetector.isMobileDevice()) {
+					return 'views/mobile/emuwebapp.html';
+				}
+				else {
+					return 'views/emuwebapp.html';
+				}
+      },
 			restrict: 'E',
 			scope: {
 				audioGetUrl: '@',
@@ -18,7 +25,7 @@ angular.module('emuwebApp')
 					viewState.mouseInEmuWebApp = true;
 
 				});
-				
+
 				element.bind('mouseleave', function (event) {
 					viewState.mouseInEmuWebApp = false;
 				});

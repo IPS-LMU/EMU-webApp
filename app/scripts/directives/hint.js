@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
 				scope.hideMe = function () {
-					scope.internalVars.showAboutHint = !scope.internalVars.showAboutHint;
+					viewState.showAboutHint = !viewState.showAboutHint;
 					scope.aboutBtnClick();
 		 		};
 			}

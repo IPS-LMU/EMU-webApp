@@ -88,15 +88,6 @@ describe('Controller: MainController', function () {
     expect(scope.loadDefaultConfig).toHaveBeenCalled();
   }));
 
-
-  it('should have all variables defined', function () {
-    expect(scope.connectBtnLabel).toBe('connect');
-    expect(scope.tmp).toEqual(emptyObject);
-    expect(scope.dbLoaded).toBe(false);
-    expect(scope.is2dCancasesHidden).toBe(true);
-    expect(scope.windowWidth).toBeDefined;
-  });
-
   it('all services should exist', inject(function (viewState,
     ConfigProviderService,
     HistoryService,

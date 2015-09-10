@@ -27,7 +27,7 @@
       <div class="emuwebapp-nav-wrap" ng-show="cps.vals.activeButtons.openDemoDB">
         <ul class="emuwebapp-dropdown-container">
           <li class="left">
-            <button id="demoDB" type="button" ng-mouseover="dropdown = true" ng-mouseleave="dropdown = false" ng-click="dropdown = !dropdown" class="emuwebapp-mini-btn full" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">open demo <span id="emuwebapp-dropdown-arrow"></span></button>
+            <button id="demoDB" type="button" ng-mouseover="dropdown = true" ng-mouseleave="dropdown = false" ng-click="dropdown = !dropdown" class="emuwebapp-mini-btn full" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">mobile demo <span id="emuwebapp-dropdown-arrow"></span></button>
             <ul class="emuwebapp-dropdown-menu" ng-mouseover="dropdown = true" ng-mouseleave="dropdown = false" ng-init="dropdown = false" ng-show="dropdown">
               <li class="divider"></li>
               <li ng-repeat="curDB in cps.vals.demoDBs" ng-click="openDemoDBbtnClick(curDB);" id="demo{{$index}}">{{curDB}}</li>
