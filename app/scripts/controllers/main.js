@@ -269,8 +269,15 @@ angular.module('emuwebApp')
 		 * function called after default config was loaded
 		 */
 		$scope.handleDefaultConfigLoaded = function () {
+			if(browserDetector.isMobileDevice()) {
+				angular.element($document).bind('touchmove', function(e){
+				  e.preventDefault();
+				});				
+				$timeout(window.scrollTo(0, 1));
+			}
 
-			if (!viewState.getsubmenuOpen()) {
+
+			if (!viewState.getsubmenuOpen() && !browserDetector.isMobileDevice() ) {
 				viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
 			}
 

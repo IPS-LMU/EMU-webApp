@@ -18,7 +18,7 @@ angular.module('emuwebApp')
           $scope.panes.push(pane);
           return $scope.panes.length;
         };
-        
+
         this.setBottomRightResizePane = function (pane) {
           $scope.bottomRightResizePane = pane;
         };
@@ -60,9 +60,9 @@ angular.module('emuwebApp')
         ////////////////////
         // bindings
 
-        element.bind('mousemove', function (ev) {
+        element.bind('mousemove touchmove', function (ev) {
           if (!drag) return;
-          
+
           // check if scrollbar exists -> set scrollbar on pane1 to ensure equal indentation due to scrollbar width
           if(pane2.elem[0].scrollHeight > pane2.elem[0].clientHeight + 1){
             pane1.elem.css('overflow-y', 'scroll');
@@ -87,10 +87,10 @@ angular.module('emuwebApp')
             handler.css('top', pos + 'px');
             pane1.elem.css('height', pos + 'px');
             pane2.elem.css('top', pos + 'px');
-            
+
             viewState.setdragBarHeight(pos);
             $rootScope.$digest();
-            
+
           }
 
           if (dragBottomRightResizePaneTopResizer) {

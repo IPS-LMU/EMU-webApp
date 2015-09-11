@@ -7,35 +7,41 @@
      }
      .emuwebapp-mini-btn-group{
          width: 9%;
-     }     
+     }
      .emuwebapp-mini-btn-group button{
          /*width: 100%;*/
      }
-   
+
 }
 
 @media (min-width: 450px) and (max-width: 950px) {
-   /* netbooks/tablets */ 
+   /* netbooks/tablets */
      .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li {
          width: 7.5%;
      }
     .emuwebapp-mini-btn-group{
          width: 7.5%;
-     }     
+     }
     .emuwebapp-mini-btn-group button{
          /*width: 100%;*/
      }
-} 
+}
 
 @media (max-width: 450px) {
-     /* mobile devices */ 
+     /* mobile devices */
     .emuwebapp-mini-btn, .emuwebapp-nav-wrap ul li {
-        width: 6%;
+        width: 15%;
     }
     .emuwebapp-mini-btn-group{
-        width: 6%;
-    }     
-    .emuwebapp-mini-btn-group button{
-        /*width: 100%;*/
+        width: 15%;
+    }
+    .emuwebapp-mini-btn {
+      width: 15%;
+    }
+    .emuwebapp-mini-btn {
+      width: 15%;
+    }
+    .emuwebapp-tabbed .emuwebapp-tabbed-menu {
+      width: 35%;
     }
 }

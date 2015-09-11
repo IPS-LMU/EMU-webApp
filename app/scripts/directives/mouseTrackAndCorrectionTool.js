@@ -41,7 +41,7 @@ angular.module('emuwebApp')
 
 				/////////////////////////////
 				// Bindings
-				element.bind('mousedown', function (event) {
+				element.bind('mousedown touchstart', function (event) {
 					viewState.curViewPort.movingS = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
 					viewState.curViewPort.movingE = viewState.curViewPort.movingS;
 					viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
@@ -49,7 +49,7 @@ angular.module('emuwebApp')
 					scope.$apply();
 				});
 
-				element.bind('mousemove', function (event) {
+				element.bind('mousemove touchmove', function (event) {
 					var mbutton = 0;
 					if (event.buttons === undefined) {
 						mbutton = event.which;
@@ -155,7 +155,7 @@ angular.module('emuwebApp')
 				});
 */
 				// on mouse leave clear markup canvas
-				element.bind('mouseleave', function (event) {
+				element.bind('mouseleave touchleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 							if (!viewState.getdragBarActive()) {
