@@ -4,14 +4,14 @@ describe('Service: DragnDropService', function () {
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
-  
+
   var item;
-  
+
   var testData = [
       ['test1','wavData1','annotationData1'],
       ['test2','wavData2','annotationData2']
   ];
-  
+
   it('should resetToInitState', inject(function (DragnDropService) {
     // set any data
     DragnDropService.drandropBundles.push('test');
@@ -20,12 +20,12 @@ describe('Service: DragnDropService', function () {
     expect(DragnDropService.drandropBundles.length).toBe(0);
     expect(DragnDropService.bundleList.length).toBe(0);
   }));
-  
+
 
   it('should setData', inject(function ($rootScope, $q, DragnDropService, loadedMetaDataService) {
     // set according data
     var scope = $rootScope.$new();
-    var def = $q.defer(); 
+    var def = $q.defer();
     spyOn(loadedMetaDataService, 'setBundleList');
     spyOn(loadedMetaDataService, 'setCurBndlName');
     spyOn(loadedMetaDataService, 'setDemoDbName');
@@ -42,15 +42,15 @@ describe('Service: DragnDropService', function () {
     expect(loadedMetaDataService.setDemoDbName).toHaveBeenCalled();
     expect(DragnDropService.handleLocalFiles).toHaveBeenCalled();
   }));
-  
+
   it('should getBlob', inject(function (DragnDropService) {
      expect(DragnDropService.getBlob().toString()).toBe('[object Blob]');
-  })); 
-  
+  }));
+
   it('should generateDrop', inject(function (DragnDropService) {
      expect(DragnDropService.generateDrop().toString().substr(0, 12)).toBe('blob:http://');
-  }));   
-  
+  }));
+
   it('should setDragnDropData', inject(function (DragnDropService, DragnDropDataService) {
     spyOn(DragnDropDataService, 'setDefaultSession');
     var pak1 = 0;
@@ -61,8 +61,8 @@ describe('Service: DragnDropService', function () {
     DragnDropService.setDragnDropData(testData[pak2][0], pak2, 'annotation', testData[pak2][2]);
     expect(DragnDropDataService.convertedBundles.length).toBe(2);
     expect(DragnDropDataService.setDefaultSession).toHaveBeenCalled();
-  }));    
-  
+  }));
+
   it('should getDragnDropData', inject(function (DragnDropService, DragnDropDataService) {
     spyOn(DragnDropDataService, 'setDefaultSession');
     var pak1 = 0;
@@ -77,21 +77,21 @@ describe('Service: DragnDropService', function () {
     expect(DragnDropService.getDragnDropData(pak2, 'annotation')).toEqual(testData[pak2][2]);
     expect(DragnDropService.getDragnDropData(pak2, 'annotation12')).toEqual(false);
   }));
-    
-  it('should handleLocalFiles', inject(function ($rootScope, 
-                                                 $q, 
-                                                 Wavparserservice, 
+
+  it('should handleLocalFiles', inject(function ($rootScope,
+                                                 $q,
+                                                 Wavparserservice,
                                                  ConfigProviderService,
-                                                 Validationservice, 
-                                                 Iohandlerservice, 
-                                                 DragnDropService, 
+                                                 Validationservice,
+                                                 Iohandlerservice,
+                                                 DragnDropService,
                                                  Soundhandlerservice,
-                                                 DragnDropDataService, 
+                                                 DragnDropDataService,
                                                  Binarydatamaniphelper) {
     var scope = $rootScope.$new();
-    var def = $q.defer();   
-    var defio = $q.defer();   
-    var defwav = $q.defer();   
+    var def = $q.defer();
+    var defio = $q.defer();
+    var defwav = $q.defer();
     DragnDropDataService.sessionDefault = 0;
     DragnDropDataService.convertedBundles[0] = {};
     DragnDropDataService.convertedBundles[0].mediaFile = {};
@@ -111,25 +111,25 @@ describe('Service: DragnDropService', function () {
     scope.$apply();
     ConfigProviderService.vals = {};
     ConfigProviderService.vals.perspectives = [];
-  }));  
-    
-  it('should handleLocalFiles', inject(function ($rootScope, 
-                                                 $q, 
-                                                 Wavparserservice, 
+  }));
+
+  it('should handleLocalFiles', inject(function ($rootScope,
+                                                 $q,
+                                                 Wavparserservice,
                                                  ConfigProviderService,
-                                                 Validationservice, 
-                                                 Iohandlerservice, 
-                                                 DragnDropService, 
+                                                 Validationservice,
+                                                 Iohandlerservice,
+                                                 DragnDropService,
                                                  modalService,
                                                  appStateService,
                                                  Soundhandlerservice,
-                                                 DragnDropDataService, 
+                                                 DragnDropDataService,
                                                  Binarydatamaniphelper) {
     var scope = $rootScope.$new();
-    var def = $q.defer();   
-    var defio = $q.defer();   
-    var defwav = $q.defer();   
-    var defmodal = $q.defer();   
+    var def = $q.defer();
+    var defio = $q.defer();
+    var defwav = $q.defer();
+    var defmodal = $q.defer();
     DragnDropDataService.sessionDefault = 0;
     DragnDropDataService.convertedBundles[0] = {};
     DragnDropDataService.convertedBundles[0].mediaFile = {};
@@ -155,7 +155,6 @@ describe('Service: DragnDropService', function () {
     scope.$apply();
     ConfigProviderService.vals = {};
     ConfigProviderService.vals.perspectives = [];
-    expect(appStateService.resetToInitState).toHaveBeenCalled();
-  }));  
-  
+  }));
+
 });

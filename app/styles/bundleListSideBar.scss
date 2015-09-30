@@ -8,13 +8,13 @@
     ######################################
 */
 
-
 .emuwebapp-bundle-outer {
     height: 100%;
     width: 240px;
     background: $color-darkGrey;
     color: $color-white;
     margin-left: 0px;
+    padding-bottom: 500px;
     @extend .emuwebapp-font-input;
     line-height: 0.85;
     @include vendor-prefix(transition, "margin-left "+$animation-period+"ms ease-in-out");
@@ -48,10 +48,13 @@
         @extend .emuwebapp-font-small;
     }
     .emuwebapp-bundle-container {
-        width: calc(100%-20px);
-        overflow-y:auto;
+        width: calc(100% - 20px);
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
         text-align: left;
         padding: 10px;
+        padding-bottom: 150px;
         font-size: 0.8em;
         @extend .emuwebapp-font-input;
         .emuwebapp-bundle-session {

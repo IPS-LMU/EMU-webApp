@@ -1,20 +1,35 @@
 What's New
 =============================================
 
+## Version 0.0.26
+
+- fixed broken scrolling in bundleListSideBar
+- better scrolling OSCI mini map
+
+## Version 0.0.25
+
+- conversion to samples fixed for TextGrids
+- multiple select of EVENTs now possible
+- conversion to TextGrid problem fixed for Tiers of type "TextTier"
+- performance improvement due to repainting level details on boundary move only for relevant level
+- showing news in welcome modal
+- 2D canvases may now include static shapes stored as contours in SSFF files
+- single wav files can now be dropped (without TextGrid/Annotation)
+- pressing 'enter' inside a dialog triggers the default action inside the dialog
+- performance improvement due to direct canvas rendering of distorted canvases
+- improved bundleListSideBar animation lag
+
 ## Version 0.0.24
 
 - fixed off by 1px problem due to boarder problem in levels
 - checking if scroll bar in level panel -> if so adding scroll bar to track panel
-<<<<<<< HEAD
-=======
 - fixed slight alignment issue of OSCI and SPEC due to centering on FFT length and not the actual window length
 - vertical flip of EPG drawing
->>>>>>> master
 
 ## Version 0.0.23
 
 - OSCI repaint problem fix
-- time level alignment due to scroll bar issue fixed 
+- time level alignment due to scroll bar issue fixed
 - bundleList side bar scroll bar issue fixed
 
 ## Version 0.0.22

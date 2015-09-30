@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropDataService', function DragnDropDataService($q, ConfigProviderService) {
+	.service('DragnDropDataService', function DragnDropDataService($q, ConfigProviderService, modalService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.convertedBundles = [];

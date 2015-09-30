@@ -366,6 +366,8 @@ module.exports = function (grunt) {
             'manifest.json',
             'assets/EMU-webAppEmu.svg',
             'assets/EMU-webAppIcon-roundCorners.svg',
+              'assets/apple*.png',
+              'assets/favicon*.png',
             // 'styles/external/bootstrap-combined.min.css',
             'styles/images/rightSideMenuBtn.png',
             'manual/**/*.{md,gif,svg,json}',
@@ -477,6 +479,11 @@ module.exports = function (grunt) {
           flatten: true,
           src: ['dist/manual/Introduction.md'],
           dest: 'dist/manual/'
+        },{
+          expand: true,
+          flatten: true,
+          src: ['dist/views/hint.html'],
+          dest: 'dist/views/'
         }]
       }
     },

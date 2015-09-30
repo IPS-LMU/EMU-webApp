@@ -8,13 +8,8 @@ angular.module('emuwebApp')
 			link: function (scope, element, atts) {
 
 				var curMouseSample;
-				var dragStartSample;
-				var dragEndSample;
-
 				var canvas = element[0];
-
 				var ctx = canvas.getContext('2d');
-				// var elem = element[0];
 				var tr, col, sRaSt;
 				var trackName;
 				var bundleName;
@@ -47,10 +42,9 @@ angular.module('emuwebApp')
 				/////////////////////////////
 				// Bindings
 				element.bind('mousedown', function (event) {
-					dragStartSample = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
-					dragEndSample = dragStartSample;
-					viewState.select(dragStartSample, dragStartSample);
-					//Drawhelperservice.drawViewPortTimes(ctx, true);
+					viewState.curViewPort.movingS = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
+					viewState.curViewPort.movingE = viewState.curViewPort.movingS;
+					viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
 					scope.switchMarkupContext(event);
 					scope.$apply();
 				});
@@ -90,7 +84,7 @@ angular.module('emuwebApp')
 											var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
 											var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
 											if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
-												console.log('early return');
+												//console.log('early return');
 												return;
 											}
 											viewState.curPreselColumnSample = curMouseSample - colStartSampleNr;
@@ -137,8 +131,6 @@ angular.module('emuwebApp')
 													ctx.stroke();
 													ctx.fill();
 												}
-
-
 											}
 										}
 									}
@@ -149,21 +141,19 @@ angular.module('emuwebApp')
 					case 1:
 						if (!viewState.getdragBarActive()) {
 							scope.setSelectDrag(event);
-
 						}
 						break;
 					}
 					scope.$apply();
 				});
-
+/*
 				element.bind('mouseup', function (event) {
 					if (!viewState.getdragBarActive()) {
 						scope.setSelectDrag(event);
-						scope.switchMarkupContext(event);
+						scope.switchMarkupContext(event, false);
 					}
 				});
-
-
+*/
 				// on mouse leave clear markup canvas
 				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
@@ -179,7 +169,7 @@ angular.module('emuwebApp')
 
 				//
 				////////////////////
-
+				// Functions
 
 				scope.switchMarkupContext = function (event, leave) {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -196,7 +186,6 @@ angular.module('emuwebApp')
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
 						Drawhelperservice.drawMinMaxAndName(ctx, atts.ssffTrackname, col._minVal, col._maxVal, 2);
 					}
-
 					// draw crossHairs
 					if (leave !== false && ConfigProviderService.vals.restrictions.drawCrossHairs) {
 						Drawhelperservice.drawCrossHairs(ctx, event, viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 'Hz', atts.ssffTrackname);
@@ -207,13 +196,12 @@ angular.module('emuwebApp')
 
 				scope.setSelectDrag = function (event) {
 					curMouseSample = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
-					if (curMouseSample > dragStartSample) {
-						dragEndSample = curMouseSample;
-						viewState.select(dragStartSample, dragEndSample);
+					if (curMouseSample > viewState.curViewPort.movingS) {
+						viewState.curViewPort.movingE = curMouseSample;
 					} else {
-						dragStartSample = curMouseSample;
-						viewState.select(dragStartSample, dragEndSample);
+						viewState.curViewPort.movingS = curMouseSample;
 					}
+					viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
 					scope.$apply();
 				};
 			}

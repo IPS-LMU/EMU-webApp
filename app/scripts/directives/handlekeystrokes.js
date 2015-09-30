@@ -69,7 +69,7 @@ angular.module('emuwebApp')
             viewState.setlastKeyCode(code);
 
             // Handle key strokes for the hierarchy modal
-            if (viewState.hierarchyShown) {
+            if (viewState.hierarchyShown && viewState.hierarchyState !== undefined) {
               if (viewState.hierarchyState.getInputFocus()) {
                 // Commit label change
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyCommitEdit) {
@@ -793,7 +793,7 @@ angular.module('emuwebApp')
                       if (lastNeighboursMove.left !== undefined) {
                         if (lastNeighboursMove.left.sampleStart !== undefined) {
                           // check if in view
-                          if (lastNeighboursMove.left.sampleStart + lastNeighboursMove.left.sampleDur > viewState.curViewPort.sS) {
+                          if (lastNeighboursMove.left.sampleStart > viewState.curViewPort.sS) {
                             viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
@@ -805,12 +805,11 @@ angular.module('emuwebApp')
                           }
                         }
                       }
-
                     } else {
                       if (lastNeighboursMove.right !== undefined) {
                         if (lastNeighboursMove.right.sampleStart !== undefined) {
                           // check if in view
-                          if (lastNeighboursMove.right.sampleStart < viewState.curViewPort.eS) {
+                          if (lastNeighboursMove.right.sampleStart + lastNeighboursMove.right.sampleDur <= viewState.curViewPort.eS) {
                             viewState.setcurClickItem(lastNeighboursMove.right);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.right.id);
                           }
@@ -829,48 +828,31 @@ angular.module('emuwebApp')
 
               // createNewItemAtSelection
               if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
-                if (viewState.getPermission('labelAction')) {
-                  if (ConfigProviderService.vals.restrictions.addItem) {
-                    if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
-                      if (viewState.getcurClickItems().length === 1) {
-                        // check if in view
-                        if (viewState.getselectedRange().start >= viewState.curViewPort.sS && viewState.getselectedRange().end <= viewState.curViewPort.eS) {
-                          viewState.setEditing(true);
-                          LevelService.openEditArea(viewState.getcurClickItems()[0], LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
-                          scope.cursorInTextField();
+                // auto action in model when open and user presses 'enter'
+                if(modalService.isOpen) {
+                  modalService.confirmContent();
+                }
+                else {
+                  if (viewState.getPermission('labelAction')) {
+                    if (ConfigProviderService.vals.restrictions.addItem) {
+                      if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
+                        if (viewState.getcurClickItems().length === 1) {
+                          // check if in view
+                          if (viewState.getselectedRange().start >= viewState.curViewPort.sS && viewState.getselectedRange().end <= viewState.curViewPort.eS) {
+                            viewState.setEditing(true);
+                            LevelService.openEditArea(viewState.getcurClickItems()[0], LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                            scope.cursorInTextField();
+                          }
+                        } else {
+                          modalService.open('views/error.html', 'Modify Error: Please select a single Segment.');
                         }
                       } else {
-                        modalService.open('views/error.html', 'Modify Error: Please select a single Segment.');
-                      }
-                    } else {
-                      if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
-                        modalService.open('views/error.html', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
-                      } else {
-                        var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
-                        if (viewState.getcurClickLevelType() === 'SEGMENT') {
-                          if (seg === undefined) {
-                            var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
-                            if (!insSeg.ret) {
-                              modalService.open('views/error.html', 'Error : You are not allowed to insert a Segment here.');
-                            } else {
-                              HistoryService.addObjToUndoStack({
-                                'type': 'ANNOT',
-                                'action': 'INSERTSEGMENTS',
-                                'name': viewState.getcurClickLevelName(),
-                                'start': viewState.curViewPort.selectS,
-                                'end': viewState.curViewPort.selectE,
-                                'ids': insSeg.ids,
-                                'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
-                              });
-                            }
-                          } else {
-                            if (seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart + seg.sampleDur + 1) === viewState.curViewPort.selectE) {
-                              viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
-                              viewState.setcurClickItem(seg.current);
-                              LevelService.setlasteditArea('_' + seg.id);
-                              LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
-                              viewState.setEditing(true);
-                            } else {
+                        if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
+                          modalService.open('views/error.html', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
+                        } else {
+                          var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
+                          if (viewState.getcurClickLevelType() === 'SEGMENT') {
+                            if (seg === undefined) {
                               var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
                               if (!insSeg.ret) {
                                 modalService.open('views/error.html', 'Error : You are not allowed to insert a Segment here.');
@@ -885,35 +867,58 @@ angular.module('emuwebApp')
                                   'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
                                 });
                               }
-                            }
-                          }
-                        } else {
-                          var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
-                          if (typeof levelDef.anagestConfig === 'undefined') {
-                            var insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
-                            if (insPoint.alreadyExists) {
-                              viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
-                              viewState.setcurClickItem(seg.current);
-                              LevelService.setlasteditArea('_' + seg.id);
-                              LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
-                              viewState.setEditing(true);
                             } else {
-                              HistoryService.addObjToUndoStack({
-                                'type': 'ANNOT',
-                                'action': 'INSERTEVENT',
-                                'name': viewState.getcurClickLevelName(),
-                                'start': viewState.curViewPort.selectS,
-                                'id': insPoint.id,
-                                'pointName': ConfigProviderService.vals.labelCanvasConfig.newEventName
-                              });
+                              if (seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart + seg.sampleDur + 1) === viewState.curViewPort.selectE) {
+                                viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
+                                viewState.setcurClickItem(seg.current);
+                                LevelService.setlasteditArea('_' + seg.id);
+                                LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                                viewState.setEditing(true);
+                              } else {
+                                var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
+                                if (!insSeg.ret) {
+                                  modalService.open('views/error.html', 'Error : You are not allowed to insert a Segment here.');
+                                } else {
+                                  HistoryService.addObjToUndoStack({
+                                    'type': 'ANNOT',
+                                    'action': 'INSERTSEGMENTS',
+                                    'name': viewState.getcurClickLevelName(),
+                                    'start': viewState.curViewPort.selectS,
+                                    'end': viewState.curViewPort.selectE,
+                                    'ids': insSeg.ids,
+                                    'segName': ConfigProviderService.vals.labelCanvasConfig.newSegmentName
+                                  });
+                                }
+                              }
                             }
                           } else {
-                            AnagestService.insertAnagestEvents();
+                            var levelDef = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName());
+                            if (typeof levelDef.anagestConfig === 'undefined') {
+                              var insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
+                              if (insPoint.alreadyExists) {
+                                viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
+                                viewState.setcurClickItem(seg.current);
+                                LevelService.setlasteditArea('_' + seg.id);
+                                LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
+                                viewState.setEditing(true);
+                              } else {
+                                HistoryService.addObjToUndoStack({
+                                  'type': 'ANNOT',
+                                  'action': 'INSERTEVENT',
+                                  'name': viewState.getcurClickLevelName(),
+                                  'start': viewState.curViewPort.selectS,
+                                  'id': insPoint.id,
+                                  'pointName': ConfigProviderService.vals.labelCanvasConfig.newEventName
+                                });
+                              }
+                            } else {
+                              AnagestService.insertAnagestEvents();
+                            }
                           }
                         }
                       }
-                    }
-                  } else {}
+                    } else {}
+                  }
                 }
               }
 

@@ -409,7 +409,38 @@
 												"required": ["name", "xNameCoordinate", "yNameCoordinate", "xCoordinates", "yCoordinates", "connect", "color"],
 												"additionalProperties": false
 											}
+										},
+									  "staticContours": {
+										"type": "array",
+										"items": {
+										  "type": "object",
+										  "properties": {
+											"name": {
+											  "type": "string"
+											},
+											"xSsffTrack": {
+											  "type": "string"
+											},
+											"xContourNr": {
+											  "type": "integer"
+											},
+											"ySsffTrack": {
+											  "type": "string"
+											},
+											"yContourNr": {
+											  "type": "integer"
+											},
+											"connect":{
+											  "type": "boolean"
+											},
+											"color": {
+											  "type": "string"
+											}
+										  },
+										  "required": ["name", "xSsffTrack", "xContourNr", "ySsffTrack", "yContourNr"],
+										  "additionalProperties": false
 										}
+									  }
 									},
 									"required": ["name", "dots", "connectLines", "staticDots"],
 									"additionalProperties": false

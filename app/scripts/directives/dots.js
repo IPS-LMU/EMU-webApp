@@ -3,7 +3,7 @@
 angular.module('emuwebApp')
 	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice, loadedMetaDataService, mathHelperService) {
 		return {
-			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
+			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas class="emuwebapp-twoDimCanvasStatic" width="512" height="512"></canvas><canvas class="emuwebapp-twoDimCanvasDots" width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
 			scope: {},
@@ -15,12 +15,16 @@ angular.module('emuwebApp')
 				scope.shs = Soundhandlerservice;
 				scope.lmds = loadedMetaDataService;
 				scope.mhs = mathHelperService;
-				var canvas = element.find('canvas')[0];
+				var staticContoursCanvas = element.find('canvas')[0];
+				var canvas = element.find('canvas')[1];
 				var globalMinX = Infinity;
 				var globalMaxX = -Infinity;
 				var globalMinY = Infinity;
 				var globalMaxY = -Infinity;
 				var tr, col, sRaSt;
+				var startPoint = (Math.PI / 180) * 0;
+				var endPoint = (Math.PI / 180) * 360;
+
 
 				////////////////////
 				// watches
@@ -123,6 +127,87 @@ angular.module('emuwebApp')
 							}
 						});
 					});
+
+					// and staticContours
+					angular.forEach(dD.staticContours, function (sC) {
+						// get xCol
+						var trConf = scope.cps.getSsffTrackConfig(sC.xSsffTrack);
+						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+						if (xCol._minVal < globalMinX) {
+							globalMinX = xCol._minVal;
+						}
+						if (xCol._maxVal > globalMaxX) {
+							globalMaxX = xCol._maxVal;
+						}
+
+						// get yCol
+						trConf = scope.cps.getSsffTrackConfig(sC.ySsffTrack);
+						var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+						if (yCol._minVal < globalMinY) {
+							globalMinY = yCol._minVal;
+						}
+						if (yCol._maxVal > globalMaxY) {
+							globalMaxY = yCol._maxVal;
+						}
+
+					});
+
+				};
+
+				/**
+				 * drawing to draw overlay1 i.e. static
+				 */
+				scope.drawStaticContour = function () {
+					var ctx = staticContoursCanvas.getContext('2d');
+					ctx.clearRect(0, 0, staticContoursCanvas.width, staticContoursCanvas.height);
+
+					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0];
+
+					for (var i = 0; i < dD.staticContours.length; i++) {
+						// get xCol
+						var trConf = scope.cps.getSsffTrackConfig(dD.staticContours[i].xSsffTrack);
+						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+
+						// get yCol
+						trConf = scope.cps.getSsffTrackConfig(dD.staticContours[i].ySsffTrack);
+						var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+
+						var xPrev = undefined;
+						var yPrev = undefined;
+						for(var j = 0; j < xCol.values.length; j++){
+
+							var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.staticContours[i].xSsffTrack);
+							var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.staticContours[i].ySsffTrack);
+
+							//check if sampleRate and startTime is the same
+							if (xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample) {
+								alert('xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample'); // SIC should never get here!
+								return;
+							}
+
+							var x = ((xCol.values[j][dD.staticContours[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * staticContoursCanvas.width);
+							var y = staticContoursCanvas.height - ((yCol.values[j][dD.staticContours[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * staticContoursCanvas.height);
+
+							ctx.strokeStyle = dD.staticContours[i].color;
+							ctx.fillStyle = dD.staticContours[i].color;
+							ctx.beginPath();
+							ctx.arc(x, y, 2, startPoint, endPoint, true);
+							ctx.fill();
+							//ctx.closePath();
+
+							// draw lines
+							if(j >= 1 && dD.staticContours[i].connect){
+								ctx.beginPath();
+								ctx.moveTo(xPrev,yPrev);
+								ctx.lineTo(x,y);
+								ctx.stroke();
+							}
+
+							xPrev = x;
+							yPrev = y;
+
+						}
+					}
 				};
 
 				/**
@@ -131,6 +216,9 @@ angular.module('emuwebApp')
 				scope.drawDots = function () {
 					if (globalMinX === Infinity) {
 						scope.setGlobalMinMaxVals();
+						if(scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0].staticContours !== undefined){
+							scope.drawStaticContour();
+						}
 					}
 
 					var ctx = canvas.getContext('2d');
@@ -138,7 +226,7 @@ angular.module('emuwebApp')
 
 
 					//////////////////////////////
-					// markup to improve visualization 
+					// markup to improve visualization
 
 					var scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
@@ -156,17 +244,12 @@ angular.module('emuwebApp')
 
 					var smallFontSize = scope.cps.design.font.input.size.slice(0, -2) * 3 / 4;
 					// ymax
-					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black);
-					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
-
+					scope.fontImage.drawUndistortedText(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, 5, 5, scope.cps.design.color.black);
 					// xmin + y min
-					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black, true);
-					ctx.drawImage(labelTxtImg, 5, canvas.height - smallFontSize * scaleY * 2 - 5, labelTxtImg.width, labelTxtImg.height);
-
+					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, 5, canvas.height - smallFontSize * scaleY * 2 - 5, scope.cps.design.color.black, true);
 					// xmax
 					var tw = ctx.measureText('xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 5)).width * scaleX; // SIC why 5???
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black);
-					ctx.drawImage(labelTxtImg, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, labelTxtImg.width, labelTxtImg.height);
+					scope.fontImage.drawUndistortedText(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, scope.cps.design.color.black);
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 
@@ -192,16 +275,17 @@ angular.module('emuwebApp')
 					}
 
 					tw = ctx.measureText('frame: ' + curFrame).width * scaleX;
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, scope.cps.design.color.black);
 					var degrees = 90;
 					ctx.save();
 					ctx.rotate(degrees * Math.PI / 180);
-					ctx.drawImage(labelTxtImg, canvas.width / 2 - tw / 2, -canvas.height);
+					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, canvas.width / 2 - tw / 2, -canvas.height, scope.cps.design.color.black);
 					ctx.restore();
 
 					//////////////////////////////
 					// draw dots
 
+					var startPoint = (Math.PI / 180) * 0; // really don't get why the globals and visable here???
+					var endPoint = (Math.PI / 180) * 360;
 
 					var allDots = [];
 
@@ -235,9 +319,6 @@ angular.module('emuwebApp')
 						var x = ((xCol.values[curFrame][dD.dots[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var y = canvas.height - ((yCol.values[curFrame][dD.dots[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
-
-						var startPoint = (Math.PI / 180) * 0;
-						var endPoint = (Math.PI / 180) * 360;
 						ctx.strokeStyle = dD.dots[i].color;
 						ctx.beginPath();
 						ctx.arc(x, y, 20, startPoint, endPoint, true);
@@ -250,10 +331,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 
 						// draw labels
-						var labelTxtImg = scope.fontImage.getTextImage(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, scope.cps.design.color.black);
-						ctx.drawImage(labelTxtImg, x, y - 5, labelTxtImg.width, labelTxtImg.height);
-
-
+						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, x, y - 5, scope.cps.design.color.black);
 
 						// append to all dots
 						allDots.push({
@@ -297,8 +375,8 @@ angular.module('emuwebApp')
 						var labelX = ((sD.xNameCoordinate - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var labelY = canvas.height - ((sD.yNameCoordinate - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
-						var labelTxtImg = scope.fontImage.getTextImage(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, sD.color);
-						ctx.drawImage(labelTxtImg, labelX, labelY, labelTxtImg.width, labelTxtImg.height);
+						var labelTxtImg =
+						scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, labelX, labelY, sD.color);
 
 						sD.xCoordinates.forEach(function (xVal, xIdx) {
 							var x = ((xVal - globalMinX) / (globalMaxX - globalMinX) * canvas.width);

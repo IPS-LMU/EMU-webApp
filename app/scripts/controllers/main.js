@@ -467,15 +467,7 @@ angular.module('emuwebApp')
 				}
 				var newName = 'levelNr' + length;
 				var level = {
-					items: [{
-						id: DataService.getNewId(),
-						sampleStart: 0,
-						sampleDur: Soundhandlerservice.wavJSO.Data.length,
-						labels: [{
-							name: newName,
-							value: ConfigProviderService.vals.labelCanvasConfig.newSegmentName
-						}]
-					}],
+					items: [],
 					name: newName,
 					type: 'SEGMENT'
 				};
@@ -500,9 +492,6 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
-
-			} else {
-				//console.log('action currently not allowed');
 			}
 		};
 
@@ -518,18 +507,10 @@ angular.module('emuwebApp')
 				}
 				var newName = 'levelNr' + length;
 				var level = {
-					items: [{
-						id: DataService.getNewId(),
-						samplePoint: Math.round(Soundhandlerservice.wavJSO.Data.length / 2),
-						labels: []
-					}],
+					items: [],
 					name: newName,
 					type: 'EVENT'
 				};
-				level.items[0].labels.push({
-					name: newName,
-					value: ConfigProviderService.vals.labelCanvasConfig.newEventName
-				});
 				if (viewState.getCurAttrDef(newName) === undefined) {
 					var leveldef = {
 						name: newName,
@@ -550,9 +531,6 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
-
-			} else {
-				//console.log('action currently not allowed');
 			}
 		};
 
@@ -575,6 +553,7 @@ angular.module('emuwebApp')
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
+					parseMess = parseMess.replace(/\t/g, '    '); // replace tab with 4 spaces
 					modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
 				});
 			}
