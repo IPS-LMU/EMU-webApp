@@ -300,12 +300,12 @@ angular.module('emuwebApp')
 	scope.getOrientatedMousePosition = function (mouse) {
 		if (scope.vertical) {
 			return [
-				( mouse[1] - scope.zoomListener.translate()[1] ) / scope.zoomListener.scale(),
+				( mouse[1] ),
 				( mouse[0] - scope.zoomListener.translate()[0] ) / scope.zoomListener.scale()
 			];
 		} else {
 			return [
-				( mouse[0] - scope.zoomListener.translate()[0] ) / scope.zoomListener.scale(),
+				( mouse[0] ),
 				( mouse[1] - scope.zoomListener.translate()[1] ) / scope.zoomListener.scale()
 			];
 		}
