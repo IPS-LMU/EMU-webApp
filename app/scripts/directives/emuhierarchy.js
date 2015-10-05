@@ -313,7 +313,15 @@ angular.module('emuwebApp')
 
 
 	scope.getPath = function (d) {
-		return 'M'+d._fromX+' '+d._fromY+'Q'+d._fromX+' '+d._toY+' '+d._toX+' '+d._toY;
+		// It would be better if this function was independent of the scaling factor.
+		// But it turns out to be the easiest solution to counter the stretching
+		// effect of "one-dimensional scaling" on links.
+		var scale = scope.zoomListener.scale();
+		if (scope.vertical) {
+			return 'M'+d._fromX+' '+(d._fromY/scale)+'Q'+d._fromX+' '+(d._toY/scale)+' '+d._toX+' '+(d._toY/scale);
+		} else {
+			return 'M'+(d._fromX/scale)+' '+d._fromY+'Q'+(d._fromX/scale)+' '+d._toY+' '+(d._toX/scale)+' '+d._toY;
+		}
 	};
 
 	/**
@@ -1146,6 +1154,12 @@ angular.module('emuwebApp')
 			.attr('class', 'emuhierarchy-link')
 			.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 			;
+
+		if (scope.vertical) {
+			newLinks.attr('transform', 'scale(1, '+scope.zoomListener.scale()+')');
+		} else {
+			newLinks.attr('transform', 'scale('+scope.zoomListener.scale()+', 1)');
+		}
 
 		if (scope.transition.links) {
 			newLinks
