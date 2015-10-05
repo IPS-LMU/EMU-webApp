@@ -167,24 +167,42 @@ angular.module('emuwebApp')
 		scope.render();
 	};
 
+	/**
+	 * This transform is applied to the all-encompassing SVG area
+	 *
+	 * It applies the current scale factor to the dimension that represents
+	 * time.
+	 */
 	scope.getOrientatedTransform = function () {
-		var transform = 'translate('+scope.zoomListener.translate()+')';
-		transform += 'scale('+scope.zoomListener.scale()+')';
+		var transform = '';
+
 		if (scope.vertical) {
+			transform += 'translate('+scope.zoomListener.translate()[0]+',0)';
+			transform += 'scale('+scope.zoomListener.scale()+',1)';
 			transform += 'scale(-1,1),rotate(90)';
 		} else {
+			transform += 'translate(0,'+scope.zoomListener.translate()[1]+')';
+			transform += 'scale(1,'+scope.zoomListener.scale()+')';
 			transform += 'rotate(0)';
 		}
+
 		return transform;
 	};
 
+	/**
+	 * This transform is applied to each individual node, which includes
+	 * both the circle and the label.
+	 *
+	 * It reverses the zoom factor applied to the complete graphics so that
+	 * the text doesn't consume more space than needed.
+	 */
 	scope.getOrientatedNodeTransform = function (d) {
 		// Parameter d is never used because this is independent from the node's position
 
 		if (scope.vertical) {
-			return 'scale('+(1/scope.zoomListener.scale())+')scale(-1,1)rotate(90)';
+			return 'scale(1,'+(1/scope.zoomListener.scale())+')scale(-1,1)rotate(90)';
 		} else {
-			return 'scale('+(1/scope.zoomListener.scale())+')rotate(0)';
+			return 'scale(1,'+(1/scope.zoomListener.scale())+')rotate(0)';
 		}
 	};
 
@@ -229,6 +247,12 @@ angular.module('emuwebApp')
 		}
 	};
 
+	/**
+	 * This transform is applied to all nodes' text labels
+	 */
+	scope.getOrientatedTextTransform = function (d) {
+	};
+
 	scope.getOrientatedTextAnchor = function (d) {
 		if (scope.vertical) {
 			return 'middle';
@@ -254,19 +278,14 @@ angular.module('emuwebApp')
 	};
 
 	scope.getOrientatedLevelCaptionLayerTransform = function (d) {
-		if (scope.vertical) {
-			return 'translate(0, '+scope.zoomListener.translate()[1]+')';
-		} else {
-			return 'translate('+scope.zoomListener.translate()[0]+',0)';
-		}
 	};
 
 	scope.getOrientatedLevelCaptionTransform = function (d) {
 		var revArr = angular.copy(viewState.hierarchyState.path).reverse();
 		if (scope.vertical) {
-			return 'translate(25, '+scope.depthToX(revArr.indexOf(d))*scope.zoomListener.scale()+')';
+			return 'translate(25, '+scope.depthToX(revArr.indexOf(d))+')';
 		} else {
-			return 'translate('+scope.depthToX(revArr.indexOf(d))*scope.zoomListener.scale()+', 20)';
+			return 'translate('+scope.depthToX(revArr.indexOf(d))+', 20)';
 		}
 	};
 
