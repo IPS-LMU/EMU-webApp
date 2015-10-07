@@ -44,7 +44,7 @@
 			"clear": true,
 			"deleteSingleLevel": true,
 			"resizeSingleLevel": true,
-			"saveSingleLevel": true,
+			"saveSingleLevel": false,
 			"resizePerspectives": true,
 			"openDemoDB": false,
 			"saveBundle": false,

@@ -1,6 +1,13 @@
 What's New
 =============================================
 
+## Version 0.0.27
+
+- show hierarchy button when dropping annotJSON
+- items out of reach in bundleListSidebar fixed
+- fixed drag and drop combination bug
+- improved scaling while zooming in showHierarchy modal
+
 ## Version 0.0.26
 
 - fixed broken scrolling in bundleListSideBar
