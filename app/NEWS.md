@@ -1,6 +1,10 @@
 What's New
 =============================================
 
+## Version 0.0.28
+
+- now checking for duplicate attributeDefinition names on load of DBconfig
+
 ## Version 0.0.27
 
 - show hierarchy button when dropping annotJSON

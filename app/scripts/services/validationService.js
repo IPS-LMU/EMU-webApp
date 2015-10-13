@@ -69,6 +69,27 @@ angular.module('emuwebApp')
 		sServObj.semCheckLoadedConfigs = function (EMUwebAppConfig, DBconfig) {
 			var res = true;
 			var keepGoing = true;
+			/////////////////////////////////////////////////////////////////////
+			// check DBconfig levelDefinitions
+			DBconfig.levelDefinitions.forEach(function(ld, ldIdx){
+
+				// check for duplicate attributeDefinition names
+				ld.attributeDefinitions.forEach(function(ad1, ad1idx){
+					var counter = 0;
+					ld.attributeDefinitions.forEach(function(ad2){
+						if(ad1.name === ad2.name){
+							counter = counter + 1;
+						}
+					})
+					if(counter > 1) {
+						res = 'Error in DBconfig /levelDefinitions[' + ldIdx + ']/attributeDefinitions[' + ad1idx +
+							'] duplicate attribute definitions found for this entry!';
+
+						keepGoing = false;
+					}
+				});
+			});
+
 			// TODO check for unique perspective names
 
 			////////////////////////////////////////////////////////////////////
