@@ -793,13 +793,13 @@ angular.module('emuwebApp')
                       if (lastNeighboursMove.left !== undefined) {
                         if (lastNeighboursMove.left.sampleStart !== undefined) {
                           // check if in view
-                          if (lastNeighboursMove.left.sampleStart > viewState.curViewPort.sS) {
+                          if (lastNeighboursMove.left.sampleStart >= viewState.curViewPort.sS) {
                             viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         } else {
                           // check if in view
-                          if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
+                          if (lastNeighboursMove.left.samplePoint >= viewState.curViewPort.sS) {
                             viewState.setcurClickItem(lastNeighboursMove.left, lastNeighboursMove.left.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }

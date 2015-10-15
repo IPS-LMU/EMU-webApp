@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 		}
 
 		function getScaleWidth(ctx, str1, str2, scaleX) {
-			if (str1.toString().length > str2.toString().length) {
+			if (str1 !== undefined && str1.toString().length > str2.toString().length) {
 				return getScale(ctx, str1, scaleX);
 			} else {
 				return getScale(ctx, str2, scaleX);
