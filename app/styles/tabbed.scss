@@ -75,7 +75,7 @@
         font-size: 1.1em;
     }
     .emuwebapp-tabbed-rounded {
-        border: 1px solid;
+        border: 0px;
         border-radius: 10px;
         text-align: left;
         background: $color-white;
@@ -83,6 +83,7 @@
         padding: 10px;
         padding-left: 20px;
         padding-right: 20px;
+        margin-top: 50px;
         position: relative;
         font-size: 0.9em;
         .highlight {

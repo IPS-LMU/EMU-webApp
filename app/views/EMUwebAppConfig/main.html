@@ -1,16 +1,20 @@
 <!-- main configuration -->
-<div ng-repeat="(key, value) in mainConfig">
-  <div ng-switch="value.type">
-    <div ng-switch-when="boolean">
-      <input type="checkbox" name="{{key}}" value="salami" id="{{key}}">
-    </div>
-    <div ng-switch-when="string">
-      <input type="text" name="{{key}}" value="salami" id="{{key}}">
-    </div>
-    <div ng-switch-when="integer">
-      <input type="number" min="0" step="1"/>
-    </div>
+<div class="emuwebapp-text">
+  <div ng-repeat="(key, value) in mainConfig" class="emuwebapp-tabbed-table">
+    <span class="emuwebapp-tabbed-row">
+      <span class="emuwebapp-tabbed-cell">{{key}}</span>
+      <span ng-switch="value.type">
+        <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
+          <input type="checkbox" name="{{key}}" ng-value="getConfigValue('main', '{{key}}')" id="{{key}}">
+        </span>
+        <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
+          <input type="text" name="{{key}}" ng-model="value" id="{{key}}">
+        </span>
+        <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
+          <input type="text" pattern="\d*" ng-model="value" id="{{key}}">
+        </span>
+      </span>
+    </span>
   </div>
 </div>
-<br />
 <br />
