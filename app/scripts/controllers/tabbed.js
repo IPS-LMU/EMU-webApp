@@ -32,23 +32,20 @@ angular.module('emuwebApp')
 
 		// all available tabs
 		$scope.tabs = [{
-				title: 'level definitions',
-				url: 'views/tabbed/levelDefinition.html'
+				title: 'Main',
+				url: 'views/EMUwebAppConfig/main.html'
 			}, {
-				title: 'link definitions',
-				url: 'views/tabbed/linkDefinition.html'
+				title: 'Spectrogram Settings',
+				url: 'views/EMUwebAppConfig/spectro.html'
 			}, {
-				title: 'ssff track definitions',
-				url: 'views/tabbed/ssffDefinition.html'
+				title: 'Perspectives',
+				url: 'views/EMUwebAppConfig/perspectives.html'
 			}, {
-				title: '2D definitions',
-				url: 'views/tabbed/twoDimDefinition.html'
+				title: 'Label Config',
+				url: 'views/EMUwebAppConfig/label.html'
 			}, {
-				title: 'EMU-webApp',
-				url: 'views/tabbed/emuDefinition.html'
-			},{
-				title: 'global DB',
-				url: 'views/tabbed/globalDefinition.html'
+				title: 'Restrictions',
+				url: 'views/EMUwebAppConfig/restrictions.html'
 		}];
 
 		$scope.cps = ConfigProviderService;
@@ -81,7 +78,8 @@ angular.module('emuwebApp')
 		    // read db config file for enum types
 		    var dbconfigFileSchema = $scope.valid.getSchema('DBconfigFileSchema');
 		    var webappFileSchema = $scope.valid.getSchema('emuwebappConfigSchema');
-		    $scope.levelDefinitionProperties = dbconfigFileSchema.data.properties.levelDefinitions.items.properties;
+		    $scope.mainConfig = webappFileSchema.data.properties.main.properties;
+				console.log($scope.mainConfig);
 		    $scope.linkDefinitionProperties = dbconfigFileSchema.data.properties.linkDefinitions.items.properties;
 		    $scope.spectroDefinitionProperties = webappFileSchema.data.properties.spectrogramSettings.properties;
 		    $scope.resetSelections();
@@ -128,7 +126,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.highlight = function (typeOfDefinition, key) {
 		    var bg = {'background-color': $scope.cps.design.color.lightGrey };
-                    switch(typeOfDefinition) {
+        switch(typeOfDefinition) {
 		        case 'level':
 		            if($scope.cps.curDbConfig.levelDefinitions[key].added === true) {
 		                return bg;
