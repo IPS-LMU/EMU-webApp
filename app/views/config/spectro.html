@@ -1,0 +1,46 @@
+<!-- Spectrogram default configuration -->
+<div class="emuwebapp-text">
+	<h1>Spectrogram Settings</h1>
+	<div>
+	<p>
+		<table>
+		<tr ng-repeat="(key, value) in schema.spectrogramSettings.properties" class="emuwebapp-tabbed-table">
+			<td style="text-align:left !important;">{{key}}</td>
+			<td style="text-align:right !important;">
+        {{value.type}}
+        <div ng-switch="value.type">
+          <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
+            <input
+              type="checkbox"
+              name="{{key}}"
+              ng-init="modal.dataOut[key]=getConfigValue(key)"
+              ng-model="modal.dataOut[key]"
+              id="{{key}}">
+          </span>
+          <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
+            <input
+            type="text"
+            name="{{key}}"
+            ng-init="modal.dataOut[key]=getConfigValue(key)"
+            ng-model="modal.dataOut[key]"
+            id="{{key}}">
+          </span>
+          <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
+            <input
+            type="text"
+            pattern="\d*"
+            name="{{key}}"
+            ng-init="modal.dataOut[key]=getConfigValue(key)"
+            ng-model="modal.dataOut[key]"
+            id="{{key}}">
+          </span>
+          <span class="emuwebapp-tabbed-cell" ng-switch-when="array">
+            <span ng-repeat="(key, value) in getConfigValue(key)" class="emuwebapp-tabbed-table">
+              {{key}}
+            </span>
+          </span>
+        </span>
+      </td>
+		</tr>
+  </table>
+  <br />

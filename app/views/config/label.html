@@ -1,0 +1,24 @@
+<!-- main configuration -->
+<div class="emuwebapp-text">
+	<h1>Label Settings</h1>
+	<div>
+	<p>
+		<table>
+		<tr ng-repeat="(key, value) in schema.labelCanvasConfig.properties" class="emuwebapp-tabbed-table">
+			<td style="text-align:left !important;">{{key}}</td>
+			<td style="text-align:right !important;">
+        <div ng-switch="value.type">
+          <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
+            <input type="checkbox" name="{{key}}" ng-checked="{{getConfigValue(key)}}" id="{{key}}">
+          </span>
+          <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
+            <input type="text" name="{{key}}" ng-value="getConfigValue(key)" id="{{key}}">
+          </span>
+          <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
+            <input type="text" pattern="\d*" ng-value="{{getConfigValue(key)}}" id="{{key}}">
+          </span>
+        </span>
+      </td>
+		</tr>
+  </table>
+  <br />

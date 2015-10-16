@@ -13,11 +13,12 @@
         <li data-ng-repeat="node in tree" data-ng-include="'node_template.html'"></li>
     	</ul>
 			<div class="emuwebapp-tabbed-view">
-				<div ng-include src="currentTabUrl" ng-hide="isMDFile"></div>
+				<div ng-include src="currentTabUrl"></div>
 			</div>
 		</div>
   </div>
 	<div class="emuwebapp-modal-footer">
 	  <button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn">Cancel</button>
+		<button id="modalSaveBtn" ng-click="modal.confirmContent();" class="emuwebapp-mini-btn">Save</button>
 	</div>
 </div>

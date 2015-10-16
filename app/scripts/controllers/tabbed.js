@@ -1,50 +1,51 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Iohandlerservice) {
+	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice) {
 		$scope.cps = ConfigProviderService;
 		// all available tabs
 		$scope.tree = [{
-				title: 'Main',
-				url: 'views/EMUwebAppConfig/main.html'
+				title: 'Main Settings',
+				url: 'views/config/main.html',
+				config: ConfigProviderService.vals.main
 			}, {
 				title: 'Spectrogram Settings',
-				url: 'views/EMUwebAppConfig/spectro.html'
+				url: 'views/config/spectro.html',
+				config: ConfigProviderService.vals.spectrogramSettings
 			}, {
-				title: 'Perspectives',
-				url: 'views/EMUwebAppConfig/perspectives.html'
+				title: 'Perspectives Configuration',
+				url: 'views/config/perspectives.html',
+				config: ConfigProviderService.vals.perspectives
 			}, {
-				title: 'Label Config',
-				url: 'views/EMUwebAppConfig/label.html'
+				title: 'Label Configuration',
+				url: 'views/config/label.html',
+				config: ConfigProviderService.vals.labelCanvasConfig
 			}, {
 				title: 'Restrictions',
-				url: 'views/EMUwebAppConfig/restrictions.html'
+				url: 'views/config/restrictions.html',
+				config: ConfigProviderService.vals.restrictions
 		}];
 
+		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
+
+		console.log($scope.schema);
+
 		$scope.onClickTab = function (node) {
-			if(node.expanded === undefined) {
-				node.expanded = false;
-			}
-			node.expanded = !node.expanded;
 			if(node.url !== false) {
-				if(node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
-					$scope.isMDFile = true;
-					$scope.currentTabUrl = node.url;
-				}
-				else {
-					$scope.isMDFile = false;
-					$scope.currentTabUrl = node.url;
-				}
+				$scope.currentTabUrl = node.url;
+				$scope.currentConfig = node.config;
 			}
 		};
 
-		$scope.hasChildren = function (node) {
-			if(node.nodes !== undefined) {
-				if(node.nodes.length > 0) {
-					return true;
+		$scope.getConfigValue = function (key) {
+			var val = undefined;
+			angular.forEach($scope.currentConfig, function (value, configKey) {
+				if (configKey === key) {
+					val = value;
+					console.log(val);
 				}
-			}
-			return false;
+			});
+			return val;
 		};
 
 		$scope.onClickTab($scope.tree[0]);

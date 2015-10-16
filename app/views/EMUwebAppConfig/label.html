@@ -1,31 +1,20 @@
-<!-- globalDefinitions -->
-<div class="emuwebapp-tabbed-rounded">
-    <div class="emuwebapp-tabbed-table">
-		<div class="emuwebapp-tabbed-row">
-			<span class="emuwebapp-tabbed-cell3 emuwebapp-align-right">
-				UUID
-			</span>
-			<span class="emuwebapp-tabbed-cell">
-				{{cps.curDbConfig.UUID}}
-			</span>			
-		</div>
-		<br />
-		<div class="emuwebapp-tabbed-row">
-			<span class="emuwebapp-tabbed-cell3 emuwebapp-align-right">
-				Name
-			</span>
-			<span class="emuwebapp-tabbed-cell">
-				<input type="text" ng-model="cps.curDbConfig.name" size="45" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
-			</span>
-		</div>
-		<br />
-		<div class="emuwebapp-tabbed-row">
-			<span class="emuwebapp-tabbed-cell3 emuwebapp-align-right">
-				Media File Extension
-			</span>
-			<span class="emuwebapp-tabbed-cell">
-				<input type="text" ng-model="cps.curDbConfig.mediafileExtension" size="45" class="emuwebapp-tabbed-input-bold" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();" />
-			</span>
-		</div>
-	</div>
+<!-- label configuration -->
+<div class="emuwebapp-text">
+  <div ng-repeat="(key, value) in currentConfig" class="emuwebapp-tabbed-table">
+    <span class="emuwebapp-tabbed-row">
+      <span class="emuwebapp-tabbed-cell">{{key}}</span>
+      <span ng-switch="value.type">
+        <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
+          <input type="checkbox" name="{{key}}" ng-value="getConfigValue('main', '{{key}}')" id="{{key}}">
+        </span>
+        <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
+          <input type="text" name="{{key}}" ng-model="value" id="{{key}}">
+        </span>
+        <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
+          <input type="text" pattern="\d*" ng-model="value" id="{{key}}">
+        </span>
+      </span>
+    </span>
+  </div>
 </div>
+<br />
