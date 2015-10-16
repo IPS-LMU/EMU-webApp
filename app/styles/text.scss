@@ -172,9 +172,12 @@
         background: $color-white;
       }
     }
-    td{
+    td {
       @extend .emuwebapp-font-large;
       padding: 10px;
+      &:nth-child(even) {
+        text-align: right;
+      }
     }
 
   }

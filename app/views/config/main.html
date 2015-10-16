@@ -4,11 +4,10 @@
 	<div>
 	<p>
 		<table>
-		<tr ng-repeat="(key, value) in schema.main.properties" class="emuwebapp-tabbed-table">
+		<tr ng-repeat="(key, value) in schema.main.properties">
 			<td>{{key}}</td>
-			<td>
-        <div ng-switch="value.type">
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
+			<td ng-switch="value.type">
+          <span ng-switch-when="boolean">
             <input
               type="checkbox"
               name="{{key}}"
@@ -16,7 +15,7 @@
               ng-model="modal.dataOut[key]"
               id="{{key}}">
           </span>
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
+          <span ng-switch-when="string">
             <input
             type="text"
             name="{{key}}"
@@ -24,7 +23,7 @@
             ng-model="modal.dataOut[key]"
             id="{{key}}">
           </span>
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
+          <span ng-switch-when="integer">
             <input
             type="text"
             pattern="\d*"
@@ -33,8 +32,8 @@
             ng-model="modal.dataOut[key]"
             id="{{key}}">
           </span>
-        </span>
       </td>
 		</tr>
   </table>
-  <br />
+</p>
+<br />
