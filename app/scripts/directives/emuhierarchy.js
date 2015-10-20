@@ -339,8 +339,13 @@ angular.module('emuwebApp')
 	scope.getPreviewPath = function () {
 		var from = { x: scope.newLinkSrc._x, y: scope.newLinkSrc._y };
 		var to = { x: scope.selectedItem._x, y: scope.selectedItem._y };
+		var scale = scope.zoomListener.scale();
 
-		return 'M'+from.x+' '+from.y+'Q'+from.x+' '+to.y+' '+to.x+' '+to.y;
+		if (scope.vertical) {
+			return 'M'+from.x+' '+(from.y/scale)+'Q'+from.x+' '+(to.y/scale)+' '+to.x+' '+(to.y/scale);
+		} else {
+			return 'M'+(from.x/scale)+' '+from.y+'Q'+(from.x/scale)+' '+to.y+' '+(to.x/scale)+' '+to.y;
+		}
 	};
 
 	/**
@@ -1241,12 +1246,18 @@ angular.module('emuwebApp')
 				.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 				;
 
-			scope.svg.append('path')
+			var preview = scope.svg.append('path')
 				.attr('class', 'emuhierarchy-newlinkpreview')
 				.attr('d', scope.getPreviewPath)
 				.style('stroke', scope.getPreviewColor)
 				.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 				;
+
+			if (scope.vertical) {
+				preview.attr('transform', 'scale(1, '+(scope.zoomListener.scale())+')');
+			} else {
+				preview.attr('transform', 'scale('+(scope.zoomListener.scale())+', 1)');
+			}
 		}
 
 	};
