@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-  .directive('emuhierarchy', function (viewState, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService) {
+  .directive('emuhierarchy', function (viewState, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService, $timeout) {
     return {
       template: '<div class="emuwebapp-hierarchy-container" ng-mousemove="checkLink($event)"></div>',
       restrict: 'E',
@@ -41,6 +41,9 @@ angular.module('emuwebApp')
 		rotation: false,
 		contextMenu: false
 	};
+
+	// A promise that can be cancelled from within scope.zoom()
+	scope.zoomTimeoutPromise = null;
 
 	//
 	//////////////////////
@@ -164,7 +167,12 @@ angular.module('emuwebApp')
 		scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
 		scope.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
 
-		scope.render();
+		// Call scope.render(), but make sure it's only called once a rush of zoom events has finished
+		if (scope.zoomTimeoutPromise !== null) {
+			$timeout.cancel(scope.zoomTimeoutPromise);
+			scope.zoomTimeoutPromise = null;
+		}
+		scope.zoomTimeoutPromise = $timeout (scope.render, 200);
 	};
 
 	/**
