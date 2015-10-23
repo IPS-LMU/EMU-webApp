@@ -9,13 +9,13 @@
 			<td style="text-align:right !important;">
         <div ng-switch="value.type">
           <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
-            <input type="checkbox" name="{{key}}" ng-checked="{{getConfigValue(key)}}" id="{{key}}">
+            <input type="checkbox" name="{{key}}" ng-init="modal.dataOut['restrictions'][key]=getConfigValue(key)" ng-model="modal.dataOut['restrictions'][key]" ng-checked="{{getConfigValue(key)}}" id="{{key}}">
           </span>
           <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
-            <input type="text" name="{{key}}" ng-value="getConfigValue(key)" id="{{key}}">
+            <input type="text" name="{{key}}" ng-init="modal.dataOut['restrictions'][key]=getConfigValue(key)" ng-model="modal.dataOut['restrictions'][key]" ng-value="getConfigValue(key)" id="{{key}}">
           </span>
           <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
-            <input type="text" pattern="\d*" ng-value="{{getConfigValue(key)}}" id="{{key}}">
+            <input type="text" pattern="\d*" ng-init="modal.dataOut['restrictions'][key]=getConfigValue(key)" ng-model="modal.dataOut['restrictions'][key]" ng-value="{{getConfigValue(key)}}" id="{{key}}">
           </span>
         </span>
       </td>

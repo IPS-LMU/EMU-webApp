@@ -718,6 +718,7 @@ angular.module('emuwebApp')
 		    var currentConfig = $scope.cps.curDbConfig;
 		    var currentVals = $scope.cps.vals;
 			modalService.open('views/tabbed.html').then(function (res) {
+			    console.log(res);
 				if(res) {
 				    // todo save and transfer curDbConfig & vals
 				    console.log(angular.toJson({ dbconfig: $scope.cps.curDbConfig, vals: $scope.cps.vals }));

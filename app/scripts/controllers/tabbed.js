@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice) {
+	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice, viewState) {
 		$scope.cps = ConfigProviderService;
 		// all available tabs
 		$scope.tree = [{
@@ -28,8 +28,6 @@ angular.module('emuwebApp')
 
 		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
 
-		console.log($scope.schema);
-
 		$scope.onClickTab = function (node) {
 			if(node.url !== false) {
 				$scope.currentTabUrl = node.url;
@@ -42,11 +40,26 @@ angular.module('emuwebApp')
 			angular.forEach($scope.currentConfig, function (value, configKey) {
 				if (configKey === key) {
 					val = value;
-					console.log(val);
 				}
 			});
 			return val;
 		};
+		
+		/**
+		 *
+		 */
+		$scope.cursorInTextField = function () {
+			viewState.setEditing(true);
+			viewState.setcursorInTextField(true);
+		};
+
+		/**
+		 *
+		 */
+		$scope.cursorOutOfTextField = function () {
+			viewState.setEditing(false);
+			viewState.setcursorInTextField(false);
+		};		
 
 		$scope.onClickTab($scope.tree[0]);
 	});
