@@ -833,6 +833,10 @@ angular.module('emuwebApp')
                   modalService.confirmContent();
                 }
                 else {
+                  if(viewState.curClickLevelIndex === undefined) {
+                      modalService.open('views/error.html', 'Modify Error: Please select a Segment or Event Level first.');
+                  }
+                  else {
                   if (viewState.getPermission('labelAction')) {
                     if (ConfigProviderService.vals.restrictions.addItem) {
                       if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
@@ -920,6 +924,7 @@ angular.module('emuwebApp')
                     } else {}
                   }
                 }
+               }
               }
 
 
