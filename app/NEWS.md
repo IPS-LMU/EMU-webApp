@@ -4,6 +4,7 @@ What's New
 ## Version 0.0.28
 
 - now checking for duplicate attributeDefinition names on load of DBconfig
+- improved zooming performance in hierarchy view
 
 ## Version 0.0.27
 
