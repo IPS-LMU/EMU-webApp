@@ -58,24 +58,24 @@ angular.module('emuwebApp')
 
       //
       sServObj.hierarchyState = {
-      	// These variables will be set from within the emuhierarchy directive
-	// The directive will not watch for outside changes
-      	selectedItemID: undefined,
-	selectedLinkFromID: undefined,
-	selectedLinkToID: undefined,
-	editValue: undefined,
-	inputFocus: false,
-	collapseInfo: {},
-
-	// These can be set from within the emuhierarchy directive
-	// But the directive will also watch for outside changes
-	contextMenuID: undefined,
-	newLinkFromID: undefined,
-
-	// These will be set by outside components
-	path: [],
-	rotated: false,
-	playing: 0
+      // These variables will be set from within the emuhierarchy directive
+      // The directive will not watch for outside changes
+      selectedItemID: undefined,
+      selectedLinkFromID: undefined,
+      selectedLinkToID: undefined,
+      editValue: undefined,
+      inputFocus: false,
+      collapseInfo: {},
+      
+      // These can be set from within the emuhierarchy directive
+      // But the directive will also watch for outside changes
+      contextMenuID: undefined,
+      newLinkFromID: undefined,
+      
+      // These will be set by outside components
+      path: [],
+      rotated: false,
+      playing: 0
       };
 
       sServObj.timelineSize = -1;
@@ -107,6 +107,7 @@ angular.module('emuwebApp')
       sServObj.curTaskPercCompl = 0;
       sServObj.curPerspectiveIdx = -1;
       sServObj.mouseInEmuWebApp = false;
+      sServObj.focusOnEmuWebApp = true;
       sServObj.lastKeyCode = undefined;
       sServObj.lastUpdate = undefined;
       // possible general states of state machine

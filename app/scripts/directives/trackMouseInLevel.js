@@ -45,6 +45,7 @@ angular.module('emuwebApp')
 
         //
         element.bind('mousemove', function (event) {
+        if(viewState.focusOnEmuWebApp) {
           if (!viewState.getdragBarActive()) {
             var moveLine = true;
             var samplesPerPixel = viewState.getSamplesPerPixelVal(event);
@@ -182,6 +183,7 @@ angular.module('emuwebApp')
           }
           if (!viewState.getdragBarActive()) {
             scope.setLastMove(event, moveLine);
+          }
           }
         });
 
