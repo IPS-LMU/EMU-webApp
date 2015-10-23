@@ -27,24 +27,29 @@ angular.module('emuwebApp')
 		}];
 
 		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
+		
+		$scope.mainConfig = ConfigProviderService.vals;
 
 		$scope.onClickTab = function (node) {
 			if(node.url !== false) {
 				$scope.currentTabUrl = node.url;
-				$scope.currentConfig = node.config;
 			}
 		};
-
-		$scope.getConfigValue = function (key) {
+		
+		$scope.getType = function (section, key) {
 			var val = undefined;
-			angular.forEach($scope.currentConfig, function (value, configKey) {
-				if (configKey === key) {
-					val = value;
+			angular.forEach($scope.schema, function (schemaValue, schemaKey) {
+				if (schemaKey === section) {
+				    angular.forEach(schemaValue.properties, function (value, configKey) {
+        				if (configKey === key) {
+		        			val = value.type;
+				        }
+        			});
 				}
 			});
 			return val;
 		};
-		
+
 		/**
 		 *
 		 */

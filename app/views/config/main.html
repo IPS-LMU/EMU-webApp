@@ -4,23 +4,21 @@
 	<div>
 	<p>
 		<table>
-		<tr ng-repeat="(key, value) in schema.main.properties">
-			<td>{{key}}</td>
-			<td ng-switch="value.type">
+		<tr ng-repeat="(key, value) in mainConfig.main">
+		  <td>{{key}}</td>
+		  <td ng-switch="getType('main', key)">
           <span ng-switch-when="boolean">
             <input
               type="checkbox"
               name="{{key}}"
-              ng-init="modal.dataOut['main'][key]=getConfigValue(key)"
-              ng-model="modal.dataOut['main'][key]"
+              ng-model="value"
               id="{{key}}">
           </span>
           <span ng-switch-when="string">
             <input
             type="text"
             name="{{key}}"
-            ng-init="modal.dataOut['main'][key]=getConfigValue(key)"
-            ng-model="modal.dataOut['main'][key]"
+            ng-model="value"
             id="{{key}}">
           </span>
           <span ng-switch-when="integer">
@@ -28,13 +26,12 @@
             type="text"
             pattern="\d*"
             name="{{key}}"
-            ng-init="modal.dataOut['main'][key]=getConfigValue(key)"
-            ng-model="modal.dataOut['main'][key]"
+            ng-model="value"
             id="{{key}}">
           </span>
       </td>
 		</tr>
   </table>
-  {{modal.dataOut}}
+  {{mainConfig}}
 </p>
 <br />
