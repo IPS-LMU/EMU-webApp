@@ -1,34 +1,32 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice, viewState) {
+	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice, viewState, modalService) {
 		$scope.cps = ConfigProviderService;
 		// all available tabs
 		$scope.tree = [{
 				title: 'Main Settings',
-				url: 'views/config/main.html',
-				config: ConfigProviderService.vals.main
+				url: 'views/config/main.html'
+			}, {
+				title: 'Key Mappings',
+				url: 'views/config/keys.html'
 			}, {
 				title: 'Spectrogram Settings',
-				url: 'views/config/spectro.html',
-				config: ConfigProviderService.vals.spectrogramSettings
+				url: 'views/config/spectro.html'
 			}, {
 				title: 'Perspectives Configuration',
-				url: 'views/config/perspectives.html',
-				config: ConfigProviderService.vals.perspectives
+				url: 'views/config/perspectives.html'
 			}, {
 				title: 'Label Configuration',
-				url: 'views/config/label.html',
-				config: ConfigProviderService.vals.labelCanvasConfig
+				url: 'views/config/label.html'
 			}, {
 				title: 'Restrictions',
-				url: 'views/config/restrictions.html',
-				config: ConfigProviderService.vals.restrictions
+				url: 'views/config/restrictions.html'
 		}];
 
 		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
-		
-		$scope.mainConfig = ConfigProviderService.vals;
+		$scope.modal = modalService;
+		$scope.modal.dataOut = ConfigProviderService.vals;
 
 		$scope.onClickTab = function (node) {
 			if(node.url !== false) {

@@ -4,18 +4,12 @@
 	<div>
 	<p>
 		<table>
-		<tr ng-repeat="(key, value) in schema.restrictions.properties" class="emuwebapp-tabbed-table">
-			<td style="text-align:left !important;">{{key}}</td>
-			<td style="text-align:right !important;">
-        <div ng-switch="value.type">
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
-            <input type="checkbox" name="{{key}}" ng-init="modal.dataOut['restrictions'][key]=getConfigValue(key)" ng-model="modal.dataOut['restrictions'][key]" ng-checked="{{getConfigValue(key)}}" id="{{key}}">
-          </span>
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
-            <input type="text" name="{{key}}" ng-init="modal.dataOut['restrictions'][key]=getConfigValue(key)" ng-model="modal.dataOut['restrictions'][key]" ng-value="getConfigValue(key)" id="{{key}}">
-          </span>
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
-            <input type="text" pattern="\d*" ng-init="modal.dataOut['restrictions'][key]=getConfigValue(key)" ng-model="modal.dataOut['restrictions'][key]" ng-value="{{getConfigValue(key)}}" id="{{key}}">
+		<tr ng-repeat="(key, value) in modal.dataOut.restrictions">
+			<td>{{key}}</td>
+			<td>
+        <div>
+          <span>
+            <input type="checkbox" ng-model="modal.dataOut.restrictions[key]" ng-checked="modal.dataOut.restrictions[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
         </span>
       </td>

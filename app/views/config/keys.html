@@ -1,0 +1,18 @@
+<!-- main default configuration -->
+<div class="emuwebapp-text">
+	<h1>Key Mappings</h1>
+	<div>
+	<p>
+		<table>
+		<tr ng-repeat="(key, value) in modal.dataOut.keyMappings">
+		  <td>{{key}}</td>
+		  <td ng-switch="getType('keyMappings', key)">
+          <span ng-switch-when="integer">
+            <input type="text" ng-model="modal.dataOut.keyMappings[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+          </span>
+      </td>
+		</tr>
+  </table>
+  {{mainConfig}}
+</p>
+<br />

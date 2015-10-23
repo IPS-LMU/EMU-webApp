@@ -4,38 +4,25 @@
 	<div>
 	<p>
 		<table>
-		<tr ng-repeat="(key, value) in schema.spectrogramSettings.properties">
-			<td>{{key}}</td>
+		<tr ng-repeat="(key, value) in modal.dataOut.spectrogramSettings">
+			<td>{{key}} {{getType('spectrogramSettings', key)}}</td>
 			<td>
-        <div ng-switch="value.type">
-          <span ng-switch-when="boolean">
-            <input
-              type="checkbox"
-              name="{{key}}"
-              ng-init="modal.dataOut[key]=getConfigValue(key)"
-              ng-model="modal.dataOut[key]"
-              id="{{key}}">
+			<td ng-switch="getType('spectrogramSettings', key)">
+			<span ng-switch-when="boolean">
+            <input type="checkbox" ng-model="modal.dataOut.spectrogramSettings[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
           <span ng-switch-when="string">
-            <input
-            type="text"
-            name="{{key}}"
-            ng-init="modal.dataOut[key]=getConfigValue(key)"
-            ng-model="modal.dataOut[key]"
-            id="{{key}}">
+            <input type="text" ng-model="modal.dataOut.spectrogramSettings[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+          </span>
+          <span ng-switch-when="number">
+            <input type="text" pattern="\d*" ng-model="modal.dataOut.spectrogramSettings[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
           <span ng-switch-when="integer">
-            <input
-            type="text"
-            pattern="\d*"
-            name="{{key}}"
-            ng-init="modal.dataOut[key]=getConfigValue(key)"
-            ng-model="modal.dataOut[key]"
-            id="{{key}}">
+            <input type="text" ng-pattern="/^\d+$/" ng-model="modal.dataOut.spectrogramSettings[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
           <span ng-switch-when="array">
-            <span ng-repeat="(key, value) in getConfigValue(key)" class="emuwebapp-tabbed-table">
-              {{key}}
+            <span ng-repeat="(key2, value) in getConfigValue(key)" class="emuwebapp-tabbed-table" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+              {{key2}}
             </span>
           </span>
         </span>

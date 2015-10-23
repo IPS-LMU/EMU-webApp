@@ -4,34 +4,20 @@
 	<div>
 	<p>
 		<table>
-		<tr ng-repeat="(key, value) in mainConfig.main">
+		<tr ng-repeat="(key, value) in modal.dataOut.main">
 		  <td>{{key}}</td>
 		  <td ng-switch="getType('main', key)">
           <span ng-switch-when="boolean">
-            <input
-              type="checkbox"
-              name="{{key}}"
-              ng-model="value"
-              id="{{key}}">
+            <input type="checkbox" ng-model="modal.dataOut.main[key]" ng-checked="modal.dataOut.main[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
           <span ng-switch-when="string">
-            <input
-            type="text"
-            name="{{key}}"
-            ng-model="value"
-            id="{{key}}">
+            <input type="text" ng-model="modal.dataOut.main[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
           <span ng-switch-when="integer">
-            <input
-            type="text"
-            pattern="\d*"
-            name="{{key}}"
-            ng-model="value"
-            id="{{key}}">
+            <input type="text" ng-pattern="/^\d+$/" ng-model="modal.dataOut.main[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
       </td>
 		</tr>
   </table>
-  {{mainConfig}}
 </p>
 <br />
