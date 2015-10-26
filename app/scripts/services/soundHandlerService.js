@@ -101,7 +101,9 @@ angular.module('emuwebApp')
 			} else {
 
 				sServObj.isPlaying = true;
-				sServObj.decodeAndPlay(cutWavBuff);
+				if(cutWavBuff.byteLength > 44){ // if wav file is bigger than just the header (a.k.a. data block is empty)
+					sServObj.decodeAndPlay(cutWavBuff);
+				}
 			}
 
 		};
