@@ -74,15 +74,15 @@ Press the `show Hierarchy` button (keyboard shortcut `h`) to open the hierarchy 
 
 Per default, the hierarchy is shown sideways with the top of the hierarchy on the left and the time information level on the right. You can change this to a vertical view by hitting the `rotate by 90°` button (keyboard shortcut `r`).
 
-IMAGE
+![Rotating the hierarchy](manual/GeneralUsage/pics/rotateHierarchy.gif)
 
 The hierarchy view can be zoomed in and out by using the mouse wheel (or a pinch gesture on a touchscreen device).
 
-IMAGE
+![Zooming the hierarchy](manual/GeneralUsage/pics/zoomHierarchy.gif)
 
 When you are not seeing the entire hierarchy on the screen, you can move to a different part of it by holding down the left mouse button and moving the mouse around (just move your finger around the hierarchy on a touchscreen device).
 
-IMAGE
+![Panning the hierarchy](manual/GeneralUsage/pics/panHierarchy.gif)
 
 ### Selecting a path through the hierarchy
 
