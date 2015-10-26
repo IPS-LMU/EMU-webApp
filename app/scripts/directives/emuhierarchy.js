@@ -33,6 +33,9 @@ angular.module('emuwebApp')
 	// Possible zoom range
 	scope.scaleExtent = [0.5, 10];
 
+	// Do not pan away from the graph
+	scope.timeAxisSize = 0;
+
 	// Settings for CSS transitions
 	scope.transition = {
 		duration: 750,
@@ -184,12 +187,60 @@ angular.module('emuwebApp')
 	scope.getOrientatedTransform = function () {
 		var transform = '';
 
+		//
+		// Limit panning factor to make sure the user cannot pan away
+		// from the graph
+
+		// Okay, so this is what I would like to do: Only allow to "pan away" 90 % of the graph
+		var maxPositiveTranslate = scope.timeAxisSize/scope.zoomListener.scale() * 0.9;
+		// NB: I divide by the scale factor becaus I need the original axis' size (because panning will be applied before scaling)
+
+		//
+		// BUT:
+		// This is one of these real huge WTFs
+		// The graph doesn't grow linearly with the scale() factor, it rather grows a little slower (why? -> I might still find out)
+		// Therefore, I have to correct the panning limit by a logarithmic factor ... (inverse of Math.pow())
+ 		maxPositiveTranslate = maxPositiveTranslate / Math.pow(1.1, (scope.zoomListener.scale()-1));
+		// ... WTF?
+		//
+		// btw: the base 1.1 was randomly guessed and seems to work
+		//
+
+		var maxNegativeTranslate = -scope.timeAxisSize*0.99;
+		
+		console.debug(scope.zoomListener.translate());
 		if (scope.vertical) {
-			transform += 'translate('+scope.zoomListener.translate()[0]+',0)';
+			var x = scope.zoomListener.translate()[0];
+			var y = 0;
+
+			if (scope.zoomListener.translate()[0] > maxPositiveTranslate) {
+				x = maxPositiveTranslate;
+			}
+			if (scope.zoomListener.translate()[0] < maxNegativeTranslate) {
+				x = maxNegativeTranslate;
+			}
+			
+			// Apply correction
+			scope.zoomListener.translate([x, y]);
+
+			transform += 'translate('+x+','+y+')';
 			transform += 'scale('+scope.zoomListener.scale()+',1)';
 			transform += 'scale(-1,1),rotate(90)';
 		} else {
-			transform += 'translate(0,'+scope.zoomListener.translate()[1]+')';
+			var x = 0;
+			var y = scope.zoomListener.translate()[1];
+
+			if (scope.zoomListener.translate()[1] > maxPositiveTranslate) {
+				y = maxPositiveTranslate;
+			}
+			if (scope.zoomListener.translate()[1] < maxNegativeTranslate) {
+				y = maxNegativeTranslate;
+			}
+
+			// Apply correction
+			scope.zoomListener.translate([x, y]);
+
+			transform += 'translate('+x+','+y+')';
 			transform += 'scale(1,'+scope.zoomListener.scale()+')';
 			transform += 'rotate(0)';
 		}
@@ -1260,6 +1311,10 @@ angular.module('emuwebApp')
 			}
 		}
 
+
+		// Find out size of the newly rendered SVG.
+		// This is needed to prevent the user from scrolling/panning away from the graph.
+		scope.timeAxisSize = scope.svg.node().getBBox().height*scope.zoomListener.scale();
 	};
 
         /**
