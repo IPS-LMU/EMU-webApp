@@ -36,6 +36,12 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.playFromTo = function (sampleStart, endSample) {
+			if (!this.player.isPlaying) {
+				sServObj.player = $document[0].createElement('audio');
+				sServObj.player.onerror = function(e){
+					alert(e)
+				};
+			}
 			this.resetPlayerSrcFromTo(sampleStart, endSample);
 
 			if (this.player.isPlaying) {
