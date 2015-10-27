@@ -3,7 +3,7 @@ What's New
 
 ## Version 0.0.29
 
-- now actively validates annotation data before saving it to the server
+- now actively validates annotation data before saving them to the server
 - hierarchy graph can no longer be scrolled/panned away (still buggy)
 - playback of a selected part of the hierarchy now works correctly
 - fixed a bug where editing a label in hierarchy view could save wrong text
