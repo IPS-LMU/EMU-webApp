@@ -90,15 +90,6 @@ angular.module('emuwebApp')
 		}
 	}, true);
 
-	scope.$watch('hierarchyState.playing', function (newValue, oldValue) {
-		if (newValue !== oldValue) {
-			console.debug('Play() triggered by viewState', newValue);
-			if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
-				scope.play(scope.selectedItem);
-			}
-		}
-	}, false);
-
 	scope.$watch('historyService.movesAwayFromLastSave', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
 			console.debug('history service is active, rendering');
