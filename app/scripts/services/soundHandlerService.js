@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Soundhandlerservice', function Soundhandlerservice($document, Binarydatamaniphelper) {
+	.service('Soundhandlerservice', function Soundhandlerservice($document) {
 
 		// private vars
 		var audioContext;
@@ -22,7 +22,6 @@ angular.module('emuwebApp')
 		 * */
 		function initAudioContext(){
 			try {
-				// Fix up prefixing
 				window.AudioContext = window.AudioContext || window.webkitAudioContext;
 				audioContext = new AudioContext();
 			}catch(e){
@@ -34,7 +33,7 @@ angular.module('emuwebApp')
 		// public API
 
 		/**
-		 * set audioBuffer of entire audio file
+		 * decode and play a passed in buffer
 		 *
 		 * @param buffer arraybuffer containing audio file (as returned by XHR for example)
 		 * */
