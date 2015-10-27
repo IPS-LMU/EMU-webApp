@@ -1,11 +1,15 @@
 What's New
 =============================================
 
+## Version 0.0.29
+
+- hierarchy graph can no longer be scrolled/panned away (still buggy)
+- playback of a selected part of the hierarchy now works correctly
+
 ## Version 0.0.28
 
 - now checking for duplicate attributeDefinition names on load of DBconfig
 - improved zooming performance in hierarchy view
-- hierarchy graph can no longer be scrolled/panned away (still buggy)
 
 ## Version 0.0.27
 
