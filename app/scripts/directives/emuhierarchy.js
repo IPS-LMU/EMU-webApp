@@ -533,41 +533,43 @@ angular.module('emuwebApp')
 		}
 		var timeInfoType = LevelService.getLevelDetails(timeInfoLevel).type;
 
-		var firstTimeItem = null;
-		var lastTimeItem = null;
+		var startSample = null;
+		var endSample = null;
 
 		var itemList = [d];
 		var currentItem;
 		while (itemList.length > 0) {
 			currentItem = itemList.pop();
 			if (currentItem.labels[0].name === timeInfoLevel) {
-				if (lastTimeItem === null) {
-					lastTimeItem = currentItem;
-				}
+				if (timeInfoType === 'EVENT') {
+					if (currentItem.samplePoint < startSample || startSample === null) {
+						startSample = currentItem.samplePoint;
+					}
+					if (currentItem.samplePoint > endSample || endSample === null) {
+						endSample = currentItem.samplePoint;
+					}
+				} else if (timeInfoType === 'SEGMENT') {
+					if (currentItem.sampleStart < startSample || startSample === null) {
+						startSample = currentItem.sampleStart;
+					}
 
-				firstTimeItem = currentItem;
+					// I promise I'll never again use tmp as a variable name :-)
+					var tmp = currentItem.sampleStart + currentItem.sampleDur;
+					if (tmp > endSample || endSample === null) {
+						endSample = tmp;
+					}
+				}
 			}
 			itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, viewState.hierarchyState.path));
 		}
 
-		console.debug('Node info for playback: ', timeInfoType, d, firstTimeItem, lastTimeItem);
+		console.debug('Node info for playback: ', timeInfoType, d, startSample, endSample);
 
-		if (firstTimeItem === null) {
+		if (startSample === null || endSample === null) {
 			console.debug('No time information found for node, aborting playback', d);
 			return;
 		}
 
-		var startSample = 0;
-		var endSample = 0;
-		if (timeInfoType === 'EVENT') {
-			startSample = firstTimeItem.samplePoint;
-			endSample = lastTimeItem.samplePoint;
-		} else if (timeInfoType === 'SEGMENT') {
-			startSample = firstTimeItem.sampleStart;
-			endSample = lastTimeItem.sampleStart + lastTimeItem.sampleDur;
-		}
-
-		console.debug('Sample information for playback:', startSample, endSample);
 		Soundhandlerservice.playFromTo(startSample, endSample);
 	};
 
