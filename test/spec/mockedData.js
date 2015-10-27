@@ -113,3 +113,27 @@ var msajc003TextGridFileNew = readFixtures('msajc003_new.TextGrid');
       }
       return ret;
   }
+
+
+//////////////////////////////
+// hardcoded JSO
+var dataArr = [1,2,3,4,5,6,7,8];
+var buf = new Float32Array(dataArr).buffer;
+
+var parsedWavJSO = {
+    "ChunkID":"RIFF",
+    "ChunkSize":116214,
+    "Format":"WAVE",
+    "Subchunk1ID":"fmt ",
+    "Subchunk1Size":16,
+    "AudioFormat":1,
+    "NumChannels":1,
+    "SampleRate":20000,
+    "ByteRate":40000,
+    "BlockAlign":2,
+    "BitsPerSample":16,
+    "Subchunk2ID":"data",
+    "Subchunk2Size":0,
+    "Data":[1,2,3,4,5,6,7,8],
+    "origArrBuf": buf
+}
