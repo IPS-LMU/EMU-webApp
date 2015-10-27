@@ -5,6 +5,7 @@ What's New
 
 - now checking for duplicate attributeDefinition names on load of DBconfig
 - improved zooming performance in hierarchy view
+- fix for audioelement bug in chrome as of version 46; now using webaudio API to play audio
 
 ## Version 0.0.27
 

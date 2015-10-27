@@ -161,7 +161,7 @@ angular.module('emuwebApp')
      */
     sServObj.updatePlayHead = function (timestamp) {
       // at first push animation !!!
-      if (Soundhandlerservice.player.isPlaying) {
+      if (Soundhandlerservice.isPlaying) {
         $window.requestAnimationFrame(sServObj.updatePlayHead);
       }
 
@@ -173,7 +173,7 @@ angular.module('emuwebApp')
       var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.floor(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
-      if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
+      if (Soundhandlerservice.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
         if (sServObj.playHeadAnimationInfos.curS !== -1) {
           sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.curS;
         }
