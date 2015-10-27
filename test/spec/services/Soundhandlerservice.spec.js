@@ -1,40 +1,37 @@
 'use strict';
 
 describe('Service: Soundhandlerservice', function () {
+    var scope;
 
-  // load the controller's module
-  beforeEach(module('emuwebApp'));
-  
-  var b64;
-  
- /**
-   *
-   */
-  it('should setPlayerSrc', inject(function (Soundhandlerservice, Binarydatamaniphelper) {
-    b64 = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
-    Soundhandlerservice.setPlayerSrc(b64);   
-    expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + msajc003_bndl.mediaFile.data);
-  }));
-  
- /**
-   *
-   */
-  it('should resetPlayerSrcFromTo', inject(function (Soundhandlerservice, Binarydatamaniphelper) {
-    // phantomjs does not support subarray() 
-    /*Soundhandlerservice.setPlayerSrc(b64);   
-    Soundhandlerservice.resetPlayerSrcFromTo(0,2000)
-    expect(Soundhandlerservice.player.src).toEqual('data:audio/wav;base64,' + msajc003_bndl.mediaFile.data);
-    no subarray in phantomjs bug */
-  }));
-  
- /**
-  it('should playFromTo', inject(function (Soundhandlerservice, Binarydatamaniphelper) {
-    Soundhandlerservice.setPlayerSrc(b64);   
-    spyOn(Soundhandlerservice, 'resetPlayerSrcFromTo');
-    console.log(Soundhandlerservice.player);
-    Soundhandlerservice.playFromTo(0,2000);
-    expect(Soundhandlerservice.resetPlayerSrcFromTo).toHaveBeenCalled();
-  }));
-   *
-   */  
+    // load the controller's module
+    beforeEach(module('emuwebApp'));
+
+    beforeEach(inject(function ($rootScope) {
+        scope = $rootScope.$new();
+    }));
+
+    /**
+     *
+     */
+    it('should extractRelPartOfWav of length 0 = only header', inject(function (Soundhandlerservice) {
+        Soundhandlerservice.wavJSO = parsedWavJSO;
+        var cutWav = Soundhandlerservice.extractRelPartOfWav(0, 0);
+        expect(cutWav.byteLength).toEqual(44);
+    }));
+
+    /**
+     *
+     */
+/*
+    it('should not play audio if wav is empty', inject(function (Soundhandlerservice) {
+        // TODO: spy on decodeAndPlay function and check that it isn't called
+        //spyOn(Soundhandlerservice, 'decodeAndPlay');
+
+        Soundhandlerservice.wavJSO = parsedWavJSO;
+        Soundhandlerservice.playFromTo(0,0);
+        //expect(Soundhandlerservice.decodeAndPlay).toNotHaveBeenCalled();
+
+    }));
+*/
+
 });
