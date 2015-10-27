@@ -199,19 +199,19 @@ angular.module('emuwebApp')
 
 		var maxNegativeTranslate = -scope.timeAxisSize*0.99;
 		
-		console.debug(scope.zoomListener.translate());
 		if (scope.vertical) {
 			var x = scope.zoomListener.translate()[0];
 			var y = 0;
 
-			if (scope.zoomListener.translate()[0] > maxPositiveTranslate) {
-				x = maxPositiveTranslate;
-			}
-			if (scope.zoomListener.translate()[0] < maxNegativeTranslate) {
-				x = maxNegativeTranslate;
+			if (scope.timeAxisSize) {
+				if (scope.zoomListener.translate()[0] > maxPositiveTranslate) {
+					x = maxPositiveTranslate;
+				}
+				if (scope.zoomListener.translate()[0] < maxNegativeTranslate) {
+					x = maxNegativeTranslate;
+				}
 			}
 			
-			// Apply correction
 			scope.zoomListener.translate([x, y]);
 
 			transform += 'translate('+x+','+y+')';
@@ -220,21 +220,26 @@ angular.module('emuwebApp')
 		} else {
 			var x = 0;
 			var y = scope.zoomListener.translate()[1];
-
-			if (scope.zoomListener.translate()[1] > maxPositiveTranslate) {
-				y = maxPositiveTranslate;
+			
+			if (scope.timeAxisSize) {
+				if (scope.zoomListener.translate()[1] > maxPositiveTranslate) {
+					y = maxPositiveTranslate;
+				}
+				if (scope.zoomListener.translate()[1] < maxNegativeTranslate) {
+					y = maxNegativeTranslate;
+				}
 			}
-			if (scope.zoomListener.translate()[1] < maxNegativeTranslate) {
-				y = maxNegativeTranslate;
-			}
 
-			// Apply correction
 			scope.zoomListener.translate([x, y]);
 
 			transform += 'translate('+x+','+y+')';
 			transform += 'scale(1,'+scope.zoomListener.scale()+')';
 			transform += 'rotate(0)';
 		}
+
+		// Save translate and scale so they can be re-used when the modal is re-opened
+		viewState.hierarchyState.translate = scope.zoomListener.translate();
+		viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
 
 		return transform;
 	};
@@ -643,6 +648,11 @@ angular.module('emuwebApp')
 
 	// Append a group which holds all nodes and which the zoom Listener can act upon.
 	scope.svg = scope.svg.append('g').style('z-index', 1);
+
+
+	// read previously stored zoom and pan values
+	scope.zoomListener.translate(viewState.hierarchyState.translate);
+	scope.zoomListener.scale(viewState.hierarchyState.scaleFactor);
 
 	//
         /////////////////////////////

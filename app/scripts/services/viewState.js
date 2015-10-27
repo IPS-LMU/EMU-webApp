@@ -66,6 +66,8 @@ angular.module('emuwebApp')
 	editValue: undefined,
 	inputFocus: false,
 	collapseInfo: {},
+	scaleFactor: 1,
+	translate: [0, 0],
 
 	// These can be set from within the emuhierarchy directive
 	// But the directive will also watch for outside changes
@@ -75,7 +77,7 @@ angular.module('emuwebApp')
 	// These will be set by outside components
 	path: [],
 	rotated: false,
-	playing: 0
+	playing: 0 //this is only watched indirectly (the view injects this value into the directive)
       };
 
       sServObj.timelineSize = -1;
@@ -815,6 +817,8 @@ angular.module('emuwebApp')
       sServObj.hierarchyState.editValue = undefined;
       sServObj.hierarchyState.inputFocus = false;
       sServObj.hierarchyState.collapseInfo = {};
+      sServObj.hierarchyState.scaleFactor = 1;
+      sServObj.hierarchyState.translate = [0,0];
       sServObj.hierarchyState.contextMenuID = undefined;
       sServObj.hierarchyState.newLinkFromID = undefined;
     };
