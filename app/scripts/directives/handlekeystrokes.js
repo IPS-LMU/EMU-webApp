@@ -80,32 +80,37 @@ angular.module('emuwebApp')
                   var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 
                   var newValue = viewState.hierarchyState.getEditValue();
-                  var oldValue;
-                  if (element.labels[attrIndex] !== undefined) {
-                    oldValue = element.labels[attrIndex].value;
+
+		  var oldValue;
+		  if (element.labels[attrIndex] !== undefined) {
+		    oldValue = element.labels[attrIndex].value;
+		  } else {
+		    oldValue = '';
+		  }
+
+		  if (newValue !== undefined && newValue !== oldValue) { 
+			  // Check if new value is legal
+			  if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
+			    LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
+
+			    HistoryService.addObjToUndoStack({
+			      // Re-Using the already existing ANNOT/RENAMELABEL
+			      // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
+			      // but it would have the same code
+			      'type': 'ANNOT',
+			      'action': 'RENAMELABEL',
+			      'name': levelName,
+			      'id': elementID,
+			      'attrIndex': attrIndex,
+			      'oldValue': oldValue,
+			      'newValue': newValue
+			    });
+
+			    viewState.hierarchyState.closeContextMenu();
+		    	  }
                   } else {
-                    oldValue = '';
-                  }
-
-                  // Check if new value is legal
-                  if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
-                    LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
-
-                    HistoryService.addObjToUndoStack({
-                      // Re-Using the already existing ANNOT/RENAMELABEL
-                      // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
-                      // but it would have the same code
-                      'type': 'ANNOT',
-                      'action': 'RENAMELABEL',
-                      'name': levelName,
-                      'id': elementID,
-                      'attrIndex': attrIndex,
-                      'oldValue': oldValue,
-                      'newValue': newValue
-                    });
-
-                    viewState.hierarchyState.closeContextMenu();
-                  }
+			    viewState.hierarchyState.closeContextMenu();
+		  }
                 }
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyCancelEdit) {
                   viewState.hierarchyState.closeContextMenu();

@@ -461,6 +461,7 @@ angular.module('emuwebApp')
 		if (viewState.hierarchyState.contextMenuID === undefined) {
 			d3.event.stopPropagation();
 			viewState.hierarchyState.contextMenuID = d.id;
+			viewState.hierarchyState.setEditValue(scope.getNodeText(d));
 			scope.$apply(function() {
 				scope.render();
 			});

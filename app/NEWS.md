@@ -5,6 +5,7 @@ What's New
 
 - hierarchy graph can no longer be scrolled/panned away (still buggy)
 - playback of a selected part of the hierarchy now works correctly
+- fixed a bug where editing a label in hierarchy view could save wrong text
 
 ## Version 0.0.28
 
