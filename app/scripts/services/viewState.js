@@ -56,7 +56,7 @@ angular.module('emuwebApp')
         endFreezeSample: -1
       };
 
-      //
+      // HierarchyState object with all variables and functions
       sServObj.hierarchyState = {
       	// These variables will be set from within the emuhierarchy directive
 	// The directive will not watch for outside changes
@@ -77,7 +77,54 @@ angular.module('emuwebApp')
 	// These will be set by outside components
 	path: [],
 	rotated: false,
-	playing: 0 //this is only watched indirectly (the view injects this value into the directive)
+	playing: 0, //this is only watched indirectly (the view injects this value into the directive)
+
+	// member functions
+        
+	contextMenuIsOpen: function () {
+	  return sServObj.hierarchyState.contextMenuID !== undefined;
+        },
+
+        closeContextMenu: function () {
+	        sServObj.hierarchyState.contextMenuID = undefined;
+        },
+
+        getContextMenuID: function () {
+	        return sServObj.hierarchyState.contextMenuID;
+        },
+
+        setContextMenuID: function (id) {
+	        sServObj.hierarchyState.contextMenuID = id;
+        },
+
+        getInputFocus: function () {
+	        return sServObj.hierarchyState.inputFocus;
+        },
+
+        setInputFocus: function (f) {
+	        sServObj.hierarchyState.inputFocus = f;
+        },
+
+        getEditValue: function () {
+	        return sServObj.hierarchyState.editValue;
+        },
+
+        setEditValue: function (e) {
+	        sServObj.hierarchyState.editValue = e;
+        },
+
+        reset: function () {
+          sServObj.hierarchyState.selectedItemID = undefined;
+          sServObj.hierarchyState.selectedLinkFromID = undefined;
+          sServObj.hierarchyState.selectedLinkToID = undefined;
+          sServObj.hierarchyState.editValue = undefined;
+          sServObj.hierarchyState.inputFocus = false;
+          sServObj.hierarchyState.collapseInfo = {};
+          sServObj.hierarchyState.scaleFactor = 1;
+          sServObj.hierarchyState.translate = [0,0];
+          sServObj.hierarchyState.contextMenuID = undefined;
+          sServObj.hierarchyState.newLinkFromID = undefined;
+	},
       };
 
       sServObj.timelineSize = -1;
@@ -810,19 +857,6 @@ angular.module('emuwebApp')
       this.lastPcm = n;
     };
 
-    sServObj.resetHierarchyState = function () {
-      sServObj.hierarchyState.selectedItemID = undefined;
-      sServObj.hierarchyState.selectedLinkFromID = undefined;
-      sServObj.hierarchyState.selectedLinkToID = undefined;
-      sServObj.hierarchyState.editValue = undefined;
-      sServObj.hierarchyState.inputFocus = false;
-      sServObj.hierarchyState.collapseInfo = {};
-      sServObj.hierarchyState.scaleFactor = 1;
-      sServObj.hierarchyState.translate = [0,0];
-      sServObj.hierarchyState.contextMenuID = undefined;
-      sServObj.hierarchyState.newLinkFromID = undefined;
-    };
-
     /**
      *
      */
@@ -850,37 +884,6 @@ angular.module('emuwebApp')
       }
     };
 
-    sServObj.hierarchyState.contextMenuIsOpen = function () {
-	    return sServObj.hierarchyState.contextMenuID !== undefined;
-    };
-
-    sServObj.hierarchyState.closeContextMenu = function () {
-	    sServObj.hierarchyState.contextMenuID = undefined;
-    };
-
-    sServObj.hierarchyState.getContextMenuID = function () {
-	    return sServObj.hierarchyState.contextMenuID;
-    };
-
-    sServObj.hierarchyState.setContextMenuID = function (id) {
-	    sServObj.hierarchyState.contextMenuID = id;
-    };
-
-    sServObj.hierarchyState.getInputFocus = function () {
-	    return sServObj.hierarchyState.inputFocus;
-    };
-
-    sServObj.hierarchyState.setInputFocus = function (f) {
-	    sServObj.hierarchyState.inputFocus = f;
-    };
-
-    sServObj.hierarchyState.getEditValue = function () {
-	    return sServObj.hierarchyState.editValue;
-    };
-
-    sServObj.hierarchyState.setEditValue = function (e) {
-	    sServObj.hierarchyState.editValue = e;
-    };
 
     /**
      *

@@ -42,7 +42,7 @@ angular.module('emuwebApp')
 					// reset history
 					HistoryService.resetToInitState();
 					// reset hierarchy
-					viewState.resetHierarchyState();
+					viewState.hierarchyState.reset();
 					// set state
                     LevelService.deleteEditArea();
                     viewState.setEditing(false);
