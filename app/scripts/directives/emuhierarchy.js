@@ -112,7 +112,7 @@ angular.module('emuwebApp')
 		}
 	}, false);
 
-	scope.$watch('viewState.hierarchyShown', function (newValue) {
+	scope.$watch('viewState.hierarchyState.isShown()', function (newValue) {
 		if (newValue === true) {
 			console.debug ('Hierarchy modal activated, rendering');
 			scope.render();
@@ -299,13 +299,13 @@ angular.module('emuwebApp')
 
 	scope.getOrientatedNodeCollapseText = function(d) {
 		if (scope.vertical) {
-			if (viewState.getCollapsed(d.id)) {
+			if (viewState.hierarchyState.getCollapsed(d.id)) {
 				return '↓';
 			} else {
 				return '↑';
 			}
 		} else {
-			if (viewState.getCollapsed(d.id)) {
+			if (viewState.hierarchyState.getCollapsed(d.id)) {
 				return '→';
 			} else {
 				return '←';
@@ -898,7 +898,7 @@ angular.module('emuwebApp')
 				if (!element._visible) {
 					continue;
 				}
-				if (viewState.getCollapsed(parentElement.id) || !parentElement._visible) {
+				if (viewState.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
 					continue;
 				}
 
@@ -989,11 +989,11 @@ angular.module('emuwebApp')
 		// Make sure that nodes that appear due to their ancestry being uncollapsed do not fly in from the origin
 		// (as do all other nodes)
 		newNodes.attr('transform', function (d) {
-			var position = viewState.getCollapsePosition(d.id);
+			var position = viewState.hierarchyState.getCollapsePosition(d.id);
 			if (typeof position !== 'undefined') {
 				var x = position[0];
 				var y = position[1];
-				viewState.setCollapsePosition(d.id, undefined);
+				viewState.hierarchyState.setCollapsePosition(d.id, undefined);
 				return 'translate(' + x + ',' + y + ')' + scope.getOrientatedNodeTransform();
 			}
 		});
@@ -1009,11 +1009,11 @@ angular.module('emuwebApp')
 				.transition()
 				.duration(scope.transition.duration)
 				.attr('transform', function (d) {
-					var collapsePosition = viewState.getCollapsePosition(d.id);
+					var collapsePosition = viewState.hierarchyState.getCollapsePosition(d.id);
 					if (typeof collapsePosition !== 'undefined') {
 						var x = collapsePosition[0];
 						var y = collapsePosition[1];
-						viewState.setCollapsePosition(d.id, undefined);
+						viewState.hierarchyState.setCollapsePosition(d.id, undefined);
 						return 'translate(' + x + ',' + y + ')';
 					} else {
 						return 'translate(' + 0 + ',' + 0 + ')';
@@ -1023,11 +1023,11 @@ angular.module('emuwebApp')
 		} else {
 			oldNodes = oldNodes
 				.attr('transform', function (d) {
-					var collapsePosition = viewState.getCollapsePosition(d.id);
+					var collapsePosition = viewState.hierarchyState.getCollapsePosition(d.id);
 					if (typeof collapsePosition !== 'undefined') {
 						var x = collapsePosition[0];
 						var y = collapsePosition[1];
-						viewState.setCollapsePosition(d.id, undefined);
+						viewState.hierarchyState.setCollapsePosition(d.id, undefined);
 						return 'translate(' + x + ',' + y + ')';
 					} else {
 						return 'translate(' + 0 + ',' + 0 + ')';
@@ -1065,7 +1065,7 @@ angular.module('emuwebApp')
 			})
 			// Highlight collapsed items
 			.style('stroke', function(d) {
-				if (viewState.getCollapsed(d.id)) {
+				if (viewState.hierarchyState.getCollapsed(d.id)) {
 					return scope.cps.design.color.red;
 				} else {
 					return scope.cps.design.color.grey;

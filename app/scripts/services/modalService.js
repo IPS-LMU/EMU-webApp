@@ -81,8 +81,8 @@ angular.module('emuwebApp')
 			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
 			sServObj.isOpen = false;
-			if(viewState.hierarchyShown) {
-			    viewState.toggleHierarchy();
+			if(viewState.hierarchyState.isShown()) {
+			    viewState.hierarchyState.toggleHierarchy();
 			}
 			sServObj.defer.resolve(false);
 		};

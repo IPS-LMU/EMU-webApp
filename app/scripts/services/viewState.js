@@ -58,6 +58,8 @@ angular.module('emuwebApp')
 
       // HierarchyState object with all variables and functions
       sServObj.hierarchyState = {
+        hierarchyShown: false,
+
       	// These variables will be set from within the emuhierarchy directive
 	// The directive will not watch for outside changes
       	selectedItemID: undefined,
@@ -125,6 +127,115 @@ angular.module('emuwebApp')
           sServObj.hierarchyState.contextMenuID = undefined;
           sServObj.hierarchyState.newLinkFromID = undefined;
 	},
+
+        /**
+         *
+         */
+        isRotated: function () {
+          return sServObj.hierarchyState.rotated;
+        },
+    
+        /**
+         *
+         */
+        toggleRotation: function () {
+          sServObj.hierarchyState.rotated = !sServObj.hierarchyState.rotated;
+        },
+    
+        /**
+         *
+         */
+        toggleHierarchy: function () {
+          sServObj.hierarchyState.hierarchyShown = !sServObj.hierarchyState.hierarchyShown;
+          if (sServObj.hierarchyState.hierarchyShown === false) {
+            // Make sure no private attributes (such as do start with an underscore
+            // are left in the data when the hierarchy modal is closed
+            StandardFuncsService.traverseAndClean (DataService.getData());
+          }
+        },
+
+	isShown: function () {
+          return sServObj.hierarchyState.hierarchyShown;
+	},
+    
+    
+        /**
+         *
+         */
+        getCollapsed: function (id) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    return false;
+    	    } else {
+    		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsed === 'boolean') {
+    			    return sServObj.hierarchyState.collapseInfo[id].collapsed;
+    		    } else {
+    			    return false;
+    		    }
+    	    }
+        },
+    
+        /**
+         *
+         */
+        getCollapsePosition: function (id) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    return undefined;
+    	    } else {
+    		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsePosition === 'object') {
+    			    return sServObj.hierarchyState.collapseInfo[id].collapsePosition;
+    		    } else {
+    			    return undefined;
+    		    }
+    	    }
+        },
+    
+        /**
+         *
+         */
+        getNumCollapsedParents: function (id) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    return 0;
+    	    } else {
+    		    if (typeof sServObj.hierarchyState.collapseInfo[id].numCollapsedParents === 'number') {
+    			    return sServObj.hierarchyState.collapseInfo[id].numCollapsedParents;
+    		    } else {
+    			    return 0;
+    		    }
+    	    }
+        },
+    
+        /**
+         *
+         */
+        setCollapsed: function (id, newState) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    sServObj.hierarchyState.collapseInfo[id] = {};
+    	    }
+    
+    	    sServObj.hierarchyState.collapseInfo[id].collapsed = newState;
+        },
+    
+        /**
+         *
+         */
+        setCollapsePosition: function (id, newPosition) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    sServObj.hierarchyState.collapseInfo[id] = {};
+    	    }
+    
+    	    sServObj.hierarchyState.collapseInfo[id].collapsePosition = newPosition;
+        },
+    
+        /**
+         *
+         */
+        setNumCollapsedParents: function (id, newNum) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    sServObj.hierarchyState.collapseInfo[id] = {};
+    	    }
+    
+    	    sServObj.hierarchyState.collapseInfo[id].numCollapsedParents = newNum;
+        },
       };
 
       sServObj.timelineSize = -1;
@@ -134,7 +245,6 @@ angular.module('emuwebApp')
       sServObj.editing = false;
       sServObj.cursorInTextField = false;
       sServObj.saving = true;
-      sServObj.hierarchyShown = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
       sServObj.curClickItems = [];
@@ -857,111 +967,6 @@ angular.module('emuwebApp')
       this.lastPcm = n;
     };
 
-    /**
-     *
-     */
-    sServObj.isHierarchyRotated = function () {
-      return sServObj.hierarchyState.rotated;
-    };
-
-    /**
-     *
-     */
-    sServObj.toggleHierarchyRotation = function () {
-      sServObj.hierarchyState.rotated = !sServObj.hierarchyState.rotated;
-    };
-
-    /**
-     *
-     */
-    sServObj.toggleHierarchy = function () {
-      sServObj.hierarchyShown = !sServObj.hierarchyShown;
-      if (sServObj.hierarchyShown === false) {
-        // Make sure no private attributes (such as do start with an underscore
-        // are left in the data when the hierarchy modal is closed
-        console.debug ('Hierarchy modal was closed, cleaning up underscore attributes');
-        StandardFuncsService.traverseAndClean (DataService.getData());
-      }
-    };
-
-
-    /**
-     *
-     */
-    sServObj.getCollapsed = function (id) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    return false;
-	    } else {
-		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsed === 'boolean') {
-			    return sServObj.hierarchyState.collapseInfo[id].collapsed;
-		    } else {
-			    return false;
-		    }
-	    }
-    };
-
-    /**
-     *
-     */
-    sServObj.getCollapsePosition = function (id) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    return undefined;
-	    } else {
-		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsePosition === 'object') {
-			    return sServObj.hierarchyState.collapseInfo[id].collapsePosition;
-		    } else {
-			    return undefined;
-		    }
-	    }
-    };
-
-    /**
-     *
-     */
-    sServObj.getNumCollapsedParents = function (id) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    return 0;
-	    } else {
-		    if (typeof sServObj.hierarchyState.collapseInfo[id].numCollapsedParents === 'number') {
-			    return sServObj.hierarchyState.collapseInfo[id].numCollapsedParents;
-		    } else {
-			    return 0;
-		    }
-	    }
-    };
-
-    /**
-     *
-     */
-    sServObj.setCollapsed = function (id, newState) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    sServObj.hierarchyState.collapseInfo[id] = {};
-	    }
-
-	    sServObj.hierarchyState.collapseInfo[id].collapsed = newState;
-    };
-
-    /**
-     *
-     */
-    sServObj.setCollapsePosition = function (id, newPosition) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    sServObj.hierarchyState.collapseInfo[id] = {};
-	    }
-
-	    sServObj.hierarchyState.collapseInfo[id].collapsePosition = newPosition;
-    };
-
-    /**
-     *
-     */
-    sServObj.setNumCollapsedParents = function (id, newNum) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    sServObj.hierarchyState.collapseInfo[id] = {};
-	    }
-
-	    sServObj.hierarchyState.collapseInfo[id].numCollapsedParents = newNum;
-    };
 
 
 

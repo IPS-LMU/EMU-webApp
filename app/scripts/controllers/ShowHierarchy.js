@@ -51,11 +51,11 @@ angular.module('emuwebApp')
 		};
 
 		$scope.rotateHierarchy = function () {
-			viewState.toggleHierarchyRotation();
+			viewState.hierarchyState.toggleRotation();
 		};
 		
 		$scope.getRotation = function () {
-			return viewState.isHierarchyRotated();
+			return viewState.hierarchyState.isRotated();
 		};
 
 		$scope.playSelection = function () {

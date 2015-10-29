@@ -69,7 +69,7 @@ angular.module('emuwebApp')
             viewState.setlastKeyCode(code);
 
             // Handle key strokes for the hierarchy modal
-            if (viewState.hierarchyShown && viewState.hierarchyState !== undefined) {
+            if (viewState.hierarchyState.isShown() && viewState.hierarchyState !== undefined) {
               if (viewState.hierarchyState.getInputFocus()) {
                 // Commit label change
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyCommitEdit) {
@@ -128,7 +128,7 @@ angular.module('emuwebApp')
 
                 // rotateHierarchy
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyRotate) {
-                  viewState.toggleHierarchyRotation();
+                  viewState.hierarchyState.toggleRotation();
                 }
 
                 // Delete link
@@ -289,10 +289,10 @@ angular.module('emuwebApp')
               // showHierarchy
               if (code === ConfigProviderService.vals.keyMappings.showHierarchy && ConfigProviderService.vals.activeButtons.showHierarchy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
-                  if (viewState.hierarchyShown) {
+                  if (viewState.hierarchyState.isShown()) {
                     modalService.close();
                   } else {
-                    viewState.toggleHierarchy();
+                    viewState.hierarchyState.toggleHierarchy();
                     modalService.open('views/showHierarchyModal.html');
                   }
                 }

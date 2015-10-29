@@ -296,7 +296,7 @@ angular.module('emuwebApp')
 
 				while (items.length > 0) {
 					currentItem = items.pop();
-					if (! viewState.getCollapsed(currentItem.id)) {
+					if (! viewState.hierarchyState.getCollapsed(currentItem.id)) {
 						items = items.concat(sServObj.findChildren(currentItem, selectedPath));
 					}
 
@@ -311,8 +311,8 @@ angular.module('emuwebApp')
 		sServObj.toggleCollapse = function (d, selectedPath) {
 
 			// Find out whether we're collapsing or decollapsing
-			var isCollapsing = !viewState.getCollapsed (d.id);
-			viewState.setCollapsed (d.id, isCollapsing);
+			var isCollapsing = !viewState.hierarchyState.getCollapsed (d.id);
+			viewState.hierarchyState.setCollapsed (d.id, isCollapsing);
 
 			// Traverse sub-tree and change each item's number of collapsed parents
 			//
@@ -325,15 +325,15 @@ angular.module('emuwebApp')
 				currentDescendant = descendants.pop();
 				descendants = descendants.concat(sServObj.findChildren(currentDescendant, selectedPath));
 
-				var num = viewState.getNumCollapsedParents(currentDescendant.id);
+				var num = viewState.hierarchyState.getNumCollapsedParents(currentDescendant.id);
 
 				if (isCollapsing) {
-					viewState.setNumCollapsedParents(currentDescendant.id, num + 1);
+					viewState.hierarchyState.setNumCollapsedParents(currentDescendant.id, num + 1);
 				} else {
-					viewState.setNumCollapsedParents(currentDescendant.id, num - 1);
+					viewState.hierarchyState.setNumCollapsedParents(currentDescendant.id, num - 1);
 				}
 
-				viewState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
+				viewState.hierarchyState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
 			}
 		}
 
