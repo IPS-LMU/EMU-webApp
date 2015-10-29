@@ -34,7 +34,7 @@ angular.module('emuwebApp')
 	scope.scaleExtent = [0.5, 10];
 
 	// Do not pan away from the graph
-	scope.timeAxisSize = 0;
+	scope.timeAxisSize = undefined;
 
 	// Settings for CSS transitions
 	scope.transition = {
@@ -69,6 +69,12 @@ angular.module('emuwebApp')
 
 	scope.$watch('vertical', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
+			// When rotating, we should preserve (to some accuracy)
+			// the part of the graph we're looking at. We therefore
+			// have to swap the axis of the translate variable.
+			var translate = scope.zoomListener.translate();
+			scope.zoomListener.translate([translate[1], translate[0]]);
+			
 			console.debug('Rendering due to rotation: ', newValue);
 			scope.render();
 		}
