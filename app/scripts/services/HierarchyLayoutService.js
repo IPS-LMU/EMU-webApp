@@ -314,7 +314,7 @@ angular.module('emuwebApp')
 			var isCollapsing = !viewState.getCollapsed (d.id);
 			viewState.setCollapsed (d.id, isCollapsing);
 
-			// Traverse sub-tree and change each item's number of collapsend parents
+			// Traverse sub-tree and change each item's number of collapsed parents
 			//
 			// Set each item's collapsePosition as well
 			// collapsePosition is the coordinate where they fade out to or fade in from
