@@ -77,6 +77,8 @@ angular.module('emuwebApp')
 			
 			console.debug('Rendering due to rotation: ', newValue);
 			scope.render();
+
+			scope.limitPanning();
 		}
 	}, false);
 
@@ -162,6 +164,8 @@ angular.module('emuwebApp')
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
 	scope.zoom = function () {
+		scope.limitPanning();
+
 		scope.svg.attr('transform', scope.getOrientatedTransform());
 
 		scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
@@ -175,15 +179,8 @@ angular.module('emuwebApp')
 		scope.zoomTimeoutPromise = $timeout (scope.render, 200);
 	};
 
-	/**
-	 * This transform is applied to the all-encompassing SVG area
-	 *
-	 * It applies the current scale factor to the dimension that represents
-	 * time.
-	 */
-	scope.getOrientatedTransform = function () {
-		var transform = '';
-
+	
+	scope.limitPanning = function () {
 		//
 		// Limit panning factor to make sure the user cannot pan away
 		// from the graph
@@ -204,48 +201,56 @@ angular.module('emuwebApp')
 		//
 
 		var maxNegativeTranslate = -scope.timeAxisSize*0.99;
-		
+
 		if (scope.vertical) {
 			var x = scope.zoomListener.translate()[0];
 			var y = 0;
 
-			if (scope.timeAxisSize) {
-				if (scope.zoomListener.translate()[0] > maxPositiveTranslate) {
-					x = maxPositiveTranslate;
-				}
-				if (scope.zoomListener.translate()[0] < maxNegativeTranslate) {
-					x = maxNegativeTranslate;
-				}
+			if (scope.zoomListener.translate()[0] > maxPositiveTranslate) {
+				x = maxPositiveTranslate;
 			}
-			
+			if (scope.zoomListener.translate()[0] < maxNegativeTranslate) {
+				x = maxNegativeTranslate;
+			}
+		
 			scope.zoomListener.translate([x, y]);
-
-			transform += 'translate('+x+','+y+')';
-			transform += 'scale('+scope.zoomListener.scale()+',1)';
-			transform += 'scale(-1,1),rotate(90)';
 		} else {
 			var x = 0;
 			var y = scope.zoomListener.translate()[1];
 			
-			if (scope.timeAxisSize) {
-				if (scope.zoomListener.translate()[1] > maxPositiveTranslate) {
-					y = maxPositiveTranslate;
-				}
-				if (scope.zoomListener.translate()[1] < maxNegativeTranslate) {
-					y = maxNegativeTranslate;
-				}
+			if (scope.zoomListener.translate()[1] > maxPositiveTranslate) {
+				y = maxPositiveTranslate;
+			}
+			if (scope.zoomListener.translate()[1] < maxNegativeTranslate) {
+				y = maxNegativeTranslate;
 			}
 
 			scope.zoomListener.translate([x, y]);
-
-			transform += 'translate('+x+','+y+')';
-			transform += 'scale(1,'+scope.zoomListener.scale()+')';
-			transform += 'rotate(0)';
 		}
 
 		// Save translate and scale so they can be re-used when the modal is re-opened
 		viewState.hierarchyState.translate = scope.zoomListener.translate();
 		viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
+	};
+
+	/**
+	 * This transform is applied to the all-encompassing SVG area
+	 *
+	 * It applies the current scale factor to the dimension that represents
+	 * time.
+	 */
+	scope.getOrientatedTransform = function () {
+		var transform = '';
+
+		if (scope.vertical) {
+			transform += 'translate('+scope.zoomListener.translate()[0]+','+scope.zoomListener.translate()[1]+')';
+			transform += 'scale('+scope.zoomListener.scale()+',1)';
+			transform += 'scale(-1,1),rotate(90)';
+		} else {
+			transform += 'translate('+scope.zoomListener.translate()[0]+','+scope.zoomListener.translate()[1]+')';
+			transform += 'scale(1,'+scope.zoomListener.scale()+')';
+			transform += 'rotate(0)';
+		}
 
 		return transform;
 	};
