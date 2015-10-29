@@ -13,6 +13,7 @@ What's New
 - rotating the hierarchy got back its eye-candy
 - links that are selected but invisible (because their sub-tree is collapsed) can no longer be deleted
 - fixed a bug where shortcuts in hierarchy view broken after e.g. clear and reconnect
+- hierarchy view is automatically resized when window is resized
 
 ## Version 0.0.28
 
