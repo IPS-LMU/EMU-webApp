@@ -41,7 +41,7 @@ angular.module('emuwebApp')
 		duration: 750,
 		links: false,
 		nodes: false,
-		rotation: false,
+		rotation: true,
 		contextMenu: false
 	};
 
@@ -1276,7 +1276,7 @@ angular.module('emuwebApp')
 
 		// Transition links to their new position.
 
-		if (scope.transition.rotation) {
+		if (scope.transition.links) {
 			linkSet
 				.selectAll('.emuhierarchy-link')
 				.transition()
