@@ -840,6 +840,37 @@ angular.module('emuwebApp')
 		}
 
 
+		// Make sure the selected things are visible, otherwise un-select them
+		var selectedItem         = LevelService.getItemByID(viewState.hierarchyState.selectedItemID);
+		var contextMenuItem      = LevelService.getItemByID(viewState.hierarchyState.contextMenuID);
+		var selectedLinkFromItem = LevelService.getItemByID(viewState.hierarchyState.selectedLinkFromID);
+		var selectedLinkToItem   = LevelService.getItemByID(viewState.hierarchyState.selectedLinkToID);
+
+
+		console.debug(selectedItem, contextMenuItem, selectedLinkFromItem, selectedLinkToItem);
+
+		if (selectedItem !== undefined && !selectedItem._visible) {
+			console.debug('Unselecting node');
+			viewState.hierarchyState.selectedItemID = undefined;
+		}
+
+		if (selectedLinkFromItem !== undefined && !selectedLinkFromItem._visible) {
+			console.debug('Unselecting link');
+			viewState.hierarchyState.selectedLinkFromID = undefined;
+			viewState.hierarchyState.selectedLinkToID = undefined;
+		}
+
+		if (selectedLinkToItem !== undefined && !selectedLinkToItem._visible) {
+			console.debug('Unselecting link');
+			viewState.hierarchyState.selectedLinkFromID = undefined;
+			viewState.hierarchyState.selectedLinkToID = undefined;
+		}
+
+		if (contextMenuItem !== undefined && !contextMenuItem._visible) {
+			console.debug('Closing context menu (node became invisible)');
+			viewState.hierarchyState.contextMenuID = undefined;
+		}
+
 
 		////////
 		// Now layout links
