@@ -125,6 +125,13 @@ angular.module('emuwebApp')
 		}
 	}, false);
 
+	scope.$watch('hierarchyState.resize', function (newValue, oldValue) {
+		console.debug('Rendering due to window resize');
+		if (newValue !== oldValue) {
+			scope.render();
+		}
+	}, false);
+
         //
         //////////////////////
 
@@ -847,8 +854,6 @@ angular.module('emuwebApp')
 		var selectedLinkToItem   = LevelService.getItemByID(viewState.hierarchyState.selectedLinkToID);
 
 
-		console.debug(selectedItem, contextMenuItem, selectedLinkFromItem, selectedLinkToItem);
-
 		if (selectedItem !== undefined && !selectedItem._visible) {
 			console.debug('Unselecting node');
 			viewState.hierarchyState.selectedItemID = undefined;
@@ -1360,14 +1365,6 @@ angular.module('emuwebApp')
 		// This is needed to prevent the user from scrolling/panning away from the graph.
 		scope.timeAxisSize = scope.svg.node().getBBox().height*scope.zoomListener.scale();
 	};
-
-        /**
-         * SIC... not being called
-         */
-        scope.resizeHierarchy = function () {
-          console.log('###############')
-          console.log(scope.width)
-        };
       }
     };
   });

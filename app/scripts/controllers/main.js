@@ -43,6 +43,9 @@ angular.module('emuwebApp')
 		angular.element($window).bind('resize', function () {
 			LevelService.deleteEditArea();
 			viewState.setWindowWidth($window.outerWidth);
+			if (viewState.hierarchyState.isShown()) {
+				++viewState.hierarchyState.resize;
+			}
 			$scope.$digest();
 		});
 

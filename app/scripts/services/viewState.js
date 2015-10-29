@@ -80,6 +80,7 @@ angular.module('emuwebApp')
 	path: [],
 	rotated: false,
 	playing: 0, //this is only watched indirectly (the view injects this value into the directive)
+	resize: 0,
 
 	// member functions
         
