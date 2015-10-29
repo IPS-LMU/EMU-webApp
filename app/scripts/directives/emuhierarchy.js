@@ -173,6 +173,10 @@ angular.module('emuwebApp')
 	scope.zoom = function () {
 		scope.limitPanning();
 
+		// Save translate and scale so they can be re-used when the modal is re-opened
+		viewState.hierarchyState.translate = scope.zoomListener.translate();
+		viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
+
 		scope.svg.attr('transform', scope.getOrientatedTransform());
 
 		scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
@@ -234,10 +238,6 @@ angular.module('emuwebApp')
 
 			scope.zoomListener.translate([x, y]);
 		}
-
-		// Save translate and scale so they can be re-used when the modal is re-opened
-		viewState.hierarchyState.translate = scope.zoomListener.translate();
-		viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
 	};
 
 	/**
