@@ -1196,8 +1196,6 @@ angular.module('emuwebApp')
 				.on('focusout', scope.nodeOnFocusOut)
 				;
 
-			viewState.hierarchyState.setEditValue(scope.getNodeText);
-
 			if (foreignObject[0].length !== 0) {
 				foreignObject.select('input')[0][0].focus();
 				foreignObject.select('input')[0][0].select();
