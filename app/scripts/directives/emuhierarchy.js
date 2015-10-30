@@ -35,7 +35,7 @@ angular.module('emuwebApp')
 		duration: 750,
 		links: false,
 		nodes: false,
-		rotation: false,
+		rotation: true,
 		contextMenu: false
 	};
 
@@ -45,8 +45,8 @@ angular.module('emuwebApp')
 
 	// Possible pan range
 	scope.panningLimit = 0.95;
-	scope.allowCrossAxisZoom = true;
-	scope.allowCrossAxisPan = true;
+	scope.allowCrossAxisZoom = false;
+	scope.allowCrossAxisPan = false;
 
 	// Boundaries for enforcing pan range
 	scope.timeAxisStartPosition = undefined;
