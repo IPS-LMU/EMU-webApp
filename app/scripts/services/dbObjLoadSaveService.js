@@ -145,7 +145,6 @@ angular.module('emuwebApp')
 				var bundleData = {};
 				viewState.somethingInProgressTxt = 'Creating bundle json...';
 				bundleData.ssffFiles = [];
-				var formants = {};
 				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
 				var formants = Ssffdataservice.getFile('FORMANTS');
 
