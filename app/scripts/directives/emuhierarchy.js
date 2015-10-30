@@ -35,7 +35,7 @@ angular.module('emuwebApp')
 		duration: 750,
 		links: false,
 		nodes: false,
-		rotation: true,
+		rotation: false,
 		contextMenu: false
 	};
 
