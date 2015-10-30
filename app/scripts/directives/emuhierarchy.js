@@ -29,24 +29,45 @@ angular.module('emuwebApp')
 	// The same when in rotated mode
 	scope.vertOffsetX = 150;
 	scope.vertOffsetY = 25;
-
-	// Possible zoom range
-	scope.scaleExtent = [0.5, 10];
-
-	// Do not pan away from the graph
-	scope.timeAxisSize = undefined;
-
+	
 	// Settings for CSS transitions
 	scope.transition = {
 		duration: 750,
 		links: false,
 		nodes: false,
-		rotation: true,
+		rotation: false,
 		contextMenu: false
 	};
 
+
+	// Possible zoom range
+	scope.scaleExtent = [0.5, 10];
+
+	// Possible pan range
+	scope.panningLimit = 0.95;
+	scope.allowCrossAxisZoom = true;
+	scope.allowCrossAxisPan = true;
+
+	// Boundaries for enforcing pan range
+	scope.timeAxisStartPosition = undefined;
+	scope.timeAxisEndPosition = undefined;
+	scope.crossAxisStartPosition = undefined;
+	scope.crossAxisEndPosition = undefined;
+	scope.northernBoundary = undefined;
+	scope.southernBoundary = undefined;
+	scope.westernBoundary = undefined;
+	scope.easternBoundary = undefined;
+	
+
+
+	// While the user zooms (scrolls mouse wheel), many zoom events are
+	// fired. The last zoom event must be treated differently than the ones
+	// before it:
+
 	// A promise that can be cancelled from within scope.zoom()
 	scope.zoomTimeoutPromise = null;
+	// The last scale factor that was applied by a "final zoom event"
+	scope.lastScaleFactor = 1;
 
 	//
 	//////////////////////
@@ -171,14 +192,17 @@ angular.module('emuwebApp')
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
 	scope.zoom = function () {
+		// Make sure panning is within allowed regions
 		scope.limitPanning();
 
 		// Save translate and scale so they can be re-used when the modal is re-opened
 		viewState.hierarchyState.translate = scope.zoomListener.translate();
 		viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
 
-		scope.svg.attr('transform', scope.getOrientatedTransform());
-
+		// Transform all SVG elements
+		// Note that scope.svg is actually not the svg itself but rather the main <g> within it
+		// Note further that scope.captionLayer is a sibling and not a descendant of scope.svg
+		scope.svg.attr('transform', scope.getOrientatedTransform(true));
 		scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
 		scope.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
 
@@ -191,72 +215,86 @@ angular.module('emuwebApp')
 	};
 
 	
+	/**
+	 * Check if user's chosen panning value is within such limits that the
+	 * graph is still visible.
+	 *
+	 * Actually, a portion of the graph defined by (1-scope.limit)%.
+	 *
+	 * If the factor is not within that limit, reset it.
+	 */
 	scope.limitPanning = function () {
-		//
-		// Limit panning factor to make sure the user cannot pan away
-		// from the graph
-
-		// Okay, so this is what I would like to do: Only allow to "pan away" 90 % of the graph
-		var maxPositiveTranslate = scope.timeAxisSize/scope.zoomListener.scale() * 0.9;
-		// NB: I divide by the scale factor becaus I need the original axis' size (because panning will be applied before scaling)
-
-		//
-		// BUT:
-		// This is one of these real huge WTFs
-		// The graph doesn't grow linearly with the scale() factor, it rather grows a little slower (why? -> I might still find out)
-		// Therefore, I have to correct the panning limit by a logarithmic factor ... (inverse of Math.pow())
- 		maxPositiveTranslate = maxPositiveTranslate / Math.pow(1.1, (scope.zoomListener.scale()-1));
-		// ... WTF?
-		//
-		// btw: the base 1.1 was randomly guessed and seems to work
-		//
-
-		var maxNegativeTranslate = -scope.timeAxisSize*0.99;
+		// Read user's panning value 
+		var x = scope.zoomListener.translate()[0]; 
+		var y = scope.zoomListener.translate()[1];
 
 		if (scope.vertical) {
-			var x = scope.zoomListener.translate()[0];
-			var y = 0;
+			if (!scope.allowCrossAxisPan) {
+				y = 0;
+			} else {
+				if (y > scope.southernBoundary - scope.crossAxisStartPosition) { 
+					y = scope.southernBoundary - scope.crossAxisStartPosition; 
+				}
+				if (y < scope.northernBoundary - scope.crossAxisEndPosition) {
+					y = scope.northernBoundary - scope.crossAxisEndPosition;
+				}
+			}
 
-			if (scope.zoomListener.translate()[0] > maxPositiveTranslate) {
-				x = maxPositiveTranslate;
+			if (x > scope.easternBoundary - scope.timeAxisStartPosition) {
+				x = scope.easternBoundary - scope.timeAxisStartPosition;
 			}
-			if (scope.zoomListener.translate()[0] < maxNegativeTranslate) {
-				x = maxNegativeTranslate;
+			if (x < scope.westernBoundary - scope.timeAxisEndPosition) {
+				x = scope.westernBoundary - scope.timeAxisEndPosition;
 			}
-		
-			scope.zoomListener.translate([x, y]);
 		} else {
-			var x = 0;
-			var y = scope.zoomListener.translate()[1];
+			if (!scope.allowCrossAxisPan) {
+				x = 0;
+			} else {
+				if (x > scope.easternBoundary - scope.crossAxisStartPosition) {
+					x = scope.easternBoundary - scope.crossAxisStartPosition;
+				}
+				if (x < scope.westernBoundary - scope.crossAxisEndPosition) {
+					x = scope.westernBoundary - scope.crossAxisEndPosition;
+				}
+			}
 			
-			if (scope.zoomListener.translate()[1] > maxPositiveTranslate) {
-				y = maxPositiveTranslate;
+			if (y > scope.southernBoundary - scope.timeAxisStartPosition) { 
+				y = scope.southernBoundary - scope.timeAxisStartPosition; 
 			}
-			if (scope.zoomListener.translate()[1] < maxNegativeTranslate) {
-				y = maxNegativeTranslate;
+			if (y < scope.northernBoundary - scope.timeAxisEndPosition) {
+				y = scope.northernBoundary - scope.timeAxisEndPosition;
 			}
-
-			scope.zoomListener.translate([x, y]);
 		}
+
+		scope.zoomListener.translate([x, y]);
 	};
 
 	/**
-	 * This transform is applied to the all-encompassing SVG area
-	 *
-	 * It applies the current scale factor to the dimension that represents
-	 * time.
+	 * This transform is applied to the main <g> within the SVG
+	 * That <g> contains all the nodes and links but not the level captions
+	 * and neither the time arrow
 	 */
-	scope.getOrientatedTransform = function () {
+	scope.getOrientatedTransform = function (zoomInProgress) {
 		var transform = '';
 
 		if (scope.vertical) {
 			transform += 'translate('+scope.zoomListener.translate()[0]+','+scope.zoomListener.translate()[1]+')';
-			transform += 'scale('+scope.zoomListener.scale()+',1)';
 			transform += 'scale(-1,1),rotate(90)';
 		} else {
 			transform += 'translate('+scope.zoomListener.translate()[0]+','+scope.zoomListener.translate()[1]+')';
-			transform += 'scale(1,'+scope.zoomListener.scale()+')';
 			transform += 'rotate(0)';
+		}
+
+		if (zoomInProgress === true) {
+			var factor = scope.zoomListener.scale() / scope.lastScaleFactor;
+			transform += 'scale(';
+			
+			if (scope.allowCrossAxisZoom ) {
+				transform += factor;
+			} else {
+				transform += '1,'+factor;
+			}
+			transform += ')';
 		}
 
 		return transform;
@@ -273,9 +311,9 @@ angular.module('emuwebApp')
 		// Parameter d is never used because this is independent from the node's position
 
 		if (scope.vertical) {
-			return 'scale(1,'+(1/scope.zoomListener.scale())+')scale(-1,1)rotate(90)';
+			return 'scale(-1,1)rotate(90)';
 		} else {
-			return 'scale(1,'+(1/scope.zoomListener.scale())+')rotate(0)';
+			return 'rotate(0)';
 		}
 	};
 
@@ -286,11 +324,11 @@ angular.module('emuwebApp')
 	// functions are named like that, althoug they depend on both zoom
 	// scale and orientation.
 	scope.getOrientatedLinkStrokeWidth = function (d) {
-		return (1.5/scope.zoomListener.scale())+'px';
+		return '2px';
 	};
 
 	scope.getOrientatedGhostLinkStrokeWidth = function (d) {
-		return (15/scope.zoomListener.scale())+'px';
+		return '15px';
 	};
 
 	scope.getNodeText = function (d) {
@@ -351,6 +389,11 @@ angular.module('emuwebApp')
 	};
 
 	scope.getOrientatedLevelCaptionLayerTransform = function (d) {
+		if (scope.vertical) {
+			return 'translate(0, '+scope.zoomListener.translate()[1]+')';
+		} else {
+			return 'translate('+scope.zoomListener.translate()[0]+', 0)';
+		}
 	};
 
 	scope.getOrientatedLevelCaptionTransform = function (d) {
@@ -373,28 +416,20 @@ angular.module('emuwebApp')
 	scope.getOrientatedMousePosition = function (mouse) {
 		if (scope.vertical) {
 			return [
-				( mouse[1] ),
-				( mouse[0] - scope.zoomListener.translate()[0] ) / scope.zoomListener.scale()
+				( mouse[1] - scope.zoomListener.translate()[1] ),
+				( mouse[0] - scope.zoomListener.translate()[0] )
 			];
 		} else {
 			return [
-				( mouse[0] ),
-				( mouse[1] - scope.zoomListener.translate()[1] ) / scope.zoomListener.scale()
+				( mouse[0] - scope.zoomListener.translate()[0] ),
+				( mouse[1] - scope.zoomListener.translate()[1] )
 			];
 		}
 	};
 
 
 	scope.getPath = function (d) {
-		// It would be better if this function was independent of the scaling factor.
-		// But it turns out to be the easiest solution to counter the stretching
-		// effect of "one-dimensional scaling" on links.
-		var scale = scope.zoomListener.scale();
-		if (scope.vertical) {
-			return 'M'+d._fromX+' '+(d._fromY/scale)+'Q'+d._fromX+' '+(d._toY/scale)+' '+d._toX+' '+(d._toY/scale);
-		} else {
-			return 'M'+(d._fromX/scale)+' '+d._fromY+'Q'+(d._fromX/scale)+' '+d._toY+' '+(d._toX/scale)+' '+d._toY;
-		}
+		return 'M'+d._fromX+' '+d._fromY+'Q'+d._fromX+' '+d._toY+' '+d._toX+' '+d._toY;
 	};
 
 	/**
@@ -404,13 +439,8 @@ angular.module('emuwebApp')
 	scope.getPreviewPath = function () {
 		var from = { x: scope.newLinkSrc._x, y: scope.newLinkSrc._y };
 		var to = { x: scope.selectedItem._x, y: scope.selectedItem._y };
-		var scale = scope.zoomListener.scale();
 
-		if (scope.vertical) {
-			return 'M'+from.x+' '+(from.y/scale)+'Q'+from.x+' '+(to.y/scale)+' '+to.x+' '+(to.y/scale);
-		} else {
-			return 'M'+(from.x/scale)+' '+from.y+'Q'+(from.x/scale)+' '+to.y+' '+(to.x/scale)+' '+to.y;
-		}
+		return 'M'+from.x+' '+from.y+'Q'+from.x+' '+to.y+' '+to.x+' '+to.y;
 	};
 
 	/**
@@ -588,17 +618,53 @@ angular.module('emuwebApp')
 		Soundhandlerservice.playFromTo(startSample, endSample);
 	};
 
+	/***********************************************************************
+	 * Transform relative into absolute coordinates
+	 *
+	 * Uses the two functions depthToX() and posInLevelToY()
+	 *
+	 * The relative coordinates are defined on the time-axis and on the
+	 * cross-axis.
+	 * 
+	 * In vertical mode, the time-axis is X and the cross-axis is Y.
+	 * In default mode, the time-axis is Y and the cross-axis is X.
+	 *
+	 * The relative coordinate on the cross-axis is specified as "number of
+	 * levels away from the time level".
+	 *
+	 * On the time-axis, the relative coordinate is a number within [0;1].
+	 */
 	scope.depthToX = function (depth) {
-		var size = (scope.vertical) ? scope.height : scope.width;
-		var offset = (scope.vertical) ? scope.vertOffsetY : scope.offsetX;
-		return offset + depth / viewState.hierarchyState.path.length * size;
+		if (scope.vertical) {
+			var crossAxisSize = scope.height;
+			var offset = scope.vertOffsetY;
+		} else {
+			var crossAxisSize = scope.width;
+			var offset = scope.offsetX;
+		}
+
+		var result = depth / viewState.hierarchyState.path.length * crossAxisSize;
+		if (scope.allowCrossAxisZoom) {
+			result *= scope.zoomListener.scale();
+		}
+
+		result += offset;
+		
+		return result;
 	};
 
 	scope.posInLevelToY = function (posInLevel) {
-		var size = (scope.vertical) ? scope.width : scope.height;
-		var offset = (scope.vertical) ? scope.vertOffsetX : scope.offsetY;
-		size -= offset;
-		return offset + posInLevel * size;
+		if (scope.vertical) {
+			var offset = scope.vertOffsetX;
+			var timeAxisSize = scope.width - offset;
+		} else {
+			var offset = scope.offsetY;	
+			var timeAxisSize = scope.height - offset;
+		}
+
+		var result = posInLevel * timeAxisSize * scope.zoomListener.scale();
+		result += offset;
+		return result; 
 	};
 
 	//
@@ -738,6 +804,7 @@ angular.module('emuwebApp')
 	 *
          */
         scope.render = function () {
+		scope.lastScaleFactor = scope.zoomListener.scale();
 		var i;
 
 		// Get current width and height of SVG
@@ -1300,13 +1367,6 @@ angular.module('emuwebApp')
 			;
 
 
-		// Scale links correctly
-		if (scope.vertical) {
-			linkSet.attr('transform', 'scale(1, '+scope.zoomListener.scale()+')');
-		} else {
-			linkSet.attr('transform', 'scale('+scope.zoomListener.scale()+', 1)');
-		}
-
 
 		// Transition links to their new position.
 
@@ -1353,17 +1413,32 @@ angular.module('emuwebApp')
 				.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 				;
 
-			if (scope.vertical) {
-				preview.attr('transform', 'scale(1, '+(scope.zoomListener.scale())+')');
-			} else {
-				preview.attr('transform', 'scale('+(scope.zoomListener.scale())+', 1)');
-			}
 		}
 
 
-		// Find out size of the newly rendered SVG.
-		// This is needed to prevent the user from scrolling/panning away from the graph.
-		scope.timeAxisSize = scope.svg.node().getBBox().height*scope.zoomListener.scale();
+		// Set boundaries within which the graph has to stay when the
+		// user is panning. That is, the graph can never *completely*
+		// leave these boundaries
+		if (scope.vertical) {
+			scope.northernBoundary = scope.vertOffsetY + scope.height * (1-scope.panningLimit);
+			scope.southernBoundary = scope.height * scope.panningLimit;
+			scope.westernBoundary = scope.vertOffsetX + scope.width * (1-scope.panningLimit);
+			scope.easternBoundary = scope.width * scope.panningLimit;
+		} else {
+			scope.northernBoundary = scope.offsetY + scope.height * (1-scope.panningLimit);
+			scope.southernBoundary = scope.height * scope.panningLimit;
+			scope.westernBoundary = scope.offsetX + scope.width * (1-scope.panningLimit);
+			scope.easternBoundary = scope.width * scope.panningLimit;
+		}
+		
+		// Find out where the time and cross axis start and end, to
+		// prevent that these points leave the above boundaries.
+		// Note that these do not depend on scope.vertical because they
+		// are transformed when the user is in "scope.vertical mode".
+		scope.timeAxisStartPosition = scope.svg.node().getBBox().y;
+		scope.timeAxisEndPosition = scope.timeAxisStartPosition + scope.svg.node().getBBox().height;
+		scope.crossAxisStartPosition = scope.svg.node().getBBox().x;
+		scope.crossAxisEndPosition = scope.crossAxisStartPosition + scope.svg.node().getBBox().width;
 	};
       }
     };
