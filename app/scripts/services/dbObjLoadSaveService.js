@@ -44,8 +44,8 @@ angular.module('emuwebApp')
 					// reset hierarchy
 					viewState.hierarchyState.reset();
 					// set state
-                    LevelService.deleteEditArea();
-                    viewState.setEditing(false);
+					LevelService.deleteEditArea();
+					viewState.setEditing(false);
 					viewState.setState('loadingSaving');
 
 					viewState.somethingInProgress = true;
@@ -179,13 +179,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
-			
-			// Validate bundle before saving
-			//
-			// FIXME can we validate the whole bundleData against bundleSchema?
-			// The required attribute mediaFile seems to be always missing ...
 
-			viewState.somethingInProgressTxt = 'Validating bundle ...';
+			// Validate annotation before saving
+			viewState.somethingInProgressTxt = 'Validating annotJSON ...';
 
 			var validRes = Validationservice.validateJSO('annotationFileSchema', DataService.getData());
 			if (validRes !== true) {
@@ -193,27 +189,17 @@ angular.module('emuwebApp')
 				$log.error (validRes);
 			}
 
-			// clean to be safe...
+			// clean annot data just to be safe...
 			StandardFuncsService.traverseAndClean(DataService.getData());
-		
-			// re-validate bundle. if it's still not valid, refuse to save data.
-			validRes = Validationservice.validateJSO('annotationFileSchema', DataService.getData());
-			if (validRes !== true) {
-				$log.error ('GRAVE PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() HAS ALREADY BEEN CALLED.');
-				$log.error (validRes);
-				
-				modalService.open('views/error.html', 'Somehow the data for this bundle has been corrupted. This is most likely a nasty bug difficult to spot. If you are at the IPS right now, please contact an EMU developer immediately.');
-				defer.reject();
-				viewState.somethingInProgressTxt = '';
-				viewState.somethingInProgress = false;
-				// FIXME this setState doesn't appear to be enough. I still have to press escape to use most things in the webapp.
-				viewState.setState('labeling');
-				return;
-			}
 
+			////////////////////////////
+			// construct bundle
 
 			// annotation
 			bundleData.annotation = DataService.getData();
+
+			// empty media file (depricated since schema was updated)
+			bundleData.mediaFile = {'encodingfds': 'BASE64', 'data': ''};
 
 			var curBndl = loadedMetaDataService.getCurBndl();
 
@@ -230,21 +216,35 @@ angular.module('emuwebApp')
 				bundleData.comment = curBndl.comment;
 			}
 
-			viewState.somethingInProgressTxt = 'Saving bundle...';
-			Iohandlerservice.saveBundle(bundleData).then(function () {
-				viewState.somethingInProgressTxt = 'Done!';
-				viewState.somethingInProgress = false;
-				HistoryService.movesAwayFromLastSave = 0;
-				defer.resolve();
-				viewState.setState('labeling');
-			}, function (errMess) {
-				// console.log(mess);
-				modalService.open('views/error.html', 'Error saving bundle: ' + errMess.status.message).then(function () {
-					appStateService.resetToInitState();
-				});
-				defer.reject();
-			});
-		};
+			// validate bundle
+			viewState.somethingInProgressTxt = 'Validating bundle ...';
+			validRes = Validationservice.validateJSO('bundleSchema', bundleData);
 
+			if (validRes !== true) {
+				$log.error('GRAVE PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() HAS ALREADY BEEN CALLED.');
+				$log.error(validRes);
+
+				modalService.open('views/error.html', 'Somehow the data for this bundle has been corrupted. This is most likely a nasty bug difficult to spot. If you are at the IPS right now, please contact an EMU developer immediately. The Validation error is: ' + JSON.stringify(validRes, null, 4)).then(function () {
+						viewState.somethingInProgressTxt = '';
+						viewState.somethingInProgress = false;
+						viewState.setState('labeling');
+						defer.reject();
+				});
+			}else{
+				viewState.somethingInProgressTxt = 'Saving bundle...';
+				Iohandlerservice.saveBundle(bundleData).then(function () {
+					viewState.somethingInProgressTxt = 'Done!';
+					viewState.somethingInProgress = false;
+					HistoryService.movesAwayFromLastSave = 0;
+					defer.resolve();
+					viewState.setState('labeling');
+				}, function (errMess) {
+					modalService.open('views/error.html', 'Error saving bundle: ' + errMess.status.message).then(function () {
+						appStateService.resetToInitState();
+					});
+					defer.reject();
+				});
+			};
+		}
 		return (sServObj);
 	});
