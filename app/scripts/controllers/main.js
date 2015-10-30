@@ -719,13 +719,14 @@ angular.module('emuwebApp')
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
 		    var currentConfig = $scope.cps.curDbConfig;
-		    var currentVals = $scope.cps.vals;
+		    var currentVals = angular.copy($scope.cps.vals);
 			modalService.open('views/tabbed.html').then(function (res) {
 				if(res) {
 				    // todo save and transfer curDbConfig & vals
 				    console.log(angular.toJson(res, true));
 				}
 				else {
+				    $scope.cps.vals = angular.copy(currentVals);
 				}
 			});
 		};

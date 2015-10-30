@@ -57,10 +57,12 @@ angular.module('emuwebApp')
 		    var obj = {
 		      name: 'new Perspective',
 		      signalCanvases: [],
-		      levelCanvases: [],
+		      levelCanvases: {
+		        order: []
+		      },
 		      twoDimCanvases: []
 		    }
-		    $scope.modal.dataOut.perspectives.splice($scope.modal.dataOut.perspectives.length - 1, 0, obj);
+		    $scope.modal.dataOut.perspectives.splice($scope.modal.dataOut.perspectives.length, 0, obj);
 		};		
 
 		/**
