@@ -17,7 +17,15 @@
           <span ng-switch-when="integer">
             <input type="text" pattern="\d*" ng-model="modal.dataOut.labelCanvasConfig[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
-        </span>
+          <span ng-switch-default>
+            <span ng-switch="key">
+              <span ng-switch-when="addTimeMode">
+                <select ng-model="modal.dataOut.labelCanvasConfig[key]" ng-options="opt for opt in timeMode">
+              </span>
+            </span>
+          </span>          
+        </div>
+        
       </td>
 		</tr>
   </table>

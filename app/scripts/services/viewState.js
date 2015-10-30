@@ -19,6 +19,21 @@ angular.module('emuwebApp')
       RECTANGULAR: 9,
       TRIANGULAR: 10
     };
+    
+    // communication modes enum
+    var myMode = {
+      DEMO: 1,
+      WS: 2,
+      EMBEDDED: 3
+    };    
+    
+    // communication modes enum
+    var myTimeMode = {
+      absolute: 1,
+      relative: 2
+    };    
+        
+    
 
     // hold the current attribute definitions that are in view
     sServObj.curLevelAttrDefs = [];
@@ -531,6 +546,20 @@ angular.module('emuwebApp')
     sServObj.getWindowFunctions = function () {
       return myWindow;
     };
+    
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getCommunicationModes = function () {
+      return myMode;
+    };   
+    
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getTimeModes = function () {
+      return myTimeMode;
+    };       
 
 
     /**

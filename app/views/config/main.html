@@ -16,6 +16,13 @@
           <span ng-switch-when="integer">
             <input type="text" ng-pattern="/^\d+$/" ng-model="modal.dataOut.main[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>
+          <span ng-switch-default>
+            <span ng-switch="key">
+              <span ng-switch-when="comMode">
+                <select ng-model="modal.dataOut.main[key]" ng-options="mode for mode in comMode">
+              </span>
+            </span>
+          </span>
       </td>
 		</tr>
   </table>

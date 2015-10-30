@@ -8,9 +8,6 @@ angular.module('emuwebApp')
 				title: 'Main Settings',
 				url: 'views/config/main.html'
 			}, {
-				title: 'Key Mappings',
-				url: 'views/config/keys.html'
-			}, {
 				title: 'Spectrogram Settings',
 				url: 'views/config/spectro.html'
 			}, {
@@ -23,11 +20,15 @@ angular.module('emuwebApp')
 				title: 'Restrictions',
 				url: 'views/config/restrictions.html'
 		}];
-
-		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
+		
+		$scope.cps = ConfigProviderService;		
 		$scope.modal = modalService;
+		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
 		$scope.modal.dataOut = ConfigProviderService.vals;
-
+		$scope.options = Object.keys(viewState.getWindowFunctions());
+		$scope.timeMode = Object.keys(viewState.getTimeModes());
+		$scope.comMode = Object.keys(viewState.getCommunicationModes());
+		
 		$scope.onClickTab = function (node) {
 			if(node.url !== false) {
 				$scope.currentTabUrl = node.url;
