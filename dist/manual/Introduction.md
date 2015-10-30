@@ -13,9 +13,6 @@ author: Raphael Winkelmann
 - *EMU-webApp-websocket-protocol version: 0.0.2*
 
 
-**Warning: This webApp is still in ALPHA and is not meant to be used in production. So please use with caution! If you 
-have any issues or you find a bug please create an issue on the GitHub project page.**
-
 --------------------- 
 
 Welcome to the EMU-webApp! The EMU-webApp is a full fledged browser-based labeling and correction tool that offers a 
@@ -31,3 +28,6 @@ The EMU-webApp is part of the next iteration of the EMU Speech Database Manageme
 an all-in-one solution for generating, manipulating, querying, analyzing and managing speech databases as possible. For 
 an overview of the system please visit this URL: [http://ips-lmu.github.io/EMU.html](http://ips-lmu.github.io/EMU.html).
 
+If you have any issues or find a bug please create an issue on our GitHub project page 
+([https://github.com/IPS-LMU/EMU-webApp/issues](https://github.com/IPS-LMU/EMU-webApp/issues)). By doing so you will 
+help improve this software and potentially improve your own as well as the experience of other users.
