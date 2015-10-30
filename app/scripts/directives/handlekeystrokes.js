@@ -69,7 +69,7 @@ angular.module('emuwebApp')
             viewState.setlastKeyCode(code);
 
             // Handle key strokes for the hierarchy modal
-            if (viewState.hierarchyShown && viewState.hierarchyState !== undefined) {
+            if (viewState.hierarchyState.isShown() && viewState.hierarchyState !== undefined) {
               if (viewState.hierarchyState.getInputFocus()) {
                 // Commit label change
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyCommitEdit) {
@@ -80,32 +80,37 @@ angular.module('emuwebApp')
                   var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 
                   var newValue = viewState.hierarchyState.getEditValue();
-                  var oldValue;
-                  if (element.labels[attrIndex] !== undefined) {
-                    oldValue = element.labels[attrIndex].value;
+
+		  var oldValue;
+		  if (element.labels[attrIndex] !== undefined) {
+		    oldValue = element.labels[attrIndex].value;
+		  } else {
+		    oldValue = '';
+		  }
+
+		  if (newValue !== undefined && newValue !== oldValue) { 
+			  // Check if new value is legal
+			  if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
+			    LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
+
+			    HistoryService.addObjToUndoStack({
+			      // Re-Using the already existing ANNOT/RENAMELABEL
+			      // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
+			      // but it would have the same code
+			      'type': 'ANNOT',
+			      'action': 'RENAMELABEL',
+			      'name': levelName,
+			      'id': elementID,
+			      'attrIndex': attrIndex,
+			      'oldValue': oldValue,
+			      'newValue': newValue
+			    });
+
+			    viewState.hierarchyState.closeContextMenu();
+		    	  }
                   } else {
-                    oldValue = '';
-                  }
-
-                  // Check if new value is legal
-                  if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
-                    LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
-
-                    HistoryService.addObjToUndoStack({
-                      // Re-Using the already existing ANNOT/RENAMELABEL
-                      // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
-                      // but it would have the same code
-                      'type': 'ANNOT',
-                      'action': 'RENAMELABEL',
-                      'name': levelName,
-                      'id': elementID,
-                      'attrIndex': attrIndex,
-                      'oldValue': oldValue,
-                      'newValue': newValue
-                    });
-
-                    viewState.hierarchyState.closeContextMenu();
-                  }
+			    viewState.hierarchyState.closeContextMenu();
+		  }
                 }
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyCancelEdit) {
                   viewState.hierarchyState.closeContextMenu();
@@ -123,7 +128,7 @@ angular.module('emuwebApp')
 
                 // rotateHierarchy
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyRotate) {
-                  viewState.toggleHierarchyRotation();
+                  viewState.hierarchyState.toggleRotation();
                 }
 
                 // Delete link
@@ -284,10 +289,10 @@ angular.module('emuwebApp')
               // showHierarchy
               if (code === ConfigProviderService.vals.keyMappings.showHierarchy && ConfigProviderService.vals.activeButtons.showHierarchy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
-                  if (viewState.hierarchyShown) {
+                  if (viewState.hierarchyState.isShown()) {
                     modalService.close();
                   } else {
-                    viewState.toggleHierarchy();
+                    viewState.hierarchyState.toggleHierarchy();
                     modalService.open('views/showHierarchyModal.html');
                   }
                 }

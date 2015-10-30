@@ -1,10 +1,25 @@
 What's New
 =============================================
 
+## Version 0.0.29
+
+- now actively validates annotation data before saving them to the server
+- hierarchy graph can no longer be scrolled/panned away (still buggy)
+- playback of a selected part of the hierarchy now works correctly
+- modals are now destroyed rather than just hidden
+- hierarchy view now shows more or less the same part of the graph when rotated
+- fixed a bug where editing a label in hierarchy view could save wrong text
+- fixed a bug where corrupt data could be saved to the server
+- rotating the hierarchy got back its eye-candy
+- links that are selected but invisible (because their sub-tree is collapsed) can no longer be deleted
+- fixed a bug where shortcuts in hierarchy view broken after e.g. clear and reconnect
+- hierarchy view is automatically resized when window is resized
+
 ## Version 0.0.28
 
 - now checking for duplicate attributeDefinition names on load of DBconfig
 - improved zooming performance in hierarchy view
+- fix for audioelement bug in chrome as of version 46; now using webaudio API to play audio
 
 ## Version 0.0.27
 

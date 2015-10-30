@@ -42,7 +42,7 @@ angular.module('emuwebApp')
 					// reset history
 					HistoryService.resetToInitState();
 					// reset hierarchy
-					viewState.resetHierarchyState();
+					viewState.hierarchyState.reset();
 					// set state
                     LevelService.deleteEditArea();
                     viewState.setEditing(false);
@@ -179,29 +179,38 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
+			
+			// Validate bundle before saving
+			//
+			// FIXME can we validate the whole bundleData against bundleSchema?
+			// The required attribute mediaFile seems to be always missing ...
 
-			/** Markus Jochim 
-			 * Is this the way to go to validate date before saving?
-			 *
-			// validate bundle
-			var validRes = Validationservice.validateJSO('bundleSchema', bundleData);
+			viewState.somethingInProgressTxt = 'Validating bundle ...';
+
+			var validRes = Validationservice.validateJSO('annotationFileSchema', DataService.getData());
 			if (validRes !== true) {
-				console.log ('PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() will be called.');
+				$log.warn ('PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() will be called.');
+				$log.error (validRes);
 			}
-			*/
 
 			// clean to be safe...
 			StandardFuncsService.traverseAndClean(DataService.getData());
 		
-			/** Markus Jochim
-			 * Validating again would probably be overkill
-			 *
-			// validate bundle
-			var validRes = Validationservice.validateJSO('bundleSchema', bundleData);
+			// re-validate bundle. if it's still not valid, refuse to save data.
+			validRes = Validationservice.validateJSO('annotationFileSchema', DataService.getData());
 			if (validRes !== true) {
-				console.log ('GRAVE PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() HAS ALREADY BEEN CALLED.');
+				$log.error ('GRAVE PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() HAS ALREADY BEEN CALLED.');
+				$log.error (validRes);
+				
+				modalService.open('views/error.html', 'Somehow the data for this bundle has been corrupted. This is most likely a nasty bug difficult to spot. If you are at the IPS right now, please contact an EMU developer immediately.');
+				defer.reject();
+				viewState.somethingInProgressTxt = '';
+				viewState.somethingInProgress = false;
+				// FIXME this setState doesn't appear to be enough. I still have to press escape to use most things in the webapp.
+				viewState.setState('labeling');
+				return;
 			}
-			*/
+
 
 			// annotation
 			bundleData.annotation = DataService.getData();

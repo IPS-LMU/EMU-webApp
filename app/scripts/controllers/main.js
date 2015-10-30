@@ -43,6 +43,9 @@ angular.module('emuwebApp')
 		angular.element($window).bind('resize', function () {
 			LevelService.deleteEditArea();
 			viewState.setWindowWidth($window.outerWidth);
+			if (viewState.hierarchyState.isShown()) {
+				++viewState.hierarchyState.resize;
+			}
 			$scope.$digest();
 		});
 
@@ -705,8 +708,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showHierarchyBtnClick = function () {
-			if(!viewState.hierarchyShown) {
-			    viewState.toggleHierarchy();
+			if(!viewState.hierarchyState.isShown()) {
+			    viewState.hierarchyState.toggleHierarchy();
 			    modalService.open('views/showHierarchyModal.html');
 			}
 		};

@@ -5,8 +5,6 @@ angular.module('emuwebApp')
 	
 		// Scope data
 		
-		var playing = 0;
-
 		$scope.paths = {
 			possible: [],
 			possibleAsStr: [],
@@ -53,19 +51,19 @@ angular.module('emuwebApp')
 		};
 
 		$scope.rotateHierarchy = function () {
-			viewState.toggleHierarchyRotation();
+			viewState.hierarchyState.toggleRotation();
 		};
 		
 		$scope.getRotation = function () {
-			return viewState.isHierarchyRotated();
+			return viewState.hierarchyState.isRotated();
 		};
 
 		$scope.playSelection = function () {
-			++playing;
+			++viewState.hierarchyState.playing;
 		};
 
 		$scope.getPlaying = function () {
-			return playing;
+			return viewState.hierarchyState.playing;
 		};
 
 		/**

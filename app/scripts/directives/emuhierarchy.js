@@ -33,12 +33,15 @@ angular.module('emuwebApp')
 	// Possible zoom range
 	scope.scaleExtent = [0.5, 10];
 
+	// Do not pan away from the graph
+	scope.timeAxisSize = undefined;
+
 	// Settings for CSS transitions
 	scope.transition = {
 		duration: 750,
 		links: false,
 		nodes: false,
-		rotation: false,
+		rotation: true,
 		contextMenu: false
 	};
 
@@ -66,8 +69,16 @@ angular.module('emuwebApp')
 
 	scope.$watch('vertical', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
+			// When rotating, we should preserve (to some accuracy)
+			// the part of the graph we're looking at. We therefore
+			// have to swap the axis of the translate variable.
+			var translate = scope.zoomListener.translate();
+			scope.zoomListener.translate([translate[1], translate[0]]);
+			
 			console.debug('Rendering due to rotation: ', newValue);
 			scope.render();
+
+			scope.limitPanning();
 		}
 	}, false);
 
@@ -87,15 +98,6 @@ angular.module('emuwebApp')
 		}
 	}, true);
 
-	scope.$watch('hierarchyState.playing', function (newValue, oldValue) {
-		if (newValue !== oldValue) {
-			console.debug('Play() triggered by viewState', newValue);
-			if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
-				scope.play(scope.selectedItem);
-			}
-		}
-	}, false);
-
 	scope.$watch('historyService.movesAwayFromLastSave', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
 			console.debug('history service is active, rendering');
@@ -110,7 +112,7 @@ angular.module('emuwebApp')
 		}
 	}, false);
 
-	scope.$watch('viewState.hierarchyShown', function (newValue) {
+	scope.$watch('viewState.hierarchyState.isShown()', function (newValue) {
 		if (newValue === true) {
 			console.debug ('Hierarchy modal activated, rendering');
 			scope.render();
@@ -118,6 +120,13 @@ angular.module('emuwebApp')
 	}, false);
 
 	scope.$watch('hierarchyState.contextMenuID', function (newValue, oldValue) {
+		if (newValue !== oldValue) {
+			scope.render();
+		}
+	}, false);
+
+	scope.$watch('hierarchyState.resize', function (newValue, oldValue) {
+		console.debug('Rendering due to window resize');
 		if (newValue !== oldValue) {
 			scope.render();
 		}
@@ -162,6 +171,12 @@ angular.module('emuwebApp')
 	 * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 	 */
 	scope.zoom = function () {
+		scope.limitPanning();
+
+		// Save translate and scale so they can be re-used when the modal is re-opened
+		viewState.hierarchyState.translate = scope.zoomListener.translate();
+		viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
+
 		scope.svg.attr('transform', scope.getOrientatedTransform());
 
 		scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
@@ -175,6 +190,56 @@ angular.module('emuwebApp')
 		scope.zoomTimeoutPromise = $timeout (scope.render, 200);
 	};
 
+	
+	scope.limitPanning = function () {
+		//
+		// Limit panning factor to make sure the user cannot pan away
+		// from the graph
+
+		// Okay, so this is what I would like to do: Only allow to "pan away" 90 % of the graph
+		var maxPositiveTranslate = scope.timeAxisSize/scope.zoomListener.scale() * 0.9;
+		// NB: I divide by the scale factor becaus I need the original axis' size (because panning will be applied before scaling)
+
+		//
+		// BUT:
+		// This is one of these real huge WTFs
+		// The graph doesn't grow linearly with the scale() factor, it rather grows a little slower (why? -> I might still find out)
+		// Therefore, I have to correct the panning limit by a logarithmic factor ... (inverse of Math.pow())
+ 		maxPositiveTranslate = maxPositiveTranslate / Math.pow(1.1, (scope.zoomListener.scale()-1));
+		// ... WTF?
+		//
+		// btw: the base 1.1 was randomly guessed and seems to work
+		//
+
+		var maxNegativeTranslate = -scope.timeAxisSize*0.99;
+
+		if (scope.vertical) {
+			var x = scope.zoomListener.translate()[0];
+			var y = 0;
+
+			if (scope.zoomListener.translate()[0] > maxPositiveTranslate) {
+				x = maxPositiveTranslate;
+			}
+			if (scope.zoomListener.translate()[0] < maxNegativeTranslate) {
+				x = maxNegativeTranslate;
+			}
+		
+			scope.zoomListener.translate([x, y]);
+		} else {
+			var x = 0;
+			var y = scope.zoomListener.translate()[1];
+			
+			if (scope.zoomListener.translate()[1] > maxPositiveTranslate) {
+				y = maxPositiveTranslate;
+			}
+			if (scope.zoomListener.translate()[1] < maxNegativeTranslate) {
+				y = maxNegativeTranslate;
+			}
+
+			scope.zoomListener.translate([x, y]);
+		}
+	};
+
 	/**
 	 * This transform is applied to the all-encompassing SVG area
 	 *
@@ -185,11 +250,11 @@ angular.module('emuwebApp')
 		var transform = '';
 
 		if (scope.vertical) {
-			transform += 'translate('+scope.zoomListener.translate()[0]+',0)';
+			transform += 'translate('+scope.zoomListener.translate()[0]+','+scope.zoomListener.translate()[1]+')';
 			transform += 'scale('+scope.zoomListener.scale()+',1)';
 			transform += 'scale(-1,1),rotate(90)';
 		} else {
-			transform += 'translate(0,'+scope.zoomListener.translate()[1]+')';
+			transform += 'translate('+scope.zoomListener.translate()[0]+','+scope.zoomListener.translate()[1]+')';
 			transform += 'scale(1,'+scope.zoomListener.scale()+')';
 			transform += 'rotate(0)';
 		}
@@ -241,13 +306,13 @@ angular.module('emuwebApp')
 
 	scope.getOrientatedNodeCollapseText = function(d) {
 		if (scope.vertical) {
-			if (viewState.getCollapsed(d.id)) {
+			if (viewState.hierarchyState.getCollapsed(d.id)) {
 				return '↓';
 			} else {
 				return '↑';
 			}
 		} else {
-			if (viewState.getCollapsed(d.id)) {
+			if (viewState.hierarchyState.getCollapsed(d.id)) {
 				return '→';
 			} else {
 				return '←';
@@ -410,6 +475,7 @@ angular.module('emuwebApp')
 		if (viewState.hierarchyState.contextMenuID === undefined) {
 			d3.event.stopPropagation();
 			viewState.hierarchyState.contextMenuID = d.id;
+			viewState.hierarchyState.setEditValue(scope.getNodeText(d));
 			scope.$apply(function() {
 				scope.render();
 			});
@@ -482,41 +548,43 @@ angular.module('emuwebApp')
 		}
 		var timeInfoType = LevelService.getLevelDetails(timeInfoLevel).type;
 
-		var firstTimeItem = null;
-		var lastTimeItem = null;
+		var startSample = null;
+		var endSample = null;
 
 		var itemList = [d];
 		var currentItem;
 		while (itemList.length > 0) {
 			currentItem = itemList.pop();
 			if (currentItem.labels[0].name === timeInfoLevel) {
-				if (lastTimeItem === null) {
-					lastTimeItem = currentItem;
-				}
+				if (timeInfoType === 'EVENT') {
+					if (currentItem.samplePoint < startSample || startSample === null) {
+						startSample = currentItem.samplePoint;
+					}
+					if (currentItem.samplePoint > endSample || endSample === null) {
+						endSample = currentItem.samplePoint;
+					}
+				} else if (timeInfoType === 'SEGMENT') {
+					if (currentItem.sampleStart < startSample || startSample === null) {
+						startSample = currentItem.sampleStart;
+					}
 
-				firstTimeItem = currentItem;
+					// I promise I'll never again use tmp as a variable name :-)
+					var tmp = currentItem.sampleStart + currentItem.sampleDur;
+					if (tmp > endSample || endSample === null) {
+						endSample = tmp;
+					}
+				}
 			}
 			itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, viewState.hierarchyState.path));
 		}
 
-		console.debug('Node info for playback: ', timeInfoType, d, firstTimeItem, lastTimeItem);
+		console.debug('Node info for playback: ', timeInfoType, d, startSample, endSample);
 
-		if (firstTimeItem === null) {
+		if (startSample === null || endSample === null) {
 			console.debug('No time information found for node, aborting playback', d);
 			return;
 		}
 
-		var startSample = 0;
-		var endSample = 0;
-		if (timeInfoType === 'EVENT') {
-			startSample = firstTimeItem.samplePoint;
-			endSample = lastTimeItem.samplePoint;
-		} else if (timeInfoType === 'SEGMENT') {
-			startSample = firstTimeItem.sampleStart;
-			endSample = lastTimeItem.sampleStart + lastTimeItem.sampleDur;
-		}
-
-		console.debug('Sample information for playback:', startSample, endSample);
 		Soundhandlerservice.playFromTo(startSample, endSample);
 	};
 
@@ -599,6 +667,11 @@ angular.module('emuwebApp')
 	// Append a group which holds all nodes and which the zoom Listener can act upon.
 	scope.svg = scope.svg.append('g').style('z-index', 1);
 
+
+	// read previously stored zoom and pan values
+	scope.zoomListener.translate(viewState.hierarchyState.translate);
+	scope.zoomListener.scale(viewState.hierarchyState.scaleFactor);
+
 	//
         /////////////////////////////
 
@@ -665,11 +738,6 @@ angular.module('emuwebApp')
 	 *
          */
         scope.render = function () {
-		// This is an undesired fix for #110
-		// We clean the SVG element on every re-render, thereby destroying the
-		// possibility of eye-candy transitions
-		scope.svg.selectAll('*').remove();
-
 		var i;
 
 		// Get current width and height of SVG
@@ -779,6 +847,35 @@ angular.module('emuwebApp')
 		}
 
 
+		// Make sure the selected things are visible, otherwise un-select them
+		var selectedItem         = LevelService.getItemByID(viewState.hierarchyState.selectedItemID);
+		var contextMenuItem      = LevelService.getItemByID(viewState.hierarchyState.contextMenuID);
+		var selectedLinkFromItem = LevelService.getItemByID(viewState.hierarchyState.selectedLinkFromID);
+		var selectedLinkToItem   = LevelService.getItemByID(viewState.hierarchyState.selectedLinkToID);
+
+
+		if (selectedItem !== undefined && !selectedItem._visible) {
+			console.debug('Unselecting node');
+			viewState.hierarchyState.selectedItemID = undefined;
+		}
+
+		if (selectedLinkFromItem !== undefined && !selectedLinkFromItem._visible) {
+			console.debug('Unselecting link');
+			viewState.hierarchyState.selectedLinkFromID = undefined;
+			viewState.hierarchyState.selectedLinkToID = undefined;
+		}
+
+		if (selectedLinkToItem !== undefined && !selectedLinkToItem._visible) {
+			console.debug('Unselecting link');
+			viewState.hierarchyState.selectedLinkFromID = undefined;
+			viewState.hierarchyState.selectedLinkToID = undefined;
+		}
+
+		if (contextMenuItem !== undefined && !contextMenuItem._visible) {
+			console.debug('Closing context menu (node became invisible)');
+			viewState.hierarchyState.contextMenuID = undefined;
+		}
+
 
 		////////
 		// Now layout links
@@ -806,7 +903,7 @@ angular.module('emuwebApp')
 				if (!element._visible) {
 					continue;
 				}
-				if (viewState.getCollapsed(parentElement.id) || !parentElement._visible) {
+				if (viewState.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
 					continue;
 				}
 
@@ -897,11 +994,11 @@ angular.module('emuwebApp')
 		// Make sure that nodes that appear due to their ancestry being uncollapsed do not fly in from the origin
 		// (as do all other nodes)
 		newNodes.attr('transform', function (d) {
-			var position = viewState.getCollapsePosition(d.id);
+			var position = viewState.hierarchyState.getCollapsePosition(d.id);
 			if (typeof position !== 'undefined') {
 				var x = position[0];
 				var y = position[1];
-				viewState.setCollapsePosition(d.id, undefined);
+				viewState.hierarchyState.setCollapsePosition(d.id, undefined);
 				return 'translate(' + x + ',' + y + ')' + scope.getOrientatedNodeTransform();
 			}
 		});
@@ -917,11 +1014,11 @@ angular.module('emuwebApp')
 				.transition()
 				.duration(scope.transition.duration)
 				.attr('transform', function (d) {
-					var collapsePosition = viewState.getCollapsePosition(d.id);
+					var collapsePosition = viewState.hierarchyState.getCollapsePosition(d.id);
 					if (typeof collapsePosition !== 'undefined') {
 						var x = collapsePosition[0];
 						var y = collapsePosition[1];
-						viewState.setCollapsePosition(d.id, undefined);
+						viewState.hierarchyState.setCollapsePosition(d.id, undefined);
 						return 'translate(' + x + ',' + y + ')';
 					} else {
 						return 'translate(' + 0 + ',' + 0 + ')';
@@ -931,11 +1028,11 @@ angular.module('emuwebApp')
 		} else {
 			oldNodes = oldNodes
 				.attr('transform', function (d) {
-					var collapsePosition = viewState.getCollapsePosition(d.id);
+					var collapsePosition = viewState.hierarchyState.getCollapsePosition(d.id);
 					if (typeof collapsePosition !== 'undefined') {
 						var x = collapsePosition[0];
 						var y = collapsePosition[1];
-						viewState.setCollapsePosition(d.id, undefined);
+						viewState.hierarchyState.setCollapsePosition(d.id, undefined);
 						return 'translate(' + x + ',' + y + ')';
 					} else {
 						return 'translate(' + 0 + ',' + 0 + ')';
@@ -973,7 +1070,7 @@ angular.module('emuwebApp')
 			})
 			// Highlight collapsed items
 			.style('stroke', function(d) {
-				if (viewState.getCollapsed(d.id)) {
+				if (viewState.hierarchyState.getCollapsed(d.id)) {
 					return scope.cps.design.color.red;
 				} else {
 					return scope.cps.design.color.grey;
@@ -1168,12 +1265,6 @@ angular.module('emuwebApp')
 			.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 			;
 
-		if (scope.vertical) {
-			newLinks.attr('transform', 'scale(1, '+scope.zoomListener.scale()+')');
-		} else {
-			newLinks.attr('transform', 'scale('+scope.zoomListener.scale()+', 1)');
-		}
-
 		if (scope.transition.links) {
 			newLinks
 				.style('opacity', 0)
@@ -1208,9 +1299,18 @@ angular.module('emuwebApp')
 			})
 			;
 
+
+		// Scale links correctly
+		if (scope.vertical) {
+			linkSet.attr('transform', 'scale(1, '+scope.zoomListener.scale()+')');
+		} else {
+			linkSet.attr('transform', 'scale('+scope.zoomListener.scale()+', 1)');
+		}
+
+
 		// Transition links to their new position.
 
-		if (scope.transition.rotation) {
+		if (scope.transition.links) {
 			linkSet
 				.selectAll('.emuhierarchy-link')
 				.transition()
@@ -1260,15 +1360,11 @@ angular.module('emuwebApp')
 			}
 		}
 
-	};
 
-        /**
-         * SIC... not being called
-         */
-        scope.resizeHierarchy = function () {
-          console.log('###############')
-          console.log(scope.width)
-        };
+		// Find out size of the newly rendered SVG.
+		// This is needed to prevent the user from scrolling/panning away from the graph.
+		scope.timeAxisSize = scope.svg.node().getBBox().height*scope.zoomListener.scale();
+	};
       }
     };
   });

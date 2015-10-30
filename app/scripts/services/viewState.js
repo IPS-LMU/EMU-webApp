@@ -56,26 +56,187 @@ angular.module('emuwebApp')
         endFreezeSample: -1
       };
 
-      //
+      // HierarchyState object with all variables and functions
       sServObj.hierarchyState = {
-      // These variables will be set from within the emuhierarchy directive
-      // The directive will not watch for outside changes
-      selectedItemID: undefined,
-      selectedLinkFromID: undefined,
-      selectedLinkToID: undefined,
-      editValue: undefined,
-      inputFocus: false,
-      collapseInfo: {},
-      
-      // These can be set from within the emuhierarchy directive
-      // But the directive will also watch for outside changes
-      contextMenuID: undefined,
-      newLinkFromID: undefined,
-      
-      // These will be set by outside components
-      path: [],
-      rotated: false,
-      playing: 0
+        hierarchyShown: false,
+
+      	// These variables will be set from within the emuhierarchy directive
+	// The directive will not watch for outside changes
+      	selectedItemID: undefined,
+	selectedLinkFromID: undefined,
+	selectedLinkToID: undefined,
+	editValue: undefined,
+	inputFocus: false,
+	collapseInfo: {},
+	scaleFactor: 1,
+	translate: [0, 0],
+
+	// These can be set from within the emuhierarchy directive
+	// But the directive will also watch for outside changes
+	contextMenuID: undefined,
+	newLinkFromID: undefined,
+
+	// These will be set by outside components
+	path: [],
+	rotated: false,
+	playing: 0, //this is only watched indirectly (the view injects this value into the directive)
+	resize: 0,
+
+	// member functions
+        
+	contextMenuIsOpen: function () {
+	  return sServObj.hierarchyState.contextMenuID !== undefined;
+        },
+
+        closeContextMenu: function () {
+	        sServObj.hierarchyState.contextMenuID = undefined;
+        },
+
+        getContextMenuID: function () {
+	        return sServObj.hierarchyState.contextMenuID;
+        },
+
+        setContextMenuID: function (id) {
+	        sServObj.hierarchyState.contextMenuID = id;
+        },
+
+        getInputFocus: function () {
+	        return sServObj.hierarchyState.inputFocus;
+        },
+
+        setInputFocus: function (f) {
+	        sServObj.hierarchyState.inputFocus = f;
+        },
+
+        getEditValue: function () {
+	        return sServObj.hierarchyState.editValue;
+        },
+
+        setEditValue: function (e) {
+	        sServObj.hierarchyState.editValue = e;
+        },
+
+        reset: function () {
+          sServObj.hierarchyState.selectedItemID = undefined;
+          sServObj.hierarchyState.selectedLinkFromID = undefined;
+          sServObj.hierarchyState.selectedLinkToID = undefined;
+          sServObj.hierarchyState.editValue = undefined;
+          sServObj.hierarchyState.inputFocus = false;
+          sServObj.hierarchyState.collapseInfo = {};
+          sServObj.hierarchyState.scaleFactor = 1;
+          sServObj.hierarchyState.translate = [0,0];
+          sServObj.hierarchyState.contextMenuID = undefined;
+          sServObj.hierarchyState.newLinkFromID = undefined;
+	},
+
+        /**
+         *
+         */
+        isRotated: function () {
+          return sServObj.hierarchyState.rotated;
+        },
+    
+        /**
+         *
+         */
+        toggleRotation: function () {
+          sServObj.hierarchyState.rotated = !sServObj.hierarchyState.rotated;
+        },
+    
+        /**
+         *
+         */
+        toggleHierarchy: function () {
+          sServObj.hierarchyState.hierarchyShown = !sServObj.hierarchyState.hierarchyShown;
+          if (sServObj.hierarchyState.hierarchyShown === false) {
+            // Make sure no private attributes (such as do start with an underscore
+            // are left in the data when the hierarchy modal is closed
+            StandardFuncsService.traverseAndClean (DataService.getData());
+          }
+        },
+
+	isShown: function () {
+          return sServObj.hierarchyState.hierarchyShown;
+	},
+    
+    
+        /**
+         *
+         */
+        getCollapsed: function (id) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    return false;
+    	    } else {
+    		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsed === 'boolean') {
+    			    return sServObj.hierarchyState.collapseInfo[id].collapsed;
+    		    } else {
+    			    return false;
+    		    }
+    	    }
+        },
+    
+        /**
+         *
+         */
+        getCollapsePosition: function (id) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    return undefined;
+    	    } else {
+    		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsePosition === 'object') {
+    			    return sServObj.hierarchyState.collapseInfo[id].collapsePosition;
+    		    } else {
+    			    return undefined;
+    		    }
+    	    }
+        },
+    
+        /**
+         *
+         */
+        getNumCollapsedParents: function (id) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    return 0;
+    	    } else {
+    		    if (typeof sServObj.hierarchyState.collapseInfo[id].numCollapsedParents === 'number') {
+    			    return sServObj.hierarchyState.collapseInfo[id].numCollapsedParents;
+    		    } else {
+    			    return 0;
+    		    }
+    	    }
+        },
+    
+        /**
+         *
+         */
+        setCollapsed: function (id, newState) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    sServObj.hierarchyState.collapseInfo[id] = {};
+    	    }
+    
+    	    sServObj.hierarchyState.collapseInfo[id].collapsed = newState;
+        },
+    
+        /**
+         *
+         */
+        setCollapsePosition: function (id, newPosition) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    sServObj.hierarchyState.collapseInfo[id] = {};
+    	    }
+    
+    	    sServObj.hierarchyState.collapseInfo[id].collapsePosition = newPosition;
+        },
+    
+        /**
+         *
+         */
+        setNumCollapsedParents: function (id, newNum) {
+    	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
+    		    sServObj.hierarchyState.collapseInfo[id] = {};
+    	    }
+    
+    	    sServObj.hierarchyState.collapseInfo[id].numCollapsedParents = newNum;
+        },
       };
 
       sServObj.timelineSize = -1;
@@ -85,7 +246,6 @@ angular.module('emuwebApp')
       sServObj.editing = false;
       sServObj.cursorInTextField = false;
       sServObj.saving = true;
-      sServObj.hierarchyShown = false;
       sServObj.submenuOpen = false;
       sServObj.rightSubmenuOpen = false;
       sServObj.curClickItems = [];
@@ -162,7 +322,7 @@ angular.module('emuwebApp')
      */
     sServObj.updatePlayHead = function (timestamp) {
       // at first push animation !!!
-      if (Soundhandlerservice.player.isPlaying) {
+      if (Soundhandlerservice.isPlaying) {
         $window.requestAnimationFrame(sServObj.updatePlayHead);
       }
 
@@ -174,7 +334,7 @@ angular.module('emuwebApp')
       var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
       sServObj.playHeadAnimationInfos.curS = Math.floor(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
-      if (Soundhandlerservice.player.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
+      if (Soundhandlerservice.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
         if (sServObj.playHeadAnimationInfos.curS !== -1) {
           sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.curS;
         }
@@ -809,153 +969,6 @@ angular.module('emuwebApp')
       this.lastPcm = n;
     };
 
-    sServObj.resetHierarchyState = function () {
-      sServObj.hierarchyState.selectedItemID = undefined;
-      sServObj.hierarchyState.selectedLinkFromID = undefined;
-      sServObj.hierarchyState.selectedLinkToID = undefined;
-      sServObj.hierarchyState.editValue = undefined;
-      sServObj.hierarchyState.inputFocus = false;
-      sServObj.hierarchyState.collapseInfo = {};
-      sServObj.hierarchyState.contextMenuID = undefined;
-      sServObj.hierarchyState.newLinkFromID = undefined;
-    };
-
-    /**
-     *
-     */
-    sServObj.isHierarchyRotated = function () {
-      return sServObj.hierarchyState.rotated;
-    };
-
-    /**
-     *
-     */
-    sServObj.toggleHierarchyRotation = function () {
-      sServObj.hierarchyState.rotated = !sServObj.hierarchyState.rotated;
-    };
-
-    /**
-     *
-     */
-    sServObj.toggleHierarchy = function () {
-      sServObj.hierarchyShown = !sServObj.hierarchyShown;
-      if (sServObj.hierarchyShown === false) {
-        // Make sure no private attributes (such as do start with an underscore
-        // are left in the data when the hierarchy modal is closed
-        console.debug ('Hierarchy modal was closed, cleaning up underscore attributes');
-        StandardFuncsService.traverseAndClean (DataService.getData());
-      }
-    };
-
-    sServObj.hierarchyState.contextMenuIsOpen = function () {
-	    return sServObj.hierarchyState.contextMenuID !== undefined;
-    };
-
-    sServObj.hierarchyState.closeContextMenu = function () {
-	    sServObj.hierarchyState.contextMenuID = undefined;
-    };
-
-    sServObj.hierarchyState.getContextMenuID = function () {
-	    return sServObj.hierarchyState.contextMenuID;
-    };
-
-    sServObj.hierarchyState.setContextMenuID = function (id) {
-	    sServObj.hierarchyState.contextMenuID = id;
-    };
-
-    sServObj.hierarchyState.getInputFocus = function () {
-	    return sServObj.hierarchyState.inputFocus;
-    };
-
-    sServObj.hierarchyState.setInputFocus = function (f) {
-	    sServObj.hierarchyState.inputFocus = f;
-    };
-
-    sServObj.hierarchyState.getEditValue = function () {
-	    return sServObj.hierarchyState.editValue;
-    };
-
-    sServObj.hierarchyState.setEditValue = function (e) {
-	    sServObj.hierarchyState.editValue = e;
-    };
-
-    /**
-     *
-     */
-    sServObj.getCollapsed = function (id) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    return false;
-	    } else {
-		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsed === 'boolean') {
-			    return sServObj.hierarchyState.collapseInfo[id].collapsed;
-		    } else {
-			    return false;
-		    }
-	    }
-    };
-
-    /**
-     *
-     */
-    sServObj.getCollapsePosition = function (id) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    return undefined;
-	    } else {
-		    if (typeof sServObj.hierarchyState.collapseInfo[id].collapsePosition === 'object') {
-			    return sServObj.hierarchyState.collapseInfo[id].collapsePosition;
-		    } else {
-			    return undefined;
-		    }
-	    }
-    };
-
-    /**
-     *
-     */
-    sServObj.getNumCollapsedParents = function (id) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    return 0;
-	    } else {
-		    if (typeof sServObj.hierarchyState.collapseInfo[id].numCollapsedParents === 'number') {
-			    return sServObj.hierarchyState.collapseInfo[id].numCollapsedParents;
-		    } else {
-			    return 0;
-		    }
-	    }
-    };
-
-    /**
-     *
-     */
-    sServObj.setCollapsed = function (id, newState) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    sServObj.hierarchyState.collapseInfo[id] = {};
-	    }
-
-	    sServObj.hierarchyState.collapseInfo[id].collapsed = newState;
-    };
-
-    /**
-     *
-     */
-    sServObj.setCollapsePosition = function (id, newPosition) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    sServObj.hierarchyState.collapseInfo[id] = {};
-	    }
-
-	    sServObj.hierarchyState.collapseInfo[id].collapsePosition = newPosition;
-    };
-
-    /**
-     *
-     */
-    sServObj.setNumCollapsedParents = function (id, newNum) {
-	    if (typeof sServObj.hierarchyState.collapseInfo[id] === 'undefined') {
-		    sServObj.hierarchyState.collapseInfo[id] = {};
-	    }
-
-	    sServObj.hierarchyState.collapseInfo[id].numCollapsedParents = newNum;
-    };
 
 
 
