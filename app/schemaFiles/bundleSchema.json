@@ -37,8 +37,17 @@
 				"required": ["encoding", "data", "fileExtension"],
 				"additionalProperties": false
 			}
-		}
+		},
+	  	"session":{
+		  "type": "string"
+		},
+	  	"finishedEditing":{
+		  "type": "string"
+		},
+	  	"comment":{
+			"type": "string"
+	  	}
 	},
-	"required": ["mediaFile", "annotation", "ssffFiles"],
+	"required": ["annotation", "ssffFiles"],
 	"additionalProperties": false
 }
