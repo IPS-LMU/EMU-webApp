@@ -249,9 +249,9 @@ angular.module('emuwebApp')
 								//check for enough space to stroke text
 								if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
 									if (isOpen) {
-										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2, (canvas[0].height / 2) - (fontSize - 2), ConfigProviderService.design.color.black);
+										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2 - 2, (canvas[0].height / 2) - (fontSize - 2) + 2, ConfigProviderService.design.color.black);
 									} else {
-										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2, (canvas[0].height / 2) - fontSize, ConfigProviderService.design.color.black);
+										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2 - 2, (canvas[0].height / 2) - fontSize + 2, ConfigProviderService.design.color.black);
 									}
 								}
 
