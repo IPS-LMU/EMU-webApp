@@ -224,7 +224,7 @@ angular.module('emuwebApp')
 				$log.error('GRAVE PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() HAS ALREADY BEEN CALLED.');
 				$log.error(validRes);
 
-				modalService.open('views/error.html', 'Somehow the data for this bundle has been corrupted. This is most likely a nasty bug difficult to spot. If you are at the IPS right now, please contact an EMU developer immediately. The Validation error is: ' + JSON.stringify(validRes, null, 4)).then(function () {
+				modalService.open('views/error.html', 'Somehow the data for this bundle has been corrupted. This is most likely a nasty and diffucult to spot bug. If you are at the IPS right now, please contact an EMU developer immediately. The Validation error is: ' + JSON.stringify(validRes, null, 4)).then(function () {
 						viewState.somethingInProgressTxt = '';
 						viewState.somethingInProgress = false;
 						viewState.setState('labeling');
