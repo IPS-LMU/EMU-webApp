@@ -22,10 +22,10 @@ describe('Service: dbObjLoadSaveService', function () {
   /**
    *
    */
-   it('should getAnnotationAndSaveBndl', inject(function (Iohandlerservice, loadedMetaDataService) {
-     var result;
+   it('should call Iohandlerservice.saveBundle getAnnotationAndSaveBndl if validation returns true', inject(function (Iohandlerservice, loadedMetaDataService, Validationservice) {
      spyOn(Iohandlerservice, 'saveBundle').and.returnValue(deferred.promise);
      spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({session: 'test', finishedEditing: false, comment: 'test comment'});
+     spyOn(Validationservice, 'validateJSO').and.returnValue(true);
      scope.dbo.getAnnotationAndSaveBndl({},deferred);
      deferred.resolve('called');
      scope.$apply();
