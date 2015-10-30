@@ -7,6 +7,7 @@ What's New
 - hierarchy graph can no longer be scrolled/panned away (still buggy)
 - playback of a selected part of the hierarchy now works correctly
 - modals are now destroyed rather than just hidden
+- reworked zooming and panning in hierarchy view
 - hierarchy view now shows more or less the same part of the graph when rotated
 - fixed a bug where editing a label in hierarchy view could save wrong text
 - fixed a bug where corrupt data could be saved to the server
