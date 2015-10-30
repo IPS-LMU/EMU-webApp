@@ -289,7 +289,6 @@ angular.module('emuwebApp')
               // showHierarchy
               if (code === ConfigProviderService.vals.keyMappings.showHierarchy && ConfigProviderService.vals.activeButtons.showHierarchy) {
                 if (viewState.curState !== viewState.states.noDBorFilesloaded) {
-                  console.log('FIRE');
                   if (viewState.hierarchyState.isShown()) {
                     modalService.close();
                   } else {
