@@ -48,6 +48,20 @@ angular.module('emuwebApp')
 			});
 			return val;
 		};
+		
+		$scope.perspDelete = function (key) {
+		    delete $scope.modal.dataOut.perspectives.splice(key, 1);
+		};
+		
+		$scope.perspAdd = function () {
+		    var obj = {
+		      name: 'new Perspective',
+		      signalCanvases: [],
+		      levelCanvases: [],
+		      twoDimCanvases: []
+		    }
+		    $scope.modal.dataOut.perspectives.splice($scope.modal.dataOut.perspectives.length - 1, 0, obj);
+		};		
 
 		/**
 		 *

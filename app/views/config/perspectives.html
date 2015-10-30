@@ -1,24 +1,47 @@
-<!-- main configuration -->
+<!-- perspectives configuration -->
 <div class="emuwebapp-text">
 	<h1>Perspectives Settings</h1>
 	<div>
 	<p>
 		<table>
 		<tr ng-repeat="(key, value) in modal.dataOut.perspectives">
-			<td>{{key}}</td>
 			<td>
-        <div ng-switch="getType('perspectives', key)">
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="boolean">
-            <input type="checkbox" ng-checked="modal.dataOut.perspectives[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
-          </span>
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="string">
-            <input type="text" ng-value="modal.dataOut.perspectives[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
-          </span>
-          <span class="emuwebapp-tabbed-cell" ng-switch-when="integer">
-            <input type="text" pattern="\d*" ng-value="modal.dataOut.perspectives[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
-          </span>
-        </span>
-      </td>
+			  <p ng-if="value.name == 'default'">
+			    {{value.name}}
+			  </p>
+			  <p ng-if="value.name != 'default'">
+			    <input type="text" ng-model="value.name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+			  </p>
+			  <p>
+			  	<u>Signal</u>
+			  	<span> {{value.signalCanvases}}</span>
+			  </p>
+			  
+			  <p>
+			  	<u>Level</u>
+			  	<span>{{value.levelCanvases}}</span>
+			  </p>
+			  
+			  <p>
+			  	<u>2D</u>
+			  	<span>{{value.twoDimCanvases}}</span>
+			  </p>
+			  
+			</td>
+			<td ng-if="value.name !== 'default'">
+			  <a href="#" title="delete" id="modal-delete" ng-click="perspDelete(key)">
+			    <img src="img/delete.svg" width="30" height="30" />
+			  </a>
+			</td>			
 		</tr>
-  </table>
+		{{value}}
+		<tr>
+			<td colspan="2">
+			  <a href="#" ng-click="perspAdd()">add new perspective</a>
+			</td>
+		</tr>		
+		</table>
+	</p>
+	</div>
+</div>
   <br />
