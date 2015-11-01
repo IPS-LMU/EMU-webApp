@@ -317,14 +317,12 @@ angular.module('emuwebApp')
 
 		if (zoomInProgress === true) {
 			var factor = scope.zoomListener.scale() / scope.lastScaleFactor;
-			transform += 'scale(';
-			
+
 			if (scope.allowCrossAxisZoom ) {
-				transform += factor;
+				transform += 'scale('+factor+')';
 			} else {
-				transform += '1,'+factor;
+				transform += 'scale(1,'+factor+')';
 			}
-			transform += ')';
 		}
 
 		return transform;
