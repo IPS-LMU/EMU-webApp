@@ -441,6 +441,33 @@ angular.module('emuwebApp')
 		}
 	};
 
+	scope.getOrientatedTimeLevelBackgroundTransform = function (d) {
+		if (scope.vertical) {
+			return 'translate('+(scope.vertOffsetX-25)+',-15)';
+		} else {
+			return 'translate(-10,'+(scope.offsetY-20)+')';
+		}
+	};
+	
+	scope.getOrientatedTimeLevelBackgroundWidth = function (d) {
+		if (scope.vertical) {
+			return '100%';
+		} else {
+			var levelWidth = scope.depthToX(1) - scope.depthToX(0);
+			return levelWidth+'px';
+		}
+	};
+
+	scope.getOrientatedTimeLevelBackgroundHeight = function (d) {
+		console.debug('height');
+		if (scope.vertical) {
+			var levelHeight = scope.depthToX(1) - scope.depthToX(0);
+			return levelHeight +'px';
+		} else {
+			return '100%';
+		}
+	};
+
 	scope.getOrientatedMousePosition = function (mouse) {
 		if (scope.vertical) {
 			return [
@@ -905,8 +932,25 @@ angular.module('emuwebApp')
 			.attr('d', 'M0,-6 V6 M-6,0 H6')
 			;
 
+		newLevelCaptions
+			.filter(function(d) {
+				var levelType = LevelService.getLevelDetails(d).type;
+				return (levelType === 'SEGMENT' || levelType === 'EVENT');
+			})
+			.append('rect')
+			.attr('class', 'emuhierarchy-timelevelbackground')
+			.style('fill', scope.cps.design.color.grey)
+			;
+
 		levelCaptionSet
 			.attr('transform', scope.getOrientatedLevelCaptionTransform)
+			;
+
+		levelCaptionSet
+			.select('.emuhierarchy-timelevelbackground')
+			.attr('transform', scope.getOrientatedTimeLevelBackgroundTransform)
+			.style('width', scope.getOrientatedTimeLevelBackgroundWidth)
+			.style('height', scope.getOrientatedTimeLevelBackgroundHeight)
 			;
 
 		if (scope.transition.rotation) {

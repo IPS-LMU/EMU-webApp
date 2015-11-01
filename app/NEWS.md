@@ -5,6 +5,7 @@ What's New
 
 - now actively validates annotation data before saving them to the server
 - hierarchy graph can no longer be scrolled/panned away
+- levels with time information now have a dark background in hierarchy view
 - playback of a selected part of the hierarchy now works correctly
 - modals are now destroyed rather than just hidden
 - reworked zooming and panning in hierarchy view
