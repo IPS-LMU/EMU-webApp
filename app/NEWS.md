@@ -4,7 +4,7 @@ What's New
 ## Version 0.0.29
 
 - now actively validates annotation data before saving them to the server
-- hierarchy graph can no longer be scrolled/panned away (still buggy)
+- hierarchy graph can no longer be scrolled/panned away
 - playback of a selected part of the hierarchy now works correctly
 - modals are now destroyed rather than just hidden
 - reworked zooming and panning in hierarchy view
@@ -12,7 +12,7 @@ What's New
 - fixed a bug where editing a label in hierarchy view could save wrong text
 - fixed a bug where corrupt data could be saved to the server
 - links that are selected but invisible (because their sub-tree is collapsed) can no longer be deleted
-- fixed a bug where shortcuts in hierarchy view broken after e.g. clear and reconnect
+- fixed a bug where shortcuts in hierarchy view were broken after e.g. clear and reconnect
 - hierarchy view is automatically resized when window is resized
 
 ## Version 0.0.28
