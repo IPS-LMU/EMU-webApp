@@ -90,16 +90,8 @@ angular.module('emuwebApp')
 
 	scope.$watch('vertical', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
-			// When rotating, we should preserve (to some accuracy)
-			// the part of the graph we're looking at. We therefore
-			// have to swap the axis of the translate variable.
-			var translate = scope.zoomListener.translate();
-			scope.zoomListener.translate([translate[1], translate[0]]);
-			
 			console.debug('Rendering due to rotation: ', newValue);
-			scope.render();
-
-			scope.limitPanning();
+			scope.rotate();
 		}
 	}, false);
 
@@ -269,6 +261,44 @@ angular.module('emuwebApp')
 		scope.zoomListener.translate([x, y]);
 	};
 
+	scope.rotate = function () {
+		// When rotating, we should preserve (to some accuracy)
+		// the part of the graph we're looking at.
+		// We therefore calculate how much of the graph is
+		// panned away before the rotation and try to restore
+		// that value afterwards.
+
+		var translate = scope.zoomListener.translate();
+
+		if (scope.vertical === true) {
+			// Changing from horizontal to vertical
+			var percentageAwayTimeAxis = (translate[1]) / scope.timeAxisEndPosition;
+			var percentageAwayCrossAxis = (translate[0]) / scope.crossAxisEndPosition;
+		} else {
+			// Changing from vertical to horizontal
+			var percentageAwayTimeAxis = (translate[0]) / scope.timeAxisEndPosition;
+			var percentageAwayCrossAxis = (translate[1]) / scope.crossAxisEndPosition;
+		}
+		
+		scope.render();
+
+		percentageAwayTimeAxis = percentageAwayTimeAxis * scope.timeAxisEndPosition;
+		percentageAwayCrossAxis = percentageAwayCrossAxis * scope.crossAxisEndPosition;
+
+		if (scope.vertical === true) {
+			// Changing from horizontal to vertical
+			scope.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
+		} else {
+			// Changing from vertical to horizontal
+			scope.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
+		}
+		
+		scope.limitPanning();
+
+		// Make sure the programmatic changes to the translate vector are applied
+		scope.zoomListener.event(scope.svg);
+	}
+
 	/**
 	 * This transform is applied to the main <g> within the SVG
 	 * That <g> contains all the nodes and links but not the level captions
@@ -287,14 +317,12 @@ angular.module('emuwebApp')
 
 		if (zoomInProgress === true) {
 			var factor = scope.zoomListener.scale() / scope.lastScaleFactor;
-			transform += 'scale(';
-			
+
 			if (scope.allowCrossAxisZoom ) {
-				transform += factor;
+				transform += 'scale('+factor+')';
 			} else {
-				transform += '1,'+factor;
+				transform += 'scale(1,'+factor+')';
 			}
-			transform += ')';
 		}
 
 		return transform;
@@ -410,6 +438,33 @@ angular.module('emuwebApp')
 			return 'translate(-12, -5)';
 		} else {
 			return 'translate(-12, -5)';
+		}
+	};
+
+	scope.getOrientatedTimeLevelBackgroundTransform = function (d) {
+		if (scope.vertical) {
+			return 'translate('+(scope.vertOffsetX-25)+',-15)';
+		} else {
+			return 'translate(-10,'+(scope.offsetY-20)+')';
+		}
+	};
+	
+	scope.getOrientatedTimeLevelBackgroundWidth = function (d) {
+		if (scope.vertical) {
+			return '100%';
+		} else {
+			var levelWidth = scope.depthToX(1) - scope.depthToX(0);
+			return levelWidth+'px';
+		}
+	};
+
+	scope.getOrientatedTimeLevelBackgroundHeight = function (d) {
+		console.debug('height');
+		if (scope.vertical) {
+			var levelHeight = scope.depthToX(1) - scope.depthToX(0);
+			return levelHeight +'px';
+		} else {
+			return '100%';
 		}
 	};
 
@@ -730,6 +785,9 @@ angular.module('emuwebApp')
 		.append('text')
 		.text('time →');
 
+	scope.scaleFactorDisplay = scope.svg.append('g');
+	scope.scaleFactorDisplay.append('text');
+
 	// Append a group which holds all nodes and which the zoom Listener can act upon.
 	scope.svg = scope.svg.append('g').style('z-index', 1);
 
@@ -830,6 +888,30 @@ angular.module('emuwebApp')
 			scope.timeArrow.attr('transform', 'translate('+(scope.width-20)+','+(scope.height/2)+')rotate(90)')
 		}
 
+		
+		/////////
+		// Draw scale factor display
+		if (scope.vertical) {
+			scope.scaleFactorDisplay
+				.attr('transform', 'translate('+scope.width+', 20)')
+				;
+
+			scope.scaleFactorDisplay
+				.select('text')
+				.attr('text-anchor', 'end')
+				.text('Zoom: '+Math.round(scope.zoomListener.scale()*100)+' %');
+		} else {
+			scope.scaleFactorDisplay
+				.attr('transform', 'translate(0, '+scope.height+')')
+				;
+
+			scope.scaleFactorDisplay
+				.select('text')
+				.attr('text-anchor', 'start')
+				.text('Zoom: '+Math.round(scope.zoomListener.scale()*100)+' %');
+				;
+		}
+
 
 		/////////
 		// Draw level captions and 'add item buttons' (which append
@@ -877,8 +959,25 @@ angular.module('emuwebApp')
 			.attr('d', 'M0,-6 V6 M-6,0 H6')
 			;
 
+		newLevelCaptions
+			.filter(function(d) {
+				var levelType = LevelService.getLevelDetails(d).type;
+				return (levelType === 'SEGMENT' || levelType === 'EVENT');
+			})
+			.append('rect')
+			.attr('class', 'emuhierarchy-timelevelbackground')
+			.style('fill', scope.cps.design.color.grey)
+			;
+
 		levelCaptionSet
 			.attr('transform', scope.getOrientatedLevelCaptionTransform)
+			;
+
+		levelCaptionSet
+			.select('.emuhierarchy-timelevelbackground')
+			.attr('transform', scope.getOrientatedTimeLevelBackgroundTransform)
+			.style('width', scope.getOrientatedTimeLevelBackgroundWidth)
+			.style('height', scope.getOrientatedTimeLevelBackgroundHeight)
 			;
 
 		if (scope.transition.rotation) {
