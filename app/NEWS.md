@@ -7,6 +7,7 @@ What's New
 - hierarchy graph can no longer be scrolled/panned away
 - levels with time information now have a dark background in hierarchy view
 - playback of a selected part of the hierarchy now works correctly
+- show zoom factor in hierarchy view
 - modals are now destroyed rather than just hidden
 - reworked zooming and panning in hierarchy view
 - hierarchy view now shows more or less the same part of the graph when rotated
