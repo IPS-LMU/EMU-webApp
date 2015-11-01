@@ -90,16 +90,8 @@ angular.module('emuwebApp')
 
 	scope.$watch('vertical', function (newValue, oldValue) {
 		if (newValue !== oldValue) {
-			// When rotating, we should preserve (to some accuracy)
-			// the part of the graph we're looking at. We therefore
-			// have to swap the axis of the translate variable.
-			var translate = scope.zoomListener.translate();
-			scope.zoomListener.translate([translate[1], translate[0]]);
-			
 			console.debug('Rendering due to rotation: ', newValue);
-			scope.render();
-
-			scope.limitPanning();
+			scope.rotate();
 		}
 	}, false);
 
@@ -268,6 +260,44 @@ angular.module('emuwebApp')
 
 		scope.zoomListener.translate([x, y]);
 	};
+
+	scope.rotate = function () {
+		// When rotating, we should preserve (to some accuracy)
+		// the part of the graph we're looking at.
+		// We therefore calculate how much of the graph is
+		// panned away before the rotation and try to restore
+		// that value afterwards.
+
+		var translate = scope.zoomListener.translate();
+
+		if (scope.vertical === true) {
+			// Changing from horizontal to vertical
+			var percentageAwayTimeAxis = (translate[1]) / scope.timeAxisEndPosition;
+			var percentageAwayCrossAxis = (translate[0]) / scope.crossAxisEndPosition;
+		} else {
+			// Changing from vertical to horizontal
+			var percentageAwayTimeAxis = (translate[0]) / scope.timeAxisEndPosition;
+			var percentageAwayCrossAxis = (translate[1]) / scope.crossAxisEndPosition;
+		}
+		
+		scope.render();
+
+		percentageAwayTimeAxis = percentageAwayTimeAxis * scope.timeAxisEndPosition;
+		percentageAwayCrossAxis = percentageAwayCrossAxis * scope.crossAxisEndPosition;
+
+		if (scope.vertical === true) {
+			// Changing from horizontal to vertical
+			scope.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
+		} else {
+			// Changing from vertical to horizontal
+			scope.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
+		}
+		
+		// I haven't quite understood why I need to render again
+		scope.render();
+
+		scope.limitPanning();
+	}
 
 	/**
 	 * This transform is applied to the main <g> within the SVG
