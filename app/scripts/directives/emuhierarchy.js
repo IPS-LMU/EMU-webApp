@@ -785,6 +785,9 @@ angular.module('emuwebApp')
 		.append('text')
 		.text('time →');
 
+	scope.scaleFactorDisplay = scope.svg.append('g');
+	scope.scaleFactorDisplay.append('text');
+
 	// Append a group which holds all nodes and which the zoom Listener can act upon.
 	scope.svg = scope.svg.append('g').style('z-index', 1);
 
@@ -883,6 +886,30 @@ angular.module('emuwebApp')
 			scope.timeArrow.attr('transform', 'translate('+(scope.width/2)+','+(scope.height-10)+')')
 		} else {
 			scope.timeArrow.attr('transform', 'translate('+(scope.width-20)+','+(scope.height/2)+')rotate(90)')
+		}
+
+		
+		/////////
+		// Draw scale factor display
+		if (scope.vertical) {
+			scope.scaleFactorDisplay
+				.attr('transform', 'translate('+scope.width+', 20)')
+				;
+
+			scope.scaleFactorDisplay
+				.select('text')
+				.attr('text-anchor', 'end')
+				.text('Zoom: '+Math.round(scope.zoomListener.scale()*100)+' %');
+		} else {
+			scope.scaleFactorDisplay
+				.attr('transform', 'translate(0, '+scope.height+')')
+				;
+
+			scope.scaleFactorDisplay
+				.select('text')
+				.attr('text-anchor', 'start')
+				.text('Zoom: '+Math.round(scope.zoomListener.scale()*100)+' %');
+				;
 		}
 
 
