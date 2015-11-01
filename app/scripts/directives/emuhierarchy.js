@@ -293,10 +293,10 @@ angular.module('emuwebApp')
 			scope.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
 		}
 		
-		// I haven't quite understood why I need to render again
-		scope.render();
-
 		scope.limitPanning();
+
+		// Make sure the programmatic changes to the translate vector are applied
+		scope.zoomListener.event(scope.svg);
 	}
 
 	/**
