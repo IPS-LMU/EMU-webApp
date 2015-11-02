@@ -459,7 +459,6 @@ angular.module('emuwebApp')
 	};
 
 	scope.getOrientatedTimeLevelBackgroundHeight = function (d) {
-		console.debug('height');
 		if (scope.vertical) {
 			var levelHeight = scope.depthToX(1) - scope.depthToX(0);
 			return levelHeight +'px';
