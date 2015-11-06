@@ -10,10 +10,19 @@
   padding-right: 18px;
   word-wrap: break-word;
   padding-bottom: 120px;
-
-    @extend .emuwebapp-font-small;
+  @extend .emuwebapp-font-small;
     .red {
       color: #f00;
+    }
+    .emuwebapp-sortOuter {
+      list-style-type: none;
+    }
+    .emuwebapp-sort {
+      list-style-type: decimal;
+      li:hover {
+          background: $color-blue;
+          cursor: pointer;
+      }
     }
     input {
         @extend .emuwebapp-font-input;

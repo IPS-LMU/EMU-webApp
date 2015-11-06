@@ -3,44 +3,43 @@
 	<h1>Perspectives Settings</h1>
 	<div>
 	<p>
-		<table>
-		<tr ng-repeat="(key, value) in modal.dataOut.perspectives">
-			<td>
-			  <p ng-if="value.name == 'default'">
-			    {{value.name}}
-			  </p>
-			  <p ng-if="value.name != 'default'">
-			    <input type="text" ng-model="value.name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
-			  </p>
-			  <p>
-			  	<u>Signal</u>
-			  	<span> {{value.signalCanvases}}</span>
-			  </p>
+		<ul>
+		<li class="emuwebapp-sortOuter" ng-repeat="(key, value) in modal.dataOut.perspectives">
+		<div>
+			<span ng-if="value.name == 'default'">
+			  default perspective
+		    </span>
+			<span ng-if="value.name != 'default'">
+			  <input type="text" ng-model="value.name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
 			  
-			  <p>
-			  	<u>Level</u>
-			  	<span>{{value.levelCanvases}}</span>
-			  </p>
-			  
-			  <p>
-			  	<u>2D</u>
-			  	<span>{{value.twoDimCanvases}}</span>
-			  </p>
-			  
-			</td>
-			<td ng-if="value.name !== 'default'">
 			  <a href="#" title="delete" id="modal-delete" ng-click="perspDelete(key)">
-			    <img src="img/delete.svg" width="30" height="30" />
-			  </a>
-			</td>			
-		</tr>
-		{{value}}
-		<tr>
-			<td colspan="2">
-			  <a href="#" ng-click="perspAdd()">add new perspective</a>
-			</td>
-		</tr>		
-		</table>
+				<img src="img/delete.svg" width="30" height="30" />
+			</a>			
+
+			  
+			</span>
+		</div>
+		<div>
+			<u>Signal Canvases</u>
+			<ul class="emuwebapp-sort" ui-sortable ng-model="value.signalCanvases.order">
+				<li class="emuwebapp-sort" ng-repeat="signalCanvas in value.signalCanvases.order">{{ signalCanvas }}</li>
+			</ul>
+		</div>
+		<div>
+			<u>Level Canvases</u>
+			<ul class="emuwebapp-sort" ui-sortable ng-model="value.levelCanvases.order">
+				<li class="emuwebapp-sort" ng-repeat="levelCanvas in value.levelCanvases.order">{{ levelCanvas }}</li>
+			</ul>
+		</div>
+		<div>
+			<u>2D</u>
+			<ul class="emuwebapp-sort" ui-sortable ng-model="value.twoDimCanvases.order">
+				<li class="emuwebapp-sort" ng-repeat="twoDimCanvas in value.twoDimCanvases.order">{{ twoDimCanvas }}</li>
+			</ul>
+		</div>
+		</li>
+		</ul>
+		<a href="#" ng-click="perspAdd()">add new perspective</a>
 	</p>
 	</div>
 </div>
