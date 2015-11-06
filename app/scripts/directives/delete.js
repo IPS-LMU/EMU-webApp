@@ -5,12 +5,10 @@ angular.module('emuwebApp')
     return {
       restrict: 'A',
       link: function (scope, element, attr) {
-        var name = scope.level.name;
         element.bind('click', function () {
-          scope.vs.setcurClickLevelName(name, attr.delete);
+          scope.vs.setcurClickLevelName(scope.level.name, attr.delete);
           modalService.open('views/deleteLevel.html',  name);
         });
-
       }
     };
   });

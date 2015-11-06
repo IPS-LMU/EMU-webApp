@@ -1,10 +1,11 @@
 {
   "name": "EMU-webApp",
-  "version": "0.0.17",
+  "version": "0.0.24",
   "dependencies": {
     "angular-mocks": "~1.2.18",
     "angular-filter": "~0.4.9",
-    "angular-ui-sortable": "~0.13.3"
+    "angular-ui-sortable": "~0.13.3",
+    "angular-markdown-directive": "~0.3.1"
   },
   "devDependencies": {
     "jquery": "~2.0.0",

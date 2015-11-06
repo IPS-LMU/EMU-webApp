@@ -5,14 +5,17 @@
 	  </h3>
 	</div>
 	<div class="emuwebapp-modal-body" ng-controller="ModalCtrl">
-		Please enter:
-		<ul>
-			<li>server URL:<input type="text" ng-model="modal.dataOut" ng-init="modal.dataOut=cps.vals.main.serverUrl" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></li>
-			<li>{{connectionError}}</li>
-		</ul>
+	    <div class="emuwebapp-text">
+	        <div>
+	            Please enter URL: <br />
+	            &nbsp;<br />
+	            <input type="text" ng-model="modal.dataOut" ng-init="modal.dataOut=cps.vals.main.serverUrl" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"><br />
+				{{connectionError}}
+			</div>
+		</div>
 	</div>
 	<div class="emuwebapp-modal-footer">
-		<button ng-click="modal.close();" class="emuwebapp-mini-btn-dialog">Cancel</button>
-		<button ng-click="modal.confirmContent();" class="emuwebapp-mini-btn-dialog">Connect</button>
+		<button ng-click="modal.close();" class="emuwebapp-mini-btn">Cancel</button>
+		<button ng-click="modal.confirmContent();" class="emuwebapp-mini-btn">Connect</button>
 	</div>
 </div>

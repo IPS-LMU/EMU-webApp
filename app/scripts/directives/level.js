@@ -2,7 +2,7 @@
 
 
 angular.module('emuwebApp')
-	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService) {
+	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -18,19 +18,24 @@ angular.module('emuwebApp')
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
 				scope.modal = modalService;
+				scope.lmds = loadedMetaDataService;
 				var levelCanvasContainer = element.find('div');
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
 
 				scope.backgroundCanvas = {
-					'background': ConfigProviderService.vals.colors.levelColor
+					'background': ConfigProviderService.design.color.lightGrey
 				};
-				
-				scope.$watch('vs.submenuOpen', function (newValue, oldValue) {				
-					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
-				});
+
+
 
 				///////////////
 				// watches
+
+				scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue) {
+						scope.redraw();
+					}
+				});
 
 				//
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
@@ -78,11 +83,19 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
+				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
+					if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
+						scope.drawLevelDetails();
+						scope.drawLevelMarkup();
+					}
+				}, true);
+
+				//
 				/////////////////
-				
+
 				scope.redraw = function () {
 					scope.drawLevelDetails();
-					scope.drawLevelMarkup();				
+					scope.drawLevelMarkup();
 				};
 
 				/**
@@ -94,11 +107,11 @@ angular.module('emuwebApp')
 						// curAttrDef = attrDefName;
 						scope.vs.setCurAttrDef(scope.level.name, attrDefName, index);
 
-						if (!element.hasClass('emuwebapp-levelCanvasContainer-animate')) {
+						if (!element.hasClass('emuwebapp-level-animation')) {
 							scope.vs.setEditing(false);
 							LevelService.deleteEditArea();
-							$animate.addClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate').then(function () {
-								$animate.removeClass(levelCanvasContainer, 'emuwebapp-levelCanvasContainer-animate');
+							$animate.addClass(levelCanvasContainer, 'emuwebapp-level-animation').then(function () {
+								$animate.removeClass(levelCanvasContainer, 'emuwebapp-level-animation');
 								// redraw
 								scope.drawLevelDetails();
 								scope.drawLevelMarkup();
@@ -147,9 +160,10 @@ angular.module('emuwebApp')
 				 * @param levelDetails
 				 */
 				scope.drawLevelDetails = function () {
-				    
-					var fontSize = scope.cps.vals.font.fontPxSize;
+
+					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
+					var isOpen = element.parent().css('height') === '25px' ? false : true;
 
 					if ($.isEmptyObject(scope.level)) {
 						console.log('undef levelDetails');
@@ -163,7 +177,7 @@ angular.module('emuwebApp')
 						console.log('undef config');
 						return;
 					}
-					if (!scope.open) {
+					if (!isOpen) {
 						fontSize -= 1;
 					}
 					var ctx = canvas[0].getContext('2d');
@@ -179,9 +193,14 @@ angular.module('emuwebApp')
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
 					if (scope.level.name === curAttrDef) {
-						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+					    if(isOpen) {
+    						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
+    					}
+    					else {
+    					    horizontalText = fontScaleService.getTextImage(ctx, scope.level.name, fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
+    					}
 					} else {
-						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+						horizontalText = fontScaleService.getTextImageTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
 					}
 					ctx.drawImage(horizontalText, 0, ctx.canvas.height / 2 - fontSize * scaleY);
 
@@ -191,15 +210,15 @@ angular.module('emuwebApp')
 					var curID = -1;
 
 					// calculate generic max with of single char (m char used)
-					var mTxtImg = fontScaleService.getTextImage(ctx, 'm', fontSize - 2, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+					var mTxtImg = fontScaleService.getTextImage(ctx, 'm', fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
 					var mTxtImgWidth = fontScaleService.getLastImageWidth();
 
 					// calculate generic max with of single digit (0 digit used)
-					var zeroTxtImg = fontScaleService.getTextImage(ctx, '0', fontSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					var zeroTxtImg = fontScaleService.getTextImage(ctx, '0', fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
 					var zeroTxtImgWidth = fontScaleService.getLastImageWidth();
 
 					if (scope.level.type === 'SEGMENT') {
-						ctx.fillStyle = scope.cps.vals.colors.startBoundaryColor;
+						ctx.fillStyle = ConfigProviderService.design.color.black;
 						// draw segments
 						var e = scope.level.items;
 
@@ -225,23 +244,23 @@ angular.module('emuwebApp')
 								posS = scope.vs.getPos(canvas[0].width, curEvt.sampleStart);
 								posE = scope.vs.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur + 1);
 
-								ctx.fillStyle = scope.cps.vals.colors.startBoundaryColor;
+								ctx.fillStyle = ConfigProviderService.design.color.black;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
 
 								//draw segment end
-								ctx.fillStyle = scope.cps.vals.colors.endBoundaryColor;
+								ctx.fillStyle = ConfigProviderService.design.color.grey;
 								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
 
 
 								//check for enough space to stroke text
 								if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
-									horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+									horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
 									var tW = fontScaleService.getLastImageWidth();
 									var tX = posS + (posE - posS) / 2 - tW / 2;
-									if (scope.open) {
+									if (isOpen) {
 										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - (fontSize - 2), horizontalText.width, horizontalText.height);
 									} else {
-										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, 0, horizontalText.width, horizontalText.height);
+										ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, tX, (canvas[0].height / 2) - fontSize , horizontalText.width, horizontalText.height);
 									}
 								}
 
@@ -251,7 +270,7 @@ angular.module('emuwebApp')
 
 									var hlY = canvas[0].height / 4;
 									// start helper line
-									ctx.strokeStyle = scope.cps.vals.colors.startBoundaryColor;
+									ctx.strokeStyle = ConfigProviderService.design.color.black;
 									ctx.beginPath();
 									ctx.moveTo(posS, hlY);
 									ctx.lineTo(labelCenter, hlY);
@@ -260,7 +279,7 @@ angular.module('emuwebApp')
 
 									hlY = canvas[0].height / 4 * 3;
 									// end helper line
-									ctx.strokeStyle = scope.cps.vals.colors.endBoundaryColor;
+									ctx.strokeStyle = ConfigProviderService.design.color.grey;
 									ctx.beginPath();
 									ctx.moveTo(posE, hlY);
 									ctx.lineTo(labelCenter, hlY);
@@ -271,23 +290,23 @@ angular.module('emuwebApp')
 
 								// draw sampleStart numbers
 								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length) {
-									var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length && isOpen) {
+									var horizontalSubText1 = fontScaleService.getTextImage(ctx, curEvt.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 									ctx.drawImage(horizontalSubText1, 0, 0, horizontalText.width, horizontalText.height, posS + 3, 0, horizontalText.width, horizontalText.height);
 								}
 
 								// draw sampleDur numbers.
 
 								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * (5 + curEvt.sampleDur.toString().length)) {
-									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur, fontSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+								if (posE - posS > zeroTxtImgWidth * (6 + curEvt.sampleDur.toString().length) && isOpen) {
+									var horizontalSubText2 = fontScaleService.getTextImage(ctx, 'dur: ' + curEvt.sampleDur + ' ', fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 									var hst2 = fontScaleService.getLastImageWidth();
 									ctx.drawImage(horizontalSubText2, 0, 0, horizontalText.width, horizontalText.height, posE - hst2, canvas[0].height / 4 * 3, horizontalText.width, horizontalText.height);
 								}
 							}
 						});
 					} else if (scope.level.type === 'EVENT') {
-						ctx.fillStyle = scope.cps.vals.colors.startBoundaryColor;
+						ctx.fillStyle = ConfigProviderService.design.color.black;
 						// predef. vars
 						var perc;
 
@@ -302,13 +321,13 @@ angular.module('emuwebApp')
 									}
 								});
 
-								ctx.fillStyle = scope.cps.vals.colors.startBoundaryColor;
+								ctx.fillStyle = ConfigProviderService.design.color.black;
 								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+								horizontalText = fontScaleService.getTextImage(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc - 5, canvas[0].height / 3, horizontalText.width, horizontalText.height);
 
-								horizontalText = fontScaleService.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+								horizontalText = fontScaleService.getTextImage(ctx, curEvt.samplePoint, fontSize - 4, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.grey);
 								ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, perc + 5, 0, horizontalText.width, horizontalText.height);
 
 
@@ -325,7 +344,7 @@ angular.module('emuwebApp')
 					var ctx = canvas[1].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 					if (scope.level.name === scope.vs.getcurClickLevelName()) {
-						ctx.fillStyle = scope.cps.vals.colors.selectedLevelColor;
+						ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
 						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
 					}
 
@@ -361,9 +380,9 @@ angular.module('emuwebApp')
 										posS = posS - 5;
 										posE = posS + 10;
 									}
-									ctx.fillStyle = scope.cps.vals.colors.selectedSegmentColor;
+									ctx.fillStyle = ConfigProviderService.design.color.transparent.yellow;
 									ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
-									ctx.fillStyle = scope.cps.vals.colors.startBoundaryColor;
+									ctx.fillStyle = ConfigProviderService.design.color.black;
 								}
 							});
 						}
@@ -374,7 +393,7 @@ angular.module('emuwebApp')
 					// draw preselected boundary
 					curEvt = scope.vs.getcurMouseItem();
 					if (scope.level.items.length > 0 && curEvt !== undefined && segMId !== undefined && scope.level.name === scope.vs.getcurMouseLevelName()) {
-						ctx.fillStyle = scope.cps.vals.colors.selectedBoundaryColor;
+						ctx.fillStyle = ConfigProviderService.design.color.blue;
 						if (isFirst === true) { // before first segment
 							if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
 								curEvt = scope.level.items[0];
@@ -398,7 +417,7 @@ angular.module('emuwebApp')
 
 							}
 						}
-						ctx.fillStyle = scope.cps.vals.colors.startBoundaryColor;
+						ctx.fillStyle = ConfigProviderService.design.color.black;
 
 					}
 				}

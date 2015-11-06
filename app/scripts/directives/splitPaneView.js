@@ -24,8 +24,6 @@ angular.module('emuwebApp')
         };
       },
       link: function (scope, element, attrs) {
-
-
         var dragBottomRightResizePaneTopResizer = false;
         var dragBottomRightResizePaneLeftResizer = false;
         var dragBottomRightResizePaneCornerResizer = false;
@@ -36,9 +34,9 @@ angular.module('emuwebApp')
         var pane2 = scope.panes[1];
         var pane3 = scope.bottomRightResizePane;
 
-        var bottomRightResizePaneTopResizer = angular.element('<div class="emuwebapp-bottomRightResizePaneTopResizer"></div>');
-        var bottomRightResizePaneLeftResizer = angular.element('<div class="emuwebapp-bottomRightResizePaneLeftResizer"></div>');
-        var bottomRightResizePaneCornerResizer = angular.element('<div class="emuwebapp-bottomRightResizePaneCornerResizer"></div>');
+        var bottomRightResizePaneTopResizer = angular.element('<div class="top"></div>');
+        var bottomRightResizePaneLeftResizer = angular.element('<div class="left"></div>');
+        var bottomRightResizePaneCornerResizer = angular.element('<div class="corner"></div>');
         pane3.elem.prepend(bottomRightResizePaneLeftResizer);
         pane3.elem.prepend(bottomRightResizePaneTopResizer);
         pane3.elem.prepend(bottomRightResizePaneCornerResizer);
@@ -64,6 +62,14 @@ angular.module('emuwebApp')
 
         element.bind('mousemove', function (ev) {
           if (!drag) return;
+          
+          // check if scrollbar exists -> set scrollbar on pane1 to ensure equal indentation due to scrollbar width
+          if(pane2.elem[0].scrollHeight > pane2.elem[0].clientHeight + 1){
+            pane1.elem.css('overflow-y', 'scroll');
+          }else{
+            pane1.elem.css('overflow-y', 'hidden');
+          }
+
 
           var bounds = element[0].getBoundingClientRect();
           var pos = 0;
@@ -191,7 +197,7 @@ angular.module('emuwebApp')
       template: '<div class="{{typeclass}}" ng-transclude></div>',
       link: function (scope, element, attrs, bgSplitterCtrl) {
         var newElement;
-        if (scope.type !== "emuwebapp-bottomRightResizePane") {
+        if (scope.type !== 'emuwebapp-2d-map') {
           scope.elem = element;
           scope.index = bgSplitterCtrl.addPane(scope);
           scope.typeclass = 'split-pane' + scope.index;
@@ -199,7 +205,7 @@ angular.module('emuwebApp')
         } else {
           scope.elem = element;
           scope.index = 3;
-          scope.typeclass = 'emuwebapp-bottomRightResizePane';
+          scope.typeclass = 'emuwebapp-2d-map';
           bgSplitterCtrl.setBottomRightResizePane(scope);
 
         }

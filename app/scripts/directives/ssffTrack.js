@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('ssffTrack', function ($timeout, viewState, ConfigProviderService) {
+  .directive('ssffTrack', function ($timeout, viewState, ConfigProviderService, loadedMetaDataService) {
     return {
       templateUrl: 'views/ssffTrack.html',
       restrict: 'E',
@@ -13,27 +13,32 @@ angular.module('emuwebApp')
         // var context = canvas0.getContext('2d');
         var markupCtx = markupCanvas.getContext('2d');
         var trackName;
+        scope.lmds = loadedMetaDataService;
+
         attrs.$observe('trackName', function (val) {
           if (val) {
             trackName = val;
           }
         });
         scope.order = attrs.order;
-        
-        
+
+
         /////////////////////
         // watches
-        
-		//
-		scope.$watch('vs.submenuOpen', function () {
-          $timeout(scope.drawSsffTrackMarkup, scope.cps.vals.colors.transitionTime); 
-		});
 
-		//
-		scope.$watch('vs.timelineSize', function () {
-    		$timeout(scope.drawSsffTrackMarkup, scope.cps.vals.colors.transitionTime); 
-		}); 
-		
+        //
+        //
+        scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue) {
+						scope.drawSsffTrackMarkup();
+					}
+				});
+
+        //
+        scope.$watch('vs.timelineSize', function () {
+          $timeout(scope.drawSsffTrackMarkup, ConfigProviderService.design.animation.duration);
+        });
+
         scope.$watch('vs.curViewPort', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
@@ -68,8 +73,19 @@ angular.module('emuwebApp')
         }, true);
 
         //
+        scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
+          if (!$.isEmptyObject(scope.shs)) {
+            if (!$.isEmptyObject(scope.shs.wavJSO)) {
+              if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
+                scope.drawSsffTrackMarkup();
+              }
+            }
+          }
+        }, true);
+
+        //
         /////////////////////
-        
+
         /**
          *
          */

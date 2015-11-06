@@ -1,0 +1,239 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+.emuwebapp-tabbed {
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    height: 100%;
+    .emuwebapp-tabbed-menu {
+      height: 100%;
+      width: 240px !important;
+      background: $color-darkGrey;
+      color: $color-white;
+      margin-left: 0px;
+      line-height: 1;
+      left: 0;
+      top: 0;
+      li {
+        text-align: left;
+        padding-left: 10px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+    }
+    a {
+        //color: $color-black;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .emuwebapp-tabbed-link {
+      color: $color-white;
+      text-decoration: none;
+      cursor: pointer;
+      background: transparent;
+      @extend .emuwebapp-font-input;
+    }
+/*    ::-webkit-scrollbar {
+      width: 15px;
+      height: 0px;
+      right: 0;
+      padding: 0;
+      margin: 0;
+      clear: both;
+    }
+    ::-webkit-scrollbar-track {
+        background: $color-blue;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: $color-transparent-black;
+    }*/
+    .emuwebapp-tabbed-view {
+        border: 0px;
+        clear: both;
+        overflow-y: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        position: absolute;
+        width: 100%;
+        width: calc(100% - 240px);
+        height: 100%;
+        overflow: auto;
+        padding: 0px;
+        top: 0;
+        right: 0;
+    }
+    .emuwebapp-tabbed-error {
+        color: $color-red;
+        margin-left: 10px;
+        width: 100%;
+        font-size: 1.1em;
+    }
+    .emuwebapp-tabbed-rounded {
+        border: 1px solid;
+        border-radius: 10px;
+        text-align: left;
+        background: $color-white;
+        margin: 10px;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        position: relative;
+        font-size: 0.9em;
+        .highlight {
+            background: $color-lightGrey !important;
+        }
+    }
+    .dashed {
+        border-style: dashed;
+        padding-top: 25px;
+    }
+    .emuwebapp-tabbed-button {
+        background: $color-blue;
+        color: $color-white;
+        line-height: 18px;
+        text-align: center;
+        width: 18px;
+        text-decoration: none;
+        font-weight: 1200;
+        @include vendor-prefix(border-radius, "9px");
+        @include vendor-prefix(box-shadow, "1px 1px 3px " + $color-blue);
+        z-index: 99999;
+        text-decoration: none;
+    }
+    .emuwebapp-tabbed-close {
+        @extend .emuwebapp-tabbed-button;
+        position: absolute;
+        right: -9px;
+        top: -9px;
+        &:hover {
+            background: $color-transparent-red;
+            text-decoration: none;
+        }
+        &:active {
+            background: $color-transparent-red;
+            color: $color-black;
+            text-decoration: none;
+        }
+    }
+    .emuwebapp-tabbed-delete {
+        @extend .emuwebapp-tabbed-button;
+        display: inline-block;
+        margin-left: 20px;
+        &:hover {
+            background: $color-transparent-red;
+            text-decoration: none;
+        }
+        &:active {
+            background: $color-transparent-red;
+            color: $color-black;
+            text-decoration: none;
+        }
+    }
+    .emuwebapp-tabbed-delete-small {
+        @extend .emuwebapp-tabbed-button;
+        display: inline-block;
+        margin-left: 10px;
+        width: 9px;
+        line-height: 9px;
+        font-size: 0.5em;
+    }
+    .emuwebapp-tabbed-add {
+        @extend .emuwebapp-tabbed-button;
+        display: inline-block;
+    }
+    .emuwebapp-tabbed-add-small {
+        @extend .emuwebapp-tabbed-button;
+        display: inline-block;
+        width: 9px;
+        line-height: 9px;
+        font-size: 0.5em;
+    }
+    .emuwebapp-tabbed-border {
+        position: absolute;
+        top: -12px;
+        left: 5px;
+        background-color: $color-white;
+    }
+    .emuwebapp-tabbed-table {
+        display:table;
+        width: 100%;
+        .emuwebapp-tabbed-row {
+            display:table-row;
+            width: 100%;
+            vertical-align: top;
+        }
+        .emuwebapp-tabbed-cell {
+            display:table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .emuwebapp-tabbed-cell3 {
+            display:table-cell;
+            width: 33%;
+            vertical-align: top;
+        }
+        .emuwebapp-tabbed-cell4 {
+            display:table-cell;
+            width: 25%;
+            vertical-align: top;
+        }
+        .emuwebapp-tabbed-cell5 {
+            display:table-cell;
+            width: 20%;
+            vertical-align: top;
+        }
+        .emuwebapp-align-right {
+            text-align: right;
+            padding-right: 10px;
+        }
+    }
+    .emuwebapp-tabbed-rowframe {
+        border: 0px;
+        border-radius: 10px;
+        text-align: left;
+        background: linear-gradient($color-lightGrey, $color-white);
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+    .emuwebapp-tabbed-orderitem {
+        background: $color-white;
+        border: 1px solid $color-blue;
+        margin: 4px;
+        padding: 4px;
+        cursor: move;
+        width: 300px !important;
+    }
+    .emuwebapp-tabbed-order {
+        @include vendor-prefix(box-sizing, "border-box");
+        padding: 2px;
+        width: 100%;
+    }
+    .emuwebapp-tabbed-text {
+        overflow: hidden;
+        @include vendor-prefix(box-sizing, "border-box");
+        padding: 2px;
+        background: $color-white;
+    }
+    .emuwebapp-tabbed-input-small {
+        @extend .emuwebapp-tabbed-text;
+        width: 50%;
+        font-size: 75%;
+        border: 1px solid $color-grey;
+    }
+    .emuwebapp-tabbed-input {
+        @extend .emuwebapp-tabbed-text;
+        font-size: 90%;
+        border: 1px solid $color-grey;
+    }
+    .emuwebapp-tabbed-input-bold {
+        @extend .emuwebapp-tabbed-text;
+        font-size: 115%;
+        border: 1px solid $color-blue;
+    }
+}

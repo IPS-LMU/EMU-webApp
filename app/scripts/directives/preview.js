@@ -42,7 +42,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 						initialized = false;
 						scope.backgroundCanvas = {
-				            'background': ConfigProviderService.vals.colors.levelColor,
+				            'background': ConfigProviderService.design.color.lightGrey,
 				            'border': '1px solid gray',
 				            'width': '100%',
                             'height': '100%'					            
@@ -88,9 +88,9 @@ angular.module('emuwebApp')
 					var posE = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.eS;
 
 					ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
-					ctx.fillStyle = config.vals.colors.selectedAreaColor;
+					ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
 					ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
-					ctx.strokeStyle = config.vals.colors.selectedBorderColor;
+					ctx.strokeStyle = ConfigProviderService.design.color.transparent.black;
 					ctx.beginPath();
 					ctx.moveTo(posS, 0);
 					ctx.lineTo(posS, markupCanvas.height);

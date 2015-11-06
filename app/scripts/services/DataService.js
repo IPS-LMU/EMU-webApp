@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 
 		///////////////////////////////
 		// public api
-		
+
 		/**
 		 * returns all the data
 		 * @return the data
@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 		sServObj.getData = function () {
 			return sServObj.data;
 		};
-		
+
 		/**
 		 * sets all the level data
 		 * @param data containing all level data
@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 		sServObj.setLevelData = function (data) {
 			sServObj.data.levels = data;
 		};
-		
+
 		/**
 		 * returns all the level data
 		 * @return data containing all level data
@@ -33,7 +33,7 @@ angular.module('emuwebApp')
 		sServObj.getLevelData = function () {
 			return sServObj.data.levels;
 		};
-		
+
 		/**
 		 * returns a specific level at given position
 		 * @param position of the level in the level array
@@ -41,7 +41,7 @@ angular.module('emuwebApp')
 		sServObj.getLevelDataAt = function (position) {
 			return sServObj.data.levels[position];
 		};
-		
+
 		/**
 		 * inserts a single level into level data at a given position
 		 * @param position of the level in the level array
@@ -50,7 +50,7 @@ angular.module('emuwebApp')
 		sServObj.insertLevelDataAt = function (position, newLevel) {
 		    sServObj.data.levels.splice(position, 0, newLevel);
 		};
-		
+
 		/**
 		 * deletes a single level from level data at a given position
 		 * @param position of the level in the level array
@@ -58,23 +58,23 @@ angular.module('emuwebApp')
 		sServObj.deleteLevelDataAt = function (position) {
 		    sServObj.data.levels.splice(position, 1);
 		};
-		
+
 		/**
 		 * returns all the link data
 		 * @return the data
 		 */
 		sServObj.getLinkData = function () {
 			return sServObj.data.links;
-		};	
-		
+		};
+
 		/**
 		 * sets all the link data
 		 * @param data containing all link data
 		 */
 		sServObj.setLinkData = function (data) {
 			sServObj.data.links = data;
-		};	
-		
+		};
+
 		/**
 		 * inserts a single link into link data by pushing it
 		 * on to the array
@@ -82,16 +82,16 @@ angular.module('emuwebApp')
 		 */
 		sServObj.insertLinkData = function (newLink) {
 		    sServObj.data.links.push(newLink);
-		};	
-		
+		};
+
 		/**
 		 * deletes a single link from link data at a given position
 		 * @param position of the link in the link array
 		 */
 		sServObj.deleteLinkDataAt = function (position) {
 		    sServObj.data.links.splice(position, 1);
-		};	
-		
+		};
+
 		/**
 		 * inserts a single link into link data at a given position
 		 * @param position of the link in the link array
@@ -99,8 +99,8 @@ angular.module('emuwebApp')
 		 */
 		sServObj.insertLinkDataAt = function (position, newLink) {
 		    sServObj.data.links.splice(position, 0, newLink);
-		};		
-		
+		};
+
 		/**
 		 * changes a single link at a given position with new data
 		 * @param position of the link in the link array
@@ -110,12 +110,12 @@ angular.module('emuwebApp')
 		sServObj.changeLinkDataAt = function (position, fromNewID, toNewID) {
 		    sServObj.data.links[position].fromID = fromNewID;
 		    sServObj.data.links[position].toID = toNewID;
-		};			
+		};
 
 		/**
-		 * sets annotation data and sets maxItemID 
+		 * sets annotation data and sets maxItemID
 		 * by parsing id in elements
-		 * should be used to fill links and levels		 
+		 * should be used to fill links and levels
 		 * @param the data
 		 */
 		sServObj.setData = function (data) {
@@ -151,6 +151,6 @@ angular.module('emuwebApp')
 		sServObj.lowerId = function (amount) {
 			sServObj.maxItemID -= amount;
 		};
-	
+
 		return sServObj;
 	});

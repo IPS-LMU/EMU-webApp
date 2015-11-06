@@ -1,6 +1,5 @@
 'use strict';
 
-//expand ArrayBuffer with subarray function
 ArrayBuffer.prototype.subarray = function (offset, length) {
 	var sub = new ArrayBuffer(length);
 	var subView = new Int8Array(sub);

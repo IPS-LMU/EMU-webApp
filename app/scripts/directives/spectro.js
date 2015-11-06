@@ -27,7 +27,7 @@ angular.module('emuwebApp')
         scope.alpha = 0.16;
         scope.devicePixelRatio = window.devicePixelRatio || 1;
 
-        // Spectro Worker 
+        // Spectro Worker
         scope.primeWorker = new spectroDrawingWorker();
 
 
@@ -38,16 +38,24 @@ angular.module('emuwebApp')
         scope.$watch('vs.timelineSize', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              $timeout(scope.clearAndDrawSpectMarkup, scope.cps.vals.colors.transitionTime);
+              $timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
             }
           }
         });
 
         //
+        scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.wavJSO)) {
+						scope.clearAndDrawSpectMarkup();
+					}
+				});
+
+
+
         scope.$watch('vs.submenuOpen', function () {
           if (!$.isEmptyObject(scope.shs)) {
             if (!$.isEmptyObject(scope.shs.wavJSO)) {
-              $timeout(scope.clearAndDrawSpectMarkup, scope.cps.vals.colors.transitionTime);
+              $timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
             }
           }
         });
@@ -137,11 +145,11 @@ angular.module('emuwebApp')
         }
 
         scope.killSpectroRenderingThread = function () {
-          scope.context.fillStyle = scope.cps.vals.colors.levelColor;
+          scope.context.fillStyle = ConfigProviderService.design.color.lightGrey;
           scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
           // draw current viewport selected
           scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
-          var horizontalText = fontScaleService.getTextImage(scope.context, 'rendering...', scope.cps.vals.font.fontPxSize * 0.75, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+          var horizontalText = fontScaleService.getTextImage(scope.context, 'rendering...', ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, ConfigProviderService.design.font.small.family, ConfigProviderService.design.color.black, true);
           scope.context.drawImage(horizontalText, 10, 50);
 
           if (scope.primeWorker !== null) {
@@ -169,23 +177,47 @@ angular.module('emuwebApp')
         scope.startSpectroRenderingThread = function (buffer) {
           if (buffer.length > 0) {
             scope.primeWorker = new spectroDrawingWorker();
-            var parseData;
+            var parseData = [];
             var fftN = mathHelperService.calcClosestPowerOf2Gt(scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs);
             // fftN must be greater than 512 (leads to better resolution of spectrogram)
             if (fftN < 512) {
               fftN = 512;
             }
+            // extract relavant data
+            parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS);
+
+            var leftPadding = [];
+            var rightPadding = [];
+
+            // check if any zero padding at LEFT edge is necessary
+            var windowSizeInSamples = scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs;
+            if(scope.vs.curViewPort.sS < windowSizeInSamples / 2){
+              //should do something here... currently always padding with zeros!
+            }
+            else {
+              leftPadding = buffer.subarray(scope.vs.curViewPort.sS - windowSizeInSamples / 2, scope.vs.curViewPort.sS);
+            }
+            // check if zero padding at RIGHT edge is necessary
+            if(scope.vs.curViewPort.eS + fftN / 2 - 1 >= scope.shs.wavJSO.Data.length ){
+              //should do something here... currently always padding with zeros!
+            }
+            else {
+              rightPadding = buffer.subarray(scope.vs.curViewPort.eS, scope.vs.curViewPort.eS + fftN/ 2 - 1);
+            }
+            // add padding
+            var paddedSamples = new Float32Array(leftPadding.length + parseData.length + rightPadding.length );
+            paddedSamples.set(leftPadding);
+            paddedSamples.set(parseData, leftPadding.length);
+            paddedSamples.set(rightPadding, leftPadding.length + parseData.length);
 
             if (scope.vs.curViewPort.sS >= fftN / 2) {
               // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
-              parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS - fftN / 2, scope.vs.curViewPort.eS + fftN));
+              parseData = buffer.subarray(scope.vs.curViewPort.sS - fftN / 2, scope.vs.curViewPort.eS + fftN);
             } else {
               // tolerate window/2 alignment issue if at beginning of file
-              parseData = new Float32Array(buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN));
+              parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
             }
-
             scope.setupEvent();
-
             scope.primeWorker.tell({
               'windowSizeInSecs': scope.vs.spectroSettings.windowSizeInSecs,
               'fftN': fftN,
@@ -200,12 +232,12 @@ angular.module('emuwebApp')
               'pixelRatio': scope.devicePixelRatio,
               'sampleRate': scope.shs.wavJSO.SampleRate,
               'transparency': scope.cps.vals.spectrogramSettings.transparency,
-              'audioBuffer': parseData.buffer,
+              'audioBuffer': paddedSamples,
               'audioBufferChannels': scope.shs.wavJSO.NumChannels,
               'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
               'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
               'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
-            }, [parseData.buffer]);
+            }, [paddedSamples.buffer]);
           }
         }
       }

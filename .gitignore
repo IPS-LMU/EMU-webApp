@@ -68,3 +68,15 @@ app/testData/ignoredData
 # test coverage folder #
 ########################
 test/coverage
+
+*.scssc
+*.sassc
+
+autoprefixer
+--*
+
+.idea/.name
+
+*.iml
+
+.idea/EMU-webApp.iml

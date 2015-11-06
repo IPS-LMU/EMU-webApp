@@ -9,6 +9,7 @@ describe('Directive: dots', function() {
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.cps = ConfigProviderService;
+        scope.cps.design = defaultEmuwebappDesign;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.vs = viewState;
         scope.vs.curPerspectiveIdx = 0;

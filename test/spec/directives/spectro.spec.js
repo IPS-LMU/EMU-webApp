@@ -17,6 +17,7 @@ describe('Directive: spectro', function () {
         scope.dhs = Drawhelperservice;
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.curDbConfig = aeDbConfig;
+        scope.cps.design = defaultEmuwebappDesign;
         scope.vs = viewState;
         scope.data.setData(msajc003_bndl.annotation);
         scope.level = curLvl;           
@@ -77,6 +78,7 @@ describe('Directive: spectro', function () {
 
     it('should startSpectroRenderingThread', function () {
         compileDirective();
+        scope.shs.wavJSO.Data = [1, 2, 3];
         scope.vs.curViewPort.sS = 4000;
         var buffer = new ArrayBuffer(58089);
         var view = new Uint8Array(buffer);

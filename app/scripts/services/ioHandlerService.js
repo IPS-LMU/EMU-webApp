@@ -18,6 +18,14 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * default design is always loaded from same origin
+		 */
+		sServObj.httpGetDefaultDesign = function () {
+			var prom = $http.get('configFiles/default_emuwebappDesign.json');
+			return prom;
+		};
+
+		/**
 		 * default config is always loaded from same origin
 		 */
 		sServObj.httpGetPath = function (path, respType) {
@@ -106,7 +114,7 @@ angular.module('emuwebApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 			}
-			
+
 			return getProm;
 		};
 
@@ -163,6 +171,10 @@ angular.module('emuwebApp')
 				prom = Espsparserservice.asyncParseEsps(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedESPS');
 			} else if (fileType === 'TEXTGRID') {
 				prom = Textgridparserservice.asyncParseTextGrid(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTEXTGRID');
+			} else if (fileType === 'annotJSON') {
+				var def = $q.defer();
+				prom = def.promise;
+				def.resolve(angular.fromJson(string));
 			}
 
 			return prom;

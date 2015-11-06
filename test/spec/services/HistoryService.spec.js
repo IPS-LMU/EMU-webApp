@@ -180,7 +180,7 @@ describe('Service: HistoryService', function () {
     HistoryService.addObjToUndoStack(changeObjmoveBy2);
     expect(HistoryService.getCurrentStack().undo.length).toEqual(2);
     expect(HistoryService.getCurrentStack().redo.length).toEqual(0);
-    // changed values : id1 += 40; id0 -= 40 
+    // changed values : id1 += 40; id0 -= 40
     item = getItemFromJSON(JDR10_bndl.annotation, 3);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur + 40);
@@ -297,7 +297,7 @@ describe('Service: HistoryService', function () {
 	expect(ConfigProviderService.getSsffTrackConfig).toHaveBeenCalledWith('FORMANTS');
 	expect(HistoryService.getNrOfPossibleUndos()).toEqual(0);
 	HistoryService.redo();
-	expect(HistoryService.getNrOfPossibleUndos()).toEqual(1);    
+	expect(HistoryService.getNrOfPossibleUndos()).toEqual(1);
   }));
 
   /**
@@ -309,9 +309,9 @@ describe('Service: HistoryService', function () {
     HistoryService.addCurChangeObjToUndoStack();
     expect(HistoryService.getNrOfPossibleUndos()).toEqual(1);
     HistoryService.undo();
-    expect(HistoryService.getNrOfPossibleUndos()).toEqual(0); 
+    expect(HistoryService.getNrOfPossibleUndos()).toEqual(0);
     HistoryService.redo();
-    expect(HistoryService.getNrOfPossibleUndos()).toEqual(1);           
+    expect(HistoryService.getNrOfPossibleUndos()).toEqual(1);
   }));
 
   /**
@@ -323,17 +323,17 @@ describe('Service: HistoryService', function () {
     HistoryService.addObjToUndoStack(changeObjmoveBy3);
     expect(viewState.historyActionTxt).toEqual('');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toEqual('UNDO: MOVEBOUNDARY');
+    expect(viewState.historyActionTxt).toEqual('<i>UNDO</i> &#8594; MOVEBOUNDARY');
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toEqual('REDO: MOVEBOUNDARY');
+    expect(viewState.historyActionTxt).toEqual('<i>REDO</i> &#8592; MOVEBOUNDARY');
 
     HistoryService.addObjToUndoStack(changeObj);
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toEqual('UNDO: RENAMELABEL');
+    expect(viewState.historyActionTxt).toEqual('<i>UNDO</i> &#8594; RENAMELABEL');
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toEqual('REDO: RENAMELABEL');
+    expect(viewState.historyActionTxt).toEqual('<i>REDO</i> &#8592; RENAMELABEL');
   }));
-  
+
   /**
    *  UNDO stack for MOVESEGMENT
    */
@@ -352,13 +352,13 @@ describe('Service: HistoryService', function () {
     expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#MOVESEGMENT#Phonetic#154');
     spyOn(LevelService, 'moveSegment');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: MOVESEGMENT');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; MOVESEGMENT');
     expect(LevelService.moveSegment).toHaveBeenCalledWith(cur.name, cur.id, cur.length, -cur.movedBy);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: MOVESEGMENT');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; MOVESEGMENT');
     expect(LevelService.moveSegment).toHaveBeenCalledWith(cur.name, cur.id, cur.length, cur.movedBy);
-  }));  
-  
+  }));
+
   /**
    *  UNDO stack for MOVEEVENT
    */
@@ -376,13 +376,13 @@ describe('Service: HistoryService', function () {
     expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#MOVEEVENT#Phonetic#154');
     spyOn(LevelService, 'moveEvent');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: MOVEEVENT');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; MOVEEVENT');
     expect(LevelService.moveEvent).toHaveBeenCalledWith(cur.name, cur.id, -cur.movedBy);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: MOVEEVENT');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; MOVEEVENT');
     expect(LevelService.moveEvent).toHaveBeenCalledWith(cur.name, cur.id, cur.movedBy);
-  })); 
-  
+  }));
+
   /**
    *  UNDO stack for RENAMELEVEL
    */
@@ -401,13 +401,13 @@ describe('Service: HistoryService', function () {
     expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#RENAMELEVEL#Phonetic#154');
     spyOn(LevelService, 'renameLevel');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: RENAMELEVEL');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; RENAMELEVEL');
     expect(LevelService.renameLevel).toHaveBeenCalledWith(cur.newname, cur.name, cur.curPerspectiveIdx);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: RENAMELEVEL');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; RENAMELEVEL');
     expect(LevelService.renameLevel).toHaveBeenCalledWith(cur.name, cur.newname, cur.curPerspectiveIdx);
-  })); 
-  
+  }));
+
   /**
    *  UNDO stack for DELETELEVEL
    */
@@ -427,13 +427,13 @@ describe('Service: HistoryService', function () {
     spyOn(LevelService, 'insertLevel');
     spyOn(LevelService, 'deleteLevel');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: DELETELEVEL');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; DELETELEVEL');
     expect(LevelService.insertLevel).toHaveBeenCalledWith(cur.level, cur.id, cur.curPerspectiveIdx);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: DELETELEVEL');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETELEVEL');
     expect(LevelService.deleteLevel).toHaveBeenCalledWith(cur.id, cur.curPerspectiveIdx);
-  }));  
-  
+  }));
+
   /**
    *  UNDO stack for DELETEBOUNDARY
    */
@@ -454,13 +454,13 @@ describe('Service: HistoryService', function () {
     spyOn(LevelService, 'deleteBoundary');
     spyOn(LevelService, 'deleteBoundaryInvers');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: DELETEBOUNDARY');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; DELETEBOUNDARY');
     expect(LevelService.deleteBoundaryInvers).toHaveBeenCalledWith(cur.name, cur.id, cur.isFirst, cur.isLast, cur.deletedSegment);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: DELETEBOUNDARY');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETEBOUNDARY');
     expect(LevelService.deleteBoundary).toHaveBeenCalledWith(cur.name, cur.id, cur.isFirst, cur.isLast);
-  }));   
-  
+  }));
+
   /**
    *  UNDO stack for DELETESEGMENTS
    */
@@ -480,13 +480,13 @@ describe('Service: HistoryService', function () {
     spyOn(LevelService, 'deleteSegments');
     spyOn(LevelService, 'deleteSegmentsInvers');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: DELETESEGMENTS');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; DELETESEGMENTS');
     expect(LevelService.deleteSegmentsInvers).toHaveBeenCalledWith(cur.name, cur.id, cur.length, cur.deletedSegment);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: DELETESEGMENTS');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETESEGMENTS');
     expect(LevelService.deleteSegments).toHaveBeenCalledWith(cur.name, cur.id, cur.length);
-  }));   
-  
+  }));
+
   /**
    *  UNDO stack for DELETEEVENT
    */
@@ -506,13 +506,13 @@ describe('Service: HistoryService', function () {
     spyOn(LevelService, 'deleteEvent');
     spyOn(LevelService, 'insertEvent');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: DELETEEVENT');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; DELETEEVENT');
     expect(LevelService.insertEvent).toHaveBeenCalledWith(cur.name, cur.start, cur.pointName, cur.id);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: DELETEEVENT');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETEEVENT');
     expect(LevelService.deleteEvent).toHaveBeenCalledWith(cur.name, cur.id);
-  }));   
-  
+  }));
+
   /**
    *  UNDO stack for DELETELINKSTO
    */
@@ -531,13 +531,13 @@ describe('Service: HistoryService', function () {
     spyOn(LinkService, 'deleteLinksTo');
     spyOn(LinkService, 'insertLinksTo');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: DELETELINKSTO');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; DELETELINKSTO');
     expect(LinkService.insertLinksTo).toHaveBeenCalledWith(cur.deletedLinks);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: DELETELINKSTO');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETELINKSTO');
     expect(LinkService.deleteLinksTo).toHaveBeenCalledWith(cur.id);
-  }));   
-  
+  }));
+
   /**
    *  UNDO stack for DELETELINKBOUNDARY
    */
@@ -557,13 +557,13 @@ describe('Service: HistoryService', function () {
     spyOn(LinkService, 'deleteLinkBoundary');
     spyOn(LinkService, 'deleteLinkBoundaryInvers');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: DELETELINKBOUNDARY');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; DELETELINKBOUNDARY');
     expect(LinkService.deleteLinkBoundaryInvers).toHaveBeenCalledWith(cur.deletedLinks);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: DELETELINKBOUNDARY');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETELINKBOUNDARY');
     expect(LinkService.deleteLinkBoundary).toHaveBeenCalledWith(cur.id, cur.neighbourId);
-  }));    
-  
+  }));
+
   /**
    *  UNDO stack for DELETELINKSEGMENT
    */
@@ -583,13 +583,13 @@ describe('Service: HistoryService', function () {
     spyOn(LinkService, 'deleteLinkSegment');
     spyOn(LinkService, 'deleteLinkSegmentInvers');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: DELETELINKSEGMENT');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; DELETELINKSEGMENT');
     expect(LinkService.deleteLinkSegmentInvers).toHaveBeenCalledWith(cur.deletedLinks);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: DELETELINKSEGMENT');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETELINKSEGMENT');
     expect(LinkService.deleteLinkSegment).toHaveBeenCalledWith(cur.segments);
-  }));   
-  
+  }));
+
   /**
    *  UNDO stack for INSERTLEVEL
    */
@@ -609,13 +609,13 @@ describe('Service: HistoryService', function () {
     spyOn(LevelService, 'deleteLevel');
     spyOn(LevelService, 'insertLevel');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: INSERTLEVEL');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; INSERTLEVEL');
     expect(LevelService.deleteLevel).toHaveBeenCalledWith(cur.id, cur.curPerspectiveIdx);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: INSERTLEVEL');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; INSERTLEVEL');
     expect(LevelService.insertLevel).toHaveBeenCalledWith(cur.level, cur.id, cur.curPerspectiveIdx);
-  }));   
-  
+  }));
+
   /**
    *  UNDO stack for INSERTSEGMENTS
    */
@@ -637,13 +637,13 @@ describe('Service: HistoryService', function () {
     spyOn(LevelService, 'insertSegmentInvers');
     spyOn(LevelService, 'insertSegment');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: INSERTSEGMENTS');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; INSERTSEGMENTS');
     expect(LevelService.insertSegmentInvers).toHaveBeenCalledWith(cur.name, cur.start, cur.end, cur.segName);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: INSERTSEGMENTS');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; INSERTSEGMENTS');
     expect(LevelService.insertSegment).toHaveBeenCalledWith(cur.name, cur.start, cur.end, cur.segName, cur.ids);
   }));
-  
+
   /**
    *  UNDO stack for INSERTEVENT
    */
@@ -663,13 +663,13 @@ describe('Service: HistoryService', function () {
     spyOn(LevelService, 'deleteEvent');
     spyOn(LevelService, 'insertEvent');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: INSERTEVENT');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; INSERTEVENT');
     expect(LevelService.deleteEvent).toHaveBeenCalledWith(cur.name, cur.id);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: INSERTEVENT');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; INSERTEVENT');
     expect(LevelService.insertEvent).toHaveBeenCalledWith(cur.name, cur.start, cur.pointName, cur.id);
   }));
-  
+
   /**
    *  UNDO stack for EXPANDSEGMENTS
    */
@@ -689,10 +689,10 @@ describe('Service: HistoryService', function () {
     expect(Object.keys(HistoryService.getCurrentStack().undo[0])[0]).toEqual('ANNOT#EXPANDSEGMENTS#Phonetic#154');
     spyOn(LevelService, 'expandSegment');
     HistoryService.undo();
-    expect(viewState.historyActionTxt).toBe('UNDO: EXPANDSEGMENTS');
+    expect(viewState.historyActionTxt).toBe('<i>UNDO</i> &#8594; EXPANDSEGMENTS');
     expect(LevelService.expandSegment).toHaveBeenCalledWith(cur.rightSide, cur.item, cur.name, -cur.changeTime);
     HistoryService.redo();
-    expect(viewState.historyActionTxt).toBe('REDO: EXPANDSEGMENTS');
+    expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; EXPANDSEGMENTS');
     expect(LevelService.expandSegment).toHaveBeenCalledWith(cur.rightSide, cur.item, cur.name, cur.changeTime);
   }));
 

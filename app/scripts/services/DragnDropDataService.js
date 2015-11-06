@@ -9,15 +9,17 @@ angular.module('emuwebApp')
 
 		///////////////////////////////
 		// public api
-		
+
 		sServObj.getBundle = function (name, session) {
 		    var defer = $q.defer();
 		    var ret = {}
 		    angular.forEach(sServObj.convertedBundles, function (bundle, i) {
 		        if(bundle.name === name) {
+							  var bc = angular.copy(bundle);
+								delete bc.name;
 		            defer.resolve({
 		                status: 200,
-		                data: bundle
+		                data: bc
 		            });
 		        }
 		    });
@@ -32,10 +34,10 @@ angular.module('emuwebApp')
 		sServObj.setDefaultSession = function (name) {
 		    sServObj.sessionDefault = name;
 		};
-		
+
 		sServObj.getDefaultSession = function () {
 		    return sServObj.sessionDefault;
-		};		
+		};
 
 		return sServObj;
 	});

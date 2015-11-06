@@ -2,14 +2,14 @@
 
 
 angular.module('emuwebApp')
-	.directive('osci', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, Drawhelperservice) {
+	.directive('osci', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, Drawhelperservice, loadedMetaDataService) {
 		return {
 			templateUrl: 'views/osci.html',
 			replace: true,
 			restrict: 'E',
 			scope: {},
 			controller: function ($scope) {
-				$scope.changeAttrDef = function(){
+				$scope.changeAttrDef = function () {
 					//alert('sadf');
 				};
 
@@ -24,18 +24,21 @@ angular.module('emuwebApp')
 				scope.trackName = attrs.trackName;
 				scope.cps = ConfigProviderService;
 				scope.viewState = viewState;
+				scope.lmds = loadedMetaDataService;
 
 				///////////////
 				// watches
 
 				//
-				scope.$watch('viewState.submenuOpen', function () {
-					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime); 
+				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
+					if(newValue != oldValue) {
+						scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
+					}
 				});
 
 				//
 				scope.$watch('viewState.timelineSize', function () {
-					$timeout(scope.redraw, scope.cps.vals.colors.transitionTime);
+					$timeout(scope.redraw, ConfigProviderService.design.animation.duration);
 				});
 
 				//
@@ -86,6 +89,15 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
+				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
+					if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
+						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.wavJSO.Data);
+						Drawhelperservice.osciPeaks = allPeakVals;
+						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
+					}
+				}, true);
+
+				//
 				/////////////////////////
 
 				scope.redraw = function () {
@@ -95,12 +107,12 @@ angular.module('emuwebApp')
 				/**
 				 *
 				 */
-				 scope.drawPlayHead = function(scope, config) {
+				scope.drawPlayHead = function (scope, config) {
 					var ctx = markupCanvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					var posS = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.sS);
 					var posCur = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.curS);
-					ctx.fillStyle = ConfigProviderService.vals.colors.selectedAreaColor;
+					ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
 					ctx.fillRect(posS, 0, posCur - posS, canvas.height);
 					scope.drawVpOsciMarkup(scope, config, false);
 				};
@@ -110,7 +122,7 @@ angular.module('emuwebApp')
 				 * the information that is specified in
 				 * the viewport
 				 */
-				 scope.drawVpOsciMarkup = function(scope, config, reset) {
+				scope.drawVpOsciMarkup = function (scope, config, reset) {
 					var ctx = markupCanvas.getContext('2d');
 					if (reset) {
 						ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);

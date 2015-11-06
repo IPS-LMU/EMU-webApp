@@ -20,7 +20,7 @@ angular.module('emuwebApp')
       TRIANGULAR: 10
     };
 
-    // hold the current attribute definitions that are in view 
+    // hold the current attribute definitions that are in view
     sServObj.curLevelAttrDefs = [];
 
     /**
@@ -54,7 +54,7 @@ angular.module('emuwebApp')
         endFreezeSample: -1
       };
 
-      // 
+      //
       sServObj.hierarchyState = {
       	// These variables will be set from within the emuhierarchy directive
 	// The directive will not watch for outside changes
@@ -64,7 +64,7 @@ angular.module('emuwebApp')
 	editValue: undefined,
 	inputFocus: false,
 	collapseInfo: {},
-	
+
 	// These can be set from within the emuhierarchy directive
 	// But the directive will also watch for outside changes
 	contextMenuID: undefined,
@@ -106,6 +106,7 @@ angular.module('emuwebApp')
       sServObj.curPerspectiveIdx = -1;
       sServObj.mouseInEmuWebApp = false;
       sServObj.lastKeyCode = undefined;
+      sServObj.lastUpdate = undefined;
       // possible general states of state machine
       sServObj.states = [];
       sServObj.states.noDBorFilesloaded = {
@@ -272,12 +273,12 @@ angular.module('emuwebApp')
         // select first if none prev. defined (up)
         // viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
         curLev = Levelserv.getLevelDetails(order[0]);
-        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+        sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
         return;
       } else if (now === undefined && next) {
         // select last if none prev. defined (down)
         curLev = Levelserv.getLevelDetails(order[order.length - 1]);
-        sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.length - 1);
+        sServObj.setcurClickLevel(curLev.name, curLev.type, order.length - 1);
         return;
       }
 
@@ -289,17 +290,16 @@ angular.module('emuwebApp')
       });
       if(idxOfNow === undefined) {
 		  curLev = Levelserv.getLevelDetails(order[0]);
-		  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-		  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, 0);
+		  sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
 		  sServObj.curClickItems = [];
-		  sServObj.selectBoundary();      
+		  sServObj.selectBoundary();
       }
       else {
 		  if (next) {
 			if (idxOfNow + 1 < order.length) {
 			  curLev = Levelserv.getLevelDetails(order[idxOfNow + 1]);
 			  // sServObj.setcurClickLevelName(order[idxOfNow + 1]);
-			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow + 1);
+			  sServObj.setcurClickLevel(curLev.name, curLev.type, order.idxOfNow + 1);
 			  sServObj.curClickItems = [];
 			  sServObj.selectBoundary();
 			  //sServObj.resetSelect();
@@ -308,7 +308,7 @@ angular.module('emuwebApp')
 			if (idxOfNow - 1 >= 0) {
 			  curLev = Levelserv.getLevelDetails(order[idxOfNow - 1]);
 			  // sServObj.setcurClickLevelName(order[idxOfNow - 1]);
-			  sServObj.setcurClickLevel(curLev.level.name, curLev.level.type, order.idxOfNow - 1);
+			  sServObj.setcurClickLevel(curLev.name, curLev.type, order.idxOfNow - 1);
 			  sServObj.curClickItems = [];
 			  sServObj.selectBoundary();
 			  //sServObj.resetSelect();
@@ -415,13 +415,17 @@ angular.module('emuwebApp')
     sServObj.getSampleDist = function (w) {
       return this.getPos(w, this.curViewPort.sS + 1) - this.getPos(w, this.curViewPort.sS);
     };
-    
+
 
     /**
      * toggle boolean if left submenu is open
      */
-    sServObj.togglesubmenuOpen = function (time) {
+    sServObj.toggleSubmenu = function (time) {
       this.submenuOpen = !this.submenuOpen;
+      $timeout(function() {
+        var d = new Date();
+        sServObj.lastUpdate = d.getTime();
+      }, time);
     };
 
     /**
@@ -621,28 +625,6 @@ angular.module('emuwebApp')
      */
     sServObj.getcurMouseNeighbours = function () {
       return this.curMouseNeighbours;
-    };  
-
-    /**
-     * selects all Segements on current level which are inside the selected viewport
-     * @param levelData current level Object
-     */
-    sServObj.selectItemsInSelection = function (levelData) {
-      sServObj.curClickItems = [];
-      var min = Infinity;
-      var max = -Infinity;
-      var itemInSel = this.getItemsInSelection(levelData);
-      angular.forEach(itemInSel, function (item) {
-        if (item.sampleStart < min) {
-          min = item.sampleStart;
-        }
-        if ((item.sampleStart + item.sampleDur + 1) > max) {
-          max = item.sampleStart + item.sampleDur + 1;
-        }
-        sServObj.setcurClickItemMultiple(item);
-      });
-      sServObj.curViewPort.selectS = min;
-      sServObj.curViewPort.selectE = max;
     };
 
     /**
@@ -652,7 +634,6 @@ angular.module('emuwebApp')
       var itemsInRange = [];
       var rangeStart = sServObj.curViewPort.selectS;
       var rangeEnd = sServObj.curViewPort.selectE;
-
       angular.forEach(levelData, function (t) {
         if (t.name === sServObj.getcurClickLevelName()) {
           angular.forEach(t.items, function (item) {
@@ -665,10 +646,7 @@ angular.module('emuwebApp')
           });
         }
       });
-
-      return itemsInRange;
-
-
+      return itemsInRange.sort(sServObj.sortbystart);
     };
 
 
@@ -692,13 +670,8 @@ angular.module('emuwebApp')
      */
     sServObj.selectBoundary = function () {
       if (sServObj.curClickItems.length > 0) {
-        var left, right;
-        if (sServObj.curClickItems[0].sampleStart !== undefined) {
-          left = sServObj.curClickItems[0].sampleStart;
-        } else {
-          left = sServObj.curClickItems[0].samplePoint;
-        }
-        right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur ||  sServObj.curClickItems[0].samplePoint;
+        var left = sServObj.curClickItems[0].sampleStart || sServObj.curClickItems[0].samplePoint;
+        var right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur ||  sServObj.curClickItems[0].samplePoint;
         sServObj.curClickItems.forEach(function (entry) {
           if (entry.sampleStart <= left) {
             left = entry.sampleStart;
@@ -712,38 +685,45 @@ angular.module('emuwebApp')
     };
 
     /**
-     * adds a item the currently selected items if left or right of current selected items
+     * adds an item to the currently selected items if the left or right one of current selected items
      * @param item representing the Object to be added to selection
+     * @param next Object next to the Object to be added to selection
+     * @param prev Object previous of the Object to be added to selection
      */
-    sServObj.setcurClickItemMultiple = function (item) {
-      var empty = true;
-      var start = item.sampleStart;
-      var end = start + item.sampleDur + 1;
-      sServObj.curClickItems.forEach(function (entry) {
-        var front = (entry.sampleStart === end) ? true : false;
-        var back = ((entry.sampleStart + entry.sampleDur + 1) === start) ? true : false;
-        if ((front || back) && sServObj.curClickItems.indexOf(item) === -1) {
-          sServObj.curClickItems.push(item);
-          empty = false;
-        }
-      });
-      if (empty) {
+    sServObj.setcurClickItemMultiple = function (item, next, prev) {
+
+      if (sServObj.curClickItems.length == 0 || sServObj.curClickItems === undefined || sServObj.curClickItems === null) {
         sServObj.curClickItems = [];
         sServObj.curClickItems.push(item);
-      } else {
-        sServObj.curClickItems.sort(sServObj.sortbyid);
+      }
+      else {
+        if(sServObj.curClickItems.indexOf(item) === -1) {
+          if (sServObj.curClickItems.indexOf(next) >= 0 || sServObj.curClickItems.indexOf(prev) >= 0) {
+            sServObj.curClickItems.push(item);
+            sServObj.curClickItems.sort(sServObj.sortbystart);
+          }
+          else {
+            sServObj.curClickItems = [];
+            sServObj.curClickItems.push(item);
+          }
+        }
+        else {
+          sServObj.curClickItems = [];
+          sServObj.curClickItems.push(item);
+        }
       }
     };
+
 
     /**
      *
      */
-    sServObj.sortbyid = function (a, b) {
+    sServObj.sortbystart = function (a, b) {
         //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-        if (a.sampleStart > b.sampleStart) {
+        if (a.sampleStart > b.sampleStart || a.samplePoint > b.samplePoint) {
           return 1;
         }
-        if (a.sampleStart < b.sampleStart) {
+        if (a.sampleStart < b.sampleStart || a.samplePoint < b.samplePoint) {
           return -1;
         }
         return 0;
@@ -822,6 +802,17 @@ angular.module('emuwebApp')
      */
     sServObj.setLastPcm = function (n) {
       this.lastPcm = n;
+    };
+
+    sServObj.resetHierarchyState = function () {
+      sServObj.hierarchyState.selectedItemID = undefined;
+      sServObj.hierarchyState.selectedLinkFromID = undefined;
+      sServObj.hierarchyState.selectedLinkToID = undefined;
+      sServObj.hierarchyState.editValue = undefined;
+      sServObj.hierarchyState.inputFocus = false;
+      sServObj.hierarchyState.collapseInfo = {};
+      sServObj.hierarchyState.contextMenuID = undefined;
+      sServObj.hierarchyState.newLinkFromID = undefined;
     };
 
     /**
@@ -961,7 +952,7 @@ angular.module('emuwebApp')
 	    sServObj.hierarchyState.collapseInfo[id].numCollapsedParents = newNum;
     };
 
-    
+
 
     /**
      *
@@ -1247,11 +1238,11 @@ angular.module('emuwebApp')
       });
       return curAttrDef;
     };
-    
+
     sServObj.setlastKeyCode = function (e) {
         this.lastKeyCode = e;
     };
-    
+
     /**
 	*
 	*/
@@ -1272,7 +1263,7 @@ angular.module('emuwebApp')
     sServObj.resetToInitState = function () {
       sServObj.initialize();
     };
-    
+
     /**
      *
      */
@@ -1283,7 +1274,7 @@ angular.module('emuwebApp')
 			'height': '10px'
 		};
 		return (curStyle);
-	};    
+	};
 
     return sServObj;
 

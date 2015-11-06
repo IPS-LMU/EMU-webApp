@@ -51,16 +51,20 @@ angular.module('emuwebApp')
 					sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					ctx.fillStyle = 'green';
-					ctx.strokeStyle = scope.cps.vals.colors.osciColor;
-					ctx.font = (scope.cps.vals.font.fontPxSize + 'px' + ' ' + scope.cps.vals.font.fontType);
+					ctx.strokeStyle = scope.cps.design.color.black;
+					ctx.font = (scope.cps.design.font.input.size.slice(0,-2) + 'px' + ' ' + scope.cps.design.font.input.family);
 
 					var gridWidth = canvas.width / 8;
 					var gridHeight = canvas.height / 8;
 					var sInterv = 1 / sRaSt.sampleRate - sRaSt.startTime;
 					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
 					var binValStrArr;
-					angular.forEach(col.values[curFrame], function (el, elIdx) {
+					var curFrameVals = angular.copy(col.values[curFrame]);
+					curFrameVals.reverse();
+
+					angular.forEach(curFrameVals, function (el, elIdx) {
 						binValStrArr = el.toString(2).split('').reverse();
+						// pad with zeros
 						while (binValStrArr.length < 8) {
 							binValStrArr.push('0');
 						}
@@ -77,7 +81,7 @@ angular.module('emuwebApp')
 					});
 
 					// draw labels
-					var horizontalText = scope.fontImage.getTextImageTwoLines(ctx, 'EPG', 'Frame:' + curFrame, scope.cps.vals.font.fontPxSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor, true);
+					var horizontalText = scope.fontImage.getTextImageTwoLines(ctx, 'EPG', 'Frame:' + curFrame, scope.cps.design.font.input.size.slice(0, -2) * 3 / 4, scope.cps.design.font.input.family, scope.cps.design.font.input.family, scope.cps.design.color.black, true);
 					ctx.drawImage(horizontalText, 0, 0, horizontalText.width, horizontalText.height, 5, 0, horizontalText.width, horizontalText.height);
 				}
 			}

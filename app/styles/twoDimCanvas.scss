@@ -1,0 +1,23 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+/*2D + overtime canvases*/
+
+.emuwebapp-twoDimCanvasContainer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: calc(100% - 15px);
+    width: calc(100% - 15px);
+    padding: 0px;
+    background-color: $color-white;
+    canvas {
+        float: left;
+        z-index: 1;   
+        width: 100%;
+        height: 100%;
+        background-color: $color-lightGrey;
+        border: 1px solid $color-grey;
+    }
+}

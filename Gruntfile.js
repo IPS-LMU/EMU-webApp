@@ -21,13 +21,14 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+  
+  grunt.loadNpmTasks('grunt-json2sass');
 
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
     dist: 'dist'
   };
-
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -195,6 +196,15 @@ module.exports = function (grunt) {
         }
       }
     },
+    
+	json2sass: {
+		files: {
+          src: '<%= yeoman.app %>/configFiles/default_emuwebappDesign.json',
+          dest: '<%= yeoman.app %>/styles/EMUwebAppDesign.sass'
+		}
+	}, 
+    
+    
     // not used since Uglify task does concat,
     // but still available if needed
     /*concat: {
@@ -292,7 +302,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          src: ['*.html', 'views/*.html'],
+          src: ['*.html', 'views/*.html', 'views/helpTabs/*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -346,7 +356,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'images/{,*/}*.{gif,webp}',
-            'img/*.png',
+            'img/*.svg',
             'styles/fonts/*',
             'configFiles/{,*/}*.*',
             'schemaFiles/*.json',
@@ -357,7 +367,9 @@ module.exports = function (grunt) {
             'assets/EMU-webAppEmu.svg',
             'assets/EMU-webAppIcon-roundCorners.svg',
             // 'styles/external/bootstrap-combined.min.css',
-            'styles/images/rightSideMenuBtn.png'
+            'styles/images/rightSideMenuBtn.png',
+            'manual/**/*.{md,gif,svg,json}',
+            'NEWS.md'
           ]
         }, {
           expand: true,
@@ -463,8 +475,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: ['dist/views/about.html'],
-          dest: 'dist/views/'
+          src: ['dist/manual/Introduction.md'],
+          dest: 'dist/manual/'
         }]
       }
     },
@@ -488,6 +500,8 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'json2sass',
+      'compass:server',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -507,6 +521,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'json2sass',
+    'compass:server',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
@@ -515,7 +531,9 @@ module.exports = function (grunt) {
 
 
   grunt.registerTask('e2e', [
-    'clean:server',
+    'clean:server',    
+    'json2sass',
+    'compass:server',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
@@ -524,6 +542,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'json2sass',
+    'compass:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',

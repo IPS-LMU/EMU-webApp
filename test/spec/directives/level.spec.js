@@ -16,9 +16,10 @@ describe('Directive: level', function () {
         scope.vs = viewState;
         scope.data = DataService;
         scope.data.setData(msajc003_bndl.annotation);
+        scope.cps.design = defaultEmuwebappDesign;
         scope.font = fontScaleService;
-        curLvl = scope.lvl.getLevelDetails(lvlName).level;
-        curLvlE = scope.lvl.getLevelDetails(lvlNameE).level;
+        curLvl = scope.lvl.getLevelDetails(lvlName);
+        curLvlE = scope.lvl.getLevelDetails(lvlNameE);
         scope.level = curLvl;
     }));
 
@@ -36,7 +37,7 @@ describe('Directive: level', function () {
      expect(elm.find('div').length).toBe(6);
      expect(elm.find('img').length).toBe(3);
    });
-   
+
    it('should watch to vs.curViewPort', function () {
      scope.vs.curViewPort.windowWidth = 64;
      scope.vs.select(0,100);
@@ -49,8 +50,8 @@ describe('Directive: level', function () {
      scope.$apply();
      expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalled();
      expect(elm.isolateScope().drawLevelDetails).toHaveBeenCalled();
-   }); 
-   
+   });
+
    it('should watch to vs.curMouseX', function () {
      scope.vs.setcurMouseLevelName(lvlName);
      scope.vs.curMouseX = 10;
@@ -62,8 +63,8 @@ describe('Directive: level', function () {
      scope.$apply();
      expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalled();
      expect(elm.isolateScope().drawLevelDetails).toHaveBeenCalled();
-   }); 
-   
+   });
+
    it('should watch to vs.curClickLevelName', function () {
      scope.vs.setcurClickLevelName(lvlName,0);
      compileDirective(curLvl);
@@ -72,8 +73,8 @@ describe('Directive: level', function () {
      scope.vs.setcurClickLevelName('Tone',1);
      scope.$apply();
      expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalled();
-   }); 
-       
+   });
+
    it('should changeCurAttrDef', function () {
      spyOn(scope.vs, 'getCurAttrDef').and.returnValue('test');
      spyOn(scope.vs, 'setCurAttrDef');
@@ -87,7 +88,7 @@ describe('Directive: level', function () {
      expect(scope.vs.setEditing).toHaveBeenCalled();
      expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
    });
-       
+
    it('should getAttrDefBtnColor', function () {
      spyOn(scope.vs, 'getCurAttrDef').and.returnValue('test');
      compileDirective(curLvl);
@@ -103,7 +104,7 @@ describe('Directive: level', function () {
 		'background-color': 'white'
 	 });
    });
-       
+
    it('should updateView', function () {
      compileDirective(curLvl);
      expect(elm.isolateScope()).toBeDefined();
@@ -111,7 +112,7 @@ describe('Directive: level', function () {
      elm.isolateScope().updateView();
      expect(elm.isolateScope().drawLevelDetails).toHaveBeenCalled();
    });
-   
+
    it('should drawLevelDetails', function () {
      compileDirective(curLvl);
      scope.vs.curViewPort.sS = 10;
@@ -120,7 +121,7 @@ describe('Directive: level', function () {
      expect(elm.isolateScope()).toBeDefined();
      elm.isolateScope().drawLevelDetails();
    });
-   
+
    it('should drawLevelDetails on EVENT', function () {
      compileDirective(curLvlE);
      scope.vs.curViewPort.sS = 10;
@@ -130,8 +131,8 @@ describe('Directive: level', function () {
      expect(elm.isolateScope()).toBeDefined();
      elm.isolateScope().drawLevelDetails();
      expect(scope.font.getTextImage).toHaveBeenCalled();
-   });   
-       
+   });
+
    it('should clear on mouseleave', function () {
      compileDirective(curLvl);
      expect(elm.isolateScope()).toBeDefined();
@@ -141,7 +142,7 @@ describe('Directive: level', function () {
      expect(scope.vs.setcurMouseItem).toHaveBeenCalledWith(undefined, undefined, undefined);
      expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalled();
    });
-       
+
    it('should check preselected boundary on drawLevelMarkup (SEGMENT)', inject(function($rootScope) {
      compileDirective(curLvl);
      var pcm = 4504;
@@ -155,7 +156,7 @@ describe('Directive: level', function () {
      elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
-       
+
    it('should check preselected boundary on drawLevelMarkup (EVENT)', inject(function($rootScope) {
      compileDirective(curLvl);
      var pcm = 4504;
@@ -169,7 +170,7 @@ describe('Directive: level', function () {
      elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
-       
+
    it('should check preselected boundary on drawLevelMarkup (first SEGMENT)', inject(function($rootScope) {
      compileDirective(curLvl);
      var pcm = 4504;
@@ -183,7 +184,7 @@ describe('Directive: level', function () {
      elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
-       
+
    it('should check preselected boundary on drawLevelMarkup (last SEGMENT)', inject(function($rootScope) {
      compileDirective(curLvl);
      var pcm = 4504;
@@ -197,7 +198,7 @@ describe('Directive: level', function () {
      elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
-       
+
    it('should drawLevelMarkup with multiple clicked segments', inject(function($rootScope) {
      compileDirective(curLvl);
      var pcm = 4504;
@@ -209,6 +210,6 @@ describe('Directive: level', function () {
      elm.isolateScope().redraw();
      expect(scope.vs.getPos).toHaveBeenCalled();
    }));
-          
+
 
 });

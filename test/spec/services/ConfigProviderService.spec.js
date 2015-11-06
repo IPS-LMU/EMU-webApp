@@ -38,12 +38,12 @@ describe('Service: ConfigProviderService', function () {
     ConfigProviderService.setVals(defaultEmuwebappConfig);
     // single value
     var newVals = {
-      'colors': {
-        'labelColor': 'mintGreen'
+      'labelCanvasConfig': {
+        'addTimeValue': 700
       }
     };
     ConfigProviderService.setVals(newVals);
-    expect(ConfigProviderService.vals.colors.labelColor).toBe('mintGreen');
+    expect(ConfigProviderService.vals.labelCanvasConfig.addTimeValue).toBe(700);
   }));
 
   /**

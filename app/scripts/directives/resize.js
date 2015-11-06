@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('resize', function () {
+  .directive('resize', function (LevelService, viewState) {
     return {
       restrict: 'A',
       link: function (scope, element) {
@@ -13,10 +13,12 @@ angular.module('emuwebApp')
         var saveButton = elem.find(element.parent().children()[2]);
 
         element.bind('click', function () {
+          LevelService.deleteEditArea();
+          viewState.setEditing(false);        
           if (scope.open) {
             scope.open = false;
             elemHeight = elem.css('height');
-            elem.css({'height': '30px'});
+            elem.css({'height': '25px'});
             if(scope.cps.vals.activeButtons.deleteSingleLevel) {
                 deleteButton.hide();
             }

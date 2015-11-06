@@ -1,0 +1,66 @@
+@import 'EMUwebAppDesign';
+@import 'font';
+@import 'mixins';
+
+.emuwebapp-hierarchy-container{
+    width: 100%;
+    height: calc(100% - 34px);
+}
+
+.emuhierarchy-node, .emuhierarchy-addbutton {
+    cursor: pointer;
+    circle {
+        stroke-width: 1.5px;
+    }
+    text {
+        @extend .emuwebapp-font-small;
+    }
+}
+
+.emuhierarchy-link {
+    fill: none;
+}
+
+/* Invisible, thick background for every link to provide easier mouse-over */
+.emuhierarchy-ghostlink {
+    fill: none;
+    /* The stroke color will never be visible due to the opacity of 0 */
+    stroke: white;
+    opacity: 0;
+}
+
+.emuhierarchy-newlinkpreview {
+    fill: none;
+    stroke-dasharray: 5 5;
+}
+
+.emuwebapp-modal-select {
+  padding: 0;
+  margin: 0;
+  border: 1px solid $color-blue;
+  width: auto;
+  overflow: hidden;
+  background-color: transparent;
+  background: transparent url('data:image/gif;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==') no-repeat 100% 50%;
+}
+
+.emuwebapp-modal-select select {
+    @include vendor-prefix(appearance, "none");
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    width: auto;
+    color: $color-black;
+    padding: 3px;
+    margin: 3px;
+    box-shadow: 0px;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+}
+.emuwebapp-modal-select select option {
+  padding-left: 40px;
+  padding-right: 40px;
+}

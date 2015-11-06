@@ -14,6 +14,7 @@ describe('Service: Validationservice', function () {
     $httpBackend.whenGET("schemaFiles/DBconfigFileSchema.json").respond(DBconfigFileSchema);
     $httpBackend.whenGET("schemaFiles/bundleListSchema.json").respond(bundleListSchema);
     $httpBackend.whenGET("schemaFiles/bundleSchema.json").respond(bundleSchema);
+    $httpBackend.whenGET("schemaFiles/designSchema.json").respond(designSchema);
     Validationservice.loadSchemas();
     $rootScope.$apply();
   }));

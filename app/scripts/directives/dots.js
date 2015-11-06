@@ -154,18 +154,18 @@ angular.module('emuwebApp')
 					ctx.stroke();
 					ctx.closePath();
 
-					var smallFontSize = scope.cps.vals.font.fontPxSize * 3 / 4;
+					var smallFontSize = scope.cps.design.font.input.size.slice(0, -2) * 3 / 4;
 					// ymax
-					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					var labelTxtImg = scope.fontImage.getTextImage(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black);
 					ctx.drawImage(labelTxtImg, 5, 5, labelTxtImg.width, labelTxtImg.height);
 
 					// xmin + y min
-					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor, true);
+					labelTxtImg = scope.fontImage.getTextImageTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black, true);
 					ctx.drawImage(labelTxtImg, 5, canvas.height - smallFontSize * scaleY * 2 - 5, labelTxtImg.width, labelTxtImg.height);
 
 					// xmax
 					var tw = ctx.measureText('xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 5)).width * scaleX; // SIC why 5???
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					labelTxtImg = scope.fontImage.getTextImage(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, scope.cps.design.color.black);
 					ctx.drawImage(labelTxtImg, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, labelTxtImg.width, labelTxtImg.height);
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
@@ -192,7 +192,7 @@ angular.module('emuwebApp')
 					}
 
 					tw = ctx.measureText('frame: ' + curFrame).width * scaleX;
-					labelTxtImg = scope.fontImage.getTextImage(ctx, 'frame: ' + curFrame, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.endBoundaryColor);
+					labelTxtImg = scope.fontImage.getTextImage(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, scope.cps.design.color.black);
 					var degrees = 90;
 					ctx.save();
 					ctx.rotate(degrees * Math.PI / 180);
@@ -250,7 +250,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 
 						// draw labels
-						var labelTxtImg = scope.fontImage.getTextImage(ctx, dD.dots[i].name, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, scope.cps.vals.colors.labelColor);
+						var labelTxtImg = scope.fontImage.getTextImage(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, scope.cps.design.color.black);
 						ctx.drawImage(labelTxtImg, x, y - 5, labelTxtImg.width, labelTxtImg.height);
 
 
@@ -297,7 +297,7 @@ angular.module('emuwebApp')
 						var labelX = ((sD.xNameCoordinate - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var labelY = canvas.height - ((sD.yNameCoordinate - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
-						var labelTxtImg = scope.fontImage.getTextImage(ctx, sD.name, scope.cps.vals.font.fontPxSize - 4, scope.cps.vals.font.fontType, sD.color);
+						var labelTxtImg = scope.fontImage.getTextImage(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, sD.color);
 						ctx.drawImage(labelTxtImg, labelX, labelY, labelTxtImg.width, labelTxtImg.height);
 
 						sD.xCoordinates.forEach(function (xVal, xIdx) {

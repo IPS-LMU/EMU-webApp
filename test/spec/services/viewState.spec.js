@@ -152,7 +152,23 @@ describe('Factory: viewState', function () {
     DataService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ["Phonetic", "Tone"], LevelService);
     viewState.select(3300, 7000);
-    viewState.selectItemsInSelection(DataService.data.levels);
+    var curClickItems = [];
+    var min = Infinity;
+    var max = -Infinity;
+    var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
+    angular.forEach(itemInSel, function (item) {
+      if ((item.sampleStart || item.samplePoint) < min) {
+        min = item.sampleStart || item.samplePoint;
+      }
+      if (((item.sampleStart + item.sampleDur + 1) || item.samplePoint) > max) {
+        max = (item.sampleStart + item.sampleDur + 1) || item.samplePoint;
+      }
+      var clickItemOrder = LevelService.getOrderById(viewState.getcurClickLevelName(), item.id);
+      var next = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder + 1);
+      var prev = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder - 1);
+      viewState.setcurClickItemMultiple(item, next, prev);
+    });
+    viewState.selectBoundary();
     expect(viewState.curClickItems.length).toEqual(2);
     expect(viewState.curClickItems[0].labels[0].value).toEqual('V');
     expect(viewState.curClickItems[1].labels[0].value).toEqual('m');
@@ -169,7 +185,23 @@ describe('Factory: viewState', function () {
     DataService.setData(msajc003_bndl.annotation);
     viewState.selectLevel(false, ['Phonetic', 'Tone'], LevelService);
     viewState.select(10, 9700);
-    viewState.selectItemsInSelection(DataService.data.levels);
+    var curClickItems = [];
+    var min = Infinity;
+    var max = -Infinity;
+    var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
+    angular.forEach(itemInSel, function (item) {
+      if ((item.sampleStart || item.samplePoint) < min) {
+        min = item.sampleStart || item.samplePoint;
+      }
+      if (((item.sampleStart + item.sampleDur + 1) || item.samplePoint) > max) {
+        max = (item.sampleStart + item.sampleDur + 1) || item.samplePoint;
+      }
+      var clickItemOrder = LevelService.getOrderById(viewState.getcurClickLevelName(), item.id);
+      var next = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder + 1);
+      var prev = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder - 1);
+      viewState.setcurClickItemMultiple(item, next, prev);
+    });
+    viewState.selectBoundary();
     range = viewState.getselectedRange();
     expect(range.start).toEqual(3750);
     expect(range.end).toEqual(9669);

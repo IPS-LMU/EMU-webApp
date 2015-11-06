@@ -5,13 +5,11 @@ angular.module('emuwebApp')
     return {
       restrict: 'A',
       link: function (scope, element, attr) {
-        var name = scope.level.name;
-
         element.bind('click', function () {
-          scope.vs.setcurClickLevelName(name, attr.save);
-          Espsparserservice.asyncParseJSO(name).then(function (result) {
-		    modalService.open('views/export.html', name + '_esps.txt', result);
-		  });
+          scope.vs.setcurClickLevelName(scope.level.name, attr.save);
+          Espsparserservice.asyncParseJSO(scope.level.name).then(function (result) {
+            modalService.open('views/export.html', name + '_esps.txt', result);
+          });
         });
       }
     };

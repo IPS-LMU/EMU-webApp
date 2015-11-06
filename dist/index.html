@@ -35,27 +35,34 @@
     <meta name="msapplication-TileColor" content="#0DC5FF">
     <meta name="msapplication-TileImage" content="assets/mstile-144x144.png">
     <!-- endicons -->
-   
-    <link rel="stylesheet" href="styles/89202259.emuwebAppExternal.min.css">
-    
 
-    <link rel="stylesheet" href="styles/10bb1e63.emuwebApp.min.css">
+    <link rel="stylesheet" href="styles/1c98af2c.emuwebAppExternal.min.css">
+
+
+<<<<<<< HEAD
+    <link rel="stylesheet" href="styles/7e4ef85a.emuwebApp.min.css">
+=======
+    <link rel="stylesheet" href="styles/6a77acdb.emuwebApp.min.css">
+>>>>>>> master
 
     <!-- set basedir for angular app change if not running in root of server-->
-    <base href="/EMU-webApp/">
+    <base href="/">
 </head>
 <body ng-app="emuwebApp">
-    <!-- use this div if you want to run the embedded version  -->
-<!--  
+
+    <!-- use this div if you want to run the embedded version
     <div style="position: relative; height:75%; width:50%; margin-left: 25%; margin-top: 4%;">
         <emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/oldFormat/msajc003/msajc003.TextGrid" label-type="TEXTGRID"></emuwebapp>
     </div>
- -->
-    <!-- use this div to run the regular (standalone+client) version -->
-    <div style="position: relative; height:100%; width:100%">
-        <emuwebapp class="emuwebapp"></emuwebapp>
-    </div>
+    -->
 
+    <!-- use this div to run the regular (standalone+client) version -->
+    <emuwebapp class="emuwebapp"></emuwebapp>
+
+		<!-- use this div to run the embedded version (wav and label auto load) -->
+		<!--
+		<emuwebapp class="emuwebapp" audio-get-url="/testData/oldFormat/msajc003/msajc003.wav" label-get-url="/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003_annot.json" label-type="annotJSON"></emuwebapp>
+		-->
 
     <!-- Google Analytics -->
      <script>
@@ -68,9 +75,13 @@
        ga('send', 'pageview');
     </script>
 
-    <script src="scripts/a548d04b.emuwebAppExternal.min.js"></script>
+    <script src="scripts/c3d1767b.emuwebAppExternal.min.js"></script>
 
-    <script src="scripts/0887bf64.emuwebApp.min.js"></script>
+<<<<<<< HEAD
+    <script src="scripts/3c06877c.emuwebApp.min.js"></script>
+=======
+    <script src="scripts/be56cc41.emuwebApp.min.js"></script>
+>>>>>>> master
 
 </body>
 </html>

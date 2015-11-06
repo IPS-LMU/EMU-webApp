@@ -92,7 +92,7 @@ angular.module('emuwebApp')
 			/////
 			// Iterate through levels bottom-up
 			for (i = 0; i < selectedPath.length; ++i) {
-				var level = LevelService.getLevelDetails(selectedPath[i]).level;
+				var level = LevelService.getLevelDetails(selectedPath[i]);
 
 				// This will be the total of the weights of all
 				// items on this level
@@ -102,14 +102,12 @@ angular.module('emuwebApp')
 				// Iterate through items to calculate their
 				// _weight and the level's _weight
 				for (ii = 0; ii < level.items.length; ++ii) {
-					var itemWeight = level.items[ii]._weight;
-
 					if (level.items[ii]._visible === false) {
 						level.items[ii]._weight = 0.35;
 					} else {
 						level.items[ii]._weight = 1;
 					}
-					
+
 					// Calculate weight of the level
 					level._weight += level.items[ii]._weight;
 				}
@@ -124,7 +122,7 @@ angular.module('emuwebApp')
 					level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight/2) / level._weight;
 					posInLevel += level.items[ii]._weight;
 					level.items[ii]._depth = selectedPath.length - i - 1;
-				
+
 					//////
 					// Additionally, calculate link positions
 					var links = DataService.getData().links;
@@ -197,10 +195,10 @@ angular.module('emuwebApp')
 		/**
 		 * This function aims to find and store the parents of every
 		 * node (along the selected path).
-		 * 
+		 *
 		 * First clears the _parents attribute from all item and then
 		 * re-calculates them.
-		 * 
+		 *
 		 * All items on the currently selected path will then have a
 		 * _parents property that is either an empty array (if it has
 		 * no parents) or an array containing its parents.
@@ -212,18 +210,18 @@ angular.module('emuwebApp')
 			// Clear _parents from all items
 			var level;
 			for (i = 0; i < selectedPath.length; ++i) {
-				level = LevelService.getLevelDetails(selectedPath[i]).level;
+				level = LevelService.getLevelDetails(selectedPath[i]);
 
 				for (ii=0; ii < level.items.length; ++ii) {
 					level.items[ii]._parents = [];
 				}
 			}
-			
-			
+
+
 			/////
 			// Iterate through levels
 			for (i = 0; i < selectedPath.length; ++i) {
-				level = LevelService.getLevelDetails(selectedPath[i]).level;
+				level = LevelService.getLevelDetails(selectedPath[i]);
 
 				// Iterate through the current level's items
 				// And save them as _parents in their children
@@ -261,10 +259,10 @@ angular.module('emuwebApp')
 
 			if (selectedPath !== undefined && selectedPath.length > 0) {
 				var rootLevelItems = [];
-				
+
 				var level;
 				for (var i=0; i < selectedPath.length; ++i) {
-					level = LevelService.getLevelDetails(selectedPath[i]).level;
+					level = LevelService.getLevelDetails(selectedPath[i]);
 
 					for (var ii=0; ii < level.items.length; ++ii) {
 						if (level.items[ii]._parents.length === 0) {
@@ -272,7 +270,7 @@ angular.module('emuwebApp')
 						}
 					}
 				}
-				
+
 
 				// First, set all nodes invisible. Later we will search
 				// all paths and if we find one uncollasped path to a
@@ -281,7 +279,7 @@ angular.module('emuwebApp')
 				var currentItem;
 				var items = [];
 				items = items.concat(rootLevelItems);
-				
+
 				while (items.length > 0) {
 					currentItem = items.pop();
 					items = items.concat(sServObj.findChildren(currentItem, selectedPath));
@@ -320,7 +318,7 @@ angular.module('emuwebApp')
 			//
 			// Set each item's collapsePosition as well
 			// collapsePosition is the coordinate where they fade out to or fade in from
-			
+
 			var currentDescendant;
 			var descendants = sServObj.findChildren(d, selectedPath);
 			while (descendants.length > 0) {
@@ -341,4 +339,3 @@ angular.module('emuwebApp')
 
 		return sServObj;
 	});
-

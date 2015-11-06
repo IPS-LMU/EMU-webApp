@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService($log, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice) {
+	.service('HistoryService', function HistoryService($log, $compile, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice) {
 
 		// shared service object
 		var sServObj = {};
@@ -21,225 +21,207 @@ angular.module('emuwebApp')
 				var cur = changeObj[key];
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
-						viewState.historyActionTxt = 'UNDO: SSFF manipulation';
+            sServObj.setHistoryActionText(true, 'SSFF manipulation');
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 					} else {
-						viewState.historyActionTxt = 'REDO: SSFF manipulation';
+						sServObj.setHistoryActionText(false, 'SSFF manipulation');
 						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'ANNOT') {
+          var action = false;
 					switch (cur.action) {
 						case 'MOVEBOUNDARY':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: MOVEBOUNDARY';
+                action = true;
 								LevelService.moveBoundary(cur.name, cur.id, -cur.movedBy, cur.isFirst, cur.isLast);
 							} else {
-								viewState.historyActionTxt = 'REDO: MOVEBOUNDARY';
-								LevelService.moveBoundary(cur.name, cur.id, cur.movedBy, cur.isFirst, cur.isLast);
+                LevelService.moveBoundary(cur.name, cur.id, cur.movedBy, cur.isFirst, cur.isLast);
 							}
 							break;
 						case 'MOVESEGMENT':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: MOVESEGMENT';
-								LevelService.moveSegment(cur.name, cur.id, cur.length, -cur.movedBy);
+                action = true;
+                LevelService.moveSegment(cur.name, cur.id, cur.length, -cur.movedBy);
 							} else {
-								viewState.historyActionTxt = 'REDO: MOVESEGMENT';
 								LevelService.moveSegment(cur.name, cur.id, cur.length, cur.movedBy);
 							}
 							break;
 						case 'MOVEEVENT':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: MOVEEVENT';
-								LevelService.moveEvent(cur.name, cur.id, -cur.movedBy);
+								action = true;
+                LevelService.moveEvent(cur.name, cur.id, -cur.movedBy);
 							} else {
-								viewState.historyActionTxt = 'REDO: MOVEEVENT';
 								LevelService.moveEvent(cur.name, cur.id, cur.movedBy);
 							}
 							break;
 						case 'RENAMELABEL':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: RENAMELABEL';
-								LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.oldValue);
+								action = true;
+                LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.oldValue);
 							} else {
-								viewState.historyActionTxt = 'REDO: RENAMELABEL';
 								LevelService.renameLabel(cur.name, cur.id, cur.attrIndex, cur.newValue);
 							}
 							break;
 						case 'RENAMELEVEL':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: RENAMELEVEL';
-								LevelService.renameLevel(cur.newname, cur.name, cur.curPerspectiveIdx);
+								action = true;
+                LevelService.renameLevel(cur.newname, cur.name, cur.curPerspectiveIdx);
 							} else {
-								viewState.historyActionTxt = 'REDO: RENAMELEVEL';
 								LevelService.renameLevel(cur.name, cur.newname, cur.curPerspectiveIdx);
 							}
 							break;
 						case 'DELETELEVEL':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETELEVEL';
-								LevelService.insertLevel(cur.level, cur.id, cur.curPerspectiveIdx);
+								action = true;
+                LevelService.insertLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETELEVEL';
 								LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 							}
 							break;
 						case 'DELETEBOUNDARY':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETEBOUNDARY';
-								LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.isFirst, cur.isLast, cur.deletedSegment);
+								action = true;
+                LevelService.deleteBoundaryInvers(cur.name, cur.id, cur.isFirst, cur.isLast, cur.deletedSegment);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETEBOUNDARY';
 								LevelService.deleteBoundary(cur.name, cur.id, cur.isFirst, cur.isLast);
 							}
 							break;
 						case 'DELETESEGMENTS':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETESEGMENTS';
-								LevelService.deleteSegmentsInvers(cur.name, cur.id, cur.length, cur.deletedSegment);
+								action = true;
+                LevelService.deleteSegmentsInvers(cur.name, cur.id, cur.length, cur.deletedSegment);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETESEGMENTS';
 								LevelService.deleteSegments(cur.name, cur.id, cur.length);
 							}
 							break;
 						case 'DELETEEVENT':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETEEVENT';
-								LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
+								action = true;
+                LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETEEVENT';
 								LevelService.deleteEvent(cur.name, cur.id);
 							}
 							break;
 						case 'DELETELINKSTO':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETELINKSTO';
-								LinkService.insertLinksTo(cur.deletedLinks);
+								action = true;
+                LinkService.insertLinksTo(cur.deletedLinks);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETELINKSTO';
 								LinkService.deleteLinksTo(cur.id);
 							}
 							break;
 						case 'DELETELINKBOUNDARY':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETELINKBOUNDARY';
-								LinkService.deleteLinkBoundaryInvers(cur.deletedLinks);
+								action = true;
+                LinkService.deleteLinkBoundaryInvers(cur.deletedLinks);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETELINKBOUNDARY';
 								LinkService.deleteLinkBoundary(cur.id, cur.neighbourId);
 							}
-							break;		
+							break;
 						case 'DELETELINKSEGMENT':
 							if (applyOldVal) {
-							    viewState.historyActionTxt = 'UNDO: DELETELINKSEGMENT';
-								LinkService.deleteLinkSegmentInvers(cur.deletedLinks);
+								action = true;
+                LinkService.deleteLinkSegmentInvers(cur.deletedLinks);
 							} else {
-							    viewState.historyActionTxt = 'REDO: DELETELINKSEGMENT';
 								LinkService.deleteLinkSegment(cur.segments);
 							}
-							break;									
+							break;
 						case 'INSERTLEVEL':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: INSERTLEVEL';
-								LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
+								action = true;
+                LevelService.deleteLevel(cur.id, cur.curPerspectiveIdx);
 							} else {
-								viewState.historyActionTxt = 'REDO: INSERTLEVEL';
 								LevelService.insertLevel(cur.level, cur.id, cur.curPerspectiveIdx);
 							}
 							break;
 						case 'INSERTSEGMENTS':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: INSERTSEGMENTS';
-								LevelService.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
+								action = true;
+                LevelService.insertSegmentInvers(cur.name, cur.start, cur.end, cur.segName);
 							} else {
-								viewState.historyActionTxt = 'REDO: INSERTSEGMENTS';
 								LevelService.insertSegment(cur.name, cur.start, cur.end, cur.segName, cur.ids);
 							}
 							break;
 						case 'INSERTEVENT':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: INSERTEVENT';
-								LevelService.deleteEvent(cur.name, cur.id);
+								action = true;
+                LevelService.deleteEvent(cur.name, cur.id);
 							} else {
-								viewState.historyActionTxt = 'REDO: INSERTEVENT';
 								LevelService.insertEvent(cur.name, cur.start, cur.pointName, cur.id);
 							}
 							break;
 						case 'INSERTLINKSTO':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: INSERTLINKSTO';
-								LinkService.deleteLinksTo(cur.parentID, cur.childIDs);
+								action = true;
+                LinkService.deleteLinksTo(cur.parentID, cur.childIDs);
 							} else {
-								viewState.historyActionTxt = 'REDO: INSERTLINKSTO';
 								LinkService.insertLinksTo(cur.parentID, cur.childIDs);
 							}
 							break;
 						case 'EXPANDSEGMENTS':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: EXPANDSEGMENTS';
-								LevelService.expandSegment(cur.rightSide, cur.item, cur.name, -cur.changeTime);
+								action = true;
+                LevelService.expandSegment(cur.rightSide, cur.item, cur.name, -cur.changeTime);
 							} else {
-								viewState.historyActionTxt = 'REDO: EXPANDSEGMENTS';
 								LevelService.expandSegment(cur.rightSide, cur.item, cur.name, cur.changeTime);
 							}
 							break;
 					}
+          sServObj.setHistoryActionText(action, cur.action);
 				} else if (cur.type === 'HIERARCHY') {
+                                        var action = false;
 					switch (cur.action) {
 						case 'DELETELINK':
 							// The order of links is not preserved on undo
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETELINK';
-								LinkService.insertLinkAt(cur.fromID, cur.toID, cur.position);
+								action = true;
+                LinkService.insertLinkAt(cur.fromID, cur.toID, cur.position);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETELINK';
 								LinkService.deleteLink(cur.fromID, cur.toID);
 							}
 							break;
 
 						case 'DELETEITEM':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: DELETEITEM';
-								LevelService.deleteItemWithLinksInvers(cur.item, cur.levelName, cur.position, cur.deletedLinks);
+								action = true;
+                LevelService.deleteItemWithLinksInvers(cur.item, cur.levelName, cur.position, cur.deletedLinks);
 							} else {
-								viewState.historyActionTxt = 'REDO: DELETEITEM';
 								LevelService.deleteItemWithLinks(cur.item.id);
 							}
 							break;
 
 						case 'ADDITEM':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: ADDITEM';
-								LevelService.addItemInvers(cur.newID);
+								action = true;
+                LevelService.addItemInvers(cur.newID);
 							} else {
-								viewState.historyActionTxt = 'REDO: ADDITEM';
 								LevelService.addItem(cur.neighborID, cur.before, cur.newID);
 							}
 							break;
 
 						case 'ADDLINK':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: ADDLINK';
-								LinkService.deleteLink(cur.link.fromID, cur.link.toID);
+								action = true;
+                LinkService.deleteLink(cur.link.fromID, cur.link.toID);
 							} else {
-								viewState.historyActionTxt = 'REDO: ADDLINK';
 								LinkService.insertLink(cur.link.fromID, cur.link.toID);
 							}
 							break;
 
 						case 'PUSHITEM':
 							if (applyOldVal) {
-								viewState.historyActionTxt = 'UNDO: PUSHITEM';
-								LevelService.addItemInvers(cur.newID);
+								action = true;
+                LevelService.addItemInvers(cur.newID);
 							} else {
-								viewState.historyActionTxt = 'REDO: PUSHITEM';
 								LevelService.pushNewItem(cur.level, cur.newID);
 							}
 							break;
 					}
+          sServObj.setHistoryActionText(action, cur.action);
 				}
 			});
 		}
@@ -341,7 +323,7 @@ angular.module('emuwebApp')
 
 				redoStack.push(oldChangeObj);
 				applyChange(oldChangeObj, true);
-				// remove old 
+				// remove old
 				undoStack.pop();
 				sServObj.movesAwayFromLastSave -= 1;
 			}
@@ -371,6 +353,15 @@ angular.module('emuwebApp')
 				'undo': undoStack,
 				'redo': redoStack
 			};
+		};
+
+		// set the displayed text of the historyActionPopup
+		sServObj.setHistoryActionText = function (isUndo, text) {
+		    var front = '<i>UNDO</i> &#8594; '
+        if(!isUndo) {
+					front = '<i>REDO</i> &#8592; '
+        }
+        viewState.historyActionTxt = front + text;
 		};
 
 		// resetToInitState

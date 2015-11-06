@@ -8,7 +8,7 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService) {
+	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService, StandardFuncsService) {
 		// shared service object
 		var sServObj = {};
 
@@ -19,7 +19,7 @@ angular.module('emuwebApp')
 		sServObj.loadBundle = function (bndl) {
 			// check if bndl has to be saved
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-				var curBndl = loadedMetaDataService.getCurBndl(); 
+				var curBndl = loadedMetaDataService.getCurBndl();
 				if (bndl !== curBndl) {
 					// $scope.lastclickedutt = bndl;
 					modalService.open('views/saveChanges.html', curBndl.session + ':' + curBndl.name).then(function (messModal) {
@@ -41,7 +41,11 @@ angular.module('emuwebApp')
 				if (bndl !== loadedMetaDataService.getCurBndl()) {
 					// reset history
 					HistoryService.resetToInitState();
+					// reset hierarchy
+					viewState.resetHierarchyState();
 					// set state
+                    LevelService.deleteEditArea();
+                    viewState.setEditing(false);
 					viewState.setState('loadingSaving');
 
 					viewState.somethingInProgress = true;
@@ -76,11 +80,6 @@ angular.module('emuwebApp')
 								viewState.curClickLevelType = undefined;
 
 								viewState.resetSelect();
-								// FOR DEVELOPMENT:
-								// viewState.curViewPort.sS = 52063;
-								// viewState.curViewPort.eS = 52100;
-								// viewState.curViewPort.selectS = 27575;
-								// viewState.curViewPort.selectE = 34538;
 								Soundhandlerservice.wavJSO = wavJSO;
 
 								// set all ssff files
@@ -180,6 +179,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
+
+			// clean to be safe...
+			StandardFuncsService.traverseAndClean(DataService.getData());
 			// annotation
 			bundleData.annotation = DataService.getData();
 
