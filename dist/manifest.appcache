@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2015-10-27T18:54:05.030Z
+# rev 1 - 2015-11-09T16:05:28.591Z
 
 CACHE:
 404.html
@@ -60,9 +60,12 @@ manual/GeneralUsage/pics/addBoundary.gif
 manual/GeneralUsage/pics/deleteBoundary.gif
 manual/GeneralUsage/pics/editLabel.gif
 manual/GeneralUsage/pics/moveBoundary.gif
+manual/GeneralUsage/pics/panHierarchy.gif
 manual/GeneralUsage/pics/preSelBoundary.gif
 manual/GeneralUsage/pics/preSelSeg.gif
+manual/GeneralUsage/pics/rotateHierarchy.gif
 manual/GeneralUsage/pics/selectLevel.gif
+manual/GeneralUsage/pics/zoomHierarchy.gif
 manual/Introduction.md
 manual/Labeling-articulatory-data.md
 manual/README.md
@@ -75,8 +78,8 @@ schemaFiles/bundleSchema.json
 schemaFiles/designSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/508660d1.emuwebAppExternal.min.js
-scripts/b3ec93ca.emuwebApp.min.js
+scripts/17d60c05.emuwebApp.min.js
+scripts/2e2d7952.emuwebAppExternal.min.js
 scripts/emuwebApp.min.js.map
 scripts/workers/espsParserWorkerClass.js
 scripts/workers/spectroDrawingWorkerClass.js
