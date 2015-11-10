@@ -42,7 +42,7 @@
 		  "type": "string"
 		},
 	  	"finishedEditing":{
-		  "type": "string"
+		  "type": "boolean"
 		},
 	  	"comment":{
 			"type": "string"
