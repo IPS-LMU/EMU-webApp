@@ -1,6 +1,10 @@
 What's New
 =============================================
 
+## Version 0.0.30
+
+- quickfix for typo in setting of encoding attribute. This caused the save function not to work!
+
 ## Version 0.0.29
 
 - now actively validates annotation data before saving them to the server
