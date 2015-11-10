@@ -198,7 +198,7 @@ angular.module('emuwebApp')
 			bundleData.annotation = DataService.getData();
 
 			// empty media file (depricated since schema was updated)
-			bundleData.mediaFile = {'encodingfds': 'BASE64', 'data': ''};
+			bundleData.mediaFile = {'encoding': 'BASE64', 'data': ''};
 
 			var curBndl = loadedMetaDataService.getCurBndl();
 

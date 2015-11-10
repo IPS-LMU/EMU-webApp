@@ -1,6 +1,10 @@
 What's New
 =============================================
 
+## Version 0.0.30
+
+- quickfix for typo in setting of encoding attribute. This caused the save function not to work!
+
 ## Version 0.0.29
 
 - now actively validates annotation data before saving them to the server
@@ -16,6 +20,7 @@ What's New
 - links that are selected but invisible (because their sub-tree is collapsed) can no longer be deleted
 - fixed a bug where shortcuts in hierarchy view were broken after e.g. clear and reconnect
 - hierarchy view is automatically resized when window is resized
+- not creating DOM elements for invisible bundleList entries which leads to much lower memory usage and a performance gain (ng-if vs. ng-show)
 
 ## Version 0.0.28
 
