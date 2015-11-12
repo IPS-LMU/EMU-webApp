@@ -1,6 +1,10 @@
 What's New
 =============================================
 
+## Version 0.0.31
+
+- quickfix for bad entry in bundleListSchema (only effects Node.js usage)
+
 ## Version 0.0.30
 
 - quickfix for typo in setting of encoding attribute. This caused the save function not to work!
