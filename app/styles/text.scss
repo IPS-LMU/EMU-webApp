@@ -10,6 +10,20 @@
   padding-right: 18px;
   word-wrap: break-word;
   padding-bottom: 120px;
+  .high {
+      @include vendor-prefix(box-sizing, "content-box");
+      background: $color-transparent-lightGrey;
+      border-radius: 10px;
+      margin: 10px;
+      text-align: left;
+  }
+  .low {
+      @include vendor-prefix(box-sizing, "content-box");
+      background: $color-lightGrey;
+      border-radius: 10px;
+      margin: 10px;
+      text-align: left;
+  }
   @extend .emuwebapp-font-small;
     .red {
       color: #f00;

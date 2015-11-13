@@ -4,7 +4,7 @@
 	<div>
 	<p>
 		<ul>
-		<li class="emuwebapp-sortOuter" ng-repeat="(key, value) in modal.dataOut.perspectives">
+		<li class="emuwebapp-sortOuter" ng-repeat="(key, value) in modal.dataOut.perspectives" ng-class="{high: $index%2==0, low: $index%2==1}">
 		<div>
 			<span ng-if="value.name == 'default'">
 			  default perspective
@@ -21,21 +21,24 @@
 		</div>
 		<div>
 			<u>Signal Canvases</u>
-			<ul class="emuwebapp-sort" ui-sortable ng-model="value.signalCanvases.order">
+			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="value.signalCanvases.order">
 				<li class="emuwebapp-sort" ng-repeat="signalCanvas in value.signalCanvases.order">{{ signalCanvas }}</li>
 			</ul>
 		</div>
 		<div>
 			<u>Level Canvases</u>
-			<ul class="emuwebapp-sort" ui-sortable ng-model="value.levelCanvases.order">
+			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="value.levelCanvases.order">
 				<li class="emuwebapp-sort" ng-repeat="levelCanvas in value.levelCanvases.order">{{ levelCanvas }}</li>
 			</ul>
 		</div>
 		<div>
 			<u>2D</u>
-			<ul class="emuwebapp-sort" ui-sortable ng-model="value.twoDimCanvases.order">
+			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="value.twoDimCanvases.order">
 				<li class="emuwebapp-sort" ng-repeat="twoDimCanvas in value.twoDimCanvases.order">{{ twoDimCanvas }}</li>
 			</ul>
+			
+			
+			{{value.twoDimCanvases}}
 		</div>
 		</li>
 		</ul>
