@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 
 		$scope.filterText = '';
 
-		$scope.pageSize = 1;
+		$scope.pageSize = 500;
 		$scope.currentPage = 0;
 
 		$scope.numberOfPages = function (sessionLength) {
