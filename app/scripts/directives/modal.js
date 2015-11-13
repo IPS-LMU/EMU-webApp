@@ -34,7 +34,6 @@ angular.module('emuwebApp')
 			    scope.force = modalService.force;
 			}
 		});
-
       }
     };
   });
