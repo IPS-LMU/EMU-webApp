@@ -4,6 +4,7 @@ What's New
 ## Version 0.0.32
 
 - improved EMU-webAppIcon-roundCorners.svg
+- improved connection dialog. urls can now be stored in local storage.
 
 ## Version 0.0.31
 

@@ -17,12 +17,22 @@ angular.module('emuwebApp')
 
 		$scope.filterText = '';
 
-		$scope.pageSize = 500;
+		$scope.pageSize = 1;
 		$scope.currentPage = 0;
 
 		$scope.numberOfPages = function (sessionLength) {
 			return Math.ceil(sessionLength / $scope.pageSize);
 		};
+		
+		$scope.turn = function (direction) {
+			if(direction) {
+			    $scope.currentPage++;
+			}
+			else {
+    			$scope.currentPage--;
+			}
+		};
+		
 
 		/**
 		 * returns false if bndl is current bndl

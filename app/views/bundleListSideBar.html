@@ -19,11 +19,11 @@
                 </div>
                 <div class="emuwebapp-bundleListSessionBndlsContainer" ng-if="!lmds.getSessionCollapseState(key)">
                     <div class="emuwebapp-bundleListSessionPager" ng-if="value.length > pageSize">
-                        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                        <button ng-disabled="currentPage == 0" ng-click="turn(false);">
                             ←
                         </button>
                         {{currentPage+1}}/{{numberOfPages(value.length)}}
-                        <button ng-disabled="currentPage >= value.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                        <button ng-disabled="currentPage >= value.length/pageSize - 1" ng-click="turn(true);">
                             →
                         </button>
                     </div>
@@ -34,7 +34,15 @@
                             <div ng-if="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-focus="vs.setcursorInTextField(true)" ng-blur="vs.setcursorInTextField(false)" ng-model="bundle.comment"/></div>
                         </div>
                     </div>
-
+                    <div class="emuwebapp-bundleListSessionPager" ng-if="value.length > pageSize">
+                        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                            ←
+                        </button>
+                        {{currentPage+1}}/{{numberOfPages(value.length)}}
+                        <button ng-disabled="currentPage >= value.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                            →
+                        </button>
+                    </div>
                 </ul>
             </div>
         </div>
