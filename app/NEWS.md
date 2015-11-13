@@ -1,6 +1,10 @@
 What's New
 =============================================
 
+## Version 0.0.32
+
+- improved EMU-webAppIcon-roundCorners.svg
+
 ## Version 0.0.31
 
 - quickfix for bad entry in bundleListSchema (only effects Node.js usage)
