@@ -50,7 +50,7 @@
     .emuwebapp-bundle-container {
         width: calc(100% - 20px);
         height: calc(100% - 60px) !important;
-        overflow-y: scroll;
+        overflow-y: auto;
         text-align: left;
         padding: 10px;
         font-size: 0.8em;
