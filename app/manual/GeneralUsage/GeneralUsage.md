@@ -31,7 +31,7 @@ Other actions that can be performed on preselected boundaries include:
 - snap to nearest zero crossing (Keyboard Shortcut `x`)
 
 To add a new boundary/event marker one has to first select the desired level one wishes to add it to by using the ↑ up and 
-↓ down cursor keys:
+↓ down cursor keys (or by clicking the desired level with the mouse):
 
 ![Alt text](manual/GeneralUsage/pics/selectLevel.gif)
 
@@ -90,43 +90,41 @@ In some databases, there may be different levels with time information and/or di
 
 The drop-down menu above the hierarchy graph shows all possible paths in the current database. Changing it will re-draw the graph to show the selected path.
 
-IMAGE
-
 ### Selecting labels
 
 On each level there may be parallel labels. A phoneme level might carry an IPA label and a SAMPA label, for instance. You can select which labels to see beneath the items by using the drop-down menus at the very top of the hierarchy view.
 
-IMAGE
-
-### Moving portions of the hierarchy out of sight
+### Moving portions of the hierarchy out of sight (a.k.a. collapsing a sub-tree)
 
 You can move parts of the hierarchy out of sight by selecting the root node of that part and collapsing it.
 
 Identify the root item of the sub-tree that you want to collapse. Clicking it will open a context menu. That context menu has a small arrow pointing in either of two directions. Clicking the arrow will collapse or decollapse the item’s children and flip the arrow’s direction. As long as the children are collapsed, the node will have a red outline.
 
-IMAGE
+![Collapsing a sub-tree](manual/GeneralUsage/pics/collapseSubtree.gif)
 
 ### Adding a new item
 
 To add a new item on a level, you have two choices. Either press the blue and white plus button next to the level’s name. An item will be appended to the end of the level. As long as the level contains no items, this is your only choice. Once there are other items, you can pre-select one of them (by moving your mouse there) and then hit either the `n` or `m` key to insert a new item before or after the pre-selected one, respectively. 
 
-IMAGE
+![Adding a new item](manual/GeneralUsage/pics/addItem.gif)
 
 ### Modifying a label
 
-Open an item’s context menu by single left-clicking it. You can then type a new label. The background of the text input turns red or green, indicating whether the label you’ve typed is acceptable. When done, hit `Return`.
+Open an item’s context menu by single left-clicking it. You can then type a new label. The background of the text input turns red or green, indicating whether the label you have typed is legal. When done, hit Return.
 
-IMAGE
+Which labels are legal is defined in the database configuration. By default, all labels are legal. If you type an illegal label, you cannot save it.
+
+![Modifying a label](manual/GeneralUsage/pics/modifyLabel.gif)
 
 ### Adding a new link
 
 To add a new link between two items, move the mouse over one of the two. It will then turn blue, indicating it is pre-selected. Then hold down the `Shift` key and move the mouse to the other item. While you are moving, a straight line appears to connect the pre-selected item and the mouse pointer. Once you reach the second item, a dashed line will appear between both items. The color’s line (green or red) indicates whether the link is acceptable. By releasing the `Shift` key, you actually add the link, replacing the dashed, green line by a solid, grey line. If the dashed line was red (indicating an illegal link), it will just disappear when the `Shift` key is released.
 
-IMAGE
+![Adding a new link](manual/GeneralUsage/pics/addLink.gif)
 
 ### Deleting an item or a link
 
-To delete an item or a link, first pre-select it by moving the mouse pointer to it. The pre-selection is indicated in blue for items and in yellow for links. Remove the pre-selected link by hitting `Backspace` or the pre-selected item by hitting the `y` key.
+To delete an item or a link, first pre-select it by moving the mouse pointer to it. The pre-selection is indicated in blue for items and in yellow for links. Remove the pre-selected link by hitting `Backspace` or the pre-selected item by hitting the `y` key. Deleting an item will also delete all links leading to or from it.
 
-IMAGE
+![Deleting an item or a link](manual/GeneralUsage/pics/deleteItemOrLink.gif)
 
