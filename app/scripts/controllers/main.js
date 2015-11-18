@@ -682,7 +682,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.aboutBtnClick = function () {
-		    modalService.open('views/help.html');
+			if (viewState.getPermission('aboutBtnClick')) {
+				modalService.open('views/help.html');
+			}
 		};
 
 		/**
