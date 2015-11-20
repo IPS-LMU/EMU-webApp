@@ -78,13 +78,13 @@
             }
         }
         ul {
-            height: calc(100% - 60px) !important;
+            
         }
     } 
 }
 
 .emuwebapp-bundleListSessionBndlsContainer {
-    height: 100% !important;
+    height: 100%;
     &.ng-hide-add.ng-hide-add-active {
         @include vendor-prefix(transition, "all "+$animation-period+"ms ease-out");
     }
