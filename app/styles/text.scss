@@ -25,9 +25,14 @@
       text-align: left;
   }
   @extend .emuwebapp-font-small;
-    .red {
-      color: #f00;
-    }
+  .red {
+  	color: #f00;
+  }
+  .emuwebapp-sort-line {
+   border: 0;
+    border-bottom: 1px dashed #ccc;
+    background: #999;
+  }
     .emuwebapp-sortOuter {
       list-style-type: none;
       text-align: left;
