@@ -8,7 +8,7 @@
         </h3>
         <my-drop-zone ng-if="vs.showDropZone"></my-drop-zone>
         <div id="emuwebapp-bundleListContainer" class="emuwebapp-bundle-container" ng-if="!vs.showDropZone">
-            <ul ng-repeat="(key, value) in lmds.getRendOptBndlList()">
+            <ul ng-repeat="(key, value) in lmds.getRendOptBndlList()" ng-class="{'emuwebapp-bundle-last':$last}">
                 <div class="emuwebapp-bundle-session" ng-if="isSessionDefined(key)" ng-click="lmds.toggleCollapseSession(key)">
                     <div ng-if="lmds.getSessionCollapseState(key)">
                         ▷{{key}}
@@ -27,7 +27,7 @@
                             →
                         </button>
                     </div>
-                    <div ng-repeat="bundle in value | startFrom:currentPage*pageSize | limitTo:pageSize | regex:filterText" ng-class="{'emuwebapp-bundle-last':$last}">
+                    <div ng-repeat="bundle in value | startFrom:currentPage*pageSize | limitTo:pageSize | regex:filterText">
                         <div class="emuwebapp-bundle-item" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="dolss.loadBundle(bundle);" dragout name="{{bundle.name}}">
                             <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();" ng-disabled="uttIsDisabled(bundle)" ng-if="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.svg" /></button>
                             <div ng-if="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-model="bundle.finishedEditing"/> <br /></div>
