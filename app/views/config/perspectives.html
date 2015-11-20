@@ -18,8 +18,8 @@
 		</div>
 		<div>
 			<u>Signal Canvases</u>
-			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="value.signalCanvases.order">
-				<li class="emuwebapp-sort" ng-repeat="signalCanvas in value.signalCanvases.order track by $index">
+			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="modal.dataOut.perspectives[key].signalCanvases.order">
+				<li class="emuwebapp-sort" ng-repeat="signalCanvas in modal.dataOut.perspectives[key].signalCanvases.order track by $index">
 					<a style="cursor: pointer;" href="#" ng-click="signalDelete(key, $index)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a> {{ signalCanvas }} 
 				</li>
 			</ul>

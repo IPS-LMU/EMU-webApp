@@ -36,7 +36,7 @@ angular.module('emuwebApp')
     // signal types enum
     var mySignalType = {
       OSCI: 1,
-      SPECTRO: 2,
+      SPEC: 2,
       fundFreq: 3,
       dftSpec: 4
     };
