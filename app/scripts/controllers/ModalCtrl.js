@@ -4,6 +4,7 @@ angular.module('emuwebApp')
 	.controller('ModalCtrl', function ($scope, ArrayHelperService, browserDetector, modalService, viewState, LevelService, HistoryService, ConfigProviderService) {
 
 		$scope.cps = ConfigProviderService;
+		$scope.vs = viewState;
 		$scope.data = undefined;
 		$scope.mySelect = null;
 

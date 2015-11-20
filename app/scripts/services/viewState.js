@@ -27,13 +27,19 @@ angular.module('emuwebApp')
       EMBEDDED: 3
     };    
     
-    // communication modes enum
+    // time modes enum
     var myTimeMode = {
       absolute: 1,
       relative: 2
     };    
         
-    
+    // signal types enum
+    var mySignalType = {
+      OSCI: 1,
+      SPECTRO: 2,
+      fundFreq: 3,
+      dftSpec: 4
+    };
 
     // hold the current attribute definitions that are in view
     sServObj.curLevelAttrDefs = [];
@@ -561,7 +567,13 @@ angular.module('emuwebApp')
       return myTimeMode;
     };       
 
-
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getSignalTypes = function () {
+      return mySignalType;
+    };  
+    
     /**
      * set if user is dragging dragbar
      */

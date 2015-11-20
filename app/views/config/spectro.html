@@ -20,37 +20,25 @@
           <span ng-switch-when="integer">
             <input type="text" ng-pattern="/^\d+$/" ng-model="modal.dataOut.spectrogramSettings[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
           </span>         
-          <span ng-switch-when="array" style="font-size: 70% !important;">
-	            <table  style="font-size: 70% !important;">
-					<tr>
-						<th></th>
-						<th>red</th>
-						<th>green</th>
-						<th>blue</th>
-						<th>resulting color</th>
-					</tr>
-	                <tr>
-	                    <td>First color:</td>
-	                    <td>r: <input  type="text" ng-model="value[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td>g: <input  type="text" ng-model="value[0][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td>b: <input  type="text" ng-model="value[0][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td><div ng-style="viewState.getColorOfAnchor(value, 0);"></div></td>
-	                </tr>
-	                <tr>
-	                    <td>Second color: </td>
-	                    <td>r: <input  type="text" ng-model="value[1][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td>g: <input  type="text" ng-model="value[1][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td>b: <input  type="text" ng-model="value[1][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td><div ng-style="viewState.getColorOfAnchor(value, 1);"></div></td>
-	                </tr>
-	                <tr>
-	                    <td>Third color: </td>
-	                    <td>r: <input  type="text" ng-model="value[2][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td>g: <input  type="text" ng-model="value[2][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td>b: <input  type="text" ng-model="value[2][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/></td>
-	                    <td><div ng-style="viewState.getColorOfAnchor(value, 2);"></div></td>
-	                </tr>
-	            </table>          
+          <span ng-switch-when="array">
+          	<span style="width:100%">first<br />
+            	r: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[0][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+          		g: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[0][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+          		b: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[0][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+          		<div style="display: inline-block;" ng-style="vs.getColorOfAnchor(modal.dataOut.spectrogramSettings.heatMapColorAnchors, 0);"></div>
+          	</span>
+          	<span style="width:100%">second<br />
+            	r: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[1][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+          		g: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[1][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+          		b: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[1][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+	            <div style="display: inline-block;" ng-style="vs.getColorOfAnchor(modal.dataOut.spectrogramSettings.heatMapColorAnchors, 1);"></div>
+          	</span>
+          	<span style="width:100%">third<br />
+            	r: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[2][0]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+          		g: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[2][1]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+          		b: <input type="text" size="3" ng-model="modal.dataOut.spectrogramSettings.heatMapColorAnchors[2][2]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
+	            <div style="display: inline-block;" ng-style="vs.getColorOfAnchor(modal.dataOut.spectrogramSettings.heatMapColorAnchors, 2);"></div>
+          	</span>
           </span>
           <span ng-switch-default>
             <span ng-switch="key">

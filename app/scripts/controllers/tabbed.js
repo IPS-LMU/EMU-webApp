@@ -3,6 +3,8 @@
 angular.module('emuwebApp')
 	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice, viewState, modalService) {
 		$scope.cps = ConfigProviderService;
+		$scope.vs = viewState;
+		
 		// all available tabs
 		$scope.tree = [{
 			title: 'Main Settings',
@@ -22,7 +24,8 @@ angular.module('emuwebApp')
 		}];
 
 		$scope.sortableOptions = {
-
+			'ui-floating': true,
+			axis: 'y'
 		};
 
 		$scope.cps = ConfigProviderService;
@@ -32,6 +35,9 @@ angular.module('emuwebApp')
 		$scope.options = Object.keys(viewState.getWindowFunctions());
 		$scope.timeMode = Object.keys(viewState.getTimeModes());
 		$scope.comMode = Object.keys(viewState.getCommunicationModes());
+		$scope.signalTypes = Object.keys(viewState.getSignalTypes());
+		
+		$scope.currentSignal = $scope.signalTypes[0];
 
 		$scope.onClickTab = function (node) {
 			if(node.url !== false) {
@@ -56,6 +62,14 @@ angular.module('emuwebApp')
 		$scope.perspDelete = function (key) {
 			delete $scope.modal.dataOut.perspectives.splice(key, 1);
 		};
+		
+		$scope.signalDelete = function (key, index) {
+			$scope.modal.dataOut.perspectives[key].signalCanvases.order.splice(index, 1);
+		};
+		
+		$scope.signalAdd = function (key,  signal) {
+			$scope.modal.dataOut.perspectives[key].signalCanvases.order.splice($scope.modal.dataOut.perspectives[key].signalCanvases.order.length, 0, signal);
+		};		
 
 		$scope.perspAdd = function () {
 			var obj = {
