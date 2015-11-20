@@ -33,6 +33,19 @@ angular.module('emuwebApp')
 		sServObj.getLevelData = function () {
 			return sServObj.data.levels;
 		};
+		
+
+		/**
+		 * returns all the level data
+		 * @return data containing all level data
+		 */
+		sServObj.getLevelOrder = function (order) {
+		    if(sServObj.data.levels !== undefined) {
+				return sServObj.data.levels.sort(function(a, b) {
+					return order.indexOf(a.name) - order.indexOf(b.name);
+				});
+		    }
+		};		
 
 		/**
 		 * returns a specific level at given position
