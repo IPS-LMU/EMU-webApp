@@ -443,9 +443,9 @@ angular.module('emuwebApp')
 
 	scope.getOrientatedTimeLevelBackgroundTransform = function (d) {
 		if (scope.vertical) {
-			return 'translate('+(scope.vertOffsetX-25)+',-15)';
+			return 'translate('+(scope.vertOffsetX-25)+',-8)';
 		} else {
-			return 'translate(-10,'+(scope.offsetY-20)+')';
+			return 'translate(-8,'+(scope.offsetY-20)+')';
 		}
 	};
 	
@@ -453,15 +453,13 @@ angular.module('emuwebApp')
 		if (scope.vertical) {
 			return '100%';
 		} else {
-			var levelWidth = scope.depthToX(1) - scope.depthToX(0);
-			return levelWidth+'px';
+			return '15px';
 		}
 	};
 
 	scope.getOrientatedTimeLevelBackgroundHeight = function (d) {
 		if (scope.vertical) {
-			var levelHeight = scope.depthToX(1) - scope.depthToX(0);
-			return levelHeight +'px';
+			return '15px';
 		} else {
 			return '100%';
 		}
@@ -965,7 +963,7 @@ angular.module('emuwebApp')
 			})
 			.append('rect')
 			.attr('class', 'emuhierarchy-timelevelbackground')
-			.style('fill', scope.cps.design.color.grey)
+			.style('fill', scope.cps.design.color.transparent.grey)
 			;
 
 		levelCaptionSet
