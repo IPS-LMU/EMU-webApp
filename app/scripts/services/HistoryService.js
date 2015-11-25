@@ -39,18 +39,18 @@ angular.module('emuwebApp')
 							// The order of links is not preserved on undo
 							if (applyOldVal) {
 								action = true;
-								loadedMetaDataService.setBndlComment(cur.bundle, cur.key, cur.index);
+								loadedMetaDataService.setBndlComment(cur.data, cur.key, cur.index);
 							} else {
-								loadedMetaDataService.setBndlComment(cur.bundle, cur.key, cur.index);
+								loadedMetaDataService.setBndlComment(cur.data, cur.key, cur.index);
 							}
 							break;
 						case 'FINISHED':
 							// The order of links is not preserved on undo
 							if (applyOldVal) {
 								action = true;
-								loadedMetaDataService.setBndlFinished(cur.key, cur.index, cur.bundle.finishedEditing);
+								loadedMetaDataService.setBndlFinished(cur.key, cur.index, false);
 							} else {
-								loadedMetaDataService.setBndlFinished(cur.key, cur.index, cur.bundle.finishedEditing);
+								loadedMetaDataService.setBndlFinished(cur.key, cur.index, true);
 							}
 							break;							
 					}				
