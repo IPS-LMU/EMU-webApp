@@ -21,6 +21,9 @@ angular.module('emuwebApp')
 		}, {
 			title: 'Restrictions',
 			url: 'views/config/restrictions.html'
+		}, {
+			title: 'Buttons',
+			url: 'views/config/buttons.html'
 		}];
 
 		$scope.sortableOptions = {

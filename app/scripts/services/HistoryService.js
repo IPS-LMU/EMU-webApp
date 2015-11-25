@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService($log, $compile, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice) {
+	.service('HistoryService', function HistoryService($log, $compile, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice, loadedMetaDataService) {
 
 		// shared service object
 		var sServObj = {};
@@ -31,7 +31,30 @@ angular.module('emuwebApp')
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
-				} else if (cur.type === 'ANNOT') {
+				} else if (cur.type === 'WEBAPP') {
+					var action = false;
+					console.log(cur);					
+					switch (cur.action) {
+						case 'COMMENT':
+							// The order of links is not preserved on undo
+							if (applyOldVal) {
+								action = true;
+								loadedMetaDataService.setBndlComment(cur.bundle, cur.key, cur.index);
+							} else {
+								loadedMetaDataService.setBndlComment(cur.bundle, cur.key, cur.index);
+							}
+							break;
+						case 'FINISHED':
+							// The order of links is not preserved on undo
+							if (applyOldVal) {
+								action = true;
+								loadedMetaDataService.setBndlFinished(cur.key, cur.index, cur.bundle.finishedEditing);
+							} else {
+								loadedMetaDataService.setBndlFinished(cur.key, cur.index, cur.bundle.finishedEditing);
+							}
+							break;							
+					}				
+				} else if (cur.type === 'ANNOT') {				
 					var action = false;
 					switch (cur.action) {
 						case 'MOVEBOUNDARY':
