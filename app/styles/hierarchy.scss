@@ -40,8 +40,17 @@
   border: 1px solid $color-blue;
   width: auto;
   overflow: hidden;
-  background-color: transparent;
-  background: transparent url('data:image/gif;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==') no-repeat 100% 50%;
+  background: url('data:image/gif;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==') no-repeat 100% 50%;
+}
+
+#emuwebapp-selection {
+	width: 100% !important;
+	text-align: center;
+}
+
+#emuwebapp-selection option{
+	width: 100% !important;
+	text-align: center;	
 }
 
 .emuwebapp-modal-select select {
@@ -50,7 +59,7 @@
     box-shadow: none;
     background-color: transparent;
     background-image: none;
-    width: auto;
+    width: 100%;
     color: $color-black;
     padding: 3px;
     margin: 3px;
