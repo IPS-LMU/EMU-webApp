@@ -370,6 +370,15 @@ angular.module('emuwebApp')
 		return 'NO VALUE';
 	};
 
+	  scope.getLevelCaptionText = function (levelName) {
+          var attributeDefinition = viewState.getCurAttrDef(levelName);
+          if (levelName === attributeDefinition) {
+              return levelName;
+          } else {
+              return levelName + ':' + attributeDefinition;
+          }
+	  };
+
 	scope.getOrientatedNodeCollapseText = function(d) {
 		if (scope.vertical) {
 			if (viewState.hierarchyState.getCollapsed(d.id)) {
@@ -928,9 +937,7 @@ angular.module('emuwebApp')
 			;
 
 		newLevelCaptions
-			.append('text').text( function (d) {
-				return d;
-			})
+			.append('text')
 			;
 
 		var addItemButtons = newLevelCaptions
@@ -969,6 +976,10 @@ angular.module('emuwebApp')
 		levelCaptionSet
 			.attr('transform', scope.getOrientatedLevelCaptionTransform)
 			;
+
+		levelCaptionSet
+				.select('text')
+				.text( scope.getLevelCaptionText );
 
 		levelCaptionSet
 			.select('.emuhierarchy-timelevelbackground')
