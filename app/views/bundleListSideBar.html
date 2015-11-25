@@ -31,7 +31,7 @@
                         <div class="emuwebapp-bundle-item" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="dolss.loadBundle(bundle);" dragout name="{{bundle.name}}">
                             <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();" ng-disabled="uttIsDisabled(bundle)" ng-if="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/saveBtn.svg" /></button>
                             <div ng-if="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-model="bundle.finishedEditing" ng-change="history(bundle, key, $index, 'finishedEditing')"/> <br /></div>
-                            <div ng-if="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-focus="vs.setcursorInTextField(true);" ng-blur="vs.setcursorInTextField(false); history(bundle, key, $index, 'comment');" ng-model="bundle.comment"/></div>
+                            <div ng-if="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-focus="vs.setcursorInTextField(true); history(bundle, key, $index, 'comment');" ng-blur="vs.setcursorInTextField(false); history(bundle, key, $index, 'comment');" ng-model="bundle.comment"/></div>
                         </div>
                     </div>
                     <div class="emuwebapp-bundleListSessionPager" ng-if="value.length > pageSize">
