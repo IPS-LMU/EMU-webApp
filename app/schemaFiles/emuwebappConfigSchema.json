@@ -5,9 +5,6 @@
 		"main": {
 			"type": "object",
 			"properties": {
-				"osciSpectroZoomFactor": {
-					"type": "integer"
-				},
 				"autoConnect": {
 					"type": "boolean"
 				},
@@ -24,7 +21,7 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["osciSpectroZoomFactor", "autoConnect", "serverUrl", "serverTimeoutInterval", "comMode", "catchMouseForKeyBinding"],
+			"required": ["autoConnect", "serverUrl", "serverTimeoutInterval", "comMode", "catchMouseForKeyBinding"],
 			"additionalProperties": false
 		},
 		"keyMappings": {
