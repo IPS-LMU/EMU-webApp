@@ -32,8 +32,7 @@ angular.module('emuwebApp')
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'WEBAPP') {
-					var action = false;
-					console.log(cur);					
+					var action = false;			
 					switch (cur.action) {
 						case 'COMMENT':
 							// The order of links is not preserved on undo

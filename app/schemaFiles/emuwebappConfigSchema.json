@@ -573,7 +573,7 @@
 				"showHierarchy": {
 					"type": "boolean"
 				},
-				"editDBconfig": {
+				"editEMUwebAppConfig": {
 					"type": "boolean"
 				}
 			},

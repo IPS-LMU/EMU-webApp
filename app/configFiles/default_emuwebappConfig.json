@@ -122,7 +122,7 @@
         "saveBundle": false,
         "openMenu": true,
         "showHierarchy": false,
-        "editDBconfig": false
+        "editEMUwebAppConfig": false
     },
     "demoDBs": ["ae", "ema", "epgdorsal"]
 }
