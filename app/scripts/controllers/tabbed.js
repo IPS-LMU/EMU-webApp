@@ -71,6 +71,9 @@ angular.module('emuwebApp')
 		};
 		
 		$scope.signalAdd = function (key,  signal) {
+			if($scope.modal.dataOut.perspectives[key].signalCanvases.order === undefined) {
+				$scope.modal.dataOut.perspectives[key].signalCanvases.order = [];
+			}
 			$scope.modal.dataOut.perspectives[key].signalCanvases.order.splice($scope.modal.dataOut.perspectives[key].signalCanvases.order.length, 0, signal);
 		};		
 
