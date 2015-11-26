@@ -65,6 +65,22 @@ angular.module('emuwebApp')
 		$scope.perspDelete = function (key) {
 			delete $scope.modal.dataOut.perspectives.splice(key, 1);
 		};
+
+		$scope.signalUp = function (key, index) {
+		    if(index>0) {
+		        var tmp = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index-1];
+		        $scope.modal.dataOut.perspectives[key].signalCanvases.order[index-1] = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index];
+		        $scope.modal.dataOut.perspectives[key].signalCanvases.order[index] = tmp;
+		    }
+		};
+		
+		$scope.signalDown = function (key, index) {
+			if($scope.modal.dataOut.perspectives[key].signalCanvases.order[index+1] !== undefined) {
+    		    var tmp = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index+1];
+	    	    $scope.modal.dataOut.perspectives[key].signalCanvases.order[index+1] = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index];
+	            $scope.modal.dataOut.perspectives[key].signalCanvases.order[index] = tmp;
+			}
+		};	
 		
 		$scope.signalDelete = function (key, index) {
 			$scope.modal.dataOut.perspectives[key].signalCanvases.order.splice(index, 1);
@@ -104,6 +120,8 @@ angular.module('emuwebApp')
 			viewState.setEditing(false);
 			viewState.setcursorInTextField(false);
 		};
+
+
 
 		$scope.onClickTab($scope.tree[0]);
 	});

@@ -18,9 +18,12 @@
 		</div>
 		<div>
 			<u>Signal Canvases</u>
-			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="modal.dataOut.perspectives[key].signalCanvases.order">
-				<li class="emuwebapp-sort" ng-repeat="signalCanvas in modal.dataOut.perspectives[key].signalCanvases.order track by $index">
-					<a style="cursor: pointer;" href="#" ng-click="signalDelete(key, $index)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a> {{ signalCanvas }} {{$index}}
+			<ul class="emuwebapp-signalcanvas" ng-model="modal.dataOut.perspectives[key].signalCanvases.order">
+				<li ng-repeat="item in modal.dataOut.perspectives[key].signalCanvases.order track by $index">						
+					<a href="#" ng-click="signalUp(key, $index)">&uarr;</a>
+					<a href="#" ng-click="signalDown(key, $index)">&darr;</a>
+					{{ $index }} : {{ item }}
+					<a href="#" ng-click="signalDelete(key, $index)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a>
 				</li>
 			</ul>
 			add a new <select ng-model="currentSignal" ng-options="signal for signal in signalTypes" /> 

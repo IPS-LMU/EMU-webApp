@@ -63,7 +63,7 @@
     
    .emuwebapp-delete-signal {
     	@extend .emuwebapp-add-signal;
-    	float: left;
+    	float: right;
     }     
     
     .emuwebapp-delete {
@@ -85,6 +85,17 @@
         right:0;
         margin-top: 0;
         margin-bottom: 0;
+    }
+    .emuwebapp-signalcanvas {
+    	list-style-type: none;
+    	width: 50%;
+    	margin-left: 25%;	
+    	li {
+    	    list-style-type: none;
+    	    background-color: $color-blue;
+    	    margin: 10px;
+    	    padding: 3px; 
+    	}
     }
 }
 
