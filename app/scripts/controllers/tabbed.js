@@ -36,10 +36,21 @@ angular.module('emuwebApp')
 			$scope.timeMode = Object.keys(viewState.getTimeModes());
 			$scope.comMode = Object.keys(viewState.getCommunicationModes());
 			$scope.signalTypes = Object.keys(viewState.getSignalTypes());
-			$scope.currentSignal = $scope.signalTypes[0];
+			$scope.levelTypes = [];
+			
 			angular.forEach(ConfigProviderService.curDbConfig.ssffTrackDefinitions, function (val, key) {
 				$scope.signalTypes.push(val.name);
 			});
+			angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (val, key) {
+				if(val.type === 'SEGMENT' || val.type === 'EVENT') {
+					$scope.levelTypes.push(val.name);
+				}
+			});
+			$scope.currentSignal = $scope.signalTypes[0];
+			if($scope.levelTypes.length>0) {
+				$scope.currentLevel = $scope.levelTypes[0];
+			}
+			
 		};
 
 		$scope.onClickTab = function (node) {
@@ -117,6 +128,14 @@ angular.module('emuwebApp')
 			}
 			p.signalCanvases.order.push(signal);
 		};		
+
+		$scope.levelAdd = function (key,  signal) {
+			var p = $scope.modal.dataOut.perspectives[key];
+			if(p.levelCanvases.order === undefined) {
+				p.levelCanvases.order = [];
+			}
+			p.levelCanvases.order.push(signal);
+		};	
 
 		$scope.perspAdd = function () {
 			var obj = {
