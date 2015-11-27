@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, ConfigProviderService, Validationservice, viewState, modalService) {
+	.controller('TabbedCtrl', function ($scope, $timeout, ConfigProviderService, Validationservice, viewState, modalService) {
 		$scope.cps = ConfigProviderService;
 		$scope.vs = viewState;
 		
@@ -30,6 +30,7 @@ angular.module('emuwebApp')
 		$scope.modal = modalService;
 		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
 		$scope.modal.dataOut = ConfigProviderService.vals;
+		$scope.warning = '';
 		
 		$scope.init = function () {
 			$scope.options = Object.keys(viewState.getWindowFunctions());
@@ -129,12 +130,18 @@ angular.module('emuwebApp')
 			p.signalCanvases.order.push(signal);
 		};		
 
-		$scope.levelAdd = function (key,  signal) {
+		$scope.levelAdd = function (key,  level) {
 			var p = $scope.modal.dataOut.perspectives[key];
 			if(p.levelCanvases.order === undefined) {
 				p.levelCanvases.order = [];
 			}
-			p.levelCanvases.order.push(signal);
+			if(p.levelCanvases.order.indexOf(level) === -1) {
+				p.levelCanvases.order.push(level);
+			}
+			else {
+				$scope.warning = 'Error: "'+level+'" is already existing';
+				$timeout(function() { $scope.warning = ''; }, 3000);
+			}
 		};	
 
 		$scope.perspAdd = function () {

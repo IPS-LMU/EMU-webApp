@@ -41,6 +41,8 @@
 			<span ng-if="levelTypes.length > 0">
 			add a new <select ng-model="currentLevel" ng-options="level for level in levelTypes" /> 
 			<a style="cursor: pointer;" href="#" ng-click="levelAdd(key, currentLevel)"><img src="img/add.svg" width="18" height="18" class="emuwebapp-add-signal" style="margin-right: 10px;"/></a>
+			<br />
+			{{ warning }}
 			</span>
 			<hr class="emuwebapp-sort-line" />
 			&nbsp;<br />
