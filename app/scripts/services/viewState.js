@@ -36,10 +36,14 @@ angular.module('emuwebApp')
     // signal types enum
     var mySignalType = {
       OSCI: 1,
-      SPEC: 2,
-      fundFreq: 3,
-      dftSpec: 4
+      SPEC: 2
     };
+    
+    // twoDim types enum
+    var myTwoDimType = {
+      DOTS: 1,
+      EPG: 2
+    };    
 
     // hold the current attribute definitions that are in view
     sServObj.curLevelAttrDefs = [];
@@ -573,6 +577,13 @@ angular.module('emuwebApp')
     sServObj.getSignalTypes = function () {
       return mySignalType;
     };  
+    
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getTwoDimTypes = function () {
+      return myTwoDimType;
+    };    
     
     /**
      * set if user is dragging dragbar

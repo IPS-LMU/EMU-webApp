@@ -26,21 +26,21 @@ angular.module('emuwebApp')
 			url: 'views/config/buttons.html'
 		}];
 
-		$scope.sortableOptions = {
-			'ui-floating': true,
-			axis: 'y'
-		};
-
 		$scope.cps = ConfigProviderService;
 		$scope.modal = modalService;
 		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
 		$scope.modal.dataOut = ConfigProviderService.vals;
-		$scope.options = Object.keys(viewState.getWindowFunctions());
-		$scope.timeMode = Object.keys(viewState.getTimeModes());
-		$scope.comMode = Object.keys(viewState.getCommunicationModes());
-		$scope.signalTypes = Object.keys(viewState.getSignalTypes());
 		
-		$scope.currentSignal = $scope.signalTypes[0];
+		$scope.init = function () {
+			$scope.options = Object.keys(viewState.getWindowFunctions());
+			$scope.timeMode = Object.keys(viewState.getTimeModes());
+			$scope.comMode = Object.keys(viewState.getCommunicationModes());
+			$scope.signalTypes = Object.keys(viewState.getSignalTypes());
+			$scope.currentSignal = $scope.signalTypes[0];
+			angular.forEach(ConfigProviderService.curDbConfig.ssffTrackDefinitions, function (val, key) {
+				$scope.signalTypes.push(val.name);
+			});
+		};
 
 		$scope.onClickTab = function (node) {
 			if(node.url !== false) {
@@ -62,35 +62,60 @@ angular.module('emuwebApp')
 			return val;
 		};
 
-		$scope.perspDelete = function (key) {
-			delete $scope.modal.dataOut.perspectives.splice(key, 1);
-		};
-
-		$scope.signalUp = function (key, index) {
+		$scope.up = function (key, index, sequence) {
+			var p = $scope.modal.dataOut.perspectives[key];
 		    if(index>0) {
-		        var tmp = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index-1];
-		        $scope.modal.dataOut.perspectives[key].signalCanvases.order[index-1] = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index];
-		        $scope.modal.dataOut.perspectives[key].signalCanvases.order[index] = tmp;
+		    	if(sequence === 0) {
+		            var tmp = p.signalCanvases.order[index-1];
+    		        p.signalCanvases.order[index-1] = p.signalCanvases.order[index];
+	    	        p.signalCanvases.order[index] = tmp;
+		    	}
+		    	else if (sequence === 1) {
+		            var tmp = p.levelCanvases.order[index-1];
+    		        p.levelCanvases.order[index-1] = p.levelCanvases.order[index];
+	    	        p.levelCanvases.order[index] = tmp;
+		    	}
 		    }
 		};
 		
-		$scope.signalDown = function (key, index) {
-			if($scope.modal.dataOut.perspectives[key].signalCanvases.order[index+1] !== undefined) {
-    		    var tmp = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index+1];
-	    	    $scope.modal.dataOut.perspectives[key].signalCanvases.order[index+1] = $scope.modal.dataOut.perspectives[key].signalCanvases.order[index];
-	            $scope.modal.dataOut.perspectives[key].signalCanvases.order[index] = tmp;
+		$scope.down = function (key, index, sequence) {
+			var p = $scope.modal.dataOut.perspectives[key];
+		    if(sequence === 0) {
+				if(p.signalCanvases.order[index+1] !== undefined) {
+    		    	var tmp = p.signalCanvases.order[index+1];
+		    	    p.signalCanvases.order[index+1] = p.signalCanvases.order[index];
+		            p.signalCanvases.order[index] = tmp;
+				}
 			}
+	    	else if (sequence === 1) {
+				if(p.levelCanvases.order[index+1] !== undefined) {
+    		    	var tmp = p.levelCanvases.order[index+1];
+		    	    p.levelCanvases.order[index+1] = p.levelCanvases.order[index];
+		            p.levelCanvases.order[index] = tmp;
+				}
+	    	}		
 		};	
 		
-		$scope.signalDelete = function (key, index) {
-			$scope.modal.dataOut.perspectives[key].signalCanvases.order.splice(index, 1);
+		$scope.del = function (key, index, sequence) {
+			var p = $scope.modal.dataOut.perspectives[key];
+			if(sequence === 0) {
+				p.signalCanvases.order.splice(index, 1);
+			}
+			else if(sequence === 0) {
+				p.levelCanvases.order.splice(index, 1);
+			}
 		};
 		
+		$scope.perspDelete = function (key) {
+			delete $scope.modal.dataOut.perspectives.splice(key, 1);
+		};		
+		
 		$scope.signalAdd = function (key,  signal) {
-			if($scope.modal.dataOut.perspectives[key].signalCanvases.order === undefined) {
-				$scope.modal.dataOut.perspectives[key].signalCanvases.order = [];
+			var p = $scope.modal.dataOut.perspectives[key];
+			if(p.signalCanvases.order === undefined) {
+				p.signalCanvases.order = [];
 			}
-			$scope.modal.dataOut.perspectives[key].signalCanvases.order.splice($scope.modal.dataOut.perspectives[key].signalCanvases.order.length, 0, signal);
+			p.signalCanvases.order.push(signal);
 		};		
 
 		$scope.perspAdd = function () {
@@ -124,4 +149,5 @@ angular.module('emuwebApp')
 
 
 		$scope.onClickTab($scope.tree[0]);
+		$scope.init();
 	});

@@ -18,32 +18,26 @@
 		</div>
 		<div>
 			<u>Signal Canvases</u>
-			<ul class="emuwebapp-signalcanvas" ng-model="modal.dataOut.perspectives[key].signalCanvases.order">
-				<li ng-repeat="item in modal.dataOut.perspectives[key].signalCanvases.order track by $index">						
-					<a href="#" ng-click="signalUp(key, $index)">&uarr;</a>
-					<a href="#" ng-click="signalDown(key, $index)">&darr;</a>
-					{{ $index }} : {{ item }}
-					<a href="#" ng-click="signalDelete(key, $index)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a>
+			<ul class="emuwebapp-signalcanvas" ng-model="value.signalCanvases.order">
+				<li ng-repeat="item in value.signalCanvases.order track by $index">						
+					<a href="#" ng-click="up(key, $index, 0)">&uarr;</a>
+					<a href="#" ng-click="down(key, $index, 0)">&darr;</a>
+					{{ $index + 1 }} : {{ item }}
+					<a href="#" ng-click="del(key, $index, 0)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a>
 				</li>
 			</ul>
 			add a new <select ng-model="currentSignal" ng-options="signal for signal in signalTypes" /> 
 			<a style="cursor: pointer;" href="#" ng-click="signalAdd(key, currentSignal)"><img src="img/add.svg" width="18" height="18" class="emuwebapp-add-signal" style="margin-right: 10px;"/></a>
 			<hr class="emuwebapp-sort-line" />
 			<u>Level Canvases</u>
-			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="value.levelCanvases.order">
-				<li class="emuwebapp-sort" ng-repeat="levelCanvas in value.levelCanvases.order">
-					<a style="cursor: pointer;" href="#" ng-click="levelDelete(key, levelCanvas)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a> {{ levelCanvas }} 
+			<ul class="emuwebapp-signalcanvas" ng-model="value.levelCanvases.order">
+				<li ng-repeat="item in value.levelCanvases.order track by $index">						
+					<a href="#" ng-click="up(key, $index, 1)">&uarr;</a>
+					<a href="#" ng-click="down(key, $index, 1)">&darr;</a>
+					{{ $index + 1 }} : {{ item }}
+					<a href="#" ng-click="del(key, $index, 1)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a>
 				</li>
 			</ul>
-		</div>
-		<div>
-			<u>2D</u>
-			<ul class="emuwebapp-sort" ui-sortable="sortableOptions" ng-model="value.twoDimCanvases.order">
-				<li class="emuwebapp-sort" ng-repeat="twoDimCanvas in value.twoDimCanvases.order">{{ twoDimCanvas }}</li>
-			</ul>
-			
-			
-			{{value.twoDimCanvases}}
 		</div>
 		</li>
 		</ul>
