@@ -112,7 +112,7 @@ angular.module('emuwebApp')
 			if(sequence === 0) {
 				p.signalCanvases.order.splice(index, 1);
 			}
-			else if(sequence === 0) {
+			else if(sequence === 1) {
 				p.levelCanvases.order.splice(index, 1);
 			}
 		};
