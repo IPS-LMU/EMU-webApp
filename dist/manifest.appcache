@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2015-11-10T17:04:39.098Z
+# rev 1 - 2015-11-30T09:25:41.164Z
 
 CACHE:
 404.html
@@ -57,8 +57,13 @@ manual/EMU-webAppWebsocketProtocol/pics/protocol.svg
 manual/FAQs.md
 manual/GeneralUsage/GeneralUsage.md
 manual/GeneralUsage/pics/addBoundary.gif
+manual/GeneralUsage/pics/addItem.gif
+manual/GeneralUsage/pics/addLink.gif
+manual/GeneralUsage/pics/collapseSubtree.gif
 manual/GeneralUsage/pics/deleteBoundary.gif
+manual/GeneralUsage/pics/deleteItemOrLink.gif
 manual/GeneralUsage/pics/editLabel.gif
+manual/GeneralUsage/pics/modifyLabel.gif
 manual/GeneralUsage/pics/moveBoundary.gif
 manual/GeneralUsage/pics/panHierarchy.gif
 manual/GeneralUsage/pics/preSelBoundary.gif
@@ -79,15 +84,15 @@ schemaFiles/designSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
 scripts/2e2d7952.emuwebAppExternal.min.js
-scripts/60979f4e.emuwebApp.min.js
 scripts/emuwebApp.min.js.map
+scripts/faf521de.emuwebApp.min.js
 scripts/workers/espsParserWorkerClass.js
 scripts/workers/spectroDrawingWorkerClass.js
 scripts/workers/ssffParserWorkerClass.js
 scripts/workers/textGridParserWorkerClass.js
 scripts/workers/wavParserWorkerClass.js
+styles/00155f40.emuwebApp.min.css
 styles/1c98af2c.emuwebAppExternal.min.css
-styles/f63a3175.emuwebApp.min.css
 views/SelectLabelModal.html
 views/SelectThresholdModal.html
 views/bundleListSideBar.html

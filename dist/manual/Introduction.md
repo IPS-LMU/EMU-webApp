@@ -7,9 +7,9 @@ author: Raphael Winkelmann
 ![icon](assets/EMU-webAppIcon-roundCorners.svg)
 
 
-- **Version: 0.0.31**
-- *Build time stamp: Tue Nov 10 2015 18:04:39*
-- *Build GIT SHA-1: 16a0e9e2575338c3cb4a5d175b272e1eec2ae635 - master*
+- **Version: 0.0.32**
+- *Build time stamp: Mon Nov 30 2015 10:25:41*
+- *Build GIT SHA-1: b1d31b8d0cb24845bdb3b3d79666730ada15d1fe - master*
 - *EMU-webApp-websocket-protocol version: 0.0.2*
 
 --------------------- 

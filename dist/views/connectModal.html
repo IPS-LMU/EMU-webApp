@@ -9,7 +9,14 @@
 	        <div>
 	            Please enter URL: <br>
 	            &nbsp;<br>
-	            <input type="text" ng-model="modal.dataOut" ng-init="modal.dataOut=cps.vals.main.serverUrl" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"><br>
+	            <input type="text" ng-model="modal.dataOut" ng-init="modal.dataOut=cps.vals.main.serverUrl" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+	            <button id="emuwebapp-modal-save" ng-click="saveURL();" class="emuwebapp-mini-btn-save">(+)</button> 
+	            <button id="emuwebapp-modal-save" ng-click="deleteURL(mySelect);" class="emuwebapp-mini-btn-save">(-)</button><br>
+	            &nbsp;<br>
+	            <select size="3" name="url" class="emuwebapp-modal-list" ng-init="myUrls = getURLs(); mySelect=myUrls[0]" ng-model="mySelect" ng-change="setCurrentURL(mySelect)" ng-dblclick="modal.confirmContent();">
+	            	<option ng-repeat="url in myUrls track by $index">{{url}}</option>
+	            </select>	            
+	            <br>
 				{{connectionError}}
 			</div>
 		</div>
