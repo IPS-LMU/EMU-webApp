@@ -1,6 +1,13 @@
 What's New
 =============================================
 
+## Version 0.0.32
+
+- improved EMU-webAppIcon-roundCorners.svg
+- improved connection dialog. urls can now be stored in local storage (+) or be removed from local storage (-).
+- background color masking of links fixed
+- dropdown of path through hierarchy clickable on entire area 
+
 ## Version 0.0.31
 
 - quickfix for bad entry in bundleListSchema (only effects Node.js usage)
