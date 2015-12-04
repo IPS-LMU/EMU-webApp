@@ -101,8 +101,8 @@
         "drawCrossHairs": true,
         "drawSampleNrs": false,
         "drawZeroLine": true,
-        "bundleComments": true,
-        "bundleFinishedEditing": true,
+        "bundleComments": false,
+        "bundleFinishedEditing": false,
         "showPerspectivesSidebar": false
     },
     "activeButtons": {
