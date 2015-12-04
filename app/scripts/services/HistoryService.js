@@ -32,24 +32,24 @@ angular.module('emuwebApp')
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'WEBAPP') {
-					var action = false;			
+					var action = false;	
+					console.log(cur.comment);		
 					switch (cur.action) {
 						case 'COMMENT':
 							// The order of links is not preserved on undo
 							if (applyOldVal) {
 								action = true;
-								loadedMetaDataService.setBndlComment(cur.bundle, cur.key, cur.index);
+								loadedMetaDataService.setBndlComment(cur.initial, cur.key, cur.index);
 							} else {
-								loadedMetaDataService.setBndlComment(cur.bundle, cur.key, cur.index);
+								loadedMetaDataService.setBndlComment(cur.comment, cur.key, cur.index);
 							}
 							break;
 						case 'FINISHED':
-							// The order of links is not preserved on undo
 							if (applyOldVal) {
 								action = true;
-								loadedMetaDataService.setBndlFinished(false, cur.key, cur.index);
+								loadedMetaDataService.setBndlFinished(cur.finishedEditing, cur.key, cur.index);
 							} else {
-								loadedMetaDataService.setBndlFinished(true, cur.key, cur.index);
+								loadedMetaDataService.setBndlFinished(!cur.finishedEditing, cur.key, cur.index);
 							}
 							break;							
 					}				
@@ -264,6 +264,15 @@ angular.module('emuwebApp')
 					curChangeObj[dataKey] = dataObj;
 				} else {
 					dataObj.oldValue = curChangeObj[dataKey].oldValue;
+					curChangeObj[dataKey] = dataObj;
+				}
+			} else if (dataObj.type === 'WEBAPP') {
+				dataKey = String(dataObj.type + '#' + dataObj.action + '#' + dataObj.key + '#' + dataObj.index);
+				// update curChangeObj
+				if (!curChangeObj[dataKey]) {
+					curChangeObj[dataKey] = dataObj;
+				} else {
+					dataObj.comment = curChangeObj[dataKey].comment;
 					curChangeObj[dataKey] = dataObj;
 				}
 			} else if (dataObj.type === 'ANNOT') {

@@ -106,11 +106,11 @@ angular.module('emuwebApp')
 		};
 		
 		/**
-		 * setter BndlComment
+		 * remove BndlComment
 		 */
-		sServObj.setBndlComment = function (bundle, key, index) {
-			rendOptBndlList[key][index].comment = bundle.comment;
-		};		
+		sServObj.setBndlComment = function (comment, key, index) {
+			rendOptBndlList[key][index].comment = comment;
+		};
 		
 		/**
 		 * setter BndlFinished

@@ -246,7 +246,6 @@ angular.module('emuwebApp')
 						viewState.somethingInProgressTxt = 'Validating emuwebappConfig';
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
 						if (validRes === true) {
-							console.log(data);
 							ConfigProviderService.setVals(data);
 							$scope.handleDefaultConfigLoaded();
 							// loadFilesForEmbeddedApp if these are set
@@ -724,7 +723,6 @@ angular.module('emuwebApp')
 		    var currentConfig = $scope.cps.curDbConfig;
 		    var currentVals = angular.toJson($scope.cps.vals, true);
 			modalService.open('views/tabbed.html').then(function (res) {
-				console.log(res);
 				if(res === false) {
 					$scope.cps.vals = angular.fromJson(currentVals);
 				}

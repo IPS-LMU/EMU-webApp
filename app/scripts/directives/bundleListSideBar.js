@@ -9,28 +9,33 @@ angular.module('emuwebApp')
 			replace: true,
 			scope: {},
 			link: function postLink(scope, element, attr) {
-				scope.history = function (bundle, key, index, type) {
-					switch(type) {
-						case 'finishedEditing':
-							HistoryService.addObjToUndoStack({
-								type: 'WEBAPP',
-								action: 'FINISHED',
-								bundle: bundle,
-								key: key,
-								index: index
-							});	
-						break;
-						case 'comment':
-							HistoryService.addObjToUndoStack({
-								type: 'WEBAPP',
-								action: 'COMMENT',
-								bundle: bundle,
-								key: key,
-								index: index
-							});	
-						break;						
-					}
+				scope.comment = '';
+				scope.finishedEditing = function (finished, key, index) {
+					HistoryService.addObjToUndoStack({
+						type: 'WEBAPP',
+						action: 'FINISHED',
+						finishedEditing: finished,
+						key: key,
+						index: index
+					});	
 				};
+				scope.updateHistory = function (bundle, key, index) {
+					HistoryService.updateCurChangeObj({
+						type: 'WEBAPP',
+						action: 'COMMENT',
+						initial: scope.comment,
+						comment: bundle.comment,
+						key: key,
+						index: index
+					});
+				};	
+				scope.endHistory = function () {
+					HistoryService.addCurChangeObjToUndoStack();
+				};			
+				scope.startHistory = function (bundle) {
+					scope.comment = bundle.comment;
+				};			
+
 			}
 		};
 	});
