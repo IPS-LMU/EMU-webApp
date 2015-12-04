@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 		var defer;
 
 		// add event listener to worker to respond to messages
-		worker.says(function(e) {
+		worker.says(function (e) {
 			if (e.status.type === 'SUCCESS') {
 				defer.resolve(e.data);
 			} else {
@@ -33,8 +33,8 @@ angular.module('emuwebApp')
 			});
 			return defer.promise;
 		};
-		
-		
+
+
 		/**
 		 * parse array of ssff file using webworker
 		 * @param array of ssff files encoded as base64 stings
@@ -54,5 +54,5 @@ angular.module('emuwebApp')
 
 
 		return sServObj;
-		
+
 	});

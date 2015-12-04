@@ -9,7 +9,6 @@ angular.module('emuwebApp')
 		sServObj.data = [];
 
 
-
 		/////////////////////
 		// public API
 

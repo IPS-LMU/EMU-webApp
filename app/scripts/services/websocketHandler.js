@@ -79,14 +79,14 @@ angular.module('emuwebApp')
 				// console.log(callbacks[messageObj.callbackID]);
 				// console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
 				switch (messageObj.type) {
-				case 'getESPSfile':
-				  alert('espsfile');
-					//handleReceivedESPS(messageObj.fileName, messageObj.data);
-					break;
-				case 'getSSFFfile':
-				  alert('ssfffile');
-					//handleReceivedSSFF(messageObj.fileName, messageObj.data);
-					break;
+					case 'getESPSfile':
+						alert('espsfile');
+						//handleReceivedESPS(messageObj.fileName, messageObj.data);
+						break;
+					case 'getSSFFfile':
+						alert('ssfffile');
+						//handleReceivedSSFF(messageObj.fileName, messageObj.data);
+						break;
 				}
 
 				// resolve promise with data only
@@ -136,13 +136,14 @@ angular.module('emuwebApp')
 
 		// close connection with ws
 		sServObj.closeConnect = function () {
-		    if(sServObj.isConnected()) {
-    			sServObj.ws.onclose = function () {};
-	    		sServObj.ws.close();    
-		    }
-		    else {
-		        console.log('WEBSOCKET ERROR: was not connected!');
-		    }
+			if (sServObj.isConnected()) {
+				sServObj.ws.onclose = function () {
+				};
+				sServObj.ws.close();
+			}
+			else {
+				console.log('WEBSOCKET ERROR: was not connected!');
+			}
 		};
 
 		////////////////////////////
@@ -225,7 +226,7 @@ angular.module('emuwebApp')
 			var promise = sendRequest(request);
 			return promise;
 		};
-		
+
 
 		// ws  disconnecting
 		sServObj.disconnectWarning = function () {
@@ -236,7 +237,7 @@ angular.module('emuwebApp')
 			var promise = sendRequest(request);
 			return promise;
 		};
-		
+
 
 		// ws  GetDoEditDBConfig
 		sServObj.getDoEditDBConfig = function () {
@@ -246,8 +247,8 @@ angular.module('emuwebApp')
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
 			return promise;
-		};	
-		
+		};
+
 
 		// ws  editDBConfig with subtype and data
 		sServObj.editDBConfig = function (subtype, data) {
@@ -259,7 +260,7 @@ angular.module('emuwebApp')
 			// Storing in a variable for clarity on what sendRequest returns
 			var promise = sendRequest(request);
 			return promise;
-		};		
+		};
 
 		//
 		// EMU-webApp protocol ends here

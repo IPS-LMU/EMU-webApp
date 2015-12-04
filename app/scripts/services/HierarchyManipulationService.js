@@ -67,7 +67,7 @@ angular.module('emuwebApp')
 		 * 5: link would cross another link
 		 **/
 		sServObj.checkLinkValidity = function (path, from, to) {
-			var result = { valid: true, reason: 0 };
+			var result = {valid: true, reason: 0};
 			var links = DataService.getLinkData();
 
 			// This case (from === to)  would also be caught below
@@ -83,7 +83,7 @@ angular.module('emuwebApp')
 
 
 			// Check whether link already exists
-			for (var i=0; i<links.length; ++i) {
+			for (var i = 0; i < links.length; ++i) {
 				if (links[i].fromID === from && links[i].toID === to) {
 					result.valid = false;
 					result.reason = 2;
@@ -98,7 +98,7 @@ angular.module('emuwebApp')
 			var superlevelName = LevelService.getLevelName(from);
 			var sublevelName = LevelService.getLevelName(to);
 			var superlevelIndex = path.indexOf(superlevelName);
-			if (path[superlevelIndex-1] !== sublevelName) {
+			if (path[superlevelIndex - 1] !== sublevelName) {
 				result.valid = false;
 				result.reason = 3;
 				return result;
@@ -108,8 +108,7 @@ angular.module('emuwebApp')
 			var linkType;
 			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
 				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === sublevelName &&
-				    ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName === superlevelName)
-				{
+					ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName === superlevelName) {
 					linkType = ConfigProviderService.curDbConfig.linkDefinitions[i].type;
 				}
 			}
@@ -185,7 +184,7 @@ angular.module('emuwebApp')
 
 				var children = HierarchyLayoutService.findChildren(sibling, path);
 
-				for (var i=0; i<children.length; ++i) {
+				for (var i = 0; i < children.length; ++i) {
 					var index = LevelService.getOrderById(sublevelName, children[i].id);
 					if (firstAllowedChildIndex === undefined || index > firstAllowedChildIndex) {
 						firstAllowedChildIndex = index;
@@ -211,7 +210,7 @@ angular.module('emuwebApp')
 					continue;
 				}
 
-				for (var i=0; i<children.length; ++i) {
+				for (var i = 0; i < children.length; ++i) {
 					var index = LevelService.getOrderById(sublevelName, children[i].id);
 					if (lastAllowedChildIndex === undefined || index < lastAllowedChildIndex) {
 						lastAllowedChildIndex = index;
@@ -219,8 +218,8 @@ angular.module('emuwebApp')
 				}
 			}
 
-			console.debug( 'child must be within', firstAllowedChildIndex, lastAllowedChildIndex);
-			if ( childOrder < firstAllowedChildIndex || childOrder > lastAllowedChildIndex) {
+			console.debug('child must be within', firstAllowedChildIndex, lastAllowedChildIndex);
+			if (childOrder < firstAllowedChildIndex || childOrder > lastAllowedChildIndex) {
 				result.valid = false;
 				result.reason = 5;
 				return result;

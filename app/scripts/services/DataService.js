@@ -33,19 +33,19 @@ angular.module('emuwebApp')
 		sServObj.getLevelData = function () {
 			return sServObj.data.levels;
 		};
-		
+
 
 		/**
 		 * returns all the level data
 		 * @return data containing all level data
 		 */
 		sServObj.getLevelOrder = function (order) {
-		    if(sServObj.data.levels !== undefined) {
-				return sServObj.data.levels.sort(function(a, b) {
+			if (sServObj.data.levels !== undefined) {
+				return sServObj.data.levels.sort(function (a, b) {
 					return order.indexOf(a.name) - order.indexOf(b.name);
 				});
-		    }
-		};		
+			}
+		};
 
 		/**
 		 * returns a specific level at given position
@@ -61,7 +61,7 @@ angular.module('emuwebApp')
 		 * @param newLevel the new level to insert
 		 */
 		sServObj.insertLevelDataAt = function (position, newLevel) {
-		    sServObj.data.levels.splice(position, 0, newLevel);
+			sServObj.data.levels.splice(position, 0, newLevel);
 		};
 
 		/**
@@ -69,7 +69,7 @@ angular.module('emuwebApp')
 		 * @param position of the level in the level array
 		 */
 		sServObj.deleteLevelDataAt = function (position) {
-		    sServObj.data.levels.splice(position, 1);
+			sServObj.data.levels.splice(position, 1);
 		};
 
 		/**
@@ -94,7 +94,7 @@ angular.module('emuwebApp')
 		 * @param newLink the new link to insert
 		 */
 		sServObj.insertLinkData = function (newLink) {
-		    sServObj.data.links.push(newLink);
+			sServObj.data.links.push(newLink);
 		};
 
 		/**
@@ -102,7 +102,7 @@ angular.module('emuwebApp')
 		 * @param position of the link in the link array
 		 */
 		sServObj.deleteLinkDataAt = function (position) {
-		    sServObj.data.links.splice(position, 1);
+			sServObj.data.links.splice(position, 1);
 		};
 
 		/**
@@ -111,7 +111,7 @@ angular.module('emuwebApp')
 		 * @param newLink the new link to insert
 		 */
 		sServObj.insertLinkDataAt = function (position, newLink) {
-		    sServObj.data.links.splice(position, 0, newLink);
+			sServObj.data.links.splice(position, 0, newLink);
 		};
 
 		/**
@@ -121,8 +121,8 @@ angular.module('emuwebApp')
 		 * @param toNewID the new toID of the link
 		 */
 		sServObj.changeLinkDataAt = function (position, fromNewID, toNewID) {
-		    sServObj.data.links[position].fromID = fromNewID;
-		    sServObj.data.links[position].toID = toNewID;
+			sServObj.data.links[position].fromID = fromNewID;
+			sServObj.data.links[position].toID = toNewID;
 		};
 
 		/**

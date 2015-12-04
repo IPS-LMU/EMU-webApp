@@ -71,17 +71,17 @@ angular.module('emuwebApp')
 			var keepGoing = true;
 			/////////////////////////////////////////////////////////////////////
 			// check DBconfig levelDefinitions
-			DBconfig.levelDefinitions.forEach(function(ld, ldIdx){
+			DBconfig.levelDefinitions.forEach(function (ld, ldIdx) {
 
 				// check for duplicate attributeDefinition names
-				ld.attributeDefinitions.forEach(function(ad1, ad1idx){
+				ld.attributeDefinitions.forEach(function (ad1, ad1idx) {
 					var counter = 0;
-					ld.attributeDefinitions.forEach(function(ad2){
-						if(ad1.name === ad2.name){
+					ld.attributeDefinitions.forEach(function (ad2) {
+						if (ad1.name === ad2.name) {
 							counter = counter + 1;
 						}
 					})
-					if(counter > 1) {
+					if (counter > 1) {
 						res = 'Error in DBconfig /levelDefinitions[' + ldIdx + ']/attributeDefinitions[' + ad1idx +
 							'] duplicate attribute definitions found for this entry!';
 

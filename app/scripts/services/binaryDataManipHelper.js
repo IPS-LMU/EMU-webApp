@@ -35,7 +35,7 @@ angular.module('emuwebApp')
 
 		/**
 		 *
-		sServObj.stringToArrayBuffer = function (str) {
+		 sServObj.stringToArrayBuffer = function (str) {
 			var ab = new ArrayBuffer(str.length);
 			var view = new Uint8Array(ab);
 			for (var i = 0; i < str.length; ++i) {

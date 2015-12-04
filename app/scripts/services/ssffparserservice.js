@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 		var defer;
 
 		// add event listener to worker to respond to messages
-		worker.says(function(e) {
+		worker.says(function (e) {
 			if (e.status.type === 'SUCCESS') {
 				defer.resolve(e);
 			} else {

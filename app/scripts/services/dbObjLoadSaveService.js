@@ -224,12 +224,12 @@ angular.module('emuwebApp')
 				$log.error(validRes);
 
 				modalService.open('views/error.html', 'Somehow the data for this bundle has been corrupted. This is most likely a nasty and diffucult to spot bug. If you are at the IPS right now, please contact an EMU developer immediately. The Validation error is: ' + JSON.stringify(validRes, null, 4)).then(function () {
-						viewState.somethingInProgressTxt = '';
-						viewState.somethingInProgress = false;
-						viewState.setState('labeling');
-						defer.reject();
+					viewState.somethingInProgressTxt = '';
+					viewState.somethingInProgress = false;
+					viewState.setState('labeling');
+					defer.reject();
 				});
-			}else{
+			} else {
 				viewState.somethingInProgressTxt = 'Saving bundle...';
 				Iohandlerservice.saveBundle(bundleData).then(function () {
 					viewState.somethingInProgressTxt = 'Done!';
@@ -243,7 +243,8 @@ angular.module('emuwebApp')
 					});
 					defer.reject();
 				});
-			};
+			}
+			;
 		}
 		return (sServObj);
 	});

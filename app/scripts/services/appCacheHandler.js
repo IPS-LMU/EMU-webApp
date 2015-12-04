@@ -99,7 +99,7 @@ angular.module('emuwebApp')
 					localStorage.removeItem("haveShownWelcomeModal");
 					appCache.swapCache();
 					window.location.reload();
-				}else{
+				} else {
 					localStorage.removeItem("haveShownWelcomeModal");
 				}
 			});
@@ -133,8 +133,8 @@ angular.module('emuwebApp')
 
 		sServObj.checkForNewVersion = function () {
 			// console.log('check for new version');
-			if((appCache.status !== 0 && appCache.status !== 3)){ // uncached == 0 & downloading == 3
-				console.log('INFO: appCache.status: '+ appCache.status);
+			if ((appCache.status !== 0 && appCache.status !== 3)) { // uncached == 0 & downloading == 3
+				console.log('INFO: appCache.status: ' + appCache.status);
 				appCache.update();
 			}
 		};

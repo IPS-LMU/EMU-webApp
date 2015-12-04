@@ -38,7 +38,7 @@ angular.module('emuwebApp')
 		 * round to n digits after decimal point
 		 * used to help display numbers with a given
 		 * precision
-		 * @param x number 
+		 * @param x number
 		 * @param n digits after decimal point
 		 * @returns rounded number
 		 */

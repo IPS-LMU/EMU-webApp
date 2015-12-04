@@ -16,8 +16,8 @@ angular.module('emuwebApp')
 
 		$scope.onClickTab = function (node) {
 			node.expanded = !node.expanded;
-			if(node.url !== false) {
-				if(node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
+			if (node.url !== false) {
+				if (node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
 					$scope.isMDFile = true;
 					$scope.currentTabUrl = node.url;
 				}
@@ -29,8 +29,8 @@ angular.module('emuwebApp')
 		};
 
 		$scope.hasChildren = function (node) {
-			if(node.nodes !== undefined) {
-				if(node.nodes.length > 0) {
+			if (node.nodes !== undefined) {
+				if (node.nodes.length > 0) {
 					return true;
 				}
 			}

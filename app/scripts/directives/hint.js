@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 				scope.hideMe = function () {
 					scope.internalVars.showAboutHint = !scope.internalVars.showAboutHint;
 					scope.aboutBtnClick();
-		 		};
+				};
 			}
 		};
 	});

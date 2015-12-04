@@ -32,7 +32,7 @@ angular.module('emuwebApp')
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'WEBAPP') {
-					var action = false;	
+					var action = false;
 					switch (cur.action) {
 						case 'COMMENT':
 							// The order of links is not preserved on undo
@@ -50,9 +50,9 @@ angular.module('emuwebApp')
 							} else {
 								loadedMetaDataService.setBndlFinished(cur.finished, cur.key, cur.index);
 							}
-							break;							
-					}				
-				} else if (cur.type === 'ANNOT') {				
+							break;
+					}
+				} else if (cur.type === 'ANNOT') {
 					var action = false;
 					switch (cur.action) {
 						case 'MOVEBOUNDARY':
@@ -325,7 +325,6 @@ angular.module('emuwebApp')
 			curChangeObj = {};
 
 
-
 		};
 
 		// addCurChangeObjToUndoStack
@@ -388,7 +387,7 @@ angular.module('emuwebApp')
 		// set the displayed text of the historyActionPopup
 		sServObj.setHistoryActionText = function (isUndo, text) {
 			var front = '<i>UNDO</i> &#8594; ';
-			if(!isUndo) {
+			if (!isUndo) {
 				front = '<i>REDO</i> &#8592; ';
 			}
 			viewState.historyActionTxt = front + text;

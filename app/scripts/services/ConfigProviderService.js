@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.setDesign = function (data) {
-		    angular.copy(data, sServObj.design);
+			angular.copy(data, sServObj.design);
 		};
 
 		/**
@@ -125,72 +125,71 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.setPerspectivesOrder = function (curPerspective, levelName) {
-		    if(sServObj.vals !== undefined) {
-		        if(sServObj.vals.perspectives !== undefined) {
-		            if(sServObj.vals.perspectives[curPerspective] !== undefined ) {
-		                if(sServObj.vals.perspectives[curPerspective].levelCanvases !== undefined) {
-		                    sServObj.vals.perspectives[curPerspective].levelCanvases.order = levelName;	
-		                }
-		            }
-		        }
-		    }
-			
+			if (sServObj.vals !== undefined) {
+				if (sServObj.vals.perspectives !== undefined) {
+					if (sServObj.vals.perspectives[curPerspective] !== undefined) {
+						if (sServObj.vals.perspectives[curPerspective].levelCanvases !== undefined) {
+							sServObj.vals.perspectives[curPerspective].levelCanvases.order = levelName;
+						}
+					}
+				}
+			}
+
 		};
-		
+
 		/**
 		 *  replace ascii codes from config with strings
-		 */		
+		 */
 		sServObj.getStrRep = function (code) {
 			var str;
 			switch (code) {
-			case 8:
-				str = 'BACKSPACE';
-				break;
-			case 9:
-				str = 'TAB';
-				break;
-			case 13:
-				str = 'ENTER';
-				break;
-			case 16:
-				str = 'SHIFT';
-				break;
-			case 18:
-				str = 'ALT';
-				break;
-			case 32:
-				str = 'SPACE';
-				break;
-			case 37:
-				str = '←';
-				break;
-			case 39:
-				str = '→';
-				break;
-			case 38:
-				str = '↑';
-				break;
-			case 40:
-				str = '↓';
-				break;
-			case 42:
-				str = '+';
-				break;
-			case 43:
-				str = '+';
-				break;								
-			case 45:
-				str = '-';
-				break;
-			case 95:
-				str = '-';
-				break;				
-			default:
-				str = String.fromCharCode(code);
+				case 8:
+					str = 'BACKSPACE';
+					break;
+				case 9:
+					str = 'TAB';
+					break;
+				case 13:
+					str = 'ENTER';
+					break;
+				case 16:
+					str = 'SHIFT';
+					break;
+				case 18:
+					str = 'ALT';
+					break;
+				case 32:
+					str = 'SPACE';
+					break;
+				case 37:
+					str = '←';
+					break;
+				case 39:
+					str = '→';
+					break;
+				case 38:
+					str = '↑';
+					break;
+				case 40:
+					str = '↓';
+					break;
+				case 42:
+					str = '+';
+					break;
+				case 43:
+					str = '+';
+					break;
+				case 45:
+					str = '-';
+					break;
+				case 95:
+					str = '-';
+					break;
+				default:
+					str = String.fromCharCode(code);
 			}
 			return str;
-		};		
-
+		};
 
 
 		return sServObj;

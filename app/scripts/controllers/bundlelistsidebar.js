@@ -23,16 +23,16 @@ angular.module('emuwebApp')
 		$scope.numberOfPages = function (sessionLength) {
 			return Math.ceil(sessionLength / $scope.pageSize);
 		};
-		
+
 		$scope.turn = function (direction) {
-			if(direction) {
-			    $scope.currentPage++;
+			if (direction) {
+				$scope.currentPage++;
 			}
 			else {
-    			$scope.currentPage--;
+				$scope.currentPage--;
 			}
 		};
-		
+
 
 		/**
 		 * returns false if bndl is current bndl

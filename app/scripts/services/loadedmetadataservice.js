@@ -86,7 +86,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getRendOptBndlList = function () {
 			return rendOptBndlList;
-		};	
+		};
 
 		///////////
 		// curBndl 
@@ -104,20 +104,20 @@ angular.module('emuwebApp')
 		sServObj.setCurBndl = function (bndl) {
 			curBndl = bndl;
 		};
-		
+
 		/**
 		 * remove BndlComment
 		 */
 		sServObj.setBndlComment = function (comment, key, index) {
 			rendOptBndlList[key][index].comment = comment;
 		};
-		
+
 		/**
 		 * setter BndlFinished
 		 */
 		sServObj.setBndlFinished = function (finished, key, index) {
 			rendOptBndlList[key][index].finishedEditing = finished;
-		};		
+		};
 
 
 		/**
@@ -133,7 +133,6 @@ angular.module('emuwebApp')
 		sServObj.setCurBndlName = function (name) {
 			curBndl.name = name;
 		};
-
 
 
 		//////////////

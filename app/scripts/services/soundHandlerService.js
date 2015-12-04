@@ -20,11 +20,11 @@ angular.module('emuwebApp')
 		/**
 		 * safely initialize audio context
 		 * */
-		function initAudioContext(){
+		function initAudioContext() {
 			try {
 				window.AudioContext = window.AudioContext || window.webkitAudioContext;
 				audioContext = new AudioContext();
-			}catch(e){
+			} catch (e) {
 				alert("Error loading the AudioContext (could mean your browser doesn't support the HTML5 webaudio API):" + e);
 			}
 		}
@@ -37,21 +37,21 @@ angular.module('emuwebApp')
 		 *
 		 * @param buffer arraybuffer containing audio file (as returned by XHR for example)
 		 * */
-		sServObj.decodeAndPlay = function(buffer){
-			if(typeof(audioContext) == "undefined"){
+		sServObj.decodeAndPlay = function (buffer) {
+			if (typeof(audioContext) == "undefined") {
 				initAudioContext();
 			}
 
-			audioContext.decodeAudioData(buffer, function(ab) {
+			audioContext.decodeAudioData(buffer, function (ab) {
 				curSource = audioContext.createBufferSource();
 				curSource.buffer = ab;
 				curSource.connect(audioContext.destination);
 				curSource.start(0);
-				curSource.onended = function(){
+				curSource.onended = function () {
 					sServObj.isPlaying = false;
 				}
 
-			}, function(e){
+			}, function (e) {
 				alert(e);
 			});
 		};
@@ -81,7 +81,7 @@ angular.module('emuwebApp')
 			tmp.set(new Uint8Array(header), 0);
 			tmp.set(new Uint8Array(newData), header.byteLength);
 
-			return(tmp.buffer);
+			return (tmp.buffer);
 		};
 
 		/**
@@ -100,7 +100,7 @@ angular.module('emuwebApp')
 			} else {
 
 				sServObj.isPlaying = true;
-				if(cutWavBuff.byteLength > 44){ // if wav file is bigger than just the header (a.k.a. data block is empty)
+				if (cutWavBuff.byteLength > 44) { // if wav file is bigger than just the header (a.k.a. data block is empty)
 					sServObj.decodeAndPlay(cutWavBuff);
 				}
 			}

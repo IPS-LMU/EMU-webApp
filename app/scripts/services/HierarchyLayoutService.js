@@ -119,14 +119,14 @@ angular.module('emuwebApp')
 				// depends on the correctness of level._weight
 				var posInLevel = 0;
 				for (ii = 0; ii < level.items.length; ++ii) {
-					level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight/2) / level._weight;
+					level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight / 2) / level._weight;
 					posInLevel += level.items[ii]._weight;
 					level.items[ii]._depth = selectedPath.length - i - 1;
 
 					//////
 					// Additionally, calculate link positions
 					var links = DataService.getData().links;
-					for (var l=0; l<links.length; ++l) {
+					for (var l = 0; l < links.length; ++l) {
 						if (links[l].toID === level.items[ii].id) {
 							links[l]._toPosInLevel = level.items[ii]._posInLevel;
 							links[l]._toDepth = level.items[ii]._depth;
@@ -212,7 +212,7 @@ angular.module('emuwebApp')
 			for (i = 0; i < selectedPath.length; ++i) {
 				level = LevelService.getLevelDetails(selectedPath[i]);
 
-				for (ii=0; ii < level.items.length; ++ii) {
+				for (ii = 0; ii < level.items.length; ++ii) {
 					level.items[ii]._parents = [];
 				}
 			}
@@ -234,7 +234,6 @@ angular.module('emuwebApp')
 				}
 			}
 		};
-
 
 
 		/**
@@ -261,10 +260,10 @@ angular.module('emuwebApp')
 				var rootLevelItems = [];
 
 				var level;
-				for (var i=0; i < selectedPath.length; ++i) {
+				for (var i = 0; i < selectedPath.length; ++i) {
 					level = LevelService.getLevelDetails(selectedPath[i]);
 
-					for (var ii=0; ii < level.items.length; ++ii) {
+					for (var ii = 0; ii < level.items.length; ++ii) {
 						if (level.items[ii]._parents.length === 0) {
 							rootLevelItems.push(level.items[ii]);
 						}
@@ -296,7 +295,7 @@ angular.module('emuwebApp')
 
 				while (items.length > 0) {
 					currentItem = items.pop();
-					if (! viewState.hierarchyState.getCollapsed(currentItem.id)) {
+					if (!viewState.hierarchyState.getCollapsed(currentItem.id)) {
 						items = items.concat(sServObj.findChildren(currentItem, selectedPath));
 					}
 

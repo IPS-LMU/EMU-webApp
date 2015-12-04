@@ -1,96 +1,96 @@
 'use strict';
 
 angular.module('emuwebApp')
-  .directive('dragout', function (DataService, loadedMetaDataService, browserDetector, ConfigProviderService) {
-    return {
-      restrict: 'A',
-      replace:true,
-      scope: {
-        name: '@'
-      },
-      link: function (scope, element, attrs) {
-        scope.cps = ConfigProviderService;
-        var el = element[0];
-        var dragIcon = document.createElement('img');
-        dragIcon.src = 'img/save.svg';
-        dragIcon.width = '35';
-        dragIcon.height = '35';
-        var dataString = '';
+	.directive('dragout', function (DataService, loadedMetaDataService, browserDetector, ConfigProviderService) {
+		return {
+			restrict: 'A',
+			replace: true,
+			scope: {
+				name: '@'
+			},
+			link: function (scope, element, attrs) {
+				scope.cps = ConfigProviderService;
+				var el = element[0];
+				var dragIcon = document.createElement('img');
+				dragIcon.src = 'img/save.svg';
+				dragIcon.width = '35';
+				dragIcon.height = '35';
+				var dataString = '';
 
-        scope.generateURL = function () {
-            return scope.getURL(angular.toJson(DataService.getData(), true));
-        };
+				scope.generateURL = function () {
+					return scope.getURL(angular.toJson(DataService.getData(), true));
+				};
 
-        scope.isActive = function () {
-        	if(attrs.name === loadedMetaDataService.getCurBndl().name) {
-        		return true;
-        	}
-        	else return false;
-        };
-
-        scope.getURL = function (data) {
-		    var objURL;
-		    if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
-		        objURL = webkitURL.createObjectURL(scope.getBlob(data));
-		    } else {
-		        objURL = URL.createObjectURL(scope.getBlob(data));
-		    }
-		    return objURL;
-        };
-
-        scope.getBlob = function (data) {
-		    var blob;
-		    try {
-		        blob = new Blob([data], {type: 'text/plain'});
-		    } catch (e) { // Backwards-compatibility
-		        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-		        blob = new BlobBuilder();
-		        blob.append(data);
-		        blob = blob.getBlob();
-		    }
-		    return blob;
-        };
-
-        el.addEventListener(
-            'dragstart',
-			function(e) {	
-				console.log('dragstart');
-				if(scope.isActive()) {
-					this.classList.add('drag');
-					var url = scope.generateURL();
-					if(browserDetector.isBrowser.Firefox() || browserDetector.isBrowser.Chrome()) {
-						// normal <img png> is not scalable
-						// therefore generate div, place <img> in it and then scale
-						var div = document.createElement('div');
-						div.appendChild(dragIcon);
-						document.querySelector('body').appendChild(div);					
-					    e.dataTransfer.setDragImage(div, -8, -8);
-					    e.dataTransfer.effectAllowed = 'move';
-					    e.dataTransfer.setData('DownloadURL', 'application/json:'+attrs.name+'_annot.json:' + url);
+				scope.isActive = function () {
+					if (attrs.name === loadedMetaDataService.getCurBndl().name) {
+						return true;
 					}
-                }
-                else {
-                	e.preventDefault();
-					console.log('dropping inactive bundles is not allowed');
-                }
-                return false;
-            },
-            false
-        );
+					else return false;
+				};
 
-        el.addEventListener(
-            'dragend',
-            function(e) {
-            	console.log('dragend');
-                if(scope.isActive()) {
-                    this.classList.remove('drag');
-                    e.preventDefault();
-                }
-                return false;
-                
-            },
-            false
-        );
-      }
-    };
-  });
+				scope.getURL = function (data) {
+					var objURL;
+					if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+						objURL = webkitURL.createObjectURL(scope.getBlob(data));
+					} else {
+						objURL = URL.createObjectURL(scope.getBlob(data));
+					}
+					return objURL;
+				};
+
+				scope.getBlob = function (data) {
+					var blob;
+					try {
+						blob = new Blob([data], {type: 'text/plain'});
+					} catch (e) { // Backwards-compatibility
+						window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+						blob = new BlobBuilder();
+						blob.append(data);
+						blob = blob.getBlob();
+					}
+					return blob;
+				};
+
+				el.addEventListener(
+					'dragstart',
+					function (e) {
+						console.log('dragstart');
+						if (scope.isActive()) {
+							this.classList.add('drag');
+							var url = scope.generateURL();
+							if (browserDetector.isBrowser.Firefox() || browserDetector.isBrowser.Chrome()) {
+								// normal <img png> is not scalable
+								// therefore generate div, place <img> in it and then scale
+								var div = document.createElement('div');
+								div.appendChild(dragIcon);
+								document.querySelector('body').appendChild(div);
+								e.dataTransfer.setDragImage(div, -8, -8);
+								e.dataTransfer.effectAllowed = 'move';
+								e.dataTransfer.setData('DownloadURL', 'application/json:' + attrs.name + '_annot.json:' + url);
+							}
+						}
+						else {
+							e.preventDefault();
+							console.log('dropping inactive bundles is not allowed');
+						}
+						return false;
+					},
+					false
+				);
+
+				el.addEventListener(
+					'dragend',
+					function (e) {
+						console.log('dragend');
+						if (scope.isActive()) {
+							this.classList.remove('drag');
+							e.preventDefault();
+						}
+						return false;
+
+					},
+					false
+				);
+			}
+		};
+	});

@@ -20,11 +20,11 @@ angular.module('emuwebApp')
 		 */
 		sServObj.traverseAndClean = function (o) {
 			for (var i in o) {
-				if ( i.substr(0,1) === '_') {
+				if (i.substr(0, 1) === '_') {
 					delete o[i];
 				}
 
-				if (o[i] !== null && typeof(o[i])==='object') {
+				if (o[i] !== null && typeof(o[i]) === 'object') {
 					// Go one step down in the object tree
 					sServObj.traverseAndClean(o[i]);
 				}

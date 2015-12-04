@@ -117,7 +117,6 @@ angular.module('emuwebApp')
 		};
 
 
-
 		/**
 		 * @param cps color provider service
 		 */
@@ -218,7 +217,6 @@ angular.module('emuwebApp')
 		};
 
 
-
 		/**
 		 * drawing method to drawMovingBoundaryLine
 		 */
@@ -254,7 +252,7 @@ angular.module('emuwebApp')
 
 		sServObj.drawCurViewPortSelected = function (ctx, drawTimeAndSamples) {
 
-		  var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
+			var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 			var xOffset, sDist, space, horizontalText, scaleX;
 			sDist = viewState.getSampleDist(ctx.canvas.width);
 

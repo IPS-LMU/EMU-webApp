@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 				// element.text('this is the progressThing directive');
 
 				attrs.$observe('showThing', function (newVal) {
-					if (newVal==='true') {
+					if (newVal === 'true') {
 						// $animate.removeClass(element, 'hideProgressThing');
 						$animate.removeClass(element, 'emuwebapp-shrinkHeightTo0px');
 						$animate.removeClass(element, 'emuwebapp-animationStopped');

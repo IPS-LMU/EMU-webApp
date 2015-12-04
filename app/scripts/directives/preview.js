@@ -19,10 +19,10 @@ angular.module('emuwebApp')
 				scope.vs = viewState;
 				scope.shs = Soundhandlerservice;
 				scope.backgroundCanvas = {
-				    'background': '#eee',
-				    'border': '1px solid gray',
-				    'width': '100%',
-						'height': '100%'				    
+					'background': '#eee',
+					'border': '1px solid gray',
+					'width': '100%',
+					'height': '100%'
 				}
 
 				/////////////////////
@@ -42,11 +42,11 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
 						initialized = false;
 						scope.backgroundCanvas = {
-				            'background': ConfigProviderService.design.color.lightGrey,
-				            'border': '1px solid gray',
-				            'width': '100%',
-                            'height': '100%'
-				        }
+							'background': ConfigProviderService.design.color.lightGrey,
+							'border': '1px solid gray',
+							'width': '100%',
+							'height': '100%'
+						}
 						scope.drawPreview();
 
 					}
@@ -65,7 +65,7 @@ angular.module('emuwebApp')
 				/**
 				 *
 				 */
-				 scope.drawPreview = function() {
+				scope.drawPreview = function () {
 					if (!initialized) {
 						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.wavJSO.Data);
 						Drawhelperservice.osciPeaks = allPeakVals;
@@ -82,7 +82,7 @@ angular.module('emuwebApp')
 				 * the information that is specified in
 				 * the viewport
 				 */
-				 scope.drawVpOsciMarkup = function(vs, canvas, config) {
+				scope.drawVpOsciMarkup = function (vs, canvas, config) {
 					var ctx = markupCanvas.getContext('2d');
 					var posS = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.sS;
 					var posE = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.eS;

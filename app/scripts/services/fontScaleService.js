@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 			ctxOriginal.scale(sServObj.scaleX, sServObj.scaleY);
 			ctxOriginal.fillStyle = color;
 			ctxOriginal.fillText(text, x / sServObj.scaleX, (y + fontPxSize + sServObj.spaceTop) / sServObj.scaleY);
-			ctxOriginal.scale(1,1);
+			ctxOriginal.scale(1, 1);
 			ctxOriginal.restore();
 		};
 

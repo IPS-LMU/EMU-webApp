@@ -34,8 +34,8 @@ spectroDrawingWorker.prototype = {
 		 *
 		 */
 
-		///////////////////////////////////
-		// start: global vars
+			///////////////////////////////////
+			// start: global vars
 		global.executed = false;
 		global.PI = 3.141592653589793; // value : Math.PI
 		global.TWO_PI = 6.283185307179586; // value : 2 * Math.PI
@@ -159,88 +159,88 @@ spectroDrawingWorker.prototype = {
 				// var length = buffer.length;
 				this.alpha = alpha;
 				switch (type) {
-				case global.myWindow.BARTLETT:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+					case global.myWindow.BARTLETT:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionBartlett(length, i);
 						}
-						buffer[i] *= this.wFunctionBartlett(length, i);
-					}
-					break;
-				case global.myWindow.BARTLETTHANN:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.BARTLETTHANN:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionBartlettHann(length, i);
 						}
-						buffer[i] *= this.wFunctionBartlettHann(length, i);
-					}
-					break;
-				case global.myWindow.BLACKMAN:
-					this.alpha = this.alpha || 0.16;
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.BLACKMAN:
+						this.alpha = this.alpha || 0.16;
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionBlackman(length, i, alpha);
 						}
-						buffer[i] *= this.wFunctionBlackman(length, i, alpha);
-					}
-					break;
-				case global.myWindow.COSINE:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.COSINE:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionCosine(length, i);
 						}
-						buffer[i] *= this.wFunctionCosine(length, i);
-					}
-					break;
-				case global.myWindow.GAUSS:
-					this.alpha = this.alpha || 0.25;
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.GAUSS:
+						this.alpha = this.alpha || 0.25;
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionGauss(length, i, alpha);
 						}
-						buffer[i] *= this.wFunctionGauss(length, i, alpha);
-					}
-					break;
-				case global.myWindow.HAMMING:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.HAMMING:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionHamming(length, i);
 						}
-						buffer[i] *= this.wFunctionHamming(length, i);
-					}
-					break;
-				case global.myWindow.HANN:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.HANN:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionHann(length, i);
 						}
-						buffer[i] *= this.wFunctionHann(length, i);
-					}
-					break;
-				case global.myWindow.LANCZOS:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.LANCZOS:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionLanczos(length, i);
 						}
-						buffer[i] *= this.wFunctionLanczos(length, i);
-					}
-					break;
-				case global.myWindow.RECTANGULAR:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.RECTANGULAR:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionRectangular(length, i);
 						}
-						buffer[i] *= this.wFunctionRectangular(length, i);
-					}
-					break;
-				case global.myWindow.TRIANGULAR:
-					for (i = 0; i < length; i++) {
-						if (i > 0) {
-							buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+						break;
+					case global.myWindow.TRIANGULAR:
+						for (i = 0; i < length; i++) {
+							if (i > 0) {
+								buffer[i] = this.applyPreEmph(buffer[i], buffer[i - 1]);
+							}
+							buffer[i] *= this.wFunctionTriangular(length, i);
 						}
-						buffer[i] *= this.wFunctionTriangular(length, i);
-					}
-					break;
+						break;
 				}
 				return buffer;
 			};
@@ -653,36 +653,36 @@ spectroDrawingWorker.prototype = {
 				}
 				if (data.window !== undefined) {
 					switch (data.window) {
-					case 1:
-						global.wFunction = global.myWindow.BARTLETT;
-						break;
-					case 2:
-						global.wFunction = global.myWindow.BARTLETTHANN;
-						break;
-					case 3:
-						global.wFunction = global.myWindow.BLACKMAN;
-						break;
-					case 4:
-						global.wFunction = global.myWindow.COSINE;
-						break;
-					case 5:
-						global.wFunction = global.myWindow.GAUSS;
-						break;
-					case 6:
-						global.wFunction = global.myWindow.HAMMING;
-						break;
-					case 7:
-						global.wFunction = global.myWindow.HANN;
-						break;
-					case 8:
-						global.wFunction = global.myWindow.LANCZOS;
-						break;
-					case 9:
-						global.wFunction = global.myWindow.RECTANGULAR;
-						break;
-					case 10:
-						global.wFunction = global.myWindow.TRIANGULAR;
-						break;
+						case 1:
+							global.wFunction = global.myWindow.BARTLETT;
+							break;
+						case 2:
+							global.wFunction = global.myWindow.BARTLETTHANN;
+							break;
+						case 3:
+							global.wFunction = global.myWindow.BLACKMAN;
+							break;
+						case 4:
+							global.wFunction = global.myWindow.COSINE;
+							break;
+						case 5:
+							global.wFunction = global.myWindow.GAUSS;
+							break;
+						case 6:
+							global.wFunction = global.myWindow.HAMMING;
+							break;
+						case 7:
+							global.wFunction = global.myWindow.HANN;
+							break;
+						case 8:
+							global.wFunction = global.myWindow.LANCZOS;
+							break;
+						case 9:
+							global.wFunction = global.myWindow.RECTANGULAR;
+							break;
+						case 10:
+							global.wFunction = global.myWindow.TRIANGULAR;
+							break;
 					}
 				} else {
 					renderError = 'window';

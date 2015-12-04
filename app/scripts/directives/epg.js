@@ -43,7 +43,7 @@ angular.module('emuwebApp')
 				/**
 				 * drawing method to drawEpgGrid
 				 */
-				 scope.drawEpgGrid = function (scope) {
+				scope.drawEpgGrid = function (scope) {
 
 					var ctx = canvas.getContext('2d');
 					tr = scope.cps.getSsffTrackConfig('EPG'); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
@@ -52,7 +52,7 @@ angular.module('emuwebApp')
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					ctx.fillStyle = 'green';
 					ctx.strokeStyle = scope.cps.design.color.black;
-					ctx.font = (scope.cps.design.font.input.size.slice(0,-2) + 'px' + ' ' + scope.cps.design.font.input.family);
+					ctx.font = (scope.cps.design.font.input.size.slice(0, -2) + 'px' + ' ' + scope.cps.design.font.input.family);
 
 					var gridWidth = canvas.width / 8;
 					var gridHeight = canvas.height / 8;

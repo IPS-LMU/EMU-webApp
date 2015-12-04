@@ -61,99 +61,99 @@ angular.module('emuwebApp')
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
 					switch (mbutton) {
-					case 0:
-						if (viewState.getPermission('labelAction')) {
-							scope.switchMarkupContext(event);
-							if (!$.isEmptyObject(Ssffdataservice.data)) {
-								if (Ssffdataservice.data.length !== 0) {
-									if (!viewState.getdragBarActive()) {
-										if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
-											// var col = Ssffdataservice.data[0].Columns[0];
-											if (tr === undefined) {
-												tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
-											}
-											col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-											sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
-											var startTimeVP = viewState.getViewPortStartTime();
-											var endTimeVP = viewState.getViewPortEndTime();
-											var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-											var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-											var nrOfSamples = colEndSampleNr - colStartSampleNr;
-											var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-											var curMouseTime = startTimeVP + (viewState.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
-											var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
-											var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
-											if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
-												//console.log('early return');
-												return;
-											}
-											viewState.curPreselColumnSample = curMouseSample - colStartSampleNr;
-											var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-											var y = canvas.height - curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
+						case 0:
+							if (viewState.getPermission('labelAction')) {
+								scope.switchMarkupContext(event);
+								if (!$.isEmptyObject(Ssffdataservice.data)) {
+									if (Ssffdataservice.data.length !== 0) {
+										if (!viewState.getdragBarActive()) {
+											if (viewState.curCorrectionToolNr !== undefined && !viewState.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
+												// var col = Ssffdataservice.data[0].Columns[0];
+												if (tr === undefined) {
+													tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
+												}
+												col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+												sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+												var startTimeVP = viewState.getViewPortStartTime();
+												var endTimeVP = viewState.getViewPortEndTime();
+												var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
+												var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
+												var nrOfSamples = colEndSampleNr - colStartSampleNr;
+												var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
+												var curMouseTime = startTimeVP + (viewState.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
+												var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
+												var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
+												if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
+													//console.log('early return');
+													return;
+												}
+												viewState.curPreselColumnSample = curMouseSample - colStartSampleNr;
+												var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+												var y = canvas.height - curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
 
-											// draw sample
-											ctx.strokeStyle = 'black';
-											ctx.fillStyle = 'black';
-											ctx.beginPath();
-											ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-											ctx.closePath();
-											ctx.stroke();
-											ctx.fill();
+												// draw sample
+												ctx.strokeStyle = 'black';
+												ctx.fillStyle = 'black';
+												ctx.beginPath();
+												ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+												ctx.closePath();
+												ctx.stroke();
+												ctx.fill();
 
 
-											if (event.shiftKey) {
-												var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
-												var newValue = viewState.spectroSettings.rangeTo - viewState.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
+												if (event.shiftKey) {
+													var oldValue = angular.copy(curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1]);
+													var newValue = viewState.spectroSettings.rangeTo - viewState.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo; // SIC only using rangeTo
 
-												curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - viewState.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo;
-												var updateObj = HistoryService.updateCurChangeObj({
-													'type': 'SSFF',
-													'trackName': tr.name,
-													'sampleBlockIdx': colStartSampleNr + viewState.curPreselColumnSample,
-													'sampleIdx': viewState.curCorrectionToolNr - 1,
-													'oldValue': oldValue,
-													'newValue': newValue
-												});
+													curSampleArrs[viewState.curPreselColumnSample][viewState.curCorrectionToolNr - 1] = viewState.spectroSettings.rangeTo - viewState.getY(event) / event.originalEvent.target.height * viewState.spectroSettings.rangeTo;
+													var updateObj = HistoryService.updateCurChangeObj({
+														'type': 'SSFF',
+														'trackName': tr.name,
+														'sampleBlockIdx': colStartSampleNr + viewState.curPreselColumnSample,
+														'sampleIdx': viewState.curCorrectionToolNr - 1,
+														'oldValue': oldValue,
+														'newValue': newValue
+													});
 
-												//draw updateObj as overlay
-												for (var key in updateObj) {
-													curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
-													x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-													y = canvas.height - updateObj[key].newValue / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
+													//draw updateObj as overlay
+													for (var key in updateObj) {
+														curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
+														x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
+														y = canvas.height - updateObj[key].newValue / (viewState.spectroSettings.rangeTo - viewState.spectroSettings.rangeFrom) * canvas.height;
 
-													// draw sample
-													ctx.strokeStyle = 'red';
-													ctx.fillStyle = 'red';
-													// ctx.lineWidth = 4;
-													ctx.beginPath();
-													ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-													ctx.closePath();
-													ctx.stroke();
-													ctx.fill();
+														// draw sample
+														ctx.strokeStyle = 'red';
+														ctx.fillStyle = 'red';
+														// ctx.lineWidth = 4;
+														ctx.beginPath();
+														ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+														ctx.closePath();
+														ctx.stroke();
+														ctx.fill();
+													}
 												}
 											}
 										}
 									}
 								}
 							}
-						}
-						break;
-					case 1:
-						if (!viewState.getdragBarActive()) {
-							scope.setSelectDrag(event);
-						}
-						break;
+							break;
+						case 1:
+							if (!viewState.getdragBarActive()) {
+								scope.setSelectDrag(event);
+							}
+							break;
 					}
 					scope.$apply();
 				});
-/*
-				element.bind('mouseup', function (event) {
-					if (!viewState.getdragBarActive()) {
-						scope.setSelectDrag(event);
-						scope.switchMarkupContext(event, false);
-					}
-				});
-*/
+				/*
+				 element.bind('mouseup', function (event) {
+				 if (!viewState.getdragBarActive()) {
+				 scope.setSelectDrag(event);
+				 scope.switchMarkupContext(event, false);
+				 }
+				 });
+				 */
 				// on mouse leave clear markup canvas
 				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {

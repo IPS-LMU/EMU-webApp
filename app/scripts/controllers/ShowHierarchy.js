@@ -2,9 +2,9 @@
 
 angular.module('emuwebApp')
 	.controller('ShowhierarchyCtrl', function ($scope, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
-	
+
 		// Scope data
-		
+
 		$scope.paths = {
 			possible: [],
 			possibleAsStr: [],
@@ -24,7 +24,7 @@ angular.module('emuwebApp')
 		// convert array paths to strings
 		angular.forEach($scope.paths.possible, function (arr, arrIdx) {
 			var revArr = StandardFuncsService.reverseCopy(arr);
-			
+
 			if (arrIdx === 0) {
 				// select first possible path on load
 				$scope.paths.selected = revArr.join(' → ');
@@ -35,10 +35,10 @@ angular.module('emuwebApp')
 		//////////////
 		// watches
 
-		$scope.$watch ('paths.selected', function(newValue) {
+		$scope.$watch ('paths.selected', function (newValue) {
 			viewState.hierarchyState.path = $scope.paths.possible[$scope.getSelIdx()];
 		}, false);
-		
+
 		//
 		//////////////
 
@@ -53,7 +53,7 @@ angular.module('emuwebApp')
 		$scope.rotateHierarchy = function () {
 			viewState.hierarchyState.toggleRotation();
 		};
-		
+
 		$scope.getRotation = function () {
 			return viewState.hierarchyState.isRotated();
 		};

@@ -31,7 +31,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
-					if(newValue != oldValue) {
+					if (newValue != oldValue) {
 						scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 					}
 				});

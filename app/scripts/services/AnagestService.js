@@ -224,7 +224,7 @@ angular.module('emuwebApp')
 							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
 
 							modalService.open('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then(function (itemIdx) {
-							    if(itemIdx!==false) {
+								if (itemIdx !== false) {
 									var childIDs = [
 										gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
 										ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
@@ -314,7 +314,7 @@ angular.module('emuwebApp')
 				}
 
 				modalService.open('views/SelectThresholdModal.html', infos, undefined, true).then(function (resp) {
-				    console.log(resp);
+					console.log(resp);
 					var ap = vz[anavv[resp]];
 					ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
 					defer.resolve(ap);

@@ -17,7 +17,7 @@ angular.module('emuwebApp')
 						finished: finished,
 						key: key,
 						index: index
-					});	
+					});
 				};
 				scope.updateHistory = function (bundle, key, index) {
 					HistoryService.updateCurChangeObj({
@@ -28,13 +28,13 @@ angular.module('emuwebApp')
 						key: key,
 						index: index
 					});
-				};	
+				};
 				scope.endHistory = function () {
 					HistoryService.addCurChangeObjToUndoStack();
-				};			
+				};
 				scope.startHistory = function (bundle) {
 					scope.comment = bundle.comment;
-				};			
+				};
 
 			}
 		};

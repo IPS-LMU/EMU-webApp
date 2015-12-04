@@ -68,7 +68,7 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.render = function (data) {
-				
+
 					//Set our scale's domains
 					// x.domain(data.map(function (d) {
 					// 	return d.name;
@@ -151,7 +151,6 @@ angular.module('emuwebApp')
 					// 		return y(d.count);
 					// 	})
 				};
-
 
 
 			}

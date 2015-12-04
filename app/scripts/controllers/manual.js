@@ -25,10 +25,10 @@ angular.module('emuwebApp')
 		$scope.setCurrentMdFile = function (mdFile) {
 			$scope.curMdFile = mdFile;
 		};
-		
+
 		$scope.isCurrentMdFile = function (tabUrl) {
-		    console.log(tabUrl);
-		    console.log($scope.curMdFile.url);
+			console.log(tabUrl);
+			console.log($scope.curMdFile.url);
 			if (tabUrl === $scope.curMdFile.url) {
 				return {
 					'background-color': ConfigProviderService.design.color.white,
@@ -37,10 +37,10 @@ angular.module('emuwebApp')
 				};
 			}
 			return {
-					'background-color': ConfigProviderService.design.color.blue,
-					'color': ConfigProviderService.design.color.white,
-					'font-weight': '400'
-				};
-		};		
+				'background-color': ConfigProviderService.design.color.blue,
+				'color': ConfigProviderService.design.color.white,
+				'font-weight': '400'
+			};
+		};
 
 	});

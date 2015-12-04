@@ -31,7 +31,6 @@ angular.module('emuwebApp')
 		};
 
 
-
 		/**
 		 * find value between two points
 		 * by linearly interpolating them

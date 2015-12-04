@@ -26,16 +26,16 @@ angular.module('emuwebApp')
 		 * open modal normally
 		 */
 		sServObj.open = function (template, param1, param2, force) {
-			if(param1!==undefined) {
+			if (param1 !== undefined) {
 				sServObj.dataIn = param1;
-				if(param1.y!==undefined) {
+				if (param1.y !== undefined) {
 					sServObj.dataIn.chartData = ArrayHelperService.convertArrayToXYjsoArray(param1.y);
 				}
 			}
-			if(param2!==undefined) {
+			if (param2 !== undefined) {
 				sServObj.dataExport = param2;
 			}
-			if(force!==undefined) { // force user to do sth
+			if (force !== undefined) { // force user to do sth
 				sServObj.force = force;
 			}
 			sServObj.defer = $q.defer();
@@ -46,22 +46,21 @@ angular.module('emuwebApp')
 		};
 
 
-
 		/**
 		 *
 		 */
 		sServObj.changeModal = function (template, param1, param2, force) {
-		    if(param1!==undefined) {
-		        sServObj.dataIn = param1;
-		    }
-		    if(param2!==undefined) {
-		        sServObj.dataExport = param2;
-		    }
-		    if(force!==undefined) { // force user to do sth
-		        sServObj.force = force;
-		    }
-		    sServObj.deferChange = $q.defer();
-    		sServObj.templateUrl = template;
+			if (param1 !== undefined) {
+				sServObj.dataIn = param1;
+			}
+			if (param2 !== undefined) {
+				sServObj.dataExport = param2;
+			}
+			if (force !== undefined) { // force user to do sth
+				sServObj.force = force;
+			}
+			sServObj.deferChange = $q.defer();
+			sServObj.templateUrl = template;
 			return sServObj.deferChange.promise;
 		};
 
@@ -81,8 +80,8 @@ angular.module('emuwebApp')
 			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
 			sServObj.isOpen = false;
-			if(viewState.hierarchyState.isShown()) {
-			    viewState.hierarchyState.toggleHierarchy();
+			if (viewState.hierarchyState.isShown()) {
+				viewState.hierarchyState.toggleHierarchy();
 			}
 			sServObj.defer.resolve(false);
 		};

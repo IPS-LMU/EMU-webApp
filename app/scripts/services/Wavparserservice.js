@@ -7,9 +7,9 @@ angular.module('emuwebApp')
 
 		var worker = new wavParserWorker();
 		var defer;
-		
+
 		// add event listener to worker to respond to messages
-		worker.says(function(e) {
+		worker.says(function (e) {
 			if (e.status.type === 'SUCCESS') {
 				defer.resolve(e.data);
 			} else {

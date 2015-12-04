@@ -112,17 +112,17 @@ angular.module('emuwebApp')
 					dD.staticDots.forEach(function (sD) {
 						sD.xCoordinates.forEach(function (xVal, xIdx) {
 							// check x
-							if(xVal < globalMinX){
+							if (xVal < globalMinX) {
 								globalMinX = xVal;
 							}
-							if(xVal > globalMaxX){
+							if (xVal > globalMaxX) {
 								globalMaxX = xVal;
 							}
 							// check y
-							if(sD.yCoordinates[xIdx] < globalMinY){
+							if (sD.yCoordinates[xIdx] < globalMinY) {
 								globalMinY = sD.yCoordinates[xIdx];
 							}
-							if(sD.yCoordinates[xIdx] > globalMaxY){
+							if (sD.yCoordinates[xIdx] > globalMaxY) {
 								globalMaxY = sD.yCoordinates[xIdx];
 							}
 						});
@@ -174,7 +174,7 @@ angular.module('emuwebApp')
 
 						var xPrev = undefined;
 						var yPrev = undefined;
-						for(var j = 0; j < xCol.values.length; j++){
+						for (var j = 0; j < xCol.values.length; j++) {
 
 							var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.staticContours[i].xSsffTrack);
 							var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.staticContours[i].ySsffTrack);
@@ -196,10 +196,10 @@ angular.module('emuwebApp')
 							//ctx.closePath();
 
 							// draw lines
-							if(j >= 1 && dD.staticContours[i].connect){
+							if (j >= 1 && dD.staticContours[i].connect) {
 								ctx.beginPath();
-								ctx.moveTo(xPrev,yPrev);
-								ctx.lineTo(x,y);
+								ctx.moveTo(xPrev, yPrev);
+								ctx.lineTo(x, y);
 								ctx.stroke();
 							}
 
@@ -216,7 +216,7 @@ angular.module('emuwebApp')
 				scope.drawDots = function () {
 					if (globalMinX === Infinity) {
 						scope.setGlobalMinMaxVals();
-						if(scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0].staticContours !== undefined){
+						if (scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0].staticContours !== undefined) {
 							scope.drawStaticContour();
 						}
 					}
@@ -278,7 +278,7 @@ angular.module('emuwebApp')
 					var degrees = 90;
 					ctx.save();
 					ctx.rotate(degrees * Math.PI / 180);
-					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, canvas.width / 2 - tw / 2, -canvas.height, scope.cps.design.color.black);
+					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, canvas.width / 2 - tw / 2, -canvas.height, scope.cps.design.color.black);
 					ctx.restore();
 
 					//////////////////////////////
@@ -315,7 +315,6 @@ angular.module('emuwebApp')
 						}
 
 
-
 						var x = ((xCol.values[curFrame][dD.dots[i].xContourNr] - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var y = canvas.height - ((yCol.values[curFrame][dD.dots[i].yContourNr] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
@@ -331,7 +330,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 
 						// draw labels
-						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, x, y - 5, scope.cps.design.color.black);
+						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, x, y - 5, scope.cps.design.color.black);
 
 						// append to all dots
 						allDots.push({
@@ -376,7 +375,7 @@ angular.module('emuwebApp')
 						var labelY = canvas.height - ((sD.yNameCoordinate - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
 						var labelTxtImg =
-						scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0,-2) - 4, scope.cps.design.font.input.family, labelX, labelY, sD.color);
+							scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, labelX, labelY, sD.color);
 
 						sD.xCoordinates.forEach(function (xVal, xIdx) {
 							var x = ((xVal - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
