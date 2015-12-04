@@ -126,7 +126,7 @@ angular.module('emuwebApp')
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
 				alert('CORS version of getBundle not implemented');
-			} else if (ConfigProviderService.vals.main.comMode === 'embedded') {
+			} else if (ConfigProviderService.vals.main.comMode === 'EMBEDDED') {
 				getProm = DragnDropDataService.getBundle(name, session);
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getBundle(name, session);

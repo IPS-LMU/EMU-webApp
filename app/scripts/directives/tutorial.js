@@ -24,7 +24,6 @@ angular.module('emuwebApp')
 							++scope.counter
 						}
 			        }
-			        console.log(newValue);
 			    });
 			    
 			    
