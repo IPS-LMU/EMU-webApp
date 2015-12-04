@@ -67,7 +67,6 @@ angular.module('emuwebApp')
               }
             }
             viewState.setlastKeyCode(code);
-
             // Handle key strokes for the hierarchy modal
             if (viewState.hierarchyState.isShown() && viewState.hierarchyState !== undefined) {
               if (viewState.hierarchyState.getInputFocus()) {
@@ -78,39 +77,34 @@ angular.module('emuwebApp')
                   var levelName = LevelService.getLevelName(elementID);
                   var attrIndex = viewState.getCurAttrIndex(levelName);
                   var legalLabels = ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
-
                   var newValue = viewState.hierarchyState.getEditValue();
-
-		  var oldValue;
-		  if (element.labels[attrIndex] !== undefined) {
-		    oldValue = element.labels[attrIndex].value;
-		  } else {
-		    oldValue = '';
-		  }
-
-		  if (newValue !== undefined && newValue !== oldValue) { 
-			  // Check if new value is legal
-			  if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
-			    LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
-
-			    HistoryService.addObjToUndoStack({
-			      // Re-Using the already existing ANNOT/RENAMELABEL
-			      // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
-			      // but it would have the same code
-			      'type': 'ANNOT',
-			      'action': 'RENAMELABEL',
-			      'name': levelName,
-			      'id': elementID,
-			      'attrIndex': attrIndex,
-			      'oldValue': oldValue,
-			      'newValue': newValue
-			    });
-
-			    viewState.hierarchyState.closeContextMenu();
-		    	  }
+                  var oldValue;
+                  if (element.labels[attrIndex] !== undefined) {
+                    oldValue = element.labels[attrIndex].value;
                   } else {
-			    viewState.hierarchyState.closeContextMenu();
-		  }
+                    oldValue = '';
+                  }
+                  if (newValue !== undefined && newValue !== oldValue) { 
+                    // Check if new value is legal
+                    if (legalLabels === undefined || (newValue.length > 0 && legalLabels.indexOf(newValue) >= 0)) {
+                      LevelService.renameLabel(levelName, elementID, attrIndex, newValue);
+                      HistoryService.addObjToUndoStack({
+                        // Re-Using the already existing ANNOT/RENAMELABEL
+                        // I could also define HIERARCHY/RENAMELABEL for keeping the logical structure,
+                        // but it would have the same code
+                        'type': 'ANNOT',
+                        'action': 'RENAMELABEL',
+                        'name': levelName,
+                        'id': elementID,
+                        'attrIndex': attrIndex,
+                        'oldValue': oldValue,
+                        'newValue': newValue
+                      });
+                      viewState.hierarchyState.closeContextMenu();
+                    }
+                  } else {
+                    viewState.hierarchyState.closeContextMenu();
+                  }
                 }
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyCancelEdit) {
                   viewState.hierarchyState.closeContextMenu();
@@ -123,7 +117,9 @@ angular.module('emuwebApp')
 
                 // Play selected item
                 if (code === ConfigProviderService.vals.keyMappings.hierarchyPlayback) {
+                  e.preventDefault();
                   viewState.hierarchyState.playing += 1;
+                  console.log('hierarchyPlayback');
                 }
 
                 // rotateHierarchy
@@ -228,7 +224,7 @@ angular.module('emuwebApp')
                 }
 
                 // close modal
-                if (code === ConfigProviderService.vals.keyMappings.esc || code === ConfigProviderService.vals.keyMappings.showHierarchy) {
+                if (!e.shiftKey && (code === ConfigProviderService.vals.keyMappings.esc || code === ConfigProviderService.vals.keyMappings.showHierarchy)) {
                   modalService.close();
                 }
               }
@@ -798,13 +794,13 @@ angular.module('emuwebApp')
                       if (lastNeighboursMove.left !== undefined) {
                         if (lastNeighboursMove.left.sampleStart !== undefined) {
                           // check if in view
-                          if (lastNeighboursMove.left.sampleStart > viewState.curViewPort.sS) {
+                          if (lastNeighboursMove.left.sampleStart >= viewState.curViewPort.sS) {
                             viewState.setcurClickItem(lastNeighboursMove.left);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
                         } else {
                           // check if in view
-                          if (lastNeighboursMove.left.samplePoint > viewState.curViewPort.sS) {
+                          if (lastNeighboursMove.left.samplePoint >= viewState.curViewPort.sS) {
                             viewState.setcurClickItem(lastNeighboursMove.left, lastNeighboursMove.left.id);
                             LevelService.setlasteditArea('_' + lastNeighboursMove.left.id);
                           }
@@ -838,6 +834,10 @@ angular.module('emuwebApp')
                   modalService.confirmContent();
                 }
                 else {
+                  if(viewState.curClickLevelIndex === undefined) {
+                      modalService.open('views/error.html', 'Modify Error: Please select a Segment or Event Level first.');
+                  }
+                  else {
                   if (viewState.getPermission('labelAction')) {
                     if (ConfigProviderService.vals.restrictions.addItem) {
                       if (viewState.getselectedRange().start === viewState.curViewPort.selectS && viewState.getselectedRange().end === viewState.curViewPort.selectE) {
@@ -925,6 +925,7 @@ angular.module('emuwebApp')
                     } else {}
                   }
                 }
+               }
               }
 
 

@@ -57,6 +57,25 @@ angular.module('emuwebApp')
 			}
 		});
 
+        // bind focus check for mouse on window and document ( mouse inside )
+		angular.element($window).bind('blur', function (e) {
+		  viewState.focusOnEmuWebApp = false;
+		});
+		
+		// bind focus check for mouse on window and document ( mouse inside )
+		angular.element($document).bind('blur', function (e) {
+		  viewState.focusOnEmuWebApp = false;
+		});
+
+		// bind blur check for mouse on window and document ( mouse outside )
+		angular.element($window).bind('focus', function (e) {
+		  viewState.focusOnEmuWebApp = true;
+		});
+
+		// bind blur check for mouse on window and document ( mouse outside )
+		angular.element($document).bind('focus', function (e) {
+		  viewState.focusOnEmuWebApp = true;
+		});
 
 		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
@@ -702,15 +721,18 @@ angular.module('emuwebApp')
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
 		    var currentConfig = $scope.cps.curDbConfig;
-		    var currentVals = $scope.cps.vals;
+		    var currentVals = angular.toJson($scope.cps.vals, true);
 			modalService.open('views/tabbed.html').then(function (res) {
-				if(res) {
-				    // todo save and transfer curDbConfig & vals
-				    console.log(angular.toJson({ dbconfig: $scope.cps.curDbConfig, vals: $scope.cps.vals }));
+				if(res === false) {
+					$scope.cps.vals = angular.fromJson(currentVals);
 				}
 				else {
-				    $scope.cps.curDbConfig = currentConfig;
-				    $scope.cps.vals = currentVals;
+					if(Validationservice.validateJSO('emuwebappConfigSchema', res)) {
+						// todo save and transfer curDbConfig & vals
+					}
+					else {
+				    	$scope.cps.vals = angular.fromJson(currentVals);
+					}
 				}
 			});
 		};

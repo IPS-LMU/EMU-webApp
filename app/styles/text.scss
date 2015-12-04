@@ -10,10 +10,35 @@
   padding-right: 18px;
   word-wrap: break-word;
   padding-bottom: 120px;
-
-    @extend .emuwebapp-font-small;
-    .red {
-      color: #f00;
+  input.ng-invalid.ng-touched {
+    background-color: $color-red;
+  }
+  @extend .emuwebapp-font-small;
+  .red {
+  	color: #f00;
+  }
+  .emuwebapp-sort-line {
+   border: 0;
+    border-bottom: 1px dashed #ccc;
+    background: #999;
+  }
+    .emuwebapp-sortOuter {
+      list-style-type: none;
+      text-align: left;
+    }
+    .emuwebapp-sort {
+      list-style-type: none;
+      	width: 60%;
+      	margin-top: 15px;
+      	margin-bottom: 15px;
+      	margin-left: 20%;
+      li {
+      	border: 1px dashed $color-white;
+      }
+      li:hover {
+          background: $color-blue;
+          cursor: n-resize;
+      }
     }
     input {
         @extend .emuwebapp-font-input;
@@ -155,6 +180,7 @@
     margin: auto;
     text-align: left;
     max-width: 500px;
+    width: 500px !important;
     th{
       background-color: $color-white;
       font-weight: bold;
@@ -164,17 +190,25 @@
       @extend .emuwebapp-font-large;
     }
     tr{
-      padding: 5px;
+      width: 500px !important;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 2px;
+      padding-right: 2px;
       &:nth-child(even) {
         background: $color-lightGrey;
       }
       &:nth-child(odd) {
-        background: $color-white;
+        background: $color-grey;
+        color: $color-white;
       }
     }
-    td{
+    td {
       @extend .emuwebapp-font-large;
       padding: 10px;
+      &:nth-child(even) {
+        text-align: right;
+      }
     }
 
   }

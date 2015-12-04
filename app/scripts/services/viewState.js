@@ -19,6 +19,31 @@ angular.module('emuwebApp')
       RECTANGULAR: 9,
       TRIANGULAR: 10
     };
+    
+    // communication modes enum
+    var myMode = {
+      DEMO: 1,
+      WS: 2,
+      EMBEDDED: 3
+    };    
+    
+    // time modes enum
+    var myTimeMode = {
+      absolute: 1,
+      relative: 2
+    };    
+        
+    // signal types enum
+    var mySignalType = {
+      OSCI: 1,
+      SPEC: 2
+    };
+    
+    // twoDim types enum
+    var myTwoDimType = {
+      DOTS: 1,
+      EPG: 2
+    };    
 
     // hold the current attribute definitions that are in view
     sServObj.curLevelAttrDefs = [];
@@ -267,6 +292,7 @@ angular.module('emuwebApp')
       sServObj.curTaskPercCompl = 0;
       sServObj.curPerspectiveIdx = -1;
       sServObj.mouseInEmuWebApp = false;
+      sServObj.focusOnEmuWebApp = true;
       sServObj.lastKeyCode = undefined;
       sServObj.lastUpdate = undefined;
       // possible general states of state machine
@@ -530,8 +556,35 @@ angular.module('emuwebApp')
     sServObj.getWindowFunctions = function () {
       return myWindow;
     };
+    
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getCommunicationModes = function () {
+      return myMode;
+    };   
+    
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getTimeModes = function () {
+      return myTimeMode;
+    };       
 
-
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getSignalTypes = function () {
+      return mySignalType;
+    };  
+    
+    /**
+     * @returns myWindow object
+     */
+    sServObj.getTwoDimTypes = function () {
+      return myTwoDimType;
+    };    
+    
     /**
      * set if user is dragging dragbar
      */

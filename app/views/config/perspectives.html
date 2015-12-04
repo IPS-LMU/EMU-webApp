@@ -1,0 +1,58 @@
+<!-- perspectives configuration -->
+<div class="emuwebapp-text">
+	<h1>Perspectives Settings</h1>
+	<div>
+	<p>
+	<table style="width: 500px !important;">
+		<tr ng-repeat="(key, value) in modal.dataOut.perspectives">
+		<td>	
+		<a href="#" title="delete" id="modal-delete" ng-click="perspDelete(key)" ng-if="value.name != 'default'">
+			<img src="img/delete.svg" width="30" height="30" class="emuwebapp-delete" />
+		</a>				
+		<div>
+			<span ng-if="value.name == 'default'">
+			  default perspective
+		    </span>
+			<span ng-if="value.name != 'default'">
+			  <input type="text" size="20" ng-model="value.name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">	
+			</span>
+		</div>
+		<div>
+			<u>Signal Canvases</u>
+			<ul class="emuwebapp-signalcanvas" ng-model="value.signalCanvases.order">
+				<li ng-repeat="item in value.signalCanvases.order track by $index">						
+					<a href="#" ng-click="up(key, $index, 0)">&uarr;</a>
+					<a href="#" ng-click="down(key, $index, 0)">&darr;</a>
+					{{ $index + 1 }} : {{ item }}
+					<a href="#" ng-click="del(key, $index, 0)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a>
+				</li>
+			</ul>
+			add a new <select ng-model="currentSignal" ng-options="signal for signal in signalTypes" /> 
+			<a style="cursor: pointer;" href="#" ng-click="signalAdd(key, currentSignal)"><img src="img/add.svg" width="18" height="18" class="emuwebapp-add-signal" style="margin-right: 10px;"/></a>
+			<hr class="emuwebapp-sort-line" />
+			<u>Level Canvases</u>
+			<ul class="emuwebapp-signalcanvas" ng-model="value.levelCanvases.order">
+				<li ng-repeat="item in value.levelCanvases.order track by $index">						
+					<a href="#" ng-click="up(key, $index, 1)">&uarr;</a>
+					<a href="#" ng-click="down(key, $index, 1)">&darr;</a>
+					{{ $index + 1 }} : {{ item }}
+					<a href="#" ng-click="del(key, $index, 1)"><img src="img/delete.svg" width="18" height="18" class="emuwebapp-delete-signal" style="margin-right: 10px;"/></a>
+				</li>
+			</ul>
+			<span ng-if="levelTypes.length > 0">
+			add a new <select ng-model="currentLevel" ng-options="level for level in levelTypes" /> 
+			<a style="cursor: pointer;" href="#" ng-click="levelAdd(key, currentLevel)"><img src="img/add.svg" width="18" height="18" class="emuwebapp-add-signal" style="margin-right: 10px;"/></a>
+			<br />
+			{{ warning }}
+			</span>
+			<hr class="emuwebapp-sort-line" />
+			&nbsp;<br />
+		</div>
+		</td>
+		</tr>
+		</table>
+		<a href="#" ng-click="perspAdd()">add new perspective</a>
+	</p>
+	</div>
+</div>
+  <br />

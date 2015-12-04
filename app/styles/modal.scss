@@ -40,8 +40,42 @@
         &:hover {
             background: $color-blue;
             text-decoration: none;
-            }
+        }
     }
+    
+   .emuwebapp-add-signal {
+   		clear: both;
+   		display: inline-block;
+    	background: $color-white;
+        text-decoration: none;
+        font-weight: bold;
+        @include vendor-prefix(box-shadow, "1px 1px 3px "+$color-transparent-grey);
+        @include vendor-prefix(border-radius, "15px");
+        z-index: 99999;
+        &:hover {
+            background: $color-blue;
+            text-decoration: none;
+        }
+        img {
+            text-align: right;
+        }
+    }     
+    
+   .emuwebapp-delete-signal {
+    	@extend .emuwebapp-add-signal;
+    	float: right;
+    }     
+    
+    .emuwebapp-delete {
+	    @extend .emuwebapp-font-small;
+	    float: right;
+        position: relative;
+        top: -10px;
+        right: -10px;
+        width: 30px;
+        height: 30px;
+    }  
+      
 
     .emuwebapp-modal-inner {
         position: absolute;
@@ -51,6 +85,17 @@
         right:0;
         margin-top: 0;
         margin-bottom: 0;
+    }
+    .emuwebapp-signalcanvas {
+    	list-style-type: none;
+    	width: 50%;
+    	margin-left: 25%;	
+    	li {
+    	    list-style-type: none;
+    	    background-color: $color-blue;
+    	    margin: 10px;
+    	    padding: 3px; 
+    	}
     }
 }
 

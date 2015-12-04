@@ -69,8 +69,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.error = function (msg) {
-		    sServObj.dataIn = msg;
-    		sServObj.templateUrl = 'views/error.html';
+			sServObj.dataIn = msg;
+			sServObj.templateUrl = 'views/error.html';
 			viewState.setState('modalShowing');
 		};
 

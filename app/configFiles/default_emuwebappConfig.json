@@ -1,6 +1,5 @@
 {
     "main": {
-        "osciSpectroZoomFactor": 2,
         "autoConnect": false,
         "serverUrl": "ws://localhost:17890",
         "serverTimeoutInterval": 30000,
@@ -123,7 +122,7 @@
         "saveBundle": false,
         "openMenu": true,
         "showHierarchy": false,
-        "editDBconfig": false
+        "editEMUwebAppConfig": false
     },
     "demoDBs": ["ae", "ema", "epgdorsal"]
 }

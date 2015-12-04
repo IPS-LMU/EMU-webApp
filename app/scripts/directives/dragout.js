@@ -12,7 +12,9 @@ angular.module('emuwebApp')
         scope.cps = ConfigProviderService;
         var el = element[0];
         var dragIcon = document.createElement('img');
-            dragIcon.src = 'img/saveBtn.svg';
+        dragIcon.src = 'img/save.svg';
+        dragIcon.width = '35';
+        dragIcon.height = '35';
         var dataString = '';
 
         scope.generateURL = function () {
@@ -20,7 +22,10 @@ angular.module('emuwebApp')
         };
 
         scope.isActive = function () {
-            return (attrs.name === loadedMetaDataService.getCurBndl().name && scope.cps.vals.main.comMode === 'embedded');
+        	if(attrs.name === loadedMetaDataService.getCurBndl().name) {
+        		return true;
+        	}
+        	else return false;
         };
 
         scope.getURL = function (data) {
@@ -48,17 +53,24 @@ angular.module('emuwebApp')
 
         el.addEventListener(
             'dragstart',
-			function(e) {
+			function(e) {	
+				console.log('dragstart');
 				if(scope.isActive()) {
 					this.classList.add('drag');
 					var url = scope.generateURL();
 					if(browserDetector.isBrowser.Firefox() || browserDetector.isBrowser.Chrome()) {
-					    e.dataTransfer.setDragImage(dragIcon, -10, -10);
+						// normal <img png> is not scalable
+						// therefore generate div, place <img> in it and then scale
+						var div = document.createElement('div');
+						div.appendChild(dragIcon);
+						document.querySelector('body').appendChild(div);					
+					    e.dataTransfer.setDragImage(div, -8, -8);
 					    e.dataTransfer.effectAllowed = 'move';
 					    e.dataTransfer.setData('DownloadURL', 'application/json:'+attrs.name+'_annot.json:' + url);
 					}
                 }
                 else {
+                	e.preventDefault();
 					console.log('dropping inactive bundles is not allowed');
                 }
                 return false;
@@ -69,24 +81,13 @@ angular.module('emuwebApp')
         el.addEventListener(
             'dragend',
             function(e) {
+            	console.log('dragend');
                 if(scope.isActive()) {
                     this.classList.remove('drag');
+                    e.preventDefault();
                 }
                 return false;
-            },
-            false
-        );
-
-        el.addEventListener(
-            'mousedown',
-            function(e) {
-                if(scope.isActive()) {
-                    el.setAttribute('draggable', true);
-                }
-                else {
-                    el.setAttribute('draggable', false);
-                    el.removeAttribute('dragable');
-                }
+                
             },
             false
         );

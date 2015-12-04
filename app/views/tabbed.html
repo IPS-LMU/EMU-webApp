@@ -1,20 +1,25 @@
+<script type="text/ng-template" id="node_template.html">
+<a class="emuwebapp-tabbed-link" href="#" ng-click="onClickTab(node)">&nbsp;&nbsp;&nbsp;{{node.title}}</a></div>
+</script>
 <div class="emuwebapp-modal-wrap">
 	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
-	  <h3 id="modalHeading">
-	      Edit Configuration
-	  </h3>
+		<h3 id="modalHeading">EMU-webApp Configuration</h3>
 	</div>
 	<div class="emuwebapp-modal-body">
 		<!-- tabbed header -->
-		<div id="tabs" class="emuwebapp-tabbed" ng-controller="TabbedCtrl">
-			<ul class="emuwebapp-grid">
-				<li ng-repeat="tab in tabs" ng-style="isActiveTab(tab.url)" class="emuwebapp-grid-cell emuwebapp-grid-center emuwebapp-grid-button emuwebapp-link" ng-click="onClickTab(tab)">{{tab.title}}</li>
-			</ul>
-			<div ng-include="currentTabUrl" class="emuwebapp-tabbed-view"></div>
+		<div id="tabs" class="emuwebapp-tabbed" data-ng-controller="TabbedCtrl">
+			<ul class="emuwebapp-tabbed-menu">
+        <li data-ng-repeat="node in tree" data-ng-include="'node_template.html'"></li>
+    	</ul>
+			<div class="emuwebapp-tabbed-view">
+				<form name="configForm">
+					<div ng-include src="currentTabUrl"></div>
+				</form>
+			</div>
 		</div>
-  	</div>
-  <div class="emuwebapp-modal-footer">
-    <button ng-click="modal.closeAndResolve(false)" class="emuwebapp-mini-btn">Close</button>
   </div>
+	<div class="emuwebapp-modal-footer">
+	  <button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn">Cancel</button>
+		<button id="modalSaveBtn" ng-click="modal.confirmContent();" class="emuwebapp-mini-btn">Save</button>
+	</div>
 </div>
-

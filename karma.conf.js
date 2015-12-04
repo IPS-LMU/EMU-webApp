@@ -24,7 +24,6 @@ module.exports = function (config) {
       'app/bower_components/angular-filter/dist/angular-filter.js',
       'app/bower_components/d3/d3.js',
       'app/bower_components/tv4/tv4.js',
-      'app/bower_components/angular-ui-sortable/sortable.js',
       'app/bower_components/showdown/src/showdown.js',
       'app/bower_components/angular-markdown-directive/markdown.js',
       'app/bower_components/angular-sanitize/angular-sanitize.js',

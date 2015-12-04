@@ -26,8 +26,8 @@
 		<emuhierarchy playing="getPlaying();" vertical="getRotation();"></emuhierarchy>
 	</div>
 	<div class="emuwebapp-modal-footer">
-	    <button class="emuwebapp-mini-btn" ng-click="playSelection()">play selected</button>
-	    <button id="modalRotateBtn" class="emuwebapp-mini-btn" ng-click="rotateHierarchy()">&orarr; rotate by 90&deg;</button>
-		<button id="modalCancelBtn" ng-click="modal.close();" class="emuwebapp-mini-btn">close</button>
+	    <button class="emuwebapp-mini-btn" id="modalPlayBtn" ng-click="playSelection()">play selected</button>
+	    <button class="emuwebapp-mini-btn" id="modalRotateBtn" ng-click="rotateHierarchy()">&orarr; rotate by 90&deg;</button>
+		<button class="emuwebapp-mini-btn" id="modalCancelBtn" ng-click="modal.close();">close hierarchy</button>
 	</div>
 </div>

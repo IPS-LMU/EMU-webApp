@@ -29,7 +29,7 @@ describe('Service: dbObjLoadSaveService', function () {
      scope.dbo.getAnnotationAndSaveBndl({},deferred);
      deferred.resolve('called');
      scope.$apply();
-     expect(Iohandlerservice.saveBundle).toHaveBeenCalled();
+     expect(Iohandlerservice.saveBundle).toHaveBeenCalledWith({ annotation : {  }, mediaFile : { encoding : 'BASE64', data : '' }, session : 'test', finishedEditing : false, comment : 'test comment' });
    }));
 
   /**
