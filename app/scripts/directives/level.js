@@ -11,7 +11,6 @@ angular.module('emuwebApp')
 			},
 			link: function postLink(scope, element, attr) {
 				// select the needed DOM items from the template
-				console.log(scope.level);
 				var canvas = element.find('canvas');
 				scope.open = attr.open;
 				scope.vs = viewState;

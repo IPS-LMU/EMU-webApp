@@ -246,6 +246,7 @@ angular.module('emuwebApp')
 						viewState.somethingInProgressTxt = 'Validating emuwebappConfig';
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
 						if (validRes === true) {
+							console.log(data);
 							ConfigProviderService.setVals(data);
 							$scope.handleDefaultConfigLoaded();
 							// loadFilesForEmbeddedApp if these are set
@@ -721,14 +722,19 @@ angular.module('emuwebApp')
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
 		    var currentConfig = $scope.cps.curDbConfig;
-		    var currentVals = angular.copy($scope.cps.vals);
+		    var currentVals = angular.toJson($scope.cps.vals, true);
 			modalService.open('views/tabbed.html').then(function (res) {
-				if(res) {
-				    // todo save and transfer curDbConfig & vals
-				    console.log(angular.toJson(res, true));
+				console.log(res);
+				if(res === false) {
+					$scope.cps.vals = angular.fromJson(currentVals);
 				}
 				else {
-				    $scope.cps.vals = angular.copy(currentVals);
+					if(Validationservice.validateJSO('emuwebappConfigSchema', res)) {
+						// todo save and transfer curDbConfig & vals
+					}
+					else {
+				    	$scope.cps.vals = angular.fromJson(currentVals);
+					}
 				}
 			});
 		};

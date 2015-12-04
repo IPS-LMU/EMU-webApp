@@ -26,5 +26,34 @@
       </td>
 		</tr>
   </table>
+  <p>&nbsp;</p>
+  <h1>Restrictions</h1>
+		<table>
+		<tr ng-repeat="(key, value) in modal.dataOut.restrictions">
+			<td>{{key}}</td>
+			<td>
+        <div>
+          <span>
+            <input type="checkbox" ng-model="modal.dataOut.restrictions[key]" ng-checked="modal.dataOut.restrictions[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+          </span>
+        </span>
+      </td>
+		</tr>
+  </table>
+  <p>&nbsp;</p>
+  <h1>Buttons</h1>
+		<table>
+		<tr ng-repeat="(key, value) in modal.dataOut.activeButtons">
+			<td>{{key}}</td>
+			<td>
+        <div>
+          <span>
+            <input type="checkbox" ng-model="modal.dataOut.activeButtons[key]" ng-checked="modal.dataOut.activeButtons[key]" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+          </span>
+        </span>
+      </td>
+		</tr>
+  </table>  
+  
 </p>
 <br />

@@ -7,9 +7,6 @@ angular.module('emuwebApp')
 		
 		// all available tabs
 		$scope.tree = [{
-			title: 'Main Settings',
-			url: 'views/config/main.html'
-		}, {
 			title: 'Spectrogram Settings',
 			url: 'views/config/spectro.html'
 		}, {
@@ -19,11 +16,8 @@ angular.module('emuwebApp')
 			title: 'Label Configuration',
 			url: 'views/config/label.html'
 		}, {
-			title: 'Restrictions',
-			url: 'views/config/restrictions.html'
-		}, {
-			title: 'Buttons',
-			url: 'views/config/buttons.html'
+			title: 'Expert Settings',
+			url: 'views/config/expert.html'
 		}];
 
 		$scope.cps = ConfigProviderService;

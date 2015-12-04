@@ -3,8 +3,9 @@
 	<h1>Perspectives Settings</h1>
 	<div>
 	<p>
-		<ul>
-		<li class="emuwebapp-sortOuter" ng-repeat="(key, value) in modal.dataOut.perspectives" ng-class="{high: $index%2==0, low: $index%2==1}">
+	<table style="width: 500px !important;">
+		<tr ng-repeat="(key, value) in modal.dataOut.perspectives">
+		<td>	
 		<a href="#" title="delete" id="modal-delete" ng-click="perspDelete(key)" ng-if="value.name != 'default'">
 			<img src="img/delete.svg" width="30" height="30" class="emuwebapp-delete" />
 		</a>				
@@ -47,8 +48,9 @@
 			<hr class="emuwebapp-sort-line" />
 			&nbsp;<br />
 		</div>
-		</li>
-		</ul>
+		</td>
+		</tr>
+		</table>
 		<a href="#" ng-click="perspAdd()">add new perspective</a>
 	</p>
 	</div>

@@ -10,19 +10,8 @@
   padding-right: 18px;
   word-wrap: break-word;
   padding-bottom: 120px;
-  .high {
-      @include vendor-prefix(box-sizing, "content-box");
-      background: $color-transparent-lightGrey;
-      border-radius: 10px;
-      margin: 10px;
-      text-align: left;
-  }
-  .low {
-      @include vendor-prefix(box-sizing, "content-box");
-      background: $color-lightGrey;
-      border-radius: 10px;
-      margin: 10px;
-      text-align: left;
+  input.ng-invalid.ng-touched {
+    background-color: $color-red;
   }
   @extend .emuwebapp-font-small;
   .red {
@@ -191,6 +180,7 @@
     margin: auto;
     text-align: left;
     max-width: 500px;
+    width: 500px !important;
     th{
       background-color: $color-white;
       font-weight: bold;
@@ -200,12 +190,17 @@
       @extend .emuwebapp-font-large;
     }
     tr{
-      padding: 5px;
+      width: 500px !important;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 2px;
+      padding-right: 2px;
       &:nth-child(even) {
         background: $color-lightGrey;
       }
       &:nth-child(odd) {
-        background: $color-white;
+        background: $color-grey;
+        color: $color-white;
       }
     }
     td {
