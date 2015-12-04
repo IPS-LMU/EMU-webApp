@@ -14,7 +14,7 @@ angular.module('emuwebApp')
 					HistoryService.addObjToUndoStack({
 						type: 'WEBAPP',
 						action: 'FINISHED',
-						finishedEditing: finished,
+						finished: finished,
 						key: key,
 						index: index
 					});	

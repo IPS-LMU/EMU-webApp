@@ -33,7 +33,6 @@ angular.module('emuwebApp')
 					}
 				} else if (cur.type === 'WEBAPP') {
 					var action = false;	
-					console.log(cur.comment);		
 					switch (cur.action) {
 						case 'COMMENT':
 							// The order of links is not preserved on undo
@@ -47,9 +46,9 @@ angular.module('emuwebApp')
 						case 'FINISHED':
 							if (applyOldVal) {
 								action = true;
-								loadedMetaDataService.setBndlFinished(cur.finishedEditing, cur.key, cur.index);
+								loadedMetaDataService.setBndlFinished(!cur.finished, cur.key, cur.index);
 							} else {
-								loadedMetaDataService.setBndlFinished(!cur.finishedEditing, cur.key, cur.index);
+								loadedMetaDataService.setBndlFinished(cur.finished, cur.key, cur.index);
 							}
 							break;							
 					}				
