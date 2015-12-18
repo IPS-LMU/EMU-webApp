@@ -1,1 +1,188 @@
-{"name":"ae","UUID":"cd45b08a-3a13-4e42-b566-585844efabd4","mediafileExtension":"wav","ssffTrackDefinitions":[{"name":"FORMANTS","columnName":"fm","fileExtension":"fms"},{"name":"fundFreq","columnName":"F0","fileExtension":"f0"},{"name":"dftSpec","columnName":"dft","fileExtension":"dft"}],"levelDefinitions":[{"name":"Utterance","type":"ITEM","attributeDefinitions":[{"name":"Utterance","type":"STRING"}]},{"name":"Intonational","type":"ITEM","attributeDefinitions":[{"name":"Intonational","type":"STRING"}]},{"name":"Intermediate","type":"ITEM","attributeDefinitions":[{"name":"Intermediate","type":"STRING"}]},{"name":"Word","type":"ITEM","attributeDefinitions":[{"name":"Word","type":"STRING"},{"name":"Accent","type":"STRING"},{"name":"Text","type":"STRING"}]},{"name":"Syllable","type":"ITEM","attributeDefinitions":[{"name":"Syllable","type":"STRING"}]},{"name":"Phoneme","type":"ITEM","attributeDefinitions":[{"name":"Phoneme","type":"STRING"}]},{"name":"Phonetic","type":"SEGMENT","attributeDefinitions":[{"name":"Phonetic","type":"STRING"},{"name":"IPA","type":"STRING","legalLabels":["ʌ","m","ŋ","s","t","ɥ","@:","f","r","ɛ","n","z","ʃ","iː","w","ə","k","ɪ","d","db","j","uː","dH","l"]}]},{"name":"Tone","type":"EVENT","attributeDefinitions":[{"name":"Tone","type":"STRING"}]},{"name":"Foot","type":"ITEM","attributeDefinitions":[{"name":"Foot","type":"STRING"}]},{"name":"Syllable","type":"ITEM","attributeDefinitions":[{"name":"Syllable","type":"STRING"}]}],"linkDefinitions":[{"type":"ONE_TO_MANY","superlevelName":"Utterance","sublevelName":"Intonational"},{"type":"ONE_TO_MANY","superlevelName":"Intonational","sublevelName":"Intermediate"},{"type":"ONE_TO_MANY","superlevelName":"Intermediate","sublevelName":"Word"},{"type":"ONE_TO_MANY","superlevelName":"Word","sublevelName":"Syllable"},{"type":"ONE_TO_MANY","superlevelName":"Syllable","sublevelName":"Phoneme"},{"type":"MANY_TO_MANY","superlevelName":"Phoneme","sublevelName":"Phonetic"},{"type":"ONE_TO_MANY","superlevelName":"Syllable","sublevelName":"Tone"},{"type":"ONE_TO_MANY","superlevelName":"Intonational","sublevelName":"Foot"},{"type":"ONE_TO_MANY","superlevelName":"Foot","sublevelName":"Syllable"}],"EMUwebAppConfig":{"main":{"autoConnect":false,"serverUrl":"ws://localhost:17890","serverTimeoutInterval":30000,"comMode":"WS","catchMouseForKeyBinding":false},"keyMappings":{"toggleSideBarLeft":111,"toggleSideBarRight":79,"zoomSel":101,"zoomAll":113,"zoomOut":115,"zoomIn":119,"showHierarchy":104,"hierarchyDeleteLink":8,"hierarchyDeleteItem":121,"hierarchyAddItemBefore":110,"hierarchyAddItemAfter":109,"hierarchyAddLink":108,"hierarchyRotate":114,"hierarchyPlayback":32,"hierarchyCommitEdit":13,"hierarchyCancelEdit":27,"shiftViewPortLeft":97,"shiftViewPortRight":100,"playEntireFile":102,"playAllInView":32,"playSelected":99,"deletePreselBoundary":8,"selNextPrevItem":9,"selNextItem":39,"selPrevItem":37,"createNewItemAtSelection":13,"levelUp":38,"levelDown":40,"undo":122,"redo":90,"shrinkSelSegmentsRight":95,"shrinkSelSegmentsLeft":45,"expandSelSegmentsRight":43,"expandSelSegmentsLeft":42,"selectFirstContourCorrectionTool":49,"selectSecondContourCorrectionTool":50,"selectThirdContourCorrectionTool":51,"selectFourthContourCorrectionTool":52,"selectNoContourCorrectionTool":48,"selectItemsInSelection":103,"snapBoundaryToNearestTopBoundary":116,"snapBoundaryToNearestBottomBoundary":98,"snapBoundaryToNearestZeroCrossing":120,"shift":16,"alt":18,"esc":27},"spectrogramSettings":{"windowSizeInSecs":0.01,"rangeFrom":0,"rangeTo":5000,"dynamicRange":70,"window":"GAUSS","preEmphasisFilterFactor":0.97,"transparency":255,"drawHeatMapColors":false,"heatMapColorAnchors":[[255,0,0],[0,255,0],[0,0,0]]},"perspectives":[{"name":"default","signalCanvases":{"order":["OSCI","SPEC","SPEC"],"assign":[{"signalCanvasName":"SPEC","ssffTrackName":"FORMANTS"}],"contourLims":[{"ssffTrackName":"FORMANTS","minContourIdx":0,"maxContourIdx":1}],"contourColors":[{"ssffTrackName":"FORMANTS","colors":["rgb(238,130,238)","rgb(127,255,212)"]}]},"levelCanvases":{"order":["Phonetic","Tone"]},"twoDimCanvases":{"order":[]}},{"name":"segmentsAnd10DftCoeffs","signalCanvases":{"order":["OSCI","SPEC","fundFreq","dftSpec"],"assign":[],"contourLims":[{"ssffTrackName":"dftSpec","minContourIdx":0,"maxContourIdx":9}]},"levelCanvases":{"order":["Phonetic","Tone"]},"twoDimCanvases":{"order":[]}}],"labelCanvasConfig":{"addTimeMode":"absolute","addTimeValue":750,"newSegmentName":"","newEventName":""},"restrictions":{"playback":true,"correctionTool":true,"editItemSize":true,"editItemName":true,"deleteItemBoundary":true,"deleteItem":true,"deleteLevel":true,"addItem":true,"drawCrossHairs":true,"drawSampleNrs":false,"drawZeroLine":true,"bundleComments":false,"bundleFinishedEditing":false,"showPerspectivesSidebar":true},"activeButtons":{"addLevelSeg":false,"addLevelEvent":false,"renameSelLevel":false,"downloadTextGrid":false,"downloadAnnotation":false,"specSettings":true,"connect":true,"clear":true,"deleteSingleLevel":false,"resizeSingleLevel":true,"saveSingleLevel":false,"resizePerspectives":true,"openDemoDB":false,"saveBundle":true,"openMenu":true,"showHierarchy":true,"editEMUwebAppConfig":true},"demoDBs":["ae","ema","epgdorsal"]}}
+{
+	"name": "ae",
+	"UUID": "cd45b08a-3a13-4e42-b566-585844efabd4",
+	"mediafileExtension": "wav",
+	"ssffTrackDefinitions": [{
+		"name": "FORMANTS",
+		"columnName": "fm",
+		"fileExtension": "fms"
+	}, {
+		"name": "fundFreq",
+		"columnName": "F0",
+		"fileExtension": "f0"
+	}, {
+		"name": "dftSpec",
+		"columnName": "dft",
+		"fileExtension": "dft"
+	}],
+	"levelDefinitions": [{
+		"name": "Utterance",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Utterance",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Intonational",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Intonational",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Intermediate",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Intermediate",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Word",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Word",
+			"type": "STRING"
+		}, {
+			"name": "Accent",
+			"type": "STRING"
+		}, {
+			"name": "Text",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Syllable",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Syllable",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Phoneme",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Phoneme",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Phonetic",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "Phonetic",
+			"type": "STRING"
+		}, {
+			"name": "IPA",
+			"type": "STRING",
+			"legalLabels": ["ʌ", "m", "ŋ", "s", "t", "ɥ", "@:", "f", "r", "ɛ", "n", "z", "ʃ", "iː", "w", "ə", "k", "ɪ", "d", "db", "j", "uː", "dH", "l"]
+		}]
+	}, {
+		"name": "Tone",
+		"type": "EVENT",
+		"attributeDefinitions": [{
+			"name": "Tone",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Foot",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Foot",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Syllable",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Syllable",
+			"type": "STRING"
+		}]
+	}],
+	"linkDefinitions": [{
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Utterance",
+		"sublevelName": "Intonational"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Intonational",
+		"sublevelName": "Intermediate"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Intermediate",
+		"sublevelName": "Word"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Word",
+		"sublevelName": "Syllable"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Syllable",
+		"sublevelName": "Phoneme"
+	}, {
+		"type": "MANY_TO_MANY",
+		"superlevelName": "Phoneme",
+		"sublevelName": "Phonetic"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Syllable",
+		"sublevelName": "Tone"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Intonational",
+		"sublevelName": "Foot"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Foot",
+		"sublevelName": "Syllable"
+	}],
+	"EMUwebAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC", "fundFreq"],
+				"assign": [{
+					"signalCanvasName": "SPEC",
+					"ssffTrackName": "FORMANTS"
+				}],
+				"contourLims": [{
+					"ssffTrackName": "FORMANTS",
+					"minContourIdx": 0,
+					"maxContourIdx": 1
+				}],
+				"contourColors": [{
+				    "ssffTrackName": "FORMANTS",
+				    "colors": ["rgb(238,130,238)", "rgb(127,255,212)"]
+				}]
+			},
+			"levelCanvases": {
+				"order": ["Phonetic", "Tone"]
+			},
+			"twoDimCanvases": {
+				"order": []
+			}
+		}, {
+			"name": "segmentsAnd10DftCoeffs",
+			"signalCanvases": {
+				"order": ["OSCI", "SPEC", "fundFreq", "dftSpec"],
+				"assign": [],
+				"contourLims": [{
+					"ssffTrackName": "dftSpec",
+					"minContourIdx": 0,
+					"maxContourIdx": 9
+				}]
+			},
+			"levelCanvases": {
+				"order": ["Phonetic", "Tone"]
+			},
+			"twoDimCanvases": {
+				"order": []
+			}
+		}],
+		"restrictions": {
+			"showPerspectivesSidebar": true
+		},
+		"activeButtons": {
+			"saveBundle": true,
+			"showHierarchy": true,
+			"editEMUwebAppConfig": true
+		}
+	}
+}
