@@ -10,12 +10,7 @@
 			<img src="img/delete.svg" width="30" height="30" class="emuwebapp-delete" />
 		</a>				
 		<div>
-			<span ng-if="value.name == 'default'">
-			  default perspective
-		    </span>
-			<span ng-if="value.name != 'default'">
-			  <input type="text" size="20" ng-model="value.name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">	
-			</span>
+			<input type="text" size="20" ng-model="value.name" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">	
 		</div>
 		<div>
 			<u>Signal Canvases</u>

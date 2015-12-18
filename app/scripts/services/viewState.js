@@ -295,6 +295,7 @@ angular.module('emuwebApp')
 			sServObj.focusOnEmuWebApp = true;
 			sServObj.lastKeyCode = undefined;
 			sServObj.lastUpdate = undefined;
+			sServObj.url = undefined;
 			// possible general states of state machine
 			sServObj.states = [];
 			sServObj.states.noDBorFilesloaded = {

@@ -7,14 +7,11 @@ angular.module('emuwebApp')
 
 		// all available tabs
 		$scope.tree = [{
-			title: 'Spectrogram Settings',
-			url: 'views/config/spectro.html'
-		}, {
 			title: 'Perspectives Configuration',
 			url: 'views/config/perspectives.html'
 		}, {
-			title: 'Label Configuration',
-			url: 'views/config/label.html'
+			title: 'Spectrogram Settings',
+			url: 'views/config/spectro.html'
 		}, {
 			title: 'Expert Settings',
 			url: 'views/config/expert.html'
@@ -23,7 +20,7 @@ angular.module('emuwebApp')
 		$scope.cps = ConfigProviderService;
 		$scope.modal = modalService;
 		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
-		$scope.modal.dataOut = ConfigProviderService.vals;
+		$scope.modal.dataOut = angular.copy(ConfigProviderService.vals);
 		$scope.warning = '';
 
 		$scope.init = function () {

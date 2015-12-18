@@ -315,6 +315,42 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
       break;
 
+      // SAVECONFIG method
+    case 'SAVECONFIG':
+      console.log('### Pretending to save the following configuration:');
+      fs.readFile(pathToDbRoot + configName, 'utf8', function (err, data) {
+        if (err) {
+      		ws.send(JSON.stringify({
+      			'callbackID': mJSO.callbackID,
+      			'status': {
+      				'type': 'ERROR',
+      				'message': 'Error reading configuration file.'
+      			}
+      		}), undefined, 0);
+        
+        }
+        else {
+        	var config = JSON.parse(data);
+        	config.EMUwebAppConfig = JSON.parse(mJSO.data);
+        	console.log(config);
+        	fs.writeFile(pathToDbRoot + configName, JSON.stringify(config, undefined, 0), function(err) {
+        		if(err) {
+        			return console.log(err);
+        		} else {
+        			console.log("The configuration was saved!");
+        			ws.send(JSON.stringify({
+        				'callbackID': mJSO.callbackID,
+        				'status': {
+        					'type': 'SUCCESS',
+        					'message': 'Configuration successfully saved.'
+        				}
+        			}), undefined, 0);
+        		}
+        	});
+        }
+      });      
+      break;
+      
       // DISCONNECTING method
     case 'DISCONNECTWARNING':
       console.log('preparing to disconnect...');
