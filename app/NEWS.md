@@ -1,6 +1,11 @@
 What's New
 =============================================
 
+## Version 0.0.33
+
+- new config editor for the EMU-webApp now available. you can edit the default perspectives, default spectrogram settings as well as expert settings.
+- improved protocol by 'SAVECONFIG', to be able to save config
+
 ## Version 0.0.32
 
 - improved EMU-webAppIcon-roundCorners.svg

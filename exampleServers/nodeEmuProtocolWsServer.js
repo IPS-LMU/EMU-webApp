@@ -26,7 +26,14 @@ if (process.argv.length === 2) {
   // var configName = 'gersC_DBconfig.json';
   var pathToDbRoot = '../app/testData/newFormat/ae/';
   var configName = 'ae_DBconfig.json';
-
+  console.log(' usage: node nodeEmuProtocolServer.js [port] [path] [config]');
+  console.log(' where:');
+  console.log('    [port]: The port number to listen on (optional, default: 17890)');
+  console.log('    [path]: The path to the directory where the config is stored (optional, default: ../app/testData/newFormat/ae/)');
+  console.log('    [config]: The name of the configuration file (optional, default: ae_DBconfig.json)');
+  console.log(' example:');
+  console.log('    node nodeEmuProtocolServer.js 1025 /path/to/db/ myDB_DBconfig.json');
+  console.log(' ');
 
 } else if (process.argv.length === 3) {
 
@@ -58,8 +65,10 @@ var WebSocketServer = require('ws').Server,
     host: host,
     port: portNr
   });
-
-console.log('websocketserver running @: ws://' + host + ':' + portNr);
+  
+console.log('########################################################');
+console.log('local server now running @: ws://' + host + ':' + portNr);
+console.log('########################################################');
 
 wss.on('connection', function (ws) {
 
