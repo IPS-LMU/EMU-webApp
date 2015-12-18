@@ -748,6 +748,7 @@ angular.module('emuwebApp')
 				}
 				else {
 					if (Validationservice.validateJSO('emuwebappConfigSchema', res)) {
+						console.log(angular.toJson(res, false));
 						Iohandlerservice.saveConfiguration(angular.toJson(res, true)).then(function (ret) {
 							modalService.open('views/confirmModal.html', 'In order to load the new configuration the EMU-webApp will now reload.').then(function (reload) {
 								if (reload) {
