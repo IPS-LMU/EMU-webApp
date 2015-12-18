@@ -118,7 +118,16 @@ angular.module('emuwebApp')
 			if (p.signalCanvases.order === undefined) {
 				p.signalCanvases.order = [];
 			}
-			p.signalCanvases.order.push(signal);
+			if(p.signalCanvases.order.indexOf(signal) === -1) {
+				p.signalCanvases.order.push(signal);
+			}
+			else {
+				$scope.warningSignal = true;
+				$scope.warning = 'Signal "' + signal + '" already existing';
+				$timeout(function () {
+					$scope.warningSignal = false;
+				}, 2000);				
+			}
 		};
 
 		$scope.levelAdd = function (key, level) {
@@ -130,10 +139,11 @@ angular.module('emuwebApp')
 				p.levelCanvases.order.push(level);
 			}
 			else {
-				$scope.warning = 'Error: "' + level + '" is already existing';
+				$scope.warningLevel = true;
+				$scope.warning = 'Level "' + level + '" already existing';
 				$timeout(function () {
-					$scope.warning = '';
-				}, 3000);
+					$scope.warningLevel = false;
+				}, 2000);
 			}
 		};
 

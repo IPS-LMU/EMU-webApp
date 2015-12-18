@@ -113,6 +113,7 @@ angular.module('emuwebApp')
 		
 		$scope.$on('reloadToInitState', function (event, url) {
 			$scope.loadDefaultConfig();
+			viewState.url = url;
 			viewState.somethingInProgressTxt = 'Connecting to server...';
 			viewState.somethingInProgress = true;
 			Iohandlerservice.wsH.initConnect(url).then(function (message) {

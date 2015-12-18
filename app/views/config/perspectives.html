@@ -24,6 +24,11 @@
 			</ul>
 			add a new <select ng-model="currentSignal" ng-options="signal for signal in signalTypes" /> 
 			<a style="cursor: pointer;" href="#" ng-click="signalAdd(key, currentSignal)"><img src="img/add.svg" width="18" height="18" class="emuwebapp-add-signal" style="margin-right: 10px;"/></a>
+			<br />
+			<span ng-if="warningSignal" style="font-size: 12px;">
+				&nbsp;<br />
+				<b style="color: #e33;">Error :</b> {{ warning }}
+			</span>
 			<hr class="emuwebapp-sort-line" />
 			<u>Level Canvases</u>
 			<ul class="emuwebapp-signalcanvas" ng-model="value.levelCanvases.order">
@@ -38,7 +43,10 @@
 			add a new <select ng-model="currentLevel" ng-options="level for level in levelTypes" /> 
 			<a style="cursor: pointer;" href="#" ng-click="levelAdd(key, currentLevel)"><img src="img/add.svg" width="18" height="18" class="emuwebapp-add-signal" style="margin-right: 10px;"/></a>
 			<br />
-			{{ warning }}
+			<span ng-if="warningLevel" style="font-size: 12px;">
+				&nbsp;<br />
+				<b style="color: #e33;">Error :</b> {{ warning }}
+			</span>
 			</span>
 			<hr class="emuwebapp-sort-line" />
 			&nbsp;<br />

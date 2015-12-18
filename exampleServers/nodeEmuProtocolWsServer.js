@@ -333,7 +333,7 @@ wss.on('connection', function (ws) {
         	var config = JSON.parse(data);
         	config.EMUwebAppConfig = JSON.parse(mJSO.data);
         	console.log(config);
-        	fs.writeFile(pathToDbRoot + configName, JSON.stringify(config, undefined, 0), function(err) {
+        	fs.writeFile(pathToDbRoot + configName, JSON.stringify(config, undefined, 4), function(err) {
         		if(err) {
         			return console.log(err);
         		} else {
