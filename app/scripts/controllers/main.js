@@ -514,6 +514,7 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
+				viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService); // pass in LevelService to prevent circular deps
 			}
 		};
 
@@ -553,6 +554,7 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
+				viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService); // pass in LevelService to prevent circular deps
 			}
 		};
 
@@ -670,6 +672,7 @@ angular.module('emuwebApp')
 
 									// then load first bundle in list
 									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+
 								}, function (err) {
 									modalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
 										appStateService.resetToInitState();
