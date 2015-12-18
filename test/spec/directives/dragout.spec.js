@@ -16,7 +16,7 @@ describe('Directive: dragout', function() {
     }));
 
     function compileDirective(bundleName) {
-        var tpl = '<div dragout name="'+bundleName+'"></div>';
+        var tpl = '<div dragout draggable="true" name="'+bundleName+'"></div>';
         inject(function($compile) {
             elm = $compile(tpl)(scope);
         });
@@ -56,7 +56,7 @@ describe('Directive: dragout', function() {
         var event = document.createEvent('Event');
         event.initEvent('mousedown', true, true);
         elm[0].dispatchEvent(event);
-        expect(elm[0].draggable).toBe(false);
+        expect(elm[0].draggable).toBe(true);
     });
 
     it('should stop css on dragend', function() {

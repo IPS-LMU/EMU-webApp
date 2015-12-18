@@ -182,7 +182,7 @@ describe('Service: dbObjLoadSaveService', function () {
      HistoryService.movesAwayFromLastSave = 1;
      scope.dbo.loadBundle({name: 'test'});
      deferred.resolve('discardChanges');
-     scope.$apply();
+     //scope.$apply();
      expect(modalService.open).toHaveBeenCalled();
    }));
 });
