@@ -264,6 +264,7 @@ angular.module('emuwebApp')
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
 						if (validRes === true) {
 							ConfigProviderService.setVals(data);
+							angular.copy($scope.cps.vals ,$scope.cps.initDbConfig);
 							$scope.handleDefaultConfigLoaded();
 							// loadFilesForEmbeddedApp if these are set
 							$scope.loadFilesForEmbeddedApp();
@@ -740,22 +741,20 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
-			var currentConfig = $scope.cps.curDbConfig;
-			var currentVals = angular.toJson($scope.cps.vals, true);
 			modalService.open('views/tabbed.html').then(function (res) {
 				if (res === false) {
 					modalService.open('views/error.html', 'Sorry, there were errors in your configuration.');
 				}
 				else {
 					if (Validationservice.validateJSO('emuwebappConfigSchema', res)) {
-						console.log(angular.toJson(res, false));
-						Iohandlerservice.saveConfiguration(angular.toJson(res, true)).then(function (ret) {
-							modalService.open('views/confirmModal.html', 'In order to load the new configuration the EMU-webApp will now reload.').then(function (reload) {
-								if (reload) {
-									appStateService.reloadToInitState();
-								}
-							});
-
+						$scope.cps.getDelta(res).then(function (delta) {
+							Iohandlerservice.saveConfiguration(angular.toJson(delta, true)).then(function (ret) {
+								modalService.open('views/confirmModal.html', 'In order to load the new configuration the EMU-webApp will now reload.').then(function (reload) {
+									if (reload) {
+										appStateService.reloadToInitState();
+									}
+								});
+							});				
 						});
 					}
 					else {

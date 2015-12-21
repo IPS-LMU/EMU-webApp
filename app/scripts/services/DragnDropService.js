@@ -46,7 +46,6 @@ angular.module('emuwebApp')
 			sServObj.maxDroppedBundles = 10;
 			DragnDropDataService.resetToInitState();
 			loadedMetaDataService.resetToInitState();
-			console.log('reset');
 		};
 
 		/**
