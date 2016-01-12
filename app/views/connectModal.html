@@ -20,7 +20,7 @@
 	                    ng-model="mySelect" 
 	                    ng-change="setCurrentURL(mySelect)"
 	                    ng-dblclick="modal.confirmContent();">
-	            	<option ng-repeat="url in myUrls track by $index">{{url}}</option>
+	            	<option ng-repeat="url in myUrls track by $index" ng-click="setCurrentURL(url)">{{url}}</option>
 	            </select>	            
 	            <br />
 				{{connectionError}}
