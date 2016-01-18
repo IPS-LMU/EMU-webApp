@@ -28,6 +28,9 @@
     \node [cmd, above of=dummyBundleNode] (GETBUNDLE) {\texttt{GETBUNDLE}};
     \node [cmd, below of=dummyBundleNode] (SAVEBUNDLE) {\texttt{SAVEBUNDLE}};
 
+    \node [left of=connected, node distance = 4cm] (dummyBundleNode2) {};
+    \node [cmd, below of=dummyBundleNode2] (SAVECONFIG) {\texttt{SAVECONFIG}};
+
     \node [cmd, above of=GETBUNDLE] (DISCONNECTWARNING) {\texttt{DISCONNECTWARNING}};
 
     % \node [cmd, below of=connected, node distance = 2cm] (GETDOEDITDBCONFIG) {\texttt{GETDOEDITDBCONFIG}};
@@ -45,6 +48,7 @@
     \draw [->] (DISCONNECTWARNING) to [bend right=25] (connect);
     \draw [<->] (connected) -- (GETBUNDLE);
     \draw [<->] (connected) -- (SAVEBUNDLE);
+    \draw [<->] (connected) -- (SAVECONFIG);
     % \draw [->] (connected) -- (GETDOEDITDBCONFIG);
     % \draw [->] (GETDOEDITDBCONFIG) -- node {yes} (EDITDBCONFIG);
     % \draw [->] (EDITDBCONFIG) |-  (connected);

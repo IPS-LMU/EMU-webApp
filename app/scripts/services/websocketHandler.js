@@ -226,6 +226,18 @@ angular.module('emuwebApp')
 			var promise = sendRequest(request);
 			return promise;
 		};
+		
+		// ws  saveConfiguration
+		sServObj.saveConfiguration = function (configData) {
+
+			var request = {
+				type: 'SAVEDBCONFIG',
+				data: configData
+			};
+			// Storing in a variable for clarity on what sendRequest returns
+			var promise = sendRequest(request);
+			return promise;
+		};		
 
 
 		// ws  disconnecting

@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('ConfigProviderService', function (viewState) {
+	.service('ConfigProviderService', function ($q, viewState) {
 
 		// shared service object
 		var sServObj = {};
 		sServObj.vals = {};
 		sServObj.design = {};
 		sServObj.curDbConfig = {};
+		sServObj.initDbConfig = {};
 
 		// embedded values -> if these are set this overrides the normal config  
 		sServObj.embeddedVals = {
@@ -49,6 +50,36 @@ angular.module('emuwebApp')
 				});
 			}
 		};
+		
+		sServObj.getDelta = function (current) {
+			var defer = $q.defer();
+			var ret = sServObj.getDeltas(current, sServObj.initDbConfig);
+			defer.resolve(ret);
+			return defer.promise;
+		}
+		
+		sServObj.getDeltas = function (current, start) {
+			var ret = {};
+			angular.forEach(current, function (value, key) {
+				if (!angular.equals(value, start[key])) {
+					if(Array.isArray(value)) {
+						ret[key] = [];
+						angular.copy(value, ret[key]);
+					}
+					else if(typeof value == 'object'){
+						ret[key] = {};
+						ret[key] = sServObj.getDeltas(value, start[key]);
+					}
+					else {
+						if(key !== 'clear' && key !== 'openDemoDB' && key !== 'specSettings') {
+							ret[key] = value;
+						}
+						
+					}
+				}
+			});
+			return ret;
+		};		
 
 		/**
 		 *

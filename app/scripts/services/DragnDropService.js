@@ -46,7 +46,6 @@ angular.module('emuwebApp')
 			sServObj.maxDroppedBundles = 10;
 			DragnDropDataService.resetToInitState();
 			loadedMetaDataService.resetToInitState();
-			console.log('reset');
 		};
 
 		/**
@@ -232,7 +231,7 @@ angular.module('emuwebApp')
 						loadedMetaDataService.setCurBndl(DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault]);
 						viewState.resetSelect();
 						viewState.curPerspectiveIdx = 0;
-						DataService.setLevelData(annotation.levels);
+						DataService.setData(annotation);
 						var lNames = [];
 						var levelDefs = [];
 						annotation.levels.forEach(function (l) {

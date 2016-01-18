@@ -110,6 +110,22 @@ angular.module('emuwebApp')
 		$scope.$on('resetToInitState', function () {
 			$scope.loadDefaultConfig();
 		});
+		
+		$scope.$on('reloadToInitState', function (event, url) {
+			$scope.loadDefaultConfig();
+			viewState.url = url;
+			viewState.somethingInProgressTxt = 'Connecting to server...';
+			viewState.somethingInProgress = true;
+			Iohandlerservice.wsH.initConnect(url).then(function (message) {
+				if (message.type === 'error') {
+					modalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(function () {
+						appStateService.resetToInitState();
+					});
+				} else {
+					$scope.handleConnectedToWSserver();
+				}
+			});
+		});
 
 		//
 		////////////
@@ -248,6 +264,7 @@ angular.module('emuwebApp')
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
 						if (validRes === true) {
 							ConfigProviderService.setVals(data);
+							angular.copy($scope.cps.vals ,$scope.cps.initDbConfig);
 							$scope.handleDefaultConfigLoaded();
 							// loadFilesForEmbeddedApp if these are set
 							$scope.loadFilesForEmbeddedApp();
@@ -514,6 +531,7 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
+				viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService); // pass in LevelService to prevent circular deps
 			}
 		};
 
@@ -553,6 +571,7 @@ angular.module('emuwebApp')
 					'id': length,
 					'curPerspectiveIdx': viewState.curPerspectiveIdx
 				});
+				viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService); // pass in LevelService to prevent circular deps
 			}
 		};
 
@@ -608,6 +627,7 @@ angular.module('emuwebApp')
 					if (url) {
 						viewState.somethingInProgressTxt = 'Connecting to server...';
 						viewState.somethingInProgress = true;
+						viewState.url = url;
 						Iohandlerservice.wsH.initConnect(url).then(function (message) {
 							if (message.type === 'error') {
 								modalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(function () {
@@ -670,6 +690,7 @@ angular.module('emuwebApp')
 
 									// then load first bundle in list
 									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+
 								}, function (err) {
 									modalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
 										appStateService.resetToInitState();
@@ -720,18 +741,24 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
-			var currentConfig = $scope.cps.curDbConfig;
-			var currentVals = angular.toJson($scope.cps.vals, true);
 			modalService.open('views/tabbed.html').then(function (res) {
 				if (res === false) {
-					$scope.cps.vals = angular.fromJson(currentVals);
+					// do nothing when user clicks on cancle
 				}
 				else {
 					if (Validationservice.validateJSO('emuwebappConfigSchema', res)) {
-						// todo save and transfer curDbConfig & vals
+						$scope.cps.getDelta(res).then(function (delta) {
+							Iohandlerservice.saveConfiguration(angular.toJson(delta, true)).then(function (ret) {
+								modalService.open('views/confirmModal.html', 'In order to load the new configuration the EMU-webApp will now reload.').then(function (reload) {
+									if (reload) {
+										appStateService.reloadToInitState();
+									}
+								});
+							});				
+						});
 					}
 					else {
-						$scope.cps.vals = angular.fromJson(currentVals);
+						modalService.open('views/error.html', 'Sorry, there were errors in your configuration.');
 					}
 				}
 			});

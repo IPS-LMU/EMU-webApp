@@ -37,8 +37,25 @@ angular.module('emuwebApp')
 			viewState.showDropZone = true;
 			$rootScope.$broadcast('resetToInitState');
 			//$scope.loadDefaultConfig();
-
-
+		};
+		
+		sServObj.reloadToInitState = function () {
+			Iohandlerservice.wsH.closeConnect();
+			// $scope.curBndl = {};
+			var url = viewState.url;
+			loadedMetaDataService.resetToInitState()
+			Soundhandlerservice.wavJSO = {};
+			DataService.setData({});
+			DragnDropDataService.resetToInitState();
+			DragnDropService.resetToInitState();
+			Ssffdataservice.data = [];
+			HistoryService.resetToInitState();
+			viewState.setState('noDBorFilesloaded');
+			viewState.somethingInProgress = false;
+			HistoryService.resetToInitState();
+			viewState.resetToInitState();
+			$rootScope.$broadcast('reloadToInitState', url);
+			
 		};
 
 		return sServObj;

@@ -158,6 +158,21 @@ angular.module('emuwebApp')
 			return getProm;
 		};
 
+
+		/**
+		 *
+		 */
+		sServObj.saveConfiguration = function (configData) {
+			var getProm;
+
+			if (ConfigProviderService.vals.main.comMode === 'CORS') {
+				alert('CORS version of saveBundle not implemented');
+			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
+				getProm = Websockethandler.saveConfiguration(configData);
+			}
+			return getProm;
+		};
+
 		//
 		// EMU-webApp protocol ends here
 		////////////////////////////

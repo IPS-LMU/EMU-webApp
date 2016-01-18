@@ -533,25 +533,31 @@ describe('Controller: MainController', function () {
     expect(scope.modal.open).toHaveBeenCalledWith('views/tabbed.html');
   }));
 
-  it('should addLevelPoint on BtnClick', function () {
+  it('should addLevelPoint on BtnClick', inject(function (ConfigProviderService, viewState) {
+  	viewState.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(viewState, 'selectLevel');
     spyOn(scope.lvl, 'insertLevel');
     spyOn(scope.history, 'addObjToUndoStack');
     scope.addLevelPointBtnClick();
     expect(scope.lvl.insertLevel).toHaveBeenCalled();
     expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelPointBtnClick');
-  });
+    expect(viewState.selectLevel).toHaveBeenCalled();
+  }));
 
-  it('should addLevelSeg on BtnClick', function () {
+  it('should addLevelSeg on BtnClick', inject(function (ConfigProviderService, viewState) {
+    viewState.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
+    spyOn(viewState, 'selectLevel');
     spyOn(scope.lvl, 'insertLevel');
     spyOn(scope.history, 'addObjToUndoStack');
     scope.addLevelSegBtnClick();
     expect(scope.lvl.insertLevel).toHaveBeenCalled();
     expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelSegBtnClick');
-  });
+    expect(viewState.selectLevel).toHaveBeenCalled();
+  }));
 
    it('should getEnlarge (-1)', inject(function (viewState) {
     viewState.curPerspectiveIdx = 0;
