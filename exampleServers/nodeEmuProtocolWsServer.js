@@ -324,8 +324,8 @@ wss.on('connection', function (ws) {
       }), undefined, 0);
       break;
 
-      // SAVECONFIG method
-    case 'SAVECONFIG':
+      // SAVEDBCONFIG method
+    case 'SAVEDBCONFIG':
       console.log('### Pretending to save the following configuration:');
       fs.readFile(pathToDbRoot + configName, 'utf8', function (err, data) {
         if (err) {
@@ -336,12 +336,10 @@ wss.on('connection', function (ws) {
       				'message': 'Error reading configuration file.'
       			}
       		}), undefined, 0);
-        
         }
         else {
         	var config = JSON.parse(data);
         	config.EMUwebAppConfig = JSON.parse(mJSO.data);
-        	console.log(config);
         	fs.writeFile(pathToDbRoot + configName, JSON.stringify(config, undefined, 4), function(err) {
         		if(err) {
         			return console.log(err);

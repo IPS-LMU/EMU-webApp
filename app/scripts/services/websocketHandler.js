@@ -231,7 +231,7 @@ angular.module('emuwebApp')
 		sServObj.saveConfiguration = function (configData) {
 
 			var request = {
-				type: 'SAVECONFIG',
+				type: 'SAVEDBCONFIG',
 				data: configData
 			};
 			// Storing in a variable for clarity on what sendRequest returns

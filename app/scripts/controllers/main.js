@@ -743,7 +743,7 @@ angular.module('emuwebApp')
 		$scope.showEditDBconfigBtnClick = function () {
 			modalService.open('views/tabbed.html').then(function (res) {
 				if (res === false) {
-					modalService.open('views/error.html', 'Sorry, there were errors in your configuration.');
+					// do nothing when user clicks on cancle
 				}
 				else {
 					if (Validationservice.validateJSO('emuwebappConfigSchema', res)) {
