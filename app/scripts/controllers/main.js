@@ -594,7 +594,7 @@ angular.module('emuwebApp')
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
 				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
-					parseMess = parseMess.replace(/\t/g, '    '); // replace tab with 4 spaces
+					parseMess = parseMess.replace(/\t/g, '    '); // replace all tabs with 4 spaces
 					modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
 				});
 			}
@@ -605,7 +605,9 @@ angular.module('emuwebApp')
 		 */
 		$scope.downloadAnnotationBtnClick = function () {
 			if (viewState.getPermission('downloadAnnotationBtnClick')) {
-				modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '_annot.json', angular.toJson(DataService.getData(), true));
+				if(Validationservice.validateJSO('emuwebappConfigSchema', DataService.getData())) {
+					modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '_annot.json', angular.toJson(DataService.getData(), true));
+				}
 			}
 		};
 
