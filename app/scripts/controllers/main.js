@@ -111,18 +111,20 @@ angular.module('emuwebApp')
 			$scope.loadDefaultConfig();
 		});
 		
-		$scope.$on('reloadToInitState', function (event, url) {
+		$scope.$on('reloadToInitState', function (event, data) {
 			$scope.loadDefaultConfig();
-			viewState.url = url;
+			viewState.url = data.url;
 			viewState.somethingInProgressTxt = 'Connecting to server...';
 			viewState.somethingInProgress = true;
-			Iohandlerservice.wsH.initConnect(url).then(function (message) {
+			Iohandlerservice.wsH.initConnect(data.url).then(function (message) {
 				if (message.type === 'error') {
-					modalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(function () {
+					modalService.open('views/error.html', 'Could not connect to websocket server: ' + data.url).then(function () {
 						appStateService.resetToInitState();
 					});
 				} else {
-					$scope.handleConnectedToWSserver();
+					$scope.handleConnectedToWSserver(data.session);
+					//$scope.lmds.setCurBndl(data.session);
+					//dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
 				}
 			});
 		});
@@ -327,7 +329,7 @@ angular.module('emuwebApp')
 					if (message.type === 'error') {
 						modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
 					} else {
-						$scope.handleConnectedToWSserver();
+						$scope.handleConnectedToWSserver(null);
 					}
 				});
 			}
@@ -351,7 +353,7 @@ angular.module('emuwebApp')
 		 * has been established. It executes the protocol
 		 * and loads the first bundle in the bundle list (= default behavior).
 		 */
-		$scope.handleConnectedToWSserver = function () {
+		$scope.handleConnectedToWSserver = function (session) {
 			// hide drop zone
 			viewState.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'WS';
@@ -365,18 +367,19 @@ angular.module('emuwebApp')
 					// then ask if server does user management
 					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
 						if (doUsrData === 'NO') {
-							$scope.innerHandleConnectedToWSserver();
+							$scope.innerHandleConnectedToWSserver(session);
 						} else {
 							// show user management error
 							modalService.open('views/loginModal.html').then(function (res) {
 								if (res) {
-									$scope.innerHandleConnectedToWSserver();
+									$scope.innerHandleConnectedToWSserver(session);
 								} else {
 									appStateService.resetToInitState();
 								}
 							});
 						}
 					});
+					
 				} else {
 					// show protocol error and disconnect from server
 					modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
@@ -389,7 +392,7 @@ angular.module('emuwebApp')
 		/**
 		 * to avoid redundant code...
 		 */
-		$scope.innerHandleConnectedToWSserver = function () {
+		$scope.innerHandleConnectedToWSserver = function (session) {
 			viewState.somethingInProgressTxt = 'Loading DB config...';
 			// then get the DBconfigFile
 			Iohandlerservice.httpGetDefaultDesign().success(function (data) {
@@ -418,7 +421,12 @@ angular.module('emuwebApp')
 
 								if (validRes === true) {
 									// then load first bundle in list
-									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+									if(session === null) {
+										session = loadedMetaDataService.getBundleList()[0];
+									}
+									dbObjLoadSaveService.loadBundle(session);
+									viewState.currentPage = (viewState.numberOfPages(loadedMetaDataService.getBundleList().length)) - 1;
+									loadedMetaDataService.toggleCollapseSession(session.session);
 								} else {
 									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										appStateService.resetToInitState();
@@ -636,7 +644,7 @@ angular.module('emuwebApp')
 									appStateService.resetToInitState();
 								});
 							} else {
-								$scope.handleConnectedToWSserver();
+								$scope.handleConnectedToWSserver(null);
 							}
 						});
 					}
@@ -751,11 +759,16 @@ angular.module('emuwebApp')
 					if (Validationservice.validateJSO('emuwebappConfigSchema', res)) {
 						$scope.cps.getDelta(res).then(function (delta) {
 							Iohandlerservice.saveConfiguration(angular.toJson(delta, true)).then(function (ret) {
-								modalService.open('views/confirmModal.html', 'In order to load the new configuration the EMU-webApp will now reload.').then(function (reload) {
-									if (reload) {
-										appStateService.reloadToInitState();
-									}
-								});
+								if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
+									modalService.open('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.').then(function (res) {
+										if (res) {
+											appStateService.reloadToInitState();
+										}
+									});
+								}
+								else {
+									appStateService.reloadToInitState($scope.lmds.getCurBndl());
+								}
 							});				
 						});
 					}

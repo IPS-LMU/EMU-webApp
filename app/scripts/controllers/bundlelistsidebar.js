@@ -17,19 +17,15 @@ angular.module('emuwebApp')
 
 		$scope.filterText = '';
 
-		$scope.pageSize = 500;
-		$scope.currentPage = 0;
-
-		$scope.numberOfPages = function (sessionLength) {
-			return Math.ceil(sessionLength / $scope.pageSize);
-		};
+		$scope.vs.pageSize = 500;
+		$scope.vs.currentPage = 0;
 
 		$scope.turn = function (direction) {
 			if (direction) {
-				$scope.currentPage++;
+				$scope.vs.currentPage++;
 			}
 			else {
-				$scope.currentPage--;
+				$scope.vs.currentPage--;
 			}
 		};
 

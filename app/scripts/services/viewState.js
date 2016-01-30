@@ -296,6 +296,8 @@ angular.module('emuwebApp')
 			sServObj.lastKeyCode = undefined;
 			sServObj.lastUpdate = undefined;
 			sServObj.url = undefined;
+			sServObj.pageSize = 500;
+			sServObj.currentPage = undefined;
 			// possible general states of state machine
 			sServObj.states = [];
 			sServObj.states.noDBorFilesloaded = {
@@ -1339,6 +1341,10 @@ angular.module('emuwebApp')
 				'height': '10px'
 			};
 			return (curStyle);
+		};
+		
+		sServObj.numberOfPages = function (sessionLength) {
+			return Math.ceil(sessionLength / sServObj.pageSize);
 		};
 
 		return sServObj;

@@ -39,11 +39,11 @@ angular.module('emuwebApp')
 			//$scope.loadDefaultConfig();
 		};
 		
-		sServObj.reloadToInitState = function () {
+		sServObj.reloadToInitState = function (session) {
 			Iohandlerservice.wsH.closeConnect();
 			// $scope.curBndl = {};
 			var url = viewState.url;
-			loadedMetaDataService.resetToInitState()
+			loadedMetaDataService.resetToInitState();
 			Soundhandlerservice.wavJSO = {};
 			DataService.setData({});
 			DragnDropDataService.resetToInitState();
@@ -54,8 +54,7 @@ angular.module('emuwebApp')
 			viewState.somethingInProgress = false;
 			HistoryService.resetToInitState();
 			viewState.resetToInitState();
-			$rootScope.$broadcast('reloadToInitState', url);
-			
+			$rootScope.$broadcast('reloadToInitState', {url:url, session:session});
 		};
 
 		return sServObj;
