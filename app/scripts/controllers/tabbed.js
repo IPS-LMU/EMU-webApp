@@ -101,13 +101,35 @@ angular.module('emuwebApp')
 
 		$scope.del = function (key, index, sequence) {
 			var p = $scope.modal.dataOut.perspectives[key];
-			if (sequence === 0) {
-				p.signalCanvases.order.splice(index, 1);
-			}
-			else if (sequence === 1) {
-				p.levelCanvases.order.splice(index, 1);
-			}
+				if(p.signalCanvases.assign !== undefined) {
+					var dependency = false;
+					var depWarn = '';
+					for (var x = 0; x < p.signalCanvases.assign.length; x++) {
+						if(p.signalCanvases.assign[x].signalCanvasName === p.signalCanvases.order[index]) {
+							dependency = true;
+							depWarn = p.signalCanvases.assign[x].signalCanvasName;
+						}
+						if(p.signalCanvases.assign[x].ssffTrackName === p.signalCanvases.order[index]) {
+							dependency = true;
+							depWarn = p.signalCanvases.assign[x].ssffTrackName;
+						}
+					}	
+				}
+				if(!dependency) {
+					p.signalCanvases.order.splice(index, 1);
+				}
+				else {
+					$scope.showWarning('Could not delete "' + depWarn + '" because of internal dependencies !');
+				}
 		};
+		
+		$scope.showWarning = function (msg) {
+			$scope.warningSignal = true;
+			$scope.warning = msg;
+			$timeout(function () {
+				$scope.warningSignal = false;
+			}, 2000);						
+		}
 
 		$scope.perspDelete = function (key) {
 			delete $scope.modal.dataOut.perspectives.splice(key, 1);
@@ -122,11 +144,7 @@ angular.module('emuwebApp')
 				p.signalCanvases.order.push(signal);
 			}
 			else {
-				$scope.warningSignal = true;
-				$scope.warning = 'Signal "' + signal + '" already existing';
-				$timeout(function () {
-					$scope.warningSignal = false;
-				}, 2000);				
+				$scope.showWarning('Signal "' + level + '" already existing');			
 			}
 		};
 
@@ -139,11 +157,7 @@ angular.module('emuwebApp')
 				p.levelCanvases.order.push(level);
 			}
 			else {
-				$scope.warningLevel = true;
-				$scope.warning = 'Level "' + level + '" already existing';
-				$timeout(function () {
-					$scope.warningLevel = false;
-				}, 2000);
+				$scope.showWarning('Level "' + level + '" already existing');
 			}
 		};
 

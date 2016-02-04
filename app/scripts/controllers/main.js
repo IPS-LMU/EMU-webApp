@@ -137,8 +137,7 @@ angular.module('emuwebApp')
 			ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
 			ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
 			ConfigProviderService.embeddedVals.fromUrlParams = true;
-		}
-		;
+		};
 
 		/**
 		 *
@@ -426,12 +425,11 @@ angular.module('emuwebApp')
 									if(session === null) {
 										session = loadedMetaDataService.getBundleList()[0];
 									}
-									if(reload) {
-										loadedMetaDataService.toggleCollapseSession(session);
-									}
 									dbObjLoadSaveService.loadBundle(session);
 									viewState.currentPage = (viewState.numberOfPages(loadedMetaDataService.getBundleList().length)) - 1;
-									
+									if(reload) {
+										loadedMetaDataService.openCollapseSession(session.session);
+									}									
 								} else {
 									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										appStateService.resetToInitState();
