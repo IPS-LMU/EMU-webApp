@@ -40,7 +40,6 @@ angular.module('emuwebApp')
 				modalService.open('views/error.html', 'A non clean disconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(function () {
 					$rootScope.$broadcast('connectionDisrupted');
 				});
-
 			}
 			connected = false;
 			console.log('WEBSOCKET closed!!!!!');
@@ -64,7 +63,6 @@ angular.module('emuwebApp')
 						'message': 'Sent request of type: ' + request.type + ' timed out after ' + ConfigProviderService.vals.main.serverTimeoutInterval + 'ms!  Please check the server...'
 					}
 				};
-
 				listener(tOutResp);
 			}, ConfigProviderService.vals.main.serverTimeoutInterval);
 

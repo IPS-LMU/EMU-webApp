@@ -54,7 +54,7 @@ angular.module('emuwebApp')
 			viewState.somethingInProgress = false;
 			HistoryService.resetToInitState();
 			viewState.resetToInitState();
-			$rootScope.$broadcast('reloadToInitState', {url:url, session:session});
+			$rootScope.$broadcast('reloadToInitState', {url:url, session:session, reload:true });
 		};
 
 		return sServObj;

@@ -122,9 +122,7 @@ angular.module('emuwebApp')
 						appStateService.resetToInitState();
 					});
 				} else {
-					$scope.handleConnectedToWSserver(data.session);
-					//$scope.lmds.setCurBndl(data.session);
-					//dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
+					$scope.handleConnectedToWSserver(data);
 				}
 			});
 		});
@@ -329,7 +327,7 @@ angular.module('emuwebApp')
 					if (message.type === 'error') {
 						modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
 					} else {
-						$scope.handleConnectedToWSserver(null);
+						$scope.handleConnectedToWSserver({session: null, reload: null});
 					}
 				});
 			}
@@ -353,8 +351,10 @@ angular.module('emuwebApp')
 		 * has been established. It executes the protocol
 		 * and loads the first bundle in the bundle list (= default behavior).
 		 */
-		$scope.handleConnectedToWSserver = function (session) {
+		$scope.handleConnectedToWSserver = function (data) {
 			// hide drop zone
+			var session = data.session;
+			var reload = data.reload;
 			viewState.showDropZone = false;
 			ConfigProviderService.vals.main.comMode = 'WS';
 			ConfigProviderService.vals.activeButtons.openDemoDB = false;
@@ -367,12 +367,12 @@ angular.module('emuwebApp')
 					// then ask if server does user management
 					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
 						if (doUsrData === 'NO') {
-							$scope.innerHandleConnectedToWSserver(session);
+							$scope.innerHandleConnectedToWSserver({session: session, reload: reload});
 						} else {
 							// show user management error
 							modalService.open('views/loginModal.html').then(function (res) {
 								if (res) {
-									$scope.innerHandleConnectedToWSserver(session);
+									$scope.innerHandleConnectedToWSserver({session: session, reload: reload});
 								} else {
 									appStateService.resetToInitState();
 								}
@@ -392,7 +392,9 @@ angular.module('emuwebApp')
 		/**
 		 * to avoid redundant code...
 		 */
-		$scope.innerHandleConnectedToWSserver = function (session) {
+		$scope.innerHandleConnectedToWSserver = function (data) {
+			var session = data.session;
+			var reload = data.reload;
 			viewState.somethingInProgressTxt = 'Loading DB config...';
 			// then get the DBconfigFile
 			Iohandlerservice.httpGetDefaultDesign().success(function (data) {
@@ -424,9 +426,12 @@ angular.module('emuwebApp')
 									if(session === null) {
 										session = loadedMetaDataService.getBundleList()[0];
 									}
+									if(reload) {
+										loadedMetaDataService.toggleCollapseSession(session);
+									}
 									dbObjLoadSaveService.loadBundle(session);
 									viewState.currentPage = (viewState.numberOfPages(loadedMetaDataService.getBundleList().length)) - 1;
-									loadedMetaDataService.toggleCollapseSession(session.session);
+									
 								} else {
 									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										appStateService.resetToInitState();
@@ -644,13 +649,13 @@ angular.module('emuwebApp')
 									appStateService.resetToInitState();
 								});
 							} else {
-								$scope.handleConnectedToWSserver(null);
+								$scope.handleConnectedToWSserver({session: null, reload: null});
 							}
 						});
 					}
 				});
 			} else {
-				//console.log('action currently not allowed');
+
 			}
 		};
 
