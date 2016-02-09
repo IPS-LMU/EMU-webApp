@@ -89,7 +89,10 @@ angular.module('emuwebApp')
 									// set annotation
 									DataService.setData(bundleData.annotation);
 									loadedMetaDataService.setCurBndl(bndl);
+									// select first level
+									viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
 									viewState.setState('labeling');
+
 									viewState.somethingInProgress = false;
 									viewState.somethingInProgressTxt = 'Done!';
 									// FOR DEVELOPMENT:
