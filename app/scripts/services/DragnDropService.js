@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropService', function DragnDropService($q, $rootScope, modalService, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService) {
+	.service('DragnDropService', function DragnDropService($q, $rootScope, modalService, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService, LevelService) {
 		// shared service object
 		var sServObj = {};
 		sServObj.drandropBundles = [];
@@ -269,6 +269,8 @@ angular.module('emuwebApp')
 								sServObj.resetToInitState();
 							});
 						}
+						// select first level
+						viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
 					}, function (errMess) {
 						modalService.open('views/error.html', 'Error parsing wav file: ' + errMess).then(function () {
 							//appStateService.resetToInitState();
