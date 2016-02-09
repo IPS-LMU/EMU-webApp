@@ -379,6 +379,11 @@ angular.module('emuwebApp')
 				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
 				var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
 				var width = end - start;
+				sServObj.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+
+/*
+	zooming in disabled
+	
 				if (width < (2 * len)) {
 					var zoom = viewState.curViewPort.eS - viewState.curViewPort.sS;
 					if (zoom <= 10) { // if already zoomed in but text is still too long
@@ -390,6 +395,7 @@ angular.module('emuwebApp')
 						return;
 					}
 				}
+*/
 
 
 				sServObj.createEditAreaElement(element, start, top, end - start, height, editText, lastEventClick.id);
@@ -442,6 +448,7 @@ angular.module('emuwebApp')
 				id: textid,
 				'class': textid + ' emuwebapp-label-edit',
 				'ng-model': 'message',
+				'wrap': 'hard',
 				'autofocus': 'true'
 			}).css({
 				'left': Math.round(x + 2) + 'px',
