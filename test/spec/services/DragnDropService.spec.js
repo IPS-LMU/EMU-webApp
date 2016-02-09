@@ -85,46 +85,12 @@ describe('Service: DragnDropService', function () {
                                                  Validationservice,
                                                  Iohandlerservice,
                                                  DragnDropService,
-                                                 Soundhandlerservice,
-                                                 DragnDropDataService,
-                                                 Binarydatamaniphelper) {
-    var scope = $rootScope.$new();
-    var def = $q.defer();
-    var defio = $q.defer();
-    var defwav = $q.defer();
-    DragnDropDataService.sessionDefault = 0;
-    DragnDropDataService.convertedBundles[0] = {};
-    DragnDropDataService.convertedBundles[0].mediaFile = {};
-    DragnDropDataService.convertedBundles[0].mediaFile.data = msajc003_bndl.mediaFile.data;
-    DragnDropDataService.convertedBundles[0].annotation = msajc003_bndl.annotation;
-    spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer').and.returnValue(def.promise);
-    spyOn(Iohandlerservice, 'httpGetPath').and.returnValue(defio.promise);
-    spyOn(Validationservice, 'validateJSO').and.returnValue(true);
-    spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(defwav.promise);
-    DragnDropService.handleLocalFiles();
-    expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
-    expect(Iohandlerservice.httpGetPath).toHaveBeenCalled();
-    defio.resolve({data: defaultEmuwebappConfig});
-    scope.$apply();
-    expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
-    defwav.resolve({Data: [1, 2, 3]});
-    scope.$apply();
-    ConfigProviderService.vals = {};
-    ConfigProviderService.vals.perspectives = [];
-  }));
-
-  it('should handleLocalFiles', inject(function ($rootScope,
-                                                 $q,
-                                                 Wavparserservice,
-                                                 ConfigProviderService,
-                                                 Validationservice,
-                                                 Iohandlerservice,
-                                                 DragnDropService,
                                                  modalService,
                                                  appStateService,
                                                  Soundhandlerservice,
                                                  DragnDropDataService,
-                                                 Binarydatamaniphelper) {
+                                                 Binarydatamaniphelper,
+                                                 viewState) {
     var scope = $rootScope.$new();
     var def = $q.defer();
     var defio = $q.defer();
@@ -135,6 +101,8 @@ describe('Service: DragnDropService', function () {
     DragnDropDataService.convertedBundles[0].mediaFile = {};
     DragnDropDataService.convertedBundles[0].mediaFile.data = msajc003_bndl.mediaFile.data;
     DragnDropDataService.convertedBundles[0].annotation = msajc003_bndl.annotation;
+    viewState.curPerspectiveIdx = 0;
+    spyOn(viewState, 'selectLevel').and.returnValue(true);
     spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer').and.returnValue(def.promise);
     spyOn(modalService, 'open').and.returnValue(defmodal.promise);
     spyOn(appStateService, 'resetToInitState');

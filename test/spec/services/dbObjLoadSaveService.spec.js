@@ -17,6 +17,7 @@ describe('Service: dbObjLoadSaveService', function () {
      scope.cps = ConfigProviderService;
      scope.cps.setVals(defaultEmuwebappConfig);
      scope.cps.curDbConfig = aeDbConfig;   
+     scope.vs.curPerspectiveIdx = 0;
   }));
 
   /**
@@ -64,12 +65,13 @@ describe('Service: dbObjLoadSaveService', function () {
   /**
    *
    */
-   it('should loadBundle', inject(function (DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService) {
+   it('should loadBundle', inject(function (DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService, viewState) {
      spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1'});
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
      spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(deferred2.promise);
      spyOn(Ssffparserservice, 'asyncParseSsffArr').and.returnValue(deferred3.promise);
      spyOn(Validationservice, 'validateJSO').and.returnValue(true);
+     spyOn(viewState, 'selectLevel').and.returnValue(true);
      spyOn(DataService, 'setData');
      spyOn(loadedMetaDataService, 'setCurBndl');
      spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer');
@@ -83,6 +85,7 @@ describe('Service: dbObjLoadSaveService', function () {
      expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
      deferred3.resolve({Data: []});
      scope.$apply();
+     expect(viewState.selectLevel).toHaveBeenCalled();
      expect(Validationservice.validateJSO).toHaveBeenCalled();
      expect(Ssffparserservice.asyncParseSsffArr).toHaveBeenCalled();
      expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();

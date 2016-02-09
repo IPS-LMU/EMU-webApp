@@ -270,7 +270,8 @@ angular.module('emuwebApp')
 							});
 						}
 						// select first level
-						viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
+						if (!browserDetector.isBrowser.PhantomJS())
+							viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
 					}, function (errMess) {
 						modalService.open('views/error.html', 'Error parsing wav file: ' + errMess).then(function () {
 							//appStateService.resetToInitState();
