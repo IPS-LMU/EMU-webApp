@@ -396,9 +396,6 @@ angular.module('emuwebApp')
 					}
 				}
 */
-
-
-				sServObj.createEditAreaElement(element, start, top, end - start, height, editText, lastEventClick.id);
 			} else {
 				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
 				var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
@@ -448,7 +445,6 @@ angular.module('emuwebApp')
 				id: textid,
 				'class': textid + ' emuwebapp-label-edit',
 				'ng-model': 'message',
-				'wrap': 'hard',
 				'autofocus': 'true'
 			}).css({
 				'left': Math.round(x + 2) + 'px',
