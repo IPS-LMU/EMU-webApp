@@ -320,8 +320,10 @@ angular.module('emuwebApp')
 			if (!viewState.getsubmenuOpen()) {
 				viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
 			}
+			// check if either autoConnect is set in DBconfig or as get parameter
+			var searchObject = $location.search();
 
-			if (ConfigProviderService.vals.main.autoConnect) {
+			if (ConfigProviderService.vals.main.autoConnect || searchObject['autoConnect'] === 'true') {
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
 					if (message.type === 'error') {
 						modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
