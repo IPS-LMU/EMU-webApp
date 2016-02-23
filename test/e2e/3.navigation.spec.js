@@ -87,7 +87,7 @@ describe('navigation', function () {
 		for (var i = 0; i < 2; i++) {
 			element(by.id('zoomInBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(1);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
 
 		// on first
 		ptor.actions().sendKeys('1').perform();
@@ -490,7 +490,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({
@@ -500,26 +500,6 @@ describe('navigation', function () {
 			.click()
 			.perform();
 		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-	});
-
-	it('should insert a new boundary on SEGMENT (double boundary should NOT work)', function () {
-		for (var i = 0; i < 3; i++) {
-			element(by.id('zoomInBtn')).click();
-			element(by.id('zoomRightBtn')).click();
-		};
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
-		ptor.actions()
-			.mouseMove(elem)
-			.mouseMove({
-				x: -50,
-				y: 0
-			})
-			.click()
-			.perform();
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
-		var elem = element.all(by.css('.emuwebapp-modal-body')).get(0);
-		expect(elem.getText()).toEqual('Error : You are not allowed to insert a Segment here.');
-		element(by.id('emuwebapp-modal-cancel')).click();
 	});
 
 	it('should insert a new segment on SEGMENT level', function () {
@@ -527,7 +507,7 @@ describe('navigation', function () {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
 		};
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({
@@ -554,7 +534,7 @@ describe('navigation', function () {
 			.mouseMove(elem)
 			.click()
 			.perform();
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({
@@ -645,7 +625,7 @@ describe('navigation', function () {
 	});
 
 	it('should select a range in the viewport', function () {
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions()
 			.mouseMove(elem)
 			.mouseMove({
@@ -666,7 +646,7 @@ describe('navigation', function () {
 	});
 
 	it('should play sound in selected viewport', function () {
-		var elem = element.all(by.css('.emuwebapp-timelineCanvasMarkup')).get(0);
+		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
 		ptor.actions().mouseMove(elem).mouseMove({
 			x: -250,
 			y: 0

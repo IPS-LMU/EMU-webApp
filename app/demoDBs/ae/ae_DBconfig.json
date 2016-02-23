@@ -170,7 +170,7 @@
 		}],
 		"restrictions": {
 			"showPerspectivesSidebar": true,
-			"playback": false,
+			"playback": true,
 			"correctionTool": true,
 			"editItemSize": true
 		},
