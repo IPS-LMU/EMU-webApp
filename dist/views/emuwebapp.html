@@ -37,7 +37,7 @@
       </div>
       <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn left" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
       <button id="showHierarchy" class="emuwebapp-mini-btn left" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
-      <button id="showeditDB" class="emuwebapp-mini-btn left" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editDBconfig">edit DBconfig</button>
+      <button id="showeditDB" class="emuwebapp-mini-btn left" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editEMUwebAppConfig">edit config</button>
       <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn left" ng-click="clearBtnClick();">clear</button>
       <button id="aboutBtn" class="emuwebapp-button-icon" style="float: right" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" class="_35px"></button>
     </div>
@@ -51,15 +51,15 @@
             <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge({{$index}}) }" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
               <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
               <spectro ng-switch-when="SPEC" order="{{$index}}" track-name="{{curTrack}}"></spectro>
-              <ssff-track track-name="{{curTrack}}" ng-switch-default order="{{$index}}"></ssff-track>
+              <ssff-track ng-switch-default order="{{$index}}" track-name="{{curTrack}}"></ssff-track>
             </li>
           </ul>
         </bg-pane>
         <bg-pane type="bottomPane" min-size="80">
           <div style="margin-top: 25px">
             <ul>
-              <li ng-repeat="level in dataServ.getLevelData() | levelsFilter track by $index">
-                <level id="{{level.name}}" open="true" level="level" idx="$index"></level>
+              <li ng-repeat="level in dataServ.getLevelOrder(cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order) | levelsFilter track by $index">
+                <level open="true" level="level" idx="$index" order="{{$index}}" id="{{level.name}}"></level>
               </li>
             </ul>
           </div>

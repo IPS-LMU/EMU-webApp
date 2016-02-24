@@ -237,6 +237,36 @@ Response:
       }
     }
 
+### SAVECONFIG
+
+
+*Function to be called if the user saves a configuration (by pushing the
+save button in the EMU-webApp Configuration).*
+
+
+Request:
+
+    {
+      'type': 'SAVECONFIG',
+      'data': configData,
+      'callbackID': 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    }
+
+Where `configData` is the javascript object containing the
+desired configuration for the EMU-webApp. If the response
+is a 'SUCCESS', the configuration is saved on the server 
+side and the webApp will reload with the newly saved configuration.
+
+Response:
+
+    {
+      'callbackID': request.callbackID,
+      'status': {
+        'type': 'SUCCESS',
+        'message': ''
+      }
+    }
+
 ### GETDOEDITDBCONFIG
 
 

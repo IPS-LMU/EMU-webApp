@@ -1,5 +1,12 @@
-What's New
-=============================================
+# What's New
+
+## Version 0.0.33
+
+- new config editor now available. You can edit the default perspectives, default spectrogram settings as well as expert settings.
+- updated protocol to support 'SAVECONFIG'
+- auto-select of first time level on load + drag & drop
+- autoConnect=true GET parameter now available (http://ips-lmu.github.io/EMU-webApp/?autoConnect=true will automatically connect to the websocket server)
+- problem with auto-scrolling of large labels in edit text window fixed
 
 ## Version 0.0.32
 

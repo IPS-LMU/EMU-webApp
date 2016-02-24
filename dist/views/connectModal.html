@@ -14,7 +14,7 @@
 	            <button id="emuwebapp-modal-save" ng-click="deleteURL(mySelect);" class="emuwebapp-mini-btn-save">(-)</button><br>
 	            &nbsp;<br>
 	            <select size="3" name="url" class="emuwebapp-modal-list" ng-init="myUrls = getURLs(); mySelect=myUrls[0]" ng-model="mySelect" ng-change="setCurrentURL(mySelect)" ng-dblclick="modal.confirmContent();">
-	            	<option ng-repeat="url in myUrls track by $index">{{url}}</option>
+	            	<option ng-repeat="url in myUrls track by $index" ng-click="setCurrentURL(url)">{{url}}</option>
 	            </select>	            
 	            <br>
 				{{connectionError}}

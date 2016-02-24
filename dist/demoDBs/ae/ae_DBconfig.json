@@ -169,7 +169,10 @@
 			}
 		}],
 		"restrictions": {
-			"showPerspectivesSidebar": true
+			"showPerspectivesSidebar": true,
+			"playback": true,
+			"correctionTool": true,
+			"editItemSize": true
 		},
 		"activeButtons": {
 			"saveBundle": false,

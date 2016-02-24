@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2015-11-30T09:25:41.164Z
+# rev 1 - 2016-02-24T10:38:41.678Z
 
 CACHE:
 404.html
@@ -43,10 +43,11 @@ fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
 fonts/glyphicons-halflings-regular.ttf
 fonts/glyphicons-halflings-regular.woff
+img/add.svg
 img/delete.svg
 img/menu.svg
 img/resize.svg
-img/saveBtn.svg
+img/save.svg
 img/search.svg
 index.html
 intro.html
@@ -83,16 +84,16 @@ schemaFiles/bundleSchema.json
 schemaFiles/designSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/2e2d7952.emuwebAppExternal.min.js
+scripts/3fadbc48.emuwebApp.min.js
+scripts/a07cc9c3.emuwebAppExternal.min.js
 scripts/emuwebApp.min.js.map
-scripts/faf521de.emuwebApp.min.js
 scripts/workers/espsParserWorkerClass.js
 scripts/workers/spectroDrawingWorkerClass.js
 scripts/workers/ssffParserWorkerClass.js
 scripts/workers/textGridParserWorkerClass.js
 scripts/workers/wavParserWorkerClass.js
-styles/00155f40.emuwebApp.min.css
 styles/1c98af2c.emuwebAppExternal.min.css
+styles/53298164.emuwebApp.min.css
 views/SelectLabelModal.html
 views/SelectThresholdModal.html
 views/bundleListSideBar.html

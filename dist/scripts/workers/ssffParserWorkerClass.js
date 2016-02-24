@@ -13,7 +13,7 @@ function ssffParserWorker(Worker) {
 
 ssffParserWorker.prototype = {
 	// get the worker script in string format.
-	getWorkerScript: function(){
+	getWorkerScript: function () {
 		var js = '';
 		js += '(' + this.workerInit + ')(this);';
 		return js;
@@ -21,7 +21,7 @@ ssffParserWorker.prototype = {
 
 	// This function really represents the body of our worker script.
 	// The global context of the worker script will be passed in.
-	workerInit: function(global) {
+	workerInit: function (global) {
 
 
 		var ssffData = {};
@@ -136,7 +136,7 @@ ssffParserWorker.prototype = {
 		/**
 		 *
 		 */
-		global.base64ToArrayBuffer = function(stringBase64) {
+		global.base64ToArrayBuffer = function (stringBase64) {
 			var binaryString = global.atob(stringBase64);
 			var len = binaryString.length;
 			var bytes = new Uint8Array(len);
@@ -152,7 +152,7 @@ ssffParserWorker.prototype = {
 		 * used to help display numbers with a given
 		 * precision
 		 */
-		global.round = function(x, n) {
+		global.round = function (x, n) {
 			if (n < 1 || n > 14) {
 				return false;
 			}
@@ -169,7 +169,7 @@ ssffParserWorker.prototype = {
 		 * helper function to convert string to Uint8Array
 		 * @param string
 		 */
-		global.stringToUint = function(string) {
+		global.stringToUint = function (string) {
 			var charList = string.split('');
 			var uintArray = [];
 			for (var i = 0; i < charList.length; i++) {
@@ -181,7 +181,7 @@ ssffParserWorker.prototype = {
 		/**
 		 *
 		 */
-		global.Uint8Concat = function(first, second) {
+		global.Uint8Concat = function (first, second) {
 			var firstLength = first.length;
 			var result = new Uint8Array(firstLength + second.length);
 
@@ -216,7 +216,7 @@ ssffParserWorker.prototype = {
 				//var headerStr = buffStr.split(sepString)[0];
 				//var dataStr = buffStr.split(sepString)[1];
 				//console.log(dataStr);
-			}else{
+			} else {
 				for (var j = 0; j < uIntBuffView.length; j++) {
 					buffStr = buffStr + String.fromCharCode(uIntBuffView[j]);
 				}
@@ -469,7 +469,7 @@ ssffParserWorker.prototype = {
 		/**
 		 * loop over ssff files in ssffArr and create a ssffJsoArr
 		 */
-		global.parseArr = function(ssffArr) {
+		global.parseArr = function (ssffArr) {
 			var noError = true;
 			var resArr = [];
 			var ssffJso;
@@ -500,7 +500,7 @@ ssffParserWorker.prototype = {
 				return {
 					'status': {
 						'type': 'ERROR',
-						'message': 'Error in parseArr() with: '+ JSON.stringify(ssffArr)
+						'message': 'Error in parseArr() with: ' + JSON.stringify(ssffArr)
 					}
 				};
 			}
@@ -518,8 +518,8 @@ ssffParserWorker.prototype = {
 		};
 
 
-		global.onmessage = function(e) {
-			if(e.data !== undefined) {
+		global.onmessage = function (e) {
+			if (e.data !== undefined) {
 				switch (e.data.cmd) {
 					case 'parseArr':
 						global.postMessage(global.parseArr(e.data.ssffArr));
@@ -550,7 +550,7 @@ ssffParserWorker.prototype = {
 
 
 	// get a blob url for the worker script from the worker script text
-	getWorkerURL: function() {
+	getWorkerURL: function () {
 		var blob, urlObj;
 		try {
 			blob = new Blob([this.getWorkerScript()], {type: 'application/javascript'});
@@ -569,12 +569,12 @@ ssffParserWorker.prototype = {
 	},
 
 	// kill the spectroDrawingWorker
-	kill: function() {
-		if(this.worker) {
+	kill: function () {
+		if (this.worker) {
 			this.worker.terminate();
 			this.worker = undefined;
 		}
-		if(this.url) {
+		if (this.url) {
 			if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
 				webkitURL.revokeObjectURL(this.url);
 			} else {
@@ -585,16 +585,16 @@ ssffParserWorker.prototype = {
 	},
 
 	// say something to the ssffParserWorker
-	tell: function(msg) {
-		if(this.worker) {
+	tell: function (msg) {
+		if (this.worker) {
 			this.worker.postMessage(msg);
 		}
 	},
 
 	// listen for the ssffParserWorker to talk back
-	says: function(handler) {
-		if(this.worker) {
-			this.worker.addEventListener('message', function(e) {
+	says: function (handler) {
+		if (this.worker) {
+			this.worker.addEventListener('message', function (e) {
 				handler(e.data);
 			});
 		}
