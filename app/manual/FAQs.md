@@ -20,14 +20,14 @@
 
 ## I think I have found a bug! What should I do now?
 
-The best thing to do is to head over to our <a href="https://github.com/IPS-LMU/EMU-webApp/issues">GitHub issues page</a> 
+The best thing to do is to head over to our [GitHub issues page](https://github.com/IPS-LMU/EMU-webApp/issues) 
 and see if someone might have already posted an issue that describes the problem you are having / the bug you have found. 
 If you can't find an appropriate issue please feel free to open a new one and let us know what the problem is. However 
-keep in mind that posting a <a href="http://stackoverflow.com/help/how-to-ask">well formulated bug report / question</a>
+keep in mind that posting a [well formulated bug report / question](http://stackoverflow.com/help/how-to-ask)
 is beneficial for the developers as well as other users that might have the same problem as you.
     
 ## What is the official EMU-webApp URL?
 
-The official EMU-webApp is hosted at: <a href="https://ips-lmu.github.io/EMU-webApp/">https://ips-lmu.github.io/EMU-webApp/</a>. 
+The official EMU-webApp is hosted at: [https://ips-lmu.github.io/EMU-webApp/](https://ips-lmu.github.io/EMU-webApp/). 
 Chances are that you are already there anyway! But in case you are on a privately hosted version of the EMU-webApp you
 can find the official EMU-webApp under the before mentioned URL.
