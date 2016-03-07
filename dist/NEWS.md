@@ -1,5 +1,10 @@
 # What's New
 
+## Version 0.0.34
+
+- fixed broken links in FAQs
+- fixed bad paging problem
+
 ## Version 0.0.33
 
 - new config editor now available. You can edit the default perspectives, default spectrogram settings as well as expert settings.
