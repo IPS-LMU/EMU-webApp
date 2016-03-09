@@ -42,6 +42,21 @@ describe('Directive: bundleListSideBar', function() {
         expect(elm.html()).toContain('my-drop-zone-input');
     }));
     
-    
+    it('should handle multiple pages', inject(function (viewState, loadedMetaDataService, Validationservice) {
+    	scope.vs = viewState;
+    	scope.vs.pageSize = 10;
+    	var bdlList = [];
+    	bdlList.push({"name": "firstElement"});
+    	for (var i = 0; i < 10; i++) { 
+    		bdlList.push({"name": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 9)});
+    	}
+		spyOn(Validationservice, 'validateJSO').and.returnValue(true);
+    	loadedMetaDataService.setBundleList(bdlList);
+        scope.vs.submenuOpen = true;
+        scope.vs.showDropZone = false;
+        compileDirective();
+        expect(elm.html()).toContain('firstElement');
+        console.log(elm.html());
+    }));  
     
 });
