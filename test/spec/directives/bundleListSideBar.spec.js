@@ -43,19 +43,21 @@ describe('Directive: bundleListSideBar', function() {
     }));
     
     it('should handle multiple pages', inject(function (viewState, loadedMetaDataService, Validationservice) {
-    	scope.vs = viewState;
-    	scope.vs.pageSize = 10;
+    	spyOn(loadedMetaDataService, 'getSessionCollapseState').and.returnValue(false);    	
     	var bdlList = [];
-    	bdlList.push({"name": "firstElement"});
-    	for (var i = 0; i < 10; i++) { 
-    		bdlList.push({"name": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 9)});
-    	}
+    	bdlList.push({"name": "firstElement", "session": "a"});
+    	for (var i = 0; i < 499; i++) { 
+    		bdlList.push({"name": Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 9), "session": "a"});
+    	}	
+    	bdlList.push({"name": "lastElement", "session": "a"});
 		spyOn(Validationservice, 'validateJSO').and.returnValue(true);
     	loadedMetaDataService.setBundleList(bdlList);
-        scope.vs.submenuOpen = true;
-        scope.vs.showDropZone = false;
+        viewState.submenuOpen = true;
+        viewState.showDropZone = false;
         compileDirective();
         expect(elm.html()).toContain('firstElement');
+        expect(elm.html()).not.toContain('lastElement');
+        expect(elm.find('button').length).toBe(4);
         console.log(elm.html());
     }));  
     
