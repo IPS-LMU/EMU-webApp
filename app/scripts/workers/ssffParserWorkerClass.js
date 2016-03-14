@@ -467,17 +467,15 @@ ssffParserWorker.prototype = {
 			});
 		}
 
+
 		/**
 		 * loop over ssff files in ssffArr and create a ssffJsoArr
 		 */
 		global.parseArr = function (ssffArr) {
-			var noError = true;
 			var resArr = [];
-			var ssffJso;
-
 			for (var i = 0; i < ssffArr.length; i++) {
 				var arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
-				resArr.push(JSON.parse(JSON.stringify(global.ssff2jso(arrBuff, ssffArr[i].fileExtension))));
+				resArr[i] = Object.assign({}, global.ssff2jso(arrBuff, ssffArr[i].fileExtension));
 			}
 			return {
 				'status': {
