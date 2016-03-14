@@ -182,7 +182,8 @@ angular.module('emuwebApp')
 						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
 					} else {
 						var tr = ConfigProviderService.getSsffTrackConfig(atts.ssffTrackname);
-						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						var file = Ssffdataservice.getFile(atts.ssffTrackname);
+						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName, file);
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
 						Drawhelperservice.drawMinMaxAndName(ctx, atts.ssffTrackname, col._minVal, col._maxVal, 2);
 					}

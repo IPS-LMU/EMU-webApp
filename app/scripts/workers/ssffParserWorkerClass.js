@@ -33,6 +33,7 @@ ssffParserWorker.prototype = {
 		ssffData.startTime = -1;
 		ssffData.origFreq = -1;
 		ssffData.Columns = [];
+		
 
 		/**
 		 * Mock for atob btoa for web kit based browsers that don't support these in webworkers
@@ -375,7 +376,7 @@ ssffParserWorker.prototype = {
 
 				} //for
 			} //while
-
+			ssffData.raw = buf;
 			return ssffData;
 
 		}
@@ -476,8 +477,7 @@ ssffParserWorker.prototype = {
 
 			for (var i = 0; i < ssffArr.length; i++) {
 				var arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
-				var obj = JSON.parse(JSON.stringify(global.ssff2jso(arrBuff, ssffArr[i].fileExtension)));
-				resArr.push(obj);
+				resArr.push(JSON.parse(JSON.stringify(global.ssff2jso(arrBuff, ssffArr[i].fileExtension))));
 			}
 			return {
 				'status': {
