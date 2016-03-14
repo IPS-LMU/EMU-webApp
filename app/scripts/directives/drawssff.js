@@ -105,8 +105,9 @@ angular.module('emuwebApp')
 								if (ass.signalCanvasName === scope.trackName) {
 									scope.assTrackName = ass.ssffTrackName;
 									var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
-									var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-									var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+									var file = Ssffdataservice.getFile(tr.name);
+									var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName, file);
+									var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name, file);
 									var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
 									// draw values
 									scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);

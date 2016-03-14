@@ -103,7 +103,10 @@ angular.module('emuwebApp')
 
 							// draw min max an name of track
 							var tr = scope.cps.getSsffTrackConfig(trackName);
-							var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
+							var file = scope.ssffds.getFile(tr.name);
+							console.log(file);
+							var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName, file);
+							console.log(col);
 							scope.dhs.drawMinMaxAndName(markupCtx, trackName, col._minVal, col._maxVal, 2);
 						}
 					}

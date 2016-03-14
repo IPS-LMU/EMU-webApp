@@ -480,13 +480,10 @@ ssffParserWorker.prototype = {
 				var arrBuff;
 				arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
 				ssffJso = global.ssff2jso(arrBuff, ssffArr[i].fileExtension);
-				if (ssffJso.status === undefined) {
-					resArr.push(JSON.parse(JSON.stringify(ssffJso))); // YUCK... don't know if SIC but YUCK!!!
-				} else {
-					noError = false;
-					return ssffJso;
-				}
+				resArr[i] = ssffJso;
+
 			}
+			console.log(resArr);
 			if (noError) {
 				return {
 					'status': {

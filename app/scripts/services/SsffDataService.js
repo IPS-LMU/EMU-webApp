@@ -18,29 +18,27 @@ angular.module('emuwebApp')
 		 * @param trackName name of track to get file for
 		 */
 		sServObj.getFile = function (trackName) {
-			var res;
 			if (ConfigProviderService.curDbConfig.ssffTrackDefinitions !== undefined) {
-				ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach(function (std) {
-					if (std.name === trackName) {
-						sServObj.data.forEach(function (f) {
-							if (f.fileExtension === std.fileExtension) {
-								res = f;
+				var tD = ConfigProviderService.curDbConfig.ssffTrackDefinitions;
+				for (var x = 0; x < tD.length; x++) {
+					if (tD[x].name === trackName) {
+						for (var y = 0; y < sServObj.data.length; y++) {
+							if (sServObj.data[y].fileExtension === tD[x].fileExtension) {
+								return sServObj.data[y];
 							}
-						});
+						}
 					}
-				});
+				}
 			}
-			return res;
+			return null;
 		};
+			
 
 		/**
 		 *
 		 */
-		sServObj.getColumnOfTrack = function (trackName, columnName) {
+		sServObj.getColumnOfTrack = function (trackName, columnName, file) {
 			var res;
-			var file = sServObj.getFile(trackName);
-
-
 			if (file !== undefined) {
 				file.Columns.forEach(function (col) {
 					if (col.name === columnName) {
@@ -55,9 +53,8 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName) {
+		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName, file) {
 			var res = {};
-			var file = sServObj.getFile(trackName);
 
 			if (file !== undefined) {
 				res.sampleRate = file.sampleRate;
