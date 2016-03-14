@@ -428,7 +428,7 @@ angular.module('emuwebApp')
 										session = loadedMetaDataService.getBundleList()[0];
 									}
 									dbObjLoadSaveService.loadBundle(session);
-									viewState.currentPage = (viewState.numberOfPages(loadedMetaDataService.getBundleList().length)) - 1;
+									//viewState.currentPage = (viewState.numberOfPages(loadedMetaDataService.getBundleList().length)) - 1;
 									if(reload) {
 										loadedMetaDataService.openCollapseSession(session.session);
 									}									

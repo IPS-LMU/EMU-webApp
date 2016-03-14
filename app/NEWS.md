@@ -3,6 +3,7 @@
 ## Version 0.0.34
 
 - fixed broken links in FAQs
+- fixed bad paging problem
 
 ## Version 0.0.33
 
