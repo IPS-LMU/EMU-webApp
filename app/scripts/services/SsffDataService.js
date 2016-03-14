@@ -32,6 +32,37 @@ angular.module('emuwebApp')
 			}
 			return null;
 		};
+		
+		/**
+		 * Search through ssffTrackDefinitions to find correct
+		 * extension.
+		 * @param trackName name of track to get extension for
+		 */
+		sServObj.getExtension = function (trackName) {
+			if (ConfigProviderService.curDbConfig.ssffTrackDefinitions !== undefined) {
+				var tD = ConfigProviderService.curDbConfig.ssffTrackDefinitions;
+				for (var x = 0; x < tD.length; x++) {
+					if (tD[x].name === trackName) {
+						return tD[x].fileExtension;
+					}
+				}
+			}
+			return null;
+		};	
+		
+		/**
+		 * Search through ssffTrackDefinitions to find correct
+		 * extension.
+		 * @param trackName name of track to get extension for
+		 */
+		sServObj.getFileByExtension = function (extension) {
+			for (var y = 0; y < sServObj.data.length; y++) {
+				if (sServObj.data[y].fileExtension === extension) {
+					return sServObj.data[y];
+				}
+			}
+			return null;
+		};		
 			
 
 		/**

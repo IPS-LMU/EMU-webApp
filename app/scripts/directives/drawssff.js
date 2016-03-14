@@ -118,9 +118,9 @@ angular.module('emuwebApp')
 							if (scope.trackName !== 'OSCI' && scope.trackName !== 'SPEC') {
 
 								var tr = ConfigProviderService.getSsffTrackConfig(scope.trackName);
-								var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-								var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
-
+								var file = Ssffdataservice.getFile(tr.name);
+								var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName, file);
+								var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name, file);
 								var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
 								// draw values
 								scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);

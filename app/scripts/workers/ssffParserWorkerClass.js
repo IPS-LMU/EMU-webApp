@@ -475,32 +475,17 @@ ssffParserWorker.prototype = {
 			var ssffJso;
 
 			for (var i = 0; i < ssffArr.length; i++) {
-
-				ssffJso = {};
-				var arrBuff;
-				arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
-				ssffJso = global.ssff2jso(arrBuff, ssffArr[i].fileExtension);
-				resArr[i] = ssffJso;
-
+				var arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
+				var obj = JSON.parse(JSON.stringify(global.ssff2jso(arrBuff, ssffArr[i].fileExtension)));
+				resArr.push(obj);
 			}
-			console.log(resArr);
-			if (noError) {
-				return {
-					'status': {
-						'type': 'SUCCESS',
-						'message': ''
-					},
-					'data': resArr
-				};
-			}
-			else {
-				return {
-					'status': {
-						'type': 'ERROR',
-						'message': 'Error in parseArr() with: ' + JSON.stringify(ssffArr)
-					}
-				};
-			}
+			return {
+				'status': {
+					'type': 'SUCCESS',
+					'message': ''
+				},
+				'data': resArr
+			};
 		};
 
 		//expand ArrayBuffer with subarray function
