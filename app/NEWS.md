@@ -1,5 +1,9 @@
 # What's New
 
+## Version 0.0.35
+
+- manual bootstrapping
+
 ## Version 0.0.34
 
 - fixed broken links in FAQs
