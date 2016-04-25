@@ -3,6 +3,7 @@
 ## Version 0.0.35
 
 - manual bootstrapping
+- serverUrl now available as GET parameter
 
 ## Version 0.0.34
 
