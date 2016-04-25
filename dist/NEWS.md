@@ -1,5 +1,11 @@
 # What's New
 
+## Version 0.1.00
+
+- manual bootstrapping
+- serverUrl now available as GET parameter
+- random version bump to 0.1.00 to end alpha phase
+
 ## Version 0.0.34
 
 - fixed broken links in FAQs
