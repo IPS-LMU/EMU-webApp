@@ -297,7 +297,9 @@ ssffParserWorker.prototype = {
 			var curBinIdx = newLsep.slice(0, i + 1).join('').length;
 
 			var curBufferView, curBuffer, curLen, curMin, curMax;
-
+			
+			ssffData.raw = buf.subarray(curBinIdx);
+			
 			while (curBinIdx < uIntBuffView.length) {
 
 				for (i = 0; i < ssffData.Columns.length; i++) {
@@ -373,10 +375,10 @@ ssffParserWorker.prototype = {
 							}
 						});
 					}
+					
 
 				} //for
 			} //while
-			ssffData.raw = buf;
 			return ssffData;
 
 		}

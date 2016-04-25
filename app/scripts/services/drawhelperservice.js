@@ -5,11 +5,9 @@ angular.module('emuwebApp')
 
 		//shared service object to be returned
 		var sServObj = {};
-
 		function getScale(ctx, str, scale) {
 			return ctx.measureText(str).width * scale;
 		}
-
 		function getScaleWidth(ctx, str1, str2, scaleX) {
 			if (str1 !== undefined && str1.toString().length > str2.toString().length) {
 				return getScale(ctx, str1, scaleX);
@@ -17,7 +15,6 @@ angular.module('emuwebApp')
 				return getScale(ctx, str2, scaleX);
 			}
 		}
-
 
 		/**
 		 * drawing method to draw single line between two
@@ -31,9 +28,7 @@ angular.module('emuwebApp')
 		 */
 
 		function drawFrame(viewState, index, value, max, prevPeak, canvas, config) {
-
 			var ctx = canvas.getContext('2d');
-
 			//cur
 			var w = 1;
 			var h = Math.round(value * (canvas.height / max)); //rel to max
@@ -375,6 +370,7 @@ angular.module('emuwebApp')
 						// draw min max an name of track
 						var tr = ConfigProviderService.getSsffTrackConfig(trackname);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						console.log(col);
 						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
 						mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
 						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);
@@ -447,9 +443,7 @@ angular.module('emuwebApp')
 			ctx.strokeStyle = ConfigProviderService.design.color.black;
 			ctx.fillStyle = ConfigProviderService.design.color.black
 			ctx.font = (ConfigProviderService.design.font.small.size + ' ' + ConfigProviderService.design.font.small.family);
-
 			var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
-
 			// lines to corners
 			ctx.beginPath();
 			ctx.moveTo(0, 0);
