@@ -1,5 +1,9 @@
 # What's New
 
+## Version 0.1.01
+
+- fixed bad entry in keyboard shortcut list 
+
 ## Version 0.1.00
 
 - manual bootstrapping
