@@ -117,11 +117,15 @@ angular.module('emuwebApp')
 		// public api
 		sServObj.initConnect = function (url) {
 			var defer = $q.defer();
-			sServObj.ws = new WebSocket(url);
-			sServObj.ws.onopen = wsonopen;
-			sServObj.ws.onmessage = wsonmessage;
-			sServObj.ws.onerror = wsonerror;
-			sServObj.ws.onclose = wsonclose;
+			try{
+				sServObj.ws = new WebSocket(url);
+				sServObj.ws.onopen = wsonopen;
+				sServObj.ws.onmessage = wsonmessage;
+				sServObj.ws.onerror = wsonerror;
+				sServObj.ws.onclose = wsonclose;
+			}catch (err){
+				return $q.reject("A malformed websocket URL that doesn't start with ws:// or wss:// was provided.");
+			}
 
 			conPromise = defer;
 			return defer.promise;

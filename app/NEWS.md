@@ -3,6 +3,7 @@
 ## Version 0.1.01
 
 - fixed bad entry in keyboard shortcut list 
+- catching mal formed websocket urls (not starting with ws:// or wss://)
 
 ## Version 0.1.00
 

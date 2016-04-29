@@ -124,6 +124,10 @@ angular.module('emuwebApp')
 				} else {
 					$scope.handleConnectedToWSserver(data);
 				}
+			}, function (errMess) {
+				modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+					appStateService.resetToInitState();
+				});
 			});
 		});
 
@@ -333,6 +337,10 @@ angular.module('emuwebApp')
 					} else {
 						$scope.handleConnectedToWSserver({session: null, reload: null});
 					}
+				}, function (errMess) {
+					modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+						appStateService.resetToInitState();
+					});
 				});
 			}
 
@@ -654,6 +662,10 @@ angular.module('emuwebApp')
 							} else {
 								$scope.handleConnectedToWSserver({session: null, reload: null});
 							}
+						}, function (errMess) {
+							modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+								appStateService.resetToInitState();
+							});
 						});
 					}
 				});
