@@ -5,6 +5,7 @@
 - fixed bad entry in keyboard shortcut list 
 - catching mal formed websocket urls (not starting with ws:// or wss://)
 - not showing "save current changes" dialog anymore when saveButtons are disabled
+- reset url without GET parameters on reset to init state
 
 ## Version 0.1.00
 
