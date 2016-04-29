@@ -4,6 +4,7 @@
 
 - fixed bad entry in keyboard shortcut list 
 - catching mal formed websocket urls (not starting with ws:// or wss://)
+- not showing "save current changes" dialog anymore when saveButtons are disabled
 
 ## Version 0.1.00
 
