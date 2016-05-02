@@ -18,6 +18,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.loadBundle = function (bndl) {
 			// check if bndl has to be saved
+			viewState.setcurClickItem(null);
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO' && ConfigProviderService.vals.activeButtons.saveBundle)) {
 				var curBndl = loadedMetaDataService.getCurBndl();
 				if (bndl !== curBndl) {
