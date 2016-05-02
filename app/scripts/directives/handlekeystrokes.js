@@ -878,8 +878,6 @@ angular.module('emuwebApp')
 																}
 															} else {
 																if (seg.sampleStart === viewState.curViewPort.selectS && (seg.sampleStart + seg.sampleDur + 1) === viewState.curViewPort.selectE) {
-																	viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
-																	viewState.setcurClickItem(seg.current);
 																	LevelService.setlasteditArea('_' + seg.id);
 																	LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
 																	viewState.setEditing(true);
@@ -905,8 +903,6 @@ angular.module('emuwebApp')
 															if (typeof levelDef.anagestConfig === 'undefined') {
 																var insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, ConfigProviderService.vals.labelCanvasConfig.newEventName);
 																if (insPoint.alreadyExists) {
-																	viewState.setcurClickLevel(viewState.getcurClickLevelName(), viewState.getcurClickLevelType(), scope.$index);
-																	viewState.setcurClickItem(seg.current);
 																	LevelService.setlasteditArea('_' + seg.id);
 																	LevelService.openEditArea(seg, LevelService.getlasteditAreaElem(), viewState.getcurClickLevelType());
 																	viewState.setEditing(true);

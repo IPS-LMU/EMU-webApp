@@ -1,5 +1,10 @@
 # What's New
 
+## Version 0.1.02
+
+- fixed multiple selection of labels using the keyboard arrows and shift
+- fixed error on selection and editing of label text with enter key
+
 ## Version 0.1.01
 
 - fixed bad entry in keyboard shortcut list 
