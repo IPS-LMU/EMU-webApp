@@ -1,12 +1,9 @@
 # What's New
 
-## Version 0.1.02
+## Version 0.1.01
 
 - fixed multiple selection of labels using the keyboard arrows and shift
 - fixed error on selection and editing of label text with enter key
-
-## Version 0.1.01
-
 - fixed bad entry in keyboard shortcut list 
 - catching mal formed websocket urls (not starting with ws:// or wss://)
 - not showing "save current changes" dialog anymore when saveButtons are disabled
