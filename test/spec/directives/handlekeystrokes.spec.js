@@ -741,8 +741,9 @@ describe('Directive: handleglobalkeystrokes', function() {
         trigEvent(scope.cps.vals.keyMappings.selPrevItem, true);
         var item = scope.lvl.getClosestItem(fakePCMclick,lvlName,msajc003_bndl.mediaFile.data.length).current;
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
+        var neighbours2 = scope.lvl.getItemNeighboursFromLevel(lvlName, neighbours.left.id, neighbours.left.id);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
-        expect(scope.vs.setcurClickItemMultiple).toHaveBeenCalledWith(neighbours.left);
+        expect(scope.vs.setcurClickItemMultiple).toHaveBeenCalledWith(neighbours.left, neighbours2.right);
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.vs.setcurClickItem).toHaveBeenCalled();
@@ -780,8 +781,9 @@ describe('Directive: handleglobalkeystrokes', function() {
         clickOnItem(lvlName, fakePCMclick, msajc003_bndl.mediaFile.data.length, 'SEGMENT');
         trigEvent(scope.cps.vals.keyMappings.selNextItem, true);
         var neighbours = scope.lvl.getItemNeighboursFromLevel(lvlName, item.id, item.id);
+        var neighbours2 = scope.lvl.getItemNeighboursFromLevel(lvlName, neighbours.left.id, neighbours.left.id);
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
-        expect(scope.vs.setcurClickItemMultiple).toHaveBeenCalledWith(neighbours.right);
+        expect(scope.vs.setcurClickItemMultiple).toHaveBeenCalledWith(neighbours.right, neighbours2.right);
         expect(scope.lvl.setlasteditArea).toHaveBeenCalled();
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.vs.setcurClickItem).toHaveBeenCalled();

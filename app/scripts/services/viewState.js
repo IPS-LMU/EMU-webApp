@@ -906,23 +906,24 @@ angular.module('emuwebApp')
 		 * @param next Object next to the Object to be added to selection
 		 * @param prev Object previous of the Object to be added to selection
 		 */
-		sServObj.setcurClickItemMultiple = function (item, next, prev) {
+		sServObj.setcurClickItemMultiple = function (item, neighbour) {
 
+			// if nothing is in curClickItems
 			if (sServObj.curClickItems.length == 0 || sServObj.curClickItems === undefined || sServObj.curClickItems === null) {
 				sServObj.curClickItems = [];
 				sServObj.curClickItems.push(item);
 			}
+			// if there is something in curClickItems
 			else {
+				// if item is not yet in curClickItems
 				if (sServObj.curClickItems.indexOf(item) === -1) {
-					if (sServObj.curClickItems.indexOf(next) >= 0 || sServObj.curClickItems.indexOf(prev) >= 0) {
-						sServObj.curClickItems.push(item);
-						sServObj.curClickItems.sort(sServObj.sortbystart);
-					}
-					else {
+					if ( sServObj.curClickItems.indexOf(neighbour) < 0 ) {
 						sServObj.curClickItems = [];
-						sServObj.curClickItems.push(item);
 					}
+					sServObj.curClickItems.push(item);
+					sServObj.curClickItems.sort(sServObj.sortbystart);						
 				}
+				// if item is in curClickItems reset and add
 				else {
 					sServObj.curClickItems = [];
 					sServObj.curClickItems.push(item);
