@@ -465,7 +465,9 @@ angular.module('emuwebApp')
 					// select first if none prev. defined (up)
 					// viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
 					curLev = Levelserv.getLevelDetails(order[0]);
-					sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
+					if(curLev !== null) {
+						sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
+					}
 					return;
 				}
 				else {

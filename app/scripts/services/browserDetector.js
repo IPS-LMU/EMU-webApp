@@ -47,11 +47,15 @@ angular.module('emuwebApp')
 			PhantomJS: function () {
 				return navigator.userAgent.match(/PhantomJS/i);
 			},
+			Safari: function () {
+				return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+			},
 			any: function () {
 				return (sServObj.isBrowser.Firefox() ||
 				sServObj.isBrowser.Chrome() ||
 				sServObj.isBrowser.InternetExplorer() ||
 				sServObj.isBrowser.Opera() ||
+				sServObj.isBrowser.Safari() ||
 				sServObj.isBrowser.PhantomJS());
 			}
 		};
