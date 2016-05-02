@@ -7,14 +7,14 @@ author: Raphael Winkelmann
 ![icon](assets/EMU-webAppIcon-roundCorners.svg)
 
 
-- **Version: 0.1.00**
-- *Build time stamp: Mon Apr 25 2016 17:00:09*
-- *Build GIT SHA-1: 15098314c45b90fc5cccc3be4dd74a3de9509fc9 - master*
+- **Version: 0.1.01**
+- *Build time stamp: Mon May 02 2016 21:20:49*
+- *Build GIT SHA-1: 4864a25bc6efa80e40181dcfb676ecd1df234aec - master*
 - *EMU-webApp-websocket-protocol version: 0.0.2*
 
 --------------------- 
 
-Welcome to the EMU-webApp! The EMU-webApp is a full fledged browser-based labeling and correction tool that offers a 
+Welcome to the EMU-webApp! The EMU-webApp is a fully fledged browser-based labeling and correction tool that offers a 
 multitude of labeling and visualization features. These features include unlimited undo/redo, formant correction 
 capabilities, snap preselected boundary to nearest top/bottom boundary and snap preselected boundary to nearest zero 
 crossing and many more. The web application is able to render everything directly in clients browser which includes the 
