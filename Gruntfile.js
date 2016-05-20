@@ -4,8 +4,9 @@ var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({
   port: LIVERELOAD_PORT
 });
+var serveStatic = require('serve-static');
 var mountFolder = function (connect, dir) {
-  return connect.static(require('path').resolve(dir));
+  return serveStatic(require('path').resolve(dir));
 };
 
 // # Globbing
@@ -22,7 +23,8 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
   
-  grunt.loadNpmTasks('grunt-json2sass');
+  //deprecated
+  //grunt.loadNpmTasks('grunt-json2sass');
 
   // Configurable paths for the application
   var appConfig = {
@@ -196,13 +198,14 @@ module.exports = function (grunt) {
       }
     },
     
+    /*
 	json2sass: {
 		files: {
           src: '<%= yeoman.app %>/configFiles/default_emuwebappDesign.json',
           dest: '<%= yeoman.app %>/styles/EMUwebAppDesign.sass'
 		}
 	}, 
-    
+    */
     
     // not used since Uglify task does concat,
     // but still available if needed
@@ -506,7 +509,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'json2sass',
+      //'json2sass',
       'compass:server',
       'concurrent:server',
       'autoprefixer',

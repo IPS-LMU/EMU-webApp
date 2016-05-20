@@ -2,6 +2,12 @@
   "name": "EMU-webApp",
   "version": "0.1.01",
   "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
+  "keywords": "emu, EMU, labeling, speech",
+  "homepage": "http://ips-lmu.github.io/",
+  "bugs": {
+    "url": "https://github.com/IPS-LMU/EMU-webApp/issues",
+    "email": "emu@phonetik.uni-muenchen.de"
+  },
   "main": "app/scripts/app.js",
   "scripts": {
     "install": "node node_modules/protractor/bin/webdriver-manager update"
@@ -15,9 +21,10 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "bower": "^1.7.9",
     "connect-livereload": "~0.5.4",
     "filewalker": "~0.1.2",
-    "grunt": "~1.0.1",
+    "grunt": "^0.4.5",
     "grunt-appcache": "~0.2.0",
     "grunt-autoprefixer": "~3.0.4",
     "grunt-bower-requirejs": "~2.0.0",
@@ -26,8 +33,8 @@
     "grunt-contrib-coffee": "~1.0.0",
     "grunt-contrib-compass": "^1.1.1",
     "grunt-contrib-concat": "~1.0.1",
-    "grunt-contrib-connect": "~1.0.2",
-    "grunt": "~1.0.1",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "~1.0.1",
     "grunt-contrib-htmlmin": "~1.4.0",
     "grunt-contrib-imagemin": "~1.0.0",
@@ -66,6 +73,7 @@
     "load-grunt-tasks": "~3.5.0",
     "phantomjs-prebuilt": "~2.1.7",
     "protractor": "~3.3.0",
+    "serve-static": "^1.10.2",
     "time-grunt": "~1.3.0",
     "ws": "~1.1.0"
   },
