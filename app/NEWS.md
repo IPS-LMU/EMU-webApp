@@ -1,6 +1,6 @@
 # What's New
 
-## Version 0.1.01
+## Version 0.1.00.9000
 
 - fixed bad entry in keyboard shortcut list 
 - catching mal formed websocket URLs (not starting with ws:// or wss://)
@@ -10,6 +10,8 @@
 - fixed error on selection and editing of label text with enter key
 - fixed select area still present on load of new bundle
 - fixed text entry problem with CSS
+- fixes problem of loaded color in bundleListSideBar when same bundle name in different sessions (issue #192)
+
 
 ## Version 0.1.00
 

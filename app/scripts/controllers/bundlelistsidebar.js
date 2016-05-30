@@ -63,7 +63,8 @@ angular.module('emuwebApp')
 			}
 
 			// console.log(bndl.name)
-			if (bndl.name === loadedMetaDataService.getCurBndl().name) {
+			var curBndl = loadedMetaDataService.getCurBndl();
+			if (bndl.name === curBndl.name && bndl.session === curBndl.session) {
 				return curColor;
 			}
 		};
