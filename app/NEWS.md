@@ -10,8 +10,8 @@
 - fixed error on selection and editing of label text with enter key
 - fixed select area still present on load of new bundle
 - fixed text entry problem with CSS
-- fixes problem of loaded color in bundleListSideBar when same bundle name in different sessions (issue #192)
-
+- fixed problem of loaded color in bundleListSideBar when same bundle name in different sessions (issue \#192)
+- fixed problem of not being able to play first segment if it starts at sampleStart = 0 (issue \#195)
 
 ## Version 0.1.00
 

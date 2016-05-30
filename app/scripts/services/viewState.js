@@ -888,8 +888,19 @@ angular.module('emuwebApp')
 		 */
 		sServObj.selectBoundary = function () {
 			if (sServObj.curClickItems.length > 0) {
-				var left = sServObj.curClickItems[0].sampleStart || sServObj.curClickItems[0].samplePoint;
-				var right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur || sServObj.curClickItems[0].samplePoint;
+				
+				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
+					var left = sServObj.curClickItems[0].sampleStart;
+				}else{
+				 	var left = sServObj.curClickItems[0].samplePoint;
+				}
+
+				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
+					var right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur;
+				}else{
+					var right = sServObj.curClickItems[0].samplePoint;
+				}
+
 				sServObj.curClickItems.forEach(function (entry) {
 					if (entry.sampleStart <= left) {
 						left = entry.sampleStart;
