@@ -139,6 +139,12 @@
 	pointer-events: auto;
 }
 
+.emuwebapp-modal-URL-input {
+  min-width: 60%;
+  overflow: auto;
+}
+
+
 .emuwebapp-modal-body {
     height: calc(100% - 120px);
     width: 100%;
