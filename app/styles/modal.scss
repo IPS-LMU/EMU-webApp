@@ -164,6 +164,12 @@
 	select {
 	    margin: 3px;
 	}
+
+	select[name=url] {
+	    min-width: 80%;
+	    overflow: auto;
+	}
+
 	hr {
 		margin-top: 10px;
 		margin-bottom: 10px;
