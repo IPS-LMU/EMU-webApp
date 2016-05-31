@@ -31,11 +31,9 @@ angular.module('emuwebApp')
 				var jsonMessage = angular.fromJson(message.data);
 				listener(jsonMessage);
 			}catch(e){
-				console.log(e);
-				modalService.open('views/error.html', 'Got not JSON string as message from server! This is not allowed!').then(function () {
+				modalService.open('views/error.html', 'Got non-JSON string as message from server! This is not allowed! The message was: ' + message.data + ' which caused the angular.fromJson error: ' + e).then(function () {
 					sServObj.closeConnect();
 					$rootScope.$broadcast('resetToInitState');
-
 				});
 
 			}
@@ -116,7 +114,7 @@ angular.module('emuwebApp')
 				else if (messageObj.status.type === 'ERROR:TIMEOUT') {
 					// do nothing
 				} else {
-					modalService.open('views/error.html', 'What just happened? You should not be here...');
+					modalService.open('views/error.html', 'Received invalid messageObj.callbackID that could not be resolved to a request! This should not happen and indicates a bad server response! The invalid callbackID was: ' + messageObj.callbackID);
 				}
 			}
 		}
