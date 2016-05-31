@@ -27,7 +27,18 @@ angular.module('emuwebApp')
 		}
 
 		function wsonmessage(message) {
-			listener(angular.fromJson(message.data));
+			try{
+				var jsonMessage = angular.fromJson(message.data);
+				listener(jsonMessage);
+			}catch(e){
+				console.log(e);
+				modalService.open('views/error.html', 'Got not JSON string as message from server! This is not allowed!').then(function () {
+					sServObj.closeConnect();
+					$rootScope.$broadcast('resetToInitState');
+
+				});
+
+			}
 		}
 
 		function wsonerror(message) {
@@ -99,7 +110,10 @@ angular.module('emuwebApp')
 
 				delete callbacks[messageObj.callbackID];
 			} else {
-				if (messageObj.status.type === 'ERROR:TIMEOUT') {
+				if(typeof messageObj.status === "undefined"){
+					modalService.open('views/error.html', 'Just got JSON message from server that the EMU-webApp does not know how to deal with! This is not allowed!');
+				}
+				else if (messageObj.status.type === 'ERROR:TIMEOUT') {
 					// do nothing
 				} else {
 					modalService.open('views/error.html', 'What just happened? You should not be here...');
