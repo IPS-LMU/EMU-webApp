@@ -309,13 +309,12 @@ ssffParserWorker.prototype = {
 			var curBinIdx = newLsep.slice(0, i + 1).join('').length;
 
 			var tmpView = new DataView(buf, curBinIdx);
-			var curBuffer = buf.subarray(curBinIdx + 16)
-			var curView = new DataView(curBuffer);
+
+			console.log(tmpView.getUint16(2, true));
 
 			// ssffData.rawDataBlock = tmpView.buffer; // extract buffer
 			// ssffData.rawDataBlockDataView = new DataView(ssffData.rawDataBlock); // add view to buffer
 
-			console.log(curView.getUint16(15));
 			// for (i = 0; i < ssffData.rawDataBlockDataView.byteLength; i += sampleBitBlockSize) {
 			// console.log("--------------------------")
 			// i = 0;
