@@ -27,7 +27,16 @@ angular.module('emuwebApp')
 		}
 
 		function wsonmessage(message) {
-			listener(angular.fromJson(message.data));
+			try{
+				var jsonMessage = angular.fromJson(message.data);
+				listener(jsonMessage);
+			}catch(e){
+				modalService.open('views/error.html', 'Got non-JSON string as message from server! This is not allowed! The message was: ' + message.data + ' which caused the angular.fromJson error: ' + e).then(function () {
+					sServObj.closeConnect();
+					$rootScope.$broadcast('resetToInitState');
+				});
+
+			}
 		}
 
 		function wsonerror(message) {
@@ -99,10 +108,13 @@ angular.module('emuwebApp')
 
 				delete callbacks[messageObj.callbackID];
 			} else {
-				if (messageObj.status.type === 'ERROR:TIMEOUT') {
+				if(typeof messageObj.status === "undefined"){
+					modalService.open('views/error.html', 'Just got JSON message from server that the EMU-webApp does not know how to deal with! This is not allowed!');
+				}
+				else if (messageObj.status.type === 'ERROR:TIMEOUT') {
 					// do nothing
 				} else {
-					modalService.open('views/error.html', 'What just happened? You should not be here...');
+					modalService.open('views/error.html', 'Received invalid messageObj.callbackID that could not be resolved to a request! This should not happen and indicates a bad server response! The invalid callbackID was: ' + messageObj.callbackID);
 				}
 			}
 		}
@@ -117,11 +129,15 @@ angular.module('emuwebApp')
 		// public api
 		sServObj.initConnect = function (url) {
 			var defer = $q.defer();
-			sServObj.ws = new WebSocket(url);
-			sServObj.ws.onopen = wsonopen;
-			sServObj.ws.onmessage = wsonmessage;
-			sServObj.ws.onerror = wsonerror;
-			sServObj.ws.onclose = wsonclose;
+			try{
+				sServObj.ws = new WebSocket(url);
+				sServObj.ws.onopen = wsonopen;
+				sServObj.ws.onmessage = wsonmessage;
+				sServObj.ws.onerror = wsonerror;
+				sServObj.ws.onclose = wsonclose;
+			}catch (err){
+				return $q.reject("A malformed websocket URL that doesn't start with ws:// or wss:// was provided.");
+			}
 
 			conPromise = defer;
 			return defer.promise;

@@ -14,7 +14,7 @@ author: Raphael Winkelmann
 
 --------------------- 
 
-Welcome to the EMU-webApp! The EMU-webApp is a full fledged browser-based labeling and correction tool that offers a 
+Welcome to the EMU-webApp! The EMU-webApp is a fully fledged browser-based labeling and correction tool that offers a 
 multitude of labeling and visualization features. These features include unlimited undo/redo, formant correction 
 capabilities, snap preselected boundary to nearest top/bottom boundary and snap preselected boundary to nearest zero 
 crossing and many more. The web application is able to render everything directly in clients browser which includes the 

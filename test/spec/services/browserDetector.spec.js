@@ -10,7 +10,6 @@ describe('Factory: browserDetector', function () {
    */
   it('should check if mobile', inject(function (browserDetector) {
       expect(browserDetector.isMobileDevice()).toBe(false);
-      expect(browserDetector.isDesktopDevice()).toBe(true);
   }));
   
   /**

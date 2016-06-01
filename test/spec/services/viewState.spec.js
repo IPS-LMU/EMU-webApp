@@ -156,6 +156,7 @@ describe('Factory: viewState', function () {
     var min = Infinity;
     var max = -Infinity;
     var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
+    var prev = null;
     angular.forEach(itemInSel, function (item) {
       if ((item.sampleStart || item.samplePoint) < min) {
         min = item.sampleStart || item.samplePoint;
@@ -163,10 +164,13 @@ describe('Factory: viewState', function () {
       if (((item.sampleStart + item.sampleDur + 1) || item.samplePoint) > max) {
         max = (item.sampleStart + item.sampleDur + 1) || item.samplePoint;
       }
-      var clickItemOrder = LevelService.getOrderById(viewState.getcurClickLevelName(), item.id);
-      var next = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder + 1);
-      var prev = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder - 1);
-      viewState.setcurClickItemMultiple(item, next, prev);
+      if(prev === null) {
+      	viewState.setcurClickItem(item);
+      }
+      else {
+        viewState.setcurClickItemMultiple(item, prev);
+      }
+      prev = item;
     });
     viewState.selectBoundary();
     expect(viewState.curClickItems.length).toEqual(2);
@@ -189,6 +193,7 @@ describe('Factory: viewState', function () {
     var min = Infinity;
     var max = -Infinity;
     var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
+    var prev = null;
     angular.forEach(itemInSel, function (item) {
       if ((item.sampleStart || item.samplePoint) < min) {
         min = item.sampleStart || item.samplePoint;
@@ -196,10 +201,13 @@ describe('Factory: viewState', function () {
       if (((item.sampleStart + item.sampleDur + 1) || item.samplePoint) > max) {
         max = (item.sampleStart + item.sampleDur + 1) || item.samplePoint;
       }
-      var clickItemOrder = LevelService.getOrderById(viewState.getcurClickLevelName(), item.id);
-      var next = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder + 1);
-      var prev = LevelService.getItemDetails(viewState.getcurClickLevelName(), clickItemOrder - 1);
-      viewState.setcurClickItemMultiple(item, next, prev);
+      if(prev === null) {
+      	viewState.setcurClickItem(item);
+      }
+      else {
+      	viewState.setcurClickItemMultiple(item, prev);
+      }
+      prev = item;
     });
     viewState.selectBoundary();
     range = viewState.getselectedRange();

@@ -124,6 +124,10 @@ angular.module('emuwebApp')
 				} else {
 					$scope.handleConnectedToWSserver(data);
 				}
+			}, function (errMess) {
+				modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+					appStateService.resetToInitState();
+				});
 			});
 		});
 
@@ -324,12 +328,21 @@ angular.module('emuwebApp')
 			var searchObject = $location.search();
 
 			if (ConfigProviderService.vals.main.autoConnect || searchObject['autoConnect'] === 'true') {
+				if (typeof searchObject['serverUrl'] !== 'undefined') { // overwrite serverUrl if set as GET parameter
+					ConfigProviderService.vals.main.serverUrl = searchObject['serverUrl'];
+				}
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
 					if (message.type === 'error') {
-						modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl);
+						modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl).then(function () {
+						appStateService.resetToInitState();
+					});
 					} else {
 						$scope.handleConnectedToWSserver({session: null, reload: null});
 					}
+				}, function (errMess) {
+					modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+						appStateService.resetToInitState();
+					});
 				});
 			}
 
@@ -651,6 +664,10 @@ angular.module('emuwebApp')
 							} else {
 								$scope.handleConnectedToWSserver({session: null, reload: null});
 							}
+						}, function (errMess) {
+							modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+								appStateService.resetToInitState();
+							});
 						});
 					}
 				});

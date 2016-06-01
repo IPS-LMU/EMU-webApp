@@ -91,7 +91,7 @@ angular.module('emuwebApp')
 						scope.bundleNames = [];
 						scope.count = 0;
 					}
-					if (!browserDetector.isBrowser.Firefox()) {
+					if (!browserDetector.isBrowser.Firefox() && !browserDetector.isBrowser.Safari()) {
 						scope.$digest();
 					}
 					if (scope.bundles[j] !== undefined) {
@@ -180,7 +180,10 @@ angular.module('emuwebApp')
 								if (browserDetector.isBrowser.Firefox()) {
 									var items = evt.originalEvent.dataTransfer.files;
 								}
-								else {
+								else if (browserDetector.isBrowser.Safari()) {
+									var items = evt.originalEvent.dataTransfer.files;
+								}
+								else { // we assume it is chrome
 									var items = evt.originalEvent.dataTransfer.items;
 								}
 								scope.loadFiles(items);

@@ -465,7 +465,9 @@ angular.module('emuwebApp')
 					// select first if none prev. defined (up)
 					// viewState.setcurClickLevel(levelID, levelType, scope.$index, scope.this.level.items.length);
 					curLev = Levelserv.getLevelDetails(order[0]);
-					sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
+					if(curLev !== null) {
+						sServObj.setcurClickLevel(curLev.name, curLev.type, 0);
+					}
 					return;
 				}
 				else {
@@ -886,8 +888,19 @@ angular.module('emuwebApp')
 		 */
 		sServObj.selectBoundary = function () {
 			if (sServObj.curClickItems.length > 0) {
-				var left = sServObj.curClickItems[0].sampleStart || sServObj.curClickItems[0].samplePoint;
-				var right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur || sServObj.curClickItems[0].samplePoint;
+				
+				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
+					var left = sServObj.curClickItems[0].sampleStart;
+				}else{
+				 	var left = sServObj.curClickItems[0].samplePoint;
+				}
+
+				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
+					var right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur;
+				}else{
+					var right = sServObj.curClickItems[0].samplePoint;
+				}
+
 				sServObj.curClickItems.forEach(function (entry) {
 					if (entry.sampleStart <= left) {
 						left = entry.sampleStart;
@@ -906,23 +919,24 @@ angular.module('emuwebApp')
 		 * @param next Object next to the Object to be added to selection
 		 * @param prev Object previous of the Object to be added to selection
 		 */
-		sServObj.setcurClickItemMultiple = function (item, next, prev) {
+		sServObj.setcurClickItemMultiple = function (item, neighbour) {
 
+			// if nothing is in curClickItems
 			if (sServObj.curClickItems.length == 0 || sServObj.curClickItems === undefined || sServObj.curClickItems === null) {
 				sServObj.curClickItems = [];
 				sServObj.curClickItems.push(item);
 			}
+			// if there is something in curClickItems
 			else {
+				// if item is not yet in curClickItems
 				if (sServObj.curClickItems.indexOf(item) === -1) {
-					if (sServObj.curClickItems.indexOf(next) >= 0 || sServObj.curClickItems.indexOf(prev) >= 0) {
-						sServObj.curClickItems.push(item);
-						sServObj.curClickItems.sort(sServObj.sortbystart);
-					}
-					else {
+					if ( sServObj.curClickItems.indexOf(neighbour) < 0 ) {
 						sServObj.curClickItems = [];
-						sServObj.curClickItems.push(item);
 					}
+					sServObj.curClickItems.push(item);
+					sServObj.curClickItems.sort(sServObj.sortbystart);						
 				}
+				// if item is in curClickItems reset and add
 				else {
 					sServObj.curClickItems = [];
 					sServObj.curClickItems.push(item);

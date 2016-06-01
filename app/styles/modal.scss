@@ -139,6 +139,12 @@
 	pointer-events: auto;
 }
 
+.emuwebapp-modal-URL-input {
+  min-width: 60%;
+  overflow: auto;
+}
+
+
 .emuwebapp-modal-body {
     height: calc(100% - 120px);
     width: 100%;
@@ -164,6 +170,12 @@
 	select {
 	    margin: 3px;
 	}
+
+	select[name=url] {
+	    min-width: 80%;
+	    overflow: auto;
+	}
+
 	hr {
 		margin-top: 10px;
 		margin-bottom: 10px;

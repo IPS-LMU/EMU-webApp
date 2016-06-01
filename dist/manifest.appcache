@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2016-03-07T18:29:47.634Z
+# rev 1 - 2016-05-02T19:20:49.285Z
 
 CACHE:
 404.html
@@ -85,15 +85,15 @@ schemaFiles/designSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
 scripts/a07cc9c3.emuwebAppExternal.min.js
-scripts/b75c8be7.emuwebApp.min.js
 scripts/emuwebApp.min.js.map
+scripts/f9a196ce.emuwebApp.min.js
 scripts/workers/espsParserWorkerClass.js
 scripts/workers/spectroDrawingWorkerClass.js
 scripts/workers/ssffParserWorkerClass.js
 scripts/workers/textGridParserWorkerClass.js
 scripts/workers/wavParserWorkerClass.js
 styles/1c98af2c.emuwebAppExternal.min.css
-styles/53298164.emuwebApp.min.css
+styles/d49a7793.emuwebApp.min.css
 views/SelectLabelModal.html
 views/SelectThresholdModal.html
 views/bundleListSideBar.html

@@ -182,6 +182,7 @@ describe('Service: dbObjLoadSaveService', function () {
    it('should loadBundle (-> discardChanges)', inject(function (modalService, ConfigProviderService, loadedMetaDataService, HistoryService) {
      spyOn(modalService, 'open').and.returnValue(deferred.promise);
      ConfigProviderService.vals.main.comMode = 'embedded';
+     ConfigProviderService.vals.activeButtons.saveBundle = true;
      HistoryService.movesAwayFromLastSave = 1;
      scope.dbo.loadBundle({name: 'test'});
      deferred.resolve('discardChanges');

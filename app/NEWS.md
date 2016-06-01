@@ -1,8 +1,25 @@
 # What's New
 
-## Version 0.0.35
+## Version 0.1.00.9000
+
+- fixed bad entry in keyboard shortcut list 
+- catching mal formed websocket URLs (not starting with ws:// or wss://)
+- not showing "save current changes" dialog anymore when saveButtons are disabled
+- reset URL without GET parameters on reset to init state
+- fixed multiple selection of labels using the keyboard arrows and shift
+- fixed error on selection and editing of label text with enter key
+- fixed select area still present on load of new bundle
+- fixed text entry problem with CSS
+- fixed problem of loaded color in bundleListSideBar when same bundle name in different sessions (issue \#192)
+- fixed problem of not being able to play first segment if it starts at sampleStart = 0 (issue \#195)
+- wider width of URL input as well as URL list box
+- better error handling for bad protocol commands sent from server
+
+## Version 0.1.00
 
 - manual bootstrapping
+- serverUrl now available as GET parameter
+- random version bump to 0.1.00 to end alpha phase
 
 ## Version 0.0.34
 
