@@ -272,7 +272,7 @@ ssffParserWorker.prototype = {
 				});
 			}
 
-
+			var sampleBitBlockSize = 0;
 			for (var i = 4; i < newLsep.length; i++) {
 				if (newLsep[i].split(/[ ,]+/)[0] === 'Original_Freq') {
 					ssffData.origFreq = parseFloat(newLsep[i].split(/[ ,]+/)[2].replace(/(\r\n|\n|\r)/gm, ''));
@@ -283,22 +283,65 @@ ssffParserWorker.prototype = {
 				var lSpl = newLsep[i].split(/[ ]+/);
 
 				if (lSpl[0] === 'Column') {
-					ssffData.Columns.push({
+					var l = parseInt(lSpl[3].replace(/(\r\n|\n|\r)/gm, ''), 10);
+
+					var curCol = {
 						'name': lSpl[1],
 						'ssffdatatype': lSpl[2],
-						'length': parseInt(lSpl[3].replace(/(\r\n|\n|\r)/gm, ''), 10),
+						'length': l,
 						'values': [],
 						'_minVal': Infinity,
 						'_maxVal': -Infinity
-					});
+					};
+
+					// SIC only short!!! Add other types!!!
+					if(lSpl[2] == 'SHORT'){
+						sampleBitBlockSize += l * 2;
+						curCol.sampleBitBlockSize = l * 2;
+					}
+
+					ssffData.Columns.push(curCol);
 				}
 			}
+			///////////////////////////////////////
+			// parse data block
 
 			var curBinIdx = newLsep.slice(0, i + 1).join('').length;
 
+			var tmpView = new DataView(buf, curBinIdx);
+			var curBuffer = buf.subarray(curBinIdx + 16)
+			var curView = new DataView(curBuffer);
+
+			// ssffData.rawDataBlock = tmpView.buffer; // extract buffer
+			// ssffData.rawDataBlockDataView = new DataView(ssffData.rawDataBlock); // add view to buffer
+
+			console.log(curView.getUint16(15));
+			// for (i = 0; i < ssffData.rawDataBlockDataView.byteLength; i += sampleBitBlockSize) {
+			// console.log("--------------------------")
+			// i = 0;
+			// 	var curBitIdx = 0;
+			// 	for (j = 0; j < ssffData.Columns.length; j++) {
+            //
+			// 		var curCol = ssffData.Columns[j];
+			// 		for(var k = 0; k < curCol.length; k ++){
+            //
+			// 			if(curCol.ssffdatatype === 'SHORT' && curCol.name === "fm"){
+			// 				console.log(curBitIdx);
+			// 				console.log(ssffData.rawDataBlockDataView.getInt16(i + curBitIdx));
+			// 			 	curBitIdx += 16;
+            //
+			// 			}
+			// 		}
+			// 		curBitIdx = 0
+            //
+			// 	}
+			// }
+
+			////////////////////////////////////////
+			// parse into old columns array (SIC this is depricated and will be removed by block above)
+
+
 			var curBufferView, curBuffer, curLen, curMin, curMax;
-			
-			ssffData.raw = buf.subarray(curBinIdx);
 			
 			while (curBinIdx < uIntBuffView.length) {
 
