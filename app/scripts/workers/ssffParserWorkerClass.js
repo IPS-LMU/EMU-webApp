@@ -304,37 +304,107 @@ ssffParserWorker.prototype = {
 				}
 			}
 			///////////////////////////////////////
-			// parse data block
-
+			// implement iterator
 			var curBinIdx = newLsep.slice(0, i + 1).join('').length;
 
-			var tmpView = new DataView(buf, curBinIdx);
+			//////////////////////////
+			class ssffDataBlockIterator {
+				constructor(buffer, startByteOffset, byteShift, columns, colName, colIdx) {
+					this.buffer = buffer;
+					this.startByteOffset = startByteOffset;
+					this.byteShift = byteShift;
+					this.colums = columns;
 
-			console.log(tmpView.getUint16(2, true));
+					this.colName = colName;
+					this.colIdx = colIdx;
+				}
+				// iterator over sampleBlocks (increase by byteShift)
+				[Symbol.iterator]() {
+					let current = 0;
+					let buffer = this.buffer;
+					let startByteOffset = this.startByteOffset;
+					let bs = this.byteShift;
+					let columns = this.colums;
+					let colName = this.colName;
+					let colIdx = this.colIdx;
+					return  {
+						next: function () {
+							let prev = current;
+							current += bs;
+							// console.log("--------------------");
+							// console.log("prev:" + prev);
+							// console.log("current:" + current);
 
-			// ssffData.rawDataBlock = tmpView.buffer; // extract buffer
-			// ssffData.rawDataBlockDataView = new DataView(ssffData.rawDataBlock); // add view to buffer
+							let curColumnByteIdx = 0;
+							let colSampleView;
 
-			// for (i = 0; i < ssffData.rawDataBlockDataView.byteLength; i += sampleBitBlockSize) {
-			// console.log("--------------------------")
-			// i = 0;
-			// 	var curBitIdx = 0;
-			// 	for (j = 0; j < ssffData.Columns.length; j++) {
-            //
-			// 		var curCol = ssffData.Columns[j];
-			// 		for(var k = 0; k < curCol.length; k ++){
-            //
-			// 			if(curCol.ssffdatatype === 'SHORT' && curCol.name === "fm"){
-			// 				console.log(curBitIdx);
-			// 				console.log(ssffData.rawDataBlockDataView.getInt16(i + curBitIdx));
-			// 			 	curBitIdx += 16;
-            //
-			// 			}
-			// 		}
-			// 		curBitIdx = 0
-            //
-			// 	}
-			// }
+							if(current <= buffer.byteLength){
+							// iterate through sample block
+							for (i = 0; i < columns.length; i++) {
+
+								let typeByteSize;
+								switch (columns[i].ssffdatatype) {
+									case 'DOUBLE':
+										typeByteSize = 8;
+										break;
+									case 'FLOAT':
+										typeByteSize = 4;
+										break;
+									case 'SHORT':
+										typeByteSize = 2;
+										if(columns[i].name === colName){
+											// extract only sample of column that matches colName + colIdx
+											colSampleView = new Uint16Array(buffer, startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize), 1);
+										}
+										break;
+									case 'BYTE':
+										typeByteSize = 1;
+										break;
+									default:
+										console.error("don't know type!");
+								}
+
+								curColumnByteIdx  += columns[i].length * typeByteSize;
+
+							}
+							}
+							return {
+								value: colSampleView,
+								done: current > buffer.byteLength
+							};
+						}
+					}
+				}
+			}
+			/////////////////////////
+			// first test case:
+
+			// uneven numbers = fm; even numbers = bw;
+			var testArray = new Uint16Array([11,12,13,14,21,22,23,24, // 1x = first fm block; 2x = first bw block
+				                             31,32,33,34,41,42,43,44, // 3x = second fm block; 4x = second bw block
+				                             51,52,53,54,61,62,63,64]); // ...
+
+
+			// instantiate iterator class to iterate over first value (index 0) of "fm" column of testArray
+			let ds = new ssffDataBlockIterator(testArray.buffer, 0, sampleBitBlockSize, ssffData.Columns, "fm", 0);
+
+			for(let el of ds){
+				console.log(el);
+				// check if setting works coz of formant-correction tool
+				el[0] = 9999;
+			}
+
+			console.log(testArray); // setting seems to work!
+
+			///////////////////////////
+			// second test case:
+
+			// instantiate iterator class to iterate over second value (index 1) of "fm" column of
+			ds = new ssffDataBlockIterator(buf, curBinIdx, sampleBitBlockSize, ssffData.Columns, "fm", 1);
+			console.log("---------------------------------------------")
+			for(let el of ds){
+				console.log(el); // causes start offset error! Probably bad range...
+			}
 
 			////////////////////////////////////////
 			// parse into old columns array (SIC this is depricated and will be removed by block above)
