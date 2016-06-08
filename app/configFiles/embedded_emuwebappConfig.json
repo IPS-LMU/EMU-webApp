@@ -38,6 +38,7 @@
 			"addLevelEvent": false,
 			"renameSelLevel": false,
 			"downloadTextGrid": true,
+			"downloadAnnotation": true,
 			"specSettings": true,
 			"connect": false,
 			"clear": false,
