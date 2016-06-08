@@ -14,6 +14,7 @@
 - fixed problem of not being able to play first segment if it starts at sampleStart = 0 (issue \#195)
 - wider width of URL input as well as URL list box
 - better error handling for bad protocol commands sent from server
+- using min max mapping for oscillogramme when drawing mean(sample per pixel) envelope
 
 ## Version 0.1.00
 
