@@ -2,6 +2,16 @@
 
 ## Version 0.1.00.9000
 
+
+## new features / performance tweaks / improvements
+
+- using min max mapping for oscillogramme when drawing mean(sample per pixel) envelope
+- wider width of URL input as well as URL list box
+- better error handling for bad protocol commands sent from server
+- added manual entry for URL parameters
+
+### bug fixes
+
 - fixed bad entry in keyboard shortcut list 
 - catching mal formed websocket URLs (not starting with ws:// or wss://)
 - not showing "save current changes" dialog anymore when saveButtons are disabled
@@ -12,9 +22,8 @@
 - fixed text entry problem with CSS
 - fixed problem of loaded color in bundleListSideBar when same bundle name in different sessions (issue \#192)
 - fixed problem of not being able to play first segment if it starts at sampleStart = 0 (issue \#195)
-- wider width of URL input as well as URL list box
-- better error handling for bad protocol commands sent from server
-- using min max mapping for oscillogramme when drawing mean(sample per pixel) envelope
+
+
 
 ## Version 0.1.00
 
