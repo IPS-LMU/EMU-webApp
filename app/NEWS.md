@@ -9,6 +9,7 @@
 - wider width of URL input as well as URL list box
 - better error handling for bad protocol commands sent from server
 - added manual entry for URL parameters
+- added DBconfigGetUrl URL parameter
 
 ### bug fixes
 
