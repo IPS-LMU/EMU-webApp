@@ -21,9 +21,7 @@ The EMU-webApp currently implements several URL parameters (see [https://en.wiki
 ### Examples
 
 - TextGrid example: [http://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https:%2F%2Fraw.githubusercontent.com%2FIPS-LMU%2FEMU-webApp%2Fmaster%2Fapp%2FtestData%2FoldFormat%2Fmsajc003%2Fmsajc003.wav&labelGetUrl=https:%2F%2Fraw.githubusercontent.com%2FIPS-LMU%2FEMU-webApp%2Fmaster%2Fapp%2FtestData%2FoldFormat%2Fmsajc003%2Fmsajc003.TextGrid&labelType=TEXTGRID](http://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/oldFormat/msajc003/msajc003.wav&labelGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/oldFormat/msajc003/msajc003.TextGrid&labelType=TEXTGRID)
-- annotJSON example: 
-
-[http://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003.wav&labelGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003_annot.json&labelType=annotJSON](http://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003.wav&labelGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003_annot.json&labelType=annotJSON)
+- annotJSON example: [http://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003.wav&labelGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003_annot.json&labelType=annotJSON](http://ips-lmu.github.io/EMU-webApp/?audioGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003.wav&labelGetUrl=https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/testData/newFormat/ae/0000_ses/msajc003_bndl/msajc003_annot.json&labelType=annotJSON)
 
 ## Navigation parameters
 
