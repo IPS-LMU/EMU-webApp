@@ -1,9 +1,8 @@
 # What's New
 
-## Version 0.1.00.9000
+## Version 0.1.01
 
-
-## new features / performance tweaks / improvements
+### new features / performance tweaks / improvements
 
 - using min max mapping for oscillogramme when drawing mean(sample per pixel) envelope
 - wider width of URL input as well as URL list box
@@ -23,8 +22,6 @@
 - fixed text entry problem with CSS
 - fixed problem of loaded color in bundleListSideBar when same bundle name in different sessions (issue \#192)
 - fixed problem of not being able to play first segment if it starts at sampleStart = 0 (issue \#195)
-
-
 
 ## Version 0.1.00
 

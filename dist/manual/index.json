@@ -25,6 +25,10 @@
             {
               "title": "WebSocket Protocol",
               "url": "manual/EMU-webAppWebsocketProtocol/EMU-webApp-websocket-protocol-0_0_2.md"
+            },
+            {
+              "title": "URL Parameters",
+              "url": "manual/URLparameters.md"
             }
           ]
         },
