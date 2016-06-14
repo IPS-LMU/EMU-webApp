@@ -161,8 +161,18 @@ angular.module('emuwebApp')
 					}
 
 					viewState.somethingInProgressTxt = 'Loading DB config...';
+
+					// test if DBconfigGetUrl is set if so use it
+					var searchObject = $location.search();
+					var DBconfigGetUrl;
+					if (searchObject['DBconfigGetUrl']){
+						DBconfigGetUrl = searchObject.DBconfigGetUrl;
+					}else{
+						DBconfigGetUrl = 'configFiles/embedded_emuwebappConfig.json';
+					}
+
 					// then get the DBconfigFile
-					Iohandlerservice.httpGetPath('configFiles/embedded_emuwebappConfig.json').then(function (resp) {
+					Iohandlerservice.httpGetPath(DBconfigGetUrl).then(function (resp) {
 						// first element of perspectives is default perspective
 						viewState.curPerspectiveIdx = 0;
 						ConfigProviderService.setVals(resp.data.EMUwebAppConfig);

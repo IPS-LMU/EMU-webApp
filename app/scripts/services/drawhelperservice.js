@@ -26,20 +26,21 @@ angular.module('emuwebApp')
 		 * @param prevPeak
 		 * @param canvas
 		 */
-
-		function drawFrame(viewState, index, value, max, prevPeak, canvas, config) {
+		function drawFrame(viewState, index, value, min, max, prevPeak, canvas, config) {
 			var ctx = canvas.getContext('2d');
 			//cur
 			var w = 1;
-			var h = Math.round(value * (canvas.height / max)); //rel to max
+
+			// var h = Math.round(value * (canvas.height / max)); //rel to max
 			var x = index * w;
-			var y = Math.round((canvas.height - h) / 2);
+			// var y = Math.round((canvas.height - h) / 2);
+			var y = ((max - value) / (max - min)) * canvas.height;
 
 			//prev
-			// var prevW = 1;
-			var prevH = Math.round(prevPeak * (canvas.height / max));
+			// var prevH = Math.round(prevPeak * (canvas.height / max));
 			var prevX = (index - 1) * w;
-			var prevY = Math.round((canvas.height - prevH) / 2);
+			// var prevY = Math.round((canvas.height - prevH) / 2);
+			var prevY = ((max - prevPeak) / (max - min)) * canvas.height;
 
 			ctx.strokeStyle = ConfigProviderService.design.color.black;
 			ctx.moveTo(prevX, prevY);
@@ -101,6 +102,10 @@ angular.module('emuwebApp')
 					if (avrVal > maxPeak) {
 						maxPeak = avrVal;
 					}
+					if (avrVal < minPeak) {
+						minPeak = avrVal;
+					}
+
 				}
 			} //else
 			return {
@@ -128,7 +133,7 @@ angular.module('emuwebApp')
 				ctx.beginPath();
 				allPeakVals.peaks.forEach(function (peak, index) {
 					if (index !== 0) {
-						drawFrame(viewState, index, peak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, config);
+						drawFrame(viewState, index, peak, allPeakVals.minPeak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, config);
 					}
 				});
 				ctx.stroke();
@@ -185,14 +190,12 @@ angular.module('emuwebApp')
 				// draw zero line
 				ctx.strokeStyle = ConfigProviderService.design.color.blue;
 				ctx.fillStyle = ConfigProviderService.design.color.blue;
-				// see if Chrome ->dashed line
-				//if (navigator.vendor === 'Google Inc.') {
-				//	ctx.setLineDash([2]);
-				//}
+
 				if (allPeakVals.samplePerPx >= 1) {
+					var zeroLineY = canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
 					ctx.beginPath();
-					ctx.moveTo(0, canvas.height / 2);
-					ctx.lineTo(canvas.width, canvas.height / 2);
+					ctx.moveTo(0, zeroLineY);
+					ctx.lineTo(canvas.width, zeroLineY);
 					ctx.stroke();
 					ctx.fillText('0', 5, canvas.height / 2 - 5, canvas.width);
 				} else {

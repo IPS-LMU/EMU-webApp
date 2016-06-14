@@ -182,7 +182,7 @@
 		"activeButtons": {
 			"saveBundle": true,
 			"showHierarchy": true,
-			"editEMUwebAppConfig": true
+			"editEMUwebAppConfig": false
 		}
 	}
 }
