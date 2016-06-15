@@ -86,8 +86,7 @@ angular.module('emuwebApp')
 								// set all ssff files
 								viewState.somethingInProgressTxt = 'Parsing SSFF files...';
 								Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
-									console.log(ssffJso.data);
-									Ssffdataservice.data = ssffJso.data;
+									Ssffdataservice.setData(ssffJso.data);
 									// set annotation
 									DataService.setData(bundleData.annotation);
 									loadedMetaDataService.setCurBndl(bndl);

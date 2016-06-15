@@ -252,11 +252,15 @@ angular.module('emuwebApp')
 					scope.fontImage.drawUndistortedText(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, scope.cps.design.color.black);
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
-
+					
+					console.log(dD);
+					
 					// frame nr
 					var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].xSsffTrack); // use first track for sample numbers
 					var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].ySsffTrack);
-
+					
+					console.log(xsRaSt);
+					
 					var sInterv = (1 / xsRaSt.sampleRate);
 					var curMousePosTime = scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate;
 					var curFrame;

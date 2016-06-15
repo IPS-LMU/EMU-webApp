@@ -373,7 +373,6 @@ angular.module('emuwebApp')
 						// draw min max an name of track
 						var tr = ConfigProviderService.getSsffTrackConfig(trackname);
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-						console.log(col);
 						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
 						mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
 						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);

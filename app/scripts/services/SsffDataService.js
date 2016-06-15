@@ -11,6 +11,10 @@ angular.module('emuwebApp')
 
 		/////////////////////
 		// public API
+		
+		sServObj.setData = function (data) {
+			sServObj.data = data;
+		};
 
 		/**
 		 * Search through ssffTrackDefinitions to find correct
@@ -68,28 +72,27 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getColumnOfTrack = function (trackName, columnName, file) {
-			var res;
-			if (file !== undefined) {
-				file.Columns.forEach(function (col) {
-					if (col.name === columnName) {
-						res = col;
-					}
-				});
-				return res;
+		sServObj.getColumnOfTrack = function (trackName, columnName) {
+			var file = sServObj.getFile(trackName);
+			for (var y = 0; y < file.Columns.length; y++) {
+				if(file.Columns[y].name === columnName) {
+					return file.Columns[y];
+				}
 			}
+			return undefined;
 		};
 
 
 		/**
 		 *
 		 */
-		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName, file) {
+		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName) {
+			var data = sServObj.getFileByExtension(sServObj.getExtension(trackName));
 			var res = {};
 
-			if (file !== undefined) {
-				res.sampleRate = file.sampleRate;
-				res.startTime = file.startTime;
+			if (data !== undefined) {
+				res.sampleRate = data.sampleRate;
+				res.startTime = data.startTime;
 				return res;
 			}
 		};
