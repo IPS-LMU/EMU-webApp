@@ -162,6 +162,10 @@ angular.module('emuwebApp')
 													sServObj.convertDragnDropData(bundles, i + 1).then(function () {
 														defer.resolve();
 													});
+												}, function (errMess) {
+													modalService.open('views/error.html', 'Error parsing TextGrid file: ' + errMess.status.message).then(function(){
+														defer.reject();
+													});
 												});
 											}
 										};
@@ -179,6 +183,11 @@ angular.module('emuwebApp')
 										};
 									}
 								}
+							}, function (errMess){
+								modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function(){
+									defer.reject();
+								});
+								
 							});
 						}
 					};

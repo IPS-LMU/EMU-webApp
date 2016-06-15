@@ -4,6 +4,8 @@
 
 ### new features / performance tweaks / improvements
 
+- display error dialog on bad TextGrid / wav files (issue \#197)
+
 ### bug fixes
 
 ## Version 0.1.01
