@@ -191,7 +191,7 @@ textGridParserWorker.prototype = {
 				return ({
 					'status': {
 						'type': 'ERROR',
-						'message': 'bad header in TextGrid file!!! The header has to be: ' + global.l1 + '\n' + global.l2
+						'message': 'bad header in TextGrid file!!! The header has to be: ' + global.l1 + '\n' + global.l2 + '; Note: Currently only long-form text TextGrids are supported!'
 					}
 				});
 			}
