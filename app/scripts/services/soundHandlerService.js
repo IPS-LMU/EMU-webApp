@@ -67,11 +67,20 @@ angular.module('emuwebApp')
 		 * */
 		sServObj.extractRelPartOfWav = function (sampleStart, endSample) {
 			var bytePerSample = sServObj.wavJSO.BitsPerSample / 8;
-			var header = sServObj.wavJSO.origArrBuf.subarray(0, 44);
-			var data = sServObj.wavJSO.origArrBuf.subarray(44, sServObj.wavJSO.Data.length * bytePerSample);
+			var headerSize = 44;
+			if(sServObj.wavJSO.Subchunk1Size == 18){
+				headerSize = 46;
+			}
+
+			var header = sServObj.wavJSO.origArrBuf.subarray(0, headerSize);
+			var data = sServObj.wavJSO.origArrBuf.subarray(headerSize, sServObj.wavJSO.Data.length * bytePerSample);
 
 			var dv = new DataView(header);
-			dv.setUint32(40, (endSample - sampleStart) * bytePerSample, true);
+			var Subchunk2SizePos = 40;
+			if(sServObj.wavJSO.Subchunk1Size == 18){
+				Subchunk2SizePos = 42;
+			}
+			dv.setUint32(Subchunk2SizePos, (endSample - sampleStart) * bytePerSample, true);
 			// var Subchunk2Size = dv.getUint32(40, true);
 			// console.log(Subchunk2Size);
 
