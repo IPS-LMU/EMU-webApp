@@ -318,8 +318,7 @@ ssffParserWorker.prototype = {
 				}
 			}
 			
-			var curBinIdx = buffStr.indexOf("-----------------") + 1;
-			
+			var curBinIdx = buffStr.indexOf(sepString) + 1;
 			
 			///////////////////////////////////////
 			// implement iterator
@@ -358,29 +357,36 @@ ssffParserWorker.prototype = {
 											typeByteSize = 8;
 											if(columns[i].name === colName){
 												// extract only sample of column that matches colName + colIdx
-												colSampleView = new Uint64Array(buffer, startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize), 1);												
+												// ugly hack
+												if (typeof Float64Array == "undefined") {
+													Float64Array = Float32Array;
+												}
+												let sum = startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize);
+												colSampleView = new Float64Array(buffer, sum, 1);												
 											}
 											break;
 										case FLOAT:
 											typeByteSize = 4;
 											if(columns[i].name === colName){
 												// extract only sample of column that matches colName + colIdx
-												console.log(startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize));
-												colSampleView = new Uint32Array(buffer, startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize), 1);
+												let sum = startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize);
+												colSampleView = new Uint32Array(buffer, sum, 1);
 											}
 											break;
 										case SHORT:
 											typeByteSize = 2;
 											if(columns[i].name === colName){
 												// extract only sample of column that matches colName + colIdx
-												colSampleView = new Uint16Array(buffer, startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize), 1);
+												let sum = startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize);
+												colSampleView = new Uint16Array(buffer, sum, 1);
 											}
 											break;
 										case BYTE:
 											typeByteSize = 1;
 											if(columns[i].name === colName){
 												// extract only sample of column that matches colName + colIdx
-												colSampleView = new Uint8Array(buffer, startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize), 1);
+												let sum = startByteOffset + prev + curColumnByteIdx + (colIdx * typeByteSize);
+												colSampleView = new Uint8Array(buffer, sum, 1);
 											}
 											break;
 										default:
@@ -396,7 +402,6 @@ ssffParserWorker.prototype = {
 				}
 			}
 			var length = uIntBuffView.length;
-			var i = 0;
 			var sbo = 0;
 			// buffer, startByteOffset, byteShift, columns, colName, colIdx
 			//let ds = new ssffDataBlockIterator(buf, 0, sampleBitBlockSize, ssffData.Columns, "dft", 0);
@@ -433,12 +438,14 @@ ssffParserWorker.prototype = {
 			// second test case:
 			
 			
-			for (i = 0; i < ssffData.Columns.length; i++) {
+			for (let i = 0; i < ssffData.Columns.length; i++) {
+				console.log(ssffData.Columns[i].ssffdatatype);
+				console.log(curBinIdx);			
 				ds = new ssffDataBlockIterator(buf, curBinIdx, ssffData.Columns[i].sampleBitBlockSize, ssffData.Columns, ssffData.Columns[i].name, ssffData.Columns[i].index);
-				var arr = Array.from(ds.entries());
-				
+				//console.log(ds);
+				//var arr = Array.from(ds);
 				//ssffData.Columns[i].values = v;
-				console.log(arr);
+				//console.log(arr);
 			}
 			
 			// instantiate iterator class to iterate over second value (index 1) of "fm" column of
