@@ -5,6 +5,7 @@
 ### new features / performance tweaks / improvements
 
 - display error dialog on bad TextGrid / wav files (issue \#197)
+- now supporting WAVEFORMATEX cbSize entry in Subchunk1 -> supported Subchunk1Sizes == 16 and 18
 
 ### bug fixes
 
