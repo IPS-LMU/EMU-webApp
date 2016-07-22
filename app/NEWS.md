@@ -9,6 +9,8 @@
 
 ### bug fixes
 
+- labels in hierarchy view can now be edited in Firefox
+
 ## Version 0.1.01
 
 ### new features / performance tweaks / improvements

@@ -1368,8 +1368,8 @@ angular.module('emuwebApp')
 							.style('border', '0')
 							.style('background-color', scope.getLabelLegalnessColor)
 							.on('input', scope.nodeOnInput)
-							.on('focusin', scope.nodeOnFocusIn)
-							.on('focusout', scope.nodeOnFocusOut)
+							.on('focus', scope.nodeOnFocusIn)
+							.on('blur', scope.nodeOnFocusOut)
 						;
 
 						if (foreignObject[0].length !== 0) {
