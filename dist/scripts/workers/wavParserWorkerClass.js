@@ -114,7 +114,8 @@ wavParserWorker.prototype = {
 			curBuffer = buf.subarray(curBinIdx, 4);
 			curBufferView = new Uint32Array(curBuffer);
 			wavRep.Subchunk1Size = curBufferView[0];
-			if (wavRep.Subchunk1Size !== 16) {
+			console.log([16,18].indexOf(19))
+			if ([16,18].indexOf(wavRep.Subchunk1Size) === -1) {
 				// console.error('Wav read error: Subchunk1Size not 16');
 				return ({
 					'status': {
@@ -190,8 +191,13 @@ wavParserWorker.prototype = {
 				});
 			}
 
+			var riffChunkSize = 12;
+			var Subchunk1IDandSizeSize = 8;
+
+			var Subchunk2start = riffChunkSize + Subchunk1IDandSizeSize + wavRep.Subchunk1Size;
+			
 			// Subchunk2ID
-			curBinIdx = 36;
+			curBinIdx = Subchunk2start; // 36
 			curBuffer = buf.subarray(curBinIdx, 4);
 			curBufferView = new Uint8Array(curBuffer);
 			wavRep.Subchunk2ID = global.ab2str(curBufferView);
@@ -206,13 +212,13 @@ wavParserWorker.prototype = {
 			}
 
 			// Subchunk2Size
-			curBinIdx = 40;
+			curBinIdx = Subchunk2start + 4;
 			curBuffer = buf.subarray(curBinIdx, 4);
 			curBufferView = new Uint32Array(curBuffer);
 			wavRep.Subchunk2Size = curBufferView[0];
 
 			// Data
-			curBinIdx = 44;
+			curBinIdx = Subchunk2start + 8;
 			curBuffer = buf.subarray(curBinIdx, wavRep.Subchunk2Size);
 			curBufferView = new Int16Array(curBuffer);
 			wavRep.Data = new Float32Array(curBufferView);

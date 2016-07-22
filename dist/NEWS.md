@@ -1,5 +1,16 @@
 # What's New
 
+## Version 0.1.02
+
+### new features / performance tweaks / improvements
+
+- display error dialog on bad TextGrid / wav files (issue \#197)
+- now supporting WAVEFORMATEX cbSize entry in Subchunk1 -> supported Subchunk1Sizes == 16 and 18
+
+### bug fixes
+
+- labels in hierarchy view can now be edited in Firefox
+
 ## Version 0.1.01
 
 ### new features / performance tweaks / improvements
