@@ -15,7 +15,19 @@
 			},
 			"comment": {
 				"type": "string"
-			}
+			},
+			"timeAnchors":{
+				"type": "array"
+				"items": {
+					"type": "object",
+					"properties": {
+						"sample_start": {
+							"type": "number"
+						},
+						"sample_end": {
+							"type": "number"
+						}
+					}
 		},
 		"required": ["name"],
 		"additionalProperties": true
