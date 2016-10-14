@@ -74,13 +74,17 @@ angular.module('emuwebApp')
 								var wavJSO = messWavParser;
 								viewState.curViewPort.sS = 0;
 								viewState.curViewPort.eS = wavJSO.Data.length;
-								viewState.curViewPort.selectS = -1;
-								viewState.curViewPort.selectE = -1;
+								if(bndl.timeAnchors.length > 0){
+									viewState.curViewPort.selectS = bndl.timeAnchors[0].sample_start;
+									viewState.curViewPort.selectE = bndl.timeAnchors[0].sample_end;
+								}else {
+									viewState.resetSelect();
+								}
+								viewState.curTimeAnchorIdx = -1;
 								viewState.curClickSegments = [];
 								viewState.curClickLevelName = undefined;
 								viewState.curClickLevelType = undefined;
 
-								viewState.resetSelect();
 								Soundhandlerservice.wavJSO = wavJSO;
 
 								// set all ssff files

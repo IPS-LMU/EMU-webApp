@@ -4,7 +4,7 @@
 
 ### new features / performance tweaks / improvements
 
-- 
+- time anchors implemented for automatic zooming
 
 ### bug fixes
 

@@ -298,6 +298,7 @@ angular.module('emuwebApp')
 			sServObj.url = undefined;
 			sServObj.pageSize = 500;
 			sServObj.currentPage = undefined;
+			sServObj.curTimeAnchorIdx = -1;
 			// possible general states of state machine
 			sServObj.states = [];
 			sServObj.states.noDBorFilesloaded = {

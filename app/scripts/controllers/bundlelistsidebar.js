@@ -8,12 +8,13 @@
  * Controller of the bundleListSideBar
  */
 angular.module('emuwebApp')
-	.controller('bundleListSideBarCtrl', function ($scope, viewState, HistoryService, loadedMetaDataService, dbObjLoadSaveService, ConfigProviderService) {
+	.controller('bundleListSideBarCtrl', function ($scope, viewState, HistoryService, loadedMetaDataService, dbObjLoadSaveService, ConfigProviderService, LevelService) {
 
 		$scope.vs = viewState;
 		$scope.lmds = loadedMetaDataService;
 		$scope.dolss = dbObjLoadSaveService;
 		$scope.cps = ConfigProviderService;
+		$scope.ls = LevelService;
 
 		$scope.filterText = '';
 
@@ -78,6 +79,50 @@ angular.module('emuwebApp')
 				return false;
 			} else {
 				return true;
+			}
+		};
+
+		/**
+		 * zoom to next / previous time anchor
+		 */
+		$scope.nextPrevAnchor= function (next) {
+			var curBndl = loadedMetaDataService.getCurBndl();
+			if(next){
+				if($scope.vs.curTimeAnchorIdx < curBndl.timeAnchors.length - 1){
+					$scope.vs.curTimeAnchorIdx = $scope.vs.curTimeAnchorIdx + 1;
+					$scope.vs.select(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
+					$scope.vs.setViewPort(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
+					$scope.vs.zoomViewPort(false, $scope.ls);
+				}
+			}else{
+				if($scope.vs.curTimeAnchorIdx > 0){
+					$scope.vs.curTimeAnchorIdx = $scope.vs.curTimeAnchorIdx - 1;
+					$scope.vs.select(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
+					$scope.vs.setViewPort(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
+					$scope.vs.zoomViewPort(false, $scope.ls);
+				}
+			}
+		};
+		/**
+		 * get max nr of time anchors
+		 */
+		$scope.getTimeAnchorIdxMax = function () {
+			var curBndl = loadedMetaDataService.getCurBndl();
+			if(angular.equals({}, curBndl)){
+				var res = -1;
+			}else{
+				var res = curBndl.timeAnchors.length - 1;
+			}
+			return(res);
+		};
+
+
+		$scope.isCurBndl= function (bndl) {
+			var curBndl = loadedMetaDataService.getCurBndl();
+			if (bndl.name === curBndl.name && bndl.session === curBndl.session) {
+				return true;
+			}else{
+				return false;
 			}
 		};
 	});

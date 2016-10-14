@@ -206,6 +206,7 @@ wss.on('connection', function (ws) {
             bundleList.push({
               'name': nArr.join('_'),
               'session': sArr.join('_')
+              // 'timeAnchors': [{sample_start: 100, sample_end: 500}, {sample_start: 5000, sample_end: 5500}]
             });
           }
         }).on('error', function (err) {

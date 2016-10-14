@@ -32,6 +32,18 @@
                             <b>{{bundle.name}}</b><button class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();" ng-disabled="uttIsDisabled(bundle)" ng-if="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/save.svg" /></button>
                             <div ng-if="cps.vals.restrictions.bundleFinishedEditing">Finished editing: <input type="checkbox" ng-model="bundle.finishedEditing" ng-change="finishedEditing(bundle.finishedEditing, key, $index)"/> <br /></div>
                             <div ng-if="cps.vals.restrictions.bundleComments">Comment:<input type="text" ng-focus="vs.setcursorInTextField(true); startHistory(bundle);" ng-blur="vs.setcursorInTextField(false); updateHistory(bundle, key, $index); endHistory();" ng-model="bundle.comment"/></div>
+
+                            <!--timeAnchors controlls-->
+                            <div class="emuwebapp-bundleListSessionPager" ng-if="bundle.timeAnchors.length > 0 && isCurBndl(bundle)">
+                                <button ng-disabled="vs.curTimeAnchorIdx == 0" ng-click="nextPrevAnchor(false);">
+                                    ←
+                                </button>
+                                time anchor idx: {{vs.curTimeAnchorIdx}}
+                                <button ng-disabled="vs.curTimeAnchorIdx == getTimeAnchorIdxMax()" ng-click="nextPrevAnchor(true);">
+                                    →
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                     <div class="emuwebapp-bundleListSessionPager" ng-if="value.length > vs.pageSize">
