@@ -328,9 +328,7 @@ textGridParserWorker.prototype = {
 			blob.append(textGridParserWorker);
 			blob = blob.getBlob();
 		}
-		if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
-			urlObj = webkitURL.createObjectURL(blob);
-		} else {
+		if (typeof URL !== 'object') {
 			urlObj = URL.createObjectURL(blob);
 		}
 		return urlObj;
