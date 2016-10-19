@@ -74,7 +74,7 @@ angular.module('emuwebApp')
 								var wavJSO = messWavParser;
 								viewState.curViewPort.sS = 0;
 								viewState.curViewPort.eS = wavJSO.Data.length;
-								if(bndl.timeAnchors.length > 0){
+								if(bndl.timeAnchors !== undefined && bndl.timeAnchors.length > 0){
 									viewState.curViewPort.selectS = bndl.timeAnchors[0].sample_start;
 									viewState.curViewPort.selectE = bndl.timeAnchors[0].sample_end;
 								}else {
