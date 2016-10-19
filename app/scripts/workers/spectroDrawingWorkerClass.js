@@ -789,7 +789,9 @@ spectroDrawingWorker.prototype = {
 			blob.append(spectroDrawingWorker);
 			blob = blob.getBlob();
 		}
-		if (typeof URL !== 'object') {
+		if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+			urlObj = webkitURL.createObjectURL(blob);
+		} else {
 			urlObj = URL.createObjectURL(blob);
 		}
 		return urlObj;
@@ -801,8 +803,8 @@ spectroDrawingWorker.prototype = {
 			this.worker.terminate();
 		}
 		if (this.url) {
-			if (typeof URL !== 'object' && typeof URL !== 'undefined') {
-				URL.revokeObjectURL(this.url);
+			if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+				webkitURL.revokeObjectURL(this.url);
 			} else {
 				URL.revokeObjectURL(this.url);
 			}
