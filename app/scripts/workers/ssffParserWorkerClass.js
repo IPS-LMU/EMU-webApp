@@ -560,8 +560,8 @@ ssffParserWorker.prototype = {
 			blob.append(textGridParserWorker);
 			blob = blob.getBlob();
 		}
-		if (typeof URL !== 'object' && typeof URL !== 'undefined') {
-			urlObj = URL.createObjectURL(blob);
+		if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
+			urlObj = webkitURL.createObjectURL(blob);
 		} else {
 			urlObj = URL.createObjectURL(blob);
 		}
