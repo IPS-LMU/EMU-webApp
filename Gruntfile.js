@@ -21,8 +21,6 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
-  
-  grunt.loadNpmTasks('grunt-json2sass');
 
   // Configurable paths for the application
   var appConfig = {
@@ -195,13 +193,6 @@ module.exports = function (grunt) {
         }
       }
     },
-    
-	json2sass: {
-		files: {
-          src: '<%= yeoman.app %>/configFiles/default_emuwebappDesign.json',
-          dest: '<%= yeoman.app %>/styles/EMUwebAppDesign.sass'
-		}
-	}, 
     
     
     // not used since Uglify task does concat,
@@ -506,7 +497,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'json2sass',
       'compass:server',
       'concurrent:server',
       'autoprefixer',
@@ -527,7 +517,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
-    'json2sass',
     'compass:server',
     'concurrent:test',
     'autoprefixer',
@@ -538,7 +527,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('e2e', [
     'clean:server',    
-    'json2sass',
     'compass:server',
     'concurrent:test',
     'autoprefixer',
@@ -548,7 +536,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'json2sass',
     'compass:dist',
     'useminPrepare',
     'concurrent:dist',
