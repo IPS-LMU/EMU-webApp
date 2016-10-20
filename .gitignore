@@ -36,7 +36,7 @@ npm-debug.log
 
 # Bower #
 ########
-app/bower_components
+bower_components
 
 # Minified code+maps #
 ###################
