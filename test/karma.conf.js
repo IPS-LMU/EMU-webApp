@@ -30,7 +30,6 @@ module.exports = function (config) {
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
-      'bower_components/ngprogress-lite/ngprogress-lite.js',
       'bower_components/raf/index.js',
       'bower_components/angular-ui-layout/ui-layout.js',
       'bower_components/tv4/tv4.js',
