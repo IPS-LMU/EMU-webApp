@@ -51,7 +51,7 @@ angular.module('emuwebApp')
 				});
 			}
 			connected = false;
-			console.log('WEBSOCKET closed!!!!!');
+			// console.log('WEBSOCKET closed!!!!!');
 		}
 
 		function sendRequest(request) {
@@ -156,7 +156,7 @@ angular.module('emuwebApp')
 				sServObj.ws.close();
 			}
 			else {
-				console.log('WEBSOCKET ERROR: was not connected!');
+				// console.log('WEBSOCKET ERROR: was not connected!');
 			}
 		};
 

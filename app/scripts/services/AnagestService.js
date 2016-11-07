@@ -314,7 +314,7 @@ angular.module('emuwebApp')
 				}
 
 				modalService.open('views/SelectThresholdModal.html', infos, undefined, true).then(function (resp) {
-					console.log(resp);
+					// console.log(resp);
 					var ap = vz[anavv[resp]];
 					ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
 					defer.resolve(ap);

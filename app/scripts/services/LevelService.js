@@ -1601,7 +1601,7 @@ angular.module('emuwebApp')
 			}
 
 			// Delete the item itself
-			console.log('Deleting item:', item, 'From level:', level);
+			// console.log('Deleting item:', item, 'From level:', level);
 			result.item = item;
 			result.levelName = level.name;
 			result.position = level.items.indexOf(item);
@@ -1612,7 +1612,7 @@ angular.module('emuwebApp')
 			var links = DataService.getLinkData();
 			for (var i = links.length - 1; i >= 0; --i) {
 				if (links[i].fromID === id || links[i].toID === id) {
-					console.log('Deleting link', i);
+					// console.log('Deleting link', i);
 					result.deletedLinks.push(links[i]);
 					links.splice(i, 1);
 				}

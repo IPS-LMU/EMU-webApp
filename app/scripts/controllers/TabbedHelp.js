@@ -6,7 +6,7 @@ angular.module('emuwebApp')
 		$scope.tree = [];
 		Iohandlerservice.httpGetPath('manual/index.json').then(function (resp) {
 			$scope.tree = resp.data;
-			console.log($scope.tree);
+			// console.log($scope.tree);
 			// load root element
 			$scope.onClickTab($scope.tree[0]);
 			// expand root element

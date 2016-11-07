@@ -54,7 +54,7 @@ angular.module('emuwebApp')
 				el.addEventListener(
 					'dragstart',
 					function (e) {
-						console.log('dragstart');
+						// console.log('dragstart');
 						if (scope.isActive()) {
 							this.classList.add('drag');
 							var url = scope.generateURL();
@@ -71,7 +71,7 @@ angular.module('emuwebApp')
 						}
 						else {
 							e.preventDefault();
-							console.log('dropping inactive bundles is not allowed');
+							// console.log('dropping inactive bundles is not allowed');
 						}
 						return false;
 					},
@@ -81,7 +81,7 @@ angular.module('emuwebApp')
 				el.addEventListener(
 					'dragend',
 					function (e) {
-						console.log('dragend');
+						// console.log('dragend');
 						if (scope.isActive()) {
 							this.classList.remove('drag');
 							e.preventDefault();

@@ -27,8 +27,8 @@ angular.module('emuwebApp')
 		};
 
 		$scope.isCurrentMdFile = function (tabUrl) {
-			console.log(tabUrl);
-			console.log($scope.curMdFile.url);
+			// console.log(tabUrl);
+			// console.log($scope.curMdFile.url);
 			if (tabUrl === $scope.curMdFile.url) {
 				return {
 					'background-color': ConfigProviderService.design.color.white,

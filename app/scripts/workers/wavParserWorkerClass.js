@@ -114,7 +114,7 @@ wavParserWorker.prototype = {
 			curBuffer = buf.subarray(curBinIdx, 4);
 			curBufferView = new Uint32Array(curBuffer);
 			wavRep.Subchunk1Size = curBufferView[0];
-			console.log([16,18].indexOf(19))
+			// console.log([16,18].indexOf(19))
 			if ([16,18].indexOf(wavRep.Subchunk1Size) === -1) {
 				// console.error('Wav read error: Subchunk1Size not 16');
 				return ({

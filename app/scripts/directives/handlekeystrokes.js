@@ -119,7 +119,7 @@ angular.module('emuwebApp')
 								if (code === ConfigProviderService.vals.keyMappings.hierarchyPlayback) {
 									e.preventDefault();
 									viewState.hierarchyState.playing += 1;
-									console.log('hierarchyPlayback');
+									// console.log('hierarchyPlayback');
 								}
 
 								// rotateHierarchy

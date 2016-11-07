@@ -160,7 +160,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.toggleCollapseSession = function (session) {
-			console.log(session);
+			// console.log(session);
 			if(uniqSessionList[session] === undefined) {
 				uniqSessionList[session] = {};
 			}
@@ -174,7 +174,7 @@ angular.module('emuwebApp')
 		};
 		
 		sServObj.openCollapseSession = function (session) {
-			console.log(session);
+			// console.log(session);
 			uniqSessionList[session] = {};
 			uniqSessionList[session].collapsed = false;
 			// close all other sessions

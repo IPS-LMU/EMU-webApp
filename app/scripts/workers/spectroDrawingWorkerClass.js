@@ -117,7 +117,7 @@ spectroDrawingWorker.prototype = {
 			var n = global.N;
 			m = parseInt((Math.log(n) / 0.6931471805599453), 10);
 			if (n !== (1 << m)) { // Make sure n is a power of 2
-				console.log('ERROR : FFT length must be power of 2');
+				// console.log('ERROR : FFT length must be power of 2');
 			}
 			if (global.cos === undefined || n !== global.N) {
 
@@ -780,9 +780,7 @@ spectroDrawingWorker.prototype = {
 	getWorkerURL: function () {
 		var blob, urlObj;
 		try {
-			blob = new Blob([this.getWorkerScript()], {
-				type: 'application/javascript'
-			});
+			blob = new Blob([this.getWorkerScript()], {type: 'application/javascript'});
 		} catch (e) { // Backwards-compatibility
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 			blob = new BlobBuilder();
