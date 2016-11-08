@@ -36,8 +36,11 @@ describe('Service: DragnDropDataService', function () {
 
   it('should getBundle', inject(function (DragnDropDataService) {
     // set any data
-    DragnDropDataService.convertedBundles.push({name: 'test'})
-    expect(DragnDropDataService.getBundle('test')).toEqual({ $$state : { status : 1, value : { status : 200, data : { } } } });
+    DragnDropDataService.convertedBundles.push({name: 'test'});
+    var bndl = DragnDropDataService.getBundle('test');
+    expect(bndl.$$state.status).toEqual(1);
+    expect(bndl.$$state.value.status).toEqual(200);
+    expect(bndl.$$state.value.data).toEqual({});
   }));
 
 });
