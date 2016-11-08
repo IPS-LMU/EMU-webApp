@@ -21,26 +21,28 @@ module.exports = function (config) {
       // bower:js
       'bower_components/jquery/jquery.js',
       'bower_components/angular/angular.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-filter/dist/angular-filter.js',
+      'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
+      'bower_components/angular-animate/angular-animate.js',
+      'bower_components/angular-cookies/angular-cookies.js',
+      'bower_components/angular-resource/angular-resource.js',
+      'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-touch/angular-touch.js',
+      'bower_components/tv4/tv4.js',
+      'bower_components/d3/d3.js',
+      'bower_components/angular-filter/dist/angular-filter.js',
       'bower_components/showdown/src/showdown.js',
       'bower_components/angular-markdown-directive/markdown.js',
-      'bower_components/angular-route/angular-route.js',
-      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-      'bower_components/angular-animate/angular-animate.js',
-      'bower_components/bootstrap/dist/js/bootstrap.js',
-      'bower_components/raf/index.js',
-      'bower_components/angular-ui-layout/ui-layout.js',
-      'bower_components/tv4/tv4.js',
       'bower_components/jasmine/lib/jasmine-core/jasmine.js',
       'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-      'bower_components/d3/d3.js',
+      'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
       'test/spec/**/*.js',
       //include the directory where directive templates are stored.
       'app/views/**/*.html',
+      // 'app/img/*.svg',
+      // 'app/*.html',
 
       // demoDBs JSON fixtures
       {
@@ -95,9 +97,10 @@ module.exports = function (config) {
     // Which plugins to enable
     plugins: [
       'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
       'karma-jasmine',
-      'karma-coverage',
       'karma-ng-html2js-preprocessor'
+      // 'karma-coverage'
     ],
 
     // Continuous Integration mode
@@ -112,20 +115,18 @@ module.exports = function (config) {
 
     // Uncomment the following lines if you are using grunt's server to run the tests
     proxies: {
-       '/': 'http://localhost:9000/'
-    //   '/img/': 'http://ips-lmu.github.io/EMU-webApp/img/',
-    //   '/assets/': 'http://ips-lmu.github.io/EMU-webApp/assets/',
-    //   '/NEWS.md': 'http://ips-lmu.github.io/EMU-webApp/NEWS.md'
+      '/': 'http://localhost:9000/'
+      // '/img/': 'http://localhost:9000/img/'
+      // '/assets/': 'http://localhost:9000/assets/',
+      // '/NEWS.md': 'http://localhost:9000/NEWS.md'
     },
     // URL root prevent conflicts with the site root
     urlRoot: '_karma_',
 
-    //
-    //
     // generate js files from html templates to expose them during testing.
     preprocessors: {
-      'app/views/**/*.html': 'ng-html2js',
-      'app/scripts/**/*.js': 'coverage'
+      'app/views/**/*.html': 'ng-html2js'
+      // 'app/scripts/**/*.js': 'coverage'
     },
 
     ngHtml2JsPreprocessor: {
@@ -136,13 +137,13 @@ module.exports = function (config) {
 
       // the name of the Angular module to create
       moduleName: 'emuwebApp.templates'
-    }
+    },
 
-/*
+
     captureTimeout: 60000,
 
-    browserNoActivityTimeout: 3000
-*/
+    browserNoActivityTimeout: 40000
+
 
     // coverage reporter
     // reporters: ['progress', 'coverage'],
@@ -151,6 +152,5 @@ module.exports = function (config) {
     //   type: 'lcov',
     //   dir: 'test/coverage/'
     // }
-
   });
 };
