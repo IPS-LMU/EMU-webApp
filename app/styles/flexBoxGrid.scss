@@ -7,14 +7,14 @@
     .emuwebapp-grid-button {
         height: 30px;
         padding-top: 5px;
-        border: 0px;
+        border: 0;
         border-left: 1px solid $color-white;
         border-right: 1px solid $color-white;
         &:first-child {
-            border-left: 0px;
+            border-left: 0;
         }
         &:last-child {
-            border-right: 0px;
+            border-right: 0;
         }
     }
     .emuwebapp-grid-center {
@@ -49,7 +49,7 @@
 .emuwebapp-grid-cell {
   flex: 1;
   .emuwebapp-grid-head {
-    border: 0px;
+    border: 0;
     margin-bottom: 12px;
     margin-top: 12px;
     text-align: left;
@@ -65,8 +65,8 @@
       &:nth-child(odd) {
         background: $color-lightGrey;
       }
-      border: 0px;
-      margin: 0px;
+      border: 0;
+      margin: 0;
       padding: 2px;
       padding-top: 4px;
       padding-bottom: 4px;
