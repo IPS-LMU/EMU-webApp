@@ -22,7 +22,7 @@ describe('Directive: slideToggle', function() {
 
     it('should toggle on slideToggle', function() {
         compileDirective(false);
-        expect(elm.prevObject[0].style.cssText).toEqual('display: block; ');
+        expect(elm.prevObject[0].style.cssText).toEqual('display: block;');
         compileDirective(true);
         expect(elm.prevObject[0].style.cssText).toEqual('');
     });
