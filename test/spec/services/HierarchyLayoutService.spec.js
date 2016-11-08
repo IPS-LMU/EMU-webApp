@@ -34,7 +34,7 @@ describe('Service: HierarchyLayoutService', function () {
    */
   it('should findParents', function () {
     spyOn(scope.hierarchy, 'findChildren').and.returnValue([{"_parents":[]},{"_parents":[]},{"_parents":[]}]);
-    spyOn(scope.lvl, 'getLevelDetails').and.returnValue({ items: [1, 2, 3] });
+    spyOn(scope.lvl, 'getLevelDetails').and.returnValue({ items: [{id: 1}, {id: 2}, {id: 3}] });
     scope.hierarchy.findParents('Phonetic');
     expect(scope.hierarchy.findChildren).toHaveBeenCalled();
   });
