@@ -16,10 +16,10 @@
 			top:100%;
 			left:0;
 			background: $color-white;
-			margin:0px;
+			margin:0;
 			margin-left: 2px;
 			ul {
-				top: 0px;
+				top: 0;
 				left: 100%;
 				z-index: 99999;
 			}
@@ -54,7 +54,7 @@
 	resize: none;
 	white-space: nowrap;
 	background-color: $color-yellow;
-	box-shadow: 0px 0px 15px $color-darkGrey;
+	box-shadow: 0 0 15px $color-darkGrey;
 	vertical-align: middle !important;
 	overflow-x: hidden;
 	overflow-y: hidden;
@@ -63,14 +63,13 @@
 .emuwebapp-mini-btn {
 	display: inline-block;
     background: transparent;
-    border-radius: 0px;
+    border-radius: 0;
     border: 1px solid $color-white;
     color: $color-white;
     text-decoration: none;
     text-align: center;
-    margin: 0px;
-    padding: 0px;
-    text-align: center;
+    margin: 0;
+    padding: 0;
     width: 120px;
     height: 30px;
     outline: none;
@@ -113,7 +112,7 @@
     width: 40px;
     height: 40px;
     text-align: center;
-    top: 0px;
+    top: 0;
     > ._20px {
 			width: 20px;
 			height:20px;
