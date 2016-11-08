@@ -13,16 +13,21 @@
     width: 240px;
     background: $color-darkGrey;
     color: $color-white;
-    margin-left: 0px;
+    margin-left: 0;
     padding-bottom: 500px;
     @extend .emuwebapp-font-input;
     line-height: 0.85;
-    @include vendor-prefix(transition, "margin-left "+$animation-period+"ms ease-in-out");
-    &.ng-hide:not(.ng-hide-animate) {
-      visibility: visible !important;
-      display: block !important;
-      margin-left: -240px;
-      @include vendor-prefix(transition, "margin-left "+$animation-period+"ms ease-in-out");
+    //@include vendor-prefix(transition, "margin-left "+$animation-period+"ms ease-in-out");
+    //&.ng-hide:not(.ng-hide-animate) {
+    //  visibility: visible !important;
+    //  display: block !important;
+    //  margin-left: -240px;
+    //  @include vendor-prefix(transition, "margin-left "+$animation-period+"ms ease-in-out");
+    //}
+    @include vendor-prefix(transition, "margin-left ease-in-out " + $animation-period + "ms");
+
+    &.ng-hide{
+        margin-left: -240px;
     }
     h3 {
         font-size: 1.4em;
@@ -57,7 +62,7 @@
         @extend .emuwebapp-font-input;
 		&::-webkit-scrollbar {
 			width: 12px;
-			height: 0px;
+			height: 0;
 		}
 		&::-webkit-scrollbar-track {
 			background: $color-lightGrey;
@@ -68,7 +73,7 @@
 			background-color: rgba(0, 0, 0, .5);
 		}    
         .emuwebapp-bundle-session {
-            margin: 0px;
+            margin: 0;
             padding: 5px 0 5px 0;
             border-style:none;
             position: relative;
@@ -97,7 +102,7 @@
 }
 
 .emuwebapp-bundleListSessionPager{
-    margin: 0px;
+    margin: 0;
     padding: 5px 0 5px 0;
     border-style:none;
     position: relative;
@@ -123,7 +128,7 @@
 }
 
 .emuwebapp-bundle-item {
-    margin: 0px;
+    margin: 0;
     padding: 10px;
     border-style:none;
     border-bottom:thin solid rgba(152, 152, 152, 0.25);

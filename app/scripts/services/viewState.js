@@ -61,7 +61,7 @@ angular.module('emuwebApp')
 				movingE: -1,
 				dragBarActive: false,
 				dragBarHeight: -1,
-				windowWidth: undefined,
+				windowWidth: undefined
 			};
 
 			sServObj.spectroSettings = {
@@ -109,10 +109,6 @@ angular.module('emuwebApp')
 
 				// member functions
 
-				contextMenuIsOpen: function () {
-					return sServObj.hierarchyState.contextMenuID !== undefined;
-				},
-
 				closeContextMenu: function () {
 					sServObj.hierarchyState.contextMenuID = undefined;
 				},
@@ -121,16 +117,8 @@ angular.module('emuwebApp')
 					return sServObj.hierarchyState.contextMenuID;
 				},
 
-				setContextMenuID: function (id) {
-					sServObj.hierarchyState.contextMenuID = id;
-				},
-
 				getInputFocus: function () {
 					return sServObj.hierarchyState.inputFocus;
-				},
-
-				setInputFocus: function (f) {
-					sServObj.hierarchyState.inputFocus = f;
 				},
 
 				getEditValue: function () {
@@ -261,7 +249,7 @@ angular.module('emuwebApp')
 					}
 
 					sServObj.hierarchyState.collapseInfo[id].numCollapsedParents = newNum;
-				},
+				}
 			};
 
 			sServObj.timelineSize = -1;
@@ -403,7 +391,6 @@ angular.module('emuwebApp')
 
 		/**
 		 * reset selected Area to default
-		 * @param length of current pcm stream
 		 */
 		sServObj.resetSelect = function () {
 			sServObj.curViewPort.selectS = -1;
@@ -478,7 +465,7 @@ angular.module('emuwebApp')
 					return;
 				}
 			}
-			var idxOfNow;
+			var idxOfNow = -1;
 			order.forEach(function (name, idx) {
 				if (name === now) {
 					idxOfNow = idx;
@@ -645,6 +632,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.toggleSubmenu = function (time) {
 			this.submenuOpen = !this.submenuOpen;
+			// hack to call $apply post animation
 			$timeout(function () {
 				var d = new Date();
 				sServObj.lastUpdate = d.getTime();
@@ -738,6 +726,7 @@ angular.module('emuwebApp')
 		/**
 		 * sets the current (clicked) Level Name
 		 * @param name is name of level
+		 * @param index index of level
 		 */
 		sServObj.setcurClickLevelName = function (name, index) {
 			this.curClickLevelName = name;
@@ -889,17 +878,17 @@ angular.module('emuwebApp')
 		 */
 		sServObj.selectBoundary = function () {
 			if (sServObj.curClickItems.length > 0) {
-				
+				var left, right;
 				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
-					var left = sServObj.curClickItems[0].sampleStart;
+					left = sServObj.curClickItems[0].sampleStart;
 				}else{
-				 	var left = sServObj.curClickItems[0].samplePoint;
+				 	left = sServObj.curClickItems[0].samplePoint;
 				}
 
 				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
-					var right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur;
+					right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur;
 				}else{
-					var right = sServObj.curClickItems[0].samplePoint;
+					right = sServObj.curClickItems[0].samplePoint;
 				}
 
 				sServObj.curClickItems.forEach(function (entry) {
@@ -917,8 +906,7 @@ angular.module('emuwebApp')
 		/**
 		 * adds an item to the currently selected items if the left or right one of current selected items
 		 * @param item representing the Object to be added to selection
-		 * @param next Object next to the Object to be added to selection
-		 * @param prev Object previous of the Object to be added to selection
+		 * @param neighbour left or right neighbor to add to selection
 		 */
 		sServObj.setcurClickItemMultiple = function (item, neighbour) {
 
@@ -1099,28 +1087,28 @@ angular.module('emuwebApp')
 		 * calcs and returns start in secs
 		 */
 		sServObj.getViewPortStartTime = function () {
-			return (this.curViewPort.sS * 1 / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
 		};
 
 		/**
 		 * calcs and returns end time in secs
 		 */
 		sServObj.getViewPortEndTime = function () {
-			return (this.curViewPort.eS * 1 / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
 		};
 
 		/**
 		 * calcs and returns start in secs
 		 */
 		sServObj.getSelectedStartTime = function () {
-			return (this.curViewPort.selectS * 1 / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
 		};
 
 		/**
 		 * calcs and returns end time in secs
 		 */
 		sServObj.getSelectedEndTime = function () {
-			return (this.curViewPort.selectE * 1 / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.selectE / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
 		};
 
 
@@ -1129,7 +1117,7 @@ angular.module('emuwebApp')
 		 * (with several out-of-bounds like checks)
 		 *
 		 * @param sSample start sample of view
-		 * @param sSample end sample of view
+		 * @param eSample end sample of view
 		 */
 		sServObj.setViewPort = function (sSample, eSample) {
 			var oldStart = this.curViewPort.sS;
@@ -1180,6 +1168,7 @@ angular.module('emuwebApp')
 		 * @param zoomIn bool to specify zooming direction
 		 * if set to true -> zoom in
 		 * if set to false -> zoom out
+		 * @param LevelService pass in LevelService to avoid circular dependencies
 		 */
 		sServObj.zoomViewPort = function (zoomIn, LevelService) {
 			var newStartS, newEndS, curMouseMoveItemStart;
@@ -1273,6 +1262,7 @@ angular.module('emuwebApp')
 		 *
 		 * @param levelName name of level
 		 * @param newAttrDefName
+		 * @param index index of attribute
 		 */
 		sServObj.setCurAttrDef = function (levelName, newAttrDefName, index) {
 			angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
@@ -1291,7 +1281,7 @@ angular.module('emuwebApp')
 		 * @returns attrDefName
 		 */
 		sServObj.getCurAttrDef = function (levelName) {
-			var curAttrDef;
+			var curAttrDef = undefined;
 			angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
 				if (ad.levelName === levelName) {
 					curAttrDef = ad.curAttrDefName;
@@ -1308,7 +1298,7 @@ angular.module('emuwebApp')
 		 * @returns attrDefName
 		 */
 		sServObj.getCurAttrIndex = function (levelName) {
-			var curAttrDef;
+			var curAttrDef = undefined;
 			angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
 				if (ad.levelName === levelName) {
 					if (ad.curAttrDefIndex === undefined) {
