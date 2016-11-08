@@ -185,10 +185,16 @@ describe('Directive: myDropZone', function() {
     
     it('should warn if no FileAPI available', inject(function ($q, modalService, appStateService) {
         compileDirective();
-        window.File = false;
-        window.FileReader = false;
-        window.FileList = false;
-        window.Blob = false;
+        // save cur window vars in tmp vars
+        var old_window_File = window.File;
+        var old_window_FileReader = window.FileReader;
+        var old_window_FileList = window.FileList;
+        var old_window_Blob = window.Blob;
+
+        window.File = undefined;
+        window.FileReader = undefined;
+        window.FileList = undefined;
+        window.Blob = undefined;
         var txtDeferred = $q.defer(); 
         spyOn(modalService, 'open').and.returnValue(txtDeferred.promise);
         spyOn(appStateService, 'resetToInitState');
@@ -205,6 +211,11 @@ describe('Directive: myDropZone', function() {
         scope.$digest();
         expect(appStateService.resetToInitState).toHaveBeenCalled();
         expect(modalService.open).toHaveBeenCalled();
-    })); 
+        // reset old vars to not mess up other test because window vars are messed up
+        window.File = old_window_File;
+        window.FileReader = old_window_FileReader;
+        window.FileList = old_window_FileList;
+        window.Blob = old_window_Blob;
+    }));
     
 });
