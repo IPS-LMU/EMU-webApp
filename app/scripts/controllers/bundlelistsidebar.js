@@ -35,11 +35,7 @@ angular.module('emuwebApp')
 		 * returns false if bndl is current bndl
 		 */
 		$scope.uttIsDisabled = function (bndl) {
-			if (bndl.name === loadedMetaDataService.getCurBndl().name) {
-				return false;
-			} else {
-				return true;
-			}
+			return !(bndl.name === loadedMetaDataService.getCurBndl().name);
 		};
 
 		/**
@@ -63,7 +59,6 @@ angular.module('emuwebApp')
 				};
 			}
 
-			// console.log(bndl.name)
 			var curBndl = loadedMetaDataService.getCurBndl();
 			if (bndl.name === curBndl.name && bndl.session === curBndl.session) {
 				return curColor;
@@ -75,11 +70,7 @@ angular.module('emuwebApp')
 		 * @return bool
 		 */
 		$scope.isSessionDefined = function (ses) {
-			if (ses === 'undefined') {
-				return false;
-			} else {
-				return true;
-			}
+			return !(ses === 'undefined');
 		};
 
 		/**
@@ -108,10 +99,11 @@ angular.module('emuwebApp')
 		 */
 		$scope.getTimeAnchorIdxMax = function () {
 			var curBndl = loadedMetaDataService.getCurBndl();
+			var res;
 			if(angular.equals({}, curBndl)){
-				var res = -1;
+				res = -1;
 			}else{
-				var res = curBndl.timeAnchors.length - 1;
+				res = curBndl.timeAnchors.length - 1;
 			}
 			return(res);
 		};
@@ -119,10 +111,6 @@ angular.module('emuwebApp')
 
 		$scope.isCurBndl= function (bndl) {
 			var curBndl = loadedMetaDataService.getCurBndl();
-			if (bndl.name === curBndl.name && bndl.session === curBndl.session) {
-				return true;
-			}else{
-				return false;
-			}
+			return (bndl.name === curBndl.name && bndl.session === curBndl.session);
 		};
 	});
