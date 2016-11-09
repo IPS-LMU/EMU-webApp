@@ -55,7 +55,7 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+        tasks: ['compass:server', 'postcss:server']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -544,15 +544,15 @@ module.exports = function (grunt) {
   ]);
 
 
-  grunt.registerTask('e2e', [
-    'clean:server',
-    'json2sass',
-    'compass:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'protractor:run'
-  ]);
+  // grunt.registerTask('e2e', [
+  //   'clean:server',
+  //   'json2sass',
+  //   'compass:server',
+  //   'concurrent:test',
+  //   'postcss',
+  //   'connect:test',
+  //   'protractor:run'
+  // ]);
 
   grunt.registerTask('build', [
     'clean:dist',
