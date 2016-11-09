@@ -3,8 +3,8 @@
 @import 'mixins';
 
 .emuwebapp-tabbed {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -16,7 +16,7 @@
       width: 240px !important;
       background: $color-darkGrey;
       color: $color-white;
-      margin-left: 0px;
+      margin-left: 0;
       line-height: 1;
       left: 0;
       top: 0;
@@ -54,17 +54,17 @@
         background: $color-transparent-black;
     }*/
     .emuwebapp-tabbed-view {
-        border: 0px;
+        border: 0;
         clear: both;
         overflow-y: -moz-scrollbars-vertical;
         overflow-y: scroll;
         overflow-x: hidden;
         position: absolute;
-        width: 100%;
+        //width: 100%;
         width: calc(100% - 240px);
         height: 100%;
         overflow: auto;
-        padding: 0px;
+        padding: 0;
         top: 0;
         right: 0;
     }
@@ -75,7 +75,7 @@
         font-size: 1.1em;
     }
     .emuwebapp-tabbed-rounded {
-        border: 0px;
+        border: 0;
         border-radius: 10px;
         text-align: left;
         background: $color-white;
@@ -101,11 +101,10 @@
         text-align: center;
         width: 18px;
         text-decoration: none;
-        font-weight: 1200;
+        font-weight: 900;
         @include vendor-prefix(border-radius, "9px");
         @include vendor-prefix(box-shadow, "1px 1px 3px " + $color-blue);
         z-index: 99999;
-        text-decoration: none;
     }
     .emuwebapp-tabbed-close {
         @extend .emuwebapp-tabbed-button;
@@ -195,7 +194,7 @@
         }
     }
     .emuwebapp-tabbed-rowframe {
-        border: 0px;
+        border: 0;
         border-radius: 10px;
         text-align: left;
         background: linear-gradient($color-lightGrey, $color-white);
