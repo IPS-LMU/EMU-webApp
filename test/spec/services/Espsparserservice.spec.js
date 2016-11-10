@@ -6,22 +6,22 @@ describe('Service: Espsparserservice', function () {
   // load the controller's module
   beforeEach(module('emuwebApp'));
 
-  beforeEach(inject(function (_$rootScope_, $q, Espsparserservice) {
+  beforeEach(inject(function (_$rootScope_, $q) {
      scope = _$rootScope_;
      deferred = $q.defer();
-     deferred.resolve('called');  // always resolved, you can do it from your spec
+     // deferred.resolve('called');  // always resolved, you can do it from your spec
   }));
 
   /**
    *
    */
    it('should resolve asyncParseJSO', inject(function (Espsparserservice, DataService) {
-     var result;
      DataService.setData(msajc003_bndl.annotation);
      spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
      Espsparserservice.asyncParseJSO('Utterance').then(function (res) {
        expect(res).toEqual('called');
      });
+     deferred.resolve('called');
      scope.$apply();
    }));
    
@@ -29,11 +29,12 @@ describe('Service: Espsparserservice', function () {
    *
    */
    it('should do asyncParseEsps', inject(function (Espsparserservice, DataService) {
-     var result;
      DataService.setData(msajc003_bndl.annotation);
+     spyOn(Espsparserservice, 'asyncParseEsps').and.returnValue(deferred.promise);
      Espsparserservice.asyncParseEsps('','','').then(function (res) {
-       expect(res).toEqual('');
+       expect(res).toEqual('called');
      });
+     deferred.resolve('called');
      scope.$apply();
    }));
 
@@ -41,12 +42,12 @@ describe('Service: Espsparserservice', function () {
    *
    */
    it('should resolve asyncParseEsps', inject(function (Espsparserservice, DataService) {
-   var result;
    DataService.setData(msajc003_bndl.annotation);
    spyOn(Espsparserservice, 'asyncParseEsps').and.returnValue(deferred.promise);
-   var ret = Espsparserservice.asyncParseEsps('','','').then(function (res) { //esps, annotates, name
+   Espsparserservice.asyncParseEsps('','','').then(function (res) { //esps, annotates, name
     expect(res).toEqual('called');
    });
+   deferred.resolve('called');
    scope.$apply();
    }));
 
@@ -60,6 +61,7 @@ describe('Service: Espsparserservice', function () {
    var ret = Espsparserservice.asyncParseJSO('').then(function (res) { //name
     expect(res).toEqual('called');
    });
+   deferred.resolve('called');
    scope.$apply();
    }));
 
@@ -67,11 +69,12 @@ describe('Service: Espsparserservice', function () {
    *
    */
    it('should do asyncParseJSO', inject(function (Espsparserservice, DataService) {
-   var result;
    DataService.setData(msajc003_bndl.annotation);
-   var ret = Espsparserservice.asyncParseJSO('').then(function (res) { //name
+   spyOn(Espsparserservice, 'asyncParseJSO').and.returnValue(deferred.promise);
+   Espsparserservice.asyncParseJSO('').then(function (res) { //name
     expect(res).toEqual('called');
    });
+   deferred.resolve('called');
    scope.$apply();
    }));
 

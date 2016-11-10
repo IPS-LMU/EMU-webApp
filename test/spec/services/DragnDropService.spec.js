@@ -1,11 +1,16 @@
 'use strict';
 
 describe('Service: DragnDropService', function () {
+  var $scope;
+  var $q;
 
   // load the controller's module
   beforeEach(module('emuwebApp'));
 
-  var item;
+  beforeEach(inject(function(_$rootScope_, _$q_) {
+    $q = _$q_;
+    $scope = _$rootScope_.$new();
+  }));
 
   var testData = [
       ['test1','wavData1','annotationData1'],
@@ -21,10 +26,8 @@ describe('Service: DragnDropService', function () {
     expect(DragnDropService.bundleList.length).toBe(0);
   }));
 
-
-  it('should setData', inject(function ($rootScope, $q, DragnDropService, loadedMetaDataService) {
+  it('should setData', inject(function (DragnDropService, loadedMetaDataService) {
     // set according data
-    var scope = $rootScope.$new();
     var def = $q.defer();
     spyOn(loadedMetaDataService, 'setBundleList');
     spyOn(loadedMetaDataService, 'setCurBndlName');
@@ -36,12 +39,13 @@ describe('Service: DragnDropService', function () {
     expect(DragnDropService.setDragnDropData).toHaveBeenCalled();
     expect(DragnDropService.convertDragnDropData).toHaveBeenCalledWith([  ], 0);
     def.resolve();
-    scope.$apply();
+    $scope.$apply();
     expect(loadedMetaDataService.setBundleList).toHaveBeenCalled();
     expect(loadedMetaDataService.setCurBndlName).toHaveBeenCalled();
     expect(loadedMetaDataService.setDemoDbName).toHaveBeenCalled();
     expect(DragnDropService.handleLocalFiles).toHaveBeenCalled();
   }));
+
 
   it('should getBlob', inject(function (DragnDropService) {
      expect(DragnDropService.getBlob().toString()).toBe('[object Blob]');
@@ -78,9 +82,7 @@ describe('Service: DragnDropService', function () {
     expect(DragnDropService.getDragnDropData(pak2, 'annotation12')).toEqual(false);
   }));
 
-  it('should handleLocalFiles', inject(function ($rootScope,
-                                                 $q,
-                                                 Wavparserservice,
+  it('should handleLocalFiles', inject(function (Wavparserservice,
                                                  ConfigProviderService,
                                                  Validationservice,
                                                  Iohandlerservice,
@@ -91,11 +93,8 @@ describe('Service: DragnDropService', function () {
                                                  DragnDropDataService,
                                                  Binarydatamaniphelper,
                                                  viewState) {
-    var scope = $rootScope.$new();
-    var def = $q.defer();
     var defio = $q.defer();
     var defwav = $q.defer();
-    var defmodal = $q.defer();
     DragnDropDataService.sessionDefault = 0;
     DragnDropDataService.convertedBundles[0] = {};
     DragnDropDataService.convertedBundles[0].mediaFile = {};
@@ -103,26 +102,16 @@ describe('Service: DragnDropService', function () {
     DragnDropDataService.convertedBundles[0].annotation = msajc003_bndl.annotation;
     viewState.curPerspectiveIdx = 0;
     spyOn(viewState, 'selectLevel').and.returnValue(true);
-    spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer').and.returnValue(def.promise);
-    spyOn(modalService, 'open').and.returnValue(defmodal.promise);
-    spyOn(appStateService, 'resetToInitState');
+    spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer').and.returnValue(new ArrayBuffer());
     spyOn(Iohandlerservice, 'httpGetPath').and.returnValue(defio.promise);
-    spyOn(Validationservice, 'validateJSO').and.callFake(function(param1, param2){
-        if (param1 === 'emuwebappConfigSchema') return true;
-        if (param1 === 'annotationFileSchema') return false;
-    });
+    spyOn(Validationservice, 'validateJSO').and.returnValue(true);
     spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(defwav.promise);
     DragnDropService.handleLocalFiles();
     expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
     expect(Iohandlerservice.httpGetPath).toHaveBeenCalled();
     defio.resolve({data: defaultEmuwebappConfig});
-    scope.$apply();
+    $scope.$apply();
     expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
-    defwav.resolve({Data: [1, 2, 3]});
-    defmodal.resolve();
-    scope.$apply();
-    ConfigProviderService.vals = {};
-    ConfigProviderService.vals.perspectives = [];
   }));
 
 });
