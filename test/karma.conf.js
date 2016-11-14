@@ -115,30 +115,30 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
 
     // Uncomment the following lines if you are using grunt's server to run the tests
-    proxies: {
-      '/': 'http://localhost:9000/'
-      // '/img/': 'http://localhost:9000/img/'
-      // '/assets/': 'http://localhost:9000/assets/',
-      // '/NEWS.md': 'http://localhost:9000/NEWS.md'
-    },
-    // URL root prevent conflicts with the site root
-    urlRoot: '_karma_',
-
-    // generate js files from html templates to expose them during testing.
-    preprocessors: {
-      'app/views/**/*.html': 'ng-html2js'
-      // 'app/scripts/**/*.js': 'coverage'
-    },
-
-    ngHtml2JsPreprocessor: {
-      // If your build process changes the path to your templates,
-      // use stripPrefix and prependPrefix to adjust it.
-      stripPrefix: 'app/',
-      prependPrefix: '',
-
-      // the name of the Angular module to create
-      moduleName: 'emuwebApp.templates'
-    },
+    // proxies: {
+    //   '/': 'http://localhost:9000/'
+    //   // '/img/': 'http://localhost:9000/img/',
+    //   // '/assets/': 'http://localhost:9000/assets/',
+    //   // '/NEWS.md': 'http://localhost:9000/NEWS.md'
+    // },
+    // // URL root prevent conflicts with the site root
+    // urlRoot: '_karma_',
+    //
+    // // generate js files from html templates to expose them during testing.
+    // preprocessors: {
+    //   'app/views/**/*.html': 'ng-html2js'
+    //   // 'app/scripts/**/*.js': 'coverage'
+    // },
+    //
+    // ngHtml2JsPreprocessor: {
+    //   // If your build process changes the path to your templates,
+    //   // use stripPrefix and prependPrefix to adjust it.
+    //   stripPrefix: 'app/',
+    //   prependPrefix: '',
+    //
+    //   // the name of the Angular module to create
+    //   moduleName: 'emuwebApp.templates'
+    // },
 
 
     captureTimeout: 60000,

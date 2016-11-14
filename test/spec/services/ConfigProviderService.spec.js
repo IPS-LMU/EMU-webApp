@@ -73,7 +73,8 @@ describe('Service: ConfigProviderService', function () {
   it('should getAssignment', inject(function (viewState, ConfigProviderService) {
     ConfigProviderService.setVals(defaultEmuwebappConfig);
     viewState.curPerspectiveIdx = 0;
-    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases = aeDbConfig.EMUwebAppConfig.perspectives[0].levelCanvases;
+    // set
+    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign = [{signalCanvasName: 'SPEC', ssffTrackName: 'FORMANTS'}];
     expect(ConfigProviderService.getAssignment('SPEC')).toEqual({
         signalCanvasName : 'SPEC', 
         ssffTrackName : 'FORMANTS'

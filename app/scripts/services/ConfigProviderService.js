@@ -56,7 +56,7 @@ angular.module('emuwebApp')
 			var ret = sServObj.getDeltas(current, sServObj.initDbConfig);
 			defer.resolve(ret);
 			return defer.promise;
-		}
+		};
 		
 		sServObj.getDeltas = function (current, start) {
 			var ret = {};

@@ -19,10 +19,6 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn'
   });
 
-  grunt.loadNpmTasks('grunt-json2sass');
-  grunt.loadNpmTasks('grunt-newer');
-  grunt.loadNpmTasks('grunt-jscs');
-
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
