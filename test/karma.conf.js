@@ -74,6 +74,7 @@ module.exports = function (config) {
         served: true,
         included: false
       }
+
     ],
 
     // list of files / patterns to exclude
@@ -112,15 +113,15 @@ module.exports = function (config) {
 
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
 
     // Uncomment the following lines if you are using grunt's server to run the tests
-    // proxies: {
-    //   '/': 'http://localhost:9000/'
-    //   // '/img/': 'http://localhost:9000/img/',
-    //   // '/assets/': 'http://localhost:9000/assets/',
-    //   // '/NEWS.md': 'http://localhost:9000/NEWS.md'
-    // },
+    proxies: {
+      // '/': 'http://localhost:9000/'
+      '/img/': 'http://localhost:8081/base/test/images/'
+      // '/assets/': 'http://localhost:9000/assets/',
+      // '/NEWS.md': 'http://localhost:9000/NEWS.md'
+    },
     // // URL root prevent conflicts with the site root
     // urlRoot: '_karma_',
     //
