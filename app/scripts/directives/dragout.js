@@ -11,11 +11,10 @@ angular.module('emuwebApp')
 			link: function (scope, element, attrs) {
 				scope.cps = ConfigProviderService;
 				var el = element[0];
-				var dragIcon = document.createElement('img');
-				dragIcon.src = 'img/save.svg';
-				dragIcon.width = '35';
-				dragIcon.height = '35';
-				var dataString = '';
+				// var dragIcon = document.createElement('img');
+				// dragIcon.src = 'img/save.svg';
+				// dragIcon.width = '35';
+				// dragIcon.height = '35';
 
 				scope.generateURL = function () {
 					return scope.getURL(angular.toJson(DataService.getData(), true));
@@ -59,14 +58,12 @@ angular.module('emuwebApp')
 							this.classList.add('drag');
 							var url = scope.generateURL();
 							if (browserDetector.isBrowser.Firefox() || browserDetector.isBrowser.Chrome()) {
-								// normal <img png> is not scalable
-								// therefore generate div, place <img> in it and then scale
-								var div = document.createElement('div');
-								div.appendChild(dragIcon);
-								document.querySelector('body').appendChild(div);
-								e.dataTransfer.setDragImage(div, -8, -8);
-								e.dataTransfer.effectAllowed = 'move';
-								e.dataTransfer.setData('DownloadURL', 'application/json:' + attrs.name + '_annot.json:' + url);
+								if(e.dataTransfer !== undefined){
+									// add image
+									// e.dataTransfer.setDragImage(dragIcon, -8, -8);
+									// e.dataTransfer.effectAllowed = 'move';
+									e.dataTransfer.setData('DownloadURL', 'application/json:' + attrs.name + '_annot.json:' + url);
+								}
 							}
 						}
 						else {
