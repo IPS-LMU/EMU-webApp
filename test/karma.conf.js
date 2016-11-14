@@ -124,21 +124,21 @@ module.exports = function (config) {
     // // URL root prevent conflicts with the site root
     // urlRoot: '_karma_',
     //
-    // // generate js files from html templates to expose them during testing.
-    // preprocessors: {
-    //   'app/views/**/*.html': 'ng-html2js'
-    //   // 'app/scripts/**/*.js': 'coverage'
-    // },
-    //
-    // ngHtml2JsPreprocessor: {
-    //   // If your build process changes the path to your templates,
-    //   // use stripPrefix and prependPrefix to adjust it.
-    //   stripPrefix: 'app/',
-    //   prependPrefix: '',
-    //
-    //   // the name of the Angular module to create
-    //   moduleName: 'emuwebApp.templates'
-    // },
+    // generate js files from html templates to expose them during testing.
+    preprocessors: {
+      'app/views/**/*.html': 'ng-html2js'
+      // 'app/scripts/**/*.js': 'coverage'
+    },
+
+    ngHtml2JsPreprocessor: {
+      // If your build process changes the path to your templates,
+      // use stripPrefix and prependPrefix to adjust it.
+      stripPrefix: 'app/',
+      prependPrefix: '',
+
+      // the name of the Angular module to create
+      moduleName: 'emuwebApp.templates'
+    },
 
 
     captureTimeout: 60000,
