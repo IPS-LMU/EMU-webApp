@@ -16,16 +16,18 @@ describe('Factory: browserDetector', function () {
    *
    */
   it('should check if mobile on mobile', inject(function (browserDetector) {
-      setUserAgent(window, 'iPhone');
-      expect(browserDetector.isMobileDevice()).toBe(true);
-      setUserAgent(window, 'iPad');
-      expect(browserDetector.isMobileDevice()).toBe(true);
-      setUserAgent(window, 'iPod');
-      expect(browserDetector.isMobileDevice()).toBe(true);
-      setUserAgent(window, 'Android');
-      expect(browserDetector.isMobileDevice()).toBe(true);
-      setUserAgent(window, 'BlackBerry');
-      expect(browserDetector.isMobileDevice()).toBe(true);
+      if(!navigator.userAgent.match(/Chrome/i)){ // check if window.navigator can be set (= read only property in chrome)
+        setUserAgent(window, 'iPhone');
+        expect(browserDetector.isMobileDevice()).toBe(true);
+        setUserAgent(window, 'iPad');
+        expect(browserDetector.isMobileDevice()).toBe(true);
+        setUserAgent(window, 'iPod');
+        expect(browserDetector.isMobileDevice()).toBe(true);
+        setUserAgent(window, 'Android');
+        expect(browserDetector.isMobileDevice()).toBe(true);
+        setUserAgent(window, 'BlackBerry');
+        expect(browserDetector.isMobileDevice()).toBe(true);
+      }
   }));  
   
   
