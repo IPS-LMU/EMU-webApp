@@ -119,7 +119,7 @@ module.exports = function (config) {
     proxies: {
       // '/': 'http://localhost:9000/'
       '/img/': '/base/app/img/'
-      // '/assets/': 'http://localhost:9000/assets/',
+      // '/assets/': '/base/app/img/assets/'
       // '/NEWS.md': 'http://localhost:9000/NEWS.md'
     },
     // // URL root prevent conflicts with the site root

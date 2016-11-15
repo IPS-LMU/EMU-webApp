@@ -46,7 +46,7 @@ angular.module('emuwebApp')
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
-				console.error('CORS version of getProtocol not implemented');
+				// console.error('CORS version of getProtocol not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getProtocol();
 			}
@@ -61,7 +61,7 @@ angular.module('emuwebApp')
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
-                console.error('CORS version of getDoUserManagement not implemented');
+                // console.error('CORS version of getDoUserManagement not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDoUserManagement();
 			}
@@ -76,7 +76,7 @@ angular.module('emuwebApp')
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
-                console.error('CORS version of logOnUser not implemented');
+                // console.error('CORS version of logOnUser not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.logOnUser(name, pwd);
 			}
@@ -91,7 +91,7 @@ angular.module('emuwebApp')
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
-                console.error('CORS version of getDBconfigFile not implemented');
+                // console.error('CORS version of getDBconfigFile not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDBconfigFile();
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
@@ -108,7 +108,7 @@ angular.module('emuwebApp')
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
-                console.error('CORS version of getBundleList not implemented');
+                // console.error('CORS version of getBundleList not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getBundleList();
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
@@ -125,7 +125,7 @@ angular.module('emuwebApp')
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
-                console.error('CORS version of getBundle not implemented');
+                // console.error('CORS version of getBundle not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'EMBEDDED') {
 				getProm = DragnDropDataService.getBundle(name, session);
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
@@ -146,7 +146,7 @@ angular.module('emuwebApp')
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
-                console.error('CORS version of saveBundle not implemented');
+                // console.error('CORS version of saveBundle not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.saveBundle(bundleData);
 			}
