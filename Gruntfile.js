@@ -19,6 +19,8 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn'
   });
 
+  var serveStatic = require('serve-static'); // Connect 3 no longer uses connect.static
+
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
@@ -89,16 +91,16 @@ module.exports = function (grunt) {
           open: true,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
+              serveStatic('.tmp'),
               connect().use(
                   '/bower_components',
-                  connect.static('./bower_components')
+                  serveStatic('./bower_components')
               ),
               connect().use(
                   '/app/styles',
-                  connect.static('./app/styles')
+                  serveStatic('./app/styles')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -108,13 +110,13 @@ module.exports = function (grunt) {
           port: 9001,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
+              serveStatic('.tmp'),
+              serveStatic('test'),
               connect().use(
                   '/bower_components',
-                  connect.static('./bower_components')
+                  serveStatic('./bower_components')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -184,7 +186,7 @@ module.exports = function (grunt) {
     postcss: {
       options: {
         processors: [
-          require('autoprefixer-core')({browsers: ['last 1 version']})
+          require('autoprefixer')({browsers: ['last 2 version']})
         ]
       },
       server: {
@@ -494,7 +496,7 @@ module.exports = function (grunt) {
     karma: {
       unit: {
         configFile: 'test/karma.conf.js',
-        singleRun: false
+        singleRun: true
         // logLevel: 'DEBUG'
 
       }
@@ -542,15 +544,15 @@ module.exports = function (grunt) {
   ]);
 
 
-  // grunt.registerTask('e2e', [
-  //   'clean:server',
-  //   'json2sass',
-  //   'compass:server',
-  //   'concurrent:test',
-  //   'postcss',
-  //   'connect:test',
-  //   'protractor:run'
-  // ]);
+  grunt.registerTask('e2e', [
+    'clean:server',
+    'json2sass',
+    'compass:server',
+    'concurrent:test',
+    'postcss',
+    'connect:test',
+    'protractor:run'
+  ]);
 
   grunt.registerTask('build', [
     'clean:dist',
