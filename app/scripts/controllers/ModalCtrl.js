@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 		/**
 		 *  Save changes made on SSFF
 		 */
-		$scope.saveChanges = function (name) {
+		$scope.saveChanges = function () {
 			modalService.close();
 		};
 
@@ -35,7 +35,7 @@ angular.module('emuwebApp')
 		/**
 		 *  Save changes made on SSFF
 		 */
-		$scope.discardChanges = function (name) {
+		$scope.discardChanges = function () {
 			modalService.close();
 		};
 
@@ -47,7 +47,7 @@ angular.module('emuwebApp')
 			if (currentURLS.indexOf(modalService.dataOut) === -1) {
 				currentURLS.push(modalService.dataOut);
 			}
-			localStorage.setItem("urls", JSON.stringify(currentURLS));
+			localStorage.setItem('urls', JSON.stringify(currentURLS));
 			$scope.myUrls = currentURLS;
 			$scope.mySelect = $scope.myUrls[0];
 		};
@@ -56,7 +56,7 @@ angular.module('emuwebApp')
 		 *  Return all URLs from localStorage
 		 */
 		$scope.getURLs = function () {
-			var curVal = localStorage.getItem("urls");
+			var curVal = localStorage.getItem('urls');
 			var urlData = [];
 			if (!browserDetector.isBrowser.PhantomJS() && curVal !== null) {
 				urlData = JSON.parse(curVal);
@@ -80,7 +80,7 @@ angular.module('emuwebApp')
 			if (currentURLS.indexOf(data) !== -1) {
 				currentURLS.splice(currentURLS.indexOf(data), 1);
 			}
-			localStorage.setItem("urls", JSON.stringify(currentURLS));
+			localStorage.setItem('urls', JSON.stringify(currentURLS));
 			$scope.myUrls = currentURLS;
 			$scope.mySelect = $scope.myUrls[0];
 		};
@@ -104,7 +104,7 @@ angular.module('emuwebApp')
 		/**
 		 *  Delete a complete level from LevelService
 		 */
-		$scope.deleteLevel = function (name) {
+		$scope.deleteLevel = function () {
 			var lvl = LevelService.getLevelDetails(viewState.getcurClickLevelName());
 			LevelService.deleteLevel(viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({

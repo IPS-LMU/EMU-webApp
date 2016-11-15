@@ -35,7 +35,7 @@ angular.module('emuwebApp')
 		//////////////
 		// watches
 
-		$scope.$watch ('paths.selected', function (newValue) {
+		$scope.$watch ('paths.selected', function () {
 			viewState.hierarchyState.path = $scope.paths.possible[$scope.getSelIdx()];
 		}, false);
 

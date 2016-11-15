@@ -35,5 +35,5 @@ angular.module('emuwebApp')
 				}
 			}
 			return false;
-		}
+		};
 	});

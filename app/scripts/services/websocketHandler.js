@@ -80,7 +80,7 @@ angular.module('emuwebApp')
 
 		function listener(data) {
 			var messageObj = data;
-			// console.log("Received data from websocket: ", messageObj);
+			// console.log('Received data from websocket: ', messageObj);
 			// If an object exists with callbackID in our callbacks object, resolve it
 			if (callbacks.hasOwnProperty(messageObj.callbackID)) {
 				// console.log(callbacks[messageObj.callbackID]);
@@ -108,7 +108,7 @@ angular.module('emuwebApp')
 
 				delete callbacks[messageObj.callbackID];
 			} else {
-				if(typeof messageObj.status === "undefined"){
+				if(typeof messageObj.status === 'undefined'){
 					modalService.open('views/error.html', 'Just got JSON message from server that the EMU-webApp does not know how to deal with! This is not allowed!');
 				}
 				else if (messageObj.status.type === 'ERROR:TIMEOUT') {
@@ -136,7 +136,7 @@ angular.module('emuwebApp')
 				sServObj.ws.onerror = wsonerror;
 				sServObj.ws.onclose = wsonclose;
 			}catch (err){
-				return $q.reject("A malformed websocket URL that doesn't start with ws:// or wss:// was provided.");
+				return $q.reject('A malformed websocket URL that does not start with ws:// or wss:// was provided.');
 			}
 
 			conPromise = defer;

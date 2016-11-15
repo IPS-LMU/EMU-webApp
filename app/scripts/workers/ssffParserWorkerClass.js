@@ -163,7 +163,7 @@ ssffParserWorker.prototype = {
 			}
 			k += e.toString().substring(1);
 			return k.substring(0, k.indexOf('.') + n + 1);
-		}
+		};
 
 		/**
 		 * helper function to convert string to Uint8Array
@@ -176,7 +176,7 @@ ssffParserWorker.prototype = {
 				uintArray.push(charList[i].charCodeAt(0));
 			}
 			return new Uint8Array(uintArray);
-		}
+		};
 
 		/**
 		 *
@@ -189,7 +189,7 @@ ssffParserWorker.prototype = {
 			result.set(second, firstLength);
 
 			return result;
-		}
+		};
 
 		/**
 		 * convert arraybuffer containing a ssff file
@@ -206,7 +206,7 @@ ssffParserWorker.prototype = {
 			var uIntBuffView = new Uint8Array(buf);
 			var dataView = new DataView(buf);
 
-			// Causes "RangeError: Maximum call stack size exceeded"
+			// Causes 'RangeError: Maximum call stack size exceeded'
 			// with some browsers (?)(Chrome/Chromium on Ubuntu)
 			//var buffStr = String.fromCharCode.apply(null, uIntBuffView);
 			var buffStr = '';
@@ -250,11 +250,11 @@ ssffParserWorker.prototype = {
 			var counter = 0;
 			while (newLsep[counter] !== sepString) {
 				if (newLsep[counter].split(/[ ,]+/)[0] === 'Record_Freq') {
-					// console.log("FOUND Record_Freq")
+					// console.log('FOUND Record_Freq')
 					ssffData.sampleRate = parseFloat(newLsep[counter].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
 				}
 				if (newLsep[counter].split(/[ ,]+/)[0] === 'Start_Time') {
-					// console.log("FOUND Start_Time")
+					// console.log('FOUND Start_Time')
 					ssffData.startTime = parseFloat(newLsep[counter].split(/[ ,]+/)[1].replace(/(\r\n|\n|\r)/gm, ''));
 				}
 				counter += 1;
@@ -306,7 +306,7 @@ ssffParserWorker.prototype = {
 						curLen = 8 * ssffData.Columns[i].length;
 						curBuffer = buf.subarray(curBinIdx, curLen);
 						// ugly hack in order to support PhantomJS < 2.0 testing
-						if (typeof Float64Array == "undefined") {
+						if (typeof Float64Array === 'undefined') {
 							Float64Array = Float32Array;
 						}
 						curBufferView = new Float64Array(curBuffer);
@@ -378,7 +378,7 @@ ssffParserWorker.prototype = {
 
 			return ssffData;
 
-		}
+		};
 
 		/**
 		 * convert javascript object of label file to
@@ -464,7 +464,7 @@ ssffParserWorker.prototype = {
 				},
 				'data': ssffBufView.buffer
 			});
-		}
+		};
 
 		/**
 		 * loop over ssff files in ssffArr and create a ssffJsoArr
