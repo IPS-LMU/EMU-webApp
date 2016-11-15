@@ -2,11 +2,8 @@
 
 describe('Controller: bundleListSideBarCtrl', function () {
 
-  var FileCtrl, $scope;
-  var emptyArr = [];
-  var emptyObj = {};
-  
-  
+  var $scope;
+
     // load the controller's module
   beforeEach(module('emuwebApp'));
   
@@ -24,8 +21,8 @@ describe('Controller: bundleListSideBarCtrl', function () {
        $scope.lmds = loadedMetaDataService;
        $scope.dolss = dbObjLoadSaveService;
        $scope.history = HistoryService;
-     }));  
-     
+     }));
+
    it('should check if uttIsDisabled', function () {
        expect($scope.uttIsDisabled({name: 'test'})).toBe(true);
        $scope.lmds.setCurBndlName('test1');
