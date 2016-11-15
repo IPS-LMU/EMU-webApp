@@ -82,7 +82,7 @@ module.exports = function (config) {
     ],
 
     // web server port
-    port: 8081,
+    port: 8080,
 
     // Start these browsers, currently available:
     // - Chrome
@@ -92,7 +92,7 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Which plugins to enable
@@ -118,7 +118,7 @@ module.exports = function (config) {
     // Uncomment the following lines if you are using grunt's server to run the tests
     proxies: {
       // '/': 'http://localhost:9000/'
-      '/img/': 'http://localhost:8081/base/test/images/'
+      '/img/': '/base/app/img/'
       // '/assets/': 'http://localhost:9000/assets/',
       // '/NEWS.md': 'http://localhost:9000/NEWS.md'
     },
