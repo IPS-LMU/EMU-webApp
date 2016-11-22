@@ -2,13 +2,16 @@
 
 describe('Directive: trackmouseinlevel', function () {
 
+    var $rootScope, $compile;
     var elm, tpl, scope, curLvl, testitem;
     var lvlName = 'Phonetic';
     var lvlType = 'SEGMENT';
 
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
 
-    beforeEach(inject(function ($rootScope, $compile, Soundhandlerservice, DataService, LevelService, ConfigProviderService, viewState, HistoryService) {
+    beforeEach(inject(function (_$compile_, _$rootScope_, Soundhandlerservice, DataService, LevelService, ConfigProviderService, viewState, HistoryService) {
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
         scope = $rootScope.$new();
         scope.lvl = LevelService;
         scope.data = DataService;
@@ -37,7 +40,7 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(elm.isolateScope(), 'setLastMove');
         spyOn(elm.isolateScope(), 'setLastClick');
         var e = jQuery.Event('click');
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastClick).toHaveBeenCalled();
      });
@@ -47,7 +50,7 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(elm.isolateScope(), 'setLastMove');
         spyOn(elm.isolateScope(), 'setLastRightClick');
         var e = jQuery.Event('contextmenu');
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastRightClick).toHaveBeenCalled();
      });
@@ -59,7 +62,7 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(elm.isolateScope(), 'setLastDblClick');
         spyOn(elm.isolateScope(), 'setLastClick');
         var e = jQuery.Event('dblclick');
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastDblClick).toHaveBeenCalled();
         expect(elm.isolateScope().setLastClick).not.toHaveBeenCalled();
@@ -72,7 +75,7 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(elm.isolateScope(), 'setLastDblClick');
         spyOn(elm.isolateScope(), 'setLastClick');
         var e = jQuery.Event('dblclick');
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
         expect(elm.isolateScope().setLastDblClick).not.toHaveBeenCalled();
         expect(elm.isolateScope().setLastClick).toHaveBeenCalled();
@@ -82,7 +85,7 @@ describe('Directive: trackmouseinlevel', function () {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         var e = jQuery.Event('mousedown');
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
      });
 
@@ -90,7 +93,7 @@ describe('Directive: trackmouseinlevel', function () {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         var e = jQuery.Event('mouseup');
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
      });
 
@@ -98,7 +101,7 @@ describe('Directive: trackmouseinlevel', function () {
         compileDirective();
         spyOn(elm.isolateScope(), 'setLastMove');
         var e = jQuery.Event('mouseout');
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(elm.isolateScope().setLastMove).toHaveBeenCalled();
      });
 
@@ -119,7 +122,7 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(scope.history, 'updateCurChangeObj');
         var e = jQuery.Event('mousemove');
         e.shiftKey = true;
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(scope.vs.getSamplesPerPixelVal).toHaveBeenCalled();
         expect(scope.vs.getX).toHaveBeenCalled();
         expect(scope.lvl.getClosestItem).toHaveBeenCalled();
@@ -143,7 +146,7 @@ describe('Directive: trackmouseinlevel', function () {
         spyOn(scope.lvl, 'getLastItem').and.returnValue({sampleStart: 0, sampleDur: 0});
         var e = jQuery.Event('mousemove');
         e.shiftKey = true;
-        elm.trigger(e);
+        elm.triggerHandler(e);
         expect(scope.vs.getSamplesPerPixelVal).toHaveBeenCalled();
         expect(scope.vs.getX).toHaveBeenCalled();
         expect(scope.lvl.getClosestItem).toHaveBeenCalled();

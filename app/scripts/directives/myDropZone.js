@@ -186,6 +186,7 @@ angular.module('emuwebApp')
 								else { // we assume it is chrome
 									var items = evt.originalEvent.dataTransfer.items;
 								}
+
 								scope.loadFiles(items);
 							}
 						}
@@ -233,7 +234,9 @@ angular.module('emuwebApp')
 				});
 
 				element.bind('click', function (event) {
-					element.context.children[1].children[0].click();
+					var input = element.find('input');
+					// call click of my-drop-zone-input
+                    input[0].click();
 				});
 
 

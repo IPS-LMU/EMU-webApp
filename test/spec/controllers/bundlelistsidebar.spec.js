@@ -2,13 +2,16 @@
 
 describe('Controller: bundleListSideBarCtrl', function () {
 
-  var $scope;
+  var $scope, $controller, $rootScope;
 
     // load the controller's module
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, viewState, loadedMetaDataService, dbObjLoadSaveService, ConfigProviderService, HistoryService) {
+     beforeEach(inject(function (_$controller_, _$rootScope_, viewState, loadedMetaDataService, dbObjLoadSaveService, ConfigProviderService, HistoryService) {
+         $controller = _$controller_;
+         $rootScope = _$rootScope_;
+
        $controller('bundleListSideBarCtrl', {
             $scope: $rootScope
         });

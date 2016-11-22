@@ -5,7 +5,7 @@ describe('Directive: emuwebapp', function() {
     var httpBackend, elm, scope;
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
 
-    beforeEach(inject(function($injector, $rootScope, $compile) {
+    beforeEach(inject(function($injector, $rootScope) {
         scope = $rootScope.$new();
         httpBackend = $injector.get('$httpBackend');
         httpBackend.whenGET('schemaFiles/annotationFileSchema.json').respond(annotationFileSchema);

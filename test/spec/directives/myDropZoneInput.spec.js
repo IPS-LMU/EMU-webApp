@@ -6,7 +6,7 @@ describe('Directive: myDropZoneInput', function() {
     
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
     
-    beforeEach(inject(function($rootScope, $compile) {
+    beforeEach(inject(function($rootScope) {
         scope = $rootScope.$new();
         scope.$parent.loadFiles = function() {};
     }));

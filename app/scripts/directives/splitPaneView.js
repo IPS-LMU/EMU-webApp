@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 			template: '<div class="emuwebapp-split-panes vertical" ng-transclude></div>',
 			controller: function ($scope) {
 				$scope.panes = [];
-				$scope.bottomRightResizePane;
+				$scope.bottomRightResizePane = undefined;
 
 				this.addPane = function (pane) {
 					if ($scope.panes.length > 1)
@@ -52,9 +52,19 @@ angular.module('emuwebApp')
 
 				attrs.$observe('showTwoDimCans', function (val) {
 					if (val === 'false') {
-						scope.bottomRightResizePane.elem.hide();
+                        // function not available in unit test
+                        // try{
+							scope.bottomRightResizePane.elem.hide();
+                        // }catch (e){
+                        // 	console.log(e);
+                        // }
 					} else {
-						scope.bottomRightResizePane.elem.show();
+                        // function not available in unit test
+                        // try{
+                            scope.bottomRightResizePane.elem.show();
+                        // }catch(e){
+                        //     console.log(e);
+                        // }
 					}
 				});
 				////////////////////
@@ -176,7 +186,7 @@ angular.module('emuwebApp')
 					dragSplitPaneResizer = false;
 					dragBottomRightResizePaneTopResizer = false;
 					dragBottomRightResizePaneLeftResizer = false;
-					dragBottomRightResizePaneCornerResizer = false
+					dragBottomRightResizePaneCornerResizer = false;
 					viewState.setdragBarActive(false);
 					$rootScope.$digest();
 				});
@@ -196,7 +206,6 @@ angular.module('emuwebApp')
 			},
 			template: '<div class="{{typeclass}}" ng-transclude></div>',
 			link: function (scope, element, attrs, bgSplitterCtrl) {
-				var newElement;
 				if (scope.type !== 'emuwebapp-2d-map') {
 					scope.elem = element;
 					scope.index = bgSplitterCtrl.addPane(scope);

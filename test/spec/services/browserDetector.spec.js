@@ -2,8 +2,13 @@
 
 describe('Factory: browserDetector', function () {
 
+  var $window;
   // load the controller's module
   beforeEach(module('emuwebApp'));
+
+  beforeEach(inject(function(_$window_) {
+      $window = _$window_;
+  }));
 
   /**
    *
@@ -17,15 +22,15 @@ describe('Factory: browserDetector', function () {
    */
   it('should check if mobile on mobile', inject(function (browserDetector) {
       if(!navigator.userAgent.match(/Chrome/i)){ // check if window.navigator can be set (= read only property in chrome)
-        setUserAgent(window, 'iPhone');
+        setUserAgent($window, 'iPhone');
         expect(browserDetector.isMobileDevice()).toBe(true);
-        setUserAgent(window, 'iPad');
+        setUserAgent($window, 'iPad');
         expect(browserDetector.isMobileDevice()).toBe(true);
-        setUserAgent(window, 'iPod');
+        setUserAgent($window, 'iPod');
         expect(browserDetector.isMobileDevice()).toBe(true);
-        setUserAgent(window, 'Android');
+        setUserAgent($window, 'Android');
         expect(browserDetector.isMobileDevice()).toBe(true);
-        setUserAgent(window, 'BlackBerry');
+        setUserAgent($window, 'BlackBerry');
         expect(browserDetector.isMobileDevice()).toBe(true);
       }
   }));  

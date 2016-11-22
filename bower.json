@@ -2,6 +2,7 @@
   "name": "emuwebapp",
   "version": "0.1.02",
   "dependencies": {
+    "jquery": "^3.1.1",
     "angular": "^1.5.8",
     "bootstrap-sass-official": "^3.2.0",
     "angular-animate": "^1.5.8",
@@ -11,13 +12,12 @@
     "angular-sanitize": "^1.5.8",
     "angular-touch": "^1.5.8",
     "tv4": "~1.0.17",
-    "jquery": "~2.0.0",
     "d3": "~3.4.11",
     "angular-filter": "~0.4.9",
-    "angular-markdown-directive": "~0.3.1",
-    "jasmine-jquery": "^2.1.1"
+    "angular-markdown-directive": "~0.3.1"
   },
   "devDependencies": {
+    "jasmine-jquery": "^2.1.1",
     "angular-mocks": "^1.5.8"
   },
   "appPath": "app",

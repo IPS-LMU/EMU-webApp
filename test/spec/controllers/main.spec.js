@@ -7,7 +7,8 @@ describe('Controller: MainController', function () {
 
   var emptyObject = {};
 
-  var MainCtrl, scope, ret, deferred, deferred2, $location;
+  var $window;
+  var MainCtrl, scope, deferred;
   var testSizeAll = 58809;
   var testSizeStart = 10;
   var testSizeEnd = 1337;
@@ -33,7 +34,9 @@ describe('Controller: MainController', function () {
     Validationservice,
     Wavparserservice,
     loadedMetaDataService,
-    Textgridparserservice) {
+    Textgridparserservice, _$window_) {
+
+    $window = _$window_;
 
     // initiate the controller and mock the scope
     scope = $rootScope.$new();
@@ -619,8 +622,8 @@ describe('Controller: MainController', function () {
    it('should react on resize window', function () {
      spyOn(scope.lvl, 'deleteEditArea');
      spyOn(scope.vs, 'setWindowWidth');
-     var e = jQuery.Event('resize');
-     $(window).trigger(e);
+     angular.element($window).triggerHandler('resize');
+     scope.$digest();
      expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
      expect(scope.vs.setWindowWidth).toHaveBeenCalled();
   });

@@ -274,6 +274,7 @@ wavParserWorker.prototype = {
 		try {
 			blob = new Blob([this.getWorkerScript()], {type: 'application/javascript'});
 		} catch (e) { // Backwards-compatibility
+			console.log(e);
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 			blob = new BlobBuilder();
 			blob.append(textGridParserWorker);

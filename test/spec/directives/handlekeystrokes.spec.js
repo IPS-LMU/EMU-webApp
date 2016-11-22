@@ -52,7 +52,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         e.which = key;
         e.keyCode = key;
         e.shiftKey = shiftKey;
-        $(document).trigger(e);
+        $(document).triggerHandler(e);
     }
 
     function clickOnItem(lvlName, pcm, pcmLength, type) {
@@ -73,7 +73,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         e.which = 40;
         e.keyCode = 40;
         e.shiftKey = false;
-        $(document).trigger(e);
+        $(document).triggerHandler(e);
         expect(scope.applyKeyCodeUp).toHaveBeenCalled();
         scope.vs.setcursorInTextField(true);
         scope.vs.setEditing(false);
@@ -85,7 +85,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         e.which = 40;
         e.keyCode = 40;
         e.shiftKey = false;
-        $(document).trigger(e);
+        $(document).triggerHandler(e);
         expect(scope.applyKeyCode).toHaveBeenCalled();
      });
 

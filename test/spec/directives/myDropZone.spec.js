@@ -2,11 +2,12 @@
 
 describe('Directive: myDropZone', function() {
 
-    var elm, scope, mockObject, mockObjectgrid, mockObjectother, mockObjectannot, mockDir;
+    var $window, elm, scope, mockObject, mockObjectgrid, mockObjectother, mockObjectannot, mockDir;
     beforeEach(module('emuwebApp', 'emuwebApp.templates'));
     
-    beforeEach(inject(function($rootScope, $compile) {
+    beforeEach(inject(function($rootScope, _$window_) {
         scope = $rootScope.$new();
+        $window = _$window_;
         mockObject = {
             name : 'test.wav',
             file : function() {return mockObject},
@@ -125,14 +126,9 @@ describe('Directive: myDropZone', function() {
     it('should dropFiles', function() {
         compileDirective();
         spyOn(elm.isolateScope(), 'loadFiles');
-        elm.triggerHandler({
-          type: 'drop',
-          originalEvent: {
-            dataTransfer: {
-              files: [ 'testFile.wav' ]
-            }
-          }
-        });
+        var e = jQuery.Event('drop', {originalEvent: new Event('drop')});
+        e.originalEvent.dataTransfer = {files: ['testFile.wav'], items: ['testFile.wav']};
+        elm.triggerHandler(e);
         scope.$apply(); 
         expect(elm.isolateScope().loadFiles).toHaveBeenCalled();
     });
@@ -186,36 +182,31 @@ describe('Directive: myDropZone', function() {
     it('should warn if no FileAPI available', inject(function ($q, modalService, appStateService) {
         compileDirective();
         // save cur window vars in tmp vars
-        var old_window_File = window.File;
-        var old_window_FileReader = window.FileReader;
-        var old_window_FileList = window.FileList;
-        var old_window_Blob = window.Blob;
+        var old_window_File = $window.File;
+        var old_window_FileReader = $window.FileReader;
+        var old_window_FileList = $window.FileList;
+        var old_window_Blob = $window.Blob;
 
-        window.File = undefined;
-        window.FileReader = undefined;
-        window.FileList = undefined;
-        window.Blob = undefined;
+        $window.File = undefined;
+        $window.FileReader = undefined;
+        $window.FileList = undefined;
+        $window.Blob = undefined;
         var txtDeferred = $q.defer(); 
         spyOn(modalService, 'open').and.returnValue(txtDeferred.promise);
         spyOn(appStateService, 'resetToInitState');
-        elm.triggerHandler({
-          type: 'drop',
-          originalEvent: {
-            dataTransfer: {
-              files: [ 'testFile.wav' ]
-            }
-          }
-        });
+        var e = jQuery.Event('drop', {originalEvent: new Event('drop')});
+        e.originalEvent.dataTransfer = {files: ['testFile.wav'], items: ['testFile.wav']};
+        elm.triggerHandler(e);
         scope.$apply();
         txtDeferred.resolve(true);
         scope.$digest();
         expect(appStateService.resetToInitState).toHaveBeenCalled();
         expect(modalService.open).toHaveBeenCalled();
         // reset old vars to not mess up other test because window vars are messed up
-        window.File = old_window_File;
-        window.FileReader = old_window_FileReader;
-        window.FileList = old_window_FileList;
-        window.Blob = old_window_Blob;
+        $window.File = old_window_File;
+        $window.FileReader = old_window_FileReader;
+        $window.FileList = old_window_FileList;
+        $window.Blob = old_window_Blob;
     }));
     
 });

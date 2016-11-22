@@ -96,22 +96,26 @@
        ga('send', 'pageview');
     </script>
 
-    <!-- build:js scripts/emuwebAppExternal.min.js -->
-    <script src="bower_components/jquery/jquery.js"></script>
-    <!--<script src="bower_components/jquery-ui/jquery-ui.js"></script>-->
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <!--<script src="bower_components/angular-ui/build/angular-ui.js"></script>-->
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-markdown-directive/markdown.js"></script>
-    <script src="bower_components/showdown/src/showdown.js"></script>
-    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/tv4/tv4.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
+    <script src="bower_components/showdown/src/showdown.js"></script>
+    <script src="bower_components/angular-markdown-directive/markdown.js"></script>
+    <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:js scripts/emuwebApp.min.js -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/prototypeexpansions.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/services/ConfigProviderService.js"></script>
@@ -129,7 +133,7 @@
     <script src="scripts/directives/resize.js"></script>
     <script src="scripts/directives/enlarge.js"></script>
     <script src="scripts/directives/save.js"></script>
-    <script src="scripts/directives/slideToggle.js"></script>
+    <!--<script src="scripts/directives/slideToggle.js"></script>-->
     <script src="scripts/directives/previewtrack.js"></script>
     <script src="scripts/services/ioHandlerService.js"></script>
     <script src="scripts/services/soundHandlerService.js"></script>
@@ -157,7 +161,7 @@
     <script src="scripts/filters/levelsFilter.js"></script>
     <script src="scripts/controllers/ModalCtrl.js"></script>
     <script src="scripts/directives/toggleRightSideBar.js"></script>
-    <script src="scripts/directives/toggle2dCanvases.js"></script>
+    <!--<script src="scripts/directives/toggle2dCanvases.js"></script>-->
     <script src="scripts/directives/splitPaneView.js"></script>
     <script src="scripts/directives/ssffTrack.js"></script>
     <script src="scripts/directives/progressThing.js"></script>

@@ -29,7 +29,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      spyOn(viewState, 'getX').and.returnValue(5);
      spyOn(elm.isolateScope(), 'switchMarkupContext');
      var e = jQuery.Event('mousedown');
-     $(elm).trigger(e);
+     $(elm).triggerHandler(e);
      expect(elm.isolateScope().switchMarkupContext).toHaveBeenCalled();
    }));
 
@@ -51,7 +51,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      Soundhandlerservice.wavJSO = { Data: [1, 2, 3]};
      spyOn(elm.isolateScope(), 'switchMarkupContext');
      var e = jQuery.Event('mouseleave');
-     $(elm).trigger(e);
+     $(elm).triggerHandler(e);
      expect(elm.isolateScope().switchMarkupContext).toHaveBeenCalled();
      expect(viewState.getPermission).toHaveBeenCalledWith('labelAction');
    }));
@@ -62,7 +62,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      spyOn(viewState, 'getX').and.returnValue(500);
      var e = jQuery.Event('mousemove');
      e.buttons = 1;
-     $(elm).trigger(e);
+     $(elm).triggerHandler(e);
      expect(elm.isolateScope().setSelectDrag).toHaveBeenCalled();
    }));
 
@@ -83,7 +83,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      e.originalEvent = {};
      e.originalEvent.target = {};
      e.originalEvent.target.width = 1000;
-     $(elm).trigger(e);
+     $(elm).triggerHandler(e);
      expect(elm.isolateScope().switchMarkupContext).toHaveBeenCalled();
      expect(viewState.getPermission).toHaveBeenCalledWith('labelAction');
    }));
@@ -107,7 +107,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
      e.originalEvent = {};
      e.originalEvent.target = {};
      e.originalEvent.target.width = 100;
-     $(elm).trigger(e);
+     $(elm).triggerHandler(e);
      expect(elm.isolateScope().switchMarkupContext).toHaveBeenCalled();
      expect(viewState.getPermission).toHaveBeenCalledWith('labelAction');
      expect(HistoryService.updateCurChangeObj).toHaveBeenCalled();

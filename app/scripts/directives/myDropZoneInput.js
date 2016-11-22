@@ -2,12 +2,12 @@
 
 
 angular.module('emuwebApp')
-	.directive('myDropZoneInput', function ($animate, browserDetector, appStateService) {
+	.directive('myDropZoneInput', function () {
 		return {
 			templateUrl: 'views/myDropZoneInput.html',
 			restrict: 'E',
 			scope: {},
-			link: function postLink(scope, element, attr) {
+			link: function postLink(scope, element) {
 				scope.acceptGrid = '.TextGrid';
 				scope.acceptWav = 'audio/wav';
 				scope.acceptJson = 'application/json';
@@ -15,15 +15,15 @@ angular.module('emuwebApp')
 				scope.acceptFile = scope.acceptBoth;
 
 				scope.handleFilesonChange = function () {
-					var loadedFiles = element.context.children.fileDialog;
-					scope.$parent.loadFiles(loadedFiles.files);
-				}
+					var loadedFiles = element[0].firstChild.files;
+					scope.$parent.loadFiles(loadedFiles);
+				};
 
 				element.bind('change', function (event) {
 					scope.handleFilesonChange(event);
 				});
 
-				element.bind('click', function (event) {
+				element.bind('click', function () {
 					var elem = angular.element('input');
 					if (elem[1] !== undefined) {
 						elem[1].click();

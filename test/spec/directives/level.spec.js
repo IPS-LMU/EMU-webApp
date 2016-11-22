@@ -138,7 +138,7 @@ describe('Directive: level', function () {
      expect(elm.isolateScope()).toBeDefined();
      spyOn(scope.vs, 'setcurMouseItem');
      spyOn(elm.isolateScope(), 'drawLevelMarkup');
-     elm.trigger('mouseleave');
+     elm.triggerHandler('mouseleave');
      expect(scope.vs.setcurMouseItem).toHaveBeenCalledWith(undefined, undefined, undefined);
      expect(elm.isolateScope().drawLevelMarkup).toHaveBeenCalled();
    });

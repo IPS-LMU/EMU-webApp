@@ -8,7 +8,7 @@ describe('Worker: wavParserWorker', function() {
   
   beforeEach(function(){
     var DummyWorker = function() {};
-    worker = new wavParserWorker(DummyWorker);    
+    worker = new wavParserWorker(DummyWorker);
     // mock the global scope for the worker thread.
     mockGlobal = {
       postMessage: jasmine.createSpy('postMessage')
