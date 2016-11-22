@@ -120,8 +120,8 @@ module.exports = function (config) {
     // Uncomment the following lines if you are using grunt's server to run the tests
     proxies: {
       // '/': 'http://localhost:9000/'
-      '/img/': '/base/app/img/'
-      // '/assets/': '/base/app/img/assets/'
+      '/img/': '/base/app/img/',
+      '/assets/': '/base/app/assets/'
       // '/NEWS.md': 'http://localhost:9000/NEWS.md'
     },
     // // URL root prevent conflicts with the site root
