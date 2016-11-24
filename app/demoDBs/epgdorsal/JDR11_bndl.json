@@ -51,6 +51,14 @@
        {
         "name": "Phonetic",
         "value": "i"
+       },
+       {
+        "name": "Links",
+        "value": ""
+       },
+       {
+        "name": "Rechts",
+        "value": ""
        }
       ]
      },
@@ -62,6 +70,14 @@
        {
         "name": "Phonetic",
         "value": "x"
+       },
+       {
+        "name": "Links",
+        "value": ""
+       },
+       {
+        "name": "Rechts",
+        "value": ""
        }
       ]
      },
@@ -73,6 +89,14 @@
        {
         "name": "Phonetic",
         "value": "U"
+       },
+       {
+        "name": "Links",
+        "value": ""
+       },
+       {
+        "name": "Rechts",
+        "value": ""
        }
       ]
      }
