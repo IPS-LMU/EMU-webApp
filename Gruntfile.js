@@ -414,7 +414,7 @@ module.exports = function (grunt) {
     ngtemplates: {
       dist: {
         options: {
-          module: 'bliApp',
+          module: 'emuwebApp',
           htmlmin: '<%= htmlmin.dist.options %>',
           usemin: 'scripts/scripts.js'
         },
@@ -456,7 +456,22 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '*.html',
             'images/{,*/}*.{webp}',
-            'styles/fonts/{,*/}*.*'
+            'img/*.svg',
+            'styles/fonts/{,*/}*.*',
+            'configFiles/{,*/}*.*',
+            'schemaFiles/*.json',
+            'scripts/workers/*.js',
+            'demoDBs/{,*/}*.*',
+            'background.js',
+            'manifest.json',
+            'assets/EMU-webAppEmu.svg',
+            'assets/EMU-webAppIcon-roundCorners.svg',
+            'assets/apple*.png',
+            'assets/favicon*.png',
+            // 'styles/external/bootstrap-combined.min.css',
+            'styles/images/rightSideMenuBtn.png',
+            'manual/**/*.{md,gif,svg,json}',
+            'NEWS.md'
           ]
         }, {
           expand: true,
