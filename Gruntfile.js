@@ -16,7 +16,8 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn'
+    cdnify: 'grunt-google-cdn',
+    protractor: 'grunt-protractor-runner'
   });
 
   var serveStatic = require('serve-static'); // Connect 3 no longer uses connect.static
@@ -502,6 +503,13 @@ module.exports = function (grunt) {
       }
     },
 
+    protractor: {
+        options: {
+            keepAlive: true,
+            configFile: 'protractor.conf.js'
+        },
+        run: {}
+    },
 
     json2sass: {
 		files: {

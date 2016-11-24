@@ -1,113 +1,81 @@
-function selectOption(selector, item) {
-	var selectList, desiredOption;
-
-	selectList = this.findElement(selector);
-	selectList.click();
-
-	selectList.findElements(protractor.By.tagName('option'))
-		.then(function findMatchingOption(options) {
-			options.some(function (option) {
-				option.getText().then(function doesOptionMatch(text) {
-					if (item === text) {
-						desiredOption = option;
-						return true;
-					}
-				});
-			});
-		})
-		.then(function clickOption() {
-			if (desiredOption) {
-				desiredOption.click();
-			}
-		});
-}
 
 // tests for spectro Settings
 describe('E2E: spectrogram settings', function () {
 
-	var ptor;
-
-	// beforeEach it
-	beforeEach(function () {
-		ptor = protractor.getInstance();
-	});
-
-	// afterEach it
-	afterEach(function () {});
 
 	/////////////////////////////////
 	// start: test different window functions
 
 	it('should be able to set window Func to BARLETT', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'BARLETT');
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="BARTLETT"]').click();
 		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to BARLETTHANN', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'BARLETTHANN');
-		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="BARTLETTHANN"]').click();
+        element(by.id('emuwebapp-modal-save')).click();
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to BLACKMAN', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'BLACKMAN');
-		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="BLACKMAN"]').click();
+        element(by.id('emuwebapp-modal-save')).click();
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to COSINE', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'COSINE');
-		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="COSINE"]').click();
+        element(by.id('emuwebapp-modal-save')).click();
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to HAMMING', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'HAMMING');
-		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="HAMMING"]').click();
+        element(by.id('emuwebapp-modal-save')).click();
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to HANN', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'HANN');
-		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="HANN"]').click();
+        element(by.id('emuwebapp-modal-save')).click();
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to LANCZOS', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'LANCZOS');
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="LANCZOS"]').click();
 		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to RECTANGULAR', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'RECTANGULAR');
-		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="RECTANGULAR"]').click();
+        element(by.id('emuwebapp-modal-save')).click();
+		browser.sleep(90);
 	});
 
 	it('should be able to set window Func to TRIANGULAR', function () {
 		element(by.id('spectSettingsBtn')).click();
-		ptor.selectOption = selectOption.bind(ptor);
-		ptor.selectOption(by.id('selWindowInfo'), 'TRIANGULAR');
-		element(by.id('emuwebapp-modal-save')).click();
-		ptor.sleep(90);
+        var select = element(by.model('selWindowInfo.name'));
+        select.$('[label="TRIANGULAR"]').click();
+        element(by.id('emuwebapp-modal-save')).click();
+		browser.sleep(90);
 	});
 
 	// end: test different window functions
@@ -148,7 +116,7 @@ describe('E2E: spectrogram settings', function () {
 		element(by.model('modalVals.rangeTo')).sendKeys('8000');
 		element(by.id('emuwebapp-modal-save')).click();
 		var ele = by.model('filterText');
-		expect(ptor.isElementPresent(ele)).toBe(true);
+		expect(browser.isElementPresent(ele)).toBe(true);
 	});
 
 	it('should be able to set view range of spectrogram settings bottom limit to 2000 Hz', function () {
@@ -157,7 +125,7 @@ describe('E2E: spectrogram settings', function () {
 		element(by.model('modalVals.rangeFrom')).sendKeys('1000');
 		element(by.id('emuwebapp-modal-save')).click();
 		var ele = by.model('filterText');
-		expect(ptor.isElementPresent(ele)).toBe(true);
+		expect(browser.isElementPresent(ele)).toBe(true);
 	});
 	// end: test rangeTo/rangeFrom
 	/////////////////////////////////////
@@ -170,7 +138,7 @@ describe('E2E: spectrogram settings', function () {
 		element(by.model('modalVals.dynamicRange')).sendKeys('50');
 		element(by.id('emuwebapp-modal-save')).click();
 		var ele = by.model('filterText');
-		expect(ptor.isElementPresent(ele)).toBe(true);
+		expect(browser.isElementPresent(ele)).toBe(true);
 	});
 
 	it('should be able to set dynamic range to 90', function () {
@@ -179,7 +147,7 @@ describe('E2E: spectrogram settings', function () {
 		element(by.model('modalVals.dynamicRange')).sendKeys('90');
 		element(by.id('emuwebapp-modal-save')).click();
 		var ele = by.model('filterText');
-		expect(ptor.isElementPresent(ele)).toBe(true);
+		expect(browser.isElementPresent(ele)).toBe(true);
 	});
 
 	// end: test dynamic range

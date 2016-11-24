@@ -2,7 +2,7 @@
 exports.config = {
   // Do not start a Selenium Standalone sever - only run this using chrome.
   directConnect: true,
-  chromeDriver: './node_modules/protractor/selenium/chromedriver',
+  chromeDriver: '/usr/local/lib/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25', //
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
@@ -14,9 +14,11 @@ exports.config = {
 
   },
 
+
+  // baseUrl: 'http://localhost:9000/',
   // Spec patterns are relative to the current working directly when
   // protractor is called.
-  specs: ['test/e2e/**/**.spec.js'],
+  specs: ['test/e2e/**/*.spec.js'],
 
   // Options to be passed to Jasmine-node.
   jasmineNodeOpts: {

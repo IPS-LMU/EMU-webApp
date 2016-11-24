@@ -1,21 +1,20 @@
 // tests for Utterence filter
 describe('navigation', function () {
-
-	var ptor;
+	var i;
 
 	browser.get('http://127.0.0.1:9000/');
 
 	// beforeEach it
-	beforeEach(function () {
-		ptor = protractor.getInstance();
-		browser.manage().logs().get('browser').then(function (browserLog) {
-			// expect(browserLog.length).toEqual(0);
-			// Uncomment to actually see the log.
-			if(browserLog.length !== 0){
-				//console.log('log: ' + require('util').inspect(browserLog));
-			}
-		});
-	});
+	// beforeEach(function () {
+	// 	// browser = protractor.getInstance();
+	// 	browser.manage().logs().get('browser').then(function (browserLog) {
+	// 		// expect(browserLog.length).toEqual(0);
+	// 		// Uncomment to actually see the log.
+	// 		if(browserLog.length !== 0){
+	// 			//console.log('log: ' + require('util').inspect(browserLog));
+	// 		}
+	// 	});
+	// });
 
 
 	// afterEach it
@@ -24,9 +23,9 @@ describe('navigation', function () {
 	});
 
 	it('should load about modal', function () {
-		expect(ptor.isElementPresent(by.id('aboutBtn'))).toBe(true);
+		expect(browser.isElementPresent(by.id('aboutBtn'))).toBe(true);
 		element(by.id('aboutBtn')).click();
-		heading = ptor.findElement(protractor.By.id('modalHeading'));
+		var heading = browser.findElement(protractor.By.id('modalHeading'));
 		expect(heading.getText()).toEqual('EMU-webApp Help');
 		element(by.id('modalCancelBtn')).click('EMU-webApp');
 	});
@@ -41,8 +40,8 @@ describe('navigation', function () {
 	it('should load utterance msajc010', function () {
 		element.all(by.css('.emuwebapp-bundle-item')).get(0).click();
 		element(by.model('filterText')).sendKeys('');
-		expect(ptor.isElementPresent(by.id('Phonetic'))).toBe(true);
-		expect(ptor.isElementPresent(by.id('Tone'))).toBe(true);
+		expect(browser.isElementPresent(by.id('Phonetic'))).toBe(true);
+		expect(browser.isElementPresent(by.id('Tone'))).toBe(true);
 	});
 
 	it('should close submenu with button', function () {
@@ -50,33 +49,33 @@ describe('navigation', function () {
 	});
 
 	it('should open & close submenu with shortcuts', function () {
-		ptor.actions().sendKeys('o').perform();
-		ptor.actions().sendKeys('o').perform();
+		browser.actions().sendKeys('o').perform();
+        browser.actions().sendKeys('o').perform();
 	});
 
 	it('should open & close right submenu with shortcuts', function () {
-		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+		browser.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+		browser.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
 	});
 
 	it('should change loaded timeline view', function () {
-		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(600);
+		browser.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+		browser.sleep(600);
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
-		ptor.sleep(1200);
+		browser.sleep(1200);
 	});
 
 	it('should change loaded timeline view back to orig', function () {
-		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
-		ptor.sleep(600);
+		browser.actions().keyDown(protractor.Key.SHIFT).sendKeys('o').keyUp(protractor.Key.SHIFT).perform();
+		browser.sleep(600);
 		element.all(by.css('.emuwebapp-perspLi')).get(0).click();
-		ptor.sleep(1200);
+		browser.sleep(1200);
 	});
 
 	it('should test all resize buttons', function () {
 		var elem = element.all(by.id('emuwebapp-level-button-resize'));
 		expect(elem.count()).toBe(2);
-		for (var i = 0; i < 2; i++) {
+		for (i = 0; i < 2; i++) {
 			var button = elem.get(i);
 			button.click();
 			button.click();
@@ -84,14 +83,14 @@ describe('navigation', function () {
 	});
 
 	it('should test contour correction', function () {
-		for (var i = 0; i < 2; i++) {
+		for (i = 0; i < 2; i++) {
 			element(by.id('zoomInBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
 
 		// on first
-		ptor.actions().sendKeys('1').perform();
-		ptor.actions()
+		browser.actions().sendKeys('1').perform();
+        browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -61,
@@ -143,8 +142,8 @@ describe('navigation', function () {
 
 
 		// on second
-		ptor.actions().sendKeys('2').perform();
-		ptor.actions()
+		browser.actions().sendKeys('2').perform();
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: 61,
@@ -202,20 +201,20 @@ describe('navigation', function () {
 
 	it('should undo last 2 changes', function () {
 		var elem = element.all(by.css('.emuwebapp-main'));
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem.get(0))
 			.click()
 			.perform();
-		ptor.actions().sendKeys('z').perform();
+		browser.actions().sendKeys('z').perform();
 
-		ptor.actions().sendKeys('z').perform();
+		browser.actions().sendKeys('z').perform();
 
 	});
 
 	it('should move dividing pane up and down', function () {
 		var elem = element.all(by.css('.emuwebapp-split-handler'));
 		expect(elem.count()).toBe(1);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem.get(0))
 			.click()
 			.mouseDown()
@@ -226,7 +225,7 @@ describe('navigation', function () {
 			.mouseUp()
 			.perform();
 
-		ptor.actions()
+        browser.actions()
 			.mouseMove(elem.get(0))
 			.click()
 			.mouseDown()
@@ -237,7 +236,7 @@ describe('navigation', function () {
 			.mouseUp()
 			.perform();
 
-		ptor.actions()
+        browser.actions()
 			.mouseMove(elem.get(0))
 			.click()
 			.mouseDown()
@@ -250,57 +249,57 @@ describe('navigation', function () {
 	});
 
 	it('should tab in both directions with arrow keys and tab (shift tab)', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
-		};
-		for (var i = 0; i < 3; i++) {
+		}
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
     var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove( { x: -200, y: 0 }).click()
 			.click()
 			.perform();
-		for (var i = 0; i < 3; i++) {
-		        ptor.actions().sendKeys(protractor.Key.TAB).perform();
-		 };
-		    for (var i = 0; i < 3; i++) {
-		        ptor.actions().sendKeys(protractor.Key.ARROW_RIGHT).perform();
-		 };
-		    for (var i = 0; i < 3; i++) {
-		        ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.TAB).keyUp(protractor.Key.SHIFT).perform();
-		 };
-		    for (var i = 0; i < 3; i++) {
-		        ptor.actions().sendKeys(protractor.Key.ARROW_LEFT).perform();
-		 };
+		for (i = 0; i < 3; i++) {
+		        browser.actions().sendKeys(protractor.Key.TAB).perform();
+		 }
+		    for (i = 0; i < 3; i++) {
+		        browser.actions().sendKeys(protractor.Key.ARROW_RIGHT).perform();
+		 }
+		    for (i = 0; i < 3; i++) {
+		        browser.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.TAB).keyUp(protractor.Key.SHIFT).perform();
+		 }
+		    for (i = 0; i < 3; i++) {
+		        browser.actions().sendKeys(protractor.Key.ARROW_LEFT).perform();
+		 }
 	});
 
 	it('should move around with zoom (with shortcuts)', function () {
-		for (var i = 0; i < 5; i++) {
-			ptor.actions().sendKeys('w').perform();
+		for (i = 0; i < 5; i++) {
+			browser.actions().sendKeys('w').perform();
 		}
 
-		for (var i = 0; i < 5; i++) {
-			ptor.actions().sendKeys('a').perform();
+		for (i = 0; i < 5; i++) {
+			browser.actions().sendKeys('a').perform();
 		}
 
-		for (var i = 0; i < 5; i++) {
-			ptor.actions().sendKeys('d').perform();
+		for (i = 0; i < 5; i++) {
+			browser.actions().sendKeys('d').perform();
 		}
 
-		for (var i = 0; i < 5; i++) {
-			ptor.actions().sendKeys('s').perform();
+		for (i = 0; i < 5; i++) {
+			browser.actions().sendKeys('s').perform();
 		}
 	});
 
 	it('should move around with zoom (with navigationbar)', function () {
-		for (var i = 0; i < 3; i++) {
-			ptor.actions().sendKeys('w').perform();
+		for (i = 0; i < 3; i++) {
+			browser.actions().sendKeys('w').perform();
 		}
 		var elem = element.all(by.css('.emuwebapp-preview-canvas-markup'));
 		expect(elem.count()).toBe(1);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem.get(0))
 			.click()
 			.mouseDown()
@@ -311,7 +310,7 @@ describe('navigation', function () {
 			.mouseUp()
 			.perform();
 
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
 				x: -200,
@@ -326,7 +325,7 @@ describe('navigation', function () {
 			.mouseUp()
 			.perform();
 
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
 				x: -150,
@@ -341,7 +340,7 @@ describe('navigation', function () {
 			.mouseUp()
 			.perform();
 
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
 				x: -100,
@@ -356,7 +355,7 @@ describe('navigation', function () {
 			.mouseUp()
 			.perform();
 
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem.get(0))
 			.mouseMove({
 				x: -50,
@@ -373,55 +372,55 @@ describe('navigation', function () {
 	});
 
 	it('should move around with zoom', function () {
-		for (var i = 0; i < 5; i++) {
+		for (i = 0; i < 5; i++) {
 			element(by.id('zoomInBtn')).click();
 		}
 
-		for (var i = 0; i < 5; i++) {
+		for (i = 0; i < 5; i++) {
 			element(by.id('zoomLeftBtn')).click();
 		}
 
-		for (var i = 0; i < 5; i++) {
+		for (i = 0; i < 5; i++) {
 			element(by.id('zoomRightBtn')).click();
 		}
 
-		for (var i = 0; i < 5; i++) {
+		for (i = 0; i < 5; i++) {
 			element(by.id('zoomOutBtn')).click();
 		}
 	});
 
 	it('should overzoom to check boundaries for in and out', function () {
-		for (var i = 0; i < 30; i++) {
+		for (i = 0; i < 30; i++) {
 			element(by.id('zoomInBtn')).click();
-		};
+		}
 
-		for (var i = 0; i < 30; i++) {
+		for (i = 0; i < 30; i++) {
 			element(by.id('zoomOutBtn')).click();
-		};
+		}
 	});
 
 	it('should overzoom to check boundaries for left and right', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
-		};
+		}
 
-		for (var i = 0; i < 30; i++) {
+		for (i = 0; i < 30; i++) {
 			element(by.id('zoomLeftBtn')).click();
-		};
+		}
 
-		for (var i = 0; i < 40; i++) {
+		for (i = 0; i < 40; i++) {
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 	});
 
 
 	it('should move a boundary on SEGMENT level', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.click()
 			.keyDown(protractor.Key.SHIFT)
@@ -434,12 +433,12 @@ describe('navigation', function () {
 	});
 
 	it('should move a segment on SEGMENT level', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.click()
 			.keyDown(protractor.Key.ALT)
@@ -453,7 +452,7 @@ describe('navigation', function () {
 
 	it('should move a element on EVENT level', function () {
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.click()
 			.mouseMove({
@@ -470,28 +469,28 @@ describe('navigation', function () {
 	});
 
 	it('should open, rename and save on SEGMENT', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.doubleClick()
 			.perform();
 		var area = by.css('.emuwebapp-label-edit');
-		expect(ptor.isElementPresent(area)).toBe(true);
+		expect(browser.isElementPresent(area)).toBe(true);
 		element(by.css('.emuwebapp-label-edit')).sendKeys('TEST');
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
 	it('should insert a new boundary on SEGMENT (should work)', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -50,
@@ -499,16 +498,16 @@ describe('navigation', function () {
 			})
 			.click()
 			.perform();
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
 	it('should insert a new segment on SEGMENT level', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -80,
@@ -521,21 +520,21 @@ describe('navigation', function () {
 			})
 			.mouseUp()
 			.perform();
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
 	it('should insert a new element on EVENT level', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.click()
 			.perform();
-		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -50,
@@ -543,16 +542,16 @@ describe('navigation', function () {
 			})
 			.click()
 			.perform();
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
 	it('should open, rename and save on EVENT', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -50,
@@ -561,18 +560,18 @@ describe('navigation', function () {
 			.doubleClick()
 			.perform();
 		var area = by.css('.emuwebapp-label-edit');
-		expect(ptor.isElementPresent(area)).toBe(true);
+		expect(browser.isElementPresent(area)).toBe(true);
 		element(by.css('.emuwebapp-label-edit')).sendKeys('testElem');
-		ptor.actions().sendKeys(protractor.Key.ENTER).perform();
+		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	});
 
 	it('should delete new element from EVENT level', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(1);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -50,
@@ -584,12 +583,12 @@ describe('navigation', function () {
 
 
 	it('should delete segment boundary from SEGMENT level', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -50,
@@ -597,16 +596,16 @@ describe('navigation', function () {
 			})
 			.click()
 			.perform();
-		ptor.actions().sendKeys(protractor.Key.BACK_SPACE).perform();
+		browser.actions().sendKeys(protractor.Key.BACK_SPACE).perform();
 	});
 
 	it('should delete segment from SEGMENT level', function () {
-		for (var i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			element(by.id('zoomInBtn')).click();
 			element(by.id('zoomRightBtn')).click();
-		};
+		}
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -50,
@@ -614,19 +613,19 @@ describe('navigation', function () {
 			})
 			.click()
 			.perform();
-		ptor.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.BACK_SPACE).keyUp(protractor.Key.SHIFT).perform();
+		browser.actions().keyDown(protractor.Key.SHIFT).sendKeys(protractor.Key.BACK_SPACE).keyUp(protractor.Key.SHIFT).perform();
 	});
 
 	it('should undo last 10 changes', function () {
-		for (var i = 0; i < 10; i++) {
-			ptor.actions().sendKeys('z').perform();
+		for (i = 0; i < 10; i++) {
+			browser.actions().sendKeys('z').perform();
 
-		};
+		}
 	});
 
 	it('should select a range in the viewport', function () {
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions()
+		browser.actions()
 			.mouseMove(elem)
 			.mouseMove({
 				x: -250,
@@ -647,7 +646,7 @@ describe('navigation', function () {
 
 	it('should play sound in selected viewport', function () {
 		var elem = element.all(by.css('.emuwebapp-level-markup')).get(0);
-		ptor.actions().mouseMove(elem).mouseMove({
+		browser.actions().mouseMove(elem).mouseMove({
 			x: -250,
 			y: 0
 		}).mouseDown().mouseMove({
@@ -655,7 +654,7 @@ describe('navigation', function () {
 			y: 0
 		}).mouseUp().perform();
 		element(by.id('playSelBtn')).click();
-		ptor.sleep(200);
+		browser.sleep(200);
 	});
 
 	it('should play sound in zoomed viewport', function () {
@@ -663,12 +662,12 @@ describe('navigation', function () {
 		element(by.id('zoomInBtn')).click();
 		element(by.id('zoomLeftBtn')).click();
 		element(by.id('playViewBtn')).click();
-		ptor.sleep(900);
+		browser.sleep(900);
 	});
 
 	it('should play complete sound', function () {
 		element(by.id('playAllBtn')).click();
-		ptor.sleep(2950);
+		browser.sleep(2950);
 	});
 
 

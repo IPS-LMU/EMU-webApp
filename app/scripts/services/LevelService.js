@@ -355,11 +355,11 @@ angular.module('emuwebApp')
 			// find labelIdx
 			var labelIdx = getLabelIdx(attrDefName, lastEventClick.labels);
 
-			var elem = element.find('canvas').context.getContext('2d');
-			var clientWidth = elem.canvas.clientWidth;
-			var clientOffset = elem.canvas.offsetLeft;
-			var top = elem.canvas.offsetTop;
-			var height = elem.canvas.clientHeight - 1;
+			var elem = element.find('canvas')[0];
+			var clientWidth = elem.clientWidth;
+			var clientOffset = elem.offsetLeft;
+			var top = elem.offsetTop;
+			var height = elem.clientHeight - 1;
 			var len = 10;
 			if (labelIdx !== undefined) {
 				if (lastEventClick.labels[labelIdx].value.length > 0) {

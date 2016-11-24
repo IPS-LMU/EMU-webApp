@@ -5,6 +5,7 @@
 ### new features / performance tweaks / improvements
 
 - time anchors implemented for automatic zooming
+- updated all dependencies to current versions (incl. AngularJS & co.)
 
 ### bug fixes
 
