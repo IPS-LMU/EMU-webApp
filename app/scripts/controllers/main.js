@@ -58,22 +58,22 @@ angular.module('emuwebApp')
 		});
 
 		// bind focus check for mouse on window and document ( mouse inside )
-		angular.element($window).bind('blur', function (e) {
+		angular.element($window).bind('blur', function () {
 			viewState.focusOnEmuWebApp = false;
 		});
 
 		// bind focus check for mouse on window and document ( mouse inside )
-		angular.element($document).bind('blur', function (e) {
+		angular.element($document).bind('blur', function () {
 			viewState.focusOnEmuWebApp = false;
 		});
 
 		// bind blur check for mouse on window and document ( mouse outside )
-		angular.element($window).bind('focus', function (e) {
+		angular.element($window).bind('focus', function () {
 			viewState.focusOnEmuWebApp = true;
 		});
 
 		// bind blur check for mouse on window and document ( mouse outside )
-		angular.element($document).bind('focus', function (e) {
+		angular.element($document).bind('focus', function () {
 			viewState.focusOnEmuWebApp = true;
 		});
 
@@ -102,7 +102,7 @@ angular.module('emuwebApp')
 		// listens
 
 		// listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
-		$scope.$on('connectionDisrupted', function (event, args) {
+		$scope.$on('connectionDisrupted', function () {
 			appStateService.resetToInitState();
 		});
 
@@ -555,7 +555,7 @@ angular.module('emuwebApp')
 							name: newName,
 							type: "string"
 						}
-					}
+					};
 					viewState.setCurLevelAttrDefs(leveldef);
 				}
 				LevelService.insertLevel(level, length, viewState.curPerspectiveIdx);
@@ -595,7 +595,7 @@ angular.module('emuwebApp')
 							name: newName,
 							type: "string"
 						}
-					}
+					};
 					viewState.setCurLevelAttrDefs(leveldef);
 				}
 				LevelService.insertLevel(level, length, viewState.curPerspectiveIdx);
@@ -715,7 +715,7 @@ angular.module('emuwebApp')
 						if (validRes === true) {
 							ConfigProviderService.curDbConfig = data;
 							viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-							validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig)
+							validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
 
 							if (validRes === true) {
 								// then get the DBconfigFile
