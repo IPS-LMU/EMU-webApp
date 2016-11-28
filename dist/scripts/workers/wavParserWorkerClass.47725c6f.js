@@ -114,7 +114,7 @@ wavParserWorker.prototype = {
 			curBuffer = buf.subarray(curBinIdx, 4);
 			curBufferView = new Uint32Array(curBuffer);
 			wavRep.Subchunk1Size = curBufferView[0];
-			console.log([16,18].indexOf(19))
+			// console.log([16,18].indexOf(19))
 			if ([16,18].indexOf(wavRep.Subchunk1Size) === -1) {
 				// console.error('Wav read error: Subchunk1Size not 16');
 				return ({
@@ -274,6 +274,7 @@ wavParserWorker.prototype = {
 		try {
 			blob = new Blob([this.getWorkerScript()], {type: 'application/javascript'});
 		} catch (e) { // Backwards-compatibility
+			console.log(e);
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 			blob = new BlobBuilder();
 			blob.append(textGridParserWorker);

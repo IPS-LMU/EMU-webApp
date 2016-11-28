@@ -51,6 +51,14 @@
        {
         "name": "Phonetic",
         "value": "O"
+       },
+       {
+        "name": "Links",
+        "value": ""
+       },
+       {
+        "name": "Rechts",
+        "value": ""
        }
       ]
      },
@@ -62,6 +70,14 @@
        {
         "name": "Phonetic",
         "value": "k"
+       },
+       {
+        "name": "Links",
+        "value": ""
+       },
+       {
+        "name": "Rechts",
+        "value": ""
        }
       ]
      },
@@ -73,6 +89,14 @@
        {
         "name": "Phonetic",
         "value": "H"
+       },
+       {
+        "name": "Links",
+        "value": ""
+       },
+       {
+        "name": "Rechts",
+        "value": ""
        }
       ]
      },
@@ -84,6 +108,14 @@
        {
         "name": "Phonetic",
         "value": "I"
+       },
+       {
+        "name": "Links",
+        "value": ""
+       },
+       {
+        "name": "Rechts",
+        "value": ""
        }
       ]
      }

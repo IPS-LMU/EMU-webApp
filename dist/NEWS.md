@@ -1,5 +1,14 @@
 # What's New
 
+## Version 0.1.02.9000
+
+### new features / performance tweaks / improvements
+
+- time anchors implemented for automatic zooming
+- updated all dependencies to current versions (incl. AngularJS & co.)
+
+### bug fixes
+
 ## Version 0.1.02
 
 ### new features / performance tweaks / improvements
