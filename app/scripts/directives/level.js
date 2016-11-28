@@ -12,7 +12,7 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attr) {
 				// select the needed DOM items from the template
 				var canvas = element.find('canvas');
-				scope.open = attr.open;
+				scope.open = true; // attr.open; // not using attr.open any more because minification changes open="true" to open
 				scope.vs = viewState;
 				scope.hists = HistoryService;
 				scope.cps = ConfigProviderService;
@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('vs.curMouseX', function (newValue, oldValue) {
+				scope.$watch('vs.curMouseX', function () {
 					// only repaint if mouse over current level
 					if (scope.vs.getcurMouseLevelName() === scope.level.name) {
 						scope.drawLevelDetails();
@@ -55,7 +55,7 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('vs.curClickLevelName', function (newValue, oldValue) {
+				scope.$watch('vs.curClickLevelName', function (newValue) {
 					if (newValue !== undefined) {
 						scope.drawLevelMarkup();
 					}
@@ -131,7 +131,7 @@ angular.module('emuwebApp')
 						};
 					} else {
 						curColor = {
-							'background-color': 'white',
+							'background-color': 'white'
 						};
 					}
 					return curColor;
@@ -156,14 +156,12 @@ angular.module('emuwebApp')
 
 				/**
 				 * draw level details
-				 * @param levelDetails
 				 */
 				scope.drawLevelDetails = function () {
 
 					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
-					var isOpen = element.parent().css('height') === '25px' ? false : true;
-
+					var isOpen = !element.parent().css('height') === '25px';// ? false : true;
 					if ($.isEmptyObject(scope.level)) {
 						//console.log('undef levelDetails');
 						return;
@@ -180,7 +178,7 @@ angular.module('emuwebApp')
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
 					//predef vars
-					var sDist, posS, posE, horizontalText;
+					var sDist, posS, posE;
 
 					sDist = scope.vs.getSampleDist(canvas[0].width);
 
@@ -199,9 +197,6 @@ angular.module('emuwebApp')
 						fontScaleService.drawUndistortedTextTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, ConfigProviderService.design.font.small.family, 4, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.black, true);
 					}
 
-					var segMId = scope.vs.getcurMouseItem();
-					var segCId = scope.vs.getcurClickItems();
-					var levelId = scope.vs.getcurClickLevelName();
 					var curID = -1;
 
 					// calculate generic max with of single char (m char used)
@@ -303,7 +298,7 @@ angular.module('emuwebApp')
 							if (curEvt.samplePoint > scope.vs.curViewPort.sS && curEvt.samplePoint < scope.vs.curViewPort.eS) {
 								perc = Math.round(scope.vs.getPos(canvas[0].width, curEvt.samplePoint) + (sDist / 2));
 								// get label
-								var curLabVal;
+								var curLabVal = undefined;
 								curEvt.labels.forEach(function (lab) {
 									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;

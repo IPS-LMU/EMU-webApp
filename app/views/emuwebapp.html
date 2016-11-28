@@ -59,7 +59,7 @@
                     <div style="margin-top: 25px;">
                         <ul>
                             <li ng-repeat="level in dataServ.getLevelOrder(cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order) | levelsFilter track by $index">
-                                <level open='true' level="level" idx="$index" order="{{$index}}" id="{{level.name}}"></level>
+                                <level open level="level" idx="$index" order="{{$index}}" id="{{level.name}}"></level>
                             </li>
                         </ul>
                     </div>
