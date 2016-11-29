@@ -142,6 +142,11 @@
 					"signalCanvasName": "SPEC",
 					"ssffTrackName": "FORMANTS"
 				}],
+				"minMaxValLims": [{
+					"ssffTrackName": "fundFreq",
+					"minVal": 50,
+					"maxVal": 100
+				}],
 				"contourLims": [{
 					"ssffTrackName": "FORMANTS",
 					"minContourIdx": 0,

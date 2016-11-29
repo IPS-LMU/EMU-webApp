@@ -44,6 +44,7 @@ describe('Directive: ssffTrack', function () {
         spyOn(scope.dhs, 'drawMinMaxAndName');
         spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: 'test'});
         spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({_minVal: 0, _maxVal: 10});
+        spyOn(scope.cps, 'getValueLimsOfTrack').and.returnValue({minVal: 50, maxVal: 100});
         scope.ssffds.data = [1, 2, 3, 4, 5];
         scope.drawSsffTrackMarkup();
         expect(scope.dhs.drawMovingBoundaryLine).toHaveBeenCalled();

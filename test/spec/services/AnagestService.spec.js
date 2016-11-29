@@ -3,7 +3,7 @@
 describe('Service: AnagestService', function () {
 
 
-	var deferred, $rootScope;
+	var $rootScope;
 	var mockDialogService = {};
 
 
@@ -18,7 +18,7 @@ describe('Service: AnagestService', function () {
 		$rootScope = _$rootScope_;
 
 		// mock open function 
-		mockDialogService.open = function (p1, p2, p3) {
+		mockDialogService.open = function (p1) {
 			var deferred = $q.defer();
 			if(p1 === 'views/SelectLabelModal.html'){
 				deferred.resolve(0);
@@ -110,7 +110,7 @@ describe('Service: AnagestService', function () {
 	    spyOn(HistoryService, 'updateCurChangeObj');
 	    spyOn(HistoryService, 'addCurChangeObjToUndoStack');
 	    spyOn(LinkService, 'insertLinksTo');
-	    spyOn(LevelService, 'getLevelDetails').and.returnValue({level: {name: 'test', items: [ {id:1}, {id:2}]}});
+	    spyOn(LevelService, 'getLevelDetails').and.returnValue({name: 'test', items: [ {id:1}, {id:2}]});
 	    spyOn(LevelService, 'getAllLabelsOfLevel').and.returnValue({});
 	    spyOn(viewState, 'getcurClickLevelName').and.returnValue('Phonetic');
 	    spyOn(viewState, 'getItemsInSelection').and.returnValue([]);

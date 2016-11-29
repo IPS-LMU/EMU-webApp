@@ -107,9 +107,10 @@ angular.module('emuwebApp')
 									var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
 									var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 									var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
-									var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
+									var minMaxCountourLims = ConfigProviderService.getContourLimsOfTrack(tr.name);
+                                    var minMaxValLims = ConfigProviderService.getValueLimsOfTrack(tr.name);
 									// draw values
-									scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+									scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxCountourLims, minMaxValLims);
 								}
 							});
 							scope.assTrackName = '';
@@ -120,9 +121,11 @@ angular.module('emuwebApp')
 								var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 								var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 
-								var minMaxLims = ConfigProviderService.getLimsOfTrack(tr.name);
+								var minMaxContourLims = ConfigProviderService.getContourLimsOfTrack(tr.name);
+                                var minMaxValLims = ConfigProviderService.getValueLimsOfTrack(tr.name);
+                                console.log(minMaxValLims);
 								// draw values
-								scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxLims);
+								scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxContourLims, minMaxValLims);
 							}
 						}
 					} else {
@@ -133,7 +136,7 @@ angular.module('emuwebApp')
 				/**
 				 * draw values onto canvas
 				 */
-				scope.drawValues = function (viewState, canvas, config, col, sR, sT, minMaxLims) {
+				scope.drawValues = function (viewState, canvas, config, col, sR, sT, minMaxContourLims, minMaxValLims) {
 
 					var ctx = canvas.getContext('2d');
 					var minVal, maxVal;
@@ -145,6 +148,12 @@ angular.module('emuwebApp')
 						minVal = col._minVal;
 						maxVal = col._maxVal;
 					}
+					// if minMaxValLims are set use those instead
+					if(!angular.equals(minMaxValLims, {})){
+                        minVal = minMaxValLims.minVal;
+                        maxVal = minMaxValLims.maxVal;
+					}
+
 					var startTimeVP = viewState.getViewPortStartTime();
 					var endTimeVP = viewState.getViewPortEndTime();
 					var colStartSampleNr = Math.round(startTimeVP * sR + sT);
@@ -165,14 +174,14 @@ angular.module('emuwebApp')
 
 
 							// console.log(contourNr);
-							if ($.isEmptyObject(minMaxLims) || (contourNr >= minMaxLims.minContourIdx && contourNr <= minMaxLims.maxContourIdx)) {
+							if ($.isEmptyObject(minMaxContourLims) || (contourNr >= minMaxContourLims.minContourIdx && contourNr <= minMaxContourLims.maxContourIdx)) {
 
 								// set color
-								if ($.isEmptyObject(minMaxLims)) {
+								if ($.isEmptyObject(minMaxContourLims)) {
 									ctx.strokeStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
 									ctx.fillStyle = 'hsl(' + contourNr * (360 / curSampleArrs[0].length) + ',80%, 50%)';
 								} else {
-									var l = (minMaxLims.maxContourIdx - minMaxLims.minContourIdx) + 1;
+									var l = (minMaxContourLims.maxContourIdx - minMaxContourLims.minContourIdx) + 1;
 									ctx.strokeStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
 									ctx.fillStyle = 'hsl(' + contourNr * (360 / l) + ',80%, 50%)';
 								}

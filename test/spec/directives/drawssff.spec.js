@@ -88,13 +88,13 @@ describe('Directive: drawssff', function() {
     it('should handleUpdate', function() {
         setData(); 
         spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: '1'});
-        spyOn(scope.cps, 'getLimsOfTrack').and.returnValue(1);
+        spyOn(scope.cps, 'getContourLimsOfTrack').and.returnValue(1);
         spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({values: [0, 1, 2]});
         spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue(1);
         compileDirective('SPEC');
         expect(elm.isolateScope()).toBeDefined();
         elm.isolateScope().handleUpdate();
-        expect(scope.cps.getLimsOfTrack).toHaveBeenCalledWith('test');
+        expect(scope.cps.getContourLimsOfTrack).toHaveBeenCalledWith('test');
         expect(scope.cps.getSsffTrackConfig).toHaveBeenCalled();
         expect(scope.ssffds.getColumnOfTrack).toHaveBeenCalledWith('test', '1');
         expect(scope.ssffds.getSampleRateAndStartTimeOfTrack).toHaveBeenCalledWith('test');
@@ -103,13 +103,13 @@ describe('Directive: drawssff', function() {
     it('should handleUpdate on other', function() {
         setData(); 
         spyOn(scope.cps, 'getSsffTrackConfig').and.returnValue({name: 'test', columnName: '1'});
-        spyOn(scope.cps, 'getLimsOfTrack').and.returnValue(1);
+        spyOn(scope.cps, 'getContourLimsOfTrack').and.returnValue(1);
         spyOn(scope.ssffds, 'getColumnOfTrack').and.returnValue({values: [0, 1, 2]});
         spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue(1);
         compileDirective('');
         expect(elm.isolateScope()).toBeDefined();
         elm.isolateScope().handleUpdate();
-        expect(scope.cps.getLimsOfTrack).toHaveBeenCalledWith('test');
+        expect(scope.cps.getContourLimsOfTrack).toHaveBeenCalledWith('test');
         expect(scope.cps.getSsffTrackConfig).toHaveBeenCalled();
         expect(scope.ssffds.getColumnOfTrack).toHaveBeenCalledWith('test', '1');
         expect(scope.ssffds.getSampleRateAndStartTimeOfTrack).toHaveBeenCalledWith('test');
@@ -122,7 +122,7 @@ describe('Directive: drawssff', function() {
         expect(elm.isolateScope()).toBeDefined();
         spyOn(scope.vs, 'getViewPortStartTime').and.returnValue(0);
         spyOn(scope.vs, 'getViewPortEndTime').and.returnValue(10);
-        elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1);
+        elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1, 1);
         expect(scope.cps.getContourColorsOfTrack).toHaveBeenCalled();
     });   
     
@@ -138,7 +138,7 @@ describe('Directive: drawssff', function() {
         spyOn(scope.vs, 'getViewPortStartTime').and.returnValue(0);
         spyOn(scope.vs, 'getViewPortEndTime').and.returnValue(10);
         elm.isolateScope().assTrackName = 'FORMANTS';
-        elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1);
+        elm.isolateScope().drawValues(scope.vs, elm[0], scope.cps, {values: [[0, 1, 2, 3]]}, 1, 0, 1, 1);
         expect(scope.cps.getContourColorsOfTrack).toHaveBeenCalled();
     });
      

@@ -96,10 +96,24 @@ angular.module('emuwebApp')
 			return res;
 		};
 
+        /**
+         *
+         */
+        sServObj.getValueLimsOfTrack = function (trackName) {
+            var res = {};
+            angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.minMaxValLims, function (vL) {
+                if (vL.ssffTrackName === trackName) {
+                    res = vL;
+                }
+            });
+
+            return res;
+        };
+
 		/**
 		 *
 		 */
-		sServObj.getLimsOfTrack = function (trackName) {
+		sServObj.getContourLimsOfTrack = function (trackName) {
 			var res = {};
 			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims, function (cL) {
 				if (cL.ssffTrackName === trackName) {
@@ -110,7 +124,8 @@ angular.module('emuwebApp')
 			return res;
 		};
 
-		/**
+
+        /**
 		 *
 		 */
 		sServObj.getContourColorsOfTrack = function (trackName) {

@@ -7,6 +7,7 @@
 - time anchors implemented for automatic zooming
 - updated all dependencies to current versions (incl. AngularJS & co.)
 - removed json2sass dependency as it was unused (using json directly)
+- can now override default auto-scaling of SSFF track contours by adding `EMUwebAppConfig -> perspectives -> signalCanvases -> minMaxValLims` entry in DBconfig.json (GitHub issue #202)
 
 ### bug fixes
 

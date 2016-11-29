@@ -60,11 +60,11 @@ describe('Service: ConfigProviderService', function () {
   /**
    *
    */
-  it('should getLimsOfTrack', inject(function (viewState, ConfigProviderService) {
+  it('should getContourLimsOfTrack', inject(function (viewState, ConfigProviderService) {
     ConfigProviderService.setVals(defaultEmuwebappConfig);
     viewState.curPerspectiveIdx = 0;
     ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases = aeDbConfig.EMUwebAppConfig.perspectives[0].levelCanvases;
-    expect(ConfigProviderService.getLimsOfTrack('SPEC')).toEqual({ });
+    expect(ConfigProviderService.getContourLimsOfTrack('SPEC')).toEqual({ });
   }));
   
   /**
