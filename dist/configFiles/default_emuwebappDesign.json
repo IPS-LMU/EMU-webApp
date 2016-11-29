@@ -1,5 +1,4 @@
 {
-    "/*": "This file will be overwritten. It will be generated out of 'configFiles/default_emuwebappDesign.json' .Please make all necessary changes there.",
     "color": {
         "black": "#000",
         "white": "#fff",
@@ -28,7 +27,7 @@
             "weight": "400"
         },
         "large": {
-            "family": "HelveticaNeue",        
+            "family": "HelveticaNeue",
             "size": "16px",
             "weight": "400"
         },

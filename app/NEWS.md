@@ -1,12 +1,12 @@
 # What's New
 
-## Version 0.1.02.9000
+## Version 0.1.03
 
 ### new features / performance tweaks / improvements
 
 - time anchors implemented for automatic zooming
 - updated all dependencies to current versions (incl. AngularJS & co.)
-- removed json2sass de
+- removed json2sass dependency as it was unused (using json directly)
 
 ### bug fixes
 

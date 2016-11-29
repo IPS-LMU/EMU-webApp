@@ -32,6 +32,21 @@ If `grunt serve` is not working make sure to install the latest dependencies by
 * unit: run `grunt test`
 * protractor: run `grunt e2e`
 
+## Create and deploy new release
+
+These are the steps necessary to create and deploy a new release on [https://ips-lmu.github.io/EMU-webApp/](https://ips-lmu.github.io/EMU-webApp/) (push privileges to GitHub repo required)
+
+* prerequisite: make sure all unit tests and end-to-end test pass
+* prerequisite: also run end-to-end tests on dist build (`grunt serve:dist` followed by `grunt e2e`) & manually inspect the release version
+* update version numbers in `NEWS.md`, `package.json`, `bower.json`
+* update `NEWS.md` to reflect changes (== changelog)
+* `grunt serve:dist` also runs `grunt`'s `build` task so explicitly calling `grunt build` is unnecessary
+* this will have created a new release in the `dist` folder in the root directory of this repo
+* change `<base href="/">` entry in `dist/index.html` to `<base href="/EMU-webApp/">` 
+* push changes made to repo by build process to GitHub: `git push origin master`
+* deploy the `dist` directory by running the subtree push command: `git subtree push --prefix dist origin gh-pages` from the root directory of this repo (see [http://yeoman.io/learning/deployment.html](here) for further details)
+
+
 ## Main authors
 
 **Raphael Winkelmann**
