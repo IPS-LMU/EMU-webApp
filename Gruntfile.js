@@ -552,8 +552,8 @@ module.exports = function (grunt) {
                 },{
                     expand: true,
                     flatten: true,
-                    src: ['dist/views/hint.html'],
-                    dest: 'dist/views/'
+                    src: ['dist/scripts/scripts.js'],
+                    dest: 'dist/scripts/'
                 }]
             }
         },
@@ -628,11 +628,11 @@ module.exports = function (grunt) {
         'cdnify',
         'cssmin',
         'uglify',
+        'replace', // run be 4 file rev to know file name
         'filerev',
         'usemin',
         'htmlmin',
-        'appcache',
-        'replace'
+        'appcache'
     ]);
 
     grunt.registerTask('default', [
