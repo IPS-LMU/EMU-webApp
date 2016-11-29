@@ -11,6 +11,8 @@
 
 ### bug fixes
 
+- fixed bad anagest implementation
+
 ## Version 0.1.02
 
 ### new features / performance tweaks / improvements

@@ -29,15 +29,15 @@ If `grunt serve` is not working make sure to install the latest dependencies by
 * updating `sass` and compass by running `gem update sass` and `gem update compass`
 
 ## Tests
-* unit: run `grunt test`
-* protractor: run `grunt e2e`
+* unit tests: run `grunt test`
+* end-to-end tests using protractor: run `grunt e2e`
 
 ## Create and deploy new release
 
 These are the steps necessary to create and deploy a new release on [https://ips-lmu.github.io/EMU-webApp/](https://ips-lmu.github.io/EMU-webApp/) (push privileges to GitHub repo required)
 
-* prerequisite: make sure all unit tests and end-to-end test pass
-* prerequisite: also run end-to-end tests on dist build (`grunt serve:dist` followed by `grunt e2e`) & manually inspect the release version
+* prerequisite: make sure all unit tests and end-to-end test pass (`grunt test` and `grunt e2e`)
+* prerequisite: also run end-to-end tests on dist build (`grunt serve:dist` followed by `grunt e2e`) & manually inspect the release version (just in case)
 * update version numbers in `NEWS.md`, `package.json`, `bower.json`
 * update `NEWS.md` to reflect changes (== changelog)
 * `grunt serve:dist` also runs `grunt`'s `build` task so explicitly calling `grunt build` is unnecessary
