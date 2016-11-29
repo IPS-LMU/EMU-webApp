@@ -229,12 +229,12 @@ angular.module('emuwebApp')
 										gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
 										ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
 									];
-									LinkService.insertLinksTo(linkLevelDetails.level.items[itemIdx].id, childIDs);
+									LinkService.insertLinksTo(linkLevelDetails.items[itemIdx].id, childIDs);
 									HistoryService.updateCurChangeObj({
 										'type': 'ANNOT',
 										'action': 'INSERTLINKSTO',
-										'name': linkLevelDetails.level.name,
-										'parentID': linkLevelDetails.level.items[itemIdx].id,
+										'name': linkLevelDetails.name,
+										'parentID': linkLevelDetails.items[itemIdx].id,
 										'childIDs': childIDs
 									});
 									HistoryService.addCurChangeObjToUndoStack();
@@ -247,7 +247,6 @@ angular.module('emuwebApp')
 				});
 
 			}, function () {
-				//console.error('rejected duuuude!!!!');
 			});
 			return defer.promise;
 		};

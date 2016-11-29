@@ -33,14 +33,7 @@
 	}, {
 		"name": "tongueTipGestures",
 		"type": "EVENT",
-		"items": [{
-			"id": 147,
-			"samplePoint": 150000,
-			"labels": [{
-				"name": "tongueTipGestures",
-				"value": "dude!!!!!!!!!"
-			}]
-		}]
+		"items": []
 	}],
 	"links": []
 }
