@@ -24,7 +24,7 @@ Thumbs.db
 ################
 *~
 
-# Rstudio stuff     #
+# Rstudio stuff#
 ###############
 .Rhistory
 
@@ -32,18 +32,6 @@ Thumbs.db
 ###########
 node_modules
 npm-debug.log
-
-
-# Bower #
-########
-bower_components
-
-# Minified code+maps #
-###################
-emuLVC.min.js
-spectrogram.min.js
-emuLVC.min.map
-emuLVC.min.css
 
 # tmp latex files # 
 ##############
@@ -80,5 +68,10 @@ autoprefixer
 *.iml
 .idea/EMU-webApp.iml
 
-
-
+# list form current yeoman angular gen. #
+#########################################
+/bower_components
+/node_modules
+#/dist
+/.tmp
+/.sass-cache
