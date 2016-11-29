@@ -32,7 +32,6 @@
     "grunt-gitinfo": "^0.1.8",
     "grunt-google-cdn": "^0.4.3",
     "grunt-jscs": "^3.0.1",
-    "grunt-json2sass": "renancouto/grunt-json2sass",
     "grunt-karma": "^2.0.0",
     "grunt-newer": "^1.1.0",
     "grunt-ng-annotate": "^3.0.0",

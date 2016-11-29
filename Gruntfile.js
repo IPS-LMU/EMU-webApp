@@ -526,13 +526,6 @@ module.exports = function (grunt) {
             run: {}
         },
 
-        json2sass: {
-            files: {
-                src: '<%= yeoman.app %>/configFiles/default_emuwebappDesign.json',
-                dest: '<%= yeoman.app %>/styles/EMUwebAppDesign.sass'
-            }
-        },
-
         gitinfo: {},
 
         replace: {
@@ -588,7 +581,6 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-            'json2sass',
             'wiredep',
             'concurrent:server',
             'postcss:server',
@@ -604,7 +596,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
-        'json2sass',
         'wiredep',
         'concurrent:test',
         'postcss',
@@ -615,7 +606,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('e2e', [
         'clean:server',
-        'json2sass',
         'compass:server',
         'concurrent:test',
         'postcss',
@@ -627,7 +617,6 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'gitinfo',
         'clean:dist',
-        'json2sass',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',

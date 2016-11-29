@@ -6,6 +6,7 @@
 
 - time anchors implemented for automatic zooming
 - updated all dependencies to current versions (incl. AngularJS & co.)
+- removed json2sass de
 
 ### bug fixes
 
