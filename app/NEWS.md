@@ -1,5 +1,11 @@
 # What's New
 
+## Version 0.1.04
+
+### new features / performance tweaks / improvements
+
+- $http.get() handling is now compatible to AngularJS 1.6.0)
+
 ## Version 0.1.03
 
 ### new features / performance tweaks / improvements

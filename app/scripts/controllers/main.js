@@ -270,13 +270,13 @@ angular.module('emuwebApp')
 			// load schemas first
 			Validationservice.loadSchemas().then(function (replies) {
 				Validationservice.setSchemas(replies);
-				Iohandlerservice.httpGetDefaultDesign().success(function (data) {
-					ConfigProviderService.setDesign(data);
-					Iohandlerservice.httpGetDefaultConfig().success(function (data) {
+				Iohandlerservice.httpGetDefaultDesign().then(function onSuccess (response) {
+					ConfigProviderService.setDesign(response.data);
+					Iohandlerservice.httpGetDefaultConfig().then(function onSuccess (response) {
 						viewState.somethingInProgressTxt = 'Validating emuwebappConfig';
-						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', data);
+						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', response.data);
 						if (validRes === true) {
-							ConfigProviderService.setVals(data);
+							ConfigProviderService.setVals(response.data);
 							angular.copy($scope.cps.vals ,$scope.cps.initDbConfig);
 							$scope.handleDefaultConfigLoaded();
 							// loadFilesForEmbeddedApp if these are set
@@ -291,13 +291,13 @@ angular.module('emuwebApp')
 							});
 						}
 
-					}).error(function (data, status, header, config) {
-						modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
+					}, function onError (response) {
+						modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
 							appStateService.resetToInitState();
 						});
 					});
-				}).error(function (data, status, header, config) {
-					modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + status + ' header: ' + header + ' config ' + config).then(function () {
+				}, function onError (response) {
+					modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
 						appStateService.resetToInitState();
 					});
 				});
@@ -421,8 +421,8 @@ angular.module('emuwebApp')
 			var reload = data.reload;
 			viewState.somethingInProgressTxt = 'Loading DB config...';
 			// then get the DBconfigFile
-			Iohandlerservice.httpGetDefaultDesign().success(function (data) {
-				ConfigProviderService.setDesign(data);
+			Iohandlerservice.httpGetDefaultDesign().then(function onSuccess(response) {
+				ConfigProviderService.setDesign(response.data);
 				Iohandlerservice.getDBconfigFile().then(function (data) {
 					// first element of perspectives is default perspective
 					viewState.curPerspectiveIdx = 0;
@@ -702,8 +702,8 @@ angular.module('emuwebApp')
 				viewState.setState('loadingSaving');
 				ConfigProviderService.vals.main.comMode = 'DEMO';
 				viewState.somethingInProgressTxt = 'Loading DB config...';
-				Iohandlerservice.httpGetDefaultDesign().success(function (data) {
-					ConfigProviderService.setDesign(data);
+				Iohandlerservice.httpGetDefaultDesign().then(function onSuccess(response) {
+					ConfigProviderService.setDesign(response.data);
 					Iohandlerservice.getDBconfigFile(nameOfDB).then(function (res) {
 						var data = res.data;
 						// first element of perspectives is default perspective
