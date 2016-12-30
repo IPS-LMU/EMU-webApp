@@ -5,6 +5,7 @@
 ### new features / performance tweaks / improvements
 
 - $http.get() handling is now compatible to AngularJS 1.6.0)
+- pressing enter to log in is now possible
 
 ## Version 0.1.03
 

@@ -393,14 +393,24 @@ angular.module('emuwebApp')
 						if (doUsrData === 'NO') {
 							$scope.innerHandleConnectedToWSserver({session: session, reload: reload});
 						} else {
-							// show user management error
-							modalService.open('views/loginModal.html').then(function (res) {
-								if (res) {
-									$scope.innerHandleConnectedToWSserver({session: session, reload: reload});
-								} else {
+							// show user management until a login attempt is successful
+
+							var tryLogin = function (res) {
+								if (!res) {
+									// This happens if the login modal is closed via escape or cancel
 									appStateService.resetToInitState();
+								} else {
+									Iohandlerservice.logOnUser(res.username, res.password).then(function (res) {
+										if (res === 'LOGGEDON') {
+											$scope.innerHandleConnectedToWSserver({session: session, reload: reload});
+										} else {
+											modalService.open('views/loginModal.html', 'Error: Bad login').then(tryLogin);
+										}
+									});
 								}
-							});
+							};
+								
+							modalService.open('views/loginModal.html', '').then(tryLogin);
 						}
 					});
 					

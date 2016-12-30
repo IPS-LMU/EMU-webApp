@@ -1063,6 +1063,19 @@ angular.module('emuwebApp')
 								e.preventDefault();
 								e.stopPropagation();
 							}
+						} else {
+							// not in hierarchy modal,
+							// viewState.isEditing == false and
+							// viewState.getcursorInTextField() == true
+
+
+							if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
+								// auto action in model when open and user presses 'enter'
+								// this is also done when getCursorinTextField == false
+								if (modalService.isOpen) {
+									modalService.confirmContent();
+								}
+							}
 						}
 					});
 				};

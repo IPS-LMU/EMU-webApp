@@ -3,22 +3,16 @@
 angular.module('emuwebApp')
 	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, modalService) {
 
-		$scope.loginData = {
-			'username': '',
-			'password': '',
-			'errorMsg': ''
+		modalService.dataOut = {
+			username: '',
+			password: ''
 		};
+
 		/**
 		 *
 		 */
 		$scope.tryLogin = function () {
-			Iohandlerservice.logOnUser($scope.loginData.username, $scope.loginData.password).then(function (res) {
-				if (res === 'LOGGEDON') {
-					modalService.confirm();
-				} else {
-					$scope.loginData.errorMsg = 'ERROR: ' + res;
-				}
-			});
+			modalService.confirmContent();
 		};
 		// FOR DEVELOPMENT
 		// $scope.tryLogin(); // for autologin uncomment and set username + password
@@ -27,7 +21,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.setEditing(true);
 			viewState.setcursorInTextField(true);
 		};
 
@@ -35,7 +28,6 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.setEditing(false);
 			viewState.setcursorInTextField(false);
 		};
 

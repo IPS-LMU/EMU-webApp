@@ -10,15 +10,15 @@
 		<table style="width: 100%; text-align:center;">
 			<tr>
 				<td>User name:</td>
-				<td><input type="text" ng-model="loginData.username" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
+				<td><input type="text" ng-model="modal.dataOut.username" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
 			</tr>
 			<tr>
 				<td>Password:</td>
-				<td><input type="password" ng-model="loginData.password" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
+				<td><input type="password" ng-model="modal.dataOut.password" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"></td>
 			</tr>
 		</table>
 		<hr>
-		<p style="color:red">{{loginData.errorMsg}}</p>
+		<p style="color:red">{{modal.dataIn}}</p>
 	</div>
 	<div class="emuwebapp-modal-footer">
 	  <button ng-click="modal.close();" id="modalCancelBtn" class="emuwebapp-mini-btn">Cancel</button>
