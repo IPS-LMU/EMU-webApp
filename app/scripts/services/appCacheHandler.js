@@ -17,6 +17,9 @@ angular.module('emuwebApp')
 		// 	cacheProperties.filesDownloaded = 0;
 		// 	cacheProperties.totalFiles = 0;
 
+		//	NB: .success() has been deprecated and is removed in Angular 1.6.0
+		//	See https://github.com/angular/angular.js/commit/b54a39e2029005e0572fbd2ac0e8f6a4e5d69014
+		//
 		// 	$http.get('manifest.appcache').success(function (content) {
 		// 		// console.log(content);
 		// 		content = content.replace(

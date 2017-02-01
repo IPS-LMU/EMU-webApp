@@ -1,11 +1,11 @@
 # What's New
 
-
 ## Version 0.1.3.9000
 
 ### new features / performance tweaks / improvements
 
 - show hierarchy now shows all paths through hierarchy (excluding partial paths) not only paths ending in levels with time (SEGMENT and EVENT levels)
+- $http.get() handling is now compatible to AngularJS 1.6.0)
 
 ### bug fixes
 
