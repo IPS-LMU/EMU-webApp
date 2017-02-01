@@ -182,7 +182,8 @@
 			}
 		}],
 		"restrictions": {
-			"showPerspectivesSidebar": true
+			"showPerspectivesSidebar": true,
+			"useLargeTextInputField": false
 		},
 		"activeButtons": {
 			"saveBundle": true,
