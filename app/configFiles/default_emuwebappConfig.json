@@ -103,7 +103,8 @@
         "drawZeroLine": true,
         "bundleComments": false,
         "bundleFinishedEditing": false,
-        "showPerspectivesSidebar": false
+        "showPerspectivesSidebar": false,
+        "useLargeTextInputField": false
     },
     "activeButtons": {
         "addLevelSeg": false,

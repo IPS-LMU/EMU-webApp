@@ -244,10 +244,18 @@ angular.module('emuwebApp')
 								var editingElement = LevelService.getItemFromLevelById(viewState.getcurClickLevelName(), LevelService.getlastID());
 								var attrIndex = viewState.getCurAttrIndex(viewState.getcurClickLevelName());
 								var oldValue = '';
+                                var newValue = '';
 								if (editingElement.labels[attrIndex] !== undefined) {
 									oldValue = editingElement.labels[attrIndex].value;
 								}
-								LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), domElement.val());
+								// get new value from dom element or from viewState.largeTextFieldInputFieldCurLabel if it is used
+								if(ConfigProviderService.vals.restrictions.useLargeTextInputField){
+									newValue = viewState.largeTextFieldInputFieldCurLabel;
+								}else{
+                                    newValue = domElement.val();
+								}
+
+								LevelService.renameLabel(viewState.getcurClickLevelName(), LevelService.getlastID(), viewState.getCurAttrIndex(viewState.getcurClickLevelName()), newValue);
 								HistoryService.addObjToUndoStack({
 									'type': 'ANNOT',
 									'action': 'RENAMELABEL',
@@ -255,7 +263,7 @@ angular.module('emuwebApp')
 									'id': LevelService.getlastID(),
 									'attrIndex': attrIndex,
 									'oldValue': oldValue,
-									'newValue': domElement.val()
+									'newValue': newValue
 								});
 								LevelService.deleteEditArea();
 								viewState.setEditing(false);

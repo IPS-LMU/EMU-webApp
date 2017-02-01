@@ -338,6 +338,10 @@ angular.module('emuwebApp')
 				$('.' + sServObj.getlasteditArea()).remove();
 			}
 			viewState.editing = false;
+			// close large text input field
+            viewState.largeTextFieldInputFieldCurLabel =  '';
+            viewState.largeTextFieldInputFieldVisable = false;
+
 		};
 
 		/**
@@ -375,37 +379,42 @@ angular.module('emuwebApp')
 					editText = '';
 				}
 			}
-			if (type === 'SEGMENT') {
-				var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
-				var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
-				var width = end - start;
-				sServObj.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+            if(!ConfigProviderService.vals.restrictions.useLargeTextInputField){
+				if (type === 'SEGMENT') {
+					var start = Math.floor(viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
+					var end = Math.ceil(viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
+					var width = end - start;
+					sServObj.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 
-/*
-	zooming in disabled
-	
-				if (width < (2 * len)) {
-					var zoom = viewState.curViewPort.eS - viewState.curViewPort.sS;
-					if (zoom <= 10) { // if already zoomed in but text is still too long
-						sServObj.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+	/*
+		zooming in disabled
+
+					if (width < (2 * len)) {
+						var zoom = viewState.curViewPort.eS - viewState.curViewPort.sS;
+						if (zoom <= 10) { // if already zoomed in but text is still too long
+							sServObj.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
+						}
+						else {
+							viewState.zoomViewPort(true, this);
+							sServObj.openEditArea(lastEventClick, element, type);
+							return;
+						}
 					}
-					else {
-						viewState.zoomViewPort(true, this);
-						sServObj.openEditArea(lastEventClick, element, type);
-						return;
+	*/
+				} else {
+					var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
+					var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
+					var width = end - start;
+					if (width < (2 * len)) {
+						width = (2 * len);
 					}
+					sServObj.createEditAreaElement(element, start, top, width, height, editText, lastEventClick.id);
 				}
-*/
-			} else {
-				var start = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
-				var end = viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
-				var width = end - start;
-				if (width < (2 * len)) {
-					width = (2 * len);
-				}
-				sServObj.createEditAreaElement(element, start, top, width, height, editText, lastEventClick.id);
+				sServObj.createSelection(element.find('textarea')[0], 0, editText.length);
+			}else{
+				viewState.largeTextFieldInputFieldVisable = true;
+                viewState.largeTextFieldInputFieldCurLabel =  editText;
 			}
-			sServObj.createSelection(element.find('textarea')[0], 0, editText.length);
 		};
 
 		/**
@@ -610,6 +619,7 @@ angular.module('emuwebApp')
 		 * @param level
 		 * @param sampleNr
 		 * @param maximum
+		 * @returns object of the form {current: item, nearest: item, isFirst: boolean, isLast: boolean} where
 		 * @returns object of the form {current: item, nearest: item, isFirst: boolean, isLast: boolean} where
 		 * - current is the actual item where the mouse is
 		 * - nearest is the item next to the current one depending on where the mouse is (ie if over 50% right element, under 50% left element)

@@ -13,7 +13,8 @@ module.exports = function (config) {
 
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: [
-        'jasmine'
+        'jasmine',
+        'phantomjs-shim'
     ],
 
     // list of files / patterns to load in the browser
@@ -103,7 +104,8 @@ module.exports = function (config) {
       'karma-chrome-launcher',
       'karma-firefox-launcher',
       'karma-jasmine',
-      'karma-ng-html2js-preprocessor'
+      'karma-ng-html2js-preprocessor',
+      'karma-phantomjs-shim'
       // 'karma-coverage'
     ],
 

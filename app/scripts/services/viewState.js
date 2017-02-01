@@ -287,6 +287,9 @@ angular.module('emuwebApp')
 			sServObj.pageSize = 500;
 			sServObj.currentPage = undefined;
 			sServObj.curTimeAnchorIdx = -1;
+            sServObj.largeTextFieldInputFieldVisable = false;
+            sServObj.largeTextFieldInputFieldCurLabel = '';
+
 			// possible general states of state machine
 			sServObj.states = [];
 			sServObj.states.noDBorFilesloaded = {
