@@ -1,17 +1,18 @@
 # What's New
 
-## Version 0.1.3.9000
+## Version 0.1.4
 
 ### new features / performance tweaks / improvements
 
 - show hierarchy now shows all paths through hierarchy (excluding partial paths) not only paths ending in levels with time (SEGMENT and EVENT levels)
 - $http.get() handling is now compatible to AngularJS 1.6.0)
+- ctrl + play shortcut buttons while in text edit mode now works 
 
 ### bug fixes
 
+- show hierarchy button not shown when annotJSON files are drag & dropped onto drop zone
 
-
-## Version 0.1.03
+## Version 0.1.3
 
 ### new features / performance tweaks / improvements
 
@@ -24,7 +25,7 @@
 
 - fixed bad anagest implementation
 
-## Version 0.1.02
+## Version 0.1.2
 
 ### new features / performance tweaks / improvements
 
@@ -35,7 +36,7 @@
 
 - labels in hierarchy view can now be edited in Firefox
 
-## Version 0.1.01
+## Version 0.1.1
 
 ### new features / performance tweaks / improvements
 
@@ -58,7 +59,7 @@
 - fixed problem of loaded color in bundleListSideBar when same bundle name in different sessions (issue \#192)
 - fixed problem of not being able to play first segment if it starts at sampleStart = 0 (issue \#195)
 
-## Version 0.1.00
+## Version 0.1.0
 
 - manual bootstrapping
 - serverUrl now available as GET parameter

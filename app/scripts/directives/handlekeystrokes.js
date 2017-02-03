@@ -274,6 +274,37 @@ angular.module('emuwebApp')
 								LevelService.deleteEditArea();
 								viewState.setEditing(false);
 							}
+							
+							// playAllInView
+							if (code === ConfigProviderService.vals.keyMappings.playAllInView && e.altKey) {
+								if (viewState.getPermission('playaudio')) {
+									if (ConfigProviderService.vals.restrictions.playback) {
+										Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
+										viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+									}
+								}
+							}
+
+							// playSelected
+							if (code === 3 && e.altKey) { // ConfigProviderService.vals.keyMappings.playSelected
+								if (viewState.getPermission('playaudio')) {
+									if (ConfigProviderService.vals.restrictions.playback) {
+										Soundhandlerservice.playFromTo(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+										viewState.animatePlayHead(viewState.curViewPort.selectS, viewState.curViewPort.selectE);
+									}
+								}
+							}
+
+                            // playEntireFile
+                            if (code === ConfigProviderService.vals.keyMappings.playEntireFile && e.altKey) {
+                                if (viewState.getPermission('playaudio')) {
+                                    if (ConfigProviderService.vals.restrictions.playback) {
+                                        Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
+                                        viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+                                    }
+                                }
+                            }
+
 
 						} else if (viewState.getcursorInTextField() === false) {
 
