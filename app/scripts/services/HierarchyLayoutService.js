@@ -83,7 +83,7 @@ angular.module('emuwebApp')
 		sServObj.calculateWeightsBottomUp = function (selectedPath) {
 			var i, ii, iii;
 
-			sServObj.rebuildPartialData(selectedPath, 22000, 23930);
+			sServObj.rebuildPartialData(selectedPath, 7000, 23930);
 
 			/////
 			// Make sure all items have proper _parents and
@@ -446,6 +446,8 @@ angular.module('emuwebApp')
 			return result;
 		};
 
+		// basically a copy of LevelService's function, but operating on
+		// sServObj.partialDataLevels rather than DataService.levels
 		sServObj.getLevelDetails = function (levelName) {
 			for (var i = 0; i < sServObj.partialDataLevels.length; ++i) {
 				if (sServObj.partialDataLevels[i].name === levelName) {
@@ -455,6 +457,34 @@ angular.module('emuwebApp')
 			return null;
 		};
 
+		// basically a copy of LevelService's function, but operating on
+		// sServObj.partialDataLevels rather than DataService.levels
+		sServObj.getItemByID = function (nodeID) {
+			var ret = undefined;
+			angular.forEach(sServObj.partialDataLevels, function (level) {
+				var pos = level.items.map(function (e) {
+					return e.id;
+				}).indexOf(nodeID);
+				if (pos >= 0) {
+					ret = level.items[pos];
+				}
+			});
+			return ret;
+		};
+
+		sServObj.getItemFromLevelById = function (name, id) {
+			var ret = null;
+			angular.forEach(sServObj.partialDataLevels, function (level) {
+				if (level.name === name) {
+					level.items.forEach(function (element) {
+						if (element.id == id) {
+							ret = element;
+						}
+					});
+				}
+			});
+			return ret;
+		};
 
 		return sServObj;
 	});

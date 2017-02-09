@@ -119,7 +119,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('hierarchyState.newLinkFromID', function (newValue, oldValue) {
 					if (newValue !== oldValue) {
-						scope.newLinkSrc = LevelService.getItemByID(newValue);
+						scope.newLinkSrc = sServObj.getItemByID(newValue);
 						scope.render();
 					}
 				}, false);
@@ -636,7 +636,7 @@ angular.module('emuwebApp')
 						console.debug('Likely a bug: There is no path selection. Not executing play():', d);
 						return;
 					}
-					var timeInfoType = LevelService.getLevelDetails(timeInfoLevel).type;
+					var timeInfoType = HierarchyLayoutService.getLevelDetails(timeInfoLevel).type;
 
 					var startSample = null;
 					var endSample = null;
@@ -1022,10 +1022,10 @@ angular.module('emuwebApp')
 
 
 					// Make sure the selected things are visible, otherwise un-select them
-					var selectedItem = LevelService.getItemByID(viewState.hierarchyState.selectedItemID);
-					var contextMenuItem = LevelService.getItemByID(viewState.hierarchyState.contextMenuID);
-					var selectedLinkFromItem = LevelService.getItemByID(viewState.hierarchyState.selectedLinkFromID);
-					var selectedLinkToItem = LevelService.getItemByID(viewState.hierarchyState.selectedLinkToID);
+					var selectedItem = HierarchyLayoutService.getItemByID(viewState.hierarchyState.selectedItemID);
+					var contextMenuItem = HierarchyLayoutService.getItemByID(viewState.hierarchyState.contextMenuID);
+					var selectedLinkFromItem = HierarchyLayoutService.getItemByID(viewState.hierarchyState.selectedLinkFromID);
+					var selectedLinkToItem = HierarchyLayoutService.getItemByID(viewState.hierarchyState.selectedLinkToID);
 
 
 					if (selectedItem !== undefined && !selectedItem._visible) {
@@ -1065,8 +1065,8 @@ angular.module('emuwebApp')
 					var allLinks = DataService.getData().links;
 					for (var l = 0; l < allLinks.length; ++l) {
 						for (var i = 0; i < viewState.hierarchyState.path.length - 1; ++i) {
-							var element = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i], allLinks[l].toID);
-							var parentElement = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i + 1], allLinks[l].fromID);
+							var element = HierarchyLayoutService.getItemFromLevelById(viewState.hierarchyState.path[i], allLinks[l].toID);
+							var parentElement = HierarchyLayoutService.getItemFromLevelById(viewState.hierarchyState.path[i + 1], allLinks[l].fromID);
 
 							if (element === null) {
 								continue;
