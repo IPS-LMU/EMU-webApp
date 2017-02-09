@@ -1012,7 +1012,7 @@ angular.module('emuwebApp')
 
 					for (var i = 0; i < viewState.hierarchyState.path.length; ++i) {
 						// Add all nodes that are not collapsed
-						var levelItems = LevelService.getLevelDetails(viewState.hierarchyState.path[i]).items;
+						var levelItems = HierarchyLayoutService.getLevelDetails(viewState.hierarchyState.path[i]).items;
 						for (var ii = 0; ii < levelItems.length; ++ii) {
 							if (levelItems[ii]._visible) {
 								nodes.push(levelItems[ii]);

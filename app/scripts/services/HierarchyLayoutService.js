@@ -16,7 +16,7 @@
  */
 
 angular.module('emuwebApp')
-	.service('HierarchyLayoutService', function (viewState, ConfigProviderService, LevelService, DataService) {
+	.service('HierarchyLayoutService', function (viewState, ConfigProviderService, LevelService, DataService, LinkService) {
 		// shared service object
 		var sServObj = {};
 
@@ -83,6 +83,8 @@ angular.module('emuwebApp')
 		sServObj.calculateWeightsBottomUp = function (selectedPath) {
 			var i, ii, iii;
 
+			sServObj.rebuildPartialData(selectedPath, 22000, 23930);
+
 			/////
 			// Make sure all items have proper _parents and
 			// _visibile attributes
@@ -92,7 +94,7 @@ angular.module('emuwebApp')
 			/////
 			// Iterate through levels bottom-up
 			for (i = 0; i < selectedPath.length; ++i) {
-				var level = LevelService.getLevelDetails(selectedPath[i]);
+				var level = sServObj.getLevelDetails(selectedPath[i]);
 
 				// This will be the total of the weights of all
 				// items on this level
@@ -174,14 +176,16 @@ angular.module('emuwebApp')
 			for (var li = 0; li < DataService.getData().links.length; ++li) {
 				if (DataService.getData().links[li].fromID === d.id) {
 					// Iterate over levels to find the object corresponding to d.id
-					for (var l = 0; l < DataService.getData().levels.length; ++l) {
-						if (DataService.getData().levels[l].name !== childLevel) {
+					//var levels = DataService.getData().levels;
+					var levels = sServObj.partialDataLevels;
+					for (var l = 0; l < levels.length; ++l) {
+						if (levels[l].name !== childLevel) {
 							continue;
 						}
 
-						for (var it = 0; it < DataService.getData().levels[l].items.length; ++it) {
-							if (DataService.getData().levels[l].items[it].id === DataService.getData().links[li].toID) {
-								children.push(DataService.getData().levels[l].items[it]);
+						for (var it = 0; it < levels[l].items.length; ++it) {
+							if (levels[l].items[it].id === DataService.getData().links[li].toID) {
+								children.push(levels[l].items[it]);
 							}
 						}
 					}
@@ -210,7 +214,7 @@ angular.module('emuwebApp')
 			// Clear _parents from all items
 			var level;
 			for (i = 0; i < selectedPath.length; ++i) {
-				level = LevelService.getLevelDetails(selectedPath[i]);
+				level = sServObj.getLevelDetails(selectedPath[i]);
 
 				for (ii = 0; ii < level.items.length; ++ii) {
 					level.items[ii]._parents = [];
@@ -221,7 +225,7 @@ angular.module('emuwebApp')
 			/////
 			// Iterate through levels
 			for (i = 0; i < selectedPath.length; ++i) {
-				level = LevelService.getLevelDetails(selectedPath[i]);
+				level = sServObj.getLevelDetails(selectedPath[i]);
 
 				// Iterate through the current level's items
 				// And save them as _parents in their children
@@ -261,7 +265,7 @@ angular.module('emuwebApp')
 
 				var level;
 				for (var i = 0; i < selectedPath.length; ++i) {
-					level = LevelService.getLevelDetails(selectedPath[i]);
+					level = sServObj.getLevelDetails(selectedPath[i]);
 
 					for (var ii = 0; ii < level.items.length; ++ii) {
 						if (level.items[ii]._parents.length === 0) {
@@ -334,7 +338,123 @@ angular.module('emuwebApp')
 
 				viewState.hierarchyState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
 			}
-		}
+		};
+
+		sServObj.partialDataLevels = [];
+		sServObj.partialDataLinks = [];
+
+		// @todo take EVENT into acc
+		sServObj.rebuildPartialData = function (selectedPath, start, end) {
+			if (start === -1) {
+				sServObj.partialDataLevels = DataService.getLevelData();
+				sServObj.partialDataLinks = DataService.getLinkData();
+				return;
+			}
+
+			sServObj.partialDataLevels = [];
+			sServObj.partialDataLinks = [];
+
+			var i;
+			for (i = 0; i < selectedPath.length; ++i) {
+				var level = LevelService.getLevelDetails(selectedPath[i]);
+				if (level.type === 'EVENT' || level.type === 'SEGMENT') {
+					sServObj.copyTimeLevel(level.name, start, end);
+				} else {
+					sServObj.copyItemLevel(level.name, sServObj.partialDataLevels[sServObj.partialDataLevels.length - 1]);
+				}
+			}
+		};
+
+		sServObj.copyTimeLevel = function (levelName, start, end) {
+			var i;
+			var level = angular.copy(LevelService.getLevelDetails(levelName));
+			var firstIndex = -1, lastIndex = -1;
+
+			for (i = 0; i < level.items.length; ++i) {
+				var sampleEnd = level.items[i].sampleStart + level.items[i].sampleDur - 1;
+
+				if (sampleEnd >= start) {
+					firstIndex = i;
+					break;
+				}
+			}
+
+			for (i = level.items.length - 1; i >= 0; --i) {
+				if (level.items[i].sampleStart <= end) {
+					lastIndex = i;
+					break;
+				}
+			}
+
+			if (firstIndex === -1 || lastIndex === -1) {
+				level.items = [];
+			} else {
+				level.items = level.items.slice(firstIndex, lastIndex + 1);
+			}
+
+			sServObj.partialDataLevels.push(level);
+		};
+
+		sServObj.copyItemLevel = function (levelName, referenceLevel) {
+			var i;
+			var level = angular.copy(LevelService.getLevelDetails(levelName));
+			var firstParents = null, lastParents = null;
+
+			for (i = 0; i < referenceLevel.items.length; ++i) {
+				var parents = sServObj.getParentsOnLevel(referenceLevel.items[i], levelName);
+				if (parents.length > 0) {
+					firstParents = parents;
+					break;
+				}
+			}
+
+			for (i = referenceLevel.items.length - 1; i >= 0; --i) {
+				var parents = sServObj.getParentsOnLevel(referenceLevel.items[i], levelName);
+				if (parents.length > 0) {
+					lastParents = parents;
+					break;
+				}
+			}
+
+			var firstIndex = -1, lastIndex = -1;
+			for (i = 0; i < level.items.length; ++i) {
+				if (firstParents.indexOf(level.items[i].id) !== -1) {
+					firstIndex = i;
+					break;
+				}
+			}
+
+			for (i = level.items.length - 1; i >= 0; --i) {
+				if (lastParents.indexOf(level.items[i].id) !== -1) {
+					lastIndex = i;
+					break;
+				}
+			}
+
+			level.items = level.items.slice(firstIndex, lastIndex + 1);
+			sServObj.partialDataLevels.push(level);
+		};
+
+		sServObj.getParentsOnLevel = function (item, parentLevelName) {
+			var result = [];
+			var links = LinkService.getLinksTo(item.id);
+			for (var i = 0; i < links.length; ++i) {
+				if (LevelService.getLevelName(links[i].link.fromID) === parentLevelName) {
+					result.push(links[i].link.fromID);
+				}
+			}
+			return result;
+		};
+
+		sServObj.getLevelDetails = function (levelName) {
+			for (var i = 0; i < sServObj.partialDataLevels.length; ++i) {
+				if (sServObj.partialDataLevels[i].name === levelName) {
+					return sServObj.partialDataLevels[i];
+				}
+			}
+			return null;
+		};
+
 
 		return sServObj;
 	});
