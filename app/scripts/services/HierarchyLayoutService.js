@@ -343,7 +343,6 @@ angular.module('emuwebApp')
 		sServObj.partialDataLevels = [];
 		sServObj.partialDataLinks = [];
 
-		// @todo take EVENT into acc
 		sServObj.rebuildPartialData = function (selectedPath, start, end) {
 			if (start === -1) {
 				sServObj.partialDataLevels = DataService.getLevelData();
@@ -357,15 +356,45 @@ angular.module('emuwebApp')
 			var i;
 			for (i = 0; i < selectedPath.length; ++i) {
 				var level = LevelService.getLevelDetails(selectedPath[i]);
-				if (level.type === 'EVENT' || level.type === 'SEGMENT') {
-					sServObj.copyTimeLevel(level.name, start, end);
+				if (level.type === 'EVENT') {
+					sServObj.copyEventLevel(level.name, start, end);
+				} else if (level.type === 'SEGMENT') {
+					sServObj.copySegmentLevel(level.name, start, end);
 				} else {
 					sServObj.copyItemLevel(level.name, sServObj.partialDataLevels[sServObj.partialDataLevels.length - 1]);
 				}
 			}
 		};
 
-		sServObj.copyTimeLevel = function (levelName, start, end) {
+		sServObj.copyEventLevel = function (levelName, start, end) {
+			var i;
+			var level = angular.copy(LevelService.getLevelDetails(levelName));
+			var firstIndex = -1, lastIndex = -1;
+
+			for (i = 0; i < level.items.length; ++i) {
+				if (level.items[i].samplePoint >= start) {
+					firstIndex = i;
+					break;
+				}
+			}
+
+			for (i = level.items.length - 1; i >= 0; --i) {
+				if (level.items[i].samplePoint <= end) {
+					lastIndex = i;
+					break;
+				}
+			}
+
+			if (firstIndex === -1 || lastIndex === -1) {
+				level.items = [];
+			} else {
+				level.items = level.items.slice(firstIndex, lastIndex + 1);
+			}
+
+			sServObj.partialDataLevels.push(level);
+		};
+
+		sServObj.copySegmentLevel = function (levelName, start, end) {
 			var i;
 			var level = angular.copy(LevelService.getLevelDetails(levelName));
 			var firstIndex = -1, lastIndex = -1;
@@ -416,6 +445,12 @@ angular.module('emuwebApp')
 				}
 			}
 
+			if (firstParents === null || lastParents === null) {
+				level.items = [];
+				sServObj.partialDataLevels.push(level);
+				return;
+			}
+
 			var firstIndex = -1, lastIndex = -1;
 			for (i = 0; i < level.items.length; ++i) {
 				if (firstParents.indexOf(level.items[i].id) !== -1) {
@@ -429,6 +464,12 @@ angular.module('emuwebApp')
 					lastIndex = i;
 					break;
 				}
+			}
+
+			if (firstIndex === -1 || lastIndex === -1) {
+				level.items = [];
+				sServObj.partialDataLevels.push(level);
+				return;
 			}
 
 			level.items = level.items.slice(firstIndex, lastIndex + 1);
