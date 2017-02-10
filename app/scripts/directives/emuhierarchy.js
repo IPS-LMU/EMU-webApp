@@ -119,7 +119,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('hierarchyState.newLinkFromID', function (newValue, oldValue) {
 					if (newValue !== oldValue) {
-						scope.newLinkSrc = sServObj.getItemByID(newValue);
+						scope.newLinkSrc = HierarchyLayoutService.getItemByID(newValue);
 						scope.render();
 					}
 				}, false);
