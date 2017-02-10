@@ -127,16 +127,17 @@ angular.module('emuwebApp')
 
 					//////
 					// Additionally, calculate link positions
-					var links = DataService.getData().links;
-					for (var l = 0; l < links.length; ++l) {
-						if (links[l].toID === level.items[ii].id) {
-							links[l]._toPosInLevel = level.items[ii]._posInLevel;
-							links[l]._toDepth = level.items[ii]._depth;
-						}
-						if (links[l].fromID === level.items[ii].id) {
-							links[l]._fromPosInLevel = level.items[ii]._posInLevel;
-							links[l]._fromDepth = level.items[ii]._depth;
-						}
+					var linksToHere = LinkService.getLinksTo(level.items[ii].id);
+					var linksFromHere = LinkService.getLinksFrom(level.items[ii].id);
+
+					for (var l = 0; l < linksToHere.length; ++l) {
+						linksToHere[l].link._toPosInLevel = level.items[ii]._posInLevel;
+						linksToHere[l].link._toDepth = level.items[ii]._depth;
+					}
+
+					for (var l = 0; l < linksFromHere.length; ++l) {
+						linksFromHere[l].link._fromPosInLevel = level.items[ii]._posInLevel;
+						linksFromHere[l].link._fromDepth = level.items[ii]._depth;
 					}
 				}
 			}
@@ -173,20 +174,19 @@ angular.module('emuwebApp')
 			}
 
 			// Iterate over links to find children
-			for (var li = 0; li < DataService.getData().links.length; ++li) {
-				if (DataService.getData().links[li].fromID === d.id) {
-					// Iterate over levels to find the object corresponding to d.id
-					//var levels = DataService.getData().levels;
-					var levels = sServObj.partialDataLevels;
-					for (var l = 0; l < levels.length; ++l) {
-						if (levels[l].name !== childLevel) {
-							continue;
-						}
+			var links = LinkService.getLinksFrom(d.id);
+			for (var li = 0; li < links.length; ++li) {
+				// Iterate over levels to find the object corresponding to d.id
+				//var levels = DataService.getData().levels;
+				var levels = sServObj.partialDataLevels;
+				for (var l = 0; l < levels.length; ++l) {
+					if (levels[l].name !== childLevel) {
+						continue;
+					}
 
-						for (var it = 0; it < levels[l].items.length; ++it) {
-							if (levels[l].items[it].id === DataService.getData().links[li].toID) {
-								children.push(levels[l].items[it]);
-							}
+					for (var it = 0; it < levels[l].items.length; ++it) {
+						if (levels[l].items[it].id === links[li].link.toID) {
+							children.push(levels[l].items[it]);
 						}
 					}
 				}
