@@ -226,6 +226,9 @@ angular.module('emuwebApp')
 		 * @return name of the containing level
 		 */
 		sServObj.getLevelName = function (nodeID) {
+			if (sServObj.itemLevelMap.hasOwnProperty(nodeID)) {
+				return sServObj.itemLevelMap[nodeID];
+			}
 			var ret = null;
 			angular.forEach(DataService.getLevelData(), function (level) {
 				var pos = level.items.map(function (e) {
@@ -235,8 +238,11 @@ angular.module('emuwebApp')
 					ret = level.name;
 				}
 			});
+			sServObj.itemLevelMap[nodeID] = ret;
 			return ret;
-		}
+		};
+
+		sServObj.itemLevelMap = {};
 
 		/**
 		 * Returns a level object and an item object according to a given item id
