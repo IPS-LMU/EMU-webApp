@@ -368,27 +368,30 @@ angular.module('emuwebApp')
 
 		sServObj.copyEventLevel = function (levelName, start, end) {
 			var i;
-			var level = angular.copy(LevelService.getLevelDetails(levelName));
+			var origLevel = LevelService.getLevelDetails(levelName);
+			var level = {
+				name: origLevel.name,
+				type: origLevel.type,
+				items: []
+			};
 			var firstIndex = -1, lastIndex = -1;
 
-			for (i = 0; i < level.items.length; ++i) {
-				if (level.items[i].samplePoint >= start) {
+			for (i = 0; i < origLevel.items.length; ++i) {
+				if (origLevel.items[i].samplePoint >= start) {
 					firstIndex = i;
 					break;
 				}
 			}
 
-			for (i = level.items.length - 1; i >= 0; --i) {
-				if (level.items[i].samplePoint <= end) {
+			for (i = origLevel.items.length - 1; i >= 0; --i) {
+				if (origLevel.items[i].samplePoint <= end) {
 					lastIndex = i;
 					break;
 				}
 			}
 
-			if (firstIndex === -1 || lastIndex === -1) {
-				level.items = [];
-			} else {
-				level.items = level.items.slice(firstIndex, lastIndex + 1);
+			if (firstIndex !== -1 && lastIndex !== -1) {
+				level.items = origLevel.items.slice(firstIndex, lastIndex + 1);
 			}
 
 			sServObj.partialDataLevels.push(level);
@@ -396,11 +399,16 @@ angular.module('emuwebApp')
 
 		sServObj.copySegmentLevel = function (levelName, start, end) {
 			var i;
-			var level = angular.copy(LevelService.getLevelDetails(levelName));
+			var origLevel = LevelService.getLevelDetails(levelName);
+			var level = {
+				name: origLevel.name,
+				type: origLevel.type,
+				items: []
+			};
 			var firstIndex = -1, lastIndex = -1;
 
-			for (i = 0; i < level.items.length; ++i) {
-				var sampleEnd = level.items[i].sampleStart + level.items[i].sampleDur - 1;
+			for (i = 0; i < origLevel.items.length; ++i) {
+				var sampleEnd = origLevel.items[i].sampleStart + origLevel.items[i].sampleDur - 1;
 
 				if (sampleEnd >= start) {
 					firstIndex = i;
@@ -408,17 +416,15 @@ angular.module('emuwebApp')
 				}
 			}
 
-			for (i = level.items.length - 1; i >= 0; --i) {
-				if (level.items[i].sampleStart <= end) {
+			for (i = origLevel.items.length - 1; i >= 0; --i) {
+				if (origLevel.items[i].sampleStart <= end) {
 					lastIndex = i;
 					break;
 				}
 			}
 
-			if (firstIndex === -1 || lastIndex === -1) {
-				level.items = [];
-			} else {
-				level.items = level.items.slice(firstIndex, lastIndex + 1);
+			if (firstIndex !== -1 && lastIndex !== -1) {
+				level.items = origLevel.items.slice(firstIndex, lastIndex + 1);
 			}
 
 			sServObj.partialDataLevels.push(level);
@@ -426,7 +432,12 @@ angular.module('emuwebApp')
 
 		sServObj.copyItemLevel = function (levelName, referenceLevel) {
 			var i;
-			var level = angular.copy(LevelService.getLevelDetails(levelName));
+			var origLevel = LevelService.getLevelDetails(levelName);
+			var level = {
+				name: origLevel.name,
+				type: origLevel.type,
+				items: []
+			};
 			var firstParents = null, lastParents = null;
 
 			for (i = 0; i < referenceLevel.items.length; ++i) {
@@ -446,33 +457,31 @@ angular.module('emuwebApp')
 			}
 
 			if (firstParents === null || lastParents === null) {
-				level.items = [];
 				sServObj.partialDataLevels.push(level);
 				return;
 			}
 
 			var firstIndex = -1, lastIndex = -1;
-			for (i = 0; i < level.items.length; ++i) {
-				if (firstParents.indexOf(level.items[i].id) !== -1) {
+			for (i = 0; i < origLevel.items.length; ++i) {
+				if (firstParents.indexOf(origLevel.items[i].id) !== -1) {
 					firstIndex = i;
 					break;
 				}
 			}
 
-			for (i = level.items.length - 1; i >= 0; --i) {
-				if (lastParents.indexOf(level.items[i].id) !== -1) {
+			for (i = origLevel.items.length - 1; i >= 0; --i) {
+				if (lastParents.indexOf(origLevel.items[i].id) !== -1) {
 					lastIndex = i;
 					break;
 				}
 			}
 
 			if (firstIndex === -1 || lastIndex === -1) {
-				level.items = [];
 				sServObj.partialDataLevels.push(level);
 				return;
 			}
 
-			level.items = level.items.slice(firstIndex, lastIndex + 1);
+			level.items = origLevel.items.slice(firstIndex, lastIndex + 1);
 			sServObj.partialDataLevels.push(level);
 		};
 
