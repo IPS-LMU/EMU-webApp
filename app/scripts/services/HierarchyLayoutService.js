@@ -151,6 +151,10 @@ angular.module('emuwebApp')
 		 * @return empty array if there are no children (previously would return null due to a d3 dependency that no longer exists)
 		 */
 		sServObj.findChildren = function (d, selectedPath) {
+			if (d._children) {
+				return d._children;
+			}
+
 			var children = [];
 
 			// Find the level that d is a part of
@@ -192,6 +196,7 @@ angular.module('emuwebApp')
 				}
 			}
 
+			d._children = children;
 			return children;
 		}
 
