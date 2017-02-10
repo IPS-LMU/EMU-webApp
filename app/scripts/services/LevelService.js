@@ -230,14 +230,18 @@ angular.module('emuwebApp')
 				return sServObj.itemLevelMap[nodeID];
 			}
 			var ret = null;
-			angular.forEach(DataService.getLevelData(), function (level) {
-				var pos = level.items.map(function (e) {
-					return e.id;
-				}).indexOf(nodeID);
-				if (pos >= 0) {
-					ret = level.name;
+			var levels = DataService.getLevelData();
+			for (var i = 0; i < levels.length; ++i) {
+				for (var j = 0; j < levels[i].items.length; ++j) {
+					if (levels[i].items[j].id === nodeID) {
+						ret = levels[i].name;
+						break;
+					}
 				}
-			});
+				if (ret !== null) {
+					break;
+				}
+			}
 			sServObj.itemLevelMap[nodeID] = ret;
 			return ret;
 		};

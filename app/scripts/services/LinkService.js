@@ -159,11 +159,14 @@ angular.module('emuwebApp')
 			if (sServObj.targetItemLinksMap.hasOwnProperty(toID)) {
 				return sServObj.targetItemLinksMap[toID];
 			}
-			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
-				if (link.toID === toID) {
-					ret.push({link: link, order: linkOrder});
+
+			var links = DataService.getLinkData();
+			for (var i = 0; i < links.length; ++i) {
+				if (links[i].toID === toID) {
+					ret.push({link: links[i], order: i});
 				}
-			});
+			}
+
 			sServObj.targetItemLinksMap[toID] = ret;
 			return ret;
 		};
@@ -179,11 +182,13 @@ angular.module('emuwebApp')
 				return sServObj.sourceItemLinksMap[fromID];
 			}
 
-			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
-				if (link.fromID === fromID) {
-					ret.push({link: link, order: linkOrder});
+			var links = DataService.getLinkData();
+			for (var i = 0; i < links.length; ++i) {
+				if (links[i].fromID === fromID) {
+					ret.push({link: links[i], order: i});
 				}
-			});
+			}
+
 			sServObj.sourceItemLinksMap[fromID] = ret;
 			return ret;
 		};

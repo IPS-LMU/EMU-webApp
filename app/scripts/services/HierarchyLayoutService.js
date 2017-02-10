@@ -532,15 +532,22 @@ angular.module('emuwebApp')
 			if (sServObj.idItemMap.hasOwnProperty(id)) {
 				return sServObj.idItemMap[id];
 			}
-			angular.forEach(sServObj.partialDataLevels, function (level) {
-				if (level.name === name) {
-					level.items.forEach(function (element) {
-						if (element.id == id) {
-							ret = element;
+
+			var levels = sServObj.partialDataLevels;
+
+			for (var i = 0; i < levels.length; ++i) {
+				if (levels[i].name === name) {
+					for (var j = 0; j < levels[i].items.length; ++j) {
+						if (levels[i].items[j].id === id) {
+							ret = levels[i].items[j];
+							break;
 						}
-					});
+					}
+					if (ret !== null) {
+						break;
+					}
 				}
-			});
+			}
 			sServObj.idItemMap[id] = ret;
 			return ret;
 		};
