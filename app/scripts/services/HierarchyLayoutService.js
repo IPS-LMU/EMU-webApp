@@ -83,7 +83,7 @@ angular.module('emuwebApp')
 		sServObj.calculateWeightsBottomUp = function (selectedPath) {
 			var i, ii, iii;
 
-			sServObj.rebuildPartialData(selectedPath, 7000, 23930);
+			sServObj.rebuildPartialData(selectedPath, viewState.curViewPort.sS, viewState.curViewPort.eS);
 
 			/////
 			// Make sure all items have proper _parents and
