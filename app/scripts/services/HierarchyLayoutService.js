@@ -524,6 +524,9 @@ angular.module('emuwebApp')
 
 		sServObj.getItemFromLevelById = function (name, id) {
 			var ret = null;
+			if (sServObj.idItemMap.hasOwnProperty(id)) {
+				return sServObj.idItemMap[id];
+			}
 			angular.forEach(sServObj.partialDataLevels, function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element) {
@@ -533,8 +536,12 @@ angular.module('emuwebApp')
 					});
 				}
 			});
+			sServObj.idItemMap[id] = ret;
 			return ret;
 		};
+
+		sServObj.idItemMap = {};
+
 
 		return sServObj;
 	});
