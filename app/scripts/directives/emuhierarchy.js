@@ -132,14 +132,15 @@ angular.module('emuwebApp')
 				}, false);
 
 				scope.$watch('hierarchyState.contextMenuID', function (newValue, oldValue) {
-					if (newValue !== oldValue) {
-						scope.render();
+					if (newValue !== oldValue && newValue === undefined) {
+						console.log('Rendering (context menu disappearing)');
+						scope.render(false);
 					}
 				}, false);
 
 				scope.$watch('hierarchyState.resize', function (newValue, oldValue) {
-					console.debug('Rendering due to window resize');
 					if (newValue !== oldValue) {
+						console.debug('Rendering due to window resize');
 						scope.render();
 					}
 				}, false);
@@ -202,7 +203,10 @@ angular.module('emuwebApp')
 						$timeout.cancel(scope.zoomTimeoutPromise);
 						scope.zoomTimeoutPromise = null;
 					}
-					scope.zoomTimeoutPromise = $timeout(scope.render, 200);
+					scope.zoomTimeoutPromise = $timeout(function() {
+						console.log('Rendering due to zoom');
+						scope.render();
+					}, 200);
 				};
 
 
@@ -567,7 +571,8 @@ angular.module('emuwebApp')
 						viewState.hierarchyState.contextMenuID = d.id;
 						viewState.hierarchyState.setEditValue(scope.getNodeText(d));
 						scope.$apply(function () {
-							scope.render();
+							console.log('Rendering (context menu appearing)');
+							scope.render(false);
 						});
 					}
 
@@ -1537,10 +1542,63 @@ angular.module('emuwebApp')
 					// prevent that these points leave the above boundaries.
 					// Note that these do not depend on scope.vertical because they
 					// are transformed when the user is in "scope.vertical mode".
-					scope.timeAxisStartPosition = scope.svg.node().getBBox().y;
-					scope.timeAxisEndPosition = scope.timeAxisStartPosition + scope.svg.node().getBBox().height;
-					scope.crossAxisStartPosition = scope.svg.node().getBBox().x;
-					scope.crossAxisEndPosition = scope.crossAxisStartPosition + scope.svg.node().getBBox().width;
+
+
+					//var boundingBox = scope.svg.node().getBBox();
+
+					// The runtime of scope.svg.node().getBBox() grows with
+					// the number of SVG nodes (i.e. with the size of the
+					// hierarchy) and it is very slow.
+
+					// Since there are only very few candidates among the
+					// nodes that might determine the bounding box of the
+					// whole thing, we just check these. This way, we do not
+					// need to rely on svg.getBBox() to check all nodes'
+					// position.
+
+					// This method does not return the exact same results as
+					// svg.getBBox(). It returns the center of the nodes
+					// that determine the bounding box. It fails to include
+					// their radius, and it fails to include the labels that
+					// surround the nodes. But the approximation is fair enough.
+					// And it is fast.
+
+					var largestY = 0, largestX = 0, smallestY, smallestX;
+
+					for (var i = 0; i < viewState.hierarchyState.path.length; ++i) {
+						var levelItems = HierarchyLayoutService.getLevelDetails(viewState.hierarchyState.path[i]).items;
+
+						if (smallestX === undefined || levelItems[0]._x < smallestX) {
+							smallestX = levelItems[0]._x;
+						}
+						if (smallestY === undefined || levelItems[0]._y < smallestY) {
+							smallestY = levelItems[0]._y;
+						}
+						if (levelItems[levelItems.length - 1]._x > largestX) {
+							largestX = levelItems[levelItems.length - 1]._x;
+						}
+						if (levelItems[levelItems.length - 1]._y > largestY) {
+							largestY = levelItems[levelItems.length - 1]._y;
+						}
+					}
+					if (smallestX === undefined) {
+						smallestX = 0;
+					}
+					if (smallestY === undefined) {
+						smallestY = 0;
+					}
+
+					var boundingBox = {
+						x: smallestX,
+						y: smallestY,
+						width: largestX,
+						height: largestY
+					};
+
+					scope.timeAxisStartPosition = boundingBox.y;
+					scope.timeAxisEndPosition = scope.timeAxisStartPosition + boundingBox.height;
+					scope.crossAxisStartPosition = boundingBox.x;
+					scope.crossAxisEndPosition = scope.crossAxisStartPosition + boundingBox.width;
 				};
 			}
 		};
