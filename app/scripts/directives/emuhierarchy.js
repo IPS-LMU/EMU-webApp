@@ -883,6 +883,9 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.render = function () {
+					var startTime = Date.now();
+					console.debug ('render() started');
+
 					var scaleFactor = scope.zoomListener.scale();
 					scope.lastScaleFactor = scaleFactor;
 
@@ -1664,6 +1667,8 @@ angular.module('emuwebApp')
 					scope.timeAxisEndPosition = scope.timeAxisStartPosition + boundingBox.height;
 					scope.crossAxisStartPosition = boundingBox.x;
 					scope.crossAxisEndPosition = scope.crossAxisStartPosition + boundingBox.width;
+
+					console.log('render() finished, took', Date.now() - startTime, 'milliseconds');
 				};
 			}
 		};
