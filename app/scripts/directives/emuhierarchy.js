@@ -194,6 +194,10 @@ angular.module('emuwebApp')
 					viewState.hierarchyState.translate = translate;
 					viewState.hierarchyState.scaleFactor = scale;
 
+					scope.scaleFactorDisplay
+						.select('text')
+						.text('Zoom: ' + Math.round(scale * 100) + ' %');
+
 					// Transform all SVG elements
 					// Note that scope.svg is actually not the svg itself but rather the main <g> within it
 					// Note further that scope.captionLayer is a sibling and not a descendant of scope.svg
