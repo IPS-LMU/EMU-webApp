@@ -188,8 +188,11 @@ angular.module('emuwebApp')
 					scope.limitPanning();
 
 					// Save translate and scale so they can be re-used when the modal is re-opened
-					viewState.hierarchyState.translate = scope.zoomListener.translate();
-					viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
+					var translate = scope.zoomListener.translate();
+					var scale = scope.zoomListener.scale();
+
+					viewState.hierarchyState.translate = translate;
+					viewState.hierarchyState.scaleFactor = scale;
 
 					// Transform all SVG elements
 					// Note that scope.svg is actually not the svg itself but rather the main <g> within it
@@ -199,14 +202,17 @@ angular.module('emuwebApp')
 					scope.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
 
 					// Call scope.render(), but make sure it's only called once a rush of zoom events has finished
+					// Moreover, it's only necessary after zooming, not after panning
 					if (scope.zoomTimeoutPromise !== null) {
 						$timeout.cancel(scope.zoomTimeoutPromise);
 						scope.zoomTimeoutPromise = null;
 					}
-					scope.zoomTimeoutPromise = $timeout(function() {
-						console.log('Rendering due to zoom');
-						scope.render();
-					}, 200);
+					if (scale !== scope.lastScaleFactor) {
+						scope.zoomTimeoutPromise = $timeout(function () {
+							console.log('Rendering due to zoom');
+							scope.render();
+						}, 200);
+					}
 				};
 
 
