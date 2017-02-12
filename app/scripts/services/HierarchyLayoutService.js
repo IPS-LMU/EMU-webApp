@@ -503,16 +503,26 @@ angular.module('emuwebApp')
 
 		// basically a copy of LevelService's function, but operating on
 		// sServObj.partialDataLevels rather than DataService.levels
-		sServObj.getItemByID = function (nodeID) {
+		sServObj.getItemByID = function (id) {
 			var ret = undefined;
-			angular.forEach(sServObj.partialDataLevels, function (level) {
-				var pos = level.items.map(function (e) {
-					return e.id;
-				}).indexOf(nodeID);
-				if (pos >= 0) {
-					ret = level.items[pos];
+			if (sServObj.idItemMap.hasOwnProperty(id)) {
+				return sServObj.idItemMap[id];
+			}
+
+			var levels = sServObj.partialDataLevels;
+			for (var i = 0; i < levels.length; ++i) {
+				for (var j = 0; j < levels[i].items.length; ++j) {
+					if (levels[i].items[j].id === id) {
+						ret = levels[i].items[j];
+						break;
+					}
 				}
-			});
+				if (ret !== undefined) {
+					break;
+				}
+			}
+
+			sServObj.idItemMap[id] = ret;
 			return ret;
 		};
 
