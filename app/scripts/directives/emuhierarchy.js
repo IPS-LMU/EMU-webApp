@@ -228,6 +228,8 @@ angular.module('emuwebApp')
 					// Read user's panning value
 					var x = scope.zoomListener.translate()[0];
 					var y = scope.zoomListener.translate()[1];
+					var xOrig = x;
+					var yOrig = y;
 
 					if (scope.vertical) {
 						if (!scope.allowCrossAxisPan) {
@@ -267,7 +269,11 @@ angular.module('emuwebApp')
 						}
 					}
 
-					scope.zoomListener.translate([x, y]);
+					if (x !== xOrig || y !== yOrig) {
+						scope.zoomListener.translate([x, y]);
+						// Make sure the programmatic changes to the translate vector are applied
+						scope.zoomListener.event(scope.svg);
+					}
 				};
 
 				scope.rotate = function () {
@@ -1672,6 +1678,7 @@ angular.module('emuwebApp')
 					scope.crossAxisStartPosition = boundingBox.x;
 					scope.crossAxisEndPosition = scope.crossAxisStartPosition + boundingBox.width;
 
+					scope.limitPanning();
 					console.log('render() finished, took', Date.now() - startTime, 'milliseconds');
 				};
 			}
