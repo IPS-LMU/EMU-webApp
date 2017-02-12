@@ -321,17 +321,19 @@ angular.module('emuwebApp')
 				 */
 				scope.getOrientatedTransform = function (zoomInProgress) {
 					var transform = '';
+					var scale = scope.zoomListener.scale();
+					var translate = scope.zoomListener.translate();
 
 					if (scope.vertical) {
-						transform += 'translate(' + scope.zoomListener.translate()[0] + ',' + scope.zoomListener.translate()[1] + ')';
+						transform += 'translate(' + translate[0] + ',' + translate[1] + ')';
 						transform += 'scale(-1,1),rotate(90)';
 					} else {
-						transform += 'translate(' + scope.zoomListener.translate()[0] + ',' + scope.zoomListener.translate()[1] + ')';
+						transform += 'translate(' + translate[0] + ',' + translate[1] + ')';
 						transform += 'rotate(0)';
 					}
 
 					if (zoomInProgress === true) {
-						var factor = scope.zoomListener.scale() / scope.lastScaleFactor;
+						var factor = scale / scope.lastScaleFactor;
 
 						if (scope.allowCrossAxisZoom) {
 							transform += 'scale(' + factor + ')';
@@ -441,10 +443,11 @@ angular.module('emuwebApp')
 				};
 
 				scope.getOrientatedLevelCaptionLayerTransform = function (d) {
+					var translate = scope.zoomListener.translate();
 					if (scope.vertical) {
-						return 'translate(0, ' + scope.zoomListener.translate()[1] + ')';
+						return 'translate(0, ' + translate[1] + ')';
 					} else {
-						return 'translate(' + scope.zoomListener.translate()[0] + ', 0)';
+						return 'translate(' + translate[0] + ', 0)';
 					}
 				};
 
@@ -490,15 +493,16 @@ angular.module('emuwebApp')
 				};
 
 				scope.getOrientatedMousePosition = function (mouse) {
+					var translate = scope.zoomListener.translate();
 					if (scope.vertical) {
 						return [
-							( mouse[1] - scope.zoomListener.translate()[1] ),
-							( mouse[0] - scope.zoomListener.translate()[0] )
+							( mouse[1] - translate[1] ),
+							( mouse[0] - translate[0] )
 						];
 					} else {
 						return [
-							( mouse[0] - scope.zoomListener.translate()[0] ),
-							( mouse[1] - scope.zoomListener.translate()[1] )
+							( mouse[0] - translate[0] ),
+							( mouse[1] - translate[1] )
 						];
 					}
 				};
