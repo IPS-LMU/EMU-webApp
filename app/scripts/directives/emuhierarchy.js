@@ -41,10 +41,10 @@ angular.module('emuwebApp')
 
 
 				// Possible zoom range
-				scope.scaleExtent = [0.5, 10];
+				scope.scaleExtent = [1, Infinity];
 
 				// Possible pan range
-				scope.panningLimit = 0.95;
+				scope.panningLimit = 0.5;
 				scope.allowCrossAxisZoom = false;
 				scope.allowCrossAxisPan = false;
 
@@ -1067,11 +1067,7 @@ angular.module('emuwebApp')
 							});
 
 						var itemsInViewPort;
-						if (scaleFactor < 1) {
-							itemsInViewPort = items.length;
-						} else {
-							itemsInViewPort = Math.ceil(items.length / scaleFactor);
-						}
+						itemsInViewPort = Math.ceil(items.length / scaleFactor);
 
 						if (itemsInViewPort <= timeAxisCapacity) {
 							nodes = nodes.concat(items);
