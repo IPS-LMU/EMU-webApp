@@ -271,36 +271,42 @@ angular.module('emuwebApp')
 					// panned away before the rotation and try to restore
 					// that value afterwards.
 
-					var translate = scope.zoomListener.translate();
+					if (scope.timeAxisEndPosition === 0 || scope.crossAxisEndPosition === 0) {
+						// if these values are zero, we cannot preserve any
+						// panning because we'd have to divide by zero (what
+						// would we preserve, anyway?)
 
-					if (scope.vertical === true) {
-						// Changing from horizontal to vertical
-						var percentageAwayTimeAxis = (translate[1]) / scope.timeAxisEndPosition;
-						var percentageAwayCrossAxis = (translate[0]) / scope.crossAxisEndPosition;
+						scope.render();
 					} else {
-						// Changing from vertical to horizontal
-						var percentageAwayTimeAxis = (translate[0]) / scope.timeAxisEndPosition;
-						var percentageAwayCrossAxis = (translate[1]) / scope.crossAxisEndPosition;
+						var translate = scope.zoomListener.translate();
+
+						if (scope.vertical === true) {
+							// Changing from horizontal to vertical
+							var percentageAwayTimeAxis = (translate[1]) / scope.timeAxisEndPosition;
+							var percentageAwayCrossAxis = (translate[0]) / scope.crossAxisEndPosition;
+						} else {
+							// Changing from vertical to horizontal
+							var percentageAwayTimeAxis = (translate[0]) / scope.timeAxisEndPosition;
+							var percentageAwayCrossAxis = (translate[1]) / scope.crossAxisEndPosition;
+						}
+
+						scope.render();
+
+						percentageAwayTimeAxis = percentageAwayTimeAxis * scope.timeAxisEndPosition;
+						percentageAwayCrossAxis = percentageAwayCrossAxis * scope.crossAxisEndPosition;
+
+						if (scope.vertical === true) {
+							// Changing from horizontal to vertical
+							scope.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
+						} else {
+							// Changing from vertical to horizontal
+							scope.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
+						}
+
+						// Make sure the programmatic changes to the translate vector are applied
+						scope.zoomListener.event(scope.svg);
 					}
-
-					scope.render();
-
-					percentageAwayTimeAxis = percentageAwayTimeAxis * scope.timeAxisEndPosition;
-					percentageAwayCrossAxis = percentageAwayCrossAxis * scope.crossAxisEndPosition;
-
-					if (scope.vertical === true) {
-						// Changing from horizontal to vertical
-						scope.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
-					} else {
-						// Changing from vertical to horizontal
-						scope.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
-					}
-
-					scope.limitPanning();
-
-					// Make sure the programmatic changes to the translate vector are applied
-					scope.zoomListener.event(scope.svg);
-				}
+				};
 
 				/**
 				 * This transform is applied to the main <g> within the SVG
@@ -871,7 +877,9 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.render = function () {
-					scope.lastScaleFactor = scope.zoomListener.scale();
+					var scaleFactor = scope.zoomListener.scale();
+					scope.lastScaleFactor = scaleFactor;
+
 					var i;
 
 					// Get current width and height of SVG
@@ -908,7 +916,7 @@ angular.module('emuwebApp')
 						scope.scaleFactorDisplay
 							.select('text')
 							.attr('text-anchor', 'end')
-							.text('Zoom: ' + Math.round(scope.zoomListener.scale() * 100) + ' %');
+							.text('Zoom: ' + Math.round(scaleFactor * 100) + ' %');
 					} else {
 						scope.scaleFactorDisplay
 							.attr('transform', 'translate(0, ' + scope.height + ')')
@@ -917,7 +925,7 @@ angular.module('emuwebApp')
 						scope.scaleFactorDisplay
 							.select('text')
 							.attr('text-anchor', 'start')
-							.text('Zoom: ' + Math.round(scope.zoomListener.scale() * 100) + ' %');
+							.text('Zoom: ' + Math.round(scaleFactor * 100) + ' %');
 						;
 					}
 
@@ -941,8 +949,12 @@ angular.module('emuwebApp')
 						.attr('class', 'emuhierarchy-levelcaption')
 					;
 
-					newLevelCaptions
-						.append('text')
+					var text = newLevelCaptions.append('text');
+
+					text.append('tspan');
+					text.append('tspan')
+						.attr('x', 0)
+						.attr('dy', '1.4em')
 					;
 
 					var addItemButtons = newLevelCaptions
@@ -983,7 +995,7 @@ angular.module('emuwebApp')
 					;
 
 					levelCaptionSet
-						.select('text')
+						.select('text tspan')
 						.text(scope.getLevelCaptionText);
 
 					levelCaptionSet
@@ -1012,18 +1024,60 @@ angular.module('emuwebApp')
 					/////////
 					// Compute the new tree layout (first nodes and then links)
 					//
+
+					// Compute how many items fit on the screen
+					var timeAxisCapacity;
+					if (scope.vertical) {
+						timeAxisCapacity = Math.floor((scope.width - scope.vertOffsetX) / 10);
+					} else {
+						timeAxisCapacity = Math.floor((scope.height - scope.offsetY) / 10);
+					}
+					var levelVisibility = {};
+
 					var nodes = [];
 					HierarchyLayoutService.calculateWeightsBottomUp(viewState.hierarchyState.path);
 
 					for (var i = 0; i < viewState.hierarchyState.path.length; ++i) {
+						var level = HierarchyLayoutService.getLevelDetails(viewState.hierarchyState.path[i]);
+
 						// Add all nodes that are not collapsed
-						var levelItems = HierarchyLayoutService.getLevelDetails(viewState.hierarchyState.path[i]).items;
-						for (var ii = 0; ii < levelItems.length; ++ii) {
-							if (levelItems[ii]._visible) {
-								nodes.push(levelItems[ii]);
-							}
+
+						var items = level.items
+							.filter(function (item) {
+								return item._visible;
+							});
+
+						var itemsInViewPort;
+						if (scaleFactor < 1) {
+							itemsInViewPort = items.length;
+						} else {
+							itemsInViewPort = Math.ceil(items.length / scaleFactor);
+						}
+
+						if (itemsInViewPort <= timeAxisCapacity) {
+							nodes = nodes.concat(items);
+							levelVisibility[level.name] = {visible: true};
+						} else {
+							levelVisibility[level.name] = {
+								visible: false,
+								itemsInViewPort: itemsInViewPort
+							};
 						}
 					}
+
+					// Give feedback for invisible levels
+					levelCaptionSet
+						.selectAll('text tspan')
+						.filter(':nth-child(2)')
+						.text(function(levelName) {
+							var text = '';
+							if (!levelVisibility[levelName].visible) {
+								text = 'Too many nodes, zoom in (';
+								text += levelVisibility[levelName].itemsInViewPort + '/' + timeAxisCapacity;
+								text += ')';
+							}
+							return text;
+						});
 
 
 					// Make sure the selected things are visible, otherwise un-select them
@@ -1069,25 +1123,30 @@ angular.module('emuwebApp')
 					var links = [];
 					var allLinks = DataService.getData().links;
 					for (var l = 0; l < allLinks.length; ++l) {
-						for (var i = 0; i < viewState.hierarchyState.path.length - 1; ++i) {
-							var element = HierarchyLayoutService.getItemFromLevelById(viewState.hierarchyState.path[i], allLinks[l].toID);
-							var parentElement = HierarchyLayoutService.getItemFromLevelById(viewState.hierarchyState.path[i + 1], allLinks[l].fromID);
-
-							if (element === null) {
-								continue;
-							}
-							if (parentElement === null) {
-								continue;
-							}
-							if (!element._visible) {
-								continue;
-							}
-							if (viewState.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
-								continue;
-							}
-
-							links.push(allLinks[l]);
+						var element = HierarchyLayoutService.getItemByID(allLinks[l].toID);
+						if (element === null || element === undefined) {
+							continue;
 						}
+						if (!element._visible) {
+							continue;
+						}
+
+						var parentElement = HierarchyLayoutService.getItemByID(allLinks[l].fromID);
+						if (parentElement === null || parentElement === undefined) {
+							continue;
+						}
+						if (viewState.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
+							continue;
+						}
+
+						var level = LevelService.getLevelName(allLinks[l].toID);
+						var parentLevel = LevelService.getLevelName(allLinks[l].fromID);
+
+						if (!levelVisibility[level].visible || !levelVisibility[parentLevel].visible) {
+							continue;
+						}
+
+						links.push(allLinks[l]);
 					}
 
 
