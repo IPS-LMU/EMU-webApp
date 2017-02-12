@@ -58,6 +58,11 @@ angular.module('emuwebApp')
 				scope.westernBoundary = undefined;
 				scope.easternBoundary = undefined;
 
+				// Keep track of how large levels are and whether they are
+				// displayed
+				scope.levelInfo = {};
+				scope.timeAxisCapacity = 0;
+
 
 				// While the user zooms (scrolls mouse wheel), many zoom events are
 				// fired. The last zoom event must be treated differently than the ones
@@ -197,6 +202,13 @@ angular.module('emuwebApp')
 					scope.scaleFactorDisplay
 						.select('text')
 						.text('Zoom: ' + Math.round(scale * 100) + ' %');
+
+					// Give feedback for invisible levels
+					scope.captionLayer.selectAll('g.emuhierarchy-levelcaption')
+						.selectAll('text tspan')
+						.filter(':nth-child(2)')
+						.text(scope.getLevelCaptionSecondLine);
+
 
 					// Transform all SVG elements
 					// Note that scope.svg is actually not the svg itself but rather the main <g> within it
@@ -404,6 +416,19 @@ angular.module('emuwebApp')
 					} else {
 						return levelName + ':' + attributeDefinition;
 					}
+				};
+
+				scope.getLevelCaptionSecondLine = function (levelName) {
+					var scaleFactor = scope.zoomListener.scale();
+					var itemsInViewPort = Math.ceil(scope.levelInfo[levelName].size / scaleFactor);
+
+					var text = '';
+					if (itemsInViewPort > scope.timeAxisCapacity) {
+						text = 'Too many nodes, zoom in (';
+						text += itemsInViewPort + '/' + scope.timeAxisCapacity;
+						text += ')';
+					}
+					return text;
 				};
 
 				scope.getOrientatedNodeCollapseText = function (d) {
@@ -909,6 +934,13 @@ angular.module('emuwebApp')
 					scope.width = parseInt(d3.select(scope.element[0]).style('width'), 10);
 					scope.height = parseInt(d3.select(scope.element[0]).style('height'), 10);
 
+					// Compute how many items fit on the screen
+					if (scope.vertical) {
+						scope.timeAxisCapacity = Math.floor((scope.width - scope.vertOffsetX) / 10);
+					} else {
+						scope.timeAxisCapacity = Math.floor((scope.height - scope.offsetY) / 10);
+					}
+
 					// Set orientation
 					if (scope.transition.rotation) {
 						scope.svg.transition()
@@ -978,6 +1010,7 @@ angular.module('emuwebApp')
 					text.append('tspan')
 						.attr('x', 0)
 						.attr('dy', '1.4em')
+						.style('fill', scope.cps.design.color.red)
 					;
 
 					var addItemButtons = newLevelCaptions
@@ -1048,15 +1081,6 @@ angular.module('emuwebApp')
 					// Compute the new tree layout (first nodes and then links)
 					//
 
-					// Compute how many items fit on the screen
-					var timeAxisCapacity;
-					if (scope.vertical) {
-						timeAxisCapacity = Math.floor((scope.width - scope.vertOffsetX) / 10);
-					} else {
-						timeAxisCapacity = Math.floor((scope.height - scope.offsetY) / 10);
-					}
-					var levelVisibility = {};
-
 					var nodes = [];
 					HierarchyLayoutService.calculateWeightsBottomUp(viewState.hierarchyState.path);
 
@@ -1070,17 +1094,16 @@ angular.module('emuwebApp')
 								return item._visible;
 							});
 
+						scope.levelInfo[level.name] = {size: items.length};
+
 						var itemsInViewPort;
 						itemsInViewPort = Math.ceil(items.length / scaleFactor);
 
-						if (itemsInViewPort <= timeAxisCapacity) {
+						if (itemsInViewPort <= scope.timeAxisCapacity) {
 							nodes = nodes.concat(items);
-							levelVisibility[level.name] = {visible: true};
+							scope.levelInfo[level.name].visible = true;
 						} else {
-							levelVisibility[level.name] = {
-								visible: false,
-								itemsInViewPort: itemsInViewPort
-							};
+							scope.levelInfo[level.name].visible = false;
 						}
 					}
 
@@ -1088,15 +1111,7 @@ angular.module('emuwebApp')
 					levelCaptionSet
 						.selectAll('text tspan')
 						.filter(':nth-child(2)')
-						.text(function(levelName) {
-							var text = '';
-							if (!levelVisibility[levelName].visible) {
-								text = 'Too many nodes, zoom in (';
-								text += levelVisibility[levelName].itemsInViewPort + '/' + timeAxisCapacity;
-								text += ')';
-							}
-							return text;
-						});
+						.text(scope.getLevelCaptionSecondLine);
 
 
 					// Make sure the selected things are visible, otherwise un-select them
@@ -1161,7 +1176,7 @@ angular.module('emuwebApp')
 						var level = LevelService.getLevelName(allLinks[l].toID);
 						var parentLevel = LevelService.getLevelName(allLinks[l].fromID);
 
-						if (!levelVisibility[level].visible || !levelVisibility[parentLevel].visible) {
+						if (!scope.levelInfo[level].visible || !scope.levelInfo[parentLevel].visible) {
 							continue;
 						}
 
