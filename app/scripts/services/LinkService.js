@@ -151,26 +151,71 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * Returns two hash maps with item IDs as keys and arrays of links
+		 * as values.
+		 *
+		 * The returned object has two properties, to and from, which
+		 * represent the two hash maps.
+		 *
+		 * Each hash map is keyed with item IDs, and the values are arrays
+		 * of objects like this:
+		 * {
+		 *  link: { fromID: number, toID: number },
+		 *  order: number
+		 * }
+		 *
+		 * @returns {{to: {}, from: {}}}
+		 */
+		sServObj.getHashMapIDLinks = function () {
+			var	result = {
+				to: {},
+				from: {}
+			};
+
+			var links = DataService.getLinkData();
+			for (var i = 0; i < links.length; ++i) {
+				if (!result.to.hasOwnProperty(links[i].toID)) {
+					result.to[links[i].toID] = [{
+						link: links[i],
+						order: i
+					}];
+				} else {
+					result.to[links[i].toID].push({
+						link: links[i],
+						order: i
+					});
+				}
+
+				if (!result.from.hasOwnProperty(links[i].fromID)) {
+					result.from[links[i].fromID] = [{
+						link: links[i],
+						order: i
+					}];
+				} else {
+					result.from[links[i].fromID].push({
+						link: links[i],
+						order: i
+					});
+				}
+			}
+
+			return result;
+		};
+
+		/**
 		 * returns all links
 		 * that match the form {'toID':toID}
 		 */
 		sServObj.getLinksTo = function (toID) {
 			var ret = [];
-			if (sServObj.targetItemLinksMap.hasOwnProperty(toID)) {
-				return sServObj.targetItemLinksMap[toID];
-			}
-
 			var links = DataService.getLinkData();
 			for (var i = 0; i < links.length; ++i) {
 				if (links[i].toID === toID) {
 					ret.push({link: links[i], order: i});
 				}
 			}
-
-			sServObj.targetItemLinksMap[toID] = ret;
 			return ret;
 		};
-		sServObj.targetItemLinksMap = {};
 
 		/**
 		 * returns all links
@@ -178,22 +223,14 @@ angular.module('emuwebApp')
 		 */
 		sServObj.getLinksFrom = function (fromID) {
 			var ret = [];
-			if (sServObj.sourceItemLinksMap.hasOwnProperty(fromID)) {
-				return sServObj.sourceItemLinksMap[fromID];
-			}
-
 			var links = DataService.getLinkData();
 			for (var i = 0; i < links.length; ++i) {
 				if (links[i].fromID === fromID) {
 					ret.push({link: links[i], order: i});
 				}
 			}
-
-			sServObj.sourceItemLinksMap[fromID] = ret;
 			return ret;
 		};
-
-		sServObj.sourceItemLinksMap = {};
 
 		/**
 		 * change a Link (form=={'fromID':fromID, 'toID':toID})

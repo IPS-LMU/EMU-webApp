@@ -226,9 +226,6 @@ angular.module('emuwebApp')
 		 * @return name of the containing level
 		 */
 		sServObj.getLevelName = function (nodeID) {
-			if (sServObj.itemLevelMap.hasOwnProperty(nodeID)) {
-				return sServObj.itemLevelMap[nodeID];
-			}
 			var ret = null;
 			var levels = DataService.getLevelData();
 			for (var i = 0; i < levels.length; ++i) {
@@ -242,11 +239,34 @@ angular.module('emuwebApp')
 					break;
 				}
 			}
-			sServObj.itemLevelMap[nodeID] = ret;
 			return ret;
 		};
 
-		sServObj.itemLevelMap = {};
+		/**
+		 * Returns a hash map with item IDs as keys and level names as values
+		 * @returns {{}}
+		 */
+		sServObj.getHashMapIDLevelName = function () {
+			var result = {};
+			var levels = DataService.getLevelData();
+			for (var i = 0; i < levels.length; ++i) {
+				for (var j = 0; j < levels[i].items.length; ++j) {
+					result[levels[i].items[j].id] = levels[i].name;
+				}
+			}
+			return result;
+		};
+
+		sServObj.getHashMapIDItem = function () {
+			var result = {};
+			var levels = DataService.getLevelData();
+			for (var i = 0; i < levels.length; ++i) {
+				for (var j = 0; j < levels[i].items.length; ++j) {
+					result[levels[i].items[j].id] = levels[i].items[j];
+				}
+			}
+			return result;
+		};
 
 		/**
 		 * Returns a level object and an item object according to a given item id
