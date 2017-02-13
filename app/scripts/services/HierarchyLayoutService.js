@@ -224,18 +224,13 @@ angular.module('emuwebApp')
 
 			//////
 			// Clear _parents from all items
-			var level;
-			for (i = 0; i < selectedPath.length; ++i) {
-				level = sServObj.getLevelDetails(selectedPath[i]);
-
-				for (ii = 0; ii < level.items.length; ++ii) {
-					level.items[ii]._parents = [];
-				}
+			for (var id in sServObj.hashMapIDItem) {
+				sServObj.hashMapIDItem[id]._parents = [];
 			}
-
 
 			/////
 			// Iterate through levels
+			var level;
 			for (i = 0; i < selectedPath.length; ++i) {
 				level = sServObj.getLevelDetails(selectedPath[i]);
 
