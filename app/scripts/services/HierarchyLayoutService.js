@@ -339,17 +339,14 @@ angular.module('emuwebApp')
 		};
 
 		sServObj.partialDataLevels = [];
-		sServObj.partialDataLinks = [];
 
 		sServObj.rebuildPartialData = function (selectedPath, start, end) {
 			if (start === -1) {
 				sServObj.partialDataLevels = DataService.getLevelData();
-				sServObj.partialDataLinks = DataService.getLinkData();
 				return;
 			}
 
 			sServObj.partialDataLevels = [];
-			sServObj.partialDataLinks = [];
 
 			var i;
 			for (i = 0; i < selectedPath.length; ++i) {
