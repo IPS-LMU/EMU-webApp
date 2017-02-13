@@ -20,6 +20,14 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
+		sServObj.hashMapIDChildren = {};
+		sServObj.hashMapIDItem = {};
+		sServObj.hashMapIDLevelName = {};
+		sServObj.hashMapIDLinks = {
+			to: {},
+			from: {}
+		};
+
 		/////////////////////
 		// public API
 
@@ -83,7 +91,12 @@ angular.module('emuwebApp')
 		sServObj.calculateWeightsBottomUp = function (selectedPath) {
 			var i, ii, iii;
 
+			sServObj.hashMapIDItem = LevelService.getHashMapIDItem();
+			sServObj.hashMapIDLevelName = LevelService.getHashMapIDLevelName();
+			sServObj.hashMapIDLinks = LinkService.getHashMapIDLinks();
 			sServObj.rebuildPartialData(selectedPath, viewState.curViewPort.sS, viewState.curViewPort.eS);
+			sServObj.hashMapIDChildren = {};
+			sServObj.findChildren(selectedPath);
 
 			/////
 			// Make sure all items have proper _parents and
@@ -127,8 +140,14 @@ angular.module('emuwebApp')
 
 					//////
 					// Additionally, calculate link positions
-					var linksToHere = LinkService.getLinksTo(level.items[ii].id);
-					var linksFromHere = LinkService.getLinksFrom(level.items[ii].id);
+					var linksToHere = sServObj.hashMapIDLinks.to[level.items[ii].id];
+					var linksFromHere = sServObj.hashMapIDLinks.from[level.items[ii].id];
+					if (linksToHere === undefined) {
+						linksToHere = [];
+					}
+					if (linksFromHere === undefined) {
+						linksFromHere = [];
+					}
 
 					for (var l = 0; l < linksToHere.length; ++l) {
 						linksToHere[l].link._toPosInLevel = level.items[ii]._posInLevel;
@@ -144,62 +163,50 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * Find all children of a node d that are part of the currently selected
-		 * path through the hierarchy
-		 *
-		 * @return an array of children nodes
-		 * @return empty array if there are no children (previously would return null due to a d3 dependency that no longer exists)
+		 * Find all children of all nodes that are part of the currently
+		 * selected path through the hierarchy, and store them in a hash map.
 		 */
-		sServObj.findChildren = function (d, selectedPath) {
-			if (d._children) {
-				return d._children;
-			}
+		sServObj.findChildren = function (selectedPath) {
+			for (var i = 0; i < selectedPath.length; ++i) {
+				var level = sServObj.getLevelDetails(selectedPath[i]);
 
-			var children = [];
+				for (var j = 0; j < level.items.length; ++j) {
+					var item = level.items[j];
 
-			// Find the level that d is a part of
-			// Return empty array if that fails (which shouldn't happen at all)
-			var currentLevel = LevelService.getLevelName(d.id);
-			if (currentLevel === null) {
-				console.log('Likely a bug: failed to find a node\'s level', d)
-				return [];
-			}
-
-			// Find the child level
-			var childLevel = null;
-			for (var i = 0; i < selectedPath.length - 1; ++i) {
-				if (selectedPath[i + 1] === currentLevel) {
-					childLevel = selectedPath[i];
-					break;
-				}
-			}
-			if (childLevel === null) {
-				return [];
-			}
-
-			// Iterate over links to find children
-			var links = LinkService.getLinksFrom(d.id);
-			for (var li = 0; li < links.length; ++li) {
-				// Iterate over levels to find the object corresponding to d.id
-				//var levels = DataService.getData().levels;
-				var levels = sServObj.partialDataLevels;
-				for (var l = 0; l < levels.length; ++l) {
-					if (levels[l].name !== childLevel) {
-						continue;
+					// On the bottom level along the selected path, there can
+					// be no children
+					if (i === 0) {
+						sServObj.hashMapIDChildren[item.id] = [];
+						break;
 					}
 
-					for (var it = 0; it < levels[l].items.length; ++it) {
-						if (levels[l].items[it].id === links[li].link.toID) {
-							children.push(levels[l].items[it]);
+					// On all other levels, we have to look for children
+					var children = [];
+					var links = sServObj.hashMapIDLinks.from[item.id];
+					if (links === undefined) {
+						sServObj.hashMapIDChildren[item.id] = [];
+						break;
+					}
+					for (var k = 0; k < links.length; ++k) {
+						var linkTarget = sServObj.hashMapIDItem[links[k].link.toID];
+						var targetLevel = sServObj.hashMapIDLevelName[linkTarget.id];
+						if (targetLevel === selectedPath[i - 1]) {
+							children.push(linkTarget);
 						}
 					}
+					sServObj.hashMapIDChildren[item.id] = children;
 				}
 			}
+		};
 
-			d._children = children;
-			return children;
-		}
-
+		sServObj.getChildren = function (id) {
+			var result = sServObj.hashMapIDChildren[id];
+			if (result === undefined) {
+				return [];
+			} else {
+				return result;
+			}
+		};
 
 		/**
 		 * This function aims to find and store the parents of every
@@ -235,7 +242,7 @@ angular.module('emuwebApp')
 				// Iterate through the current level's items
 				// And save them as _parents in their children
 				for (ii = 0; ii < level.items.length; ++ii) {
-					var children = sServObj.findChildren(level.items[ii], selectedPath);
+					var children = sServObj.getChildren(level.items[ii].id);
 
 					for (c = 0; c < children.length; ++c) {
 						children[c]._parents.push (level.items[ii]);
@@ -294,7 +301,7 @@ angular.module('emuwebApp')
 				while (items.length > 0) {
 					currentItem = items.pop();
 					if (!viewState.hierarchyState.getCollapsed(currentItem.id)) {
-						items = items.concat(sServObj.findChildren(currentItem, selectedPath));
+						items = items.concat(sServObj.getChildren(currentItem.id));
 					}
 
 					currentItem._visible = true;
@@ -317,10 +324,10 @@ angular.module('emuwebApp')
 			// collapsePosition is the coordinate where they fade out to or fade in from
 
 			var currentDescendant;
-			var descendants = sServObj.findChildren(d, selectedPath);
+			var descendants = sServObj.getChildren(d.id);
 			while (descendants.length > 0) {
 				currentDescendant = descendants.pop();
-				descendants = descendants.concat(sServObj.findChildren(currentDescendant, selectedPath));
+				descendants = descendants.concat(sServObj.getChildren(currentDescendant.id));
 
 				var num = viewState.hierarchyState.getNumCollapsedParents(currentDescendant.id);
 
@@ -481,9 +488,12 @@ angular.module('emuwebApp')
 
 		sServObj.getParentsOnLevel = function (item, parentLevelName) {
 			var result = [];
-			var links = LinkService.getLinksTo(item.id);
+			var links = sServObj.hashMapIDLinks.to[item.id];
+			if (links === undefined) {
+				return result;
+			}
 			for (var i = 0; i < links.length; ++i) {
-				if (LevelService.getLevelName(links[i].link.fromID) === parentLevelName) {
+				if (sServObj.hashMapIDLevelName[links[i].link.fromID] === parentLevelName) {
 					result.push(links[i].link.fromID);
 				}
 			}
@@ -501,54 +511,16 @@ angular.module('emuwebApp')
 			return null;
 		};
 
-		// basically a copy of LevelService's function, but operating on
-		// sServObj.partialDataLevels rather than DataService.levels
 		sServObj.getItemByID = function (id) {
-			var ret = undefined;
-			if (sServObj.idItemMap.hasOwnProperty(id)) {
-				return sServObj.idItemMap[id];
-			}
-
-			var levels = sServObj.partialDataLevels;
-			for (var i = 0; i < levels.length; ++i) {
-				for (var j = 0; j < levels[i].items.length; ++j) {
-					if (levels[i].items[j].id === id) {
-						ret = levels[i].items[j];
-						break;
-					}
-				}
-				if (ret !== undefined) {
-					break;
-				}
-			}
-
-			sServObj.idItemMap[id] = ret;
-			return ret;
+			return sServObj.hashMapIDItem[id];
 		};
 
-		sServObj.getItemFromLevelById = function (name, id) {
-			var ret = null;
-			if (sServObj.idItemMap.hasOwnProperty(id)) {
-				return sServObj.idItemMap[id];
+		sServObj.getLevelName = function (id) {
+			if (sServObj.hashMapIDLevelName.hasOwnProperty(id)) {
+				return sServObj.hashMapIDLevelName[id];
+			} else {
+				return null;
 			}
-
-			var levels = sServObj.partialDataLevels;
-
-			for (var i = 0; i < levels.length; ++i) {
-				if (levels[i].name === name) {
-					for (var j = 0; j < levels[i].items.length; ++j) {
-						if (levels[i].items[j].id === id) {
-							ret = levels[i].items[j];
-							break;
-						}
-					}
-					if (ret !== null) {
-						break;
-					}
-				}
-			}
-			sServObj.idItemMap[id] = ret;
-			return ret;
 		};
 
 		sServObj.idItemMap = {};

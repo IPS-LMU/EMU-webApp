@@ -399,7 +399,7 @@ angular.module('emuwebApp')
 				};
 
 				scope.getNodeText = function (d) {
-					var level = viewState.getCurAttrDef(LevelService.getLevelName(d.id));
+					var level = viewState.getCurAttrDef(HierarchyLayoutService.getLevelName(d.id));
 					for (var i = 0; i < d.labels.length; ++i) {
 						if (d.labels[i].name === level) {
 							return d.labels[i].value;
@@ -582,7 +582,7 @@ angular.module('emuwebApp')
 
 				scope.getLabelLegalnessColor = function (d) {
 					var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
-					var levelName = LevelService.getLevelName(d.id);
+					var levelName = HierarchyLayoutService.getLevelName(d.id);
 					var attrIndex = viewState.getCurAttrIndex(levelName);
 					var legalLabels = scope.cps.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 
@@ -721,7 +721,7 @@ angular.module('emuwebApp')
 								}
 							}
 						}
-						itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, viewState.hierarchyState.path));
+						itemList = itemList.concat(HierarchyLayoutService.getChildren(currentItem.id));
 					}
 
 					console.debug('Node info for playback: ', timeInfoType, d, startSample, endSample);
@@ -1173,8 +1173,8 @@ angular.module('emuwebApp')
 							continue;
 						}
 
-						var level = LevelService.getLevelName(allLinks[l].toID);
-						var parentLevel = LevelService.getLevelName(allLinks[l].fromID);
+						var level = HierarchyLayoutService.getLevelName(allLinks[l].toID);
+						var parentLevel = HierarchyLayoutService.getLevelName(allLinks[l].fromID);
 
 						if (!scope.levelInfo[level].visible || !scope.levelInfo[parentLevel].visible) {
 							continue;
