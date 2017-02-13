@@ -286,7 +286,7 @@ angular.module('emuwebApp')
 						level.items[ii]._visible = false;
 
 						if (level.items[ii]._parents.length === 0) {
-							rootLevelItems.push(level.items[ii]);
+							rootLevelItems.push(level.items[ii].id);
 						}
 					}
 				}
@@ -296,15 +296,17 @@ angular.module('emuwebApp')
 				// i.e. either they are a root node or there is an
 				// uncollapsed path to them from a root node.
 
-				var currentItem;
+				var currentID;
 				var items = rootLevelItems;
 				while (items.length > 0) {
-					currentItem = items.pop();
-					if (!viewState.hierarchyState.getCollapsed(currentItem.id)) {
-						items = items.concat(sServObj.getChildren(currentItem.id));
+					currentID = items.pop();
+					if (!viewState.hierarchyState.getCollapsed(currentID)) {
+						var children = sServObj.getChildren(currentID);
+						for (var i = 0; i < children.length; ++i) {
+							items.push(children[i].id);
+						}
 					}
-
-					currentItem._visible = true;
+					sServObj.hashMapIDItem[currentID]._visible = true;
 				}
 			}
 		};
