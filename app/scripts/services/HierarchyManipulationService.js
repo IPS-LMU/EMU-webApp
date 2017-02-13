@@ -180,8 +180,6 @@ angular.module('emuwebApp')
 					break;
 				}
 
-				console.debug('found preceding sibling', sibling.id, sibling.labels[0]);
-
 				var children = HierarchyLayoutService.findChildren(sibling, path);
 
 				for (var i = 0; i < children.length; ++i) {
@@ -203,8 +201,6 @@ angular.module('emuwebApp')
 					break;
 				}
 
-				console.debug('found successive sibling', sibling.id, sibling.labels[0]);
-
 				var children = HierarchyLayoutService.findChildren(sibling, path);
 				if (children.length === 0) {
 					continue;
@@ -218,7 +214,6 @@ angular.module('emuwebApp')
 				}
 			}
 
-			console.debug('child must be within', firstAllowedChildIndex, lastAllowedChildIndex);
 			if (childOrder < firstAllowedChildIndex || childOrder > lastAllowedChildIndex) {
 				result.valid = false;
 				result.reason = 5;
