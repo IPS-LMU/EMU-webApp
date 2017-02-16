@@ -1,5 +1,11 @@
 # What's New
 
+## Version 0.1.5
+
+### new features / performance tweaks / improvements
+
+- description field added to levelDefinition:attributeDefinitions 
+
 ## Version 0.1.4
 
 ### new features / performance tweaks / improvements
