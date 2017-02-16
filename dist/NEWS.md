@@ -4,7 +4,7 @@
 
 ### new features / performance tweaks / improvements
 
-- description field added to levelDefinition:attributeDefinitions 
+- description field added to levelDefinition:attributeDefinitions
 
 ## Version 0.1.4
 

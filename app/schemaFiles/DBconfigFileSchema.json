@@ -52,6 +52,9 @@
 								"type": {
 									"enum": ["STRING"]
 								},
+								"description": {
+									"type": "string"
+								},
 								"legalLabels": {
 									"type": "array",
 									"items": {
