@@ -30,7 +30,11 @@ describe('Directive: preview', function () {
         var spy1 = spyOn(Drawhelperservice,'freshRedrawDrawOsciOnCanvas');
         var spy2 = spyOn(Drawhelperservice,'calculatePeaks');
         DataService.setData(msajc003_bndl.annotation);
-        Soundhandlerservice.wavJSO.Data = new Array(58089);
+        Soundhandlerservice.audioBuffer.length = 58089;
+        Soundhandlerservice.audioBuffer.getChannelData = function (n) {
+            return(new Float32Array([1,2,3,4]));
+        };
+
         compileDirective('ae');
         viewState.curViewPort = {
             sS: 10,
@@ -45,7 +49,11 @@ describe('Directive: preview', function () {
         var spy1 = spyOn(Drawhelperservice,'freshRedrawDrawOsciOnCanvas');
         var spy2 = spyOn(Drawhelperservice,'calculatePeaks');
         DataService.setData(msajc003_bndl.annotation);
-        Soundhandlerservice.wavJSO.Data = new Array(58089);
+        Soundhandlerservice.audioBuffer.length = 58089;
+        Soundhandlerservice.audioBuffer.getChannelData = function (n) {
+            return(new Float32Array([1,2,3,4]));
+        };
+
         compileDirective('ae');
         scope.currentBundleName = 'msajc010';
         scope.$apply();

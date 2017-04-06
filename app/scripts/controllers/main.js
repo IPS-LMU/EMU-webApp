@@ -194,12 +194,12 @@ angular.module('emuwebApp')
 								viewState.somethingInProgress = true;
 								viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-								Wavparserservice.parseWavArrBuf(data.data).then(function (messWavParser) {
-									var wavJSO = messWavParser;
+								Wavparserservice.parseWavAudioBuf(data.data).then(function (messWavParser) {
+									var audioBuffer = messWavParser;
 									viewState.curViewPort.sS = 0;
-									viewState.curViewPort.eS = wavJSO.Data.length;
+									viewState.curViewPort.eS = audioBuffer.length;
 									viewState.resetSelect();
-									Soundhandlerservice.wavJSO = wavJSO;
+									Soundhandlerservice.audioBuffer = audioBuffer;
 
 									// get + parse file
 									Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
@@ -837,7 +837,7 @@ angular.module('emuwebApp')
 		$scope.cmdZoomAll = function () {
 			if (viewState.getPermission('zoom')) {
 				LevelService.deleteEditArea();
-				viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
+				viewState.setViewPort(0, Soundhandlerservice.audioBuffer.length);
 			} else {
 				//console.log('action currently not allowed');
 			}
@@ -932,8 +932,8 @@ angular.module('emuwebApp')
 		 */
 		$scope.cmdPlayAll = function () {
 			if (viewState.getPermission('playaudio')) {
-				Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
-				viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+				Soundhandlerservice.playFromTo(0, Soundhandlerservice.audioBuffer.length);
+				viewState.animatePlayHead(0, Soundhandlerservice.audioBuffer.length);
 			} else {
 				//console.log('action currently not allowed');
 			}

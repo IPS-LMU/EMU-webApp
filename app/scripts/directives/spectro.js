@@ -37,7 +37,7 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('vs.timelineSize', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							$timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
 						}
 					}
@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
-					if (newValue != oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.wavJSO)) {
+					if (newValue != oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.audioBuffer)) {
 						scope.clearAndDrawSpectMarkup();
 					}
 				});
@@ -53,7 +53,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.submenuOpen', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							$timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
 						}
 					}
@@ -62,7 +62,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							// check for changed zoom
 							if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
 								scope.redraw();
@@ -74,7 +74,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.movingBoundarySample', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							scope.clearAndDrawSpectMarkup();
 						}
 					}
@@ -82,7 +82,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.movingBoundary', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							// scope.redraw();
 							scope.clearAndDrawSpectMarkup();
 						}
@@ -92,7 +92,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.spectroSettings', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							scope.setupEvent();
 							scope.redraw();
 						}
@@ -102,7 +102,7 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
 								scope.redraw();
 							}
@@ -116,7 +116,7 @@ angular.module('emuwebApp')
 
 				scope.redraw = function () {
 					scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
-					scope.drawSpectro(scope.shs.wavJSO.Data);
+					scope.drawSpectro(scope.shs.audioBuffer.getChannelData(0));
 				};
 
 				scope.drawSpectro = function (buffer) {
@@ -174,7 +174,7 @@ angular.module('emuwebApp')
 					if (buffer.length > 0) {
 						scope.primeWorker = new spectroDrawingWorker();
 						var parseData = [];
-						var fftN = mathHelperService.calcClosestPowerOf2Gt(scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs);
+						var fftN = mathHelperService.calcClosestPowerOf2Gt(scope.shs.audioBuffer.sampleRate * scope.vs.spectroSettings.windowSizeInSecs);
 						// fftN must be greater than 512 (leads to better resolution of spectrogram)
 						if (fftN < 512) {
 							fftN = 512;
@@ -186,7 +186,7 @@ angular.module('emuwebApp')
 						var rightPadding = [];
 
 						// check if any zero padding at LEFT edge is necessary
-						var windowSizeInSamples = scope.shs.wavJSO.SampleRate * scope.vs.spectroSettings.windowSizeInSecs;
+						var windowSizeInSamples = scope.shs.audioBuffer.sampleRate * scope.vs.spectroSettings.windowSizeInSecs;
 						if (scope.vs.curViewPort.sS < windowSizeInSamples / 2) {
 							//should do something here... currently always padding with zeros!
 						}
@@ -194,7 +194,7 @@ angular.module('emuwebApp')
 							leftPadding = buffer.subarray(scope.vs.curViewPort.sS - windowSizeInSamples / 2, scope.vs.curViewPort.sS);
 						}
 						// check if zero padding at RIGHT edge is necessary
-						if (scope.vs.curViewPort.eS + fftN / 2 - 1 >= scope.shs.wavJSO.Data.length) {
+						if (scope.vs.curViewPort.eS + fftN / 2 - 1 >= scope.shs.audioBuffer.length) {
 							//should do something here... currently always padding with zeros!
 						}
 						else {
@@ -226,10 +226,10 @@ angular.module('emuwebApp')
 							'imgHeight': scope.canvas0.height,
 							'dynRangeInDB': scope.vs.spectroSettings.dynamicRange,
 							'pixelRatio': scope.devicePixelRatio,
-							'sampleRate': scope.shs.wavJSO.SampleRate,
+							'sampleRate': scope.shs.audioBuffer.sampleRate,
 							'transparency': scope.cps.vals.spectrogramSettings.transparency,
 							'audioBuffer': paddedSamples,
-							'audioBufferChannels': scope.shs.wavJSO.NumChannels,
+							'audioBufferChannels': scope.shs.audioBuffer.numberOfChannels,
 							'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
 							'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
 							'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors

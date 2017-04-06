@@ -41,7 +41,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.curViewPort', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							scope.drawSsffTrackMarkup();
 						}
 					}
@@ -49,7 +49,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('ssffds.data.length', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							scope.drawSsffTrackMarkup();
 						}
 					}
@@ -57,7 +57,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.movingBoundary', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							scope.drawSsffTrackMarkup();
 						}
 					}
@@ -66,7 +66,7 @@ angular.module('emuwebApp')
 
 				scope.$watch('vs.movingBoundarySample', function () {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							scope.drawSsffTrackMarkup();
 						}
 					}
@@ -75,7 +75,7 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
-						if (!$.isEmptyObject(scope.shs.wavJSO)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
 								scope.drawSsffTrackMarkup();
 							}

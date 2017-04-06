@@ -299,8 +299,8 @@ angular.module('emuwebApp')
                             if (code === ConfigProviderService.vals.keyMappings.playEntireFile && e.altKey) {
                                 if (viewState.getPermission('playaudio')) {
                                     if (ConfigProviderService.vals.restrictions.playback) {
-                                        Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
-                                        viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+                                        Soundhandlerservice.playFromTo(0, Soundhandlerservice.audioBuffer.length);
+                                        viewState.animatePlayHead(0, Soundhandlerservice.audioBuffer.length);
                                     }
                                 }
                             }
@@ -336,7 +336,7 @@ angular.module('emuwebApp')
 							// zoomAll
 							if (code === ConfigProviderService.vals.keyMappings.zoomAll) {
 								if (viewState.getPermission('zoom')) {
-									viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
+									viewState.setViewPort(0, Soundhandlerservice.audioBuffer.length);
 								} else {
 									//console.log('zoom all action currently not allowed');
 								}
@@ -391,8 +391,8 @@ angular.module('emuwebApp')
 							if (code === ConfigProviderService.vals.keyMappings.playEntireFile) {
 								if (viewState.getPermission('playaudio')) {
 									if (ConfigProviderService.vals.restrictions.playback) {
-										Soundhandlerservice.playFromTo(0, Soundhandlerservice.wavJSO.Data.length);
-										viewState.animatePlayHead(0, Soundhandlerservice.wavJSO.Data.length);
+										Soundhandlerservice.playFromTo(0, Soundhandlerservice.audioBuffer.length);
+										viewState.animatePlayHead(0, Soundhandlerservice.audioBuffer.length);
 									}
 								} else {
 									//console.log('action currently not allowed');
@@ -589,7 +589,7 @@ angular.module('emuwebApp')
 											} else {
 												var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 												if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-													changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
+													changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.audioBuffer.length / 100);
 												}
 												LevelService.expandSegment(true, viewState.getcurClickItems(), viewState.getcurClickLevelName(), changeTime);
 												HistoryService.addObjToUndoStack({
@@ -620,7 +620,7 @@ angular.module('emuwebApp')
 												if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 													var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 												} else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-													var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
+													var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.audioBuffer.length / 100);
 												} else {
 													modalService.open('views/error.html', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 												}
@@ -653,7 +653,7 @@ angular.module('emuwebApp')
 												if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 													var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 												} else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-													var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
+													var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.audioBuffer.length / 100);
 												} else {
 													modalService.open('views/error.html', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 												}
@@ -687,7 +687,7 @@ angular.module('emuwebApp')
 												if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'absolute') {
 													var changeTime = parseInt(ConfigProviderService.vals.labelCanvasConfig.addTimeValue, 10);
 												} else if (ConfigProviderService.vals.labelCanvasConfig.addTimeMode === 'relative') {
-													var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.wavJSO.Data.length / 100);
+													var changeTime = ConfigProviderService.vals.labelCanvasConfig.addTimeValue * (Soundhandlerservice.audioBuffer.length / 100);
 												} else {
 													modalService.open('views/error.html', 'Expand Segements Error: Error in Configuration (Value labelCanvasConfig.addTimeMode)');
 												}
@@ -898,7 +898,7 @@ angular.module('emuwebApp')
 													if (viewState.curViewPort.selectE == -1 && viewState.curViewPort.selectS == -1) {
 														modalService.open('views/error.html', 'Error : Please select a Segment or Point to modify it\'s name. Or select a level plus a range in the viewport in order to insert a new Segment.');
 													} else {
-														var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.wavJSO.Data.length).current;
+														var seg = LevelService.getClosestItem(viewState.curViewPort.selectS, viewState.getcurClickLevelName(), Soundhandlerservice.audioBuffer.length).current;
 														if (viewState.getcurClickLevelType() === 'SEGMENT') {
 															if (seg === undefined) {
 																var insSeg = LevelService.insertSegment(viewState.getcurClickLevelName(), viewState.curViewPort.selectS, viewState.curViewPort.selectE, ConfigProviderService.vals.labelCanvasConfig.newSegmentName);
@@ -1032,7 +1032,7 @@ angular.module('emuwebApp')
 														});
 													}
 													HistoryService.addCurChangeObjToUndoStack();
-													var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+													var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.audioBuffer.length);
 													if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
 														var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
 														viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
@@ -1051,7 +1051,7 @@ angular.module('emuwebApp')
 
 														});
 														HistoryService.addCurChangeObjToUndoStack();
-														var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+														var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.audioBuffer.length);
 														if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
 															var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
 															viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);
@@ -1084,7 +1084,7 @@ angular.module('emuwebApp')
 														'deletedLinks': deletedLinks
 													});
 													HistoryService.addCurChangeObjToUndoStack();
-													var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.wavJSO.Data.length);
+													var lastEventMove = LevelService.getClosestItem(viewState.getLasPcm() + viewState.curViewPort.sS, levelname, Soundhandlerservice.audioBuffer.length);
 													if (lastEventMove.current !== undefined && lastEventMove.nearest !== undefined) {
 														var lastNeighboursMove = LevelService.getItemNeighboursFromLevel(levelName, lastEventMove.nearest.id, lastEventMove.nearest.id);
 														viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, viewState.getLasPcm(), lastEventMove.isFirst, lastEventMove.isLast);

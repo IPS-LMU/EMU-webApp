@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 		var sServObj = {};
 
 		// public vars
-		sServObj.wavJSO = {};
+		sServObj.audioBuffer = {};
 		sServObj.isPlaying = false;
 
 		///////////////////////////////////////////
@@ -37,23 +37,28 @@ angular.module('emuwebApp')
 		 *
 		 * @param buffer arraybuffer containing audio file (as returned by XHR for example)
 		 * */
-		sServObj.decodeAndPlay = function (buffer) {
+		sServObj.decodeAndPlay = function (sampleStart, endSample) {
 			if (typeof(audioContext) == "undefined") {
 				initAudioContext();
 			}
 
-			audioContext.decodeAudioData(buffer, function (ab) {
+			var startTime = sampleStart / sServObj.audioBuffer.sampleRate;
+            var endTime = endSample / sServObj.audioBuffer.sampleRate;
+			var durTime = endTime - startTime;
+
+
+			// audioContext.decodeAudioData(buffer, function (ab) {
 				curSource = audioContext.createBufferSource();
-				curSource.buffer = ab;
+				curSource.buffer = sServObj.audioBuffer;
 				curSource.connect(audioContext.destination);
-				curSource.start(0);
+				curSource.start(0, startTime, durTime);
 				curSource.onended = function () {
 					sServObj.isPlaying = false;
 				}
 
-			}, function (e) {
-				alert(e);
-			});
+			//}, function (e) {
+			//	alert(e);
+			//});
 		};
 
 
@@ -65,33 +70,33 @@ angular.module('emuwebApp')
 		 * @paramn endSample number that represents end sample
 		 * @returns ArrayBuffer containing wav file
 		 * */
-		sServObj.extractRelPartOfWav = function (sampleStart, endSample) {
-			var bytePerSample = sServObj.wavJSO.BitsPerSample / 8;
-			var headerSize = 44;
-			if(sServObj.wavJSO.Subchunk1Size == 18){
-				headerSize = 46;
-			}
-
-			var header = sServObj.wavJSO.origArrBuf.subarray(0, headerSize);
-			var data = sServObj.wavJSO.origArrBuf.subarray(headerSize, sServObj.wavJSO.Data.length * bytePerSample);
-
-			var dv = new DataView(header);
-			var Subchunk2SizePos = 40;
-			if(sServObj.wavJSO.Subchunk1Size == 18){
-				Subchunk2SizePos = 42;
-			}
-			dv.setUint32(Subchunk2SizePos, (endSample - sampleStart) * bytePerSample, true);
-			// var Subchunk2Size = dv.getUint32(40, true);
-			// console.log(Subchunk2Size);
-
-			var newData = data.subarray(sampleStart * bytePerSample, (endSample - sampleStart) * bytePerSample);
-
-			var tmp = new Uint8Array(header.byteLength + newData.byteLength);
-			tmp.set(new Uint8Array(header), 0);
-			tmp.set(new Uint8Array(newData), header.byteLength);
-
-			return (tmp.buffer);
-		};
+		// sServObj.extractRelPartOfWav = function (sampleStart, endSample) {
+		// 	var bytePerSample = sServObj.wavJSO.BitsPerSample / 8;
+		// 	var headerSize = 44;
+		// 	if(sServObj.wavJSO.Subchunk1Size == 18){
+		// 		headerSize = 46;
+		// 	}
+        //
+		// 	var header = sServObj.wavJSO.origArrBuf.subarray(0, headerSize);
+		// 	var data = sServObj.wavJSO.origArrBuf.subarray(headerSize, sServObj.wavJSO.Data.length * bytePerSample);
+        //
+		// 	var dv = new DataView(header);
+		// 	var Subchunk2SizePos = 40;
+		// 	if(sServObj.wavJSO.Subchunk1Size == 18){
+		// 		Subchunk2SizePos = 42;
+		// 	}
+		// 	dv.setUint32(Subchunk2SizePos, (endSample - sampleStart) * bytePerSample, true);
+		// 	// var Subchunk2Size = dv.getUint32(40, true);
+		// 	// console.log(Subchunk2Size);
+        //
+		// 	var newData = data.subarray(sampleStart * bytePerSample, (endSample - sampleStart) * bytePerSample);
+        //
+		// 	var tmp = new Uint8Array(header.byteLength + newData.byteLength);
+		// 	tmp.set(new Uint8Array(header), 0);
+		// 	tmp.set(new Uint8Array(newData), header.byteLength);
+        //
+		// 	return (tmp.buffer);
+		// };
 
 		/**
 		 * play audio from to specified in samples
@@ -101,7 +106,7 @@ angular.module('emuwebApp')
 		 * */
 		sServObj.playFromTo = function (sampleStart, endSample) {
 
-			var cutWavBuff = this.extractRelPartOfWav(sampleStart, endSample);
+			//var cutWavBuff = this.extractRelPartOfWav(sampleStart, endSample);
 
 			if (sServObj.isPlaying) {
 				sServObj.isPlaying = false;
@@ -109,8 +114,8 @@ angular.module('emuwebApp')
 			} else {
 
 				sServObj.isPlaying = true;
-				if (cutWavBuff.byteLength > 44) { // if wav file is bigger than just the header (a.k.a. data block is empty)
-					sServObj.decodeAndPlay(cutWavBuff);
+				if (sServObj.audioBuffer.length > 0) { // if wav file is not empty
+					sServObj.decodeAndPlay(sampleStart, endSample);
 				}
 			}
 

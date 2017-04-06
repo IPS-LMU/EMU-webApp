@@ -157,7 +157,7 @@ angular.module('emuwebApp')
 				// on mouse leave clear markup canvas
 				element.bind('mouseleave', function (event) {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
-						if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 							if (!viewState.getdragBarActive()) {
 								if (viewState.getPermission('labelAction')) {
 									scope.switchMarkupContext(event, false);

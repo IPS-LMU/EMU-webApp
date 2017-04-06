@@ -14,14 +14,14 @@ angular.module('emuwebApp')
 
 
 				element.bind('click', function (x) {
-					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 						var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
-						startPCM = viewState.getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
+						startPCM = viewState.getX(x) * (Soundhandlerservice.audioBuffer.length / x.originalEvent.target.width);
 						if (startPCM - (width / 2) < 0) {
 							startPCM = Math.ceil(width / 2);
 						}
-						else if (startPCM + (width / 2) > Soundhandlerservice.wavJSO.Data.length) {
-							startPCM = Math.floor(Soundhandlerservice.wavJSO.Data.length - (width / 2));
+						else if (startPCM + (width / 2) > Soundhandlerservice.audioBuffer.length) {
+							startPCM = Math.floor(Soundhandlerservice.audioBuffer.length - (width / 2));
 						}
 						if (!viewState.isEditing()) {
 							scope.$apply(function () {
@@ -33,8 +33,8 @@ angular.module('emuwebApp')
 
 				//
 				element.bind('mousedown', function (x) {
-					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
-						startPCM = viewState.getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
+					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+						startPCM = viewState.getX(x) * (Soundhandlerservice.audioBuffer.length / x.originalEvent.target.width);
 					}
 				});
 
@@ -50,7 +50,7 @@ angular.module('emuwebApp')
 						case 1:
 							if (startPCM !== -1) {
 								var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
-								startPCM = viewState.getX(x) * (Soundhandlerservice.wavJSO.Data.length / x.originalEvent.target.width);
+								startPCM = viewState.getX(x) * (Soundhandlerservice.audioBuffer.length / x.originalEvent.target.width);
 								if (!viewState.isEditing()) {
 									scope.$apply(function () {
 										viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));

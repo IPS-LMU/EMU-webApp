@@ -52,7 +52,7 @@ describe('Controller: MainController', function () {
     scope.modal = modalService;
     scope.io = Iohandlerservice;
     scope.valid = Validationservice;
-    scope.shs.wavJSO.Data = new Array(testSizeAll);
+    scope.shs.audioBuffer.length = testSizeAll;
     scope.cps.setVals(defaultEmuwebappConfig);
     scope.cps.design = defaultEmuwebappDesign;
     scope.cps.curDbConfig = aeDbConfig;
@@ -175,7 +175,7 @@ describe('Controller: MainController', function () {
     expect(scope.modal.open).toHaveBeenCalledWith('views/help.html');
   });
 
-  it('should openDemoDB ae', inject(function ($q, $httpBackend) {
+  it('should openDemoDB ae', inject(function ($q, $httpBackend, dbObjLoadSaveService) {
     var ioDeferredDBConfig = $q.defer();
     ioDeferredDBConfig.resolve({
       data: {
@@ -191,6 +191,7 @@ describe('Controller: MainController', function () {
     spyOn(scope.io, 'getDBconfigFile').and.returnValue(ioDeferredDBConfig.promise);
     spyOn(scope.io, 'getBundleList').and.returnValue(ioDeferredBundleList.promise);
     spyOn(scope.valid, 'validateJSO').and.returnValue(true);
+    spyOn(dbObjLoadSaveService, 'loadBundle').and.returnValue("test12"); // overwrite call to loadBundle
     scope.openDemoDBbtnClick('ae');
     expect(scope.vs.setState).toHaveBeenCalledWith('loadingSaving');
     expect(scope.vs.getPermission).toHaveBeenCalledWith('openDemoBtnDBclick');
@@ -635,7 +636,7 @@ describe('Controller: MainController', function () {
      spyOn(scope.io, 'httpGetPath').and.returnValue(ioDeferred.promise);
      spyOn(scope.cps, 'setVals');
      spyOn(scope.valid, 'validateJSO').and.returnValue(true);
-     spyOn(scope.wav, 'parseWavArrBuf').and.returnValue(wavDeferred.promise);
+     spyOn(scope.wav, 'parseWavAudioBuf').and.returnValue(wavDeferred.promise);
      spyOn(scope.io, 'parseLabelFile').and.returnValue(ioDeferred2.promise);
      spyOn(scope.data, 'setData');
      scope.cps.embeddedVals.audioGetUrl = 'test.wav';
@@ -645,7 +646,7 @@ describe('Controller: MainController', function () {
      expect(scope.cps.setVals).toHaveBeenCalled();
      wavDeferred.resolve({Data: [1, 2, 3]});
      scope.$apply();
-     expect(scope.wav.parseWavArrBuf).toHaveBeenCalled();
+     expect(scope.wav.parseWavAudioBuf).toHaveBeenCalled();
      ioDeferred2.resolve({levels: [{ name: 'test' }]});
      scope.$apply();
      expect(scope.valid.validateJSO).toHaveBeenCalled();

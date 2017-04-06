@@ -128,21 +128,21 @@ angular.module('emuwebApp')
 							} else {
 								res = evt.currentTarget.result;
 							}
-							Wavparserservice.parseWavArrBuf(res).then(function (wavJSO) {
+							Wavparserservice.parseWavAudioBuf(res).then(function (audioBuffer) {
 								if (DragnDropDataService.convertedBundles[i] === undefined) {
 									DragnDropDataService.convertedBundles[i] = {};
 								}
 								DragnDropDataService.convertedBundles[i].mediaFile = {};
-								Soundhandlerservice.wavJSO = wavJSO;
-								DragnDropDataService.convertedBundles[i].mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(wavJSO.origArrBuf);
+								Soundhandlerservice.audioBuffer = audioBuffer;
 								DragnDropDataService.convertedBundles[i].mediaFile.encoding = 'BASE64';
+								DragnDropDataService.convertedBundles[i].mediaFile.data = Binarydatamaniphelper.arrayBufferToBase64(res);
 								DragnDropDataService.convertedBundles[i].ssffFiles = [];
 								var bundle = data.wav.name.substr(0, data.wav.name.lastIndexOf('.'));
 								if (data.annotation === undefined) {
 									DragnDropDataService.convertedBundles[i].annotation = {
 										levels: [],
 										links: [],
-										sampleRate: wavJSO.SampleRate,
+										sampleRate: audioBuffer.sampleRate,
 										annotates: bundle,
 										name: bundle
 									};
@@ -227,10 +227,11 @@ angular.module('emuwebApp')
 				if (validRes === true) {
 					ConfigProviderService.curDbConfig = resp.data;
 					viewState.somethingInProgressTxt = 'Parsing WAV file...';
-					Wavparserservice.parseWavArrBuf(ab).then(function (messWavParser) {
-						var wavJSO = messWavParser;
+					Wavparserservice.parseWavAudioBuf(ab).then(function (messWavParser) {
+						console.log("here!")
+						var audioBuffer = messWavParser;
 						viewState.curViewPort.sS = 0;
-						viewState.curViewPort.eS = wavJSO.Data.length;
+						viewState.curViewPort.eS = audioBuffer.length;
 						viewState.curViewPort.selectS = -1;
 						viewState.curViewPort.selectE = -1;
 						viewState.curClickSegments = [];
@@ -261,7 +262,7 @@ angular.module('emuwebApp')
 						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
 						ConfigProviderService.setPerspectivesOrder(viewState.curPerspectiveIdx, lNames);
 						//ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-						Soundhandlerservice.wavJSO = wavJSO;
+						Soundhandlerservice.audioBuffer = audioBuffer;
 
 						// set all ssff files
 						viewState.somethingInProgressTxt = 'Parsing SSFF files...';

@@ -30,7 +30,7 @@ angular.module('emuwebApp')
 			worker.tell({
 				'cmd': 'parseESPS',
 				'esps': esps,
-				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
+				'sampleRate': Soundhandlerservice.audioBuffer.sampleRate,
 				'annotates': annotates,
 				'name': name
 			});
@@ -48,7 +48,7 @@ angular.module('emuwebApp')
 			worker.tell({
 				'cmd': 'parseJSO',
 				'level': LevelService.getLevelDetails(name),
-				'sampleRate': Soundhandlerservice.wavJSO.SampleRate
+				'sampleRate': Soundhandlerservice.audioBuffer.sampleRate
 			});
 			return defer.promise;
 		};

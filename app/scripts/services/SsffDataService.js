@@ -73,7 +73,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.calculateSamplePosInVP = function (colSampleNr, sampleRate, startTime) {
 			var sampleTime = (colSampleNr / sampleRate) + startTime;
-			var audioSample = Math.round(sampleTime * Soundhandlerservice.wavJSO.SampleRate);
+			var audioSample = Math.round(sampleTime * Soundhandlerservice.audioBuffer.sampleRate);
 			return audioSample;
 		};
 

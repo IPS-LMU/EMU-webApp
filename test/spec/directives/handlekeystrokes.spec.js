@@ -32,7 +32,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         scope.cps.setVals(defaultEmuwebappConfig);
         scope.cps.design = defaultEmuwebappDesign;
         scope.data.setData(msajc003_bndl.annotation);
-        scope.shs.wavJSO.Data = msajc003_bndl.mediaFile.data;
+        scope.shs.audioBuffer.length = 154964;
 
         // compile
         compileDirective();

@@ -219,7 +219,7 @@ describe('Factory: viewState', function () {
    *
    */
   it('should setViewPort', inject(function (viewState, LevelService, Soundhandlerservice) {
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    Soundhandlerservice.audioBuffer.length = 58089;
     viewState.setViewPort(20156, 34679);
     expect(viewState.curViewPort.sS).toEqual(20156);
     expect(viewState.curViewPort.eS).toEqual(34679);
@@ -238,7 +238,8 @@ describe('Factory: viewState', function () {
    */
   it('should zoomViewPort', inject(function (viewState, DataService, LevelService, Soundhandlerservice) {
     DataService.setData(msajc003_bndl.annotation);
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    Soundhandlerservice.audioBuffer.length = 58089;
+
     viewState.setViewPort(0, 58089);
     viewState.zoomViewPort(true, LevelService);
     viewState.zoomViewPort(true, LevelService);
@@ -255,9 +256,8 @@ describe('Factory: viewState', function () {
   /**
    *
    */
-  it('should shiftViewPort', inject(function (viewState, DataService, LevelService, Soundhandlerservice) {
+  it('should shiftViewPort', inject(function (viewState, DataService, LevelService) {
     DataService.setData(msajc003_bndl.annotation);
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
     viewState.setViewPort(0, 58089);
     viewState.zoomViewPort(true, LevelService);
     viewState.zoomViewPort(true, LevelService);
@@ -349,10 +349,9 @@ describe('Factory: viewState', function () {
   it('should zoomViewPort with seg', inject(function (viewState, DataService, LevelService, Soundhandlerservice) {
     viewState.initialize();
     DataService.setData(msajc003_bndl.annotation);
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
-    viewState.setViewPort(0, Soundhandlerservice.wavJSO.Data.length);
+    viewState.setViewPort(0, 58089);
     spyOn(viewState, 'setViewPort');
-    var lastEventMove = LevelService.getClosestItem(5000, 'Phonetic', Soundhandlerservice.wavJSO.Data.length);
+    var lastEventMove = LevelService.getClosestItem(5000, 'Phonetic', 58089);
     var lastNeighboursMove = LevelService.getItemNeighboursFromLevel('Phonetic', lastEventMove.nearest.id, lastEventMove.nearest.id);
     viewState.setcurMouseItem(lastEventMove.nearest, lastNeighboursMove, 5000, lastEventMove.isFirst, lastEventMove.isLast);
     viewState.zoomViewPort(true, LevelService);

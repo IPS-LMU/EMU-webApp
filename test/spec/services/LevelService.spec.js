@@ -9,11 +9,12 @@ describe('Service: LevelService', function () {
   var item;
   var aetmpDBconfig, epgdorsaltmpDbConfig, ematmpDbConfig, defaultEmuwebappConfigTmp;
 
-  beforeEach(inject(function () {
-    aetmpDBconfig = angular.copy(aeDbConfig);
-    epgdorsaltmpDbConfig = angular.copy(epgdorsalDbConfig);
-    ematmpDbConfig = angular.copy(emaDbConfig);
-    defaultEmuwebappConfigTmp = angular.copy(defaultEmuwebappConfig);
+  beforeEach(inject(function (Soundhandlerservice) {
+      aetmpDBconfig = angular.copy(aeDbConfig);
+      epgdorsaltmpDbConfig = angular.copy(epgdorsalDbConfig);
+      ematmpDbConfig = angular.copy(emaDbConfig);
+      defaultEmuwebappConfigTmp = angular.copy(defaultEmuwebappConfig);
+
   }));
 
   /**
@@ -848,7 +849,7 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // snap Boundary
     DataService.setData(msajc003_bndl.annotation);
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    // Soundhandlerservice.wavJSO.Data = new Array(58089);
     // snap point to boundary above
     var ret = LevelService.snapBoundary(true,
       'Tone', {
@@ -903,7 +904,7 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 147).sampleDur).toEqual(item.sampleDur - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    Soundhandlerservice.audioBuffer.length = 58089;
     LevelService.moveBoundary('Phonetic', 180, 10, false, true);
     item = getItemFromJSON(msajc003_bndl.annotation, 180);
     expect(LevelService.getItemFromLevelById('Phonetic', 180).sampleStart).toEqual(item.sampleStart);
@@ -934,7 +935,7 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemFromLevelById('Segment', 0).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Segment', 0).sampleDur).toEqual(item.sampleDur - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples
-    Soundhandlerservice.wavJSO.Data = new Array(96002);
+    Soundhandlerservice.audioBuffer.length = 96002;
     LevelService.moveBoundary('Segment', 37, 10, false, true);
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 37);
     expect(LevelService.getItemFromLevelById('Segment', 37).sampleStart).toEqual(item.sampleStart);
@@ -965,7 +966,7 @@ describe('Service: LevelService', function () {
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleStart).toEqual(item.sampleStart + 10);
     expect(LevelService.getItemFromLevelById('Phonetic', 3).sampleDur).toEqual(item.sampleDur - 10);
     // move right most (1) boundary of segment with id 180 on level 'Phonetic' by 10 samples
-    Soundhandlerservice.wavJSO.Data = new Array(112000);
+    Soundhandlerservice.audioBuffer.length = 112000;
     LevelService.moveBoundary('Phonetic', 4, 10, false, true);
     item = getItemFromJSON(JDR10_bndl.annotation, 4);
     expect(LevelService.getItemFromLevelById('Phonetic', 4).sampleStart).toEqual(item.sampleStart);
@@ -980,7 +981,7 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // delete and deleteSegmentsInvers 2 segments
     DataService.setData(msajc003_bndl.annotation);
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    Soundhandlerservice.audioBuffer.length = 58089;
     // move point with id 181 on level 'Tone' by 100000000000 samples -> should not change anything
     LevelService.moveEvent('Tone', 181, 100000000000);
     item = getItemFromJSON(msajc003_bndl.annotation, 181);
@@ -1091,7 +1092,7 @@ describe('Service: LevelService', function () {
     // test on msajc003_bndl.annotation
     // move segment
     DataService.setData(msajc003_bndl.annotation);
-    Soundhandlerservice.wavJSO.Data = new Array(58089);
+    Soundhandlerservice.audioBuffer.length = 58089;
     // move single segment with id 158 on level 'Phonetic' by 100000000000 samples -> should not change anything
     LevelService.moveSegment('Phonetic', 158, 1, 100000000000);
     item = getItemFromJSON(msajc003_bndl.annotation, 157);
@@ -1227,23 +1228,28 @@ describe('Service: LevelService', function () {
    *
    */
   it('should calcDistanceToNearestZeroCrossing', inject(function (DataService, LevelService, viewState, Soundhandlerservice) {
-    // set according data
-    DataService.setData(msajc003_bndl.annotation);
-    Soundhandlerservice.wavJSO.Data = new Array(1000);
-    viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
-    for (var i = 0; i < Soundhandlerservice.wavJSO.Data.length; i++) {
-        Soundhandlerservice.wavJSO.Data[i] = 0;
+      // set according data
+      DataService.setData(msajc003_bndl.annotation);
+      Soundhandlerservice.audioBuffer.length = 1000;
+      viewState.setCurLevelAttrDefs(aetmpDBconfig.levelDefinitions);
+      var samples = [];
+      for (var i = 0; i < Soundhandlerservice.audioBuffer.length; i++) {
+          samples[i] = 0;
     }
-    Soundhandlerservice.wavJSO.Data[480] = -1;
-    Soundhandlerservice.wavJSO.Data[481] = 1;
-    var shift = LevelService.calcDistanceToNearestZeroCrossing(500);
-    expect(shift).toBe(-19);
-    Soundhandlerservice.wavJSO.Data[480] = -1;
-    Soundhandlerservice.wavJSO.Data[481] = 1;
-    Soundhandlerservice.wavJSO.Data[510] = 1;
-    Soundhandlerservice.wavJSO.Data[511] = -1;
-    var shift = LevelService.calcDistanceToNearestZeroCrossing(500);
-    expect(shift).toBe(11);
+      Soundhandlerservice.audioBuffer.getChannelData = function (n) {
+          return(samples);
+      }
+
+      samples[480] = -1;
+      samples[481] = 1;
+      var shift = LevelService.calcDistanceToNearestZeroCrossing(500);
+      expect(shift).toBe(-19);
+      samples[480] = -1;
+      samples[481] = 1;
+      samples[510] = 1;
+      samples[511] = -1;
+      var shift = LevelService.calcDistanceToNearestZeroCrossing(500);
+      expect(shift).toBe(11);
   }));
 
   /**

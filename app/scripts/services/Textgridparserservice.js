@@ -28,8 +28,8 @@ angular.module('emuwebApp')
 			worker.tell({
 				'cmd': 'toTextGrid',
 				'levels': DataService.getData().levels,
-				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
-				'buffLength': Soundhandlerservice.wavJSO.Data.length
+				'sampleRate': Soundhandlerservice.audioBuffer.sampleRate,
+				'buffLength': Soundhandlerservice.audioBuffer.length
 			});
 			return defer.promise;
 		};
@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 			worker.tell({
 				'cmd': 'parseTG',
 				'textGrid': textGrid,
-				'sampleRate': Soundhandlerservice.wavJSO.SampleRate,
+				'sampleRate': Soundhandlerservice.audioBuffer.sampleRate,
 				'annotates': annotates,
 				'name': name
 			});

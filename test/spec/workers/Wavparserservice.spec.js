@@ -13,13 +13,13 @@ describe('Service: Wavparserservice', function () {
   /**
    *
    */
-   it('should do parseWavArrBuf', inject(function (Binarydatamaniphelper, Wavparserservice) {
-     var ab = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
-     Wavparserservice.parseWavArrBuf(ab).then(function (res) {
-       console.log(res);
-       expect(res).toEqual('');
-     });
-     scope.$digest();
-   }));
+//   it('should do parseWavAudioBuf', inject(function (Binarydatamaniphelper, Wavparserservice) {
+//     var ab = Binarydatamaniphelper.base64ToArrayBuffer(msajc003_bndl.mediaFile.data);
+//     Wavparserservice.parseWavAudioBuf(ab).then(function (res) {
+//       console.log(res);
+//       expect(res).toEqual('');
+//     });
+//     scope.$digest();
+//   }));
 
 });

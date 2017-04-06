@@ -258,7 +258,7 @@ angular.module('emuwebApp')
 					var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].ySsffTrack);
 
 					var sInterv = (1 / xsRaSt.sampleRate);
-					var curMousePosTime = scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate;
+					var curMousePosTime = scope.vs.curMousePosSample / scope.shs.audioBuffer.sampleRate;
 					var curFrame;
 
 					if (xsRaSt.startTime === (1 / xsRaSt.sampleRate) / 2) {

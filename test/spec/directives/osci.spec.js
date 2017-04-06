@@ -21,6 +21,10 @@ describe('Directive: osci', function () {
         scope.data = DataService;
         scope.data.setData(msajc003_bndl.annotation);
         scope.level = curLvl;
+
+        scope.shs.audioBuffer.getChannelData = function (n) {
+            return([1,2,3]);
+        }
     }));
 
     function compileDirective() {
@@ -42,8 +46,7 @@ describe('Directive: osci', function () {
    it('should watch viewState.playHeadAnimationInfos', function () {
      scope.vs.playHeadAnimationInfos.sS = 1
      compileDirective();
-     scope.shs.wavJSO = {};
-     scope.shs.wavJSO.Data = [1, 2, 3];
+     scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawPlayHead');
      scope.vs.playHeadAnimationInfos.sS = 10
@@ -54,8 +57,7 @@ describe('Directive: osci', function () {
    it('should watch viewState.movingBoundarySample', function () {
      scope.vs.movingBoundarySample = 1
      compileDirective();
-     scope.shs.wavJSO = {};
-     scope.shs.wavJSO.Data = [1, 2, 3];
+     scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
      scope.vs.movingBoundarySample = 10
@@ -66,8 +68,7 @@ describe('Directive: osci', function () {
    it('should watch viewState.movingBoundary', function () {
      scope.vs.movingBoundary = false
      compileDirective();
-     scope.shs.wavJSO = {};
-     scope.shs.wavJSO.Data = [1, 2, 3];
+     scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
      scope.vs.movingBoundary = true
@@ -79,8 +80,7 @@ describe('Directive: osci', function () {
      scope.vs.curViewPort.sS = 1
      scope.vs.curViewPort.eS = 2
      compileDirective();
-     scope.shs.wavJSO = {};
-     scope.shs.wavJSO.Data = [1, 2, 3];
+     scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
      spyOn(scope.dhs, 'calculatePeaks');

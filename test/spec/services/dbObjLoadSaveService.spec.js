@@ -68,7 +68,7 @@ describe('Service: dbObjLoadSaveService', function () {
    it('should loadBundle', inject(function (DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService, viewState) {
      spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1'});
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
-     spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(deferred2.promise);
+     spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(deferred2.promise);
      spyOn(Ssffparserservice, 'asyncParseSsffArr').and.returnValue(deferred3.promise);
      spyOn(Validationservice, 'validateJSO').and.returnValue(true);
      spyOn(viewState, 'selectLevel').and.returnValue(true);
@@ -82,7 +82,7 @@ describe('Service: dbObjLoadSaveService', function () {
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.resolve({Data: []});
      scope.$apply();
-     expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
+     expect(Wavparserservice.parseWavAudioBuf).toHaveBeenCalled();
      deferred3.resolve({Data: []});
      scope.$apply();
      expect(viewState.selectLevel).toHaveBeenCalled();
@@ -99,7 +99,7 @@ describe('Service: dbObjLoadSaveService', function () {
    it('should NOT loadBundle (ssff error)', inject(function (appStateService, modalService, DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService) {
      spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1'});
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
-     spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(deferred2.promise);
+     spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(deferred2.promise);
      spyOn(Ssffparserservice, 'asyncParseSsffArr').and.returnValue(deferred3.promise);
      spyOn(Validationservice, 'validateJSO').and.returnValue(true);
      spyOn(modalService, 'open').and.returnValue(deferred4.promise);
@@ -114,7 +114,7 @@ describe('Service: dbObjLoadSaveService', function () {
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.resolve({Data: []});
      scope.$apply();
-     expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
+     expect(Wavparserservice.parseWavAudioBuf).toHaveBeenCalled();
      deferred3.reject({ status: { message: 'error_msg1' }});
      scope.$apply();
      expect(Validationservice.validateJSO).toHaveBeenCalled();
@@ -133,7 +133,7 @@ describe('Service: dbObjLoadSaveService', function () {
    it('should NOT loadBundle (wav file error)', inject(function (appStateService, modalService, DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService) {
      spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1'});
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
-     spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(deferred2.promise);
+     spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(deferred2.promise);
      spyOn(Validationservice, 'validateJSO').and.returnValue(true);
      spyOn(modalService, 'open').and.returnValue(deferred3.promise);
      spyOn(appStateService, 'resetToInitState');
@@ -147,7 +147,7 @@ describe('Service: dbObjLoadSaveService', function () {
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.reject({ status: { message: 'error_msg2' }});
      scope.$apply();
-     expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
+     expect(Wavparserservice.parseWavAudioBuf).toHaveBeenCalled();
      expect(Validationservice.validateJSO).toHaveBeenCalled();
      expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
      deferred3.resolve();

@@ -18,7 +18,7 @@ describe('Directive: showMenu', function() {
     }
 
     it('should set correct click values', inject(function (viewState, Soundhandlerservice) {
-        Soundhandlerservice.wavJSO.Data = new Array(58089); 
+        Soundhandlerservice.audioBuffer.length = 58089;
         viewState.curViewPort = {
           sS : 20,
           eS : 120
@@ -45,7 +45,7 @@ describe('Directive: showMenu', function() {
     
 
     it('should set correct mousemove values', inject(function (viewState, Soundhandlerservice) {
-        Soundhandlerservice.wavJSO.Data = new Array(58089); 
+        Soundhandlerservice.audioBuffer.length = 58089;
         viewState.curViewPort = {
           sS : 20,
           eS : 120

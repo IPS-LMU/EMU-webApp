@@ -111,7 +111,7 @@ describe('Directive: trackmouseinlevel', function () {
         scope.vs.curMouseisFirst = true;
         scope.cps.vals.restrictions.editItemSize = true;
         scope.lastPCM = 0;
-        scope.shs.wavJSO.Data = new Array(58089);
+        scope.shs.audioBuffer.length = 58089;
         elm.isolateScope().levelType = lvlType;
         spyOn(scope.vs, 'getSamplesPerPixelVal').and.returnValue(0.1);
         spyOn(scope.vs, 'getX').and.returnValue(10);
@@ -138,7 +138,7 @@ describe('Directive: trackmouseinlevel', function () {
         scope.vs.setdragBarActive(false);
         scope.cps.vals.restrictions.editItemSize = true;
         scope.lastPCM = 0;
-        scope.shs.wavJSO.Data = new Array(58089);
+        scope.shs.audioBuffer.length = 58089;
         elm.isolateScope().levelType = lvlType;
         spyOn(scope.vs, 'getSamplesPerPixelVal').and.returnValue(0.1);
         spyOn(scope.vs, 'getX').and.returnValue(10);
@@ -154,7 +154,7 @@ describe('Directive: trackmouseinlevel', function () {
      });
 
    it('should setLastClick', function () {
-     scope.shs.wavJSO.Data = new Array(58089);
+     scope.shs.audioBuffer.length = 58089;
      compileDirective();
      spyOn(scope.vs, 'getX').and.returnValue(1);
      spyOn(scope.vs, 'getSamplesPerPixelVal').and.returnValue(1);
@@ -187,7 +187,7 @@ describe('Directive: trackmouseinlevel', function () {
 
 
   it('should setLastDblClick on Event', function () {
-     scope.shs.wavJSO.Data = new Array(58089);
+     scope.shs.audioBuffer.length = 58089;
      compileDirective();
      spyOn(scope.vs, 'setcurClickLevel');
      spyOn(scope.vs, 'setcurClickItem');
@@ -206,7 +206,7 @@ describe('Directive: trackmouseinlevel', function () {
    });
 
   it('should setLastDblClick on Segment', function () {
-     scope.shs.wavJSO.Data = new Array(58089);
+     scope.shs.audioBuffer.length = 58089;
      compileDirective();
      elm.isolateScope().levelType = lvlType;
      scope.vs.curViewPort.eS = (testitem.sampleStart + testitem.sampleDur + 1);
@@ -227,7 +227,7 @@ describe('Directive: trackmouseinlevel', function () {
    });
 
    it('should setLastMove', function () {
-     scope.shs.wavJSO.Data = new Array(58089);
+     scope.shs.audioBuffer.length = 58089;
      compileDirective();
      spyOn(scope.vs, 'setcurMouseLevelName');
      spyOn(scope.vs, 'setcurMouseLevelType');
@@ -241,7 +241,7 @@ describe('Directive: trackmouseinlevel', function () {
    });
 
    it('should setLastMove with doChange', function () {
-     scope.shs.wavJSO.Data = new Array(58089);
+     scope.shs.audioBuffer.length = 58089;
      compileDirective();
      spyOn(scope.vs, 'setcurMouseLevelName');
      spyOn(scope.vs, 'setcurMouseLevelType');

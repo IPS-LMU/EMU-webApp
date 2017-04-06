@@ -30,8 +30,7 @@ describe('Service: Textgridparserservice', function () {
    */
    it('should do asyncToTextGrid', inject(function (Textgridparserservice, DataService, Soundhandlerservice) {
      var result;
-     Soundhandlerservice.wavJSO.SampleRate = 1000;
-     Soundhandlerservice.wavJSO.Data = new Array(1000);
+     Soundhandlerservice.audioBuffer.length = 1000;
      DataService.setData(msajc003_bndl.annotation);
      Textgridparserservice.asyncToTextGrid().then(function (res) {
        expect(res).toEqual('');

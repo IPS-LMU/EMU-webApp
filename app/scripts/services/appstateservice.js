@@ -24,7 +24,7 @@ angular.module('emuwebApp')
 			}
 			// $scope.curBndl = {};
 			loadedMetaDataService.resetToInitState()
-			Soundhandlerservice.wavJSO = {};
+			Soundhandlerservice.audioBuffer = {};
 			DataService.setData({});
 			DragnDropDataService.resetToInitState();
 			DragnDropService.resetToInitState();
@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 			// $scope.curBndl = {};
 			var url = viewState.url;
 			loadedMetaDataService.resetToInitState();
-			Soundhandlerservice.wavJSO = {};
+			Soundhandlerservice.audioBuffer = {};
 			DataService.setData({});
 			DragnDropDataService.resetToInitState();
 			DragnDropService.resetToInitState();

@@ -123,7 +123,7 @@ angular.module('emuwebApp')
 
 								var minMaxContourLims = ConfigProviderService.getContourLimsOfTrack(tr.name);
                                 var minMaxValLims = ConfigProviderService.getValueLimsOfTrack(tr.name);
-                                console.log(minMaxValLims);
+                                //console.log(minMaxValLims);
 								// draw values
 								scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxContourLims, minMaxValLims);
 							}

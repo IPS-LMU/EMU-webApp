@@ -49,7 +49,7 @@ describe('Directive: dots', function() {
         spyOn(scope.ssffds, 'getSampleRateAndStartTimeOfTrack').and.returnValue({startTime: 0, sampleRate: 1});
         
         scope.vs.curMousePosSample = 20000;
-        scope.shs.wavJSO.SampleRate = 20000;
+        scope.shs.audioBuffer.sampleRate = 20000;
         elm.isolateScope().drawDots();
     }); 
 

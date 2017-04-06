@@ -62,7 +62,7 @@ describe('Controller: spectSettingsCtrl', function () {
   }); 
   
   it('should calcWindowSizeInSamples', function () {
-    scope.shs.wavJSO.SampleRate = 2;
+    scope.shs.audioBuffer.sampleRate = 2;
     scope.modalVals.windowSizeInSecs = 0.5;
     scope.calcWindowSizeInSamples();
     expect(scope.modalVals._windowSizeInSamples).toEqual(1);

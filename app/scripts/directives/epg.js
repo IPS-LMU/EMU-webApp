@@ -57,7 +57,7 @@ angular.module('emuwebApp')
 					var gridWidth = canvas.width / 8;
 					var gridHeight = canvas.height / 8;
 					var sInterv = 1 / sRaSt.sampleRate - sRaSt.startTime;
-					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.wavJSO.SampleRate) / sInterv);
+					var curFrame = Math.round((scope.vs.curMousePosSample / scope.shs.audioBuffer.sampleRate) / sInterv);
 					var binValStrArr;
 					var curFrameVals = angular.copy(col.values[curFrame]);
 					curFrameVals.reverse();

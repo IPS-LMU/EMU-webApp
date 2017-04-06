@@ -40,7 +40,10 @@ describe('Directive: spectro', function () {
     });
 
     it('should watch vs.curViewPort', inject(function ($timeout) {
-        scope.shs.wavJSO.Data = {};
+        scope.shs.audioBuffer.length = 3;
+        scope.shs.audioBuffer.getChannelData = function (n) {
+            return(new Float32Array([1,2,3,4]));
+        };
         compileDirective();
         scope.vs.curViewPort.sS = 1;
         scope.$apply();
@@ -60,10 +63,9 @@ describe('Directive: spectro', function () {
 
     it('should drawSpectro', function () {
         compileDirective();
-        scope.shs.wavJSO.Data = [1, 2, 3];
         spyOn(elm.isolateScope(), 'killSpectroRenderingThread');
         spyOn(elm.isolateScope(), 'startSpectroRenderingThread');
-        elm.isolateScope().drawSpectro(scope.shs.wavJSO.Data);
+        elm.isolateScope().drawSpectro([1, 2, 3]);
         expect(elm.isolateScope().killSpectroRenderingThread).toHaveBeenCalled();
         expect(elm.isolateScope().startSpectroRenderingThread).toHaveBeenCalledWith([1, 2, 3]);
     });
@@ -78,7 +80,6 @@ describe('Directive: spectro', function () {
 
     it('should startSpectroRenderingThread', function () {
         compileDirective();
-        scope.shs.wavJSO.Data = [1, 2, 3];
         scope.vs.curViewPort.sS = 4000;
         var buffer = new ArrayBuffer(58089);
         var view = new Uint8Array(buffer);

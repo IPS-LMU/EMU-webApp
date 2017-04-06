@@ -1212,12 +1212,12 @@ angular.module('emuwebApp')
 						sServObj.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				} else {
-					if ((orig.sampleStart + changeTime) >= 0 && (orig.sampleDur - changeTime) >= 0 && (orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+					if ((orig.sampleStart + changeTime) >= 0 && (orig.sampleDur - changeTime) >= 0 && (orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.audioBuffer.length) {
 						sServObj.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
 			} else if (isLast) { // after last item
-				if ((orig.sampleDur + changeTime) >= 0 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+				if ((orig.sampleDur + changeTime) >= 0 && (orig.sampleDur + orig.sampleStart + changeTime) <= Soundhandlerservice.audioBuffer.length) {
 					sServObj.updateSegment(levelName, orig.id, undefined, labelIdx, orig.sampleStart, (orig.sampleDur + changeTime));
 				}
 			} else {
@@ -1228,7 +1228,7 @@ angular.module('emuwebApp')
 							sServObj.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 						}
 					} else {
-						if (((orig.sampleStart + changeTime) >= 0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.wavJSO.Data.length)) {
+						if (((orig.sampleStart + changeTime) >= 0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= Soundhandlerservice.audioBuffer.length)) {
 							sServObj.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 						}
 					}
@@ -1252,7 +1252,7 @@ angular.module('emuwebApp')
 
 			if (LinkService.isLinked(id)) {
 				var neighbour = sServObj.getItemNeighboursFromLevel(name, id, id);
-				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) { // if within audio
+				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.audioBuffer.length) { // if within audio
 					if (neighbour.left !== undefined && neighbour.right !== undefined) { // if between two events
 						// console.log('between two events')
 						if ((orig.samplePoint + changeTime) > (neighbour.left.samplePoint) && (orig.samplePoint + changeTime) < (neighbour.right.samplePoint)) {
@@ -1268,7 +1268,7 @@ angular.module('emuwebApp')
 						}
 					} else if (neighbour.left !== undefined && neighbour.right === undefined) { // if last event
 						// console.log('last event')
-						if ((orig.samplePoint + changeTime) > neighbour.left.samplePoint && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+						if ((orig.samplePoint + changeTime) > neighbour.left.samplePoint && (orig.samplePoint + changeTime) <= Soundhandlerservice.audioBuffer.length) {
 							sServObj.updatePoint(name, orig.id, orig.labels[0].value, labelIdx, (orig.samplePoint + changeTime));
 						}
 					}
@@ -1276,7 +1276,7 @@ angular.module('emuwebApp')
 			}
 			else {
 				// console.log('unlinked event')
-				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.wavJSO.Data.length) {
+				if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= Soundhandlerservice.audioBuffer.length) {
 					sServObj.updatePoint(name, orig.id, orig.labels[0].value, labelIdx, (orig.samplePoint + changeTime));
 				}
 				//resort Points after moving
@@ -1322,7 +1322,7 @@ angular.module('emuwebApp')
 				} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left !== undefined)) {
 					var left = sServObj.getItemFromLevelById(name, lastNeighbours.left.id);
 					if ((lastNeighbours.left.sampleDur + changeTime) >= 0) {
-						if ((lastSegment.sampleStart + lastSegment.sampleDur + changeTime) < Soundhandlerservice.wavJSO.Data.length) {
+						if ((lastSegment.sampleStart + lastSegment.sampleDur + changeTime) < Soundhandlerservice.audioBuffer.length) {
 							sServObj.updateSegment(name, left.id, undefined, labelIdx, left.sampleStart, (left.sampleDur + changeTime));
 							for (var i = firstOrder; i < (firstOrder + length); i++) {
 								var orig = sServObj.getItemDetails(name, i);
@@ -1344,7 +1344,7 @@ angular.module('emuwebApp')
 				} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left === undefined)) {
 					var first = sServObj.getItemDetails(name, firstOrder);
 					var last = sServObj.getItemDetails(name, (firstOrder + length - 1));
-					if (((first.sampleStart + changeTime) > 0) && (((last.sampleDur + last.sampleStart) + changeTime) < Soundhandlerservice.wavJSO.Data.length)) {
+					if (((first.sampleStart + changeTime) > 0) && (((last.sampleDur + last.sampleStart) + changeTime) < Soundhandlerservice.audioBuffer.length)) {
 						for (var i = firstOrder; i < (firstOrder + length); i++) {
 							var orig = sServObj.getItemDetails(name, i);
 							sServObj.updateSegment(name, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), orig.sampleDur);
@@ -1370,7 +1370,7 @@ angular.module('emuwebApp')
 			if (rightSide) { // if expand or shrink on RIGHT side
 				if (neighbours.right === undefined) { // last element
 					var lastLength = segments[segments.length - 1].sampleStart + segments[segments.length - 1].sampleDur + (changeTime * segments.length);
-					if (lastLength <= Soundhandlerservice.wavJSO.Data.length) {
+					if (lastLength <= Soundhandlerservice.audioBuffer.length) {
 						angular.forEach(segments, function (seg) {
 							tempItem = sServObj.getItemFromLevelById(name, seg.id);
 							sServObj.updateSegment(name, tempItem.id, undefined, labelIdx, tempItem.sampleStart + startTime, tempItem.sampleDur + changeTime);
@@ -1427,8 +1427,9 @@ angular.module('emuwebApp')
 			// walk right
 			var distRight = Infinity;
 			var distLeft = Infinity;
-			for (var i = sample; i < Soundhandlerservice.wavJSO.Data.length - 1; i++) {
-				if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i + 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i + 1] >= 0) {
+			var channelData =  Soundhandlerservice.audioBuffer.getChannelData(0);
+			for (var i = sample; i < Soundhandlerservice.audioBuffer.length - 1; i++) {
+				if (channelData[i] >= 0 && channelData[i + 1] < 0 || channelData[i] < 0 && channelData[i + 1] >= 0) {
 					distRight = i - sample;
 					break;
 				}
@@ -1436,7 +1437,7 @@ angular.module('emuwebApp')
 
 			// walk left
 			for (var i = sample; i > 1; i--) {
-				if (Soundhandlerservice.wavJSO.Data[i] >= 0 && Soundhandlerservice.wavJSO.Data[i - 1] < 0 || Soundhandlerservice.wavJSO.Data[i] < 0 && Soundhandlerservice.wavJSO.Data[i - 1] >= 0) {
+				if (channelData[i] >= 0 && channelData[i - 1] < 0 || channelData[i] < 0 && channelData[i - 1] >= 0) {
 					distLeft = i - sample;
 					break;
 				}

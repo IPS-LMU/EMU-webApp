@@ -70,10 +70,10 @@ angular.module('emuwebApp')
 							arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
 							viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-							Wavparserservice.parseWavArrBuf(arrBuff).then(function (messWavParser) {
-								var wavJSO = messWavParser;
+							Wavparserservice.parseWavAudioBuf(arrBuff).then(function (messWavParser) {
+								var audioBuffer = messWavParser;
 								viewState.curViewPort.sS = 0;
-								viewState.curViewPort.eS = wavJSO.Data.length;
+								viewState.curViewPort.eS = audioBuffer.length;
 								if(bndl.timeAnchors !== undefined && bndl.timeAnchors.length > 0){
 									viewState.curViewPort.selectS = bndl.timeAnchors[0].sample_start;
 									viewState.curViewPort.selectE = bndl.timeAnchors[0].sample_end;
@@ -85,7 +85,7 @@ angular.module('emuwebApp')
 								viewState.curClickLevelName = undefined;
 								viewState.curClickLevelType = undefined;
 
-								Soundhandlerservice.wavJSO = wavJSO;
+								Soundhandlerservice.audioBuffer = audioBuffer;
 
 								// set all ssff files
 								viewState.somethingInProgressTxt = 'Parsing SSFF files...';

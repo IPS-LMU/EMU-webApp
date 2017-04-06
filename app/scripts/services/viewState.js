@@ -351,7 +351,7 @@ angular.module('emuwebApp')
 				sServObj.start = timestamp;
 			}
 
-			var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.wavJSO.SampleRate;
+			var samplesPassed = (Math.floor(timestamp - sServObj.start) / 1000) * Soundhandlerservice.audioBuffer.sampleRate;
 			sServObj.playHeadAnimationInfos.curS = Math.floor(sServObj.playHeadAnimationInfos.sS + samplesPassed);
 
 			if (Soundhandlerservice.isPlaying && sServObj.playHeadAnimationInfos.curS <= sServObj.playHeadAnimationInfos.eS) {
@@ -1090,28 +1090,28 @@ angular.module('emuwebApp')
 		 * calcs and returns start in secs
 		 */
 		sServObj.getViewPortStartTime = function () {
-			return (this.curViewPort.sS / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.sS / Soundhandlerservice.audioBuffer.sampleRate) - 0.5 / Soundhandlerservice.audioBuffer.sampleRate;
 		};
 
 		/**
 		 * calcs and returns end time in secs
 		 */
 		sServObj.getViewPortEndTime = function () {
-			return (this.curViewPort.eS / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.eS / Soundhandlerservice.audioBuffer.sampleRate) + 0.5 / Soundhandlerservice.audioBuffer.sampleRate;
 		};
 
 		/**
 		 * calcs and returns start in secs
 		 */
 		sServObj.getSelectedStartTime = function () {
-			return (this.curViewPort.selectS / Soundhandlerservice.wavJSO.SampleRate) - 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate) - 0.5 / Soundhandlerservice.audioBuffer.sampleRate;
 		};
 
 		/**
 		 * calcs and returns end time in secs
 		 */
 		sServObj.getSelectedEndTime = function () {
-			return (this.curViewPort.selectE / Soundhandlerservice.wavJSO.SampleRate) + 0.5 / Soundhandlerservice.wavJSO.SampleRate;
+			return (this.curViewPort.selectE / Soundhandlerservice.audioBuffer.sampleRate) + 0.5 / Soundhandlerservice.audioBuffer.sampleRate;
 		};
 
 
@@ -1142,9 +1142,9 @@ angular.module('emuwebApp')
 			}
 			if (oldStart < this.curViewPort.sS && oldEnd < this.curViewPort.eS) {
 				//moved right
-				if (this.curViewPort.eS > Soundhandlerservice.wavJSO.Data.length) {
+				if (this.curViewPort.eS > Soundhandlerservice.audioBuffer.length) {
 					this.curViewPort.sS = oldStart;
-					this.curViewPort.eS = Soundhandlerservice.wavJSO.Data.length;
+					this.curViewPort.eS = Soundhandlerservice.audioBuffer.length;
 				}
 			}
 
@@ -1152,8 +1152,8 @@ angular.module('emuwebApp')
 			if (this.curViewPort.sS < 0) {
 				this.curViewPort.sS = 0;
 			}
-			if (this.curViewPort.eS > Soundhandlerservice.wavJSO.Data.length) {
-				this.curViewPort.eS = Soundhandlerservice.wavJSO.Data.length;
+			if (this.curViewPort.eS > Soundhandlerservice.audioBuffer.length) {
+				this.curViewPort.eS = Soundhandlerservice.audioBuffer.length;
 			}
 			// check if at least 4 samples are showing (fixed max zoom size)
 			if (this.curViewPort.eS - this.curViewPort.sS < 4) {

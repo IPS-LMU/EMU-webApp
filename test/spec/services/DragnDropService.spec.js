@@ -105,13 +105,13 @@ describe('Service: DragnDropService', function () {
     spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer').and.returnValue(new ArrayBuffer());
     spyOn(Iohandlerservice, 'httpGetPath').and.returnValue(defio.promise);
     spyOn(Validationservice, 'validateJSO').and.returnValue(true);
-    spyOn(Wavparserservice, 'parseWavArrBuf').and.returnValue(defwav.promise);
+    spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(defwav.promise);
     DragnDropService.handleLocalFiles();
     expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
     expect(Iohandlerservice.httpGetPath).toHaveBeenCalled();
     defio.resolve({data: defaultEmuwebappConfig});
     $scope.$apply();
-    expect(Wavparserservice.parseWavArrBuf).toHaveBeenCalled();
+    expect(Wavparserservice.parseWavAudioBuf).toHaveBeenCalled();
   }));
 
 });

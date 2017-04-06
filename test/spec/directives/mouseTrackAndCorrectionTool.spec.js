@@ -48,7 +48,7 @@ describe('Directive: mouseTrackAndCorrectionTool', function () {
    it('should react to mouseleave', inject(function ($compile, Soundhandlerservice, viewState) {
      compile('test');
      spyOn(viewState, 'getPermission').and.returnValue(true);
-     Soundhandlerservice.wavJSO = { Data: [1, 2, 3]};
+     Soundhandlerservice.audioBuffer.length = 3;
      spyOn(elm.isolateScope(), 'switchMarkupContext');
      var e = jQuery.Event('mouseleave');
      $(elm).triggerHandler(e);

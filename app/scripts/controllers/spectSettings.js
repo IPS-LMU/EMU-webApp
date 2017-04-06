@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
 			'heatMapColorAnchors': viewState.spectroSettings.heatMapColorAnchors,
 			'_fftN': 512,
-			'_windowSizeInSamples': Soundhandlerservice.wavJSO.SampleRate * $scope.vs.spectroSettings.windowSizeInSecs
+			'_windowSizeInSamples': Soundhandlerservice.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs
 		};
 
 		/**
@@ -46,7 +46,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.calcWindowSizeInSamples = function () {
-			$scope.modalVals._windowSizeInSamples = Soundhandlerservice.wavJSO.SampleRate * $scope.modalVals.windowSizeInSecs;
+			$scope.modalVals._windowSizeInSamples = Soundhandlerservice.audioBuffer.sampleRate * $scope.modalVals.windowSizeInSecs;
 		};
 
 		/**
@@ -87,7 +87,7 @@ angular.module('emuwebApp')
 				'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
 				'heatMapColorAnchors': viewState.spectroSettings.heatMapColorAnchors,
 				'_fftN': 512,
-				'_windowSizeInSamples': Soundhandlerservice.wavJSO.SampleRate * $scope.vs.spectroSettings.windowSizeInSecs
+				'_windowSizeInSamples': Soundhandlerservice.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs
 			};
 			modalService.close();
 		};
@@ -148,13 +148,13 @@ angular.module('emuwebApp')
 			else {
 				$scope.errorID[8] = false;
 			}
-			if (isNaN($scope.modalVals.preEmphasisFilterFactor * Soundhandlerservice.wavJSO.SampleRate)) {
+			if (isNaN($scope.modalVals.preEmphasisFilterFactor * Soundhandlerservice.audioBuffer.sampleRate)) {
 				$scope.errorID[7] = true;
 			}
 			else {
 				$scope.errorID[7] = false;
 			}
-			if (isNaN(Soundhandlerservice.wavJSO.SampleRate * $scope.modalVals.windowSizeInSecs)) {
+			if (isNaN(Soundhandlerservice.audioBuffer.sampleRate * $scope.modalVals.windowSizeInSecs)) {
 				$scope.errorID[6] = true;
 			}
 			else {

@@ -13,11 +13,11 @@ describe('Service: Soundhandlerservice', function () {
     /**
      *
      */
-    it('should extractRelPartOfWav of length 0 = only header', inject(function (Soundhandlerservice) {
-        Soundhandlerservice.wavJSO = parsedWavJSO;
-        var cutWav = Soundhandlerservice.extractRelPartOfWav(0, 0);
-        expect(cutWav.byteLength).toEqual(44);
-    }));
+//    it('should extractRelPartOfWav of length 0 = only header', inject(function (Soundhandlerservice) {
+//        Soundhandlerservice.wavJSO = parsedWavJSO;
+//        var cutWav = Soundhandlerservice.extractRelPartOfWav(0, 0);
+//        expect(cutWav.byteLength).toEqual(44);
+//    }));
 
     /**
      *

@@ -16,7 +16,7 @@ describe('Service: Ssffdataservice', function () {
    *
    */
   it('should calculateSamplePosInVP', inject(function (Ssffdataservice, Soundhandlerservice) {
-    Soundhandlerservice.wavJSO.SampleRate = 1000;
+      Soundhandlerservice.audioBuffer.sampleRate = 1000;
     expect(Ssffdataservice.calculateSamplePosInVP(2, 1, 1)).toEqual(3000);
     expect(Ssffdataservice.calculateSamplePosInVP(10, 3, 1)).toEqual(4333);
   }));

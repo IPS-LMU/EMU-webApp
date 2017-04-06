@@ -30,7 +30,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.curViewPort', function (newVal, oldVal) {
-					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 						if (oldVal.sS !== newVal.sS || oldVal.eS !== newVal.eS) {
 							scope.drawPreview();
 						}
@@ -39,7 +39,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('currentBundleName', function () {
-					if (!$.isEmptyObject(Soundhandlerservice.wavJSO)) {
+					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 						initialized = false;
 						scope.backgroundCanvas = {
 							'background': ConfigProviderService.design.color.lightGrey,
@@ -67,9 +67,9 @@ angular.module('emuwebApp')
 				 */
 				scope.drawPreview = function () {
 					if (!initialized) {
-						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.wavJSO.Data);
+						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.audioBuffer.getChannelData(0));
 						Drawhelperservice.osciPeaks = allPeakVals;
-						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.wavJSO.Data, ConfigProviderService);
+						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(0), ConfigProviderService);
 						initialized = true;
 						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					} else {
@@ -84,8 +84,8 @@ angular.module('emuwebApp')
 				 */
 				scope.drawVpOsciMarkup = function (vs, canvas, config) {
 					var ctx = markupCanvas.getContext('2d');
-					var posS = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.sS;
-					var posE = (markupCanvas.width / Soundhandlerservice.wavJSO.Data.length) * vs.curViewPort.eS;
+					var posS = (markupCanvas.width / Soundhandlerservice.audioBuffer.length) * vs.curViewPort.sS;
+					var posE = (markupCanvas.width / Soundhandlerservice.audioBuffer.length) * vs.curViewPort.eS;
 
 					ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
