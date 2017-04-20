@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 		$scope.upperBoundary = '';
 
 		$scope.osciChannel = $scope.vs.osciSettings.curChannel;
-		$scope.osciAvailableChannels = Array.from(Array(Soundhandlerservice.audioBuffer.numberOfChannels).keys()); // SIC 2 is hard coded
+		$scope.osciAvailableChannels = Array.from(Array(Soundhandlerservice.audioBuffer.numberOfChannels).keys());
 
 		$scope.modalVals = {
 			'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
