@@ -17,6 +17,7 @@ angular.module('emuwebApp')
 		 * @param bndl object containing name attribute of currently loaded bundle
 		 */
 		sServObj.loadBundle = function (bndl) {
+			var defer = $q.defer();
 			// check if bndl has to be saved
 			viewState.setcurClickItem(null);
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO' && ConfigProviderService.vals.activeButtons.saveBundle)) {
@@ -100,11 +101,7 @@ angular.module('emuwebApp')
 
 									viewState.somethingInProgress = false;
 									viewState.somethingInProgressTxt = 'Done!';
-									// FOR DEVELOPMENT:
-									// sServObj.saveBundle(); // for testing save function
-									// $scope.menuBundleSaveBtnClick(); // for testing save button
-									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
-									// $scope.spectSettingsBtnClick(); // for testing spect settings dial
+									defer.resolve();
 								}, function (errMess) {
 									modalService.open('views/error.html', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
 										appStateService.resetToInitState();
@@ -136,6 +133,7 @@ angular.module('emuwebApp')
 					});
 				}
 			}
+			return defer.promise; 
 		};
 
 		/**

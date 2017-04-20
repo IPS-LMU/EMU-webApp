@@ -1,9 +1,15 @@
 <div class="emuwebapp-modal-wrap" ng-controller="spectSettingsCtrl">
 	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
-	    <h3 id="modalHeading">Spectrogram Settings</h3>
+	    <h3 id="modalHeading">OSCI/SPEC Settings</h3>
 	</div>
 	<div class="emuwebapp-modal-body">
 	    <div class="emuwebapp-text">
+	    	<h1>OSCI Settings</h1>
+	        <div>
+	            <h2>Current channel</h2>
+	            <select ng-model="osciChannel" ng-options="channel for channel in osciAvailableChannels"></select>
+		    </div>	
+	    	<h1>SPEC Settings</h1>
 	        <div>
 	            <h2>View Range (Hz)</h2>
 	            From: <input type="text" ng-keyup="checkSpectroSettings()" ng-style="cssError(2,4)" ng-model="modalVals.rangeFrom" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();"/>
@@ -32,7 +38,7 @@
 	        </div>
 	        <div>
 	            <h2>Window Function</h2>
-	            <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in options"></select>
+	            <select id="selWindowInfo" ng-model="selWindowInfo.name" ng-options="opt for opt in windowOptions"></select>
 	        </div>
 	        <div>
 	            <h2>Color Options</h2>
@@ -75,7 +81,7 @@
 	</div>
 	<div class="emuwebapp-modal-footer">
 	    <button ng-click="reset()" class="emuwebapp-mini-btn">Cancel</button>
-	    <button id="emuwebapp-modal-save" ng-click="saveSpectroSettings()" class="emuwebapp-mini-btn">Save</button>
+	    <button id="emuwebapp-modal-save" ng-click="saveSettings()" class="emuwebapp-mini-btn">Save</button>
 	</div>
 </div>
 

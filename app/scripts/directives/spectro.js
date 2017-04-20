@@ -100,6 +100,17 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
+				scope.$watch('vs.osciSettings', function () {
+					if (!$.isEmptyObject(scope.shs)) {
+						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
+							scope.setupEvent();
+							scope.redraw();
+						}
+					}
+				}, true);
+
+
+				//
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
@@ -116,7 +127,7 @@ angular.module('emuwebApp')
 
 				scope.redraw = function () {
 					scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
-					scope.drawSpectro(scope.shs.audioBuffer.getChannelData(0));
+					scope.drawSpectro(scope.shs.audioBuffer.getChannelData(scope.vs.osciSettings.curChannel));
 				};
 
 				scope.drawSpectro = function (buffer) {

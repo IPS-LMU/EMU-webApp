@@ -23,7 +23,7 @@ angular.module('emuwebApp')
 					'border': '1px solid gray',
 					'width': '100%',
 					'height': '100%'
-				}
+				};
 
 				/////////////////////
 				// watches
@@ -38,6 +38,14 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
+				scope.$watch('vs.osciSettings', function () {
+					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+						initialized = false; // reset to uninitialized when channels change
+						scope.drawPreview();
+					}
+				}, true);
+
+				//
 				scope.$watch('currentBundleName', function () {
 					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 						initialized = false;
@@ -46,7 +54,7 @@ angular.module('emuwebApp')
 							'border': '1px solid gray',
 							'width': '100%',
 							'height': '100%'
-						}
+						};
 						scope.drawPreview();
 
 					}
@@ -67,15 +75,15 @@ angular.module('emuwebApp')
 				 */
 				scope.drawPreview = function () {
 					if (!initialized) {
-						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.audioBuffer.getChannelData(0));
+						var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), 0, scope.shs.audioBuffer.length);
 						Drawhelperservice.osciPeaks = allPeakVals;
-						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(0), ConfigProviderService);
+						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
 						initialized = true;
 						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					} else {
 						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					}
-				}
+				};
 
 				/**
 				 * draws markup of osci according to
@@ -98,7 +106,7 @@ angular.module('emuwebApp')
 					ctx.lineTo(posE, markupCanvas.height);
 					ctx.closePath();
 					ctx.stroke();
-				}
+				};
 			}
 		};
 	});

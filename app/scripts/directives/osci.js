@@ -30,8 +30,22 @@ angular.module('emuwebApp')
 				// watches
 
 				//
+				scope.$watch('vs.osciSettings', function () {
+					if (!$.isEmptyObject(Soundhandlerservice)) {
+						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+							var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), viewState.curViewPort.sS, viewState.curViewPort.eS);
+							Drawhelperservice.osciPeaks = allPeakVals;
+							Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
+							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
+						}
+					}
+
+				}, true);
+
+
+				//
 				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
-					if (newValue != oldValue) {
+					if (newValue !== oldValue) {
 						scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 					}
 				});
@@ -56,7 +70,7 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('viewState.movingBoundarySample', function (newValue) {
+				scope.$watch('viewState.movingBoundarySample', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
@@ -79,9 +93,9 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 							// check for changed zoom
 							if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-								var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.audioBuffer.getChannelData(0));
+								var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), viewState.curViewPort.sS, viewState.curViewPort.eS);
 								Drawhelperservice.osciPeaks = allPeakVals;
-								Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(0), ConfigProviderService);
+								Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
 							}
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
@@ -91,9 +105,9 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-						var allPeakVals = Drawhelperservice.calculatePeaks(viewState, canvas, Soundhandlerservice.audioBuffer.getChannelData(0));
+						var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), viewState.curViewPort.sS, viewState.curViewPort.eS);
 						Drawhelperservice.osciPeaks = allPeakVals;
-						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(0), ConfigProviderService);
+						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
 					}
 				}, true);
 
@@ -101,7 +115,7 @@ angular.module('emuwebApp')
 				/////////////////////////
 
 				scope.redraw = function () {
-					scope.drawVpOsciMarkup(scope, ConfigProviderService, true)
+					scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 				};
 
 				/**

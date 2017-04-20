@@ -74,6 +74,10 @@ angular.module('emuwebApp')
 				preEmphasisFilterFactor: -1
 			};
 
+			sServObj.osciSettings = {
+				curChannel: 0,
+			};
+
 			sServObj.playHeadAnimationInfos = {
 				sS: -1,
 				eS: -1,
@@ -419,6 +423,13 @@ angular.module('emuwebApp')
 			sServObj.spectroSettings.drawHeatMapColors = hm;
 			sServObj.spectroSettings.preEmphasisFilterFactor = preEmph;
 			sServObj.spectroSettings.heatMapColorAnchors = hmColorAnchors;
+		};
+
+		/**
+		 * setOsciSettings
+		 */
+		sServObj.setOsciSettings = function (curCh) {
+			sServObj.osciSettings.curChannel = curCh;
 		};
 
 

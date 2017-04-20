@@ -60,10 +60,13 @@ angular.module('emuwebApp')
 		 * get current peaks to be drawn
 		 * if drawing over sample exact -> samples
 		 * if multiple samples per pixel -> calculate envelope points
+		 * @param sS start sample
+		 * @param eS end sample
 		 */
 
-		sServObj.calculatePeaks = function (viewState, canvas, data) {
-			var samplePerPx = (viewState.curViewPort.eS + 1 - viewState.curViewPort.sS) / canvas.width; // PCM Samples per new pixel + one to correct for subtraction
+		sServObj.calculatePeaks = function (canvas, data, sS, eS) {
+			
+			var samplePerPx = (eS + 1 - sS) / canvas.width; // PCM Samples per new pixel + one to correct for subtraction
 			var numberOfChannels = 1; // hardcode for now...
 
 			var peaks = [];
@@ -74,10 +77,10 @@ angular.module('emuwebApp')
 
 			if (samplePerPx <= 1) {
 				// check if view at start
-				if (viewState.curViewPort.sS === 0) {
-					relData = data.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS + 2); // +2 to compensate for length
+				if (sS === 0) {
+					relData = data.subarray(sS, eS + 2); // +2 to compensate for length
 				} else {
-					relData = data.subarray(viewState.curViewPort.sS - 1, viewState.curViewPort.eS + 2); // +2 to compensate for length
+					relData = data.subarray(sS - 1, eS + 2); // +2 to compensate for length
 				}
 
 				minPeak = Math.min.apply(Math, relData);
@@ -85,7 +88,7 @@ angular.module('emuwebApp')
 				peaks = Array.prototype.slice.call(relData);
 
 			} else {
-				relData = data.subarray(viewState.curViewPort.sS, viewState.curViewPort.eS);
+				relData = data.subarray(sS, eS);
 
 				for (var curPxIdx = 0; curPxIdx < canvas.width; curPxIdx++) {
 					var avrVal = 0;

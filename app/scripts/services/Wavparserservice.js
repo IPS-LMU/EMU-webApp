@@ -127,11 +127,11 @@ angular.module('emuwebApp')
             curBufferView = new Uint16Array(curBuffer);
             headerInfos.NumChannels = curBufferView[0];
             // console.error('Wav read error: NumChannels not 1');
-            if (headerInfos.NumChannels !== 1) {
+            if (headerInfos.NumChannels < 1) {
                 return ({
                     'status': {
                         'type': 'ERROR',
-                        'message': 'Wav read error: NumChannels not 1 but ' + headerInfos.NumChannels
+                        'message': 'Wav read error: NumChannels not greater than 1 but ' + headerInfos.NumChannels
                     }
                 });
             }
@@ -192,7 +192,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.parseWavAudioBuf = function (buf) {
             var headerInfos = sServObj.parseWavHeader(buf);
-            if(typeof headerInfos.status !== "undefined" && headerInfos.status.type === "ERROR"){
+            if(typeof headerInfos.status !== 'undefined' && headerInfos.status.type === 'ERROR'){
                 defer = $q.defer();
                 defer.reject(headerInfos); // headerInfos now contains only error message
                 return defer.promise;

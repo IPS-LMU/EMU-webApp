@@ -450,11 +450,18 @@ angular.module('emuwebApp')
 									if(session === null) {
 										session = loadedMetaDataService.getBundleList()[0];
 									}
-									dbObjLoadSaveService.loadBundle(session);
+									dbObjLoadSaveService.loadBundle(session).then(function (res){
+										// FOR DEVELOPMENT:
+										// sServObj.saveBundle(); // for testing save function
+										// $scope.menuBundleSaveBtnClick(); // for testing save button
+										// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
+										// $scope.spectSettingsBtnClick(); // for testing spect settings dial
+									});
+
 									//viewState.currentPage = (viewState.numberOfPages(loadedMetaDataService.getBundleList().length)) - 1;
 									if(reload) {
 										loadedMetaDataService.openCollapseSession(session.session);
-									}									
+									}
 								} else {
 									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
 										appStateService.resetToInitState();

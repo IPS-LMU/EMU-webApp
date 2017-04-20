@@ -4,11 +4,14 @@ angular.module('emuwebApp')
 	.controller('spectSettingsCtrl', function ($scope, modalService, viewState, DataService, mathHelperService, Soundhandlerservice) {
 
 		$scope.vs = viewState;
-		$scope.options = Object.keys($scope.vs.getWindowFunctions());
+		$scope.windowOptions = Object.keys($scope.vs.getWindowFunctions());
 		$scope.selWindowInfo = {};
 		$scope.selWindowInfo.name = Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1];
 		$scope.errorID = [];
 		$scope.upperBoundary = '';
+
+		$scope.osciChannel = $scope.vs.osciSettings.curChannel;
+		$scope.osciAvailableChannels = Array.from(Array(Soundhandlerservice.audioBuffer.numberOfChannels).keys()); // SIC 2 is hard coded
 
 		$scope.modalVals = {
 			'rangeFrom': $scope.vs.spectroSettings.rangeFrom,
@@ -97,11 +100,11 @@ angular.module('emuwebApp')
 		 */
 		$scope.cssError = function (id, id2) {
 			if ($scope.errorID[id]) {
-				return {'background': '#f00'}
+				return {'background': '#f00'};
 			}
 			if (id2 !== undefined) {
 				if ($scope.errorID[id2]) {
-					return {'background': '#f00'}
+					return {'background': '#f00'};
 				}
 			}
 		};
@@ -117,7 +120,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.saveSpectroSettings = function () {
+		$scope.saveSettings = function () {
 			var error = false;
 			$scope.errorID.forEach(function (entry) {
 				if (entry === true) {
@@ -126,6 +129,7 @@ angular.module('emuwebApp')
 			});
 			if (!error) {
 				viewState.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
+				viewState.setOsciSettings($scope.osciChannel);
 				$scope.reset();
 			}
 		};

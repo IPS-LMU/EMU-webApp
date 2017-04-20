@@ -1427,7 +1427,8 @@ angular.module('emuwebApp')
 			// walk right
 			var distRight = Infinity;
 			var distLeft = Infinity;
-			var channelData =  Soundhandlerservice.audioBuffer.getChannelData(0);
+			var channelData =  Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel);
+			var channelData =  Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel);
 			for (var i = sample; i < Soundhandlerservice.audioBuffer.length - 1; i++) {
 				if (channelData[i] >= 0 && channelData[i + 1] < 0 || channelData[i] < 0 && channelData[i + 1] >= 0) {
 					distRight = i - sample;
