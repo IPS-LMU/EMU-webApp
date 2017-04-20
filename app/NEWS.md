@@ -1,14 +1,17 @@
 # What's New
 
-## Version 0.1.5.9000
+## Version 0.1.5.9002
 
 ### new features / performance tweaks / improvements
 
 - now allowing 8, 16, 24, 32 Bit wavs to be used including files containing WAVEFORMATEXTENSIBLE struct chunk
 - using audioBuffer object though out webApp (not custom wavJSO object)
 - using OfflineAudioContext to parse audio files
+- multi channel audio supported
 
 ### bug fixes
+
+- double parsing of audio file avoided on drag & drop incl. base64 conversion
 
 
 ## Version 0.1.5
