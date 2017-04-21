@@ -19,6 +19,107 @@ angular.module('emuwebApp')
 		}
 
 
+		sServObj.osciPeaks = [];
+
+
+		/**
+		 * get current peaks to be drawn
+		 * if drawing over sample exact -> samples
+		 * if multiple samples per pixel -> calculate envelope points
+		 * @param sS start sample
+		 * @param eS end sample
+		 */
+
+		sServObj.calculatePeaks = function (canvas, data, sS, eS) {
+			
+			var samplePerPx = (eS + 1 - sS) / canvas.width; // samples per pixel + one to correct for subtraction
+			// var numberOfChannels = 1; // hardcode for now...
+			// init result values for over sample exact
+			var samples = []; 
+			var minSamples;
+			var maxSamples;
+			// init result values for envelope
+			var maxPeaks = [];
+			var minPeaks = [];
+			var minMinPeak = Infinity;
+			var maxMaxPeak = -Infinity;
+
+			var winStartSample;
+			var winEndSample;
+			var winMinPeak = Infinity;
+			var winMaxPeak = -Infinity;
+
+			var relData;
+
+			if (samplePerPx <= 1) {
+				// check if view at start
+				if (sS === 0) {
+					relData = data.subarray(sS, eS + 2); // +2 to compensate for length
+				} else {
+					relData = data.subarray(sS - 1, eS + 2); // +2 to compensate for length
+				}
+
+				minSamples = Math.min.apply(Math, relData);
+				maxSamples = Math.max.apply(Math, relData);
+				samples = Array.prototype.slice.call(relData);
+
+			} else {
+
+				relData = data.subarray(sS, eS);
+				// preallocate arraybuffer
+				maxPeaks = new Float32Array(canvas.width);
+				minPeaks = new Float32Array(canvas.width);
+
+				for (var curPxIdx = 0; curPxIdx < canvas.width; curPxIdx++) {
+					//for (var c = 0; c < numberOfChannels; c++) {
+					// get window arround current pixel
+					winStartSample = curPxIdx * samplePerPx - samplePerPx/2;
+					winEndSample = curPxIdx * samplePerPx + samplePerPx/2;
+					if(winStartSample < 0){ // at start of file the won't have the full length (other option would be left padding)
+						winStartSample = 0
+					}
+					var vals = relData.subarray(winStartSample, winEndSample);
+
+					var sum = 0;
+					winMinPeak = Infinity;
+					winMaxPeak = -Infinity;
+					for (var p = 0; p < vals.length; p++) {
+						if(vals[p] > winMaxPeak){
+							winMaxPeak = vals[p];
+						}
+
+						if(vals[p] < winMinPeak){
+							winMinPeak = vals[p];
+						}
+
+						// sum += vals[p];
+					}
+					// avrVal = sum / vals.length;
+					//}
+
+					maxPeaks[curPxIdx] = winMaxPeak;
+					minPeaks[curPxIdx] = winMinPeak;
+					if (winMaxPeak > maxMaxPeak) {
+						maxMaxPeak = winMaxPeak;
+					}
+					if (winMinPeak < minMinPeak) {
+						minMinPeak = winMinPeak;
+					}
+				}
+			} //else
+			
+			return {
+				'samples': samples,
+				'minSample': minSamples,
+				'maxSample': maxSamples,
+				'minPeaks': minPeaks,
+				'maxPeaks': maxPeaks,
+				'minMinPeak': minMinPeak,
+				'maxMaxPeak': maxMaxPeak,
+				'samplePerPx': samplePerPx
+			};
+		};
+
 		/**
 		 * drawing method to draw single line between two
 		 * envelope points. Is used by drawOsciOnCanvas if
@@ -53,79 +154,6 @@ angular.module('emuwebApp')
 			ctx.lineTo(x, y);
 		}
 
-		sServObj.osciPeaks = [];
-
-
-		/**
-		 * get current peaks to be drawn
-		 * if drawing over sample exact -> samples
-		 * if multiple samples per pixel -> calculate envelope points
-		 * @param sS start sample
-		 * @param eS end sample
-		 */
-
-		sServObj.calculatePeaks = function (canvas, data, sS, eS) {
-			
-			var samplePerPx = (eS + 1 - sS) / canvas.width; // PCM Samples per new pixel + one to correct for subtraction
-			var numberOfChannels = 1; // hardcode for now...
-
-			var peaks = [];
-			var minPeak = Infinity;
-			var maxPeak = -Infinity;
-
-			var relData;
-
-			if (samplePerPx <= 1) {
-				// check if view at start
-				if (sS === 0) {
-					relData = data.subarray(sS, eS + 2); // +2 to compensate for length
-				} else {
-					relData = data.subarray(sS - 1, eS + 2); // +2 to compensate for length
-				}
-
-				minPeak = Math.min.apply(Math, relData);
-				maxPeak = Math.max.apply(Math, relData);
-				peaks = Array.prototype.slice.call(relData);
-
-			} else {
-				relData = data.subarray(sS, eS);
-
-				for (var curPxIdx = 0; curPxIdx < canvas.width; curPxIdx++) {
-					var avrVal = 0;
-					for (var c = 0; c < numberOfChannels; c++) {
-
-						var vals = relData.subarray(curPxIdx * samplePerPx, (curPxIdx + 1) * samplePerPx);
-						// var peak = -Infinity;
-
-						var sum = 0;
-						for (var p = 0, l = vals.length; p < l; p++) {
-							// if (vals[p] > peak) {
-							// 	peak = vals[p];
-							// }
-							sum += vals[p];
-						}
-						avrVal += sum / vals.length;
-					}
-
-					peaks[curPxIdx] = avrVal;
-					if (avrVal > maxPeak) {
-						maxPeak = avrVal;
-					}
-					if (avrVal < minPeak) {
-						minPeak = avrVal;
-					}
-
-				}
-			} //else
-			return {
-				'peaks': peaks,
-				'minPeak': minPeak,
-				'maxPeak': maxPeak,
-				'samplePerPx': samplePerPx
-			};
-		};
-
-
 		/**
 		 * @param cps color provider service
 		 */
@@ -135,18 +163,21 @@ angular.module('emuwebApp')
 			var ctx = canvas.getContext('2d');
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-			//set font
-			// ctx.font = (this.params.fontPxSize + "px" + " " + this.params.fontType);
-
-			if (allPeakVals.peaks && allPeakVals.samplePerPx >= 1) {
+			// check if envelope is to be drawn
+			if (allPeakVals.minPeaks && allPeakVals.maxPeaks && allPeakVals.samplePerPx >= 1) {
+				// draw envelope
+				var yMax, yMin;
 				ctx.beginPath();
-				allPeakVals.peaks.forEach(function (peak, index) {
-					if (index !== 0) {
-						drawFrame(viewState, index, peak, allPeakVals.minPeak, allPeakVals.maxPeak, allPeakVals.peaks[index - 1], canvas, config);
-					}
-				});
+				ctx.strokeStyle = ConfigProviderService.design.color.black;
+				for(var i = 0; i < canvas.width; i++){
+					yMax = ((allPeakVals.maxMaxPeak - allPeakVals.maxPeaks[i]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+					yMin = ((allPeakVals.maxMaxPeak - allPeakVals.minPeaks[i]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+					ctx.moveTo(i, yMax);
+					ctx.lineTo(i, yMin);
+				}
 				ctx.stroke();
 
+			// otherwise draw samples
 			} else if (allPeakVals.samplePerPx < 1) {
 				// console.log("at 0 over sample exact")
 				var hDbS = (1 / allPeakVals.samplePerPx) / 2; // half distance between samples
@@ -157,38 +188,38 @@ angular.module('emuwebApp')
 				// ctx.beginPath();
 				var i;
 				if (viewState.curViewPort.sS === 0) {
-					ctx.moveTo(hDbS, (allPeakVals.peaks[0] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
-					for (i = 0; i < allPeakVals.peaks.length; i++) {
-						ctx.lineTo(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
+					ctx.moveTo(hDbS, (allPeakVals.samples[0] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height);
+					for (i = 0; i < allPeakVals.samples.length; i++) {
+						ctx.lineTo(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.samples[i] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height);
 					}
 					ctx.stroke();
 					// draw sample dots
-					for (i = 0; i < allPeakVals.peaks.length; i++) {
+					for (i = 0; i < allPeakVals.samples.length; i++) {
 						ctx.beginPath();
-						ctx.arc(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 3, 4, 0, 2 * Math.PI, false);
+						ctx.arc(i / allPeakVals.samplePerPx + hDbS, (allPeakVals.samples[i] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height - 3, 4, 0, 2 * Math.PI, false);
 						ctx.stroke();
 						ctx.fill();
 						if (config.vals.restrictions.drawSampleNrs) {
-							ctx.strokeText(sNr, i / allPeakVals.samplePerPx + hDbS, (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
+							ctx.strokeText(sNr, i / allPeakVals.samplePerPx + hDbS, (allPeakVals.samples[i] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height - 10);
 							sNr = sNr + 1;
 						}
 					}
 				} else {
 					//draw lines
 					ctx.beginPath();
-					ctx.moveTo(-hDbS, canvas.height - ((allPeakVals.peaks[0] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height));
-					for (i = 1; i <= allPeakVals.peaks.length; i++) {
-						ctx.lineTo(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height + 3));
+					ctx.moveTo(-hDbS, canvas.height - ((allPeakVals.samples[0] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height));
+					for (i = 1; i <= allPeakVals.samples.length; i++) {
+						ctx.lineTo(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.samples[i] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height + 3));
 					}
 					ctx.stroke();
 					// draw sample dots
-					for (i = 1; i <= allPeakVals.peaks.length; i++) {
+					for (i = 1; i <= allPeakVals.samples.length; i++) {
 						ctx.beginPath();
-						ctx.arc(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 3, 4, 0, 2 * Math.PI, false);
+						ctx.arc(i / allPeakVals.samplePerPx - hDbS, canvas.height - ((allPeakVals.samples[i] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height) - 3, 4, 0, 2 * Math.PI, false);
 						ctx.stroke();
 						ctx.fill();
 						if (config.vals.restrictions.drawSampleNrs) {
-							ctx.fillText(sNr, i / allPeakVals.samplePerPx - hDbS, canvas.height - (allPeakVals.peaks[i] - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height - 10);
+							ctx.fillText(sNr, i / allPeakVals.samplePerPx - hDbS, canvas.height - (allPeakVals.samples[i] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height - 10);
 							sNr = sNr + 1;
 						}
 					}
@@ -201,20 +232,20 @@ angular.module('emuwebApp')
 				ctx.fillStyle = ConfigProviderService.design.color.blue;
 
 				if (allPeakVals.samplePerPx >= 1) {
-					var zeroLineY = canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
+					var zeroLineY = canvas.height - ((0 - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height);
 					ctx.beginPath();
 					ctx.moveTo(0, zeroLineY);
 					ctx.lineTo(canvas.width, zeroLineY);
 					ctx.stroke();
 					ctx.fillText('0', 5, canvas.height / 2 - 5, canvas.width);
 				} else {
-					var zeroLineY = canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height);
+					var zeroLineY = canvas.height - ((0 - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height);
 					ctx.beginPath();
 					ctx.moveTo(0, zeroLineY);
 					ctx.lineTo(canvas.width, zeroLineY);
 					ctx.stroke();
 					ctx.fill();
-					ctx.fillText('0', 5, canvas.height - ((0 - allPeakVals.minPeak) / (allPeakVals.maxPeak - allPeakVals.minPeak) * canvas.height) - 5, canvas.width);
+					ctx.fillText('0', 5, canvas.height - ((0 - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height) - 5, canvas.width);
 				}
 				// see if Chrome ->dashed line
 				//if (navigator.vendor === 'Google Inc.') {

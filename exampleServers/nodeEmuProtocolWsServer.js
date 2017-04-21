@@ -44,8 +44,8 @@ if (process.argv.length === 2) {
 } else if (process.argv.length === 5) {
 
   var portNr = process.argv[2];
-  var pathToDbRoot = process.argv[3];;
-  var configName = process.argv[4];;
+  var pathToDbRoot = process.argv[3];
+  var configName = process.argv[4];
 
 }
 

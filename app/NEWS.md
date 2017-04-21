@@ -7,7 +7,8 @@
 - now allowing 8, 16, 24, 32 Bit wavs to be used including files containing WAVEFORMATEXTENSIBLE struct chunk
 - using audioBuffer object though out webApp (not custom wavJSO object)
 - using OfflineAudioContext to parse audio files
-- multi channel audio supported
+- multi channel audio supported	
+- improved performance of OSCI envelope rendering and calculation of peaks
 
 ### bug fixes
 
