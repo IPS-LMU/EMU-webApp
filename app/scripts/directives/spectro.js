@@ -45,7 +45,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
-					if (newValue != oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.audioBuffer)) {
+					if (newValue !== oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.audioBuffer)) {
 						scope.clearAndDrawSpectMarkup();
 					}
 				});
@@ -133,16 +133,16 @@ angular.module('emuwebApp')
 				scope.drawSpectro = function (buffer) {
 					scope.killSpectroRenderingThread();
 					scope.startSpectroRenderingThread(buffer);
-				}
+				};
 
 				scope.calcSamplesPerPxl = function () {
 					return (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / scope.canvas0.width;
-				}
+				};
 
 				scope.clearAndDrawSpectMarkup = function () {
 					scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
 					scope.drawSpectMarkup();
-				}
+				};
 
 				scope.drawSpectMarkup = function () {
 					// draw moving boundary line if moving
@@ -151,7 +151,7 @@ angular.module('emuwebApp')
 					scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
 					// draw min max vals and name of track
 					scope.dhs.drawMinMaxAndName(scope.markupCtx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
-				}
+				};
 
 				scope.killSpectroRenderingThread = function () {
 					scope.context.fillStyle = ConfigProviderService.design.color.lightGrey;
@@ -163,7 +163,7 @@ angular.module('emuwebApp')
 						scope.primeWorker.kill();
 						scope.primeWorker = null;
 					}
-				}
+				};
 
 				scope.setupEvent = function () {
 					var imageData = scope.context.createImageData(scope.canvas0.width, scope.canvas0.height);
@@ -246,7 +246,7 @@ angular.module('emuwebApp')
 							'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
 						}, [paddedSamples.buffer]);
 					}
-				}
+				};
 			}
 		};
 	});

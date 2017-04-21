@@ -456,6 +456,9 @@ angular.module('emuwebApp')
 										// $scope.menuBundleSaveBtnClick(); // for testing save button
 										// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
 										// $scope.spectSettingsBtnClick(); // for testing spect settings dial
+										// viewState.curViewPort.sS = 27455;
+										// viewState.curViewPort.eS = 30180;
+
 									});
 
 									//viewState.currentPage = (viewState.numberOfPages(loadedMetaDataService.getBundleList().length)) - 1;
