@@ -10,6 +10,32 @@
 .emuwebapp-level {
     width: 100%;
     height: 64px;
+    .emuwebapp-hierarchy-container {
+        position: relative;
+        float:left;
+        width: calc(100% - 30px);
+        height: 100%;
+        padding: 5px;
+    }
+    .emuwebapp-hierarchy-canvas {
+        float: left;
+        margin: 0;
+        border: 1px solid $color-grey;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    .emuwebapp-hierarchy-markup {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        background-color: transparent;
+        border: 1px solid $color-grey;
+        width:calc(100% - 10px);
+        height: calc(100% - 10px);
+        z-index: 2;
+    }
+
     .emuwebapp-level-container {
         position: relative;
         float:left;

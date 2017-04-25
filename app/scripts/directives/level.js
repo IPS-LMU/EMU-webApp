@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService) {
+	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -18,12 +18,17 @@ angular.module('emuwebApp')
 				scope.cps = ConfigProviderService;
 				scope.modal = modalService;
 				scope.lmds = loadedMetaDataService;
+				scope.hls = HierarchyLayoutService;
+				scope.ds = DataService;
+				scope.ls = LevelService;
+
 				var levelCanvasContainer = element.find('div');
 				scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
 				scope.backgroundCanvas = {
 					'background': ConfigProviderService.design.color.lightGrey
 				};
 
+				scope.drawHierarchy = true;
 
 				///////////////
 				// watches
@@ -174,7 +179,14 @@ angular.module('emuwebApp')
 						//console.log('undef config');
 						return;
 					}
-					var ctx = canvas[0].getContext('2d');
+
+					// draw hierarchy if canvas is displayed
+					if(scope.drawHierarchy){
+						scope.drawHierarchyDetails();
+					}
+
+
+					var ctx = canvas[2].getContext('2d');
 					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
 
 					//predef vars
@@ -209,29 +221,28 @@ angular.module('emuwebApp')
 					if (scope.level.type === 'SEGMENT') {
 						ctx.fillStyle = ConfigProviderService.design.color.black;
 						// draw segments
-						var e = scope.level.items;
 
-						e.forEach(function (curEvt) {
+						scope.level.items.forEach(function (item) {
 							++curID;
 
-							if (curEvt.sampleStart >= scope.vs.curViewPort.sS &&
-								curEvt.sampleStart <= scope.vs.curViewPort.eS || //within segment
-								curEvt.sampleStart + curEvt.sampleDur > scope.vs.curViewPort.sS &&
-								curEvt.sampleStart + curEvt.sampleDur < scope.vs.curViewPort.eS || //end in segment
-								curEvt.sampleStart < scope.vs.curViewPort.sS &&
-								curEvt.sampleStart + curEvt.sampleDur > scope.vs.curViewPort.eS // within sample
+							if (item.sampleStart >= scope.vs.curViewPort.sS &&
+								item.sampleStart <= scope.vs.curViewPort.eS || //within segment
+								item.sampleStart + item.sampleDur > scope.vs.curViewPort.sS &&
+								item.sampleStart + item.sampleDur < scope.vs.curViewPort.eS || //end in segment
+								item.sampleStart < scope.vs.curViewPort.sS &&
+								item.sampleStart + item.sampleDur > scope.vs.curViewPort.eS // within sample
 							) {
 								// get label
 								var curLabVal;
-								curEvt.labels.forEach(function (lab) {
+								item.labels.forEach(function (lab) {
 									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;
 									}
 								});
 
 								// draw segment start
-								posS = scope.vs.getPos(canvas[0].width, curEvt.sampleStart);
-								posE = scope.vs.getPos(canvas[0].width, curEvt.sampleStart + curEvt.sampleDur + 1);
+								posS = scope.vs.getPos(canvas[0].width, item.sampleStart);
+								posE = scope.vs.getPos(canvas[0].width, item.sampleStart + item.sampleDur + 1);
 
 								ctx.fillStyle = ConfigProviderService.design.color.black;
 								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
@@ -277,12 +288,12 @@ angular.module('emuwebApp')
 
 								// draw sampleStart numbers
 								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * curEvt.sampleStart.toString().length && isOpen) {
-									fontScaleService.drawUndistortedText(ctx, curEvt.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, posS + 3, 0, ConfigProviderService.design.color.grey);
+								if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
+									fontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, posS + 3, 0, ConfigProviderService.design.color.grey);
 								}
 
 								// draw sampleDur numbers.
-								var durtext = 'dur: ' + curEvt.sampleDur + ' ';
+								var durtext = 'dur: ' + item.sampleDur + ' ';
 								//check for enough space to stroke text
 								if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
 									fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, ConfigProviderService.design.font.small.family, posE - (ctx.measureText(durtext).width * fontScaleService.scaleX), canvas[0].height / 4 * 3, ConfigProviderService.design.color.grey);
@@ -294,12 +305,12 @@ angular.module('emuwebApp')
 						// predef. vars
 						var perc;
 
-						scope.level.items.forEach(function (curEvt) {
-							if (curEvt.samplePoint > scope.vs.curViewPort.sS && curEvt.samplePoint < scope.vs.curViewPort.eS) {
-								perc = Math.round(scope.vs.getPos(canvas[0].width, curEvt.samplePoint) + (sDist / 2));
+						scope.level.items.forEach(function (item) {
+							if (item.samplePoint > scope.vs.curViewPort.sS && item.samplePoint < scope.vs.curViewPort.eS) {
+								perc = Math.round(scope.vs.getPos(canvas[0].width, item.samplePoint) + (sDist / 2));
 								// get label
 								var curLabVal = undefined;
-								curEvt.labels.forEach(function (lab) {
+								item.labels.forEach(function (lab) {
 									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;
 									}
@@ -310,7 +321,7 @@ angular.module('emuwebApp')
 								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
 								fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, perc - 5, canvas[0].height / 3, ConfigProviderService.design.color.black);
 								if (isOpen) {
-									fontScaleService.drawUndistortedText(ctx, curEvt.samplePoint, fontSize - 2, ConfigProviderService.design.font.small.family, perc + 5, 0, ConfigProviderService.design.color.grey);
+									fontScaleService.drawUndistortedText(ctx, item.samplePoint, fontSize - 2, ConfigProviderService.design.font.small.family, perc + 5, 0, ConfigProviderService.design.color.grey);
 								}
 							}
 						});
@@ -322,7 +333,7 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.drawLevelMarkup = function () {
-					var ctx = canvas[1].getContext('2d');
+					var ctx = canvas[3].getContext('2d');
 					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
 					if (scope.level.name === scope.vs.getcurClickLevelName()) {
 						ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
@@ -336,7 +347,7 @@ angular.module('emuwebApp')
 					Drawhelperservice.drawCurViewPortSelected(ctx);
 
 
-					var posS, posE, sDist, xOffset, curEvt;
+					var posS, posE, sDist, xOffset, item;
 					posS = scope.vs.getPos(canvas[1].width, scope.vs.curViewPort.selectS);
 					posE = scope.vs.getPos(canvas[1].width, scope.vs.curViewPort.selectE);
 					sDist = scope.vs.getSampleDist(canvas[1].width);
@@ -371,27 +382,27 @@ angular.module('emuwebApp')
 
 
 					// draw preselected boundary
-					curEvt = scope.vs.getcurMouseItem();
-					if (scope.level.items.length > 0 && curEvt !== undefined && segMId !== undefined && scope.level.name === scope.vs.getcurMouseLevelName()) {
+					item = scope.vs.getcurMouseItem();
+					if (scope.level.items.length > 0 && item !== undefined && segMId !== undefined && scope.level.name === scope.vs.getcurMouseLevelName()) {
 						ctx.fillStyle = ConfigProviderService.design.color.blue;
 						if (isFirst === true) { // before first segment
 							if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
-								curEvt = scope.level.items[0];
-								posS = Math.round(scope.vs.getPos(canvas[1].width, curEvt.sampleStart));
+								item = scope.level.items[0];
+								posS = Math.round(scope.vs.getPos(canvas[1].width, item.sampleStart));
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							}
 						} else if (isLast === true) { // after last segment
 							if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
-								curEvt = scope.level.items[scope.level.items.length - 1];
-								posS = Math.round(scope.vs.getPos(canvas[1].width, (curEvt.sampleStart + curEvt.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
+								item = scope.level.items[scope.level.items.length - 1];
+								posS = Math.round(scope.vs.getPos(canvas[1].width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							}
 						} else { // in the middle
 							if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
-								posS = Math.round(scope.vs.getPos(canvas[1].width, curEvt.sampleStart));
+								posS = Math.round(scope.vs.getPos(canvas[1].width, item.sampleStart));
 								ctx.fillRect(posS, 0, 3, canvas[1].height);
 							} else {
-								posS = Math.round(scope.vs.getPos(canvas[1].width, curEvt.samplePoint));
+								posS = Math.round(scope.vs.getPos(canvas[1].width, item.samplePoint));
 								xOffset = (sDist / 2);
 								ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
 
@@ -400,7 +411,44 @@ angular.module('emuwebApp')
 						ctx.fillStyle = ConfigProviderService.design.color.black;
 
 					}
-				}
+				};
+
+				/**
+				 * draw level hierarchy
+				 */
+				scope.drawHierarchyDetails = function () {
+					console.log('drawing hierarchy');
+					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
+					var paths = scope.hls.findPaths(scope.level.name);
+					var curPath = paths[1];
+
+					var ctx = canvas[0].getContext('2d');
+					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
+
+					//var mTxtImgWidth = ctx.measureText('m').width * fontScaleService.scaleX;
+
+					ctx.strokeStyle = ConfigProviderService.design.color.black;
+
+					// find parents for every parent for every items hence building the annotation graph
+					scope.hls.findParents(curPath);
+
+					// draw ghost level
+					for(var i = 0; i < curPath.length; i++){
+						var curLevel = scope.ls.getLevelDetails(curPath[i]);
+						var levelHeight = canvas[0].height / curPath.length;
+						var curStartY = canvas[0].height - (i + 1) * levelHeight;
+						for(var itemIdx = 0; itemIdx < curLevel.items.length; itemIdx++){
+							var posS = Math.round(scope.vs.getPos(canvas[0].width, curLevel.items[itemIdx]._derivedSampleStart));
+							var posE = Math.round(scope.vs.getPos(canvas[0].width, curLevel.items[itemIdx]._derivedSampleEnd));
+							ctx.strokeRect(posS, curStartY , posE - posS, curStartY + levelHeight);
+
+							// draw label
+							fontScaleService.drawUndistortedText(ctx, curLevel.items[itemIdx].labels[0].value, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLevel.items[itemIdx].labels[0].value).width / 2 - 2, curStartY + levelHeight / 2, ConfigProviderService.design.color.black);
+						}
+					}
+
+				};
+
 			}
 		};
 	});

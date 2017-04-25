@@ -154,7 +154,7 @@ angular.module('emuwebApp')
 			// Return empty array if that fails (which shouldn't happen at all)
 			var currentLevel = LevelService.getLevelName(d.id);
 			if (currentLevel === null) {
-				console.log('Likely a bug: failed to find a node\'s level', d)
+				console.log('Likely a bug: failed to find a node\'s level', d);
 				return [];
 			}
 
@@ -189,7 +189,7 @@ angular.module('emuwebApp')
 			}
 
 			return children;
-		}
+		};
 
 
 		/**
@@ -204,7 +204,7 @@ angular.module('emuwebApp')
 		 * no parents) or an array containing its parents.
 		 */
 		sServObj.findParents = function (selectedPath) {
-			var i, ii, c;
+			var i, ii, c, j;
 
 			//////
 			// Clear _parents from all items
@@ -222,6 +222,18 @@ angular.module('emuwebApp')
 			// Iterate through levels
 			for (i = 0; i < selectedPath.length; ++i) {
 				level = LevelService.getLevelDetails(selectedPath[i]);
+				
+				// if segment level copy start and end time information
+				// to _ variables else
+				for (j = 0; j < level.items.length; ++j) {
+					if(level.type === 'SEGMENT'){
+						level.items[j]._derivedSampleStart = level.items[j].sampleStart;
+						level.items[j]._derivedSampleEnd = level.items[j].sampleStart + level.items[j].sampleDur; // should we add 1 to this?
+					}else{
+						level.items[j]._derivedSampleStart = Infinity;
+						level.items[j]._derivedSampleEnd = -Infinity;
+					}
+				}
 
 				// Iterate through the current level's items
 				// And save them as _parents in their children
@@ -229,7 +241,17 @@ angular.module('emuwebApp')
 					var children = sServObj.findChildren(level.items[ii], selectedPath);
 
 					for (c = 0; c < children.length; ++c) {
-						children[c]._parents.push (level.items[ii]);
+						children[c]._parents.push(level.items[ii]);
+
+						// update parent _derivedSample attributes
+						if(children[c]._derivedSampleStart < level.items[ii]._derivedSampleStart){
+							level.items[ii]._derivedSampleStart = children[c]._derivedSampleStart;
+						}
+
+						if(children[c]._derivedSampleEnd > level.items[ii]._derivedSampleEnd){
+							level.items[ii]._derivedSampleEnd = children[c]._derivedSampleEnd;
+						}
+
 					}
 				}
 			}
@@ -334,7 +356,7 @@ angular.module('emuwebApp')
 
 				viewState.hierarchyState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
 			}
-		}
+		};
 
 		return sServObj;
 	});

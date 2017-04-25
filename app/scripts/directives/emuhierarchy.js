@@ -536,7 +536,7 @@ angular.module('emuwebApp')
 					} else {
 						return 'red';
 					}
-				}
+				};
 
 
 				scope.svgOnMouseMove = function (d) {
@@ -781,7 +781,7 @@ angular.module('emuwebApp')
 							});
 						}
 					}
-				}
+				};
 
 				// Append a group which holds all overlay captions and which do not react to zooming
 				scope.captionLayer = scope.svg.append('g').style('z-index', 5);

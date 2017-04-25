@@ -190,7 +190,7 @@ angular.module('emuwebApp')
 			angular.forEach(DataService.getLevelData(), function (level) {
 				if (level.name === name) {
 					level.items.forEach(function (element) {
-						if (element.id == id) {
+						if (element.id === id){
 							ret = element;
 						}
 					});
@@ -236,7 +236,7 @@ angular.module('emuwebApp')
 				}
 			});
 			return ret;
-		}
+		};
 
 		/**
 		 * Returns a level object and an item object according to a given item id
@@ -259,7 +259,7 @@ angular.module('emuwebApp')
 		 * @return item with id
 		 */
 		sServObj.getItemByID = function (nodeID) {
-			var ret = undefined;
+			var ret;
 			angular.forEach(DataService.getLevelData(), function (level) {
 				var pos = level.items.map(function (e) {
 					return e.id;
