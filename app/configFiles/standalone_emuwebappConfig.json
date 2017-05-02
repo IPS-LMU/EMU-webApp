@@ -41,6 +41,7 @@
 			"downloadAnnotation": true,
 			"specSettings": true,
 			"connect": false,
+			"search": true,
 			"clear": true,
 			"deleteSingleLevel": true,
 			"resizeSingleLevel": true,

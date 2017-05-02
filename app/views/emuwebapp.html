@@ -38,6 +38,7 @@
             <button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn left" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
             <button id="showHierarchy" class="emuwebapp-mini-btn left" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
             <button id="showeditDB" class="emuwebapp-mini-btn left" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editEMUwebAppConfig">edit config</button>
+            <button ng-show="cps.vals.activeButtons.search" ng-disabled="!vs.getPermission('searchBtnClick')" class="emuwebapp-mini-btn left" ng-click="searchBtnClick();">search</button>
             <button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn left" ng-click="clearBtnClick();">clear</button>
             <button id="aboutBtn" class="emuwebapp-button-icon" style="float: right;" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" class="_35px" /></button>
         </div>
@@ -103,4 +104,4 @@
     </div>
     <!-- end: main window -->
 </div>
-<!-- end: container EMU-webApp -->
+<!-- end: container EMU-webApp

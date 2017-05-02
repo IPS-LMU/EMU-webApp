@@ -16,12 +16,57 @@
  */
 
 angular.module('emuwebApp')
-	.service('HierarchyLayoutService', function (viewState, ConfigProviderService, LevelService, DataService) {
+	.service('HierarchyLayoutService', function (viewState, ConfigProviderService, LevelService, DataService, StandardFuncsService) {
 		// shared service object
 		var sServObj = {};
 
 		/////////////////////
 		// public API
+
+		/**
+		 *
+		 */
+		sServObj.findAllNonPartialPaths = function () {
+
+			var paths = {
+				possible: [],
+				possibleAsStr: []
+			};
+			// Find all levels to start calculating possible paths through the hierarchy of levels
+			angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
+				paths.possible = paths.possible.concat(sServObj.findPaths(l.name));
+			});
+
+			// convert array paths to strings
+			angular.forEach(paths.possible, function (arr) {
+			
+				var revArr = StandardFuncsService.reverseCopy(arr);
+
+				var curPathStr = revArr.join(' → ');
+
+				paths.possibleAsStr.push(curPathStr);
+			});
+
+			// remove partial paths
+			var partialPathsIdx = [];
+
+			angular.forEach(paths.possibleAsStr, function(p1, idx1){
+				angular.forEach(paths.possibleAsStr, function(p2){
+					if(p1 !== p2 && p2.startsWith(p1) && partialPathsIdx.indexOf(idx1) === -1){
+						partialPathsIdx.push(idx1);
+					}
+				});
+			});
+
+			angular.forEach(partialPathsIdx.reverse(), function(idx){
+				paths.possibleAsStr.splice(idx, 1);
+				paths.possible.splice(idx, 1);
+			});
+
+			return paths;
+
+		};
+
 
 		/**
 		 * Recursively find all paths through the hierarchy of levels.
@@ -32,7 +77,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.findPaths = function (startLevel, path) {
 			if (typeof path === 'undefined') {
-				var path = [startLevel];
+				path = [startLevel];
 			} else {
 				path = path.concat([startLevel]);
 			}
@@ -81,7 +126,7 @@ angular.module('emuwebApp')
 		 * use some tweaking
 		 */
 		sServObj.calculateWeightsBottomUp = function (selectedPath) {
-			var i, ii, iii;
+			var i, ii;
 
 			/////
 			// Make sure all items have proper _parents and

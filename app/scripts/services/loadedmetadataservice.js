@@ -134,6 +134,17 @@ angular.module('emuwebApp')
 			curBndl.name = name;
 		};
 
+		///////////
+		// timeAnchors
+
+		/**
+		 * setter timeAnchors
+		 */
+		sServObj.setTimeAnchors = function (timeAnchors) {
+			curBndl.timeAnchors = timeAnchors;
+		};
+
+
 
 		//////////////
 		// demoDbName

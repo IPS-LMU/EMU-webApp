@@ -549,6 +549,9 @@
 				"connect": {
 					"type": "boolean"
 				},
+				"search": {
+					"type": "boolean"
+				},
 				"clear": {
 					"type": "boolean"
 				},
@@ -580,7 +583,7 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "downloadAnnotation", "specSettings", "connect", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
+			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "downloadAnnotation", "specSettings", "connect", "search", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
 			"additionalProperties": false
 		},
 		"demoDBs": {

@@ -170,6 +170,19 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
+		sServObj.getAttrDefsNames = function (levelName) {
+			var res = [];
+			angular.forEach(sServObj.getLevelDefinition(levelName).attributeDefinitions, function (ad) {
+				res.push(ad.name);
+			});
+
+			return res;
+		};
+
+
+		/**
+		 *
+		 */
 		sServObj.setPerspectivesOrder = function (curPerspective, levelName) {
 			if (sServObj.vals !== undefined) {
 				if (sServObj.vals.perspectives !== undefined) {
@@ -180,7 +193,6 @@ angular.module('emuwebApp')
 					}
 				}
 			}
-
 		};
 
 		/**

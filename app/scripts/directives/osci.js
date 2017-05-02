@@ -30,7 +30,7 @@ angular.module('emuwebApp')
 				// watches
 
 				//
-				scope.$watch('vs.osciSettings', function () {
+				scope.$watch('viewState.osciSettings', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 							var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), viewState.curViewPort.sS, viewState.curViewPort.eS);

@@ -136,12 +136,12 @@ angular.module('emuwebApp')
 
 		// check if URL parameters are set -> if so set embedded flags!
 		var searchObject = $location.search();
-		if (searchObject['audioGetUrl'] && searchObject['labelGetUrl'] && searchObject['labelType']) {
+		if (searchObject.audioGetUrl && searchObject.labelGetUrl && searchObject.labelType) {
 			ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
 			ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
 			ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
 			ConfigProviderService.embeddedVals.fromUrlParams = true;
-		};
+		}
 
 		/**
 		 *
@@ -165,7 +165,7 @@ angular.module('emuwebApp')
 					// test if DBconfigGetUrl is set if so use it
 					var searchObject = $location.search();
 					var DBconfigGetUrl;
-					if (searchObject['DBconfigGetUrl']){
+					if (searchObject.DBconfigGetUrl){
 						DBconfigGetUrl = searchObject.DBconfigGetUrl;
 					}else{
 						DBconfigGetUrl = 'configFiles/embedded_emuwebappConfig.json';
@@ -311,10 +311,10 @@ angular.module('emuwebApp')
 		// call function on init
 		$scope.loadDefaultConfig();
 
-		$scope.checkIfToShowWelcomeModal = function (argument) {
-			var curVal = localStorage.getItem("haveShownWelcomeModal");
+		$scope.checkIfToShowWelcomeModal = function () {
+			var curVal = localStorage.getItem('haveShownWelcomeModal');
 			if (!browserDetector.isBrowser.PhantomJS() && curVal === null) {
-				localStorage.setItem("haveShownWelcomeModal", "true");
+				localStorage.setItem('haveShownWelcomeModal', 'true');
 				$scope.internalVars.showAboutHint = true;
 			}
 
@@ -337,9 +337,9 @@ angular.module('emuwebApp')
 			// check if either autoConnect is set in DBconfig or as get parameter
 			var searchObject = $location.search();
 
-			if (ConfigProviderService.vals.main.autoConnect || searchObject['autoConnect'] === 'true') {
-				if (typeof searchObject['serverUrl'] !== 'undefined') { // overwrite serverUrl if set as GET parameter
-					ConfigProviderService.vals.main.serverUrl = searchObject['serverUrl'];
+			if (ConfigProviderService.vals.main.autoConnect || searchObject.autoConnect === 'true') {
+				if (typeof searchObject.serverUrl !== 'undefined') { // overwrite serverUrl if set as GET parameter
+					ConfigProviderService.vals.main.serverUrl = searchObject.serverUrl;
 				}
 				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
 					if (message.type === 'error') {
@@ -450,12 +450,13 @@ angular.module('emuwebApp')
 									if(session === null) {
 										session = loadedMetaDataService.getBundleList()[0];
 									}
-									dbObjLoadSaveService.loadBundle(session).then(function (res){
+									dbObjLoadSaveService.loadBundle(session).then(function (){
 										// FOR DEVELOPMENT:
 										// sServObj.saveBundle(); // for testing save function
 										// $scope.menuBundleSaveBtnClick(); // for testing save button
 										// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
 										// $scope.spectSettingsBtnClick(); // for testing spect settings dial
+										// $scope.searchBtnClick();
 										// viewState.curViewPort.sS = 27455;
 										// viewState.curViewPort.eS = 30180;
 
@@ -500,20 +501,20 @@ angular.module('emuwebApp')
 		$scope.getEnlarge = function (index) {
 			var len = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length;
 			var large = 50;
-			if (viewState.getenlarge() == -1) {
+			if (viewState.getenlarge() === -1) {
 				return 'auto';
 			} else {
 				if (len === 1) {
 					return 'auto';
 				}
 				if (len === 2) {
-					if (viewState.getenlarge() == index) {
+					if (viewState.getenlarge() === index) {
 						return '70%';
 					} else {
 						return '27%';
 					}
 				} else {
-					if (viewState.getenlarge() == index) {
+					if (viewState.getenlarge() === index) {
 						return large + '%';
 					} else {
 						return (95 - large) / (len - 1) + '%';
@@ -559,11 +560,11 @@ angular.module('emuwebApp')
 
 				if (viewState.getCurAttrDef(newName) === undefined) {
 					var leveldef = {
-						name: newName,
-						type: 'EVENT',
-						attributeDefinitions: {
-							name: newName,
-							type: "string"
+						'name': newName,
+						'type': 'EVENT',
+						'attributeDefinitions': {
+							'name': newName,
+							'type': 'string'
 						}
 					};
 					viewState.setCurLevelAttrDefs(leveldef);
@@ -603,7 +604,7 @@ angular.module('emuwebApp')
 						type: 'EVENT',
 						attributeDefinitions: {
 							name: newName,
-							type: "string"
+							type: 'string'
 						}
 					};
 					viewState.setCurLevelAttrDefs(leveldef);
@@ -662,7 +663,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.spectSettingsBtnClick = function () {
 			if (viewState.getPermission('spectSettingsChange')) {
-				modalService.open('views/spectSettings.html')
+				modalService.open('views/spectSettings.html');
 			}
 		};
 
@@ -800,7 +801,7 @@ angular.module('emuwebApp')
 				else {
 					if (Validationservice.validateJSO('emuwebappConfigSchema', res)) {
 						$scope.cps.getDelta(res).then(function (delta) {
-							Iohandlerservice.saveConfiguration(angular.toJson(delta, true)).then(function (ret) {
+							Iohandlerservice.saveConfiguration(angular.toJson(delta, true)).then(function () {
 								if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
 									modalService.open('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.').then(function (res) {
 										if (res) {
@@ -821,6 +822,17 @@ angular.module('emuwebApp')
 			});
 		};
 
+
+		/**
+		 *
+		 */
+		$scope.searchBtnClick = function () {
+			if (viewState.getPermission('searchBtnClick')) {
+				modalService.open('views/searchAnnot.html');
+			}
+		};
+
+
 		/**
 		 *
 		 */
@@ -828,7 +840,7 @@ angular.module('emuwebApp')
 			// viewState.setdragBarActive(false);
 			var modalText;
 			if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.'
+				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.';
 			} else {
 				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.';
 			}
@@ -966,7 +978,7 @@ angular.module('emuwebApp')
 			}
 			viewState.curPerspectiveIdx = newIdx;
 			// close submenu
-			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen())
+			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
 		};
 
 		/**

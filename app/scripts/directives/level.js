@@ -28,13 +28,13 @@ angular.module('emuwebApp')
 					'background': ConfigProviderService.design.color.lightGrey
 				};
 
-				scope.drawHierarchy = true;
+				scope.drawHierarchy = false; // 
 
 				///////////////
 				// watches
 
 				scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
-					if (newValue != oldValue) {
+					if (newValue !== oldValue) {
 						scope.redraw();
 					}
 				});
@@ -166,7 +166,7 @@ angular.module('emuwebApp')
 
 					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 					var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
-					var isOpen = !element.parent().css('height') === '25px';// ? false : true;
+					var isOpen = element.parent().css('height') !== '25px';// ? false : true;
 					if ($.isEmptyObject(scope.level)) {
 						//console.log('undef levelDetails');
 						return;
@@ -186,13 +186,13 @@ angular.module('emuwebApp')
 					}
 
 
-					var ctx = canvas[2].getContext('2d');
-					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
+					var ctx = canvas[0].getContext('2d');
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 					//predef vars
 					var sDist, posS, posE;
 
-					sDist = scope.vs.getSampleDist(canvas[0].width);
+					sDist = scope.vs.getSampleDist(ctx.canvas.width);
 
 					// draw name of level and type
 					var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
@@ -241,24 +241,24 @@ angular.module('emuwebApp')
 								});
 
 								// draw segment start
-								posS = scope.vs.getPos(canvas[0].width, item.sampleStart);
-								posE = scope.vs.getPos(canvas[0].width, item.sampleStart + item.sampleDur + 1);
+								posS = scope.vs.getPos(ctx.canvas.width, item.sampleStart);
+								posE = scope.vs.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
 
 								ctx.fillStyle = ConfigProviderService.design.color.black;
-								ctx.fillRect(posS, 0, 2, canvas[0].height / 2);
+								ctx.fillRect(posS, 0, 2, ctx.canvas.height / 2);
 
 								//draw segment end
 								ctx.fillStyle = ConfigProviderService.design.color.grey;
-								ctx.fillRect(posE, canvas[0].height / 2, 2, canvas[0].height);
+								ctx.fillRect(posE, ctx.canvas.height / 2, 2, ctx.canvas.height);
 
 								ctx.font = (fontSize - 2 + 'px' + ' ' + ConfigProviderService.design.font.small.family);
 
 								//check for enough space to stroke text
 								if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
 									if (isOpen) {
-										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2 - 2, (canvas[0].height / 2) - (fontSize - 2) + 2, ConfigProviderService.design.color.black);
+										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2 - 2, (ctx.canvas.height / 2) - (fontSize - 2) + 2, ConfigProviderService.design.color.black);
 									} else {
-										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2 - 2, (canvas[0].height / 2) - fontSize + 2, ConfigProviderService.design.color.black);
+										fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLabVal).width / 2 - 2, (ctx.canvas.height / 2) - fontSize + 2, ConfigProviderService.design.color.black);
 									}
 								}
 
@@ -266,7 +266,7 @@ angular.module('emuwebApp')
 								if (scope.open && curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
 									var labelCenter = posS + (posE - posS) / 2;
 
-									var hlY = canvas[0].height / 4;
+									var hlY = ctx.canvas.height / 4;
 									// start helper line
 									ctx.strokeStyle = ConfigProviderService.design.color.black;
 									ctx.beginPath();
@@ -275,7 +275,7 @@ angular.module('emuwebApp')
 									ctx.lineTo(labelCenter, hlY + 5);
 									ctx.stroke();
 
-									hlY = canvas[0].height / 4 * 3;
+									hlY = ctx.canvas.height / 4 * 3;
 									// end helper line
 									ctx.strokeStyle = ConfigProviderService.design.color.grey;
 									ctx.beginPath();
@@ -296,7 +296,7 @@ angular.module('emuwebApp')
 								var durtext = 'dur: ' + item.sampleDur + ' ';
 								//check for enough space to stroke text
 								if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
-									fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, ConfigProviderService.design.font.small.family, posE - (ctx.measureText(durtext).width * fontScaleService.scaleX), canvas[0].height / 4 * 3, ConfigProviderService.design.color.grey);
+									fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, ConfigProviderService.design.font.small.family, posE - (ctx.measureText(durtext).width * fontScaleService.scaleX), ctx.canvas.height / 4 * 3, ConfigProviderService.design.color.grey);
 								}
 							}
 						});
@@ -307,7 +307,7 @@ angular.module('emuwebApp')
 
 						scope.level.items.forEach(function (item) {
 							if (item.samplePoint > scope.vs.curViewPort.sS && item.samplePoint < scope.vs.curViewPort.eS) {
-								perc = Math.round(scope.vs.getPos(canvas[0].width, item.samplePoint) + (sDist / 2));
+								perc = Math.round(scope.vs.getPos(ctx.canvas.width, item.samplePoint) + (sDist / 2));
 								// get label
 								var curLabVal = undefined;
 								item.labels.forEach(function (lab) {
@@ -317,9 +317,9 @@ angular.module('emuwebApp')
 								});
 
 								ctx.fillStyle = ConfigProviderService.design.color.black;
-								ctx.fillRect(perc, 0, 1, canvas[0].height / 2 - canvas[0].height / 10);
-								ctx.fillRect(perc, canvas[0].height / 2 + canvas[0].height / 10, 1, canvas[0].height / 2 - canvas[0].height / 10);
-								fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, perc - 5, canvas[0].height / 3, ConfigProviderService.design.color.black);
+								ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 10);
+								ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 10, 1, ctx.canvas.height / 2 - ctx.canvas.height / 10);
+								fontScaleService.drawUndistortedText(ctx, curLabVal, fontSize - 2, ConfigProviderService.design.font.small.family, perc - 5, ctx.canvas.height / 3, ConfigProviderService.design.color.black);
 								if (isOpen) {
 									fontScaleService.drawUndistortedText(ctx, item.samplePoint, fontSize - 2, ConfigProviderService.design.font.small.family, perc + 5, 0, ConfigProviderService.design.color.grey);
 								}
@@ -333,11 +333,11 @@ angular.module('emuwebApp')
 				 *
 				 */
 				scope.drawLevelMarkup = function () {
-					var ctx = canvas[3].getContext('2d');
-					ctx.clearRect(0, 0, canvas[1].width, canvas[1].height);
+					var ctx = canvas[1].getContext('2d');
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 					if (scope.level.name === scope.vs.getcurClickLevelName()) {
 						ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
-						ctx.fillRect(0, 0, canvas[0].width, canvas[0].height);
+						ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 					}
 
 					// draw moving boundary line if moving
@@ -348,9 +348,9 @@ angular.module('emuwebApp')
 
 
 					var posS, posE, sDist, xOffset, item;
-					posS = scope.vs.getPos(canvas[1].width, scope.vs.curViewPort.selectS);
-					posE = scope.vs.getPos(canvas[1].width, scope.vs.curViewPort.selectE);
-					sDist = scope.vs.getSampleDist(canvas[1].width);
+					posS = scope.vs.getPos(ctx.canvas.width, scope.vs.curViewPort.selectS);
+					posE = scope.vs.getPos(ctx.canvas.width, scope.vs.curViewPort.selectE);
+					sDist = scope.vs.getSampleDist(ctx.canvas.width);
 
 
 					var segMId = scope.vs.getcurMouseItem();
@@ -365,15 +365,15 @@ angular.module('emuwebApp')
 								if (cs !== undefined) {
 									// check if segment or event level
 									if (cs.sampleStart !== undefined) {
-										posS = Math.round(scope.vs.getPos(canvas[0].width, cs.sampleStart));
-										posE = Math.round(scope.vs.getPos(canvas[0].width, cs.sampleStart + cs.sampleDur + 1));
+										posS = Math.round(scope.vs.getPos(ctx.canvas.width, cs.sampleStart));
+										posE = Math.round(scope.vs.getPos(ctx.canvas.width, cs.sampleStart + cs.sampleDur + 1));
 									} else {
-										posS = Math.round(scope.vs.getPos(canvas[0].width, cs.samplePoint) + sDist / 2);
+										posS = Math.round(scope.vs.getPos(ctx.canvas.width, cs.samplePoint) + sDist / 2);
 										posS = posS - 5;
 										posE = posS + 10;
 									}
 									ctx.fillStyle = ConfigProviderService.design.color.transparent.yellow;
-									ctx.fillRect(posS, 0, posE - posS, canvas[0].height);
+									ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
 									ctx.fillStyle = ConfigProviderService.design.color.black;
 								}
 							});
@@ -388,23 +388,23 @@ angular.module('emuwebApp')
 						if (isFirst === true) { // before first segment
 							if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
 								item = scope.level.items[0];
-								posS = Math.round(scope.vs.getPos(canvas[1].width, item.sampleStart));
-								ctx.fillRect(posS, 0, 3, canvas[1].height);
+								posS = Math.round(scope.vs.getPos(ctx.canvas.width, item.sampleStart));
+								ctx.fillRect(posS, 0, 3, ctx.canvas.height);
 							}
 						} else if (isLast === true) { // after last segment
 							if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
 								item = scope.level.items[scope.level.items.length - 1];
-								posS = Math.round(scope.vs.getPos(canvas[1].width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
-								ctx.fillRect(posS, 0, 3, canvas[1].height);
+								posS = Math.round(scope.vs.getPos(ctx.canvas.width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
+								ctx.fillRect(posS, 0, 3, ctx.canvas.height);
 							}
 						} else { // in the middle
 							if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
-								posS = Math.round(scope.vs.getPos(canvas[1].width, item.sampleStart));
-								ctx.fillRect(posS, 0, 3, canvas[1].height);
+								posS = Math.round(scope.vs.getPos(ctx.canvas.width, item.sampleStart));
+								ctx.fillRect(posS, 0, 3, ctx.canvas.height);
 							} else {
-								posS = Math.round(scope.vs.getPos(canvas[1].width, item.samplePoint));
+								posS = Math.round(scope.vs.getPos(ctx.canvas.width, item.samplePoint));
 								xOffset = (sDist / 2);
-								ctx.fillRect(posS + xOffset, 0, 3, canvas[1].height);
+								ctx.fillRect(posS + xOffset, 0, 3, ctx.canvas.height);
 
 							}
 						}
@@ -417,13 +417,12 @@ angular.module('emuwebApp')
 				 * draw level hierarchy
 				 */
 				scope.drawHierarchyDetails = function () {
-					console.log('drawing hierarchy');
 					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 					var paths = scope.hls.findPaths(scope.level.name);
 					var curPath = paths[1];
 
 					var ctx = canvas[0].getContext('2d');
-					ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 					//var mTxtImgWidth = ctx.measureText('m').width * fontScaleService.scaleX;
 
@@ -435,11 +434,11 @@ angular.module('emuwebApp')
 					// draw ghost level
 					for(var i = 0; i < curPath.length; i++){
 						var curLevel = scope.ls.getLevelDetails(curPath[i]);
-						var levelHeight = canvas[0].height / curPath.length;
-						var curStartY = canvas[0].height - (i + 1) * levelHeight;
+						var levelHeight = ctx.canvas.height / curPath.length;
+						var curStartY = ctx.canvas.height - (i + 1) * levelHeight;
 						for(var itemIdx = 0; itemIdx < curLevel.items.length; itemIdx++){
-							var posS = Math.round(scope.vs.getPos(canvas[0].width, curLevel.items[itemIdx]._derivedSampleStart));
-							var posE = Math.round(scope.vs.getPos(canvas[0].width, curLevel.items[itemIdx]._derivedSampleEnd));
+							var posS = Math.round(scope.vs.getPos(ctx.canvas.width, curLevel.items[itemIdx]._derivedSampleStart));
+							var posE = Math.round(scope.vs.getPos(ctx.canvas.width, curLevel.items[itemIdx]._derivedSampleEnd));
 							ctx.strokeRect(posS, curStartY , posE - posS, curStartY + levelHeight);
 
 							// draw label

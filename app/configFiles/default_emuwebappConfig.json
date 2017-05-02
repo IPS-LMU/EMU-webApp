@@ -114,6 +114,7 @@
         "downloadAnnotation": false,
         "specSettings": false,
         "connect": true,
+        "search": false,
         "clear": false,
         "deleteSingleLevel": false,
         "resizeSingleLevel": true,
