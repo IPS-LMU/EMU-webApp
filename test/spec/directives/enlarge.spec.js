@@ -24,7 +24,7 @@ describe('Directive: enlarge', function() {
         scope.vs.curPerspectiveIdx = 0;
         compileDirective();
         elm.triggerHandler('click');
-        expect(scope.vs.timelineSize).toEqual('0');
+        expect(scope.vs.timelineSize).toEqual(0);
     });
 
     it('should enlarge and close', function() {
@@ -32,7 +32,7 @@ describe('Directive: enlarge', function() {
         compileDirective();
         elm.triggerHandler('click');
         //scope.$digest();
-        expect(scope.vs.timelineSize).toEqual('0');
+        expect(scope.vs.timelineSize).toEqual(0);
         elm.triggerHandler('click');
         expect(scope.vs.timelineSize).toEqual(-1);
     });

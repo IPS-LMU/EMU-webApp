@@ -49,7 +49,7 @@
 			"resizePerspectives": true,
 			"openDemoDB": false,
 			"saveBundle": false,
-			"openMenu": false
+			"openMenu": true
 		}
 	}
 }

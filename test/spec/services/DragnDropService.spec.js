@@ -83,15 +83,12 @@ describe('Service: DragnDropService', function () {
   }));
 
   it('should handleLocalFiles', inject(function (Wavparserservice,
-                                                 ConfigProviderService,
                                                  Validationservice,
                                                  Iohandlerservice,
                                                  DragnDropService,
                                                  modalService,
                                                  appStateService,
-                                                 Soundhandlerservice,
                                                  DragnDropDataService,
-                                                 Binarydatamaniphelper,
                                                  viewState) {
     var defio = $q.defer();
     var defwav = $q.defer();
@@ -102,16 +99,12 @@ describe('Service: DragnDropService', function () {
     DragnDropDataService.convertedBundles[0].annotation = msajc003_bndl.annotation;
     viewState.curPerspectiveIdx = 0;
     spyOn(viewState, 'selectLevel').and.returnValue(true);
-    spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer').and.returnValue(new ArrayBuffer());
     spyOn(Iohandlerservice, 'httpGetPath').and.returnValue(defio.promise);
     spyOn(Validationservice, 'validateJSO').and.returnValue(true);
-    spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(defwav.promise);
     DragnDropService.handleLocalFiles();
-    expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
     expect(Iohandlerservice.httpGetPath).toHaveBeenCalled();
     defio.resolve({data: defaultEmuwebappConfig});
     $scope.$apply();
-    expect(Wavparserservice.parseWavAudioBuf).toHaveBeenCalled();
   }));
 
 });

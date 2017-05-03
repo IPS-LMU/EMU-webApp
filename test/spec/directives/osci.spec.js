@@ -23,8 +23,9 @@ describe('Directive: osci', function () {
         scope.level = curLvl;
 
         scope.shs.audioBuffer.getChannelData = function (n) {
-            return([1,2,3]);
-        }
+            var res = new Float32Array([1,2,3,4]);
+            return(res);
+        };
     }));
 
     function compileDirective() {
@@ -44,49 +45,49 @@ describe('Directive: osci', function () {
    });
 
    it('should watch viewState.playHeadAnimationInfos', function () {
-     scope.vs.playHeadAnimationInfos.sS = 1
+     scope.vs.playHeadAnimationInfos.sS = 1;
      compileDirective();
      scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawPlayHead');
-     scope.vs.playHeadAnimationInfos.sS = 10
+     scope.vs.playHeadAnimationInfos.sS = 10;
      scope.$digest();
      expect(elm.isolateScope().drawPlayHead).toHaveBeenCalled();
    });
 
    it('should watch viewState.movingBoundarySample', function () {
-     scope.vs.movingBoundarySample = 1
+     scope.vs.movingBoundarySample = 1;
      compileDirective();
      scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
-     scope.vs.movingBoundarySample = 10
+     scope.vs.movingBoundarySample = 10;
      scope.$digest();
      expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
    });
    
    it('should watch viewState.movingBoundary', function () {
-     scope.vs.movingBoundary = false
+     scope.vs.movingBoundary = false;
      compileDirective();
      scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
-     scope.vs.movingBoundary = true
+     scope.vs.movingBoundary = true;
      scope.$digest();
      expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
    });
    
    it('should watch viewState.curViewPort (same value)', function () {
-     scope.vs.curViewPort.sS = 1
-     scope.vs.curViewPort.eS = 2
+     scope.vs.curViewPort.sS = 1;
+     scope.vs.curViewPort.eS = 2;
      compileDirective();
      scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
      spyOn(scope.dhs, 'calculatePeaks');
      spyOn(scope.dhs, 'freshRedrawDrawOsciOnCanvas');
-     scope.vs.curViewPort.sS = 2
-     scope.vs.curViewPort.eS = 3
+     scope.vs.curViewPort.sS = 2;
+     scope.vs.curViewPort.eS = 3;
      scope.$digest();
      expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
      expect(scope.dhs.calculatePeaks).toHaveBeenCalled();

@@ -20,6 +20,7 @@ describe('Controller: spectSettingsCtrl', function () {
     scope.data = DataService;
     scope.math = mathHelperService;
     scope.shs = Soundhandlerservice;
+
     spectSettingsCtrl = $controller('spectSettingsCtrl', {
       $scope: scope
     });
@@ -90,17 +91,17 @@ describe('Controller: spectSettingsCtrl', function () {
     expect(scope.cssError(3,1)).toEqual({'background': '#f00'});
   }); 
      
-  it('should saveSpectroSettings', function () {
+  it('should saveSettings', function () {
     scope.errorID[1] = true;
     scope.errorID[2] = false;
     scope.errorID[3] = false;
     spyOn(scope.vs, 'setspectroSettings');
     spyOn(scope, 'reset');
-    scope.saveSpectroSettings();
+    scope.saveSettings();
     expect(scope.vs.setspectroSettings).not.toHaveBeenCalled();
     expect(scope.reset).not.toHaveBeenCalled();
     scope.errorID[1] = false;
-    scope.saveSpectroSettings();
+    scope.saveSettings();
     expect(scope.vs.setspectroSettings).toHaveBeenCalled();
     expect(scope.reset).toHaveBeenCalled();
   });   
@@ -125,6 +126,8 @@ describe('Controller: spectSettingsCtrl', function () {
   
 
   it('should set cursorOutOfTextField', function () {
+    scope.shs.audioBuffer.sampleRate = 2;
+    scope.shs.audioBuffer.numberOfChannels = 1;
     spyOn(scope.vs, 'setEditing');
     spyOn(scope.vs, 'setcursorInTextField');
     scope.cursorOutOfTextField();
@@ -133,6 +136,7 @@ describe('Controller: spectSettingsCtrl', function () {
   });
 
   it('should set cursorInTextField', function () {
+    scope.shs.audioBuffer.numberOfChannels = 1;
     spyOn(scope.vs, 'setEditing');
     spyOn(scope.vs, 'setcursorInTextField');
     scope.cursorInTextField();
