@@ -190,6 +190,10 @@ angular.module('emuwebApp')
 							validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
 
 							if (validRes === true) {
+
+								validRes = loadedMetaDataService.setBundleList([{'session': 'File(s)', 'name': 'from URL parameters'}]);
+
+
 								// set wav file
 								viewState.somethingInProgress = true;
 								viewState.somethingInProgressTxt = 'Parsing WAV file...';
@@ -200,9 +204,15 @@ angular.module('emuwebApp')
 									viewState.curViewPort.eS = audioBuffer.length;
 									viewState.resetSelect();
 									Soundhandlerservice.audioBuffer = audioBuffer;
-
+									
+									var respType;	
+									if(ConfigProviderService.embeddedVals.labelType === 'TEXTGRID'){
+										respType = 'text';
+									}else{
+										respType = 'json';
+									}
 									// get + parse file
-									Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, 'utf-8').then(function (data2) {
+									Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
 										viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
 										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
