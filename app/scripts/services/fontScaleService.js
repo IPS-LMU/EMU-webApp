@@ -33,11 +33,11 @@ angular.module('emuwebApp')
 			sServObj.scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
 			ctxOriginal.save();
 			ctxOriginal.font = (fontPxSize + 'px' + ' ' + fontType);
-			ctxOriginal.fillStyle = color;
 			ctxOriginal.scale(sServObj.scaleX, sServObj.scaleY);
+			ctxOriginal.fillStyle = color;
 			if (alignLeft) {
-				ctxOriginal.fillText(text, x / sServObj.scaleX, y + fontPxSize + sServObj.spaceTop);
-				ctxOriginal.fillText(text2, x / sServObj.scaleX, y + 2 * (fontPxSize) + sServObj.spaceTop);
+				ctxOriginal.fillText(text, x / sServObj.scaleX, (y + fontPxSize + sServObj.spaceTop));
+				ctxOriginal.fillText(text2, x / sServObj.scaleX, (y + 2 * fontPxSize + sServObj.spaceTop));
 			} else {
 				var a = ctxOriginal.measureText(text).width;
 				var b = ctxOriginal.measureText(text2).width;
@@ -50,6 +50,7 @@ angular.module('emuwebApp')
 					ctxOriginal.fillText(text2, x / sServObj.scaleX, y + 2 * (fontPxSize) + sServObj.spaceTop);
 				}
 			}
+			ctxOriginal.scale(1, 1);
 			ctxOriginal.restore();
 		};
 		return sServObj;

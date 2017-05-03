@@ -493,7 +493,7 @@ angular.module('emuwebApp')
 				//draw time and sample nr
 				sTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.sS / Soundhandlerservice.audioBuffer.sampleRate, 6);
 				eTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.eS / Soundhandlerservice.audioBuffer.sampleRate, 6);
-				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.sS, sTime, fontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.black, true);
+				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.sS, sTime, fontSize, ConfigProviderService.design.font.small.family, 5, 0, ConfigProviderService.design.color.black, true);
 				space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
 				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.eS, eTime, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - space - 5, 0, ConfigProviderService.design.color.black, false);
 			}

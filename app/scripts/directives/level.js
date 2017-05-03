@@ -285,18 +285,19 @@ angular.module('emuwebApp')
 									ctx.stroke();
 								}
 
+								if (scope.open){
+									// draw sampleStart numbers
+									//check for enough space to stroke text
+									if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
+										fontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, posS + 3, 0, ConfigProviderService.design.color.grey);
+									}
 
-								// draw sampleStart numbers
-								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
-									fontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, ConfigProviderService.design.font.small.family, posS + 3, 0, ConfigProviderService.design.color.grey);
-								}
-
-								// draw sampleDur numbers.
-								var durtext = 'dur: ' + item.sampleDur + ' ';
-								//check for enough space to stroke text
-								if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
-									fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, ConfigProviderService.design.font.small.family, posE - (ctx.measureText(durtext).width * fontScaleService.scaleX), ctx.canvas.height / 4 * 3, ConfigProviderService.design.color.grey);
+									// draw sampleDur numbers.
+									var durtext = 'dur: ' + item.sampleDur + ' ';
+									//check for enough space to stroke text
+									if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
+										fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, ConfigProviderService.design.font.small.family, posE - (ctx.measureText(durtext).width * fontScaleService.scaleX), ctx.canvas.height / 4 * 3, ConfigProviderService.design.color.grey);
+									}
 								}
 							}
 						});
@@ -309,7 +310,7 @@ angular.module('emuwebApp')
 							if (item.samplePoint > scope.vs.curViewPort.sS && item.samplePoint < scope.vs.curViewPort.eS) {
 								perc = Math.round(scope.vs.getPos(ctx.canvas.width, item.samplePoint) + (sDist / 2));
 								// get label
-								var curLabVal = undefined;
+								var curLabVal;
 								item.labels.forEach(function (lab) {
 									if (lab.name === curAttrDef) {
 										curLabVal = lab.value;
