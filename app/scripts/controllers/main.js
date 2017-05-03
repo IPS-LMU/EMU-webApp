@@ -191,8 +191,9 @@ angular.module('emuwebApp')
 
 							if (validRes === true) {
 
-								validRes = loadedMetaDataService.setBundleList([{'session': 'File(s)', 'name': 'from URL parameters'}]);
-
+								var bndlList = [{'session': 'File(s)', 'name': 'from URL parameters'}];
+								loadedMetaDataService.setBundleList(bndlList);
+								loadedMetaDataService.setCurBndl(bndlList[0]);
 
 								// set wav file
 								viewState.somethingInProgress = true;
@@ -205,7 +206,7 @@ angular.module('emuwebApp')
 									viewState.resetSelect();
 									Soundhandlerservice.audioBuffer = audioBuffer;
 									
-									var respType;	
+									var respType;
 									if(ConfigProviderService.embeddedVals.labelType === 'TEXTGRID'){
 										respType = 'text';
 									}else{
