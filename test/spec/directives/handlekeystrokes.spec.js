@@ -362,15 +362,17 @@ describe('Directive: handleglobalkeystrokes', function() {
         expect(scope.vs.getPermission).toHaveBeenCalledWith('labelAction');
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
         expect(scope.lvl.calcDistanceToNearestZeroCrossing).toHaveBeenCalledWith(item.sampleStart);
-        expect(scope.lvl.moveBoundary).toHaveBeenCalledWith(lvlName, item.id, fakePCMtime, 0 );
+        expect(scope.lvl.moveBoundary).toHaveBeenCalledWith(lvlName, item.id, fakePCMtime, false, false);
         expect(scope.history.updateCurChangeObj).toHaveBeenCalledWith(
         {
-            type : 'ANNOT',
-            action : 'MOVEBOUNDARY',
-            name : lvlName,
-            id : item.id,
-            movedBy : fakePCMtime,
-            position : 0
+            'type': 'ANNOT',
+            'action': 'MOVEBOUNDARY',
+            'name': lvlName,
+            'id': item.id,
+            'movedBy' : fakePCMtime,
+            'isFirst': false,
+            'isLast': false
+
         });
         expect(scope.history.addCurChangeObjToUndoStack).toHaveBeenCalled();
     });
