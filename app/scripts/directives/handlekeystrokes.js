@@ -563,14 +563,17 @@ angular.module('emuwebApp')
 											var neigh = viewState.getcurMouseNeighbours();
 											var levelname = viewState.getcurMouseLevelName();
 											LevelService.moveBoundary(levelname, seg.id, dist, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
+
 											HistoryService.updateCurChangeObj({
 												'type': 'ANNOT',
 												'action': 'MOVEBOUNDARY',
 												'name': levelname,
 												'id': seg.id,
 												'movedBy': dist,
-												'position': 0
+												'isFirst': viewState.getcurMouseisFirst(),
+												'isLast': viewState.getcurMouseisLast()
 											});
+
 											HistoryService.addCurChangeObjToUndoStack();
 										}
 									}
