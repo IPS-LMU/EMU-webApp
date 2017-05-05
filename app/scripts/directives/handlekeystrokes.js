@@ -16,7 +16,7 @@ angular.module('emuwebApp')
 				$(document).bind('keydown', function (e) {
 					if (!scope.firefox) {
 						var code = (e.keyCode ? e.keyCode : e.which);
-						if (code == 8 || code == 9 || code == 27 || code == 37 || code == 38 || code == 39 || code == 40 || code == 32) {
+						if (code === 8 || code === 9 || code === 27 || code === 37 || code === 38 || code === 39 || code === 40 || code === 32) {
 							scope.applyKeyCode(code, e);
 						}
 					}
@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 					scope.applyKeyCode(code, e);
 				});
 
-				scope.applyKeyCodeUp = function (code, e) {
+				scope.applyKeyCodeUp = function (code) {
 					scope.$apply(function () {
 						if (code !== ConfigProviderService.vals.keyMappings.esc && code !== ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
 							var domElement = $('.' + LevelService.getlasteditArea());
@@ -47,11 +47,11 @@ angular.module('emuwebApp')
 							}
 							if (viewState.isSavingAllowed()) {
 								domElement.css({
-									"background-color": "rgba(255,255,0,1)"
+									'background-color': 'rgba(255,255,0,1)'
 								});
 							} else {
 								domElement.css({
-									"background-color": "rgba(255,0,0,1)"
+									'background-color': 'rgba(255,0,0,1)'
 								});
 							}
 						}
@@ -488,7 +488,7 @@ angular.module('emuwebApp')
 										if (minDist === false) {
 											// error msg nothing moved / nothing on top
 										} else {
-											if (levelType === "EVENT") {
+											if (levelType === 'EVENT') {
 												HistoryService.updateCurChangeObj({
 													'type': 'ANNOT',
 													'action': 'MOVEEVENT',
@@ -496,7 +496,7 @@ angular.module('emuwebApp')
 													'id': mouseSeg.id,
 													'movedBy': minDist
 												});
-											} else if (levelType === "SEGMENT") {
+											} else if (levelType === 'SEGMENT') {
 												HistoryService.updateCurChangeObj({
 													'type': 'ANNOT',
 													'action': 'MOVEBOUNDARY',
@@ -524,7 +524,7 @@ angular.module('emuwebApp')
 										if (minDist == false) {
 											// error msg nothing moved / nothing below
 										} else {
-											if (levelType === "EVENT") {
+											if (levelType === 'EVENT') {
 												HistoryService.updateCurChangeObj({
 													'type': 'ANNOT',
 													'action': 'MOVEEVENT',
@@ -532,7 +532,7 @@ angular.module('emuwebApp')
 													'id': mouseSeg.id,
 													'movedBy': minDist
 												});
-											} else if (levelType === "SEGMENT") {
+											} else if (levelType === 'SEGMENT') {
 												HistoryService.updateCurChangeObj({
 													'type': 'ANNOT',
 													'action': 'MOVEBOUNDARY',
@@ -1001,7 +1001,7 @@ angular.module('emuwebApp')
 										if (ConfigProviderService.vals.restrictions.deleteItemBoundary) {
 											if (seg !== undefined) {
 												var neighbour = LevelService.getItemNeighboursFromLevel(levelname, seg.id, seg.id);
-												if (type === "SEGMENT") {
+												if (type === 'SEGMENT') {
 													var deletedSegment = LevelService.deleteBoundary(levelname, seg.id, isFirst, isLast);
 													HistoryService.updateCurChangeObj({
 														'type': 'ANNOT',
