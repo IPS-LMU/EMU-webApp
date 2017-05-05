@@ -221,7 +221,7 @@ describe('Service: LevelService', function () {
     // test on JDR10_bndl.annotation
     LevelService.setlasteditArea('_1');
     expect(LevelService.getlasteditArea()).toEqual('_1');
-    expect(LevelService.getlastID()).toEqual('1');
+    expect(LevelService.getlastID()).toEqual(1);
   }));
 
   /**
