@@ -454,16 +454,16 @@ angular.module('emuwebApp')
 
 			// draw trackName
 			if (trackName !== '') {
-				fontScaleService.drawUndistortedText(ctx, trackName, fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY / 2, ConfigProviderService.design.color.black);
+				fontScaleService.drawUndistortedText(ctx, trackName, fontSize, ConfigProviderService.design.font.small.family, 0, ctx.canvas.height / 2 - fontSize * scaleY / 2, ConfigProviderService.design.color.black, true);
 			}
 
 			// draw min/max vals
 			if (max !== undefined) {
-				fontScaleService.drawUndistortedText(ctx, 'max: ' + mathHelperService.roundToNdigitsAfterDecPoint(max, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.grey);
+				fontScaleService.drawUndistortedText(ctx, 'max: ' + mathHelperService.roundToNdigitsAfterDecPoint(max, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, 5, ConfigProviderService.design.color.grey, true);
 			}
 			// draw min/max vals
 			if (min !== undefined) {
-				fontScaleService.drawUndistortedText(ctx, 'min: ' + mathHelperService.roundToNdigitsAfterDecPoint(min, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, ctx.canvas.height - th - 5, ConfigProviderService.design.color.grey);
+				fontScaleService.drawUndistortedText(ctx, 'min: ' + mathHelperService.roundToNdigitsAfterDecPoint(min, round), smallFontSize, ConfigProviderService.design.font.small.family, 5, ctx.canvas.height - th - 5, ConfigProviderService.design.color.grey, true);
 			}
 		};
 

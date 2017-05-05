@@ -501,7 +501,7 @@
 			"sampleDur": 3054,
 			"labels": [{
 				"name": "Phonetic",
-				"value": "f"
+				"value": "hello"
 			}, {
 				"name": "IPA",
 				"value": "f"

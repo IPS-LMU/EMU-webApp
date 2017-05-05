@@ -12,14 +12,19 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.drawUndistortedText = function (ctxOriginal, text, fontPxSize, fontType, x, y, color) {
+		sServObj.drawUndistortedText = function (ctxOriginal, text, fontPxSize, fontType, x, y, color, alignLeft) {
 			sServObj.scaleY = ctxOriginal.canvas.height / ctxOriginal.canvas.offsetHeight;
 			sServObj.scaleX = ctxOriginal.canvas.width / ctxOriginal.canvas.offsetWidth;
 			ctxOriginal.save();
 			ctxOriginal.font = (fontPxSize + 'px' + ' ' + fontType);
 			ctxOriginal.scale(sServObj.scaleX, sServObj.scaleY);
 			ctxOriginal.fillStyle = color;
-			ctxOriginal.fillText(text, x / sServObj.scaleX, (y + fontPxSize + sServObj.spaceTop) / sServObj.scaleY);
+			if(alignLeft){
+				ctxOriginal.fillText(text, x / sServObj.scaleX, (y + fontPxSize + sServObj.spaceTop) / sServObj.scaleY);
+			}else{
+				var alignLeftX = x  / sServObj.scaleX - ctxOriginal.measureText(text).width / 2;
+				ctxOriginal.fillText(text, alignLeftX, (y + fontPxSize + sServObj.spaceTop) / sServObj.scaleY);
+			}
 			ctxOriginal.scale(1, 1);
 			ctxOriginal.restore();
 		};
