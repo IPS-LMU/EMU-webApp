@@ -1,5 +1,5 @@
-# URL Parameters
 
+# URL Parameters
 The EMU-webApp currently implements several URL parameters (see [https://en.wikipedia.org/wiki/Query_string](https://en.wikipedia.org/wiki/Query_string) for more information) as part of it's query string. This document describes the currently implemented parameters and gives some accompanying examples.
 
 ## Websocket Server Parameters

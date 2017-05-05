@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 					scope.applyKeyCode(code, e);
 				});
 
-				scope.applyKeyCodeUp = function (code) {
+				scope.applyKeyCodeUp = function (codew) {
 					scope.$apply(function () {
 						if (code !== ConfigProviderService.vals.keyMappings.esc && code !== ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
 							var domElement = $('.' + LevelService.getlasteditArea());

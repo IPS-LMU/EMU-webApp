@@ -1,6 +1,6 @@
 # What's New
 
-## Version 0.1.5.9002
+## Version 0.1.6
 
 ### new features / performance tweaks / improvements
 
@@ -10,9 +10,11 @@
 - multi channel audio supported	
 - improved performance of OSCI envelope rendering and calculation of peaks
 
+
 ### bug fixes
 
 - double parsing of audio file avoided on drag & drop incl. base64 conversion
+- fixed broken snap to nearest zero crossing on last segment
 
 
 ## Version 0.1.5

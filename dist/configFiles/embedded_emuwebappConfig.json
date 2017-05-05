@@ -41,6 +41,7 @@
 			"downloadAnnotation": true,
 			"specSettings": true,
 			"connect": false,
+			"search": true,
 			"clear": false,
 			"deleteSingleLevel": false,
 			"resizeSingleLevel": true,
@@ -48,7 +49,7 @@
 			"resizePerspectives": true,
 			"openDemoDB": false,
 			"saveBundle": false,
-			"openMenu": false
+			"openMenu": true
 		}
 	}
 }

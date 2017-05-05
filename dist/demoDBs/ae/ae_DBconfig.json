@@ -172,7 +172,8 @@
 			"showPerspectivesSidebar": true,
 			"playback": true,
 			"correctionTool": true,
-			"editItemSize": true
+			"editItemSize": true,
+			"useLargeTextInputField": false
 		},
 		"activeButtons": {
 			"saveBundle": false,
