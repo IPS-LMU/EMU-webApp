@@ -158,7 +158,6 @@ angular.module('emuwebApp')
 				}
 
 			}
-			console.log(sServObj.osciPeaks);
 		}
 
 		/**
