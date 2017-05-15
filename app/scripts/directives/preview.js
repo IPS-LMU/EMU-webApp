@@ -75,9 +75,7 @@ angular.module('emuwebApp')
 				 */
 				scope.drawPreview = function () {
 					if (!initialized) {
-						var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), 0, scope.shs.audioBuffer.length);
-						Drawhelperservice.osciPeaks = allPeakVals;
-						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
+						Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, 0, scope.shs.audioBuffer.length, false);
 						initialized = true;
 						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
 					} else {

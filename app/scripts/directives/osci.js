@@ -33,9 +33,7 @@ angular.module('emuwebApp')
 				scope.$watch('viewState.osciSettings', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
-							var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), viewState.curViewPort.sS, viewState.curViewPort.eS);
-							Drawhelperservice.osciPeaks = allPeakVals;
-							Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
+							Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, viewState.curViewPort.sS, viewState.curViewPort.eS, false);
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
@@ -93,9 +91,7 @@ angular.module('emuwebApp')
 						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 							// check for changed zoom
 							if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-								var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), viewState.curViewPort.sS, viewState.curViewPort.eS);
-								Drawhelperservice.osciPeaks = allPeakVals;
-								Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
+								Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, viewState.curViewPort.sS, viewState.curViewPort.eS, false);
 							}
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
@@ -105,9 +101,7 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-						var allPeakVals = Drawhelperservice.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), viewState.curViewPort.sS, viewState.curViewPort.eS);
-						Drawhelperservice.osciPeaks = allPeakVals;
-						Drawhelperservice.freshRedrawDrawOsciOnCanvas(viewState, canvas, Drawhelperservice.osciPeaks, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), ConfigProviderService);
+						Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, viewState.curViewPort.sS, viewState.curViewPort.eS, true);
 					}
 				}, true);
 

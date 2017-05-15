@@ -1125,6 +1125,13 @@ angular.module('emuwebApp')
 			return (this.curViewPort.selectE / Soundhandlerservice.audioBuffer.sampleRate) + 0.5 / Soundhandlerservice.audioBuffer.sampleRate;
 		};
 
+		/**
+		 * calcs sample time in seconds
+		 */
+		sServObj.calcSampleTime = function (sample) {
+			return (sample / Soundhandlerservice.audioBuffer.sampleRate) + 0.5 / Soundhandlerservice.audioBuffer.sampleRate;
+		};
+
 
 		/**
 		 * set view port to start and end sample
@@ -1295,7 +1302,7 @@ angular.module('emuwebApp')
 		 * @returns attrDefName
 		 */
 		sServObj.getCurAttrDef = function (levelName) {
-			var curAttrDef = undefined;
+			var curAttrDef;
 			angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
 				if (ad.levelName === levelName) {
 					curAttrDef = ad.curAttrDefName;
@@ -1312,7 +1319,7 @@ angular.module('emuwebApp')
 		 * @returns attrDefName
 		 */
 		sServObj.getCurAttrIndex = function (levelName) {
-			var curAttrDef = undefined;
+			var curAttrDef;
 			angular.forEach(sServObj.curLevelAttrDefs, function (ad) {
 				if (ad.levelName === levelName) {
 					if (ad.curAttrDefIndex === undefined) {
