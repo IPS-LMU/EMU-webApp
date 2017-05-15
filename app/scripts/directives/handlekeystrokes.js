@@ -1014,7 +1014,7 @@ angular.module('emuwebApp')
 													});
 													var deletedLinks
 													if (neighbour.left !== undefined) {
-														deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id);
+														deletedLinks = LinkService.deleteLinkBoundary(seg.id, neighbour.left.id, LevelService);
 														HistoryService.updateCurChangeObj({
 															'type': 'ANNOT',
 															'action': 'DELETELINKBOUNDARY',
@@ -1024,7 +1024,7 @@ angular.module('emuwebApp')
 															'deletedLinks': deletedLinks
 														});
 													} else {
-														deletedLinks = LinkService.deleteLinkBoundary(seg.id, -1);
+														deletedLinks = LinkService.deleteLinkBoundary(seg.id, -1, LevelService);
 														HistoryService.updateCurChangeObj({
 															'type': 'ANNOT',
 															'action': 'DELETELINKBOUNDARY',

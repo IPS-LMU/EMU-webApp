@@ -6,6 +6,8 @@
 
 ### bug fixes
 
+- prechecking relationship type when rebending links on boundary deletes (fixes issue \#214)
+
 ## Version 0.1.6
 
 ### new features / performance tweaks / improvements

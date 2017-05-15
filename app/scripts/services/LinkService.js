@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('LinkService', function LinkService(DataService) {
+	.service('LinkService', function LinkService(DataService, ConfigProviderService) {
 		// shared service object
 		var sServObj = {};
 
@@ -44,7 +44,6 @@ angular.module('emuwebApp')
 					DataService.deleteLinkDataAt(linkIdx);
 					ret = linkIdx;
 				}
-				;
 			});
 			return ret;
 		};
@@ -55,11 +54,10 @@ angular.module('emuwebApp')
 		 */
 		sServObj.linkExists = function (fromID, toID) {
 			var ret = false;
-			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link) {
 				if (link.fromID === fromID && link.toID === toID) {
 					ret = true;
 				}
-				;
 			});
 			return ret;
 		};
@@ -70,11 +68,10 @@ angular.module('emuwebApp')
 		 */
 		sServObj.hasParents = function (ID) {
 			var ret = false;
-			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link) {
 				if (link.toID === ID) {
 					ret = true;
 				}
-				;
 			});
 			return ret;
 		};
@@ -85,11 +82,10 @@ angular.module('emuwebApp')
 		 */
 		sServObj.hasChildren = function (ID) {
 			var ret = false;
-			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
+			angular.forEach(DataService.getLinkData(), function (link) {
 				if (link.fromID === ID) {
 					ret = true;
 				}
-				;
 			});
 			return ret;
 		};
@@ -120,7 +116,7 @@ angular.module('emuwebApp')
 		sServObj.deleteLinksTo = function (fromID, toIDs) {
 			var ret = [];
 			angular.forEach(toIDs, function (toID) {
-				sServObj.deleteLink(fromID, toID)
+				sServObj.deleteLink(fromID, toID);
 				ret.push({fromID: fromID, toID: toID});
 			});
 			return ret;
@@ -239,25 +235,39 @@ angular.module('emuwebApp')
 		 * reorganizes multiple links from and to ID
 		 * if a boundary between two items is deleted
 		 */
-		sServObj.deleteLinkBoundary = function (ID, neighbourID) {
+		sServObj.deleteLinkBoundary = function (ID, neighbourID, LevelService) {
 			var linksTo = [];
 			var linksFrom = [];
 			var ord = 0;
-			if (neighbourID > 0) { // if not first item
+			var levelName = LevelService.getLevelName(neighbourID);
+
+			var onlyInM2m = true; // only in MANY_TO_MANY relationships
+            angular.forEach(ConfigProviderService.curDbConfig.linkDefinitions, function (linkDef) {
+				if(linkDef.superlevelName === levelName || linkDef.sublevelName === levelName){
+					if(linkDef.type !== 'MANY_TO_MANY'){
+						onlyInM2m = false;
+					}
+				}
+            });
+
+
+			if (neighbourID >= 0) { // if not first item (neighbourID is -1 if it is the first item)
 				angular.forEach(sServObj.getLinksTo(ID), function (found) {
 					if (sServObj.linkExists(found.link.fromID, neighbourID)) {
 						ord = sServObj.deleteLink(found.link.fromID, ID);
 						linksTo.push({fromID: found.link.fromID, toID: ID, deleted: true, order: ord, neighbourID: 0});
 					}
 					else {
-						sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
-						linksTo.push({
-							fromID: found.link.fromID,
-							toID: ID,
-							deleted: false,
-							order: ord,
-							neighbourID: neighbourID
-						});
+						if(onlyInM2m){ // only relink in MANY_TO_MANY relationships
+							sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
+							linksTo.push({
+								fromID: found.link.fromID,
+								toID: ID,
+								deleted: false,
+								order: ord,
+								neighbourID: neighbourID
+							});
+						}
 					}
 				});
 				angular.forEach(sServObj.getLinksFrom(ID), function (found) {

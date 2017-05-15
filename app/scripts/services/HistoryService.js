@@ -140,7 +140,7 @@ angular.module('emuwebApp')
 								action = true;
 								LinkService.deleteLinkBoundaryInvers(cur.deletedLinks);
 							} else {
-								LinkService.deleteLinkBoundary(cur.id, cur.neighbourId);
+								LinkService.deleteLinkBoundary(cur.id, cur.neighbourId, LevelService);
 							}
 							break;
 						case 'DELETELINKSEGMENT':
