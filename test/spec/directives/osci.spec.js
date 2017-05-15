@@ -84,13 +84,11 @@ describe('Directive: osci', function () {
      scope.shs.audioBuffer.length = 3;
      expect(elm.isolateScope()).toBeDefined();
      spyOn(elm.isolateScope(), 'drawVpOsciMarkup');
-     spyOn(scope.dhs, 'calculatePeaks');
      spyOn(scope.dhs, 'freshRedrawDrawOsciOnCanvas');
      scope.vs.curViewPort.sS = 2;
      scope.vs.curViewPort.eS = 3;
      scope.$digest();
      expect(elm.isolateScope().drawVpOsciMarkup).toHaveBeenCalled();
-     expect(scope.dhs.calculatePeaks).toHaveBeenCalled();
      expect(scope.dhs.freshRedrawDrawOsciOnCanvas).toHaveBeenCalled();
    });
 });

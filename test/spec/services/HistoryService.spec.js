@@ -541,7 +541,7 @@ describe('Service: HistoryService', function () {
   /**
    *  UNDO stack for DELETELINKBOUNDARY
    */
-  it('should add object to undo stack: DELETELINKBOUNDARY', inject(function (HistoryService, viewState, LinkService) {
+  it('should add object to undo stack: DELETELINKBOUNDARY', inject(function (HistoryService, viewState, LinkService, LevelService) {
     cur = {
       'type': 'ANNOT',
       'action': 'DELETELINKBOUNDARY',
@@ -561,7 +561,7 @@ describe('Service: HistoryService', function () {
     expect(LinkService.deleteLinkBoundaryInvers).toHaveBeenCalledWith(cur.deletedLinks);
     HistoryService.redo();
     expect(viewState.historyActionTxt).toBe('<i>REDO</i> &#8592; DELETELINKBOUNDARY');
-    expect(LinkService.deleteLinkBoundary).toHaveBeenCalledWith(cur.id, cur.neighbourId);
+    expect(LinkService.deleteLinkBoundary).toHaveBeenCalledWith(cur.id, cur.neighbourId, LevelService);
   }));
 
   /**

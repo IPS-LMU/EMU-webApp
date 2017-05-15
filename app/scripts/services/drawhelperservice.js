@@ -43,7 +43,7 @@ angular.module('emuwebApp')
 				'sampleRate': sampleRate,
 				'winSizes': [winSize0, winSize1, winSize2],
 				'channelOsciPeaks': []
-			}
+			};
 
 
 			//////////////////////////
@@ -158,12 +158,14 @@ angular.module('emuwebApp')
 				}
 
 			}
-		}
+		};
 
 		/**
 		 * get current peaks to be drawn
 		 * if drawing over sample exact -> samples
 		 * if multiple samples per pixel -> calculate envelope points
+         * @param canvas canvas object used to get width
+         * @param data samples as arraybuffer
 		 * @param sS start sample
 		 * @param eS end sample
 		 */
@@ -294,7 +296,7 @@ angular.module('emuwebApp')
 		};
 
 		/**
-		 * @param cps color provider service
+		 *
 		 */
 
 		sServObj.freshRedrawDrawOsciOnCanvas = function (canvas, sS, eS, forceToCalcOsciPeaks) {
@@ -323,7 +325,7 @@ angular.module('emuwebApp')
 				if(samplesPerPx > sServObj.osciPeaks.winSizes[i]){
 					winIdx = i;
 				}
-			};
+			}
 
 			if(winIdx !== -1){
 				// use pre calcuated peaks

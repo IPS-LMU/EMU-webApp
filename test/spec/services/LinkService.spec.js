@@ -229,7 +229,7 @@ describe('Service: LinkService', function () {
   /**
    *
    */
-  it('should deleteLinkBoundary', inject(function (DataService, LinkService) {
+  it('should deleteLinkBoundary', inject(function (DataService, LinkService, LevelService) {
     // first add
     DataService.setData(msajc003_bndl.annotation);
     DataService.setLinkData([]);
@@ -245,7 +245,7 @@ describe('Service: LinkService', function () {
         { fromID : 1234, toID : 3 }
     ]);
     // now delete boundary between 1 and 2
-    LinkService.deleteLinkBoundary(2, 1);
+    LinkService.deleteLinkBoundary(2, 1, LevelService);
     // should be 
     //      1234
     //     /    \
@@ -255,7 +255,7 @@ describe('Service: LinkService', function () {
         { fromID : 1234, toID : 3 }
     ]);
     // now delete boundary between 1 and 3 
-    LinkService.deleteLinkBoundary(3, 1);       
+    LinkService.deleteLinkBoundary(3, 1, LevelService);
     // should be 
     //      1234
     //       |
@@ -268,7 +268,7 @@ describe('Service: LinkService', function () {
  /**
    *
    */
-  it('should deleteLinkBoundary inverse', inject(function (DataService, LinkService) {
+  it('should deleteLinkBoundary inverse', inject(function (DataService, LinkService, LevelService) {
     // first add
     DataService.setData(msajc003_bndl.annotation);
     DataService.setLinkData([]);
@@ -287,12 +287,12 @@ describe('Service: LinkService', function () {
         { fromID : 1234, toID : 5 }
     ]);
     // now delete boundary between 2 and 3
-    var deleted1 = LinkService.deleteLinkBoundary(3, 2);
+    var deleted1 = LinkService.deleteLinkBoundary(3, 2, LevelService);
     //       1234
     //    / |  | \
     //   1  2  4  5    
     // now delete boundary between 2 and 4
-    var deleted2 = LinkService.deleteLinkBoundary(4, 2);
+    var deleted2 = LinkService.deleteLinkBoundary(4, 2, LevelService);
     //     1234
     //    / | \
     //   1  4  5     
@@ -314,7 +314,7 @@ describe('Service: LinkService', function () {
   /**
    *
    */
-  it('should deleteLinkBoundary with children', inject(function (DataService, LinkService) {
+  it('should deleteLinkBoundary with children', inject(function (DataService, LinkService, LevelService) {
     // first add
     DataService.setData(msajc003_bndl.annotation);
     DataService.setLinkData([]);
@@ -335,7 +335,7 @@ describe('Service: LinkService', function () {
         { fromID : 2, toID : 4 }
     ]);
     // now delete boundary between 1 and 2
-    LinkService.deleteLinkBoundary(2, 1);
+    LinkService.deleteLinkBoundary(2, 1, LevelService);
     // should be 
     //      1234
     //        |
@@ -353,7 +353,7 @@ describe('Service: LinkService', function () {
   /**
    *
    */
-  it('should deleteLinkBoundary with children inverse', inject(function (DataService, LinkService) {
+  it('should deleteLinkBoundary with children inverse', inject(function (DataService, LinkService, LevelService) {
     // first add
     DataService.setData(msajc003_bndl.annotation);
     DataService.setLinkData([]);
@@ -374,7 +374,7 @@ describe('Service: LinkService', function () {
         { fromID : 2, toID : 4 }
     ]);
     // now delete boundary between 1 and 2
-    var deleted1 = LinkService.deleteLinkBoundary(2, 1);
+    var deleted1 = LinkService.deleteLinkBoundary(2, 1, LevelService);
     // should be 
     //      1234
     //        |
@@ -382,7 +382,7 @@ describe('Service: LinkService', function () {
     //       / \
     //      3   4   
     // now delete boundary between 3 and 4
-   var deleted2 = LinkService.deleteLinkBoundary(4, 3);
+   var deleted2 = LinkService.deleteLinkBoundary(4, 3, LevelService);
     // should be 
     //      1234
     //        |
