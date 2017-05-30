@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, HierarchyManipulationService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService) {
+	.directive('handleglobalkeystrokes', function ($timeout, viewState, modalService, HierarchyManipulationService, Soundhandlerservice, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService, dbObjLoadSaveService) {
 		return {
 			restrict: 'A',
 			link: function postLink(scope) {
@@ -427,6 +427,14 @@ angular.module('emuwebApp')
 								}
 							}
 
+							// save bundle
+							if (code === ConfigProviderService.vals.keyMappings.saveBndl) {
+								if (viewState.getPermission('saveBndlBtnClick')) {
+                                    dbObjLoadSaveService.saveBundle();
+								}
+							}
+
+
 							// selectFirstContourCorrectionTool
 							if (code === ConfigProviderService.vals.keyMappings.selectFirstContourCorrectionTool) {
 								if (viewState.getPermission('labelAction')) {
@@ -435,6 +443,7 @@ angular.module('emuwebApp')
 									}
 								}
 							}
+
 							// selectSecondContourCorrectionTool
 							if (code === ConfigProviderService.vals.keyMappings.selectSecondContourCorrectionTool) {
 								if (viewState.getPermission('labelAction')) {

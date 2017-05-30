@@ -52,7 +52,8 @@
         "snapBoundaryToNearestZeroCrossing": 120,
         "shift": 16,
         "alt": 18,
-        "esc": 27
+        "esc": 27,
+        "saveBndl": 83
     },
     "spectrogramSettings": {
         "windowSizeInSecs": 0.01,

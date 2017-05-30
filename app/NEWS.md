@@ -5,6 +5,8 @@
 ### new features / performance tweaks / improvements
 
 - cleaned JS code to remove jshint errors
+- long bundle and session names now scrollable
+- implemented shortcut to save bundle (SHIFT + S)
 
 ### bug fixes
 
