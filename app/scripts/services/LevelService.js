@@ -636,15 +636,21 @@ angular.module('emuwebApp')
 			var isFirst;
 			var isLast;
 
+
 			if (level !== undefined && level !== null && level.items.length > 0) {
 				current = nearest = level.items[0];
 				isFirst = true;
 				isLast = false;
 				if (level.type === 'SEGMENT') {
+					var leftHalf; // boolean to specify which half of the segment sampleNr is in
 					angular.forEach(level.items, function (itm, index) {
+						// check if in current segment
 						if (sampleNr >= (itm.sampleStart - 0.5)) { // 0.5 sample correction
 							if (sampleNr <= (itm.sampleStart + itm.sampleDur + 0.5)) { // 0.5 sample correction
+								// check if in left or right half of segment
 								if (sampleNr - itm.sampleStart >= itm.sampleDur / 2) {
+									// right side
+									leftHalf = false;
 									if (level.items[index + 1] !== undefined) {
 										current = level.items[index];
 										nearest = level.items[index + 1];
@@ -654,11 +660,16 @@ angular.module('emuwebApp')
 										current = nearest = level.items[level.items.length - 1];
 									}
 								} else {
+									// left side
+									leftHalf = true;
 									isLast = false;
 									current = nearest = level.items[index];
 								}
 							}
-							isFirst = false;
+							// only set to false if not in left half of first segment
+							if(!leftHalf && index === 0){
+								isFirst = false;
+							}
 						}
 						if (sampleNr >= (itm.sampleStart - 0.5)) {
 							if (sampleNr <= (itm.sampleStart + itm.sampleDur + 0.5)) { // 0.5 sample correction
