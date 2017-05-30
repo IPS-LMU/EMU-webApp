@@ -63,23 +63,23 @@ angular.module('emuwebApp')
 		 */
 		$scope.SaveToDisk = function (fileURL, fileName) {
 			var save = document.createElement('a');
-			if ($scope.firefox) {
+//			if (true) {
 				save.setAttribute('download', fileName);
 				save.href = fileURL;
 				save.innerHTML = '';
 				save.style.display = 'none';
 				document.body.appendChild(save);
 				save.click();
-			}
-			else {
-				save.href = fileURL;
-				save.target = '_blank';
-				save.download = fileName || 'unknown';
-				var event = document.createEvent('Event');
-				event.initEvent('click', true, true);
-				save.dispatchEvent(event);
-				(window.URL || window.webkitURL).revokeObjectURL(save.href);
-			}
+//			}
+//			else {
+//				save.href = fileURL;
+//				save.target = '_blank';
+//				save.download = fileName || 'unknown';
+//				var event = document.createEvent('Event');
+//				event.initEvent('click', true, true);
+//				save.dispatchEvent(event);
+//				(window.URL || window.webkitURL).revokeObjectURL(save.href);
+//			}
 			$scope.updateHistoryService();
 		};
 	});
