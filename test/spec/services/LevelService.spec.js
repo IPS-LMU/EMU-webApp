@@ -384,8 +384,8 @@ describe('Service: LevelService', function () {
     // nearest left
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 38);
     expect(LevelService.getClosestItem(30980, 'TT', 96002).nearest.sampleStart).toEqual(item.sampleStart);
-    // in the middle isFirst && isLast should be false
-    expect(LevelService.getClosestItem(30980, 'TT', 96002).isFirst).toEqual(false);
+    // in the middle isFirst should be true as in segment but left half && isLast should be false
+    expect(LevelService.getClosestItem(30980, 'TT', 96002).isFirst).toEqual(true);
     expect(LevelService.getClosestItem(30980, 'TT', 96002).isLast).toEqual(false);
     // nearest right
     item = getItemFromJSON(dfgspp_mo1_prosody_0024_bndl.annotation, 39);
