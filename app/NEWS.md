@@ -4,9 +4,12 @@
 
 ### new features / performance tweaks / improvements
 
+- cleaned JS code to remove jshint errors
+
 ### bug fixes
 
 - prechecking relationship type when rebending links on boundary deletes (fixes issue \#214)
+- fixed bug caused by Chrome API change that did not allow for files to be downloaded the way we had implemented it (in download modals)
 
 ## Version 0.1.6
 
