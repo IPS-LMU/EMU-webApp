@@ -8,7 +8,6 @@ angular.module('emuwebApp')
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template
 				var canvasLength = element.find('canvas').length;
-				var ssffCanvas = element.find('canvas')[1];
 				var markupCanvas = element.find('canvas')[canvasLength - 1];
 				// var context = canvas0.getContext('2d');
 				var markupCtx = markupCanvas.getContext('2d');
@@ -29,7 +28,7 @@ angular.module('emuwebApp')
 				//
 				//
 				scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
-					if (newValue != oldValue) {
+					if (newValue !== oldValue) {
 						scope.drawSsffTrackMarkup();
 					}
 				});
@@ -118,7 +117,7 @@ angular.module('emuwebApp')
 							scope.dhs.drawMinMaxAndName(markupCtx, trackName, minVal, maxVal, 2);
 						}
 					}
-				}
+				};
 			}
 		};
 	});

@@ -6,7 +6,7 @@ angular.module('emuwebApp')
 			template: '<div class="emuwebapp-history"><div ng-bind-html="vs.historyActionTxt"></div></div>',
 			restrict: 'E',
 			replace: true,
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope, element) {
 				////////////////
 				//watches
 				scope.cps = ConfigProviderService;
@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 									$timeout(function () {
 										scope.vs.historyActionTxt = '';
 									}, scope.cps.design.animation.period);
-								})
+								});
 							}, scope.cps.design.animation.period);
 						});
 					}

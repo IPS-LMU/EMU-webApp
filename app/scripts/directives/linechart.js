@@ -14,7 +14,7 @@ angular.module('emuwebApp')
 				data: '=',
 				threshold: '='
 			},
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope, element) {
 				//////////////////////
 				// watches 
 				scope.$watch('data', function () {
@@ -105,7 +105,7 @@ angular.module('emuwebApp')
 						.call(yAxis);
 
 					// Render path
-					var lines = svg.append('svg:path')
+					svg.append('svg:path')
 						.attr('d', lineFunc(data))
 						.attr('stroke', 'red')
 						.attr('stroke-width', 1)
@@ -119,7 +119,7 @@ angular.module('emuwebApp')
 						.attr('y2', 200)
 						.attr('class', 'label-line');
 
-					var verticalLine = svg.append('line')
+					svg.append('line')
 						// .attr('transform', 'translate(100, 50)')
 						.attr({
 							'x1': x(scope.threshold),
@@ -127,7 +127,7 @@ angular.module('emuwebApp')
 							'x2': x(scope.threshold),
 							'y2': height
 						})
-						.attr("stroke", "steelblue")
+						.attr('stroke', 'steelblue')
 						.attr('class', 'verticalLine');
 
 					//Create or update the bar data

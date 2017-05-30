@@ -42,27 +42,27 @@ angular.module('emuwebApp')
 				}, true);
 
 				//watch perspective change
-				scope.$watch('vs.curPerspectiveIdx', function (newValue, oldValue) {
+				scope.$watch('vs.curPerspectiveIdx', function () {
 					scope.handleUpdate();
 				}, true);
 
 				//watch vs.curCorrectionToolNr change
-				scope.$watch('vs.curCorrectionToolNr', function (newValue, oldValue) {
+				scope.$watch('vs.curCorrectionToolNr', function () {
 					scope.handleUpdate();
 				}, true);
 
 				//watch hists.
-				scope.$watch('hists.movesAwayFromLastSave', function (newValue, oldValue) {
+				scope.$watch('hists.movesAwayFromLastSave', function () {
 					scope.handleUpdate();
 				}, true);
 
 				// watch ssffds.data change
-				scope.$watch('ssffds.data.length', function (newValue, oldValue) {
+				scope.$watch('ssffds.data.length', function () {
 					scope.handleUpdate();
 				}, true);
 
 				// watch vs.spectroSettings change
-				scope.$watch('vs.spectroSettings', function (newValue, oldValue) {
+				scope.$watch('vs.spectroSettings', function () {
 					scope.handleUpdate();
 				}, true);
 
@@ -101,7 +101,7 @@ angular.module('emuwebApp')
 						if (Ssffdataservice.data.length !== 0) {
 							scope.assTrackName = '';
 							// check assignments (= overlays)
-							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass, i) {
+							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass) {
 								if (ass.signalCanvasName === scope.trackName) {
 									scope.assTrackName = ass.ssffTrackName;
 									var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
@@ -163,15 +163,13 @@ angular.module('emuwebApp')
 
 					if (nrOfSamples < canvas.width && nrOfSamples >= 2) {
 
-						var x, y, prevX, prevY, prevVal, curSampleInCol, curSampleInColTime;
+						var x, y, curSampleInCol, curSampleInColTime;
 
 						////////////////////////////////
 						// NEW VERSION
 						////////////////////////////////
 
 						angular.forEach(curSampleArrs[0], function (contourVal, contourNr) {
-
-
 
 							// console.log(contourNr);
 							if ($.isEmptyObject(minMaxContourLims) || (contourNr >= minMaxContourLims.minContourIdx && contourNr <= minMaxContourLims.maxContourIdx)) {
@@ -256,7 +254,7 @@ angular.module('emuwebApp')
 							fontScaleService.drawUndistortedTextTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0, -2) / 1.05, ConfigProviderService.design.font.small.family, canvas.width / 2 - (ctx.measureText('see contour(s)').width * ctx.canvas.width / ctx.canvas.offsetWidth / 2), 25, ConfigProviderService.design.color.transparent.red);
 						}
 					}
-				} //function
+				}; //function
 			}
 		};
 	});

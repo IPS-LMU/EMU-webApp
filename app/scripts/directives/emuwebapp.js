@@ -14,12 +14,12 @@ angular.module('emuwebApp')
 
 				////////////////////////
 				// Bindings
-				element.bind('mouseenter', function (event) {
+				element.bind('mouseenter', function () {
 					viewState.mouseInEmuWebApp = true;
 
 				});
 
-				element.bind('mouseleave', function (event) {
+				element.bind('mouseleave', function () {
 					viewState.mouseInEmuWebApp = false;
 				});
 

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('emuwebApp')
 	.directive('bgSplitter', function ($rootScope, viewState) {
 		return {
@@ -13,8 +15,9 @@ angular.module('emuwebApp')
 				$scope.bottomRightResizePane = undefined;
 
 				this.addPane = function (pane) {
-					if ($scope.panes.length > 1)
+					if ($scope.panes.length > 1){
 						throw 'splitters can only have two panes';
+                    }
 					$scope.panes.push(pane);
 					return $scope.panes.length;
 				};
@@ -71,7 +74,9 @@ angular.module('emuwebApp')
 				// bindings
 
 				element.bind('mousemove', function (ev) {
-					if (!drag) return;
+					if (!drag) {
+						return;
+					}
 
 					// check if scrollbar exists -> set scrollbar on pane1 to ensure equal indentation due to scrollbar width
 					if (pane2.elem[0].scrollHeight > pane2.elem[0].clientHeight + 1) {
@@ -84,15 +89,17 @@ angular.module('emuwebApp')
 					var bounds = element[0].getBoundingClientRect();
 					var pos = 0;
 
+                    var height, width, tmp;
+
 					if (dragSplitPaneResizer) {
 
-						var height = bounds.bottom - bounds.top;
+						height = bounds.bottom - bounds.top;
 						pos = ev.clientY - bounds.top;
 						// perc = pos/height * 100;
 						// console.log(perc);
 
-						if (pos < pane1Min) return;
-						if (height - pos < pane2Min) return;
+						if (pos < pane1Min){return;}
+						if (height - pos < pane2Min){return;}
 
 						handler.css('top', pos + 'px');
 						pane1.elem.css('height', pos + 'px');
@@ -104,46 +111,46 @@ angular.module('emuwebApp')
 					}
 
 					if (dragBottomRightResizePaneTopResizer) {
-						var height = bounds.bottom - bounds.top;
+						height = bounds.bottom - bounds.top;
 						pos = ev.clientY - bounds.top;
 						if (pos <= 10 || height - pos <= 10) {
 							return;
 						}
 						pane3.elem.css('top', pos + 'px');
-						var tmp = height - pos;
+						tmp = height - pos;
 						pane3.elem.css('height', tmp + 'px');
 					}
 
 					if (dragBottomRightResizePaneLeftResizer) {
-						var width = bounds.right - bounds.left;
+						width = bounds.right - bounds.left;
 						pos = ev.clientX - bounds.left;
 						if (pos <= 10 || width - pos <= 10) {
 							return;
 						}
 						//pane3.elem.css('left', pos + 'px');
-						var tmp = width - pos;
+						tmp = width - pos;
 						pane3.elem.css('width', tmp + 'px');
 					}
 
 					if (dragBottomRightResizePaneCornerResizer) {
 						// do height and top
-						var height = bounds.bottom - bounds.top;
+						height = bounds.bottom - bounds.top;
 						pos = ev.clientY - bounds.top;
 						if (pos <= 10 || height - pos <= 10) {
 							return;
 						}
 						pane3.elem.css('top', pos + 'px');
-						var tmp = height - pos;
+						tmp = height - pos;
 						pane3.elem.css('height', tmp + 'px');
 
 						// do width and left
-						var width = bounds.right - bounds.left;
+						width = bounds.right - bounds.left;
 						pos = ev.clientX - bounds.left;
 						if (pos <= 10 || width - pos <= 10) {
 							return;
 						}
 						//pane3.elem.css('left', pos + 'px');
-						var tmp = width - pos;
+						tmp = width - pos;
 						pane3.elem.css('width', tmp + 'px');
 					}
 				});
@@ -181,7 +188,7 @@ angular.module('emuwebApp')
 					$rootScope.$digest();
 				});
 
-				angular.element(document).bind('mouseup', function (ev) {
+				angular.element(document).bind('mouseup', function () {
 					drag = false;
 					dragSplitPaneResizer = false;
 					dragBottomRightResizePaneTopResizer = false;

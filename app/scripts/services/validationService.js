@@ -80,7 +80,7 @@ angular.module('emuwebApp')
 						if (ad1.name === ad2.name) {
 							counter = counter + 1;
 						}
-					})
+					});
 					if (counter > 1) {
 						res = 'Error in DBconfig /levelDefinitions[' + ldIdx + ']/attributeDefinitions[' + ad1idx +
 							'] duplicate attribute definitions found for this entry!';
@@ -293,7 +293,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.getSchema = function (schemaName) {
-			var schema = undefined;
+			var schema;
 			angular.forEach(schemasJsos, function (s) {
 				if (s.name === 'schemaFiles/' + schemaName + '.json') {
 					schema = s;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('HierarchyManipulationService', function HierarchyManipulationService($q, HierarchyLayoutService, DataService, LevelService, ConfigProviderService, ArrayHelperService) {
+	.service('HierarchyManipulationService', function HierarchyManipulationService($q, HierarchyLayoutService, DataService, LevelService, ConfigProviderService) {
 		// shared service object
 		var sServObj = {};
 
@@ -20,9 +20,9 @@ angular.module('emuwebApp')
 		 */
 		sServObj.addLink = function (path, from, to) {
 			var validity = sServObj.checkLinkValidity(path, from, to);
-
+			var obj;
 			if (validity.valid) {
-				var obj = {fromID: from, toID: to};
+				obj = {fromID: from, toID: to};
 				DataService.insertLinkData(obj);
 				return obj;
 			} else {
@@ -31,7 +31,7 @@ angular.module('emuwebApp')
 					validity = sServObj.checkLinkValidity(path, to, from);
 					if (validity.valid) {
 						console.debug('Adding reverse link instead');
-						var obj = {fromID: to, toID: from};
+						obj = {fromID: to, toID: from};
 						DataService.insertLinkData(obj);
 						return obj;
 					} else {
@@ -69,6 +69,7 @@ angular.module('emuwebApp')
 		sServObj.checkLinkValidity = function (path, from, to) {
 			var result = {valid: true, reason: 0};
 			var links = DataService.getLinkData();
+			var i, children, index;
 
 			// This case (from === to)  would also be caught below
 			// during linkDefinitions check. I treat it separately
@@ -83,7 +84,7 @@ angular.module('emuwebApp')
 
 
 			// Check whether link already exists
-			for (var i = 0; i < links.length; ++i) {
+			for (i = 0; i < links.length; ++i) {
 				if (links[i].fromID === from && links[i].toID === to) {
 					result.valid = false;
 					result.reason = 2;
@@ -106,14 +107,14 @@ angular.module('emuwebApp')
 
 			// Check link type
 			var linkType;
-			for (var i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
+			for (i = 0; i < ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
 				if (ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === sublevelName &&
 					ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName === superlevelName) {
 					linkType = ConfigProviderService.curDbConfig.linkDefinitions[i].type;
 				}
 			}
 			if (linkType === undefined) {
-				consle.debug('LIKELY A BUG: link to be added (', from, '->', to, ') has been found to be a part of the currently selected path but the link between the respective levels could not be found.');
+				console.debug('LIKELY A BUG: link to be added (', from, '->', to, ') has been found to be a part of the currently selected path but the link between the respective levels could not be found.');
 				result.valid = false;
 				result.reason = 3;
 				return result;
@@ -133,7 +134,7 @@ angular.module('emuwebApp')
 			}
 			if (linkType === 'ONE_TO_ONE') {
 				var fromElement = LevelService.getItemByID(from);
-				var children = HierarchyLayoutService.findChildren(fromElement, path);
+				children = HierarchyLayoutService.findChildren(fromElement, path);
 				if (children.length > 0) {
 					result.valid = false;
 					result.reason = 4;
@@ -159,8 +160,8 @@ angular.module('emuwebApp')
 			// child of the supposed parent.
 			//
 
-			var firstAllowedChildIndex = undefined;
-			var lastAllowedChildIndex = undefined;
+			var firstAllowedChildIndex;
+			var lastAllowedChildIndex;
 
 			var superlevel = LevelService.getLevelAndItem(from).level;
 			var sublevel = LevelService.getLevelAndItem(to).level;
@@ -182,10 +183,10 @@ angular.module('emuwebApp')
 
 				console.debug('found preceding sibling', sibling.id, sibling.labels[0]);
 
-				var children = HierarchyLayoutService.findChildren(sibling, path);
+				children = HierarchyLayoutService.findChildren(sibling, path);
 
-				for (var i = 0; i < children.length; ++i) {
-					var index = LevelService.getOrderById(sublevelName, children[i].id);
+				for (i = 0; i < children.length; ++i) {
+					index = LevelService.getOrderById(sublevelName, children[i].id);
 					if (firstAllowedChildIndex === undefined || index > firstAllowedChildIndex) {
 						firstAllowedChildIndex = index;
 					}
@@ -205,13 +206,13 @@ angular.module('emuwebApp')
 
 				console.debug('found successive sibling', sibling.id, sibling.labels[0]);
 
-				var children = HierarchyLayoutService.findChildren(sibling, path);
+				children = HierarchyLayoutService.findChildren(sibling, path);
 				if (children.length === 0) {
 					continue;
 				}
 
-				for (var i = 0; i < children.length; ++i) {
-					var index = LevelService.getOrderById(sublevelName, children[i].id);
+				for (i = 0; i < children.length; ++i) {
+					index = LevelService.getOrderById(sublevelName, children[i].id);
 					if (lastAllowedChildIndex === undefined || index < lastAllowedChildIndex) {
 						lastAllowedChildIndex = index;
 					}

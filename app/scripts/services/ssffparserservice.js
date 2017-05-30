@@ -6,7 +6,7 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
-		var worker = new ssffParserWorker();
+		var worker = new SsffParserWorker();
 		var defer;
 
 		// add event listener to worker to respond to messages

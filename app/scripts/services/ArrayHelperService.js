@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('ArrayHelperService', function ArrayHelperService($q) {
+	.service('ArrayHelperService', function ArrayHelperService() {
 		// shared service object
 		var sServObj = {};
-
-		var defer; // defer promise obj
 
 		/**
 		 * convert values of array to max values
@@ -47,10 +45,10 @@ angular.module('emuwebApp')
 		 * @returns object with attributes val and idx
 		 */
 		sServObj.findMinMax = function (arr, minOrMax) {
-			var val, idx;
+			var val, idx, i;
 			if (minOrMax === 'min') {
 				val = Infinity;
-				for (var i = 0; i < arr.length; i++) {
+				for (i = 0; i < arr.length; i++) {
 					if (arr[i] < val) {
 						val = arr[i];
 						idx = i;
@@ -58,7 +56,7 @@ angular.module('emuwebApp')
 				}
 			} else if (minOrMax === 'max') {
 				val = -Infinity;
-				for (var i = 0; i < arr.length; i++) {
+				for (i = 0; i < arr.length; i++) {
 					if (arr[i] > val) {
 						val = arr[i];
 						idx = i;

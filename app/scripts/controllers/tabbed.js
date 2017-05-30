@@ -30,10 +30,10 @@ angular.module('emuwebApp')
 			$scope.signalTypes = Object.keys(viewState.getSignalTypes());
 			$scope.levelTypes = [];
 
-			angular.forEach(ConfigProviderService.curDbConfig.ssffTrackDefinitions, function (val, key) {
+			angular.forEach(ConfigProviderService.curDbConfig.ssffTrackDefinitions, function (val) {
 				$scope.signalTypes.push(val.name);
 			});
-			angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (val, key) {
+			angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (val) {
 				if (val.type === 'SEGMENT' || val.type === 'EVENT') {
 					$scope.levelTypes.push(val.name);
 				}
@@ -52,7 +52,7 @@ angular.module('emuwebApp')
 		};
 
 		$scope.getType = function (section, key) {
-			var val = undefined;
+			var val;
 			angular.forEach($scope.schema, function (schemaValue, schemaKey) {
 				if (schemaKey === section) {
 					angular.forEach(schemaValue.properties, function (value, configKey) {
@@ -68,13 +68,14 @@ angular.module('emuwebApp')
 		$scope.up = function (key, index, sequence) {
 			var p = $scope.modal.dataOut.perspectives[key];
 			if (index > 0) {
+				var tmp;
 				if (sequence === 0) {
-					var tmp = p.signalCanvases.order[index - 1];
+					tmp = p.signalCanvases.order[index - 1];
 					p.signalCanvases.order[index - 1] = p.signalCanvases.order[index];
 					p.signalCanvases.order[index] = tmp;
 				}
 				else if (sequence === 1) {
-					var tmp = p.levelCanvases.order[index - 1];
+					tmp = p.levelCanvases.order[index - 1];
 					p.levelCanvases.order[index - 1] = p.levelCanvases.order[index];
 					p.levelCanvases.order[index] = tmp;
 				}
@@ -83,27 +84,28 @@ angular.module('emuwebApp')
 
 		$scope.down = function (key, index, sequence) {
 			var p = $scope.modal.dataOut.perspectives[key];
+            var tmp;
 			if (sequence === 0) {
 				if (p.signalCanvases.order[index + 1] !== undefined) {
-					var tmp = p.signalCanvases.order[index + 1];
+					tmp = p.signalCanvases.order[index + 1];
 					p.signalCanvases.order[index + 1] = p.signalCanvases.order[index];
 					p.signalCanvases.order[index] = tmp;
 				}
 			}
 			else if (sequence === 1) {
 				if (p.levelCanvases.order[index + 1] !== undefined) {
-					var tmp = p.levelCanvases.order[index + 1];
+					tmp = p.levelCanvases.order[index + 1];
 					p.levelCanvases.order[index + 1] = p.levelCanvases.order[index];
 					p.levelCanvases.order[index] = tmp;
 				}
 			}
 		};
 
-		$scope.del = function (key, index, sequence) {
+		$scope.del = function (key, index) {
 			var p = $scope.modal.dataOut.perspectives[key];
+            	var dependency = false;
+            	var depWarn = '';
 				if(p.signalCanvases.assign !== undefined) {
-					var dependency = false;
-					var depWarn = '';
 					for (var x = 0; x < p.signalCanvases.assign.length; x++) {
 						if(p.signalCanvases.assign[x].signalCanvasName === p.signalCanvases.order[index]) {
 							dependency = true;
@@ -129,10 +131,11 @@ angular.module('emuwebApp')
 			$timeout(function () {
 				$scope.warningSignal = false;
 			}, 2000);						
-		}
+		};
 
 		$scope.perspDelete = function (key) {
-			delete $scope.modal.dataOut.perspectives.splice(key, 1);
+            //delete $scope.modal.dataOut.perspectives.splice(key, 1); // used to be this... don't know why
+			$scope.modal.dataOut.perspectives.splice(key, 1);
 		};
 
 		$scope.signalAdd = function (key, signal) {
@@ -144,7 +147,7 @@ angular.module('emuwebApp')
 				p.signalCanvases.order.push(signal);
 			}
 			else {
-				$scope.showWarning('Signal "' + level + '" already existing');			
+				$scope.showWarning('Signal "' + signal + '" already exists');
 			}
 		};
 
@@ -157,7 +160,7 @@ angular.module('emuwebApp')
 				p.levelCanvases.order.push(level);
 			}
 			else {
-				$scope.showWarning('Level "' + level + '" already existing');
+				$scope.showWarning('Level "' + level + '" already exists');
 			}
 		};
 
@@ -169,7 +172,7 @@ angular.module('emuwebApp')
 					order: []
 				},
 				twoDimCanvases: []
-			}
+			};
 			$scope.modal.dataOut.perspectives.splice($scope.modal.dataOut.perspectives.length, 0, obj);
 		};
 

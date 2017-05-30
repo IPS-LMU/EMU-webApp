@@ -77,9 +77,9 @@ angular.module('emuwebApp')
 					if (!initialized) {
 						Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, 0, scope.shs.audioBuffer.length, false);
 						initialized = true;
-						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
+						scope.drawVpOsciMarkup(viewState);
 					} else {
-						scope.drawVpOsciMarkup(viewState, canvas, ConfigProviderService);
+						scope.drawVpOsciMarkup(viewState);
 					}
 				};
 
@@ -88,7 +88,7 @@ angular.module('emuwebApp')
 				 * the information that is specified in
 				 * the viewport
 				 */
-				scope.drawVpOsciMarkup = function (vs, canvas, config) {
+				scope.drawVpOsciMarkup = function (vs) {
 					var ctx = markupCanvas.getContext('2d');
 					var posS = (markupCanvas.width / Soundhandlerservice.audioBuffer.length) * vs.curViewPort.sS;
 					var posE = (markupCanvas.width / Soundhandlerservice.audioBuffer.length) * vs.curViewPort.eS;

@@ -20,7 +20,54 @@ angular.module('emuwebApp')
 		////////////////////////////
 		// ws function
 
-		// broadcast on open
+        function listener(data) {
+            var messageObj = data;
+            // console.log('Received data from websocket: ', messageObj);
+            // If an object exists with callbackID in our callbacks object, resolve it
+            if (callbacks.hasOwnProperty(messageObj.callbackID)) {
+                // console.log(callbacks[messageObj.callbackID]);
+                // console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
+                switch (messageObj.type) {
+                    case 'getESPSfile':
+                        alert('espsfile');
+                        //handleReceivedESPS(messageObj.fileName, messageObj.data);
+                        break;
+                    case 'getSSFFfile':
+                        alert('ssfffile');
+                        //handleReceivedSSFF(messageObj.fileName, messageObj.data);
+                        break;
+                }
+
+                // resolve promise with data only
+                if (messageObj.status.type === 'SUCCESS') {
+                    $rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
+                } else {
+                    // show protocol error and disconnect from server
+                    sServObj.closeConnect();
+                    $rootScope.$broadcast('resetToInitState');
+                    $rootScope.$apply(modalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message));
+                }
+
+                delete callbacks[messageObj.callbackID];
+            } else {
+                if(typeof messageObj.status === 'undefined'){
+                    modalService.open('views/error.html', 'Just got JSON message from server that the EMU-webApp does not know how to deal with! This is not allowed!');
+                }
+                else if (messageObj.status.type === 'ERROR:TIMEOUT') {
+                    // do nothing
+                } else {
+                    modalService.open('views/error.html', 'Received invalid messageObj.callbackID that could not be resolved to a request! This should not happen and indicates a bad server response! The invalid callbackID was: ' + messageObj.callbackID);
+                }
+            }
+        }
+
+        // This creates a new callback ID for a request
+        function getCallbackId() {
+            var newUUID = uuid.new();
+            return newUUID;
+        }
+
+        // broadcast on open
 		function wsonopen(message) {
 			connected = true;
 			$rootScope.$apply(conPromise.resolve(message));
@@ -78,52 +125,6 @@ angular.module('emuwebApp')
 			return defer.promise;
 		}
 
-		function listener(data) {
-			var messageObj = data;
-			// console.log('Received data from websocket: ', messageObj);
-			// If an object exists with callbackID in our callbacks object, resolve it
-			if (callbacks.hasOwnProperty(messageObj.callbackID)) {
-				// console.log(callbacks[messageObj.callbackID]);
-				// console.log('resolving callback: ' + messageObj.type + ' Nr.: ' + messageObj.callbackID);
-				switch (messageObj.type) {
-					case 'getESPSfile':
-						alert('espsfile');
-						//handleReceivedESPS(messageObj.fileName, messageObj.data);
-						break;
-					case 'getSSFFfile':
-						alert('ssfffile');
-						//handleReceivedSSFF(messageObj.fileName, messageObj.data);
-						break;
-				}
-
-				// resolve promise with data only
-				if (messageObj.status.type === 'SUCCESS') {
-					$rootScope.$apply(callbacks[messageObj.callbackID].cb.resolve(messageObj.data));
-				} else {
-					// show protocol error and disconnect from server
-					sServObj.closeConnect();
-					$rootScope.$broadcast('resetToInitState');
-					$rootScope.$apply(modalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message));
-				}
-
-				delete callbacks[messageObj.callbackID];
-			} else {
-				if(typeof messageObj.status === 'undefined'){
-					modalService.open('views/error.html', 'Just got JSON message from server that the EMU-webApp does not know how to deal with! This is not allowed!');
-				}
-				else if (messageObj.status.type === 'ERROR:TIMEOUT') {
-					// do nothing
-				} else {
-					modalService.open('views/error.html', 'Received invalid messageObj.callbackID that could not be resolved to a request! This should not happen and indicates a bad server response! The invalid callbackID was: ' + messageObj.callbackID);
-				}
-			}
-		}
-
-		// This creates a new callback ID for a request
-		function getCallbackId() {
-			var newUUID = uuid.new();
-			return newUUID;
-		}
 
 		///////////////////////////////////////////
 		// public api

@@ -7,13 +7,13 @@
  * @constructor
  * @param Worker {Worker} injection point for Worker
  */
-function spectroDrawingWorker(Worker) {
+function SpectroDrawingWorker(Worker) {
 	Worker = Worker || window.Worker;
 	this.url = this.getWorkerURL();
 	this.worker = new Worker(this.url);
 }
 
-spectroDrawingWorker.prototype = {
+SpectroDrawingWorker.prototype = {
 	// get the worker script in string format.
 	getWorkerScript: function () {
 		var js = '';
@@ -784,7 +784,7 @@ spectroDrawingWorker.prototype = {
 		} catch (e) { // Backwards-compatibility
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 			blob = new BlobBuilder();
-			blob.append(spectroDrawingWorker);
+			blob.append(SpectroDrawingWorker);
 			blob = blob.getBlob();
 		}
 		if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {

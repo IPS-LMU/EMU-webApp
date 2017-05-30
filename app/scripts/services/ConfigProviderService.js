@@ -66,7 +66,7 @@ angular.module('emuwebApp')
 						ret[key] = [];
 						angular.copy(value, ret[key]);
 					}
-					else if(typeof value == 'object'){
+					else if(typeof value === 'object'){
 						ret[key] = {};
 						ret[key] = sServObj.getDeltas(value, start[key]);
 					}

@@ -50,7 +50,7 @@ describe('Worker: spectroDrawingWorker', function () {
 
 	beforeEach(function () {
 		var DummyWorker = function () {};
-		worker = new spectroDrawingWorker(DummyWorker);
+		worker = new SpectroDrawingWorker(DummyWorker);
 		// mock the global scope for the worker thread.
 		mockGlobal = {
 			postMessage: jasmine.createSpy('postMessage'),

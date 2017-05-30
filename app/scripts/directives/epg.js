@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('epg', function (viewState) {
+	.directive('epg', function () {
 		return {
 			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
 			restrict: 'E',
 			replace: true,
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope, element) {
 				// element.text('this is the epg directive');
 				var canvas = element.find('canvas')[0];
 
@@ -27,7 +27,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$watch('vs.curMousePosSample', function (newValue, oldValue) {
+				scope.$watch('vs.curMousePosSample', function () {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
@@ -77,12 +77,12 @@ angular.module('emuwebApp')
 								ctx.fillStyle = 'white';
 								ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);
 							}
-						})
+						});
 					});
 
 					// draw labels
 					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'EPG', 'Frame:' + curFrame, scope.cps.design.font.input.size.slice(0, -2) * 3 / 4, scope.cps.design.font.input.family, 5, 0, scope.cps.design.color.black, true);
-				}
+				};
 			}
 		};
 	});

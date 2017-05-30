@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('DragnDropDataService', function DragnDropDataService($q, ConfigProviderService, modalService) {
+	.service('DragnDropDataService', function DragnDropDataService($q) {
 		// shared service object
 		var sServObj = {};
 		sServObj.convertedBundles = [];
@@ -10,10 +10,9 @@ angular.module('emuwebApp')
 		///////////////////////////////
 		// public api
 
-		sServObj.getBundle = function (name, session) {
+		sServObj.getBundle = function (name) {
 			var defer = $q.defer();
-			var ret = {}
-			angular.forEach(sServObj.convertedBundles, function (bundle, i) {
+			angular.forEach(sServObj.convertedBundles, function (bundle) {
 				if (bundle.name === name) {
 					var bc = angular.copy(bundle);
 					delete bc.name;

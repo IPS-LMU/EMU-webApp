@@ -155,7 +155,7 @@ angular.module('emuwebApp')
 									if (data.annotation.type === 'textgrid') {
 										reader2.readAsText(data.annotation.file);
 										reader2.onloadend = function (evt) {
-											if (evt.target.readyState == FileReader.DONE) {
+											if (evt.target.readyState === FileReader.DONE) {
 												Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
 													DragnDropDataService.convertedBundles[i].annotation = parseMess;
 													sServObj.convertDragnDropData(bundles, i + 1).then(function () {
@@ -172,7 +172,7 @@ angular.module('emuwebApp')
 									else if (data.annotation.type === 'annotation') {
 										reader2.readAsText(data.annotation.file);
 										reader2.onloadend = function (evt) {
-											if (evt.target.readyState == FileReader.DONE) {
+											if (evt.target.readyState === FileReader.DONE) {
 												DragnDropDataService.convertedBundles[i].annotation = angular.fromJson(evt.currentTarget.result);
 												sServObj.convertDragnDropData(bundles, i + 1).then(function () {
 													defer.resolve();
@@ -220,8 +220,8 @@ angular.module('emuwebApp')
 				viewState.curPerspectiveIdx = 0;
 				ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
 				delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
-
-				var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
+                var validRes;
+				validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 				if (validRes === true) {
 					ConfigProviderService.curDbConfig = resp.data;
 					viewState.somethingInProgressTxt = 'Parsing WAV file...';
@@ -260,7 +260,7 @@ angular.module('emuwebApp')
 
 					// set all ssff files
 					viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-					var validRes = Validationservice.validateJSO('annotationFileSchema', annotation);
+					validRes = Validationservice.validateJSO('annotationFileSchema', annotation);
 					if (validRes === true) {
 						DataService.setLinkData(annotation.links);
 						viewState.setState('labeling');
@@ -273,8 +273,9 @@ angular.module('emuwebApp')
 						});
 					}
 					// select first level
-					if (!browserDetector.isBrowser.PhantomJS())
+					if (!browserDetector.isBrowser.PhantomJS()){
 						viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
+                    }
 
 
 				}

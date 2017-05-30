@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Soundhandlerservice', function Soundhandlerservice($document) {
+	.service('Soundhandlerservice', function Soundhandlerservice() {
 
 		// private vars
 		var audioContext;
@@ -25,7 +25,7 @@ angular.module('emuwebApp')
 				window.AudioContext = window.AudioContext || window.webkitAudioContext;
 				audioContext = new AudioContext();
 			} catch (e) {
-				alert("Error loading the AudioContext (could mean your browser doesn't support the HTML5 webaudio API):" + e);
+				alert('Error loading the AudioContext (could mean your browser does not support the HTML5 webaudio API):' + e);
 			}
 		}
 
@@ -38,7 +38,7 @@ angular.module('emuwebApp')
 		 * @param buffer arraybuffer containing audio file (as returned by XHR for example)
 		 * */
 		sServObj.decodeAndPlay = function (sampleStart, endSample) {
-			if (typeof(audioContext) == "undefined") {
+			if (typeof(audioContext) === 'undefined') {
 				initAudioContext();
 			}
 
@@ -54,7 +54,7 @@ angular.module('emuwebApp')
 				curSource.start(0, startTime, durTime);
 				curSource.onended = function () {
 					sServObj.isPlaying = false;
-				}
+				};
 
 			//}, function (e) {
 			//	alert(e);

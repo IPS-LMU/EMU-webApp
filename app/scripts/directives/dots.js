@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			replace: true,
 			scope: {},
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope, element) {
 				scope.cps = ConfigProviderService;
 				scope.ssffds = Ssffdataservice;
 				scope.vs = viewState;
@@ -21,8 +21,8 @@ angular.module('emuwebApp')
 				var globalMaxX = -Infinity;
 				var globalMinY = Infinity;
 				var globalMaxY = -Infinity;
-				var tr, col, sRaSt;
-				var startPoint = (Math.PI / 180) * 0;
+				// var tr, col, sRaSt;
+				var startPoint = 0;
 				var endPoint = (Math.PI / 180) * 360;
 
 
@@ -73,7 +73,7 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('lmds.getCurBndl()', function (newVal) {
+				scope.$watch('lmds.getCurBndl()', function () {
 					globalMinX = Infinity;
 					globalMaxX = -Infinity;
 					globalMinY = Infinity;
@@ -257,7 +257,7 @@ angular.module('emuwebApp')
 					var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].xSsffTrack); // use first track for sample numbers
 					var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[0].ySsffTrack);
 
-					var sInterv = (1 / xsRaSt.sampleRate);
+					//var sInterv = (1 / xsRaSt.sampleRate);
 					var curMousePosTime = scope.vs.curMousePosSample / scope.shs.audioBuffer.sampleRate;
 					var curFrame;
 
@@ -284,7 +284,7 @@ angular.module('emuwebApp')
 					//////////////////////////////
 					// draw dots
 
-					var startPoint = (Math.PI / 180) * 0; // really don't get why the globals and visable here???
+					var startPoint = 0; // really don't get why the globals and visable here???
 					var endPoint = (Math.PI / 180) * 360;
 
 					var allDots = [];
@@ -292,8 +292,8 @@ angular.module('emuwebApp')
 					for (var i = 0; i < dD.dots.length; i++) {
 
 						// get xCol
-						var trConf = scope.cps.getSsffTrackConfig(dD.dots[i].xSsffTrack);
-						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+						trConf = scope.cps.getSsffTrackConfig(dD.dots[i].xSsffTrack);
+						xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
 
 						// get yCol
 						trConf = scope.cps.getSsffTrackConfig(dD.dots[i].ySsffTrack);
@@ -305,8 +305,8 @@ angular.module('emuwebApp')
 							return;
 						}
 
-						var xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[i].xSsffTrack);
-						var ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[i].ySsffTrack);
+						xsRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[i].xSsffTrack);
+						ysRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(dD.dots[i].ySsffTrack);
 
 						// check if sampleRate and startTime is the same
 						if (xsRaSt.sampleRate !== ysRaSt.sampleRate || xsRaSt.startSample !== ysRaSt.startSample) {
@@ -364,8 +364,8 @@ angular.module('emuwebApp')
 
 					//////////////////////////
 					// draw static dots
-					var startPoint = (Math.PI / 180) * 0;
-					var endPoint = (Math.PI / 180) * 360;
+					startPoint = 0;
+					endPoint = (Math.PI / 180) * 360;
 
 					dD.staticDots.forEach(function (sD) {
 						ctx.strokeStyle = sD.color;
@@ -374,8 +374,7 @@ angular.module('emuwebApp')
 						var labelX = ((sD.xNameCoordinate - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 						var labelY = canvas.height - ((sD.yNameCoordinate - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 
-						var labelTxtImg =
-							scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, labelX, labelY, sD.color, true);
+						scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, labelX, labelY, sD.color, true);
 
 						sD.xCoordinates.forEach(function (xVal, xIdx) {
 							var x = ((xVal - globalMinX) / (globalMaxX - globalMinX) * canvas.width);

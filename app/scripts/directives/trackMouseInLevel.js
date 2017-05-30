@@ -45,12 +45,13 @@ angular.module('emuwebApp')
 
 				//
 				element.bind('mousemove', function (event) {
+                    var moveLine, moveBy;
 					if (viewState.focusOnEmuWebApp) {
 						if (!viewState.getdragBarActive()) {
-							var moveLine = true;
+							moveLine = true;
 							var samplesPerPixel = viewState.getSamplesPerPixelVal(event);
 							scope.curMouseSampleNrInView = viewState.getX(event) * samplesPerPixel;
-							var moveBy = (scope.curMouseSampleNrInView - scope.lastPCM);
+							moveBy = (scope.curMouseSampleNrInView - scope.lastPCM);
 							if (samplesPerPixel <= 1) {
 								var zoomEventMove = LevelService.getClosestItem(scope.curMouseSampleNrInView + viewState.curViewPort.sS, scope.levelName, Soundhandlerservice.audioBuffer.length);
 								// absolute movement in pcm below 1 pcm per pixel
@@ -91,13 +92,13 @@ angular.module('emuwebApp')
 							default:
 								if (!viewState.getdragBarActive()) {
 									var curMouseItem = viewState.getcurMouseItem();
+                                    var seg;
 									if (ConfigProviderService.vals.restrictions.editItemSize && event.shiftKey) {
 										LevelService.deleteEditArea();
 										if (curMouseItem !== undefined) {
 											viewState.movingBoundary = true;
 											if (scope.levelType === 'SEGMENT') {
 												if (viewState.getcurMouseisFirst() || viewState.getcurMouseisLast()) {
-													var seg, leftMost, rightB;
 													// before first segment
 													if (viewState.getcurMouseisFirst()) {
 														seg = LevelService.getItemDetails(scope.levelName, 0);
@@ -140,7 +141,7 @@ angular.module('emuwebApp')
 										}
 									} else if (ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
 										LevelService.deleteEditArea();
-										if (scope.levelType == 'SEGMENT') {
+										if (scope.levelType === 'SEGMENT') {
 											seg = viewState.getcurClickItems();
 											if (seg[0] !== undefined) {
 												LevelService.moveSegment(scope.levelName, seg[0].id, seg.length, moveBy);
@@ -157,7 +158,7 @@ angular.module('emuwebApp')
 											viewState.setLastPcm(scope.lastPCM);
 											viewState.selectBoundary();
 										}
-										else if (scope.levelType == 'EVENT') {
+										else if (scope.levelType === 'EVENT') {
 											seg = viewState.getcurClickItems();
 											if (seg[0] !== undefined) {
 												angular.forEach(seg, function (s) {
@@ -226,7 +227,7 @@ angular.module('emuwebApp')
 					scope.lastPCM = scope.curMouseSampleNrInView;
 					viewState.setLastPcm(scope.lastPCM);
 					scope.$apply();
-				}
+				};
 
 				/**
 				 *
@@ -248,7 +249,7 @@ angular.module('emuwebApp')
 					scope.lastPCM = scope.curMouseSampleNrInView;
 					viewState.setLastPcm(scope.lastPCM);
 					scope.$apply();
-				}
+				};
 
 				/**
 				 *
@@ -290,7 +291,7 @@ angular.module('emuwebApp')
 					scope.lastPCM = scope.curMouseSampleNrInView;
 					viewState.setLastPcm(scope.lastPCM);
 					scope.$apply();
-				}
+				};
 
 				/**
 				 *
@@ -309,7 +310,7 @@ angular.module('emuwebApp')
 					scope.lastPCM = scope.curMouseSampleNrInView;
 					viewState.setLastPcm(scope.lastPCM);
 					scope.$apply();
-				}
+				};
 			}
 		};
 	});

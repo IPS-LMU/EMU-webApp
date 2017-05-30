@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 				level: '=',
 				idx: '='
 			},
-			link: function postLink(scope, element, attr) {
+			link: function postLink(scope, element) {
 				// select the needed DOM items from the template
 				var canvas = element.find('canvas');
 				scope.open = true; // attr.open; // not using attr.open any more because minification changes open="true" to open

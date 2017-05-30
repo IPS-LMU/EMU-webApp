@@ -35,7 +35,7 @@ angular.module('emuwebApp')
 		 * returns false if bndl is current bndl
 		 */
 		$scope.uttIsDisabled = function (bndl) {
-			return !(bndl.name === loadedMetaDataService.getCurBndl().name);
+			return bndl.name !== loadedMetaDataService.getCurBndl().name;
 		};
 
 		/**
@@ -70,7 +70,7 @@ angular.module('emuwebApp')
 		 * @return bool
 		 */
 		$scope.isSessionDefined = function (ses) {
-			return !(ses === 'undefined');
+			return ses !== 'undefined';
 		};
 
 		/**

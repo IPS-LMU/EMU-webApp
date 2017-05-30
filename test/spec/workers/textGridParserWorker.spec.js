@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Worker: textGridParserWorker', function() {
+describe('Worker: TextGridParserWorker', function() {
 
   var worker, mockGlobal, wavData;
   
@@ -16,7 +16,7 @@ describe('Worker: textGridParserWorker', function() {
   beforeEach(inject(function (DataService) {
     data = DataService;
     var DummyWorker = function() {};
-    worker = new textGridParserWorker(DummyWorker);    
+    worker = new TextGridParserWorker(DummyWorker);
     // mock the global scope for the worker thread.
     mockGlobal = {
       postMessage: jasmine.createSpy('postMessage')
@@ -31,7 +31,7 @@ describe('Worker: textGridParserWorker', function() {
     expect(mockGlobal.postMessage).toHaveBeenCalledWith({
 		'status': {
 			'type': 'ERROR',
-			'message': 'Undefined message was sent to textGridParserWorker'
+			'message': 'Undefined message was sent to TextGridParserWorker'
 		}
 	});
   });
@@ -41,7 +41,7 @@ describe('Worker: textGridParserWorker', function() {
     expect(mockGlobal.postMessage).toHaveBeenCalledWith({
 		'status': {
 			'type': 'ERROR',
-			'message': 'Unknown command sent to textGridParserWorker'
+			'message': 'Unknown command sent to TextGridParserWorker'
 		}
 	});
   });

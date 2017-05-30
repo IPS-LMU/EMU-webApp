@@ -6,7 +6,7 @@ angular.module('emuwebApp')
 			templateUrl: 'views/tutorial.html',
 			restrict: 'E',
 			scope: {},
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope) {
 
 				scope.counter = 0;
 				scope.css = [];
@@ -18,17 +18,17 @@ angular.module('emuwebApp')
 				scope.que = [];
 
 
-				scope.$watch('vs.lastKeyCode', function (newValue, oldValue) {
+				scope.$watch('vs.lastKeyCode', function (newValue) {
 					if (newValue !== undefined) {
 						if (newValue === scope.que[scope.counter]) {
-							++scope.counter
+							++scope.counter;
 						}
 					}
 				});
 
 
 				scope.getClass = function (i) {
-					if (i == scope.counter) {
+					if (i === scope.counter) {
 						return scope.cssActive;
 					} else if (i < scope.counter) {
 						return scope.cssDone;

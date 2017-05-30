@@ -75,7 +75,7 @@ angular.module('emuwebApp')
 			};
 
 			sServObj.osciSettings = {
-				curChannel: 0,
+				curChannel: 0
 			};
 
 			sServObj.playHeadAnimationInfos = {
@@ -893,13 +893,13 @@ angular.module('emuwebApp')
 		sServObj.selectBoundary = function () {
 			if (sServObj.curClickItems.length > 0) {
 				var left, right;
-				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
+				if(typeof sServObj.curClickItems[0].samplePoint === 'undefined'){
 					left = sServObj.curClickItems[0].sampleStart;
 				}else{
 				 	left = sServObj.curClickItems[0].samplePoint;
 				}
 
-				if(typeof sServObj.curClickItems[0].samplePoint === "undefined"){
+				if(typeof sServObj.curClickItems[0].samplePoint === 'undefined'){
 					right = sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleStart + sServObj.curClickItems[sServObj.curClickItems.length - 1].sampleDur;
 				}else{
 					right = sServObj.curClickItems[0].samplePoint;
@@ -925,7 +925,7 @@ angular.module('emuwebApp')
 		sServObj.setcurClickItemMultiple = function (item, neighbour) {
 
 			// if nothing is in curClickItems
-			if (sServObj.curClickItems.length == 0 || sServObj.curClickItems === undefined || sServObj.curClickItems === null) {
+			if (sServObj.curClickItems.length === 0 || sServObj.curClickItems === undefined || sServObj.curClickItems === null) {
 				sServObj.curClickItems = [];
 				sServObj.curClickItems.push(item);
 			}

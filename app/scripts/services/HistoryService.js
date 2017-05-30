@@ -18,21 +18,22 @@ angular.module('emuwebApp')
 		// applyChanges should be called by undo redo functions
 		function applyChange(changeObj, applyOldVal) {
 			Object.keys(changeObj).forEach(function (key) {
+				var tr, col, action;
 				var cur = changeObj[key];
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
 						sServObj.setHistoryActionText(true, 'SSFF manipulation');
-						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
-						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
+						col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 					} else {
 						sServObj.setHistoryActionText(false, 'SSFF manipulation');
-						var tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
-						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+						tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
+						col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 					}
 				} else if (cur.type === 'WEBAPP') {
-					var action = false;
+					action = false;
 					switch (cur.action) {
 						case 'COMMENT':
 							// The order of links is not preserved on undo
@@ -53,7 +54,7 @@ angular.module('emuwebApp')
 							break;
 					}
 				} else if (cur.type === 'ANNOT') {
-					var action = false;
+					action = false;
 					switch (cur.action) {
 						case 'MOVEBOUNDARY':
 							if (applyOldVal) {
@@ -194,7 +195,7 @@ angular.module('emuwebApp')
 					}
 					sServObj.setHistoryActionText(action, cur.action);
 				} else if (cur.type === 'HIERARCHY') {
-					var action = false;
+					action = false;
 					switch (cur.action) {
 						case 'DELETELINK':
 							// The order of links is not preserved on undo

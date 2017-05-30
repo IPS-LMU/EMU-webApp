@@ -174,10 +174,10 @@ angular.module('emuwebApp')
 				scope.switchMarkupContext = function (event, leave) {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					// draw current viewport selected
-					if (atts.ssffTrackname == 'OSCI') {
+					if (atts.ssffTrackname === 'OSCI') {
 						Drawhelperservice.drawViewPortTimes(ctx, true);
 						Drawhelperservice.drawCurViewPortSelected(ctx, true);
-					} else if (atts.ssffTrackname == 'SPEC') {
+					} else if (atts.ssffTrackname === 'SPEC') {
 						Drawhelperservice.drawCurViewPortSelected(ctx, false);
 						Drawhelperservice.drawMinMaxAndName(ctx, '', viewState.spectroSettings.rangeFrom, viewState.spectroSettings.rangeTo, 2);
 					} else {

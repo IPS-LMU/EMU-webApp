@@ -24,7 +24,9 @@ angular.module('emuwebApp')
 					if (attrs.name === loadedMetaDataService.getCurBndl().name) {
 						return true;
 					}
-					else return false;
+					else{
+						return false;
+					}
 				};
 
 				scope.getURL = function (data) {

@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 			templateUrl: 'views/hint.html',
 			replace: true,
 			restrict: 'E',
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope) {
 				scope.hideMe = function () {
 					scope.internalVars.showAboutHint = !scope.internalVars.showAboutHint;
 					scope.aboutBtnClick();

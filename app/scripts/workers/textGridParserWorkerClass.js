@@ -1,17 +1,17 @@
 /**
  * A simple class that creates another thread
- * which does the textGridParserWorker work
- * @class textGridParserWorker
+ * which does the TextGridParserWorker work
+ * @class TextGridParserWorker
  * @constructor
  * @param Worker {Worker} injection point for Worker
  */
-function textGridParserWorker(Worker) {
+function TextGridParserWorker(Worker) {
 	Worker = Worker || window.Worker;
 	this.url = this.getWorkerURL();
 	this.worker = new Worker(this.url);
 }
 
-textGridParserWorker.prototype = {
+TextGridParserWorker.prototype = {
 	// get the worker script in string format.
 	getWorkerScript: function () {
 		var js = '';
@@ -147,7 +147,7 @@ textGridParserWorker.prototype = {
 						var itemST = Math.floor(lines[i + 1].split(/=/)[1] * sampleRate);
 						var itemET = Math.floor(lines[i + 2].split(/=/)[1] * sampleRate);
 						lab = lines[i + 3].split(/=/)[1].replace(/"/g, '');
-						var labs = [];
+						labs = [];
 						labs.push({
 							name: labelJSO.levels[labelJSO.levels.length - 1].name,
 							value: lab
@@ -299,7 +299,7 @@ textGridParserWorker.prototype = {
 						global.postMessage({
 							'status': {
 								'type': 'ERROR',
-								'message': 'Unknown command sent to textGridParserWorker'
+								'message': 'Unknown command sent to TextGridParserWorker'
 							}
 						});
 						break;
@@ -309,7 +309,7 @@ textGridParserWorker.prototype = {
 				global.postMessage({
 					'status': {
 						'type': 'ERROR',
-						'message': 'Undefined message was sent to textGridParserWorker'
+						'message': 'Undefined message was sent to TextGridParserWorker'
 					}
 				});
 			}
@@ -325,7 +325,7 @@ textGridParserWorker.prototype = {
 		} catch (e) { // Backwards-compatibility
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 			blob = new BlobBuilder();
-			blob.append(textGridParserWorker);
+			blob.append(TextGridParserWorker);
 			blob = blob.getBlob();
 		}
 		if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
@@ -337,7 +337,7 @@ textGridParserWorker.prototype = {
 	},
 
 
-	// kill the textGridParserWorker
+	// kill the TextGridParserWorker
 	kill: function () {
 		if (this.worker) {
 			this.worker.terminate();
@@ -347,14 +347,14 @@ textGridParserWorker.prototype = {
 		}
 	},
 
-	// say something to the textGridParserWorker
+	// say something to the TextGridParserWorker
 	tell: function (msg) {
 		if (this.worker) {
 			this.worker.postMessage(msg);
 		}
 	},
 
-	// listen for the textGridParserWorker to talk back
+	// listen for the TextGridParserWorker to talk back
 	says: function (handler) {
 		if (this.worker) {
 			this.worker.addEventListener('message', function (e) {

@@ -8,7 +8,7 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			replace: true,
 			scope: {},
-			link: function postLink(scope, element, attr) {
+			link: function postLink(scope) {
 				scope.comment = '';
 				scope.finishedEditing = function (finished, key, index) {
 					HistoryService.addObjToUndoStack({

@@ -155,7 +155,7 @@ angular.module('emuwebApp')
 				sServObj.osciPeaks.channelOsciPeaks[channelIdx] = {
 					'maxPeaks': [curChannelMaxPeaksWinSize0, curChannelMaxPeaksWinSize1, curChannelMaxPeaksWinSize2],
 					'minPeaks': [curChannelMinPeaksWinSize0, curChannelMinPeaksWinSize1, curChannelMinPeaksWinSize2]
-				}
+				};
 
 			}
 		};
@@ -327,21 +327,21 @@ angular.module('emuwebApp')
 				}
 			}
 
-			if(winIdx !== -1){
+			var allPeakVals;
+
+            var yMax, yMin;
+            var yMaxPrev, yMinPrev;
+
+            if(winIdx !== -1){
 				// use pre calcuated peaks
-				var allPeakVals = sServObj.findMinMaxPeaks(sS, eS, winIdx);
+				allPeakVals = sServObj.findMinMaxPeaks(sS, eS, winIdx);
 
 				var ssT = viewState.calcSampleTime(sS);
-				var esT = viewState.calcSampleTime(eS);
 
 				// calc exact peaks per second value (should be very close to or exactly 400|10|1 depending on  winSize)
 				var pps = sServObj.osciPeaks.sampleRate / sServObj.osciPeaks.winSizes[winIdx];
 
 				var startPeakWinIdx = ssT * pps;
-				var endPeakWinIdx = esT * pps;
-
-				var yMax, yMin;
-				var yMaxPrev, yMinPrev;
 
 				ctx.strokeStyle = ConfigProviderService.design.color.black;
 				
@@ -383,13 +383,11 @@ angular.module('emuwebApp')
 
 			}else{
 				// if winIdx is -1 then calculate the peaks from the channel data
-				var allPeakVals = sServObj.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), sS, eS);
+				allPeakVals = sServObj.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), sS, eS);
 			
 				// check if envelope is to be drawn
 				if (allPeakVals.minPeaks && allPeakVals.maxPeaks && allPeakVals.samplePerPx >= 1) {
 					// draw envelope
-					var yMax, yMin;
-					var yMaxPrev, yMinPrev;
 					ctx.strokeStyle = ConfigProviderService.design.color.black;
 					
 					ctx.beginPath();

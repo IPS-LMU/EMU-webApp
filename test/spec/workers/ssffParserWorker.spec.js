@@ -8,7 +8,7 @@ describe('Worker: ssffParserWorker', function() {
 
   beforeEach(function(){
     var DummyWorker = function() {};
-    worker = new ssffParserWorker(DummyWorker);
+    worker = new SsffParserWorker(DummyWorker);
     // mock the global scope for the worker thread.
     mockGlobal = {
       postMessage: jasmine.createSpy('postMessage')
@@ -23,7 +23,7 @@ describe('Worker: ssffParserWorker', function() {
     expect(mockGlobal.postMessage).toHaveBeenCalledWith({
 		'status': {
 			'type': 'ERROR',
-			'message': 'Undefined message was sent to ssffParserWorker'
+			'message': 'Undefined message was sent to SsffParserWorker'
 		}
 	});
   });
@@ -33,7 +33,7 @@ describe('Worker: ssffParserWorker', function() {
     expect(mockGlobal.postMessage).toHaveBeenCalledWith({
 		'status': {
 			'type': 'ERROR',
-			'message': 'Unknown command sent to ssffParserWorker'
+			'message': 'Unknown command sent to SsffParserWorker'
 		}
 	});
   });

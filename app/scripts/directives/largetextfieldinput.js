@@ -11,9 +11,6 @@ angular.module('emuwebApp')
     return {
       template: '<div class="emuwebapp-largetextinputfield" ng-show="vs.largeTextFieldInputFieldVisable" ng-focus="vs.largeTextFieldInputFieldVisable"><textarea ng-model="vs.largeTextFieldInputFieldCurLabel"></textarea></div>',
       restrict: 'E',
-        replace: true,
-      link: function postLink(scope, element, attrs) {
-        // element.text('this is the largeTextFieldInput directive');
-      }
+      replace: true
     };
   });

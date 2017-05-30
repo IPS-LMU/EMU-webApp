@@ -250,7 +250,6 @@ angular.module('emuwebApp')
 					defer.reject();
 				});
 			}
-			;
-		}
+		};
 		return (sServObj);
 	});

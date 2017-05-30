@@ -7,13 +7,13 @@ angular.module('emuwebApp')
 			templateUrl: 'views/modal.html',
 			replace: true,
 			scope: {},
-			link: function (scope, element, attr) {
+			link: function (scope, element) {
 				scope.templateUrl = '';
 				scope.modal = modalService;
 				scope.isOpen = false;
 				scope.force = false;
 				scope.dataIn = '';
-				scope.$watch('modal.isOpen', function (newValue, oldValue) {
+				scope.$watch('modal.isOpen', function (newValue) {
 					if (newValue !== undefined) {
 						scope.templateUrl = modalService.getTemplateUrl();
 						scope.dataIn = modalService.dataIn;
@@ -26,7 +26,7 @@ angular.module('emuwebApp')
 						}
 					}
 				});
-				scope.$watch('modal.templateUrl', function (newValue, oldValue) {
+				scope.$watch('modal.templateUrl', function (newValue) {
 					if (newValue !== undefined) {
 						scope.templateUrl = newValue;
 						scope.dataIn = modalService.dataIn;

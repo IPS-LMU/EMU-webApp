@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 			restrict: 'E',
 			replace: true,
 			scope: {},
-			link: function postLink(scope, element, attr) {
+			link: function postLink(scope, element) {
 				/* --------- Messages -------- */
 				scope.dropTextDefault = 'Drop your files here (.wav files; .wav & annotJSON file pairs; .wav & TextGrid file pairs) or click here to do the same with a file dialog';
 				scope.dropTextErrorFileType = 'Error: Could not parse file. The following file types are supported: .WAV .TEXTGRID _annot.json';
@@ -30,7 +30,7 @@ angular.module('emuwebApp')
 
 				scope.updateQueueLength = function (quantity) {
 					scope.count += quantity;
-				}
+				};
 
 				scope.enqueueFileAddition = function (file) {
 					var identifier = file.name.substring(file.name.lastIndexOf('_') + 1, file.name.lastIndexOf('.')).toUpperCase();
@@ -149,7 +149,7 @@ angular.module('emuwebApp')
 							}
 
 							if (!entry) {
-								updateQueueLength(-1);
+                                scope.updateQueueLength(-1);
 							}
 							else if (entry.isFile) {
 								entry.file(function (file) {
@@ -169,7 +169,7 @@ angular.module('emuwebApp')
 							}
 						}
 					}
-				}
+				};
 
 				scope.dropFiles = function (evt) {
 					evt.stopPropagation();
@@ -177,14 +177,15 @@ angular.module('emuwebApp')
 					scope.$apply(function () {
 						if (window.File && window.FileReader && window.FileList && window.Blob) {
 							if (evt.originalEvent !== undefined) {
+                                var items;
 								if (browserDetector.isBrowser.Firefox()) {
-									var items = evt.originalEvent.dataTransfer.files;
+									items = evt.originalEvent.dataTransfer.files;
 								}
 								else if (browserDetector.isBrowser.Safari()) {
-									var items = evt.originalEvent.dataTransfer.files;
+									items = evt.originalEvent.dataTransfer.files;
 								}
 								else { // we assume it is chrome
-									var items = evt.originalEvent.dataTransfer.items;
+									items = evt.originalEvent.dataTransfer.items;
 								}
 
 								scope.loadFiles(items);
@@ -192,14 +193,14 @@ angular.module('emuwebApp')
 						}
 						else {
 							// no browser support for FileAPI
-							modalService.open('views/error.html', scope.dropTextErrorAPI).then(function (res) {
+							modalService.open('views/error.html', scope.dropTextErrorAPI).then(function () {
 								scope.dropText = scope.dropTextDefault;
 								scope.dropClass = scope.dropClassDefault;
 								appStateService.resetToInitState();
 							});
 						}
 					});
-				}
+				};
 
 				scope.dragEnterLeave = function (evt) {
 					evt.preventDefault();
@@ -207,7 +208,7 @@ angular.module('emuwebApp')
 						scope.dropText = scope.dropTextDefault;
 						scope.dropClass = scope.dropClassDefault;
 					});
-				}
+				};
 
 				scope.handleDragOver = function (evt) {
 					evt.preventDefault();
@@ -215,7 +216,7 @@ angular.module('emuwebApp')
 						scope.dropText = scope.dropAllowed;
 						scope.dropClass = scope.dropClassOver;
 					});
-				}
+				};
 
 				element.bind('drop', function (event) {
 					scope.dropFiles(event);
@@ -233,7 +234,7 @@ angular.module('emuwebApp')
 					scope.dragEnterLeave(event);
 				});
 
-				element.bind('click', function (event) {
+				element.bind('click', function () {
 					var input = element.find('input');
 					// call click of my-drop-zone-input
                     input[0].click();

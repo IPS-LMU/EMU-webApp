@@ -17,13 +17,13 @@ angular.module('emuwebApp')
 		 */
 		sServObj.resetToInitState = function () {
 			if (Iohandlerservice.wsH.isConnected()) {
-				Iohandlerservice.wsH.disconnectWarning().then(function (resp) {
+				Iohandlerservice.wsH.disconnectWarning().then(function () {
 					$log.info('Closing websocket connection to server');
 					Iohandlerservice.wsH.closeConnect();
 				});
 			}
 			// $scope.curBndl = {};
-			loadedMetaDataService.resetToInitState()
+			loadedMetaDataService.resetToInitState();
 			Soundhandlerservice.audioBuffer = {};
 			DataService.setData({});
 			DragnDropDataService.resetToInitState();

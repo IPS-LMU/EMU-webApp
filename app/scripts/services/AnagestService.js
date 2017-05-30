@@ -35,7 +35,6 @@ angular.module('emuwebApp')
 			var vTrackName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.velocitySsffTrackName;
 			var vTr = ConfigProviderService.getSsffTrackConfig(vTrackName);
 			var vCol = Ssffdataservice.getColumnOfTrack(vTr.name, vTr.columnName);
-			var vSRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(vTr.name);
 
 			if (col.length !== 1 || vCol.length !== 1) {
 				modalService.open('views/error.html', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(function () {
@@ -265,6 +264,7 @@ angular.module('emuwebApp')
 		 */
 		sServObj.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction, description) {
 			// console.log('interactiveFindThresholds');
+			var i;
 
 			var thdat = minVal + (maxVal - minVal) * threshold;
 
@@ -282,7 +282,7 @@ angular.module('emuwebApp')
 
 			// vz=find((xsh>=thdat)&(xx(1:(lx-1))<thdat));
 			var vz = [];
-			for (var i = 0; i < xx.length; i++) {
+			for (i = 0; i < xx.length; i++) {
 				if ((xsh[i] >= thdat) && (xx[i] < thdat)) {
 					vz.push(i);
 				}
@@ -290,7 +290,7 @@ angular.module('emuwebApp')
 
 			// anavv=find(vz>=loguk & vz<=higuk);
 			var anavv = [];
-			for (var i = 0; i < vz.length; i++) {
+			for (i = 0; i < vz.length; i++) {
 				if ((vz[i] >= loguk) && vz[i] <= higuk) {
 					anavv.push(i);
 				}
@@ -305,7 +305,7 @@ angular.module('emuwebApp')
 				infos.minVal = minVal;
 				infos.maxVal = maxVal;
 				infos.threshold = threshold;
-				for (var i = 0; i < vz.length; i++) {
+				for (i = 0; i < vz.length; i++) {
 					infos.options.push({
 						'thresholdIdx': vz[i],
 						'thresholdValue': xx[i],

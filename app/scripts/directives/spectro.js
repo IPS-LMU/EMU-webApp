@@ -28,7 +28,7 @@ angular.module('emuwebApp')
 				scope.devicePixelRatio = window.devicePixelRatio || 1;
 
 				// Spectro Worker
-				scope.primeWorker = new spectroDrawingWorker();
+				scope.primeWorker = new SpectroDrawingWorker();
 
 
 				///////////////
@@ -183,7 +183,7 @@ angular.module('emuwebApp')
 
 				scope.startSpectroRenderingThread = function (buffer) {
 					if (buffer.length > 0) {
-						scope.primeWorker = new spectroDrawingWorker();
+						scope.primeWorker = new SpectroDrawingWorker();
 						var parseData = [];
 						var fftN = mathHelperService.calcClosestPowerOf2Gt(scope.shs.audioBuffer.sampleRate * scope.vs.spectroSettings.windowSizeInSecs);
 						// fftN must be greater than 512 (leads to better resolution of spectrogram)

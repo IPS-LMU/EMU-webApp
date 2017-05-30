@@ -18,7 +18,6 @@ angular.module('emuwebApp')
 		var bundleList = [];
 		var curBndl = {};
 		var demoDbName = '';
-		var drandropBundles = [];
 		var rendOptBndlList = {}; // render optimized bundle list
 
 		//////////////////////
@@ -40,7 +39,7 @@ angular.module('emuwebApp')
 		}
 
 		function genRendOptBndlList(bndlList) {
-			bndlList.forEach(function (bndl, idx) {
+			bndlList.forEach(function (bndl) {
 				if (rendOptBndlList[bndl.session] === undefined) {
 					rendOptBndlList[bndl.session] = [];
 				}

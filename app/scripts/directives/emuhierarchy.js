@@ -11,15 +11,15 @@ angular.module('emuwebApp')
 				playing: '='
 			},
 			replace: true,
-			link: function postLink(scope, element, attrs) {
+			link: function postLink(scope, element) {
 
 				//////////////////////
 				// private variables
 
 				// FIXME move these to viewState
-				scope.selectedItem;
-				scope.selectedLink;
-				scope.newLinkSrc;
+				// scope.selectedItem;
+				// scope.selectedLink;
+				// scope.newLinkSrc;
 				// END FIXME
 
 				// Graphical offset from the SVG's border to the first nodes
@@ -269,14 +269,15 @@ angular.module('emuwebApp')
 
 					var translate = scope.zoomListener.translate();
 
+                    var percentageAwayTimeAxis, percentageAwayCrossAxis;
 					if (scope.vertical === true) {
 						// Changing from horizontal to vertical
-						var percentageAwayTimeAxis = (translate[1]) / scope.timeAxisEndPosition;
-						var percentageAwayCrossAxis = (translate[0]) / scope.crossAxisEndPosition;
+						percentageAwayTimeAxis = (translate[1]) / scope.timeAxisEndPosition;
+						percentageAwayCrossAxis = (translate[0]) / scope.crossAxisEndPosition;
 					} else {
 						// Changing from vertical to horizontal
-						var percentageAwayTimeAxis = (translate[0]) / scope.timeAxisEndPosition;
-						var percentageAwayCrossAxis = (translate[1]) / scope.crossAxisEndPosition;
+						percentageAwayTimeAxis = (translate[0]) / scope.timeAxisEndPosition;
+						percentageAwayCrossAxis = (translate[1]) / scope.crossAxisEndPosition;
 					}
 
 					scope.render();
@@ -296,7 +297,7 @@ angular.module('emuwebApp')
 
 					// Make sure the programmatic changes to the translate vector are applied
 					scope.zoomListener.event(scope.svg);
-				}
+				};
 
 				/**
 				 * This transform is applied to the main <g> within the SVG
@@ -334,7 +335,7 @@ angular.module('emuwebApp')
 				 * It reverses the zoom factor applied to the complete graphics so that
 				 * the text doesn't consume more space than needed.
 				 */
-				scope.getOrientatedNodeTransform = function (d) {
+				scope.getOrientatedNodeTransform = function () {
 					// Parameter d is never used because this is independent from the node's position
 
 					if (scope.vertical) {
@@ -350,11 +351,11 @@ angular.module('emuwebApp')
 				// scale. It is named getORIENTATEDLinkStrokeWidth anyway because all
 				// functions are named like that, althoug they depend on both zoom
 				// scale and orientation.
-				scope.getOrientatedLinkStrokeWidth = function (d) {
+				scope.getOrientatedLinkStrokeWidth = function () {
 					return '2px';
 				};
 
-				scope.getOrientatedGhostLinkStrokeWidth = function (d) {
+				scope.getOrientatedGhostLinkStrokeWidth = function () {
 					return '15px';
 				};
 
@@ -397,10 +398,10 @@ angular.module('emuwebApp')
 				/**
 				 * This transform is applied to all nodes' text labels
 				 */
-				scope.getOrientatedTextTransform = function (d) {
+				scope.getOrientatedTextTransform = function () {
 				};
 
-				scope.getOrientatedTextAnchor = function (d) {
+				scope.getOrientatedTextAnchor = function () {
 					if (scope.vertical) {
 						return 'middle';
 					} else {
@@ -408,7 +409,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.getOrientatedTextX = function (d) {
+				scope.getOrientatedTextX = function () {
 					if (scope.vertical) {
 						return 0;
 					} else {
@@ -416,7 +417,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.getOrientatedTextY = function (d) {
+				scope.getOrientatedTextY = function () {
 					if (scope.vertical) {
 						return '1.45em';
 					} else {
@@ -424,7 +425,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.getOrientatedLevelCaptionLayerTransform = function (d) {
+				scope.getOrientatedLevelCaptionLayerTransform = function () {
 					if (scope.vertical) {
 						return 'translate(0, ' + scope.zoomListener.translate()[1] + ')';
 					} else {
@@ -441,7 +442,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.getOrientatedAddItemButtonTransform = function (d) {
+				scope.getOrientatedAddItemButtonTransform = function () {
 					if (scope.vertical) {
 						return 'translate(-12, -5)';
 					} else {
@@ -449,7 +450,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.getOrientatedTimeLevelBackgroundTransform = function (d) {
+				scope.getOrientatedTimeLevelBackgroundTransform = function () {
 					if (scope.vertical) {
 						return 'translate(' + (scope.vertOffsetX - 25) + ',-8)';
 					} else {
@@ -457,7 +458,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.getOrientatedTimeLevelBackgroundWidth = function (d) {
+				scope.getOrientatedTimeLevelBackgroundWidth = function () {
 					if (scope.vertical) {
 						return '100%';
 					} else {
@@ -465,7 +466,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.getOrientatedTimeLevelBackgroundHeight = function (d) {
+				scope.getOrientatedTimeLevelBackgroundHeight = function () {
 					if (scope.vertical) {
 						return '15px';
 					} else {
@@ -539,7 +540,7 @@ angular.module('emuwebApp')
 				};
 
 
-				scope.svgOnMouseMove = function (d) {
+				scope.svgOnMouseMove = function () {
 					if (scope.newLinkSrc !== undefined) {
 						var mouse = scope.getOrientatedMousePosition(d3.mouse(this));
 						var x = mouse[0];
@@ -551,7 +552,7 @@ angular.module('emuwebApp')
 					}
 				};
 
-				scope.svgOnClick = function (d) {
+				scope.svgOnClick = function () {
 					if (viewState.hierarchyState.contextMenuID !== undefined) {
 						scope.$apply(function () {
 							viewState.hierarchyState.contextMenuID = undefined;
@@ -603,11 +604,11 @@ angular.module('emuwebApp')
 					dom.style.backgroundColor = scope.getLabelLegalnessColor(d);
 				};
 
-				scope.nodeOnFocusIn = function (d) {
+				scope.nodeOnFocusIn = function () {
 					viewState.hierarchyState.inputFocus = true;
 				};
 
-				scope.nodeOnFocusOut = function (d) {
+				scope.nodeOnFocusOut = function () {
 					viewState.hierarchyState.inputFocus = false;
 				};
 
@@ -695,12 +696,13 @@ angular.module('emuwebApp')
 				 * On the time-axis, the relative coordinate is a number within [0;1].
 				 */
 				scope.depthToX = function (depth) {
-					if (scope.vertical) {
-						var crossAxisSize = scope.height;
-						var offset = scope.vertOffsetY;
+					var crossAxisSize, offset;
+                    if (scope.vertical) {
+						crossAxisSize = scope.height;
+						offset = scope.vertOffsetY;
 					} else {
-						var crossAxisSize = scope.width;
-						var offset = scope.offsetX;
+						crossAxisSize = scope.width;
+						offset = scope.offsetX;
 					}
 
 					var result = depth / viewState.hierarchyState.path.length * crossAxisSize;
@@ -714,12 +716,13 @@ angular.module('emuwebApp')
 				};
 
 				scope.posInLevelToY = function (posInLevel) {
+                    var offset, timeAxisSize;
 					if (scope.vertical) {
-						var offset = scope.vertOffsetX;
-						var timeAxisSize = scope.width - offset;
+						offset = scope.vertOffsetX;
+						timeAxisSize = scope.width - offset;
 					} else {
-						var offset = scope.offsetY;
-						var timeAxisSize = scope.height - offset;
+						offset = scope.offsetY;
+						timeAxisSize = scope.height - offset;
 					}
 
 					var result = posInLevel * timeAxisSize * scope.zoomListener.scale();
@@ -887,9 +890,9 @@ angular.module('emuwebApp')
 					/////////
 					// Draw time arrow
 					if (scope.vertical) {
-						scope.timeArrow.attr('transform', 'translate(' + (scope.width / 2) + ',' + (scope.height - 10) + ')')
+						scope.timeArrow.attr('transform', 'translate(' + (scope.width / 2) + ',' + (scope.height - 10) + ')');
 					} else {
-						scope.timeArrow.attr('transform', 'translate(' + (scope.width - 20) + ',' + (scope.height / 2) + ')rotate(90)')
+						scope.timeArrow.attr('transform', 'translate(' + (scope.width - 20) + ',' + (scope.height / 2) + ')rotate(90)');
 					}
 
 
@@ -912,7 +915,7 @@ angular.module('emuwebApp')
 						scope.scaleFactorDisplay
 							.select('text')
 							.attr('text-anchor', 'start')
-							.text('Zoom: ' + Math.round(scope.zoomListener.scale() * 100) + ' %');
+							.text('Zoom: ' + Math.round(scope.zoomListener.scale() * 100) + ' %')
 						;
 					}
 
@@ -1010,7 +1013,7 @@ angular.module('emuwebApp')
 					var nodes = [];
 					HierarchyLayoutService.calculateWeightsBottomUp(viewState.hierarchyState.path);
 
-					for (var i = 0; i < viewState.hierarchyState.path.length; ++i) {
+					for (i = 0; i < viewState.hierarchyState.path.length; ++i) {
 						// Add all nodes that are not collapsed
 						var levelItems = LevelService.getLevelDetails(viewState.hierarchyState.path[i]).items;
 						for (var ii = 0; ii < levelItems.length; ++ii) {
@@ -1064,7 +1067,7 @@ angular.module('emuwebApp')
 					var links = [];
 					var allLinks = DataService.getData().links;
 					for (var l = 0; l < allLinks.length; ++l) {
-						for (var i = 0; i < viewState.hierarchyState.path.length - 1; ++i) {
+						for (i = 0; i < viewState.hierarchyState.path.length - 1; ++i) {
 							var element = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i], allLinks[l].toID);
 							var parentElement = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i + 1], allLinks[l].fromID);
 
@@ -1508,12 +1511,12 @@ angular.module('emuwebApp')
 							.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 						;
 
-						var preview = scope.svg.append('path')
-							.attr('class', 'emuhierarchy-newlinkpreview')
-							.attr('d', scope.getPreviewPath)
-							.style('stroke', scope.getPreviewColor)
-							.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
-							;
+						//var preview = scope.svg.append('path')
+						//	.attr('class', 'emuhierarchy-newlinkpreview')
+						//	.attr('d', scope.getPreviewPath)
+						//	.style('stroke', scope.getPreviewColor)
+						//	.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
+						//	;
 
 					}
 

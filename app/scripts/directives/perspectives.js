@@ -6,9 +6,6 @@ angular.module('emuwebApp')
 		return {
 			templateUrl: 'views/perspectives.html',
 			replace: true,
-			restrict: 'E',
-			link: function postLink(scope, element, attrs) {
-
-			}
+			restrict: 'E'
 		};
 	});
