@@ -210,7 +210,9 @@ angular.module('emuwebApp')
 									if(ConfigProviderService.embeddedVals.labelType === 'TEXTGRID'){
 										respType = 'text';
 									}else{
-										respType = 'json';
+										// setting everything to text because the BAS webservices somehow respond with a 
+										// 200 (== successful response) but the data field is empty
+										respType = 'text'; 
 									}
 									// get + parse file
 									Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
@@ -248,7 +250,7 @@ angular.module('emuwebApp')
 										});
 
 									}, function (errMess) {
-										modalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess, null, 4));
+										modalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
 									});
 
 
