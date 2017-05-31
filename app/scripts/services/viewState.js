@@ -366,7 +366,6 @@ angular.module('emuwebApp')
                 if (sServObj.playHeadAnimationInfos.autoscroll && sServObj.playHeadAnimationInfos.curS >= sServObj.curViewPort.eS) {
                     sServObj.setViewPort(sServObj.curViewPort.eS, sServObj.curViewPort.eS + (sServObj.curViewPort.eS - sServObj.curViewPort.sS));
 				}
-				$rootScope.$apply();
 			} else {
 				sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.endFreezeSample;
 				sServObj.playHeadAnimationInfos.sS = -1;
@@ -374,6 +373,8 @@ angular.module('emuwebApp')
 				sServObj.playHeadAnimationInfos.curS = 0;
 				sServObj.start = null;
 			}
+			
+			$rootScope.$apply();
 		};
 
 		/**
