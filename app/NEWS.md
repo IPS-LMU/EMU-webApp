@@ -7,12 +7,16 @@
 - cleaned JS code to remove jshint errors
 - long bundle and session names now scrollable
 - implemented shortcut to save bundle (SHIFT + S)
+- implemented play in view to end of file with autoscrolling
+- better error message on parsing error while parsing annot.json
+- only using response type 'text' for gets as 'json' causes errors on some servers
 
 ### bug fixes
 
 - prechecking relationship type when rebending links on boundary deletes (fixes issue \#214)
 - fixed bug caused by Chrome API change that did not allow for files to be downloaded the way we had implemented it (in download modals)
 - fix history service handling of first segment boundary (fixes \#212)
+
 
 ## Version 0.1.6
 

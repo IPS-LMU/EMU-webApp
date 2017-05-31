@@ -407,8 +407,16 @@ angular.module('emuwebApp')
 							if (code === ConfigProviderService.vals.keyMappings.playAllInView) {
 								if (viewState.getPermission('playaudio')) {
 									if (ConfigProviderService.vals.restrictions.playback) {
-										Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
-										viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+										if(!e.shiftKey){
+											Soundhandlerservice.playFromTo(viewState.curViewPort.sS, viewState.curViewPort.eS);
+											viewState.animatePlayHead(viewState.curViewPort.sS, viewState.curViewPort.eS);
+										}else{
+											// playAllInView to end of file and autoscroll
+											Soundhandlerservice.playFromTo(viewState.curViewPort.sS, Soundhandlerservice.audioBuffer.length);
+											viewState.animatePlayHead(viewState.curViewPort.sS, Soundhandlerservice.audioBuffer.length, true);
+										}
+
+
 									}
 								} else {
 									//console.log('action currently not allowed');

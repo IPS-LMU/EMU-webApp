@@ -82,7 +82,8 @@ angular.module('emuwebApp')
 				sS: -1,
 				eS: -1,
 				curS: null,
-				endFreezeSample: -1
+				endFreezeSample: -1,
+				autoscroll: false
 			};
 
 			// HierarchyState object with all variables and functions
@@ -362,6 +363,9 @@ angular.module('emuwebApp')
 				if (sServObj.playHeadAnimationInfos.curS !== -1) {
 					sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.curS;
 				}
+                if (sServObj.playHeadAnimationInfos.autoscroll && sServObj.playHeadAnimationInfos.curS >= sServObj.curViewPort.eS) {
+                    sServObj.setViewPort(sServObj.curViewPort.eS, sServObj.curViewPort.eS + (sServObj.curViewPort.eS - sServObj.curViewPort.sS));
+				}
 				$rootScope.$apply();
 			} else {
 				sServObj.curMousePosSample = sServObj.playHeadAnimationInfos.endFreezeSample;
@@ -375,12 +379,15 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.animatePlayHead = function (startS, endS) {
+		sServObj.animatePlayHead = function (startS, endS, autoscroll) {
 			sServObj.playHeadAnimationInfos.sS = startS;
 			sServObj.playHeadAnimationInfos.eS = endS;
 			sServObj.playHeadAnimationInfos.endFreezeSample = endS;
 			sServObj.playHeadAnimationInfos.curS = startS;
-			$window.requestAnimationFrame(sServObj.updatePlayHead);
+            if(autoscroll !== undefined){
+                sServObj.playHeadAnimationInfos.autoscroll = autoscroll;
+            }
+            $window.requestAnimationFrame(sServObj.updatePlayHead);
 		};
 
 
