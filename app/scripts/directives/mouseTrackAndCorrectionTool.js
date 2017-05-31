@@ -42,12 +42,31 @@ angular.module('emuwebApp')
 				/////////////////////////////
 				// Bindings
 				element.bind('mousedown', function (event) {
-					viewState.curViewPort.movingS = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
-					viewState.curViewPort.movingE = viewState.curViewPort.movingS;
-					viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
-					scope.switchMarkupContext(event);
-					scope.$apply();
+					if(!event.shiftKey){
+						viewState.curViewPort.movingS = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
+						viewState.curViewPort.movingE = viewState.curViewPort.movingS;
+						viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
+						scope.switchMarkupContext(event);
+						scope.$apply();
+					}
 				});
+
+
+				element.bind('mouseup', function (event) {
+					if(event.shiftKey){
+						var curSample = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
+						if(curSample <= viewState.curViewPort.movingS){
+							viewState.curViewPort.movingS = curSample;	
+						}
+						if(curSample >= viewState.curViewPort.movingE){
+							viewState.curViewPort.movingE = curSample;	
+						}
+						viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
+						scope.switchMarkupContext(event);
+						scope.$apply();
+					}
+				});
+
 
 				element.bind('mousemove', function (event) {
 					var mbutton = 0;
