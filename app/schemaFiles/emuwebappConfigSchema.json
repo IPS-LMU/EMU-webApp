@@ -521,7 +521,6 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["playback", "correctionTool", "editItemSize", "editItemName", "deleteItemBoundary", "deleteItem", "deleteLevel", "addItem", "drawCrossHairs", "drawSampleNrs", "drawZeroLine", "bundleComments", "bundleFinishedEditing", "showPerspectivesSidebar", "useLargeTextInputField"],
 			"additionalProperties": false
 
 		},
@@ -583,7 +582,6 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "downloadAnnotation", "specSettings", "connect", "search", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
 			"additionalProperties": false
 		},
 		"demoDBs": {
