@@ -11,6 +11,7 @@
 - better error message on parsing error while parsing annot.json
 - only using response type 'text' for gets as 'json' causes errors on some servers
 - shift left clicking on preselected area in signal canvases now expands selected area (\#162)
+- propper handeling of DBconfig when passed in via URL
 
 ### bug fixes
 

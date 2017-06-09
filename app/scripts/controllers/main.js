@@ -177,7 +177,6 @@ angular.module('emuwebApp')
 						viewState.curPerspectiveIdx = 0;
 						ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
 						// validate emuwebappConfigSchema
-						delete resp.data.EMUwebAppConfig; // delete to avoid duplicate
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 						if (validRes === true) {
 							// turn of keybinding only on mouseover
@@ -222,25 +221,30 @@ angular.module('emuwebApp')
 											var annot = parseMess;
 											DataService.setData(annot);
 
-											var lNames = [];
-											var levelDefs = [];
-											annot.levels.forEach(function (l) {
-												lNames.push(l.name);
-												levelDefs.push({
-													'name': l.name,
-													'type': l.type,
-													'attributeDefinitions': {
-														'name': l.name,
-														'type': 'string'
-													}
-												});
-											});
+											// if no DBconfigGetUrl is given generate levelDefs and co. from annotation
+											if (!searchObject.DBconfigGetUrl){
 
-											// set level defs
-											ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+												var lNames = [];
+												var levelDefs = [];
+												annot.levels.forEach(function (l) {
+													lNames.push(l.name);
+													levelDefs.push({
+														'name': l.name,
+														'type': l.type,
+														'attributeDefinitions': {
+															'name': l.name,
+															'type': 'string'
+														}
+													});
+												});
+
+												ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+
+												ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+											}
+											
 											viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
 
-											ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
 											viewState.somethingInProgressTxt = 'Done!';
 											viewState.somethingInProgress = false;
 											viewState.setState('labeling');
@@ -443,7 +447,7 @@ angular.module('emuwebApp')
 					// FOR DEVELOPMENT
 					//$scope.showEditDBconfigBtnClick();
 
-					delete data.EMUwebAppConfig; // delete to avoid duplicate
+
 					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 					if (validRes === true) {
 						ConfigProviderService.curDbConfig = data;
@@ -733,7 +737,6 @@ angular.module('emuwebApp')
 						// first element of perspectives is default perspective
 						viewState.curPerspectiveIdx = 0;
 						ConfigProviderService.setVals(data.EMUwebAppConfig);
-						delete data.EMUwebAppConfig; // delete to avoid duplicate
 
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 						if (validRes === true) {
