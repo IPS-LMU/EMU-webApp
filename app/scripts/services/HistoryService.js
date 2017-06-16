@@ -53,6 +53,7 @@ angular.module('emuwebApp')
 							}
 							break;
 					}
+					sServObj.setHistoryActionText(action, cur.action);
 				} else if (cur.type === 'ANNOT') {
 					action = false;
 					switch (cur.action) {
