@@ -2,7 +2,7 @@
 exports.config = {
   // Do not start a Selenium Standalone sever - only run this using chrome.
   directConnect: true,
-  chromeDriver: '/usr/local/lib/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25', //
+  chromeDriver: './node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.26',
 
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
