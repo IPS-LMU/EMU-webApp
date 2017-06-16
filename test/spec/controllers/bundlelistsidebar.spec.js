@@ -26,12 +26,6 @@ describe('Controller: bundleListSideBarCtrl', function () {
        $scope.history = HistoryService;
      }));
 
-   it('should check if uttIsDisabled', function () {
-       expect($scope.uttIsDisabled({name: 'test'})).toBe(true);
-       $scope.lmds.setCurBndlName('test1');
-       expect($scope.uttIsDisabled({name: 'test1'})).toBe(false);
-   });  
-   
    it('should check if isSessionDefined', function () {
        expect($scope.isSessionDefined('undefined')).toBe(false);
        expect($scope.isSessionDefined('test')).toBe(true);
@@ -47,6 +41,7 @@ describe('Controller: bundleListSideBarCtrl', function () {
        res = $scope.getBndlColor({name: 'test1'});
        expect(res.color).toBe('white');
 	   
-   }); 
+   });
+   //TODO add check for isCurBndl function
 
 });
