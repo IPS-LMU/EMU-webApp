@@ -49,8 +49,10 @@ angular.module('emuwebApp')
 
 
 		// select first possible path on load
-		$scope.paths.selected = $scope.paths.possibleAsStr[0];
-		
+		$scope.paths.selected = $scope.paths.possibleAsStr[viewState.hierarchyState.curPathIdx];
+
+		$scope.vs.hierarchyState.curNrOfPaths = $scope.paths.possibleAsStr.length;
+
 		//////////////
 		// watches
 
@@ -58,7 +60,14 @@ angular.module('emuwebApp')
 			viewState.hierarchyState.path = $scope.paths.possible[$scope.getSelIdx()];
 		}, false);
 
-		//
+        $scope.$watch ('vs.hierarchyState.curPathIdx', function () {
+            //console.log('watch on viewstate working!');
+            viewState.hierarchyState.path = $scope.paths.possible[$scope.vs.hierarchyState.curPathIdx];
+            $scope.paths.selected = $scope.paths.possibleAsStr[viewState.hierarchyState.curPathIdx];
+        }, false);
+
+
+        //
 		//////////////
 
 		/**

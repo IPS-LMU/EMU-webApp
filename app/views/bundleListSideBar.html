@@ -34,14 +34,14 @@
                             <!--regulate finished editing display-->
                             <!--display checkbox if current-->
                             <div ng-if="cps.vals.restrictions.bundleFinishedEditing && isCurBndl(bundle)">
-                                Finished editing:
+                                finished editing:
                                 <input type="checkbox" ng-model="bundle.finishedEditing" ng-change="finishedEditing(bundle.finishedEditing, key, $index)"/>
                                 <br />
                             </div>
 
                             <!--display text "true" or "false" depending on model if not current-->
                             <div ng-if="cps.vals.restrictions.bundleFinishedEditing && !isCurBndl(bundle)">
-                                Finished editing:
+                                finished editing:
                                 <strong ng-if="bundle.finishedEditing" style="color:green;">true</strong>
                                 <strong ng-if="!bundle.finishedEditing" style="color:red;">false</strong>
                                 <br />

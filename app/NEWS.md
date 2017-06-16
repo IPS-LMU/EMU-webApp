@@ -14,6 +14,7 @@
 - propper handeling of DBconfig when passed in via URL
 - only displaying "finished editing" check box, "comment" text input and save button in bundle list side bar for current bundle. Displaying text only versions for not current bundle. (issue \#218)
 - only updating history action on change of comment text (issue \#219)
+- up and down arrow keys can now be used to select which hierarchy path is displayed in hierarchy modal (issue \#208)
 
 ### bug fixes
 

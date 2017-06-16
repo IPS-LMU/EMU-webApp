@@ -217,6 +217,23 @@ angular.module('emuwebApp')
 								 }
 								 }*/
 
+								// levelUp
+								if (code === ConfigProviderService.vals.keyMappings.levelUp){
+									// console.log("prevPath");
+                                    if(viewState.hierarchyState.curPathIdx >= 1) {
+										viewState.hierarchyState.curPathIdx = viewState.hierarchyState.curPathIdx - 1;
+                                    }
+								}
+								
+								// levelDown
+								if (code === ConfigProviderService.vals.keyMappings.levelDown){
+									// console.log("nextPath");
+									if(viewState.hierarchyState.curPathIdx < viewState.hierarchyState.curNrOfPaths - 1){
+                                    	viewState.hierarchyState.curPathIdx = viewState.hierarchyState.curPathIdx + 1;
+                                    }
+								}
+
+
 								// undo
 								if (code === ConfigProviderService.vals.keyMappings.undo) {
 									HistoryService.undo();

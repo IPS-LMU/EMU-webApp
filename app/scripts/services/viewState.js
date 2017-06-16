@@ -108,6 +108,8 @@ angular.module('emuwebApp')
 
 				// These will be set by outside components
 				path: [],
+				curPathIdx: 0,
+                curNrOfPaths: 0,
 				rotated: false,
 				playing: 0, //this is only watched indirectly (the view injects this value into the directive)
 				resize: 0,
