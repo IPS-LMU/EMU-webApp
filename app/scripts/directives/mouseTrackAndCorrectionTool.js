@@ -55,15 +55,14 @@ angular.module('emuwebApp')
 				element.bind('mouseup', function (event) {
 					if(event.shiftKey){
 						var curSample = Math.round(viewState.getX(event) * viewState.getSamplesPerPixelVal(event) + viewState.curViewPort.sS);
-						var movingDist = viewState.curViewPort.movingE - viewState.curViewPort.movingS;
-						if(curSample <= viewState.curViewPort.movingS + movingDist/2){
-							viewState.curViewPort.movingS = curSample;	
+						var selectDist = viewState.curViewPort.selectE - viewState.curViewPort.selectS;
+						if(curSample <= viewState.curViewPort.selectS + selectDist/2){
+							viewState.curViewPort.selectS = curSample;
 						}
 						// expand right
-						if(curSample >= viewState.curViewPort.movingE - movingDist/2){
-							viewState.curViewPort.movingE = curSample;	
+						if(curSample >= viewState.curViewPort.selectE - selectDist/2){
+							viewState.curViewPort.selectE = curSample;
 						}
-						viewState.select(viewState.curViewPort.movingS, viewState.curViewPort.movingE);
 						scope.switchMarkupContext(event);
 						scope.$apply();
 					}
