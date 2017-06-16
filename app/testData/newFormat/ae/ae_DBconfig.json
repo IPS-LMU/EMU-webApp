@@ -178,9 +178,7 @@
 		}],
 		"restrictions": {
 			"showPerspectivesSidebar": true,
-			"useLargeTextInputField": false,
-			"bundleComments": true,
-			"bundleFinishedEditing": true
+			"useLargeTextInputField": false
 		},
 		"activeButtons": {
 			"saveBundle": true,
