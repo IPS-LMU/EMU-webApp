@@ -12,6 +12,7 @@
 - only using response type 'text' for gets as 'json' causes errors on some servers
 - shift left clicking on preselected area in signal canvases now expands selected area (\#162)
 - propper handeling of DBconfig when passed in via URL
+- only displaying "finished editing" check box, "comment" text input and save button in bundle list side bar for current bundle. Displaying text only versions for not current bundle. (issue \#218)
 
 ### bug fixes
 
