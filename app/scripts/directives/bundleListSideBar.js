@@ -20,17 +20,21 @@ angular.module('emuwebApp')
 					});
 				};
 				scope.updateHistory = function (bundle, key, index) {
-					HistoryService.updateCurChangeObj({
-						type: 'WEBAPP',
-						action: 'COMMENT',
-						initial: scope.comment,
-						comment: bundle.comment,
-						key: key,
-						index: index
-					});
+					if(scope.comment !== bundle.comment){
+						HistoryService.updateCurChangeObj({
+							type: 'WEBAPP',
+							action: 'COMMENT',
+							initial: scope.comment,
+							comment: bundle.comment,
+							key: key,
+							index: index
+						});
+                    }
 				};
-				scope.endHistory = function () {
-					HistoryService.addCurChangeObjToUndoStack();
+				scope.endHistory = function (bundle) {
+                    if(scope.comment !== bundle.comment) {
+                        HistoryService.addCurChangeObjToUndoStack();
+                    }
 				};
 				scope.startHistory = function (bundle) {
 					scope.comment = bundle.comment;

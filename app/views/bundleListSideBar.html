@@ -53,7 +53,7 @@
                             <!--display text input if current-->
                             <div ng-if="cps.vals.restrictions.bundleComments && isCurBndl(bundle)">
                                 comment:
-                                <input type="text" ng-focus="vs.setcursorInTextField(true); startHistory(bundle);" ng-blur="vs.setcursorInTextField(false); updateHistory(bundle, key, $index); endHistory();" ng-model="bundle.comment"/>
+                                <input type="text" ng-focus="vs.setcursorInTextField(true); startHistory(bundle);" ng-blur="vs.setcursorInTextField(false); updateHistory(bundle, key, $index); endHistory(bundle);" ng-model="bundle.comment"/>
                             </div>
 
                             <div ng-if="cps.vals.restrictions.bundleComments && !isCurBndl(bundle)">
