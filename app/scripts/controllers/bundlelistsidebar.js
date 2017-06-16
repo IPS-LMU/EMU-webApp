@@ -30,14 +30,6 @@ angular.module('emuwebApp')
 			}
 		};
 
-
-		/**
-		 * returns false if bndl is current bndl
-		 */
-		$scope.uttIsDisabled = function (bndl) {
-			return bndl.name !== loadedMetaDataService.getCurBndl().name;
-		};
-
 		/**
 		 * returns jso with css defining color dependent
 		 * on if changes have been made that have not been saved
