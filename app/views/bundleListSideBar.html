@@ -29,7 +29,8 @@
                     </div>
                     <div ng-repeat="bundle in value | startFrom:vs.currentPage*vs.pageSize | limitTo:vs.pageSize | regex:filterText track by $index">
                         <div class="emuwebapp-bundle-item" id="uttListItem" ng-style="getBndlColor(bundle);" ng-click="dolss.loadBundle(bundle);" dragout draggable="true" name="{{bundle.name}}">
-                            <b>{{bundle.name}}</b><button ng-if="!uttIsDisabled(bundle)" class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();" ng-disabled="uttIsDisabled(bundle)" ng-if="cps.vals.activeButtons.saveBundle"><img class="emuwebapp-saveBundleButton-img" src="img/save.svg" /></button>
+                            <b>{{bundle.name}}</b>
+                            <button ng-if="cps.vals.activeButtons.saveBundle && isCurBndl(bundle)" class="emuwebapp-saveBundleButton" ng-click="dolss.saveBundle();"><img class="emuwebapp-saveBundleButton-img" src="img/save.svg" /></button>
                             <!---->
                             <!--regulate finished editing display-->
                             <!--display checkbox if current-->
