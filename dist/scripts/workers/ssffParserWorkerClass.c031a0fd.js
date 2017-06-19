@@ -5,13 +5,13 @@
  * @constructor
  * @param Worker {Worker} injection point for Worker
  */
-function ssffParserWorker(Worker) {
+function SsffParserWorker(Worker) {
 	Worker = Worker || window.Worker;
 	this.url = this.getWorkerURL();
 	this.worker = new Worker(this.url);
 }
 
-ssffParserWorker.prototype = {
+SsffParserWorker.prototype = {
 	// get the worker script in string format.
 	getWorkerScript: function () {
 		var js = '';
@@ -531,7 +531,7 @@ ssffParserWorker.prototype = {
 						global.postMessage({
 							'status': {
 								'type': 'ERROR',
-								'message': 'Unknown command sent to ssffParserWorker'
+								'message': 'Unknown command sent to SsffParserWorker'
 							}
 						});
 						break;
@@ -541,7 +541,7 @@ ssffParserWorker.prototype = {
 				global.postMessage({
 					'status': {
 						'type': 'ERROR',
-						'message': 'Undefined message was sent to ssffParserWorker'
+						'message': 'Undefined message was sent to SsffParserWorker'
 					}
 				});
 			}
@@ -557,7 +557,7 @@ ssffParserWorker.prototype = {
 		} catch (e) { // Backwards-compatibility
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 			blob = new BlobBuilder();
-			blob.append(textGridParserWorker);
+			blob.append(SsffParserWorker);
 			blob = blob.getBlob();
 		}
 		if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {

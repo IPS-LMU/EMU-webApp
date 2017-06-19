@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1 - 2017-05-05T14:33:14.209Z
+# rev 1 - 2017-06-19T10:36:01.353Z
 
 CACHE:
 404.html
@@ -86,13 +86,13 @@ schemaFiles/DBconfigFileSchema.json
 schemaFiles/designSchema.json
 schemaFiles/emuwebappConfigSchema.json
 schemaFiles/globalDBschema.json
-scripts/scripts.465155db.js
+scripts/scripts.81e0997d.js
 scripts/vendor.bbf54c88.js
-scripts/workers/espsParserWorkerClass.b0aafef4.js
-scripts/workers/spectroDrawingWorkerClass.df6326fc.js
-scripts/workers/ssffParserWorkerClass.889a6601.js
-scripts/workers/textGridParserWorkerClass.08a8b2a5.js
-styles/main.fb14b6a2.css
+scripts/workers/espsParserWorkerClass.131a7761.js
+scripts/workers/spectroDrawingWorkerClass.7e0ea709.js
+scripts/workers/ssffParserWorkerClass.c031a0fd.js
+scripts/workers/textGridParserWorkerClass.4485a2c0.js
+styles/main.15ea6ddf.css
 styles/vendor.4ec8a500.css
 
 NETWORK:

@@ -8,8 +8,8 @@ author: Raphael Winkelmann
 
 
 - **Version: 0.1.6**
-- *Build time stamp: Fri May 05 2017 16:33:13*
-- *Build GIT SHA-1: dff7622ba1b74c08b0c5e7cdc50debe84f84700b - master*
+- *Build time stamp: Mon Jun 19 2017 12:36:00*
+- *Build GIT SHA-1: dcd1d160f5bdd28493a380636dd36737c663dfc4 - master*
 - *EMU-webApp-websocket-protocol version: 0.0.2*
 
 --------------------- 

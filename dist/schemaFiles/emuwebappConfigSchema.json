@@ -21,7 +21,6 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["autoConnect", "serverUrl", "serverTimeoutInterval", "comMode", "catchMouseForKeyBinding"],
 			"additionalProperties": false
 		},
 		"keyMappings": {
@@ -164,9 +163,11 @@
 				},
 				"esc": {
 					"type": "integer"
+				},
+				"saveBndl": {
+					"type": "integer"
 				}
 			},
-			"required": ["toggleSideBarLeft", "toggleSideBarRight", "zoomSel", "zoomAll", "zoomOut", "zoomIn", "showHierarchy", "hierarchyDeleteLink", "hierarchyDeleteItem", "hierarchyAddItemBefore", "hierarchyAddItemAfter", "hierarchyAddLink", "hierarchyRotate", "hierarchyPlayback", "hierarchyCommitEdit", "hierarchyCancelEdit", "shiftViewPortLeft", "shiftViewPortRight", "playEntireFile", "playAllInView", "playSelected", "deletePreselBoundary", "selNextPrevItem", "selNextItem", "selPrevItem", "createNewItemAtSelection", "levelUp", "levelDown", "undo", "redo", "shrinkSelSegmentsLeft", "shrinkSelSegmentsRight", "expandSelSegmentsRight", "expandSelSegmentsLeft", "selectFirstContourCorrectionTool", "selectSecondContourCorrectionTool", "selectThirdContourCorrectionTool", "selectFourthContourCorrectionTool", "selectNoContourCorrectionTool", "selectItemsInSelection", "snapBoundaryToNearestTopBoundary", "snapBoundaryToNearestBottomBoundary", "snapBoundaryToNearestZeroCrossing", "shift", "alt", "esc"],
 			"additionalProperties": false
 		},
 		"spectrogramSettings": {
@@ -212,7 +213,6 @@
 					}
 				}
 			},
-			"required": ["windowSizeInSecs", "rangeFrom", "rangeTo", "dynamicRange", "window"],
 			"additionalProperties": false
 		},
 		"perspectives": {
@@ -521,7 +521,6 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["playback", "correctionTool", "editItemSize", "editItemName", "deleteItemBoundary", "deleteItem", "deleteLevel", "addItem", "drawCrossHairs", "drawSampleNrs", "drawZeroLine", "bundleComments", "bundleFinishedEditing", "showPerspectivesSidebar", "useLargeTextInputField"],
 			"additionalProperties": false
 
 		},
@@ -583,7 +582,6 @@
 					"type": "boolean"
 				}
 			},
-			"required": ["addLevelSeg", "addLevelEvent", "renameSelLevel", "downloadTextGrid", "downloadAnnotation", "specSettings", "connect", "search", "clear", "deleteSingleLevel", "resizeSingleLevel", "saveSingleLevel", "resizePerspectives", "openDemoDB", "saveBundle", "openMenu", "showHierarchy"],
 			"additionalProperties": false
 		},
 		"demoDBs": {
@@ -593,7 +591,7 @@
 			}
 		}
 	},
-	"required": ["main", "keyMappings", "spectrogramSettings", "perspectives", "labelCanvasConfig", "restrictions", "activeButtons", "demoDBs"],
+	"required": ["perspectives"],
 	"additionalProperties": false
 
 }

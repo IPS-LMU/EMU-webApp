@@ -179,8 +179,9 @@
 					}
 				}
 			}
-		}
+		},
+		"EMUwebAppConfig": { "$ref": "https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/schemaFiles/emuwebappConfigSchema.json"}
 	},
-	"required": ["name", "UUID", "mediafileExtension", "ssffTrackDefinitions", "levelDefinitions", "linkDefinitions"],
+	"required": ["name", "UUID", "mediafileExtension", "ssffTrackDefinitions", "levelDefinitions", "linkDefinitions", "EMUwebAppConfig"],
 	"additionalProperties": false
 }

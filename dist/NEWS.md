@@ -1,5 +1,28 @@
 # What's New
 
+## Version 0.1.7
+
+### new features / performance tweaks / improvements
+
+- cleaned JS code to remove jshint errors
+- long bundle and session names now scrollable
+- implemented shortcut to save bundle (SHIFT + S)
+- implemented play in view to end of file with autoscrolling
+- better error message on parsing error while parsing annot.json
+- only using response type 'text' for gets as 'json' causes errors on some servers
+- shift left clicking on preselected area in signal canvases now expands selected area (\#162)
+- propper handeling of DBconfig when passed in via URL
+- only displaying "finished editing" check box, "comment" text input and save button in bundle list side bar for current bundle. Displaying text only versions for not current bundle. (issue \#218)
+- only updating history action on change of comment text (issue \#219)
+- up and down arrow keys can now be used to select which hierarchy path is displayed in hierarchy modal (issue \#208)
+
+### bug fixes
+
+- prechecking relationship type when rebending links on boundary deletes (fixes issue \#214)
+- fixed bug caused by Chrome API change that did not allow for files to be downloaded the way we had implemented it (in download modals)
+- fix history service handling of first segment boundary (fixes \#212)
+- $apply on final resetting requestAnimationFrame for clearing of play head animation(\#190)
+
 ## Version 0.1.6
 
 ### new features / performance tweaks / improvements
