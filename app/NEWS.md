@@ -1,5 +1,13 @@
 # What's New
 
+## Version 0.1.7.9000
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- fixed bad comparison of integer with possible float with Math.round() in peak calculation of OSCI. This caused the OSCI not to display at certain sample rates.
+
 ## Version 0.1.7
 
 ### new features / performance tweaks / improvements

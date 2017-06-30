@@ -115,7 +115,7 @@ angular.module('emuwebApp')
 					// add to peaks array
 
 					// winSize0
-					if(curWindowIdxCounterWinSize0 === winSize0){
+					if(curWindowIdxCounterWinSize0 === Math.round(winSize0)){
 						curChannelMaxPeaksWinSize0[curPeakIdxWinSize0] = winMaxPeakWinSize0;
 						curChannelMinPeaksWinSize0[curPeakIdxWinSize0] = winMinPeakWinSize0;
 						curPeakIdxWinSize0 += 1;
@@ -126,7 +126,7 @@ angular.module('emuwebApp')
 					}
 
 					// winSize1
-					if(curWindowIdxCounterWinSize1 === winSize1){
+					if(curWindowIdxCounterWinSize1 === Math.round(winSize1)){
 						curChannelMaxPeaksWinSize1[curPeakIdxWinSize1] = winMaxPeakWinSize1;
 						curChannelMinPeaksWinSize1[curPeakIdxWinSize1] = winMinPeakWinSize1;
 						curPeakIdxWinSize1 += 1;
@@ -137,7 +137,7 @@ angular.module('emuwebApp')
 					}
 
 					// winSize2
-					if(curWindowIdxCounterWinSize2 === winSize2){
+					if(curWindowIdxCounterWinSize2 === Math.round(winSize2)){
 						curChannelMaxPeaksWinSize2[curPeakIdxWinSize2] = winMaxPeakWinSize2;
 						curChannelMinPeaksWinSize2[curPeakIdxWinSize2] = winMinPeakWinSize2;
 						curPeakIdxWinSize2 += 1;
