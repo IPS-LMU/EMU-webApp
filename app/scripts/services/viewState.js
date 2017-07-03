@@ -86,7 +86,8 @@ angular.module('emuwebApp')
 				autoscroll: false
 			};
 
-			// HierarchyState object with all variables and functions
+
+            // HierarchyState object with all variables and functions
 			sServObj.hierarchyState = {
 				hierarchyShown: false,
 
@@ -270,6 +271,8 @@ angular.module('emuwebApp')
 			sServObj.rightSubmenuOpen = false;
 			sServObj.curClickItems = [];
 			sServObj.curMousePosSample = 0;
+            sServObj.curMouseX = 0;
+            sServObj.curMouseTrackName = undefined;
 			sServObj.curMouseLevelName = undefined;
 			sServObj.curMouseLevelType = undefined;
 			sServObj.curClickLevelName = undefined;

@@ -89,8 +89,20 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
+                scope.$watch('vs.curMouseX', function () {
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.audioBuffer)) {
+                            // scope.redraw();
+                            // only draw corsshair x line if mouse currently not over canvas
+                            if(scope.vs.curMouseTrackName !== scope.trackName){
+                                scope.clearAndDrawSpectMarkup();
+                            }
+                        }
+                    }
+                }, true);
 
-				scope.$watch('vs.spectroSettings', function () {
+
+                scope.$watch('vs.spectroSettings', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							scope.setupEvent();
@@ -151,7 +163,10 @@ angular.module('emuwebApp')
 					scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
 					// draw min max vals and name of track
 					scope.dhs.drawMinMaxAndName(scope.markupCtx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
-				};
+                    // only draw corsshair x line if mouse currently not over canvas
+					Drawhelperservice.drawCrossHairX(scope.markupCtx, scope.vs.curMouseX);
+
+                };
 
 				scope.killSpectroRenderingThread = function () {
 					scope.context.fillStyle = ConfigProviderService.design.color.lightGrey;

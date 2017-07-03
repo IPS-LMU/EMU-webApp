@@ -593,6 +593,21 @@ angular.module('emuwebApp')
 
 		};
 
+
+        /**
+         * only draw x (= vertical) line of crosshair
+		 * this is used to draw a red line at the current mouse position
+		 * on canvases where the mouse is currently not hovering over
+         */
+        sServObj.drawCrossHairX = function(ctx, mouseX){
+            ctx.strokeStyle = ConfigProviderService.design.color.transparent.red;
+            ctx.fillStyle = ConfigProviderService.design.color.transparent.red;
+            ctx.beginPath();
+            ctx.moveTo(mouseX, 0);
+            ctx.lineTo(mouseX, ctx.canvas.height);
+            ctx.stroke();
+        };
+
 		/**
 		 * drawing method to drawCrossHairs
 		 */
@@ -623,8 +638,16 @@ angular.module('emuwebApp')
 				ctx.font = (ConfigProviderService.design.font.small.size + 'px ' + ConfigProviderService.design.font.small.family);
 				var mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(max - mouseY / ctx.canvas.height * max, 2); // SIC only uses max
 				var tW = ctx.measureText(mouseFreq + unit).width * fontScaleService.scaleX;
+				var tH = fontSize * fontScaleService.scaleY;
 				var s1 = Math.round(viewState.curViewPort.sS + mouseX / ctx.canvas.width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 				var s2 = mathHelperService.roundToNdigitsAfterDecPoint(viewState.getViewPortStartTime() + mouseX / ctx.canvas.width * (viewState.getViewPortEndTime() - viewState.getViewPortStartTime()), 6);
+
+                var y;
+                if(mouseY + tH < ctx.canvas.height){
+                    y = mouseY + 5;
+                }else{
+                    y = mouseY - tH - 5;
+                }
 
 				if (max !== undefined || min !== undefined) {
 					if (trackname === 'OSCI') {
@@ -639,9 +662,10 @@ angular.module('emuwebApp')
 						ctx.lineTo(mouseX, ctx.canvas.height);
 						ctx.stroke();
 					} else if (trackname === 'SPEC') {
-						fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);
-						fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, (ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth)), mouseY, ConfigProviderService.design.color.transparent.red, true);
-						ctx.beginPath();
+                        fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, y, ConfigProviderService.design.color.transparent.red, true);
+                        fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - tW, y, ConfigProviderService.design.color.transparent.red, true);
+
+                        ctx.beginPath();
 						ctx.moveTo(0, mouseY);
 						ctx.lineTo(5, mouseY + 5);
 						ctx.moveTo(0, mouseY);
@@ -656,8 +680,8 @@ angular.module('emuwebApp')
 						var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
 						mouseFreq = mathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
-						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, 5, mouseY, ConfigProviderService.design.color.transparent.red, true);
-						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - 5 - tW * (ctx.canvas.width / ctx.canvas.offsetWidth), mouseY, ConfigProviderService.design.color.transparent.red, true);
+						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, 5, y, ConfigProviderService.design.color.transparent.red, true);
+						fontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - 5 - tW, y, ConfigProviderService.design.color.transparent.red, true);
 						ctx.beginPath();
 						ctx.moveTo(0, mouseY);
 						ctx.lineTo(5, mouseY + 5);

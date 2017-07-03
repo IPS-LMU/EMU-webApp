@@ -76,7 +76,19 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				//
+                //
+                scope.$watch('viewState.curMouseX', function () {
+                    if (!$.isEmptyObject(Soundhandlerservice)) {
+                        if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+                            // only draw corsshair x line if mouse currently not over canvas
+                            if(viewState.curMouseTrackName !== scope.trackName) {
+                                scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
+                            }
+                        }
+                    }
+                }, true);
+
+                //
 				scope.$watch('viewState.movingBoundary', function () {
 					if (!$.isEmptyObject(Soundhandlerservice)) {
 						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
@@ -140,6 +152,8 @@ angular.module('emuwebApp')
 					Drawhelperservice.drawViewPortTimes(ctx, true);
 					// draw current viewport selected
 					Drawhelperservice.drawCurViewPortSelected(ctx, true);
+
+                    Drawhelperservice.drawCrossHairX(ctx, viewState.curMouseX);
 				};
 			}
 		};

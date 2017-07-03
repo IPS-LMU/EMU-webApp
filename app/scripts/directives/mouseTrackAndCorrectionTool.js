@@ -78,6 +78,8 @@ angular.module('emuwebApp')
 					}
 					// perform mouse tracking
 					var mouseX = viewState.getX(event);
+					viewState.curMouseX = mouseX;
+					viewState.curMouseTrackName = trackName;
 					viewState.curMousePosSample = Math.round(viewState.curViewPort.sS + mouseX / element[0].width * (viewState.curViewPort.eS - viewState.curViewPort.sS));
 
 					switch (mbutton) {

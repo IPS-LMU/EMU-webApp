@@ -4,6 +4,9 @@
 
 ### new features / performance tweaks / improvements
 
+- values on crosshairs now always visible (jump to top if there is not enough space to display them underneath)
+- x crosshair now showing on every signal canvas (closes \#221)
+
 ### bug fixes
 
 - fixed bad comparison of integer with possible float with Math.round() in peak calculation of OSCI. This caused the OSCI not to display at certain sample rates.

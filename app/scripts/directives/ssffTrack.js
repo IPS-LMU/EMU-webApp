@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.directive('ssffTrack', function ($timeout, viewState, ConfigProviderService, loadedMetaDataService) {
+	.directive('ssffTrack', function ($timeout, viewState, ConfigProviderService, loadedMetaDataService, Drawhelperservice) {
 		return {
 			templateUrl: 'views/ssffTrack.html',
 			restrict: 'E',
@@ -71,7 +71,18 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				//
+                scope.$watch('vs.curMouseX', function () {
+                    if (!$.isEmptyObject(scope.shs)) {
+                        if (!$.isEmptyObject(scope.shs.audioBuffer)) {
+                            // only draw corsshair x line if mouse currently not over canvas
+                            if(viewState.curMouseTrackName !== trackName) {
+                                scope.drawSsffTrackMarkup();
+                            }
+                        }
+                    }
+                }, true);
+
+                //
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
@@ -115,6 +126,7 @@ angular.module('emuwebApp')
 							}
 
 							scope.dhs.drawMinMaxAndName(markupCtx, trackName, minVal, maxVal, 2);
+                            Drawhelperservice.drawCrossHairX(markupCtx, viewState.curMouseX);
 						}
 					}
 				};
