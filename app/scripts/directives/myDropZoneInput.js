@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 			scope: {},
 			link: function postLink(scope, element) {
 				scope.acceptGrid = '.TextGrid';
-				scope.acceptWav = 'audio/wav';
+				scope.acceptWav = 'audio/wav, audio/x-wav, audio/wave, audio/x-pn-wav';
 				scope.acceptJson = 'application/json';
 				scope.acceptBoth = scope.acceptWav + ',' + scope.acceptGrid + ',' + scope.acceptJson;
 				scope.acceptFile = scope.acceptBoth;
