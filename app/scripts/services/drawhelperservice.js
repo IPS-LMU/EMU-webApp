@@ -54,14 +54,14 @@ angular.module('emuwebApp')
 				var curChannelSamples = Soundhandlerservice.audioBuffer.getChannelData(channelIdx);
 			
 				// preallocate min max peaks arrays
-				var curChannelMaxPeaksWinSize0 = new Float32Array(Soundhandlerservice.audioBuffer.length / winSize0);
-				var curChannelMinPeaksWinSize0 = new Float32Array(Soundhandlerservice.audioBuffer.length / winSize0);
+				var curChannelMaxPeaksWinSize0 = new Float32Array(Math.round(Soundhandlerservice.audioBuffer.length / winSize0));
+				var curChannelMinPeaksWinSize0 = new Float32Array(Math.round(Soundhandlerservice.audioBuffer.length / winSize0));
 
-				var curChannelMaxPeaksWinSize1 = new Float32Array(Soundhandlerservice.audioBuffer.length / winSize1);
-				var curChannelMinPeaksWinSize1 = new Float32Array(Soundhandlerservice.audioBuffer.length / winSize1);
+				var curChannelMaxPeaksWinSize1 = new Float32Array(Math.round(Soundhandlerservice.audioBuffer.length / winSize1));
+				var curChannelMinPeaksWinSize1 = new Float32Array(Math.round(Soundhandlerservice.audioBuffer.length / winSize1));
 
-				var curChannelMaxPeaksWinSize2 = new Float32Array(Soundhandlerservice.audioBuffer.length / winSize2);
-				var curChannelMinPeaksWinSize2 = new Float32Array(Soundhandlerservice.audioBuffer.length / winSize2);
+				var curChannelMaxPeaksWinSize2 = new Float32Array(Math.round(Soundhandlerservice.audioBuffer.length / winSize2));
+				var curChannelMinPeaksWinSize2 = new Float32Array(Math.round(Soundhandlerservice.audioBuffer.length / winSize2));
 				
 				var curWindowIdxCounterWinSize0 = 0;
 				var curPeakIdxWinSize0 = 0;
