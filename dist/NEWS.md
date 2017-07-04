@@ -1,5 +1,11 @@
 # What's New
 
+## Version 0.1.9
+
+### bug fixes
+
+- mini fix for firefox as firefox throws a type error if you put a non-int into new Float23array() which takes a number as an argument... interesting! Math.round() fixes the issue
+
 ## Version 0.1.8
 
 ### new features / performance tweaks / improvements
