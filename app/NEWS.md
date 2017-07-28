@@ -1,5 +1,15 @@
 # What's New
 
+## Version 0.1.10.9000
+
+### new features / performance tweaks / improvements
+
+- drawing zero line in OSCI again
+
+### bug fixes
+
+
+
 ## Version 0.1.9
 
 ### bug fixes

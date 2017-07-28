@@ -275,8 +275,6 @@ angular.module('emuwebApp')
 			var minMinPeak = Infinity;
 			var maxMaxPeak = -Infinity;
 
-
-
 			for(var i = Math.round(startPeakWinIdx); i < Math.round(endPeakWinIdx); i++){
 				if (sServObj.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i] > maxMaxPeak) {
 					maxMaxPeak = sServObj.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i];
@@ -476,13 +474,13 @@ angular.module('emuwebApp')
 				var zeroLineY;
 
 				if (samplesPerPx >= 1) {
-					// TODO: fix!
-					// zeroLineY = canvas.height - ((0 - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height);
-					// ctx.beginPath();
-					// ctx.moveTo(0, zeroLineY);
-					// ctx.lineTo(canvas.width, zeroLineY);
-					// ctx.stroke();
-					// ctx.fillText('0', 5, canvas.height / 2 - 5, canvas.width);
+					zeroLineY = canvas.height - ((0 - allPeakVals.minMinPeak) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak) * canvas.height);
+                    console.log(zeroLineY);
+					ctx.beginPath();
+					ctx.moveTo(0, zeroLineY);
+					ctx.lineTo(canvas.width, zeroLineY);
+					ctx.stroke();
+					ctx.fillText('0', 5, zeroLineY - 5, canvas.width);
 				} else {
 					zeroLineY = canvas.height - ((0 - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height);
 					ctx.beginPath();
