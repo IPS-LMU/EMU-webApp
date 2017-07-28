@@ -343,7 +343,7 @@ SsffParserWorker.prototype = {
 					} else if (ssffData.Columns[i].ssffdatatype === 'SHORT') {
 						curLen = 2 * ssffData.Columns[i].length;
 						curBuffer = buf.subarray(curBinIdx, curLen);
-						curBufferView = new Uint16Array(curBuffer);
+						curBufferView = new Int16Array(curBuffer);
 						ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
 						curBinIdx += curLen;
 

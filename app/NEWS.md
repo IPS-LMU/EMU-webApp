@@ -10,6 +10,7 @@
 
 ### bug fixes
 
+- now interpreting SHORT column types as signed INT16 instead of unsigned INT16 arrays
 
 
 ## Version 0.1.9
