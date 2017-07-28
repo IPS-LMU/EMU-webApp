@@ -197,11 +197,27 @@ angular.module('emuwebApp')
                 defer.reject(headerInfos); // headerInfos now contains only error message
                 return defer.promise;
             }else{
-				var offlineCtx = new OfflineAudioContext(headerInfos.NumChannels,
-					headerInfos.dataChunkSize/headerInfos.NumChannels/(headerInfos.BitsPerSample/8),
-                	headerInfos.SampleRate);
+                try {
+    				var offlineCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(
+	    			    headerInfos.NumChannels,
+		    			headerInfos.dataChunkSize/headerInfos.NumChannels/(headerInfos.BitsPerSample/8),
+                    	headerInfos.SampleRate);
+                    return offlineCtx.decodeAudioData(buf);
+                }catch (e){
+                    // construct error object
+                    var errObj = {};
+                    errObj.exception = JSON.stringify(e, null, 4);
+                    errObj.EMUwebAppComment = 'This could be because you are using Safari and the sample rate is unequal to 44100; 48000 or 96000 which seem to currently be the only sample rates supported by the webkitOfflineAudioContext in Safari';
 
-                return offlineCtx.decodeAudioData(buf);
+                    var err = {};
+                    err.status = {};
+                    err.status.message = JSON.stringify(errObj, null, 4);
+
+                    defer = $q.defer();
+                    defer.reject(err); // headerInfos now contains only error message
+                    return defer.promise;
+
+                }
 
             }
 
