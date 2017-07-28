@@ -190,6 +190,7 @@ wss.on('connection', function (ws) {
       // GETBUNDLELIST method
       // file walks through DB to get all the bundles
     case 'GETBUNDLELIST':
+      console.log('############## GETBUNDLELIST ####################')
       var bundleList = [];
       filewalker(pathToDbRoot)
         .on('dir', function (p) {
