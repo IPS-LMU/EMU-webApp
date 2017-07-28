@@ -451,18 +451,23 @@ angular.module('emuwebApp')
 		 */
 		sServObj.createEditAreaElement = function (element, x, y, width, height, label, labelid) {
 			var textid = '_' + labelid;
+			var cssObj = {
+                'left': Math.round(x + 2) + 'px',
+                'top': Math.round(y + 1) + 'px',
+                'width': Math.round(width) - 2 + 'px',
+                'height': Math.round(height) - 20 + 'px',
+                'padding-top': Math.round(height / 3 + 1) + 'px'
+            };
+			// add custom label font to CSS if specified
+			if(typeof ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.labelFontFamily !== "undefined"){
+                cssObj['font-family'] = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.labelFontFamily;
+			}
 			element.prepend($('<textarea>').attr({
 				id: textid,
 				'class': textid + ' emuwebapp-label-edit',
 				'ng-model': 'message',
 				'autofocus': 'true'
-			}).css({
-				'left': Math.round(x + 2) + 'px',
-				'top': Math.round(y + 1) + 'px',
-				'width': Math.round(width) - 2 + 'px',
-				'height': Math.round(height) - 20 + 'px',
-				'padding-top': Math.round(height / 3 + 1) + 'px'
-			}).text(label));
+			}).css(cssObj).text(label));
 		};
 
 		/**

@@ -6,6 +6,7 @@
 
 - drawing zero line in OSCI again
 - added webkitOfflineAudioContext to new wav parser routine. This should make the webApp work with common sample rates on Safari (only 44100, 4800 and 96000 seems to work though)
+- custom label fonts and sizes now possible
 
 ### bug fixes
 

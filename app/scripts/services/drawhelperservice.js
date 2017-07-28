@@ -475,7 +475,6 @@ angular.module('emuwebApp')
 
 				if (samplesPerPx >= 1) {
 					zeroLineY = canvas.height - ((0 - allPeakVals.minMinPeak) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak) * canvas.height);
-                    console.log(zeroLineY);
 					ctx.beginPath();
 					ctx.moveTo(0, zeroLineY);
 					ctx.lineTo(canvas.width, zeroLineY);
