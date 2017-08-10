@@ -356,6 +356,22 @@ SsffParserWorker.prototype = {
 						if (curMax > ssffData.Columns[i]._maxVal) {
 							ssffData.Columns[i]._maxVal = curMax;
 						}
+                    } else if (ssffData.Columns[i].ssffdatatype === 'LONG') {
+                        curLen = 4 * ssffData.Columns[i].length;
+                        curBuffer = buf.subarray(curBinIdx, curLen);
+                        curBufferView = new Int32Array(curBuffer);
+                        ssffData.Columns[i].values.push(Array.prototype.slice.call(curBufferView));
+                        curBinIdx += curLen;
+
+                        // set _minVal and _maxVal
+                        curMin = Math.min.apply(null, Array.prototype.slice.call(curBufferView));
+                        curMax = Math.max.apply(null, Array.prototype.slice.call(curBufferView));
+                        if (curMin < ssffData.Columns[i]._minVal) {
+                            ssffData.Columns[i]._minVal = curMin;
+                        }
+                        if (curMax > ssffData.Columns[i]._maxVal) {
+                            ssffData.Columns[i]._maxVal = curMax;
+                        }
 
 					} else if (ssffData.Columns[i].ssffdatatype === 'BYTE') {
 						curLen = 1 * ssffData.Columns[i].length;

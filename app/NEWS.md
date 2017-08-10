@@ -1,12 +1,14 @@
 # What's New
 
-## Version 0.1.10.9000
+## Version 0.1.11
 
 ### new features / performance tweaks / improvements
 
 - drawing zero line in OSCI again
 - added webkitOfflineAudioContext to new wav parser routine. This should make the webApp work with common sample rates on Safari (only 44100, 4800 and 96000 seems to work though)
 - custom label fonts and sizes now possible
+- permitting and handling GETURL encoding entries in bundle object sent by server (faster loading of bundles as it gets the audio file as a binary file/arraybuffer form server using a simple GET request to a specified URL)
+- added parsing of LONG SSFF columns to the ssffParser
 
 ### bug fixes
 

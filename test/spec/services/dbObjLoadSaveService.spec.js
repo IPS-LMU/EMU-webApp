@@ -77,7 +77,7 @@ describe('Service: dbObjLoadSaveService', function () {
      spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer');
      scope.dbo.loadBundle({name: 'test'});
      expect(loadedMetaDataService.getCurBndl).toHaveBeenCalled();
-     deferred.resolve({status: 200, data: { mediaFile: { data: [1, 2, 3]}}});
+     deferred.resolve({status: 200, data: { mediaFile: { encoding: 'BASE64', data: [1, 2, 3]}}});
      scope.$apply();
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.resolve({Data: []});
@@ -109,7 +109,7 @@ describe('Service: dbObjLoadSaveService', function () {
      spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer');
      scope.dbo.loadBundle({name: 'test'});
      expect(loadedMetaDataService.getCurBndl).toHaveBeenCalled();
-     deferred.resolve({status: 200, data: { mediaFile: { data: [1, 2, 3]}}});
+     deferred.resolve({status: 200, data: { mediaFile: { encoding: 'BASE64', data: [1, 2, 3]}}});
      scope.$apply();
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.resolve({Data: []});
@@ -131,7 +131,10 @@ describe('Service: dbObjLoadSaveService', function () {
    *
    */
    it('should NOT loadBundle (wav file error)', inject(function (appStateService, modalService, DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService) {
-     spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1'});
+     // two bundles (one loaded (bndl1) one to be loaded (bndl2))
+     var bndl1 = {name: 'test', mediaFile: {encoding: 'BASE64'}};
+     var bndl2 = {name: 'test1', mediaFile: {encoding: 'BASE64'}};
+     spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue(bndl1);
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
      spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(deferred2.promise);
      spyOn(Validationservice, 'validateJSO').and.returnValue(true);
@@ -140,9 +143,9 @@ describe('Service: dbObjLoadSaveService', function () {
      spyOn(DataService, 'setData');
      spyOn(loadedMetaDataService, 'setCurBndl');
      spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer');
-     scope.dbo.loadBundle({name: 'test'});
+     scope.dbo.loadBundle(bndl2);
      expect(loadedMetaDataService.getCurBndl).toHaveBeenCalled();
-     deferred.resolve({status: 200, data: { mediaFile: { data: [1, 2, 3]}}});
+     deferred.resolve({status: 200, data: { mediaFile: { encoding: 'BASE64', data: [1, 2, 3]}}});
      scope.$apply();
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.reject({ status: { message: 'error_msg2' }});
