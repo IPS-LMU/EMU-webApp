@@ -299,6 +299,12 @@
 								"items": {
 									"type": "string"
 								}
+							},
+							"labelFontFamily": {
+								"type": "string"
+							},
+							"labelFontPxSize":{
+								"type": "integer"
 							}
 						},
 						"required": ["order"],
