@@ -183,6 +183,7 @@ angular.module('emuwebApp')
 							if (!viewState.getdragBarActive()) {
 								if (viewState.getPermission('labelAction')) {
 									scope.switchMarkupContext(event, false);
+									viewState.curMouseTrackName = undefined;
 								}
 							}
 						}
