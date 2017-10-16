@@ -1,5 +1,13 @@
 # What's New
 
+## Version 0.1.11
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- preview of newly drawn link in hierarchy view is back
+
 ## Version 0.1.10
 
 ### new features / performance tweaks / improvements

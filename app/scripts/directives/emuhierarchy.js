@@ -1511,12 +1511,12 @@ angular.module('emuwebApp')
 							.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
 						;
 
-						//var preview = scope.svg.append('path')
-						//	.attr('class', 'emuhierarchy-newlinkpreview')
-						//	.attr('d', scope.getPreviewPath)
-						//	.style('stroke', scope.getPreviewColor)
-						//	.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
-						//	;
+						scope.svg.append('path')
+							.attr('class', 'emuhierarchy-newlinkpreview')
+							.attr('d', scope.getPreviewPath)
+							.style('stroke', scope.getPreviewColor)
+							.style('stroke-width', scope.getOrientatedLinkStrokeWidth)
+							;
 
 					}
 
