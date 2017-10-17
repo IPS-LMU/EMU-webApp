@@ -4,7 +4,7 @@
 
 ### new features / performance tweaks / improvements
 
-- the x crosshair is now visible when the mouse is on a level canvas (before: only when mouse was on signal canvas; issue \#228)
+- the x crosshair is now extended to the level canvases (also fixes issue \#228)
 
 ### bug fixes
 
