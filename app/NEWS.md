@@ -9,6 +9,7 @@
 ### bug fixes
 
 - preview of newly drawn link in hierarchy view is back
+- catching enter in forced modals (e.g. anagest) to avoid undefined breaks in predefined work flows (closed \#236)
 
 ## Version 0.1.10
 

@@ -915,7 +915,9 @@ angular.module('emuwebApp')
 							if (code === ConfigProviderService.vals.keyMappings.createNewItemAtSelection) {
 								// auto action in model when open and user presses 'enter'
 								if (modalService.isOpen) {
-									modalService.confirmContent();
+									if(modalService.force === false){
+										modalService.confirmContent();
+                                    }
 								}
 								else {
 									if (viewState.curClickLevelIndex === undefined) {
