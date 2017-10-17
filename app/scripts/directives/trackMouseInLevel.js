@@ -302,7 +302,7 @@ angular.module('emuwebApp')
 					if (doChange) {
 						if (scope.lastEventMove.current !== undefined && scope.lastEventMove.nearest !== undefined) {
 							scope.lastNeighboursMove = LevelService.getItemNeighboursFromLevel(scope.levelName, scope.lastEventMove.nearest.id, scope.lastEventMove.nearest.id);
-							viewState.setcurMouseItem(scope.lastEventMove.nearest, scope.lastNeighboursMove, scope.lastPCM, scope.lastEventMove.isFirst, scope.lastEventMove.isLast);
+							viewState.setcurMouseItem(scope.lastEventMove.nearest, scope.lastNeighboursMove, viewState.getX(x), scope.lastEventMove.isFirst, scope.lastEventMove.isLast);
 						}
 					}
 					viewState.setcurMouseLevelName(scope.levelName);

@@ -51,10 +51,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.curMouseX', function () {
-					// only repaint if mouse over current level
-					if (scope.vs.getcurMouseLevelName() === scope.level.name) {
-						scope.drawLevelMarkup();
-					}
+					scope.drawLevelMarkup();
 				}, true);
 
 				//
@@ -426,6 +423,9 @@ angular.module('emuwebApp')
 						ctx.fillStyle = ConfigProviderService.design.color.black;
 
 					}
+
+					// draw cursor
+					Drawhelperservice.drawCrossHairX(ctx, viewState.curMouseX);
 				};
 
 				/**

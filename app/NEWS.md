@@ -4,6 +4,8 @@
 
 ### new features / performance tweaks / improvements
 
+- the x crosshair is now extended to the level canvases (also fixes issue \#228)
+
 ### bug fixes
 
 - preview of newly drawn link in hierarchy view is back
