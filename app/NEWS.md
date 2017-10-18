@@ -10,6 +10,7 @@
 
 - preview of newly drawn link in hierarchy view is back
 - catching enter in forced modals (e.g. anagest) to avoid undefined breaks in predefined work flows (closed \#236)
+- modals are cleanly initialized (before, modals could accidentally re-use e.g. the return value or force property of the previously shown modal; see \#203) 
 
 ## Version 0.1.10
 
