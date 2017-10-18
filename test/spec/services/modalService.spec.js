@@ -37,17 +37,7 @@ describe('Service: modalService', function () {
     expect(scope.modal.templateUrl).toEqual('template');
     expect(scope.vs.setState).toHaveBeenCalled();    
   });
-  
-  /**
-   *
-   */
-  it('should changeModal', function () {
-    scope.modal.changeModal('template','dataIn','dataExport','force');
-    expect(scope.modal.templateUrl).toEqual('template');
-    expect(scope.modal.dataIn).toEqual('dataIn');
-    expect(scope.modal.dataExport).toEqual('dataExport'); 
-  });
-  
+
   /**
    *
    */

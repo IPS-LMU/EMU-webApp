@@ -45,25 +45,6 @@ angular.module('emuwebApp')
 			return sServObj.defer.promise;
 		};
 
-
-		/**
-		 *
-		 */
-		sServObj.changeModal = function (template, param1, param2, force) {
-			if (param1 !== undefined) {
-				sServObj.dataIn = param1;
-			}
-			if (param2 !== undefined) {
-				sServObj.dataExport = param2;
-			}
-			if (force !== undefined) { // force user to do sth
-				sServObj.force = force;
-			}
-			sServObj.deferChange = $q.defer();
-			sServObj.templateUrl = template;
-			return sServObj.deferChange.promise;
-		};
-
 		/**
 		 *
 		 */
