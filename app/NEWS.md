@@ -5,6 +5,7 @@
 ### new features / performance tweaks / improvements
 
 - the x crosshair is now extended to the level canvases (also fixes issue \#228)
+- new shortcuts Shift+1 .. Shift+9 for switching perspectives
 
 ### bug fixes
 
