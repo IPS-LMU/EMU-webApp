@@ -992,7 +992,7 @@ angular.module('emuwebApp')
 					newIdx = i;
 				}
 			}
-			viewState.curPerspectiveIdx = newIdx;
+			viewState.switchPerspective(newIdx, ConfigProviderService.vals.perspectives);
 			// close submenu
 			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
 		};

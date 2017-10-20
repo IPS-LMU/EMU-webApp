@@ -37,34 +37,67 @@ angular.module('emuwebApp')
 				paths.possible = paths.possible.concat(sServObj.findPaths(l.name));
 			});
 
+
+            // remove partial paths
+            var partialPathsIdx = [];
+
+            // loop twice to compare each item against each other item
+            angular.forEach(paths.possible, function(path1, index1){
+                angular.forEach(paths.possible, function(path2, index2){
+                	if (index1 === index2) {
+                		// Do not compare item against itself
+                		return;
+					}
+
+					if (partialPathsIdx.indexOf(index1) !== -1) {
+                		// path1 is already known to be a partial of some other
+						// path; do not consider path1 again
+                		return;
+					}
+
+					// See if the beginning of path2 is path1; if so, throw
+					// path1 away
+
+					if(sServObj.pathStartsWith(path2, path1)){
+                        partialPathsIdx.push(index1);
+                    }
+                });
+            });
+
+            angular.forEach(partialPathsIdx.reverse(), function(idx){
+                paths.possible.splice(idx, 1);
+            });
+
+
 			// convert array paths to strings
 			angular.forEach(paths.possible, function (arr) {
-			
 				var revArr = StandardFuncsService.reverseCopy(arr);
-
 				var curPathStr = revArr.join(' → ');
-
 				paths.possibleAsStr.push(curPathStr);
 			});
 
-			// remove partial paths
-			var partialPathsIdx = [];
 
-			angular.forEach(paths.possibleAsStr, function(p1, idx1){
-				angular.forEach(paths.possibleAsStr, function(p2){
-					if(p1 !== p2 && p2.startsWith(p1) && partialPathsIdx.indexOf(idx1) === -1){
-						partialPathsIdx.push(idx1);
-					}
-				});
-			});
-
-			angular.forEach(partialPathsIdx.reverse(), function(idx){
-				paths.possibleAsStr.splice(idx, 1);
-				paths.possible.splice(idx, 1);
-			});
 
 			return paths;
 
+		};
+
+
+		// paths are arrays of level names (strings) in reverse order
+		sServObj.pathStartsWith = function(superPath, subPathCandidate) {
+			if (subPathCandidate.length > superPath.length) {
+				return false;
+			}
+
+			var lengthDifference = superPath.length - subPathCandidate.length;
+
+			for (var i = subPathCandidate.length - 1; i >= 0; --i) {
+                if (subPathCandidate[i] !== superPath[i + lengthDifference]) {
+                    return false;
+                }
+            }
+
+            return true;
 		};
 
 

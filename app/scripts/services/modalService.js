@@ -13,19 +13,23 @@ angular.module('emuwebApp')
 		// shared service object
 		var sServObj = {};
 
-		sServObj.isOpen = false;
-		sServObj.templateUrl = '';
-		sServObj.defer = undefined;
-		sServObj.deferChange = undefined;
-		sServObj.force = false;
-		sServObj.dataOut = undefined;
-		sServObj.dataIn = undefined;
-		sServObj.dataExport = undefined;
+		sServObj.initialize = function() {
+            sServObj.isOpen = false;
+            sServObj.templateUrl = '';
+            sServObj.defer = undefined;
+            sServObj.deferChange = undefined;
+            sServObj.force = false;
+            sServObj.dataOut = undefined;
+            sServObj.dataIn = undefined;
+            sServObj.dataExport = undefined;
+        };
 
 		/**
 		 * open modal normally
 		 */
 		sServObj.open = function (template, param1, param2, force) {
+		    sServObj.initialize();
+
 			if (param1 !== undefined) {
 				sServObj.dataIn = param1;
 				if (param1.y !== undefined) {
@@ -45,29 +49,12 @@ angular.module('emuwebApp')
 			return sServObj.defer.promise;
 		};
 
-
-		/**
-		 *
-		 */
-		sServObj.changeModal = function (template, param1, param2, force) {
-			if (param1 !== undefined) {
-				sServObj.dataIn = param1;
-			}
-			if (param2 !== undefined) {
-				sServObj.dataExport = param2;
-			}
-			if (force !== undefined) { // force user to do sth
-				sServObj.force = force;
-			}
-			sServObj.deferChange = $q.defer();
-			sServObj.templateUrl = template;
-			return sServObj.deferChange.promise;
-		};
-
 		/**
 		 *
 		 */
 		sServObj.error = function (msg) {
+            sServObj.initialize();
+
 			sServObj.dataIn = msg;
 			sServObj.templateUrl = 'views/error.html';
 			viewState.setState('modalShowing');

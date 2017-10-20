@@ -82,6 +82,12 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
+				scope.$watch('vs.curPerspectiveIdx', function () {
+					scope.drawLevelDetails();
+					scope.drawLevelMarkup();
+				}, true);
+
+				//
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
 						scope.drawLevelDetails();

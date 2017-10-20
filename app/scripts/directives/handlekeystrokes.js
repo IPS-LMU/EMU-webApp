@@ -1027,7 +1027,35 @@ angular.module('emuwebApp')
 								}
 							}
 
-							// deletePreselBoundary
+                            if (e.originalEvent.code === 'Digit1' && e.shiftKey) {
+                                viewState.switchPerspective(0, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit2' && e.shiftKey) {
+                                viewState.switchPerspective(1, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit3' && e.shiftKey) {
+                                viewState.switchPerspective(2, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit4' && e.shiftKey) {
+                                viewState.switchPerspective(3, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit5' && e.shiftKey) {
+                                viewState.switchPerspective(4, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit6' && e.shiftKey) {
+								viewState.switchPerspective(5, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit7' && e.shiftKey) {
+                                viewState.switchPerspective(6, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit8' && e.shiftKey) {
+                                viewState.switchPerspective(7, ConfigProviderService.vals.perspectives);
+                            }
+                            if (e.originalEvent.code === 'Digit9' && e.shiftKey) {
+                                viewState.switchPerspective(8, ConfigProviderService.vals.perspectives);
+                            }
+
+                            // deletePreselBoundary
 							if (code === ConfigProviderService.vals.keyMappings.deletePreselBoundary) {
 								if (viewState.getPermission('labelAction')) {
 									e.preventDefault();

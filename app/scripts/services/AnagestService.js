@@ -48,10 +48,19 @@ angular.module('emuwebApp')
 
 			/////////////////////////////////////////
 
-			var gdat = [NaN, NaN];
-			var vdat = [NaN, NaN];
-			var ndat = [NaN, NaN];
-			var cdat = [NaN, NaN];
+			var gdat = [NaN, NaN]; // gesture on- and offset
+			var vdat = [NaN, NaN]; // peak velocities
+			var ndat = [NaN, NaN]; // plateatu/nucleus on- and offset
+			var cdat = [NaN]; // center
+
+
+			// Looking for peak or for valley?
+			var lookingForPeak;
+			if (ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureDirection === "valley") {
+				lookingForPeak = false;
+			} else {
+				lookingForPeak = true;
+			}
 
 
 			// easiest way to handle non-tangential signals (and has no effect on tangential signals)
@@ -70,8 +79,14 @@ angular.module('emuwebApp')
 
 
 			// maxConstr
-			var maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'max');
-			cdat[0] = maxVerticalPos.idx;
+			var maxVerticalPos;
+			if (lookingForPeak) {
+				maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'max');
+				cdat[0] = maxVerticalPos.idx;
+			} else {
+				maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'min');
+				cdat[0] = maxVerticalPos.idx;
+			}
 
 			// max vel before max constriction
 			var maxVelBeforeMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(0, cdat[0] + 1), 'max');

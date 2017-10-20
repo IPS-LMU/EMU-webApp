@@ -52,6 +52,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         e.which = key;
         e.keyCode = key;
         e.shiftKey = shiftKey;
+        e.originalEvent = jQuery.Event('keypress'); // this works but originalEvent should actually be a browser-event, not a jquery-event
         $(document).triggerHandler(e);
     }
 
@@ -85,6 +86,7 @@ describe('Directive: handleglobalkeystrokes', function() {
         e.which = 40;
         e.keyCode = 40;
         e.shiftKey = false;
+        e.originalEvent = jQuery.Event('keydown'); // this works but originalEvent should actually be a browser-event, not a jquery-event
         $(document).triggerHandler(e);
         expect(scope.applyKeyCode).toHaveBeenCalled();
      });
