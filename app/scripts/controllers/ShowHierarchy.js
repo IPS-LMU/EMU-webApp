@@ -14,39 +14,9 @@ angular.module('emuwebApp')
 		$scope.vs = viewState;
 		$scope.standardFuncServ = StandardFuncsService;
 
-		// SIC: this init code should use findAllNonPartialPaths of HierarchyLayoutService instead!
-
-		// Find all levels to start calculating possible paths through the hierarchy of levels
-		angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (l) {
-			$scope.paths.possible = $scope.paths.possible.concat(HierarchyLayoutService.findPaths(l.name));
-		});
-
-		// convert array paths to strings
-		angular.forEach($scope.paths.possible, function (arr) {
-			
-			var revArr = StandardFuncsService.reverseCopy(arr);
-
-			var curPathStr = revArr.join(' → ');
-
-			$scope.paths.possibleAsStr.push(curPathStr);
-		});
-
-		// remove partial paths
-		var partialPathsIdx = [];
-
-		angular.forEach($scope.paths.possibleAsStr, function(p1, idx1){
-			angular.forEach($scope.paths.possibleAsStr, function(p2){
-				if(p1 !== p2 && p2.startsWith(p1) && partialPathsIdx.indexOf(idx1) === -1){
-					partialPathsIdx.push(idx1);
-				}
-			});
-		});
-
-		angular.forEach(partialPathsIdx.reverse(), function(idx){
-			$scope.paths.possibleAsStr.splice(idx, 1);
-			$scope.paths.possible.splice(idx, 1);
-		});
-
+		var pathInfo = HierarchyLayoutService.findAllNonPartialPaths();
+		$scope.paths.possible = pathInfo.possible;
+		$scope.paths.possibleAsStr = pathInfo.possibleAsStr;
 
 		// select first possible path on load
 		$scope.paths.selected = $scope.paths.possibleAsStr[viewState.hierarchyState.curPathIdx];
