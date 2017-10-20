@@ -65,7 +65,7 @@
 			"verticalPosSsffTrackName": "tt_posz",
 			"velocitySsffTrackName": "t_tipTV",
 			"autoLinkLevelName": "ORT",
-			"multiplicationFactor": 1,
+			"gestureDirection": "peak",
 			"threshold": 0.2,
 			"gestureOnOffsetLabels": ["gon", "goff"],
 			"maxVelocityOnOffsetLabels": ["von", "voff"],

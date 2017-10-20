@@ -6,12 +6,14 @@
 
 - the x crosshair is now extended to the level canvases (also fixes issue \#228)
 - new shortcuts Shift+1 .. Shift+9 for switching perspectives
+- the configuration option "multiplicationFactor" for the anagest module (gesture analysis) was renamed to "gestureDirection"; the value must now be either "peak" or "valley" instead of 1/-1; please change the DBconfig.json of emuDBs with EMA data accordingly
 
 ### bug fixes
 
 - preview of newly drawn link in hierarchy view is back
 - catching enter in forced modals (e.g. anagest) to avoid undefined breaks in predefined work flows (closed \#236)
-- modals are cleanly initialized (before, modals could accidentally re-use e.g. the return value or force property of the previously shown modal; see \#203) 
+- modals are cleanly initialized (before, modals could accidentally re-use e.g. the return value or force property of the previously shown modal; see \#203)
+- the anagest module (gesture analysis) can now analyze opening gestures (represented by a valley in the corresponding EMA sensor position track) 
 
 ## Version 0.1.10
 
