@@ -97,8 +97,8 @@
 							"autoLinkLevelName": {
 								"type": "string"
 							},
-							"multiplicationFactor": {
-								"enum": [-1, 1]
+							"gestureDirection": {
+								"enum": ["peak", "valley"]
 							},
 							"threshold": {
 								"type": "number",
@@ -133,7 +133,7 @@
 								"type": "string"
 							}
 						},
-						"required": ["verticalPosSsffTrackName", "velocitySsffTrackName", "autoLinkLevelName", "multiplicationFactor", "threshold", "gestureOnOffsetLabels", "maxVelocityOnOffsetLabels", "constrictionPlateauBeginEndLabels", "maxConstrictionLabel"],
+						"required": ["verticalPosSsffTrackName", "velocitySsffTrackName", "autoLinkLevelName", "gestureDirection", "threshold", "gestureOnOffsetLabels", "maxVelocityOnOffsetLabels", "constrictionPlateauBeginEndLabels", "maxConstrictionLabel"],
 						"additionalProperties": false,
 						"uniqueItems": true
 					}

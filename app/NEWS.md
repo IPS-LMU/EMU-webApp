@@ -1,6 +1,6 @@
 # What's New
 
-## Version 0.1.11.9000
+## Version 0.1.12
 
 ### new features / performance tweaks / improvements
 
