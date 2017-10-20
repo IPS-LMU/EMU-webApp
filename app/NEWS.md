@@ -13,7 +13,9 @@
 - preview of newly drawn link in hierarchy view is back
 - catching enter in forced modals (e.g. anagest) to avoid undefined breaks in predefined work flows (closed \#236)
 - modals are cleanly initialized (before, modals could accidentally re-use e.g. the return value or force property of the previously shown modal; see \#203)
-- the anagest module (gesture analysis) can now analyze opening gestures (represented by a valley in the corresponding EMA sensor position track) 
+- the anagest module (gesture analysis) can now analyze opening gestures (represented by a valley in the corresponding EMA sensor position track)
+- similar level names (e.g. Phonetic and Phonetic2) are now correctly handled in path search; this means that the list of paths in hierarchy view and search is now correct again (closed \#210)
+- when closing the hierarchy modal, the selected path will now always be remembered (closed \#240)   
 
 ## Version 0.1.10
 
