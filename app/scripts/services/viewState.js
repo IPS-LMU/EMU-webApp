@@ -1388,7 +1388,6 @@ angular.module('emuwebApp')
 
 		sServObj.switchPerspective = function (index, allPerspectives) {
 		    // @ todo check permission/state machine
-            // @ todo repaint canvases
             if (allPerspectives.length > index) {
 				sServObj.curPerspectiveIdx = index;
             }
