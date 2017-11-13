@@ -1,5 +1,15 @@
 # What's New
 
+## Version 0.1.11.9000
+
+### new features / performance tweaks / improvements
+
+- .wav file header parser improved to accept fmt chunk in variable chunk position in header
+
+### bug fixes
+
+
+
 ## Version 0.1.11
 
 ### new features / performance tweaks / improvements
