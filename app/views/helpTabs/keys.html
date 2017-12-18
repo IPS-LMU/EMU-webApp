@@ -14,7 +14,7 @@
 			<td>open bundleList sidebar (left)</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td>
+			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td>
 			<td>open perspective sidebar (right)</td>
 		</tr>
 		<tr>
@@ -62,11 +62,11 @@
 			<td>preselect previous item</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td>
+			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td>
 			<td>add next item to preselection</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td>
+			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td>
 			<td>add previous item to preselection</td>
 		</tr>
 		<tr>
@@ -74,11 +74,11 @@
 			<td>select all items in marked area</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.saveBndl)}}</b></td>
+			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.saveBndl)}}</b></td>
 			<td>save current bundle</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>1..9</b></td>
+			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>1..9</b></td>
 			<td>switch to perspective 1..9</td>
 		</tr>
 
@@ -99,7 +99,7 @@
 			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool">undo last action</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td>
+			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td>
 			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool">redo last action</td>
 		</tr>
 		<tr>
@@ -115,7 +115,7 @@
 			<td ng-show="cps.vals.restrictions.deleteItemBoundary">delete preselected boundary / event marker</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.deleteItem"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td>
+			<td ng-show="cps.vals.restrictions.deleteItem"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td>
 			<td ng-show="cps.vals.restrictions.deleteItem">delete selected event(s) or segment(s)</td>
 		</tr>
 		<tr>
@@ -139,11 +139,11 @@
 			<td ng-show="cps.vals.restrictions.editItemSize">remove time from preselected items (shrink from right)</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsLeft)}}</b></td>
+			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsLeft)}}</b></td>
 			<td ng-show="cps.vals.restrictions.editItemSize">add time to preselected items (expand to left)</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeft)}}</b></td>
+			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeft)}}</b></td>
 			<td ng-show="cps.vals.restrictions.editItemSize">remove time from preselected items (shrink from left)</td>
 		</tr>
 		<tr>
@@ -179,7 +179,7 @@
 			<td>play/pause in view (also use as general stop for playback)</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> plus <b>{{cps.getStrRep(cps.vals.keyMappings.playAllInView)}}</b></td>
+			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.playAllInView)}}</b></td>
 			<td>play/pause in view to end of file with autoscrolling</td>
 		</tr>
 
