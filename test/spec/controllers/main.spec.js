@@ -7,7 +7,7 @@ describe('Controller: MainController', function () {
 
   var emptyObject = {};
 
-  var $window;
+  var $window, $location;
   var MainCtrl, scope, deferred;
   var testSizeAll = 58809;
   var testSizeStart = 10;
@@ -34,9 +34,10 @@ describe('Controller: MainController', function () {
     Validationservice,
     Wavparserservice,
     loadedMetaDataService,
-    Textgridparserservice, _$window_) {
+    Textgridparserservice, _$window_, _$location_) {
 
     $window = _$window_;
+    $location = _$location_;
 
     // initiate the controller and mock the scope
     scope = $rootScope.$new();
@@ -633,6 +634,7 @@ describe('Controller: MainController', function () {
      var ioDeferred = $q.defer();
      var ioDeferred2 = $q.defer();
      var wavDeferred = $q.defer();
+     spyOn($location, 'search').and.returnValue({audioGetUrl: 'test.wav', labelGetUrl: 'test_annot.json'});
      spyOn(scope.io, 'httpGetPath').and.returnValue(ioDeferred.promise);
      spyOn(scope.cps, 'setVals');
      spyOn(scope.valid, 'validateJSO').and.returnValue(true);

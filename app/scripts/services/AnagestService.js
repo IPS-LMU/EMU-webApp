@@ -56,7 +56,7 @@ angular.module('emuwebApp')
 
 			// Looking for peak or for valley?
 			var lookingForPeak;
-			if (ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureDirection === "valley") {
+			if (ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureDirection === 'valley') {
 				lookingForPeak = false;
 			} else {
 				lookingForPeak = true;

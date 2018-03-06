@@ -134,7 +134,7 @@ angular.module('emuwebApp')
 		//
 		////////////
 
-		// check if URL parameters are set -> if so set embedded flags!
+		// check if URL parameters are set -> if so set embedded flags! SIC this should probably be moved to loadFilesForEmbeddedApp
 		var searchObject = $location.search();
 		if (searchObject.audioGetUrl && searchObject.labelGetUrl && searchObject.labelType) {
 			ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
@@ -147,7 +147,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.loadFilesForEmbeddedApp = function () {
-			if (ConfigProviderService.embeddedVals.audioGetUrl) {
+            var searchObject = $location.search();
+			if (searchObject.audioGetUrl) {
+                ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
 				ConfigProviderService.vals.activeButtons.openDemoDB = false;
 				Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
 					viewState.showDropZone = false;
@@ -163,7 +165,6 @@ angular.module('emuwebApp')
 					viewState.somethingInProgressTxt = 'Loading DB config...';
 
 					// test if DBconfigGetUrl is set if so use it
-					var searchObject = $location.search();
 					var DBconfigGetUrl;
 					if (searchObject.DBconfigGetUrl){
 						DBconfigGetUrl = searchObject.DBconfigGetUrl;
@@ -214,48 +215,58 @@ angular.module('emuwebApp')
 										respType = 'text'; 
 									}
 									// get + parse file
-									Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
-										viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
-										Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
+									if(searchObject.labelGetUrl){
+										Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
+											viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
+											Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
-											var annot = parseMess;
-											DataService.setData(annot);
+												var annot = parseMess;
+												DataService.setData(annot);
 
-											// if no DBconfigGetUrl is given generate levelDefs and co. from annotation
-											if (!searchObject.DBconfigGetUrl){
+												// if no DBconfigGetUrl is given generate levelDefs and co. from annotation
+												if (!searchObject.DBconfigGetUrl){
 
-												var lNames = [];
-												var levelDefs = [];
-												annot.levels.forEach(function (l) {
-													lNames.push(l.name);
-													levelDefs.push({
-														'name': l.name,
-														'type': l.type,
-														'attributeDefinitions': {
+													var lNames = [];
+													var levelDefs = [];
+													annot.levels.forEach(function (l) {
+														lNames.push(l.name);
+														levelDefs.push({
 															'name': l.name,
-															'type': 'string'
-														}
+															'type': l.type,
+															'attributeDefinitions': {
+																'name': l.name,
+																'type': 'string'
+															}
+														});
 													});
-												});
 
-												ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+													ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
 
-												ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-											}
-											
-											viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+													ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+												}
 
-											viewState.somethingInProgressTxt = 'Done!';
-											viewState.somethingInProgress = false;
-											viewState.setState('labeling');
+												viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+
+												viewState.somethingInProgressTxt = 'Done!';
+												viewState.somethingInProgress = false;
+												viewState.setState('labeling');
+
+											}, function (errMess) {
+												modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+											});
 
 										}, function (errMess) {
-											modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+											modalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
 										});
-
-									}, function (errMess) {
-										modalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
-									});
+                                    }else{
+										// hide download + search buttons
+										ConfigProviderService.vals.activeButtons.downloadAnnotation = false;
+                                        ConfigProviderService.vals.activeButtons.downloadTextGrid = false;
+                                        ConfigProviderService.vals.activeButtons.search = false;
+                                        viewState.somethingInProgressTxt = 'Done!';
+                                        viewState.somethingInProgress = false;
+                                        viewState.setState('labeling');
+									}
 
 
 								}, function (errMess) {

@@ -79,7 +79,7 @@ angular.module('emuwebApp')
                 curBufferView = new Uint8Array(curBuffer);
                 var cur4chars = sServObj.ab2str(curBufferView);
                 if(cur4chars === 'fmt '){
-                    console.log("found fmt chunk at" + fmtBinIdx);
+                    console.log('found fmt chunk at' + fmtBinIdx);
                     headerInfos.FmtSubchunkID = 'fmt ';
                     foundChunk = true;
 
@@ -123,7 +123,6 @@ angular.module('emuwebApp')
             curBuffer = buf.subarray(curBinIdx, 2);
             curBufferView = new Uint16Array(curBuffer);
             headerInfos.NumChannels = curBufferView[0];
-            console.error('Wav read : NumChannels not 1' + headerInfos.NumChannels);
             if (headerInfos.NumChannels < 1) {
                 return ({
                     'status': {

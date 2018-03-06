@@ -55,10 +55,10 @@ by hitting the ⏎ Return Key:
 
 Other actions that can be performed on preselected items include:
 
-- select next item in level (Keyboard Shortcut `TAB`)
-- select previous item in level (Keyboard Shortcut `SHIFT plus TAB`)
+- select next item in level (Keyboard Shortcut `Tab`)
+- select previous item in level (Keyboard Shortcut `Shift + Tab`)
 - add time to selected item(s) (Keyboard Shortcut `+`)
-- move selected item(s) (hold down `ALT` Key and drag to desired position)
+- move selected item(s) (hold down `Alt` Key and drag to desired position)
 
 **NOTE:** *by right-clicking adjacent items it is possible to select multiple items at once*
 

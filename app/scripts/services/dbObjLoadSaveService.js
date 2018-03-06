@@ -67,11 +67,11 @@ angular.module('emuwebApp')
 
 							var arrBuff;
 							// set wav file
-							if(bundleData.mediaFile.encoding === "BASE64"){
+							if(bundleData.mediaFile.encoding === 'BASE64'){
 								arrBuff = Binarydatamaniphelper.base64ToArrayBuffer(bundleData.mediaFile.data);
                                 innerLoadBundle(bndl, bundleData, arrBuff, defer);
-                            }else if(bundleData.mediaFile.encoding === "GETURL"){
-                                Iohandlerservice.httpGetPath(bundleData.mediaFile.data, "arraybuffer").then(function (res) {
+                            }else if(bundleData.mediaFile.encoding === 'GETURL'){
+                                Iohandlerservice.httpGetPath(bundleData.mediaFile.data, 'arraybuffer').then(function (res) {
                                     innerLoadBundle(bndl, bundleData, res.data, defer);
                                 });
 							}

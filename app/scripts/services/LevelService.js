@@ -459,7 +459,7 @@ angular.module('emuwebApp')
                 'padding-top': Math.round(height / 3 + 1) + 'px'
             };
 			// add custom label font to CSS if specified
-			if(typeof ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.labelFontFamily !== "undefined"){
+			if(typeof ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.labelFontFamily !== 'undefined'){
                 cssObj['font-family'] = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.labelFontFamily;
 			}
 			element.prepend($('<textarea>').attr({

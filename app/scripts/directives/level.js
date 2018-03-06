@@ -166,7 +166,7 @@ angular.module('emuwebApp')
 				scope.drawLevelDetails = function () {
                     var labelFontFamily; // font family used for labels only
                     var fontFamily = scope.cps.design.font.small.family; // font family used for everything else
-                    if(typeof scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.labelFontFamily === "undefined"){
+                    if(typeof scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined'){
                         labelFontFamily = scope.cps.design.font.small.family;
                     }else{
                         labelFontFamily = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.labelFontFamily;
@@ -174,7 +174,7 @@ angular.module('emuwebApp')
 
                     var labelFontSize; // font family used for labels only
 					var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
-                    if(typeof scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.fontPxSize === "undefined") {
+                    if(typeof scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
                         labelFontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
                     }else{
                         labelFontSize = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.labelFontPxSize;
