@@ -150,6 +150,11 @@
 				"contourColors": [{
 				    "ssffTrackName": "FORMANTS",
 				    "colors": ["rgb(238,130,238)", "rgb(127,255,212)"]
+				}],
+				"minMaxValLims":[{
+					"ssffTrackName": "fundFreq",
+					"minVal": 0,
+					"maxVal": 200
 				}]
 			},
 			"levelCanvases": {
