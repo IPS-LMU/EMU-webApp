@@ -140,6 +140,18 @@ angular.module('emuwebApp')
 				console.log('INFO: appCache.status: ' + appCache.status);
 				appCache.update();
 			}
+
+            if ('serviceWorker' in navigator) {
+				console.log("service worker available")
+                // navigator.serviceWorker.register('/sw-test/sw.js', {scope: '/sw-test/'})
+                //     .then(function(reg) {
+                //         // registration worked
+                //         console.log('Registration succeeded. Scope is ' + reg.scope);
+                //     }).catch(function(error) {
+                //     // registration failed
+                //     console.log('Registration failed with ' + error);
+                // });
+            }
 		};
 
 		return sServObj;
