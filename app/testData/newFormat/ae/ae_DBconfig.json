@@ -156,12 +156,10 @@
 					"minVal": 0,
 					"maxVal": 200
 				}],
-				"horizontalLines": [
-					{
-						"ssffTrackName": "fundFreq",
-						"yValues": [50, 150]
-					}
-				]
+				"horizontalLines": [{
+                    "ssffTrackName": "fundFreq",
+                    "yValues": [50, 150]
+                }]
 			},
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"],
