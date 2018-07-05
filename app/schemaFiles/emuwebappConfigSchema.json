@@ -258,7 +258,7 @@
 										},
 										"displayLine": {
 											"type": "boolean"
-										},
+										}
 									},
 									"required": ["signalCanvasName", "ssffTrackName"],
 									"additionalProperties": false
