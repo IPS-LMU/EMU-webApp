@@ -6,6 +6,8 @@
 
 - .wav file header parser improved to accept fmt chunk in variable chunk position in header
 - audioGetUrl get parameter can be now be used by itself
+- added bndlJsonGetUrl as get parameter
+- added horizontalLines to ssffTrack configs
 
 ### bug fixes
 
