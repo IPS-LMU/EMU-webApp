@@ -148,10 +148,19 @@ angular.module('emuwebApp')
 		 */
 		$scope.loadFilesForEmbeddedApp = function () {
             var searchObject = $location.search();
-			if (searchObject.audioGetUrl) {
-                ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
-				ConfigProviderService.vals.activeButtons.openDemoDB = false;
-				Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer').then(function (data) {
+			if (searchObject.audioGetUrl || searchObject.bndlJsonGetUrl) {
+				if(searchObject.audioGetUrl){
+                    ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
+                    ConfigProviderService.vals.activeButtons.openDemoDB = false;
+                    var promise = Iohandlerservice.httpGetPath(
+                    	ConfigProviderService.embeddedVals.audioGetUrl,
+						'arraybuffer'
+					);
+				}else{
+                    var promise = Iohandlerservice.httpGetPath(searchObject.bndlJsonGetUrl, "application/json");
+				}
+
+				promise.then(function (data) {
 					viewState.showDropZone = false;
 					// set bundle name
 					var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
@@ -199,79 +208,83 @@ angular.module('emuwebApp')
 								viewState.somethingInProgress = true;
 								viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-								Wavparserservice.parseWavAudioBuf(data.data).then(function (messWavParser) {
-									var audioBuffer = messWavParser;
-									viewState.curViewPort.sS = 0;
-									viewState.curViewPort.eS = audioBuffer.length;
-									viewState.resetSelect();
-									Soundhandlerservice.audioBuffer = audioBuffer;
-									
-									var respType;
-									if(ConfigProviderService.embeddedVals.labelType === 'TEXTGRID'){
-										respType = 'text';
-									}else{
-										// setting everything to text because the BAS webservices somehow respond with a 
-										// 200 (== successful response) but the data field is empty
-										respType = 'text'; 
-									}
-									// get + parse file
-									if(searchObject.labelGetUrl){
-										Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
-											viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
-											Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
+								if(searchObject.audioGetUrl){
+									Wavparserservice.parseWavAudioBuf(data.data).then(function (messWavParser) {
+										var audioBuffer = messWavParser;
+										viewState.curViewPort.sS = 0;
+										viewState.curViewPort.eS = audioBuffer.length;
+										viewState.resetSelect();
+										Soundhandlerservice.audioBuffer = audioBuffer;
 
-												var annot = parseMess;
-												DataService.setData(annot);
+										var respType;
+										if(ConfigProviderService.embeddedVals.labelType === 'TEXTGRID'){
+											respType = 'text';
+										}else{
+											// setting everything to text because the BAS webservices somehow respond with a
+											// 200 (== successful response) but the data field is empty
+											respType = 'text';
+										}
+										// get + parse file
+										if(searchObject.labelGetUrl){
+											Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
+												viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
+												Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
 
-												// if no DBconfigGetUrl is given generate levelDefs and co. from annotation
-												if (!searchObject.DBconfigGetUrl){
+													var annot = parseMess;
+													DataService.setData(annot);
 
-													var lNames = [];
-													var levelDefs = [];
-													annot.levels.forEach(function (l) {
-														lNames.push(l.name);
-														levelDefs.push({
-															'name': l.name,
-															'type': l.type,
-															'attributeDefinitions': {
+													// if no DBconfigGetUrl is given generate levelDefs and co. from annotation
+													if (!searchObject.DBconfigGetUrl){
+
+														var lNames = [];
+														var levelDefs = [];
+														annot.levels.forEach(function (l) {
+															lNames.push(l.name);
+															levelDefs.push({
 																'name': l.name,
-																'type': 'string'
-															}
+																'type': l.type,
+																'attributeDefinitions': {
+																	'name': l.name,
+																	'type': 'string'
+																}
+															});
 														});
-													});
 
-													ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+														ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
 
-													ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
-												}
+														ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order = lNames;
+													}
 
-												viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+													viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
 
-												viewState.somethingInProgressTxt = 'Done!';
-												viewState.somethingInProgress = false;
-												viewState.setState('labeling');
+													viewState.somethingInProgressTxt = 'Done!';
+													viewState.somethingInProgress = false;
+													viewState.setState('labeling');
+
+												}, function (errMess) {
+													modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+												});
 
 											}, function (errMess) {
-												modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+												modalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
 											});
-
-										}, function (errMess) {
-											modalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
-										});
-                                    }else{
-										// hide download + search buttons
-										ConfigProviderService.vals.activeButtons.downloadAnnotation = false;
-                                        ConfigProviderService.vals.activeButtons.downloadTextGrid = false;
-                                        ConfigProviderService.vals.activeButtons.search = false;
-                                        viewState.somethingInProgressTxt = 'Done!';
-                                        viewState.somethingInProgress = false;
-                                        viewState.setState('labeling');
-									}
+										}else{
+											// hide download + search buttons
+											ConfigProviderService.vals.activeButtons.downloadAnnotation = false;
+											ConfigProviderService.vals.activeButtons.downloadTextGrid = false;
+											ConfigProviderService.vals.activeButtons.search = false;
+											viewState.somethingInProgressTxt = 'Done!';
+											viewState.somethingInProgress = false;
+											viewState.setState('labeling');
+										}
 
 
-								}, function (errMess) {
-									modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
-								});
+									}, function (errMess) {
+										modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+									});
+                                }else{
+                                    dbObjLoadSaveService.loadBundle({name: 'fromURLparams'}, searchObject.bndlJsonGetUrl);
+								}
 
 							} else {
 								modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4));

@@ -8,15 +8,16 @@
  * Service in the emuwebApp.
  */
 angular.module('emuwebApp')
-	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService, StandardFuncsService) {
+	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, $http, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService, StandardFuncsService) {
 		// shared service object
 		var sServObj = {};
 
 		/**
 		 * general loadBundle method.
 		 * @param bndl object containing name attribute of currently loaded bundle
+		 * @param url if set the bundle is loaded from the given url
 		 */
-		sServObj.loadBundle = function (bndl) {
+		sServObj.loadBundle = function (bndl, url) {
 			var defer = $q.defer();
 			// check if bndl has to be saved
 			viewState.setcurClickItem(null);
@@ -54,7 +55,12 @@ angular.module('emuwebApp')
 					viewState.somethingInProgressTxt = 'Loading bundle: ' + bndl.name;
 					// empty ssff files
 					Ssffdataservice.data = [];
-					Iohandlerservice.getBundle(bndl.name, bndl.session, loadedMetaDataService.getDemoDbName()).then(function (bundleData) {
+					if(!url){
+						var promise = Iohandlerservice.getBundle(bndl.name, bndl.session, loadedMetaDataService.getDemoDbName());
+					}else{
+						var promise = $http.get(url);
+					}
+                    promise.then(function (bundleData) {
 						// check if response from http request
 						if (bundleData.status === 200) {
 							bundleData = bundleData.data;
