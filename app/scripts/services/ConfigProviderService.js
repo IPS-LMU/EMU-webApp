@@ -113,9 +113,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getZeroLineOfTrack = function (trackName) {
-			var res = {};
-			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.zeroLine, function (vL) {
+		sServObj.getHorizontalLinesOfTrack = function (trackName) {
+			var res;
+			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.horizontalLines, function (vL) {
 				if (vL.ssffTrackName === trackName) {
 					res = vL;
 				}

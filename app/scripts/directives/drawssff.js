@@ -161,22 +161,23 @@ angular.module('emuwebApp')
 					var nrOfSamples = colEndSampleNr - colStartSampleNr;
 					var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
-					// draw zero line
-					var drawZeroLine = ConfigProviderService.getZeroLineOfTrack(scope.trackName).displayLine;
-					if (drawZeroLine == "undefined") {
-					  drawZeroLine = false;
-					}
-					if (drawZeroLine === true) {
-						ctx.beginPath();
-					 	ctx.lineWidth = "2";
-            				  	ctx.strokeStyle = "blue";
-            				  	ctx.globalAlpha = 0.75;
-            				  	var zeroY = canvas.height - ((0 - minVal) / (maxVal - minVal) * canvas.height);
-            				  	ctx.moveTo(0, zeroY);
-            				  	ctx.lineTo(10000, zeroY);
-            				  	ctx.stroke();
-            				  	ctx.lineWidth = "1";
-            				  	ctx.globalAlpha = 1;
+					// draw horizontal lines
+					var horizontalLines = ConfigProviderService.getHorizontalLinesOfTrack(scope.trackName);
+					if (horizontalLines) {
+						// loop through array of yVals and draw blue line in canvas
+                        angular.forEach(horizontalLines.yValues, function(yVal){
+                        	ctx.beginPath();
+                        	ctx.lineWidth = "2";
+                        	ctx.strokeStyle = "blue";
+                        	ctx.globalAlpha = 0.75;
+                        	var zeroY = canvas.height - ((yVal - minVal) / (maxVal - minVal) * canvas.height);
+                        	ctx.moveTo(0, zeroY);
+                        	ctx.lineTo(canvas.width, zeroY);
+                        	ctx.stroke();
+                        	ctx.lineWidth = "1";
+                        	ctx.globalAlpha = 1;
+						});
+
 					}
 
 					if (nrOfSamples < canvas.width && nrOfSamples >= 2) {

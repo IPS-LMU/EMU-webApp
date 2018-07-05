@@ -248,7 +248,7 @@
 									"additionalProperties": false
 								}
 							},
-							"zeroLine": {
+							"horizontalLines": {
 								"type": "array",
 								"items": {
 									"type" : "object",
@@ -256,11 +256,14 @@
 										"ssffTrackName": {
 											"type": "string"
 										},
-										"displayLine": {
-											"type": "boolean"
+										"yValues": {
+											"type": "array",
+											"items": {
+												"type": "number"
+											}
 										}
 									},
-									"required": ["signalCanvasName", "ssffTrackName"],
+									"required": ["ssffTrackName", "yValues"],
 									"additionalProperties": false
 								}
 							},
