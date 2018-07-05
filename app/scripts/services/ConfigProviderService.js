@@ -10,7 +10,7 @@ angular.module('emuwebApp')
 		sServObj.curDbConfig = {};
 		sServObj.initDbConfig = {};
 
-		// embedded values -> if these are set this overrides the normal config  
+		// embedded values -> if these are set this overrides the normal config
 		sServObj.embeddedVals = {
 			audioGetUrl: '',
 			labelGetUrl: '',
@@ -50,14 +50,14 @@ angular.module('emuwebApp')
 				});
 			}
 		};
-		
+
 		sServObj.getDelta = function (current) {
 			var defer = $q.defer();
 			var ret = sServObj.getDeltas(current, sServObj.initDbConfig);
 			defer.resolve(ret);
 			return defer.promise;
 		};
-		
+
 		sServObj.getDeltas = function (current, start) {
 			var ret = {};
 			angular.forEach(current, function (value, key) {
@@ -74,12 +74,12 @@ angular.module('emuwebApp')
 						if(key !== 'clear' && key !== 'openDemoDB' && key !== 'specSettings') {
 							ret[key] = value;
 						}
-						
+
 					}
 				}
 			});
 			return ret;
-		};		
+		};
 
 		/**
 		 *
@@ -109,6 +109,19 @@ angular.module('emuwebApp')
 
             return res;
         };
+
+		/**
+		 *
+		 */
+		sServObj.getZeroLineOfTrack = function (trackName) {
+			var res = {};
+			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.zeroLine, function (vL) {
+				if (vL.ssffTrackName === trackName) {
+					res = vL;
+				}
+			});
+			return res;
+		};
 
 		/**
 		 *

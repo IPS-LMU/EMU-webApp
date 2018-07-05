@@ -248,6 +248,22 @@
 									"additionalProperties": false
 								}
 							},
+							"zeroLine": {
+								"type": "array",
+								"items": {
+									"type" : "object",
+									"properties": {
+										"ssffTrackName": {
+											"type": "string"
+										},
+										"displayLine": {
+											"type": "boolean"
+										}
+									},
+									"required": ["signalCanvasName", "ssffTrackName"],
+									"additionalProperties": false
+								}
+							},
 							"contourLims": {
 								"type": "array",
 								"items": {
