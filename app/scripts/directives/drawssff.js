@@ -161,6 +161,24 @@ angular.module('emuwebApp')
 					var nrOfSamples = colEndSampleNr - colStartSampleNr;
 					var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
+					// draw zero line
+					var drawZeroLine = ConfigProviderService.getZeroLineOfTrack(scope.trackName).displayLine;
+					if (drawZeroLine == "undefined") {
+					  drawZeroLine = false;
+					}
+					if (drawZeroLine === true) {
+						ctx.beginPath();
+					 	ctx.lineWidth = "2";
+            				  	ctx.strokeStyle = "blue";
+            				  	ctx.globalAlpha = 0.75;
+            				  	var zeroY = canvas.height - ((0 - minVal) / (maxVal - minVal) * canvas.height);
+            				  	ctx.moveTo(0, zeroY);
+            				  	ctx.lineTo(10000, zeroY);
+            				  	ctx.stroke();
+            				  	ctx.lineWidth = "1";
+            				  	ctx.globalAlpha = 1;
+					}
+
 					if (nrOfSamples < canvas.width && nrOfSamples >= 2) {
 
 						var x, y, curSampleInCol, curSampleInColTime;
