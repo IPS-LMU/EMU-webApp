@@ -1,13 +1,20 @@
 # What's New
 
+## Version 0.1.13
+
+### new features / performance tweaks / improvements
+
+- added bndlJsonGetUrl as get parameter
+- added horizontalLines to ssffTrack configs
+
+### bug fixes
+
 ## Version 0.1.12
 
 ### new features / performance tweaks / improvements
 
 - .wav file header parser improved to accept fmt chunk in variable chunk position in header
 - audioGetUrl get parameter can be now be used by itself
-- added bndlJsonGetUrl as get parameter
-- added horizontalLines to ssffTrack configs
 
 ### bug fixes
 

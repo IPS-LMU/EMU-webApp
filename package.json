@@ -1,6 +1,6 @@
 {
   "name": "emuwebapp",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
   "main": "app/scripts/app.js",
   "author": "Raphael Winkelmann, Georg Raess",
@@ -36,7 +36,7 @@
     "grunt-newer": "^1.1.0",
     "grunt-ng-annotate": "^3.0.0",
     "grunt-postcss": "^0.8.0",
-    "grunt-protractor-runner": "^4.0.0",
+    "grunt-protractor-runner": "^5.0.0",
     "grunt-replace": "^1.0.1",
     "grunt-svgmin": "^4.0.0",
     "grunt-usemin": "^3.0.0",
@@ -54,7 +54,7 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-phantomjs-shim": "^1.4.0",
     "phantomjs-prebuilt": "^2.1.13",
-    "protractor": "^4.0.14",
+    "protractor": "^5.3.2",
     "serve-static": "^1.11.1",
     "time-grunt": "^1.0.0",
     "ws": "^1.1.1"
