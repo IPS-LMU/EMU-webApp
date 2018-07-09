@@ -1,5 +1,15 @@
 # What's New
 
+## Version 0.1.13
+
+### new features / performance tweaks / improvements
+
+- added bndlJsonGetUrl as get parameter
+- added horizontalLines to ssffTrack configs
+- removed google analytics
+
+### bug fixes
+
 ## Version 0.1.12
 
 ### new features / performance tweaks / improvements

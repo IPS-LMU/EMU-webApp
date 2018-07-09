@@ -248,6 +248,25 @@
 									"additionalProperties": false
 								}
 							},
+							"horizontalLines": {
+								"type": "array",
+								"items": {
+									"type" : "object",
+									"properties": {
+										"ssffTrackName": {
+											"type": "string"
+										},
+										"yValues": {
+											"type": "array",
+											"items": {
+												"type": "number"
+											}
+										}
+									},
+									"required": ["ssffTrackName", "yValues"],
+									"additionalProperties": false
+								}
+							},
 							"contourLims": {
 								"type": "array",
 								"items": {

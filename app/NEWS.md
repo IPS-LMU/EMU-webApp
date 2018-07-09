@@ -6,6 +6,7 @@
 
 - added bndlJsonGetUrl as get parameter
 - added horizontalLines to ssffTrack configs
+- removed google analytics
 
 ### bug fixes
 
