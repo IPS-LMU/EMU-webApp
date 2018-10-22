@@ -1,5 +1,14 @@
 # What's New
 
+## Version 0.1.14
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- fixed click breaking dropdown functionality in hierarchy dialog (closes \#261)
+- fixed crash on Firefox & Chrome when appCache isn't available (http -> no https)
+
 ## Version 0.1.13
 
 ### new features / performance tweaks / improvements

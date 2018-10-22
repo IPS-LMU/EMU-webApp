@@ -38,7 +38,7 @@ These are the steps necessary to create and deploy a new release on [https://ips
 
 * prerequisite: make sure all unit tests and end-to-end test pass (`grunt test` and `grunt e2e`)
 * prerequisite: also run end-to-end tests on dist build (`grunt serve:dist` followed by `grunt e2e`) & manually inspect the release version (just in case)
-* update version numbers in `NEWS.md`, `package.json`, `bower.json`
+* update version numbers in `NEWS.md`, `package.json`, `bower.json`, `manifest.json`
 * update `NEWS.md` to reflect changes (== changelog)
 * `grunt serve:dist` also runs `grunt`'s `build` task so explicitly calling `grunt build` is unnecessary
 * this will have created a new release in the `dist` folder in the root directory of this repo

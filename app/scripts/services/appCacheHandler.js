@@ -97,15 +97,17 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.handleUpdatereadyEvent = function () {
-			modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
-				if (res) {
-					localStorage.removeItem('haveShownWelcomeModal');
-					appCache.swapCache();
-					window.location.reload();
-				} else {
-					localStorage.removeItem('haveShownWelcomeModal');
-				}
-			});
+            if(typeof appCache !== 'undefined') {
+                modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
+                    if (res) {
+                        localStorage.removeItem('haveShownWelcomeModal');
+                        appCache.swapCache();
+                        window.location.reload();
+                    } else {
+                        localStorage.removeItem('haveShownWelcomeModal');
+                    }
+                });
+            }
 		};
 
 		// function handleObsoleteEvent(e) {
@@ -120,26 +122,30 @@ angular.module('emuwebApp')
 
 
 		// // bind evts
-		// // appCache.addEventListener('progress', handleProgressEvent, false);
+        if(typeof appCache !== 'undefined') {
+			// appCache.addEventListener('progress', handleProgressEvent, false);
 
-		// appCache.addEventListener('checking', handleCheckingEvent, false);
-		// appCache.addEventListener('noupdate', handleNoupdateEvent, false);
-		// appCache.addEventListener('downloading', handleDownloadingEvent, false);
-		// appCache.addEventListener('progress', handleProgressEvent, false);
-		// appCache.addEventListener('cached', handleCachedEvent, false);
-		appCache.addEventListener('updateready', sServObj.handleUpdatereadyEvent, false);
-		// appCache.addEventListener('obsolete', handleObsoleteEvent, false);
-		// appCache.addEventListener('error', handleErrorEvent, false);
+			// appCache.addEventListener('checking', handleCheckingEvent, false);
+			// appCache.addEventListener('noupdate', handleNoupdateEvent, false);
+			// appCache.addEventListener('downloading', handleDownloadingEvent, false);
+			// appCache.addEventListener('progress', handleProgressEvent, false);
+			// appCache.addEventListener('cached', handleCachedEvent, false);
+            appCache.addEventListener('updateready', sServObj.handleUpdatereadyEvent, false);
 
+			// appCache.addEventListener('obsolete', handleObsoleteEvent, false);
+			// appCache.addEventListener('error', handleErrorEvent, false);
+        }
 		// /////////////////////////////////////////////////
 		// // public api
 
 		sServObj.checkForNewVersion = function () {
 			// console.log('check for new version');
-			if ((appCache.status !== 0 && appCache.status !== 3)) { // uncached == 0 & downloading == 3
-				console.log('INFO: appCache.status: ' + appCache.status);
-				appCache.update();
-			}
+            if(typeof appCache !== 'undefined') {
+				if ((appCache.status !== 0 && appCache.status !== 3)) { // uncached == 0 & downloading == 3
+					console.log('INFO: appCache.status: ' + appCache.status);
+					appCache.update();
+				}
+            }
 
             if ('serviceWorker' in navigator) {
 				console.log("service worker available")
