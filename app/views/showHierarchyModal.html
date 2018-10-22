@@ -4,7 +4,7 @@
             <div class="emuwebapp-nav-wrap" style="margin-left: 5px;">
 				<ul class="emuwebapp-dropdown-container">
 					<li class="left">
-						<button class="emuwebapp-mini-btn full" ng-mouseover="dropdown[key] = true" ng-mouseleave="dropdown[key] = false" ng-click="dropdown = !dropdown">
+						<button class="emuwebapp-mini-btn full" ng-mouseover="dropdown[key] = true" ng-mouseleave="dropdown[key] = false" ng-click="dropdown[key] = !dropdown[key]">
 							{{levelName}} <span id="emuwebapp-dropdown-arrow"></span>
 						</button>
 						<ul class="emuwebapp-dropdown-menu" ng-mouseover="dropdown[key] = true" ng-mouseleave="dropdown[key] = false" ng-init="dropdown[key] = false" ng-show="dropdown[key]">

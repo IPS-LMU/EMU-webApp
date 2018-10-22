@@ -1,5 +1,13 @@
 # What's New
 
+## Version 0.1.13.9000
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- fixed click breaking dropdown functionality in hierarchy dialog (closes \#261)
+
 ## Version 0.1.13
 
 ### new features / performance tweaks / improvements
