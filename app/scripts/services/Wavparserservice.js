@@ -198,7 +198,17 @@ angular.module('emuwebApp')
 	    			    headerInfos.NumChannels,
 		    			headerInfos.dataChunkSize/headerInfos.NumChannels/(headerInfos.BitsPerSample/8),
                     	headerInfos.SampleRate);
-                    return offlineCtx.decodeAudioData(buf);
+
+                    defer = $q.defer();
+    				// using non promise version as Safari doesn't support it yet
+                    offlineCtx.decodeAudioData(buf,
+                        function (decodedData) { defer.resolve(decodedData); },
+                        function (error) { defer.reject(error) });
+
+
+                    return defer.promise;
+
+                    return
                 }catch (e){
                     // construct error object
                     var errObj = {};

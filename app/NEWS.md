@@ -1,5 +1,15 @@
 # What's New
 
+## Version 0.1.15
+
+### new features / performance tweaks / improvements
+
+- added CLARIN Matomo (ex. Piwik) tracker
+
+### bug fixes
+
+- using non-promise version of decodeAudioData  
+
 ## Version 0.1.14
 
 ### new features / performance tweaks / improvements
