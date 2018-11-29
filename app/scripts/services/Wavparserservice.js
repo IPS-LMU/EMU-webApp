@@ -213,7 +213,7 @@ angular.module('emuwebApp')
                     // construct error object
                     var errObj = {};
                     errObj.exception = JSON.stringify(e, null, 4);
-                    errObj.EMUwebAppComment = 'This could be because you are using Safari and the sample rate is unequal to 44100; 48000 or 96000 which seem to currently be the only sample rates supported by the webkitOfflineAudioContext in Safari';
+                    errObj.EMUwebAppComment = 'This could be because you are using Safari (or another webkit based browser) and the audio sample rate is not in the interval >= 44100 and <= 96000 which seem to currently be the only sample rates supported by the webkitOfflineAudioContext (see here https://github.com/WebKit/webkit/blob/29271ffbec500cd9c92050fcc0e613adffd0ce6a/Source/WebCore/Modules/webaudio/AudioContext.cpp#L111)';
 
                     var err = {};
                     err.status = {};
