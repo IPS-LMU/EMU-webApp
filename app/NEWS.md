@@ -5,6 +5,7 @@
 ### new features / performance tweaks / improvements
 
 - added CLARIN Matomo (ex. Piwik) tracker
+- checking for viewer_pane as URL parameter to display welcome modal (detect RStudio viewer)
 
 ### bug fixes
 
