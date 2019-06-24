@@ -5,6 +5,8 @@ author: Raphael Winkelmann
 -->
 
 
+
+
 This document describes the EMU-webApp-websocket-protocol in its current
 version. The current version number can be found in the section Version 
 History.

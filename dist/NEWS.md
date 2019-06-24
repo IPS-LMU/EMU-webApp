@@ -1,5 +1,16 @@
 # What's New
 
+## Version 1.0.0
+
+1.0.0 version bump because it has been in regular stable use for 
+quite some time now (no major version changes between 0.1.15 and 1.0.0!)
+
+### new features / performance tweaks / improvements
+
+- can now correct the fifth contour as well
+- about modal now refers to EMU-SDMS manual instead of having duplicate entries
+- resize now listens to $window.parent not $window
+
 ## Version 0.1.15
 
 ### new features / performance tweaks / improvements

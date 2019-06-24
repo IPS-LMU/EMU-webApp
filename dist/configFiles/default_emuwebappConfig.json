@@ -45,6 +45,7 @@
         "selectSecondContourCorrectionTool": 50,
         "selectThirdContourCorrectionTool": 51,
         "selectFourthContourCorrectionTool": 52,
+        "selectFifthContourCorrectionTool": 53,
         "selectNoContourCorrectionTool": 48,
         "selectItemsInSelection": 103,
         "snapBoundaryToNearestTopBoundary": 116,

@@ -40,9 +40,9 @@ angular.module('emuwebApp')
 		// bindings
 
 		// bind window resize event
-		angular.element($window).bind('resize', function () {
+		angular.element($window.parent).bind('resize', function () {
 			LevelService.deleteEditArea();
-			viewState.setWindowWidth($window.outerWidth);
+			viewState.setWindowWidth($window.parent.outerWidth);
 			if (viewState.hierarchyState.isShown()) {
 				++viewState.hierarchyState.resize;
 			}
@@ -356,7 +356,7 @@ angular.module('emuwebApp')
 			var curVal = localStorage.getItem('haveShownWelcomeModal');
             var searchObject = $location.search();
 
-			if (!browserDetector.isBrowser.PhantomJS() && curVal === null && typeof searchObject.viewer_pane !== "undefined") {
+			if (!browserDetector.isBrowser.PhantomJS() && curVal === null && typeof searchObject.viewer_pane === "undefined") {
 				localStorage.setItem('haveShownWelcomeModal', 'true');
 				$scope.internalVars.showAboutHint = true;
 			}
