@@ -145,7 +145,7 @@
 				"contourLims": [{
 					"ssffTrackName": "FORMANTS",
 					"minContourIdx": 0,
-					"maxContourIdx": 1
+					"maxContourIdx": 4
 				}],
 				"contourColors": [{
 				    "ssffTrackName": "FORMANTS",

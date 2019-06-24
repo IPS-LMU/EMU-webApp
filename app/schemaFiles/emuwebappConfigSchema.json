@@ -140,6 +140,9 @@
 				"selectFourthContourCorrectionTool": {
 					"type": "integer"
 				},
+				"selectFifthContourCorrectionTool": {
+					"type": "integer"
+				},
 				"selectNoContourCorrectionTool": {
 					"type": "integer"
 				},

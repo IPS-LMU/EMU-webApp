@@ -493,6 +493,14 @@ angular.module('emuwebApp')
 									}
 								}
 							}
+							// selectFourthContourCorrectionTool
+							if (code === ConfigProviderService.vals.keyMappings.selectFifthContourCorrectionTool) {
+								if (viewState.getPermission('labelAction')) {
+									if (ConfigProviderService.vals.restrictions.correctionTool) {
+										viewState.curCorrectionToolNr = 5;
+									}
+								}
+							}
 							// selectNOContourCorrectionTool
 							if (code === ConfigProviderService.vals.keyMappings.selectNoContourCorrectionTool) {
 								if (viewState.getPermission('labelAction')) {
