@@ -356,7 +356,7 @@ angular.module('emuwebApp')
 			var curVal = localStorage.getItem('haveShownWelcomeModal');
             var searchObject = $location.search();
 
-			if (!browserDetector.isBrowser.PhantomJS() && curVal === null && typeof searchObject.viewer_pane === "undefined") {
+			if (!browserDetector.isBrowser.PhantomJS() && curVal === null && typeof searchObject.viewer_pane !== 'undefined') {
 				localStorage.setItem('haveShownWelcomeModal', 'true');
 				$scope.internalVars.showAboutHint = true;
 			}
