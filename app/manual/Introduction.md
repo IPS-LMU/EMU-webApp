@@ -25,6 +25,7 @@ enables it to be used as a labeling tool for collaborative annotation efforts.
 
 The EMU-webApp is part of the next iteration of the EMU Speech Database Management System which aims to be as close to 
 an all-in-one solution for generating, manipulating, querying, analyzing and managing speech databases as possible. For 
-an overview of the system please visit this URL: [http://ips-lmu.github.io/EMU.html](http://ips-lmu.github.io/EMU.html).
+an overview of the system please visit this URL: [http://ips-lmu.github.io/EMU.html](http://ips-lmu.github.io/EMU.html) 
+or have a look a the [EMU-SDMS Manual](https://ips-lmu.github.io/The-EMU-SDMS-Manual).
 
 If you have any issues or find a bug please create an issue on our GitHub project page  ([https://github.com/IPS-LMU/EMU-webApp/issues](https://github.com/IPS-LMU/EMU-webApp/issues)). By doing so you will help improve this software and potentially improve your own as well as the experience of other users.
