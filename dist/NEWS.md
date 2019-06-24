@@ -1,6 +1,6 @@
 # What's New
 
-## Version 1.0.0
+## Version 1.0.1
 
 1.0.0 version bump because it has been in regular stable use for 
 quite some time now (no major version changes between 0.1.15 and 1.0.0!)
