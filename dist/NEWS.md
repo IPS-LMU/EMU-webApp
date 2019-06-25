@@ -1,5 +1,11 @@
 # What's New
 
+## Version 1.0.2
+
+### bug fixes
+
+- revert of "resize now listens to $window.parent not $window" as it causes RStudio not to load the page
+
 ## Version 1.0.1
 
 1.0.0 version bump because it has been in regular stable use for 

@@ -624,7 +624,7 @@ describe('Controller: MainController', function () {
    it('should react on resize window', function () {
      spyOn(scope.lvl, 'deleteEditArea');
      spyOn(scope.vs, 'setWindowWidth');
-     angular.element($window.parent).triggerHandler('resize');
+     angular.element($window).triggerHandler('resize');
      scope.$digest();
      expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
      expect(scope.vs.setWindowWidth).toHaveBeenCalled();
