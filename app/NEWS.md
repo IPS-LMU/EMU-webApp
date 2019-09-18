@@ -1,10 +1,17 @@
 # What's New
 
+## Version 1.0.3
+
+### bug fixes
+
+- fixed alignment bug on large screens (x-dim > 2048 pixels)
+
+
 ## Version 1.0.2
 
 ### bug fixes
 
-- revert of "resize now listens to $window.parent not $window" as it causes RStudio not to load the page
+- revert of "resize now listens to $window.parent not $window
 
 ## Version 1.0.1
 
