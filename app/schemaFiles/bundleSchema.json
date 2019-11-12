@@ -25,7 +25,7 @@
 				"type": "object",
 				"properties": {
 					"encoding": {
-						"enum": ["BASE64"]
+						"enum": ["BASE64", "GETURL", "ARRAYBUFFER"]
 					},
 					"data": {
 						"type": "string"

@@ -3,6 +3,13 @@
 angular.module('emuwebApp')
 	.service('ConfigProviderService', function ($q, viewState) {
 
+		/**
+	 	*
+	 	*/
+		function onlyUnique(value, index, self) {
+			return self.indexOf(value) === index;
+		}
+
 		// shared service object
 		var sServObj = {};
 		sServObj.vals = {};
@@ -261,6 +268,74 @@ angular.module('emuwebApp')
 			}
 			return str;
 		};
+
+
+	/**
+	 *
+	 */
+	sServObj.findAllTracksInDBconfigNeededByEMUwebApp = function() {
+		var DBconfig = sServObj.curDbConfig;
+		var allTracks = [];
+
+	   // anagestConfig ssffTracks
+	   DBconfig.levelDefinitions.forEach(function (ld) {
+		   if (ld.anagestConfig !== undefined) {
+			   allTracks.push(ld.anagestConfig.verticalPosSsffTrackName);
+			   allTracks.push(ld.anagestConfig.velocitySsffTrackName);
+		   }
+	   });
+
+
+	   DBconfig.EMUwebAppConfig.perspectives.forEach(function (p) {
+		   // tracks in signalCanvases.order
+		   p.signalCanvases.order.forEach(function (sco) {
+			   allTracks.push(sco);
+		   });
+		   // tracks in signalCanvases.assign
+		   if (p.signalCanvases.assign !== undefined) {
+			   p.signalCanvases.assign.forEach(function (sca) {
+				   allTracks.push(sca.ssffTrackName);
+			   });
+		   }
+		   // tracks in twoDimCanvases
+		   if (p.twoDimCanvases !== undefined) {
+			   if (p.twoDimCanvases.order[0] === 'EPG') {
+				   allTracks.push('EPG');
+			   }
+			   if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
+				   p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
+					   tddd.dots.forEach(function (dot) {
+						   allTracks.push(dot.xSsffTrack);
+						   allTracks.push(dot.ySsffTrack);
+					   });
+				   });
+			   }
+		   }
+	   });
+	   // uniq tracks
+	   allTracks = allTracks.filter(onlyUnique);
+	   // # remove OSCI and SPEC tracks
+	   var osciIdx = allTracks.indexOf('OSCI');
+	   if (osciIdx > -1) {
+		   allTracks.splice(osciIdx, 1);
+	   }
+	   var specIdx = allTracks.indexOf('SPEC');
+	   if (specIdx > -1) {
+		   allTracks.splice(specIdx, 1);
+	   }
+
+	   // get corresponding ssffTrackDefinitions
+	   var allTrackDefs = [];
+	   DBconfig.ssffTrackDefinitions.forEach(function (std) {
+		   if (allTracks.indexOf(std.name) > -1) {
+			   allTrackDefs.push(std);
+		   }
+	   });
+
+	   return (allTrackDefs);
+
+    };
+
 
 
 		return sServObj;

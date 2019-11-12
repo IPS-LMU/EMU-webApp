@@ -493,8 +493,12 @@ SsffParserWorker.prototype = {
 			for (var i = 0; i < ssffArr.length; i++) {
 
 				ssffJso = {};
-				var arrBuff;
-				arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
+				var arrBuff; 
+				if(ssffArr[i].encoding === 'BASE64'){
+					arrBuff = global.base64ToArrayBuffer(ssffArr[i].data);
+				} else if(ssffArr[i].encoding === 'ARRAYBUFFER'){
+					arrBuff = ssffArr[i].data;
+				}
 				ssffJso = global.ssff2jso(arrBuff, ssffArr[i].fileExtension);
 				if (ssffJso.status === undefined) {
 					resArr.push(JSON.parse(JSON.stringify(ssffJso))); // YUCK... don't know if SIC but YUCK!!!

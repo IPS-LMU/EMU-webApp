@@ -79,7 +79,7 @@ angular.module('emuwebApp')
                 curBufferView = new Uint8Array(curBuffer);
                 var cur4chars = sServObj.ab2str(curBufferView);
                 if(cur4chars === 'fmt '){
-                    console.log('found fmt chunk at' + fmtBinIdx);
+                    // console.log('found fmt chunk at' + fmtBinIdx);
                     headerInfos.FmtSubchunkID = 'fmt ';
                     foundChunk = true;
 
@@ -156,7 +156,7 @@ angular.module('emuwebApp')
             curBufferView = new Uint16Array(curBuffer);
             headerInfos.BitsPerSample = curBufferView[0];
 
-            console.log(headerInfos);
+            // console.log(headerInfos);
 
 			// look for data chunk size
 			var foundChunk = false;

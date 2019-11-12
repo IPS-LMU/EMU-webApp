@@ -68,7 +68,7 @@ angular.module('emuwebApp')
 
 						// validate bundle
 						var validRes = Validationservice.validateJSO('bundleSchema', bundleData);
-
+						
 						if (validRes === true) {
 
 							var arrBuff;
@@ -78,7 +78,7 @@ angular.module('emuwebApp')
                                 innerLoadBundle(bndl, bundleData, arrBuff, defer);
                             }else if(bundleData.mediaFile.encoding === 'GETURL'){
                                 Iohandlerservice.httpGetPath(bundleData.mediaFile.data, 'arraybuffer').then(function (res) {
-                                    innerLoadBundle(bndl, bundleData, res.data, defer);
+									innerLoadBundle(bndl, bundleData, res, defer);
                                 });
 							}
 						} else {
@@ -105,10 +105,10 @@ angular.module('emuwebApp')
 			return defer.promise; 
 		};
 
-        function innerLoadBundle(bndl, bundleData, arrBuff, defer) {
+        async function innerLoadBundle(bndl, bundleData, arrBuff, defer) {
             viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-            Wavparserservice.parseWavAudioBuf(arrBuff).then(function (messWavParser) {
+            Wavparserservice.parseWavAudioBuf(arrBuff).then(async function (messWavParser) {
                 var audioBuffer = messWavParser;
                 viewState.curViewPort.sS = 0;
                 viewState.curViewPort.eS = audioBuffer.length;
@@ -124,7 +124,13 @@ angular.module('emuwebApp')
                 viewState.curClickLevelType = undefined;
 
                 Soundhandlerservice.audioBuffer = audioBuffer;
-
+				// fetch ssff files (if encoding == GETURL)
+				for(const file of bundleData.ssffFiles){
+					if(file.encoding === 'GETURL'){ // BASE64 & ARRAYBUFFER are handled by worker
+						file.data = await Iohandlerservice.httpGetPath(file.data, 'arraybuffer');
+						file.encoding = 'ARRAYBUFFER';
+					}
+				}
                 // set all ssff files
                 viewState.somethingInProgressTxt = 'Parsing SSFF files...';
                 Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
@@ -168,7 +174,6 @@ angular.module('emuwebApp')
 				bundleData.ssffFiles = [];
 				// ssffFiles (only FORMANTS are allowed to be manipulated so only this track is sent back to server)
 				var formants = Ssffdataservice.getFile('FORMANTS');
-
 				if (formants !== undefined) {
 					Ssffparserservice.asyncJso2ssff(formants).then(function (messParser) {
 						bundleData.ssffFiles.push({
@@ -177,7 +182,7 @@ angular.module('emuwebApp')
 							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
 						});
 						sServObj.getAnnotationAndSaveBndl(bundleData, defer);
-
+						
 					}, function (errMess) {
 						modalService.open('views/error.html', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
 						defer.reject();
@@ -185,44 +190,44 @@ angular.module('emuwebApp')
 				} else {
 					sServObj.getAnnotationAndSaveBndl(bundleData, defer);
 				}
-
+				
 				return defer.promise;
 				// }
 			} else {
 				$log.info('Action: menuBundleSaveBtnClick not allowed!');
 			}
-
+			
 		};
-
-
+		
+		
 		/**
 		 *
 		 */
 		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
-
+			
 			// Validate annotation before saving
 			viewState.somethingInProgressTxt = 'Validating annotJSON ...';
-
+			
 			var validRes = Validationservice.validateJSO('annotationFileSchema', DataService.getData());
 			if (validRes !== true) {
 				$log.warn ('PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() will be called.');
 				$log.error (validRes);
 			}
-
+			
 			// clean annot data just to be safe...
 			StandardFuncsService.traverseAndClean(DataService.getData());
-
+			
 			////////////////////////////
 			// construct bundle
-
+			
 			// annotation
 			bundleData.annotation = DataService.getData();
-
+			
 			// empty media file (depricated since schema was updated)
 			bundleData.mediaFile = {'encoding': 'BASE64', 'data': ''};
-
+			
 			var curBndl = loadedMetaDataService.getCurBndl();
-
+			
 			// add session if available
 			if (typeof curBndl.session !== 'undefined') {
 				bundleData.session = curBndl.session;
@@ -235,15 +240,15 @@ angular.module('emuwebApp')
 			if (typeof curBndl.comment !== 'undefined') {
 				bundleData.comment = curBndl.comment;
 			}
-
+			
 			// validate bundle
 			viewState.somethingInProgressTxt = 'Validating bundle ...';
 			validRes = Validationservice.validateJSO('bundleSchema', bundleData);
-
+			
 			if (validRes !== true) {
 				$log.error('GRAVE PROBLEM: trying to save bundle but bundle is invalid. traverseAndClean() HAS ALREADY BEEN CALLED.');
 				$log.error(validRes);
-
+				
 				modalService.open('views/error.html', 'Somehow the data for this bundle has been corrupted. This is most likely a nasty and diffucult to spot bug. If you are at the IPS right now, please contact an EMU developer immediately. The Validation error is: ' + JSON.stringify(validRes, null, 4)).then(function () {
 					viewState.somethingInProgressTxt = '';
 					viewState.somethingInProgress = false;

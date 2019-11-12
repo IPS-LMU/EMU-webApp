@@ -384,19 +384,26 @@ angular.module('emuwebApp')
 				if (typeof searchObject.serverUrl !== 'undefined') { // overwrite serverUrl if set as GET parameter
 					ConfigProviderService.vals.main.serverUrl = searchObject.serverUrl;
 				}
-				Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
-					if (message.type === 'error') {
-						modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl).then(function () {
-						appStateService.resetToInitState();
+				if(searchObject.comMode !== "GITLAB"){
+					Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
+						if (message.type === 'error') {
+							modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl).then(function () {
+							appStateService.resetToInitState();
+						});
+						} else {
+							$scope.handleConnectedToWSserver({session: null, reload: null});
+						}
+					}, function (errMess) {
+						modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+							appStateService.resetToInitState();
+						});
 					});
-					} else {
-						$scope.handleConnectedToWSserver({session: null, reload: null});
-					}
-				}, function (errMess) {
-					modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
-						appStateService.resetToInitState();
-					});
-				});
+				} else {
+					// set comMode and pretend we are connected to server
+					// the ioHandlerService will take care of the rest
+					ConfigProviderService.vals.main.comMode = "GITLAB";
+					$scope.handleConnectedToWSserver({session: null, reload: null});
+				}
 			}
 
 			// init loading of files for testing
@@ -423,7 +430,9 @@ angular.module('emuwebApp')
 			var session = data.session;
 			var reload = data.reload;
 			viewState.showDropZone = false;
-			ConfigProviderService.vals.main.comMode = 'WS';
+			if(searchObject.comMode !== "GITLAB"){
+				ConfigProviderService.vals.main.comMode = 'WS';
+			}
 			ConfigProviderService.vals.activeButtons.openDemoDB = false;
 			viewState.somethingInProgress = true;
 			viewState.somethingInProgressTxt = 'Checking protocol...';
@@ -472,8 +481,8 @@ angular.module('emuwebApp')
 					ConfigProviderService.setVals(data.EMUwebAppConfig);
 					// FOR DEVELOPMENT
 					//$scope.showEditDBconfigBtnClick();
-
-
+					
+					
 					var validRes = Validationservice.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
 					if (validRes === true) {
 						ConfigProviderService.curDbConfig = data;
@@ -487,7 +496,7 @@ angular.module('emuwebApp')
 								// show standard buttons
 								ConfigProviderService.vals.activeButtons.clear = true;
 								ConfigProviderService.vals.activeButtons.specSettings = true;
-
+								
 								if (validRes === true) {
 									// then load first bundle in list
 									if(session === null) {
@@ -495,7 +504,7 @@ angular.module('emuwebApp')
 									}
 									dbObjLoadSaveService.loadBundle(session).then(function (){
 										// FOR DEVELOPMENT:
-										// sServObj.saveBundle(); // for testing save function
+										// dbObjLoadSaveService.saveBundle(); // for testing save function
 										// $scope.menuBundleSaveBtnClick(); // for testing save button
 										// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
 										// $scope.spectSettingsBtnClick(); // for testing spect settings dial

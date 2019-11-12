@@ -1,7 +1,23 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.service('Iohandlerservice', function Iohandlerservice($rootScope, $http, $location, $q, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler, DragnDropDataService) {
+	.service('Iohandlerservice', function Iohandlerservice(
+		$rootScope, 
+		$http, 
+		$location, 
+		$q, 
+		HistoryService, 
+		viewState, 
+		Soundhandlerservice, 
+		Ssffparserservice, 
+		Wavparserservice, 
+		Textgridparserservice, 
+		ConfigProviderService, 
+		Espsparserservice, 
+		Ssffdataservice, 
+		Websockethandler, 
+		DragnDropDataService,
+		loadedMetaDataService) {
 		// shared service object
 		var sServObj = {};
 
@@ -29,9 +45,26 @@ angular.module('emuwebApp')
 		 * default config is always loaded from same origin
 		 */
 		sServObj.httpGetPath = function (path, respType) {
-			var prom = $http.get(path, {
-				responseType: respType
-			});
+			if(ConfigProviderService.vals.main.comMode !== "GITLAB"){
+				var prom = $http.get(path, {
+					responseType: respType
+				});
+			} else {
+				var searchObject = $location.search();
+				prom = fetch(path, {
+					method: 'GET',
+					headers: {
+						'PRIVATE-TOKEN': searchObject.privateToken
+					}
+				}).then(resp => {
+					if(respType === 'json'){
+						return(resp.json());
+					} else if(respType === 'arraybuffer'){
+						return(resp.arrayBuffer());
+					}
+				});
+
+			}
 			return prom;
 		};
 
@@ -49,6 +82,15 @@ angular.module('emuwebApp')
 				// console.error('CORS version of getProtocol not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getProtocol();
+			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB'){
+				// return mock values
+				var defer = $q.defer();
+				defer.resolve({
+					protocol: 'EMU-webApp-websocket-protocol',
+					version: '0.0.2'
+				});
+
+				getProm = defer.promise;
 			}
 
 			return getProm;
@@ -64,6 +106,12 @@ angular.module('emuwebApp')
                 // console.error('CORS version of getDoUserManagement not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.getDoUserManagement();
+			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB'){
+				// return mock values
+				var defer = $q.defer();
+				defer.resolve('NO');
+
+				getProm = defer.promise;
 			}
 
 			return getProm;
@@ -96,6 +144,15 @@ angular.module('emuwebApp')
 				getProm = Websockethandler.getDBconfigFile();
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_DBconfig.json');
+			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB'){
+				var searchObject = $location.search();
+				getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + searchObject.emuDBname + '_DBconfig.json/raw?ref=master', {
+					method: 'GET',
+					headers: {
+						'PRIVATE-TOKEN': searchObject.privateToken
+					}
+				}).then(resp => resp.json());
+
 			}
 
 			return getProm;
@@ -113,6 +170,14 @@ angular.module('emuwebApp')
 				getProm = Websockethandler.getBundleList();
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
+			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB') {
+				var searchObject = $location.search();
+				getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/bundleLists%2F' + searchObject.userName + '_bundleList.json/raw?ref=master', {
+					method: 'GET',
+					headers: {
+						'PRIVATE-TOKEN': searchObject.privateToken
+					}
+				}).then(resp => resp.json());
 			}
 
 			return getProm;
@@ -133,7 +198,39 @@ angular.module('emuwebApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 				// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + name + '_bndl.json');
+			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB') {
+				var searchObject = $location.search();
+				var bndlURL = searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + session + '_ses%2F' + name + '_bndl%2F';
+				var neededTracks = ConfigProviderService.findAllTracksInDBconfigNeededByEMUwebApp();
+				var ssffFiles = [];
+
+				neededTracks.forEach(tr => {
+					ssffFiles.push({ 
+						encoding: "GETURL", 
+						data: bndlURL + name + "." + tr.fileExtension + '/raw?ref=master',
+						fileExtension: tr.fileExtension // this is redundant when doing the GETUR hack but has to be set to satisfy the validator
+					});
+				});
+				getProm = Promise.all([
+					fetch(bndlURL + name + '_annot.json/raw?ref=master', {
+						method: 'GET',
+						headers: {
+							'PRIVATE-TOKEN': searchObject.privateToken
+						}
+					}).then(resp => resp.json())
+				]).then(allResponses => {
+					return {
+						mediaFile: {
+							encoding: "GETURL",
+							data: bndlURL + name + '.wav/raw?ref=master'
+						},
+						annotation: allResponses[0],
+						ssffFiles: ssffFiles,
+					};
+				})
+
 			}
+
 
 			return getProm;
 		};
@@ -149,6 +246,43 @@ angular.module('emuwebApp')
                 // console.error('CORS version of saveBundle not implemented');
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.saveBundle(bundleData);
+			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB') {
+				console.log(bundleData);
+				var searchObject = $location.search();
+				var bndlPath = bundleData.session + '_ses/' + bundleData.annotation.name + '_bndl/';
+				// var bndlURL = searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + bndlPath;
+				var actions = [{ 
+					action: "update", // _annot.json
+					file_path: bndlPath + bundleData.annotation.name + "_annot.json",
+					content: JSON.stringify(bundleData.annotation, null, 4)
+				  },
+				  { 
+					action: "update", // _bundleList.json
+					file_path: 'bundleLists/' + searchObject.userName + "_bundleList.json",
+					content: JSON.stringify(loadedMetaDataService.getBundleList(), null, 4)
+				  },
+				  { 
+					action: "update", // SSFF file (only FORMANTS 4 now)
+					file_path: bndlPath + bundleData.annotation.name + "." + "fms",
+					content: bundleData.ssffFiles[0].data,
+					encoding: "base64"
+				  }
+				]
+				var payload = {
+					branch: "master",
+					commit_message: "EMU-webApp save by user: " + searchObject.userName + "; session: " + bundleData.session + "; bundle: " + bundleData.annotation.name + ";",
+					actions: actions
+				};
+
+				getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/commits', {
+					method: 'POST',
+					headers: {
+						'PRIVATE-TOKEN': searchObject.privateToken,
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(payload)
+				})
+
 			}
 			// else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 			// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
