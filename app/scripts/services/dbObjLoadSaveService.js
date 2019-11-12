@@ -123,7 +123,7 @@ angular.module('emuwebApp')
                 viewState.curClickLevelName = undefined;
                 viewState.curClickLevelType = undefined;
 
-                Soundhandlerservice.audioBuffer = audioBuffer;
+				Soundhandlerservice.audioBuffer = audioBuffer;
 				// fetch ssff files (if encoding == GETURL)
 				for(const file of bundleData.ssffFiles){
 					if(file.encoding === 'GETURL'){ // BASE64 & ARRAYBUFFER are handled by worker
@@ -131,6 +131,7 @@ angular.module('emuwebApp')
 						file.encoding = 'ARRAYBUFFER';
 					}
 				}
+
                 // set all ssff files
                 viewState.somethingInProgressTxt = 'Parsing SSFF files...';
                 Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {

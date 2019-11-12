@@ -47,6 +47,9 @@ angular.module('emuwebApp')
 			PhantomJS: function () {
 				return navigator.userAgent.match(/PhantomJS/i);
 			},
+			HeadlessChrome: function(){
+				return navigator.userAgent.match(/HeadlessChrome/i);
+			},
 			Safari: function () {
 				return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 			},

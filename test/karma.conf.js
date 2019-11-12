@@ -1,5 +1,7 @@
 // Karma configuration
 // Generated on 2016-10-19
+const puppeteer = require('puppeteer');
+process.env.CHROME_BIN = puppeteer.executablePath();
 
 module.exports = function (config) {
   'use strict';
@@ -95,7 +97,7 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    browsers: ['ChromeHeadless'],
 
 
     // Which plugins to enable

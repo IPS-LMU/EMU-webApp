@@ -273,7 +273,7 @@ angular.module('emuwebApp')
 						});
 					}
 					// select first level
-					if (!browserDetector.isBrowser.PhantomJS()){
+					if (!browserDetector.isBrowser.HeadlessChrome()){
 						viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
                     }
 
