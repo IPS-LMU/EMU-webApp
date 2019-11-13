@@ -1,5 +1,12 @@
 # What's New
 
+## Version 1.1.0
+
+### new features / performance tweaks / improvements
+
+- new comMode implemented which allows the EMU-webApp to speak to GitLab directly (a manual entry explaining how this can be done to follow)
+
+
 ## Version 1.0.3
 
 ### bug fixes
