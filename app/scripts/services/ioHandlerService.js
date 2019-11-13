@@ -172,7 +172,7 @@ angular.module('emuwebApp')
 				getProm = $http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB') {
 				var searchObject = $location.search();
-				getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/bundleLists%2F' + searchObject.userName + '_bundleList.json/raw?ref=master', {
+				getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/bundleLists%2F' + searchObject.bundleListName + '_bundleList.json/raw?ref=master', {
 					method: 'GET',
 					headers: {
 						'PRIVATE-TOKEN': searchObject.privateToken
@@ -258,7 +258,7 @@ angular.module('emuwebApp')
 				  },
 				  { 
 					action: "update", // _bundleList.json
-					file_path: 'bundleLists/' + searchObject.userName + "_bundleList.json",
+					file_path: 'bundleLists/' + searchObject.bundleListName + "_bundleList.json",
 					content: JSON.stringify(loadedMetaDataService.getBundleList(), null, 4)
 				  },
 				  { 
@@ -270,7 +270,7 @@ angular.module('emuwebApp')
 				]
 				var payload = {
 					branch: "master",
-					commit_message: "EMU-webApp save by user: " + searchObject.userName + "; session: " + bundleData.session + "; bundle: " + bundleData.annotation.name + ";",
+					commit_message: "EMU-webApp save by user: " + searchObject.bundleListName + "; session: " + bundleData.session + "; bundle: " + bundleData.annotation.name + ";",
 					actions: actions
 				};
 
