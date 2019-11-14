@@ -15,7 +15,7 @@
 					"type": "integer"
 				},
 				"comMode": {
-					"enum": ["DEMO", "WS", "EMBEDDED"]
+					"enum": ["DEMO", "WS", "EMBEDDED", "GITLAB"]
 				},
 				"catchMouseForKeyBinding": {
 					"type": "boolean"
