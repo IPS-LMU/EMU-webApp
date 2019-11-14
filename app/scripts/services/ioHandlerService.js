@@ -151,7 +151,7 @@ angular.module('emuwebApp')
 					headers: {
 						'PRIVATE-TOKEN': searchObject.privateToken
 					}
-				}).then(function (resp) { resp.json() });
+				}).then(function (resp) { return(resp.json()) });
 
 			}
 
@@ -177,7 +177,7 @@ angular.module('emuwebApp')
 					headers: {
 						'PRIVATE-TOKEN': searchObject.privateToken
 					}
-				}).then(function (resp) {resp.json()});
+				}).then(function (resp) { return(resp.json())});
 			}
 
 			return getProm;
@@ -217,7 +217,7 @@ angular.module('emuwebApp')
 						headers: {
 							'PRIVATE-TOKEN': searchObject.privateToken
 						}
-					}).then(function (resp) { resp.json() })
+					}).then(function (resp) { return(resp.json()) })
 				]).then(function(allResponses) {
 					return {
 						mediaFile: {
