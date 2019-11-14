@@ -126,13 +126,13 @@ angular.module('emuwebApp')
 				Soundhandlerservice.audioBuffer = audioBuffer;
 				// fetch ssff files (if encoding == GETURL)
 				var promises = [];
-				for(var file of bundleData.ssffFiles){
+				bundleData.ssffFiles.forEach(function(file) {
 					if(file.encoding === 'GETURL'){ // BASE64 & ARRAYBUFFER are handled by worker
-						file.data = Iohandlerservice.httpGetPath(file.data, 'arraybuffer')
+						file.data = Iohandlerservice.httpGetPath(file.data, 'arraybuffer');
 						promises.push(file.data);
 						file.encoding = 'ARRAYBUFFER';
 					}
-				}
+				})
 				
 				if(promises.length === 0){
 					// add resovled promise
@@ -141,7 +141,7 @@ angular.module('emuwebApp')
 					d.resolve();
 				}
 
-				$q.all(promises).then((res) => {
+				$q.all(promises).then(function(res) {
 					for(var i = 0; i < res.length; i++){
 						if(bundleData.ssffFiles.length !== 0){
 							bundleData.ssffFiles[i].data = res[i];

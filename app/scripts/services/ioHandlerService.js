@@ -56,7 +56,7 @@ angular.module('emuwebApp')
 					headers: {
 						'PRIVATE-TOKEN': searchObject.privateToken
 					}
-				}).then(resp => {
+				}).then(function(resp) {
 					if(respType === 'json'){
 						return(resp.json());
 					} else if(respType === 'arraybuffer'){
@@ -151,7 +151,7 @@ angular.module('emuwebApp')
 					headers: {
 						'PRIVATE-TOKEN': searchObject.privateToken
 					}
-				}).then(resp => resp.json());
+				}).then(function (resp) { resp.json() });
 
 			}
 
@@ -177,7 +177,7 @@ angular.module('emuwebApp')
 					headers: {
 						'PRIVATE-TOKEN': searchObject.privateToken
 					}
-				}).then(resp => resp.json());
+				}).then(function (resp) {resp.json()});
 			}
 
 			return getProm;
@@ -204,7 +204,7 @@ angular.module('emuwebApp')
 				var neededTracks = ConfigProviderService.findAllTracksInDBconfigNeededByEMUwebApp();
 				var ssffFiles = [];
 
-				neededTracks.forEach(tr => {
+				neededTracks.forEach(function (tr) {
 					ssffFiles.push({ 
 						encoding: "GETURL", 
 						data: bndlURL + name + "." + tr.fileExtension + '/raw?ref=master',
@@ -217,15 +217,15 @@ angular.module('emuwebApp')
 						headers: {
 							'PRIVATE-TOKEN': searchObject.privateToken
 						}
-					}).then(resp => resp.json())
-				]).then(allResponses => {
+					}).then(function (resp) { resp.json() })
+				]).then(function(allResponses) {
 					return {
 						mediaFile: {
 							encoding: "GETURL",
 							data: bndlURL + name + '.wav/raw?ref=master'
 						},
 						annotation: allResponses[0],
-						ssffFiles: ssffFiles,
+						ssffFiles: ssffFiles
 					};
 				})
 
