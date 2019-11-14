@@ -105,10 +105,10 @@ angular.module('emuwebApp')
 			return defer.promise; 
 		};
 
-        async function innerLoadBundle(bndl, bundleData, arrBuff, defer) {
+        function innerLoadBundle(bndl, bundleData, arrBuff, defer) {
             viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
-            Wavparserservice.parseWavAudioBuf(arrBuff).then(async function (messWavParser) {
+            Wavparserservice.parseWavAudioBuf(arrBuff).then(function (messWavParser) {
                 var audioBuffer = messWavParser;
                 viewState.curViewPort.sS = 0;
                 viewState.curViewPort.eS = audioBuffer.length;
@@ -125,32 +125,48 @@ angular.module('emuwebApp')
 
 				Soundhandlerservice.audioBuffer = audioBuffer;
 				// fetch ssff files (if encoding == GETURL)
-				for(const file of bundleData.ssffFiles){
+				var promises = [];
+				for(var file of bundleData.ssffFiles){
 					if(file.encoding === 'GETURL'){ // BASE64 & ARRAYBUFFER are handled by worker
-						file.data = await Iohandlerservice.httpGetPath(file.data, 'arraybuffer');
+						file.data = Iohandlerservice.httpGetPath(file.data, 'arraybuffer')
+						promises.push(file.data);
 						file.encoding = 'ARRAYBUFFER';
 					}
 				}
+				
+				if(promises.length === 0){
+					// add resovled promise
+					var d = $q.defer();
+					promises.push(d.promise);
+					d.resolve();
+				}
 
-                // set all ssff files
-                viewState.somethingInProgressTxt = 'Parsing SSFF files...';
-                Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
-                    Ssffdataservice.data = ssffJso.data;
-                    // set annotation
-                    DataService.setData(bundleData.annotation);
-                    loadedMetaDataService.setCurBndl(bndl);
-                    // select first level
-                    viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
-                    viewState.setState('labeling');
+				$q.all(promises).then((res) => {
+					for(var i = 0; i < res.length; i++){
+						if(bundleData.ssffFiles.length !== 0){
+							bundleData.ssffFiles[i].data = res[i];
+						}
+					}
+					// set all ssff files
+					viewState.somethingInProgressTxt = 'Parsing SSFF files...';
+					Ssffparserservice.asyncParseSsffArr(bundleData.ssffFiles).then(function (ssffJso) {
+						Ssffdataservice.data = ssffJso.data;
+						// set annotation
+						DataService.setData(bundleData.annotation);
+						loadedMetaDataService.setCurBndl(bndl);
+						// select first level
+						viewState.selectLevel(false, ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].levelCanvases.order, LevelService);
+						viewState.setState('labeling');
 
-                    viewState.somethingInProgress = false;
-                    viewState.somethingInProgressTxt = 'Done!';
-                    defer.resolve();
-                }, function (errMess) {
-                    modalService.open('views/error.html', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
-                        appStateService.resetToInitState();
-                    });
-                });
+						viewState.somethingInProgress = false;
+						viewState.somethingInProgressTxt = 'Done!';
+						defer.resolve();
+					}, function (errMess) {
+						modalService.open('views/error.html', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
+							appStateService.resetToInitState();
+						});
+					});
+			});
             }, function (errMess) {
                 modalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
                     appStateService.resetToInitState();

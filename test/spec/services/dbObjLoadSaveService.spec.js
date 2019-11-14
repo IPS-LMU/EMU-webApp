@@ -66,7 +66,7 @@ describe('Service: dbObjLoadSaveService', function () {
    *
    */
    it('should loadBundle', inject(function (DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService, viewState) {
-     spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1'});
+     spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1', ssffFiles: []});
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
      spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(deferred2.promise);
      spyOn(Ssffparserservice, 'asyncParseSsffArr').and.returnValue(deferred3.promise);
@@ -77,28 +77,27 @@ describe('Service: dbObjLoadSaveService', function () {
      spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer');
      scope.dbo.loadBundle({name: 'test'});
      expect(loadedMetaDataService.getCurBndl).toHaveBeenCalled();
-     deferred.resolve({status: 200, data: { mediaFile: { encoding: 'BASE64', data: [1, 2, 3]}}});
+     deferred.resolve({status: 200, data: { mediaFile: { encoding: 'BASE64', data: [1, 2, 3]}, ssffFiles: []}});
      scope.$apply();
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.resolve({Data: []});
      scope.$apply();
      expect(Wavparserservice.parseWavAudioBuf).toHaveBeenCalled();
-     // these test don't work after the promise eval function was wrapped in an async call
-    //  deferred3.resolve({Data: []});
-    //  scope.$apply();
-    //  expect(Ssffparserservice.asyncParseSsffArr).toHaveBeenCalled();
-    //  expect(viewState.selectLevel).toHaveBeenCalled();
-    //  expect(Validationservice.validateJSO).toHaveBeenCalled();
-    //  expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
-    //  expect(DataService.setData).toHaveBeenCalled();
-    //  expect(loadedMetaDataService.setCurBndl).toHaveBeenCalled();
+     deferred3.resolve({Data: []});
+     scope.$apply();
+     expect(Ssffparserservice.asyncParseSsffArr).toHaveBeenCalled();
+     expect(viewState.selectLevel).toHaveBeenCalled();
+     expect(Validationservice.validateJSO).toHaveBeenCalled();
+     expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
+     expect(DataService.setData).toHaveBeenCalled();
+     expect(loadedMetaDataService.setCurBndl).toHaveBeenCalled();
    }));
 
   /**
    *
    */
    it('should NOT loadBundle (ssff error)', inject(function (appStateService, modalService, DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService) {
-     spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1'});
+     spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue({name: 'test1', ssffFiles: []});
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
      spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(deferred2.promise);
      spyOn(Ssffparserservice, 'asyncParseSsffArr').and.returnValue(deferred3.promise);
@@ -110,22 +109,21 @@ describe('Service: dbObjLoadSaveService', function () {
      spyOn(Binarydatamaniphelper, 'base64ToArrayBuffer');
      scope.dbo.loadBundle({name: 'test'});
      expect(loadedMetaDataService.getCurBndl).toHaveBeenCalled();
-     deferred.resolve({status: 200, data: { mediaFile: { encoding: 'BASE64', data: [1, 2, 3]}}});
+     deferred.resolve({status: 200, data: { mediaFile: { encoding: 'BASE64', data: [1, 2, 3]}, ssffFiles: []}});
      scope.$apply();
      expect(Iohandlerservice.getBundle).toHaveBeenCalled();
      deferred2.resolve({Data: []});
      scope.$apply();
      expect(Wavparserservice.parseWavAudioBuf).toHaveBeenCalled();
-     // I am catching the rejection? what? -> this is broken somehow
-    //  deferred3.reject({ status: { message: 'error_msg1' }});
-    //  scope.$apply();
-    //  expect(Validationservice.validateJSO).toHaveBeenCalled();
-    //  expect(Ssffparserservice.asyncParseSsffArr).toHaveBeenCalled();
-    //  expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
-    //  deferred4.resolve();
-    //  scope.$apply();
-    //  expect(modalService.open).toHaveBeenCalledWith('views/error.html', 'Error parsing SSFF file: error_msg1');
-    //  expect(appStateService.resetToInitState).toHaveBeenCalled();
+     deferred3.reject({ status: { message: 'error_msg1' }});
+     scope.$apply();
+     expect(Validationservice.validateJSO).toHaveBeenCalled();
+     expect(Ssffparserservice.asyncParseSsffArr).toHaveBeenCalled();
+     expect(Binarydatamaniphelper.base64ToArrayBuffer).toHaveBeenCalled();
+     deferred4.resolve();
+     scope.$apply();
+     expect(modalService.open).toHaveBeenCalledWith('views/error.html', 'Error parsing SSFF file: error_msg1');
+     expect(appStateService.resetToInitState).toHaveBeenCalled();
    }));
 
 
@@ -134,8 +132,8 @@ describe('Service: dbObjLoadSaveService', function () {
    */
    it('should NOT loadBundle (wav file error)', inject(function (appStateService, modalService, DataService, Validationservice, Binarydatamaniphelper, Ssffparserservice, Wavparserservice, Iohandlerservice, loadedMetaDataService) {
      // two bundles (one loaded (bndl1) one to be loaded (bndl2))
-     var bndl1 = {name: 'test', mediaFile: {encoding: 'BASE64'}};
-     var bndl2 = {name: 'test1', mediaFile: {encoding: 'BASE64'}};
+     var bndl1 = {name: 'test', mediaFile: {encoding: 'BASE64'}, ssffFiles: []};
+     var bndl2 = {name: 'test1', mediaFile: {encoding: 'BASE64'}, ssffFiles: []};
      spyOn(loadedMetaDataService, 'getCurBndl').and.returnValue(bndl1);
      spyOn(Iohandlerservice, 'getBundle').and.returnValue(deferred.promise);
      spyOn(Wavparserservice, 'parseWavAudioBuf').and.returnValue(deferred2.promise);
