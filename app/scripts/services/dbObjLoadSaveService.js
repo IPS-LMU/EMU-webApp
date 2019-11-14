@@ -133,17 +133,18 @@ angular.module('emuwebApp')
 						file.encoding = 'ARRAYBUFFER';
 					}
 				})
-				
+				var dummyProm = false;
 				if(promises.length === 0){
 					// add resovled promise
 					var d = $q.defer();
+					dummyProm = true;
 					promises.push(d.promise);
 					d.resolve();
 				}
 
 				$q.all(promises).then(function(res) {
 					for(var i = 0; i < res.length; i++){
-						if(bundleData.ssffFiles.length !== 0){
+						if(!dummyProm){
 							bundleData.ssffFiles[i].data = res[i];
 						}
 					}
