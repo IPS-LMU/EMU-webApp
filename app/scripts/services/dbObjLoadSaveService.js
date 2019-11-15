@@ -78,6 +78,9 @@ angular.module('emuwebApp')
                                 innerLoadBundle(bndl, bundleData, arrBuff, defer);
                             }else if(bundleData.mediaFile.encoding === 'GETURL'){
                                 Iohandlerservice.httpGetPath(bundleData.mediaFile.data, 'arraybuffer').then(function (res) {
+									if(res.status === 200){
+										res = res.data;
+									}
 									innerLoadBundle(bndl, bundleData, res, defer);
                                 });
 							}
