@@ -247,7 +247,7 @@ angular.module('emuwebApp')
 			} else if (ConfigProviderService.vals.main.comMode === 'WS') {
 				getProm = Websockethandler.saveBundle(bundleData);
 			} else if (ConfigProviderService.vals.main.comMode === 'GITLAB') {
-				console.log(bundleData);
+				// console.log(bundleData);
 				var searchObject = $location.search();
 				var bndlPath = bundleData.session + '_ses/' + bundleData.annotation.name + '_bndl/';
 				// var bndlURL = searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + bndlPath;
@@ -260,14 +260,17 @@ angular.module('emuwebApp')
 					action: "update", // _bundleList.json
 					file_path: 'bundleLists/' + searchObject.bundleListName + "_bundleList.json",
 					content: JSON.stringify(loadedMetaDataService.getBundleList(), null, 4)
-				  },
-				  { 
-					action: "update", // SSFF file (only FORMANTS 4 now)
-					file_path: bndlPath + bundleData.annotation.name + "." + "fms",
-					content: bundleData.ssffFiles[0].data,
-					encoding: "base64"
 				  }
-				]
+				];
+				//console.log(bundleData.ssffFiles.length);
+				if(bundleData.ssffFiles.length > 0){
+					actions.push({ 
+						action: "update", // SSFF file (only FORMANTS 4 now)
+						file_path: bndlPath + bundleData.annotation.name + "." + "fms",
+						content: bundleData.ssffFiles[0].data,
+						encoding: "base64"
+					});
+				}
 				var payload = {
 					branch: "master",
 					commit_message: "EMU-webApp save by user: " + searchObject.bundleListName + "; session: " + bundleData.session + "; bundle: " + bundleData.annotation.name + ";",
