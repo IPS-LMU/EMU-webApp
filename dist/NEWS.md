@@ -1,6 +1,6 @@
 # What's New
 
-## Version 1.1.0
+## Version 1.1.1
 
 ### new features / performance tweaks / improvements
 
