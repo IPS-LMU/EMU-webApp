@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.1.1.9000
+
+### bug fixes
+
+- fixed snap to nearest zero crossing for events (fixes \#265)
+
+### new features / performance tweaks / improvements
+
 ## Version 1.1.1
 
 ### new features / performance tweaks / improvements

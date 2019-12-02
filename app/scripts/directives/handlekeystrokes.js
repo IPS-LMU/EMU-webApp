@@ -599,6 +599,7 @@ angular.module('emuwebApp')
 								if (viewState.getPermission('labelAction')) {
 									if (ConfigProviderService.vals.restrictions.editItemSize) {
 										var dist;
+										var action;
 										if (viewState.getcurMouseLevelType() === 'SEGMENT') {
 											dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseItem().sampleStart);
 										} else {
@@ -607,11 +608,18 @@ angular.module('emuwebApp')
 										if (dist !== 0) {
 											seg = viewState.getcurMouseItem();
 											levelName = viewState.getcurMouseLevelName();
-											LevelService.moveBoundary(levelName, seg.id, dist, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
+											levelType = viewState.getcurMouseLevelType();
+											if(levelType == 'SEGMENT'){
+												LevelService.moveBoundary(levelName, seg.id, dist, viewState.getcurMouseisFirst(), viewState.getcurMouseisLast());
+												action = 'MOVEBOUNDARY';
+											} else {
+												LevelService.moveEvent(levelName, seg.id, dist);
+												action = 'MOVEEVENT';
+											}
 
 											HistoryService.updateCurChangeObj({
 												'type': 'ANNOT',
-												'action': 'MOVEBOUNDARY',
+												'action': action,
 												'name': levelName,
 												'id': seg.id,
 												'movedBy': dist,
