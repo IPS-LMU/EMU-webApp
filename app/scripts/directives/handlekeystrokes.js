@@ -601,7 +601,11 @@ angular.module('emuwebApp')
 										var dist;
 										var action;
 										if (viewState.getcurMouseLevelType() === 'SEGMENT') {
-											dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseItem().sampleStart);
+											if(!viewState.getcurMouseisLast()){
+												dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseItem().sampleStart);
+											} else {
+												dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseItem().sampleStart + viewState.getcurMouseItem().sampleDur + 1);	
+											}
 										} else {
 											dist = LevelService.calcDistanceToNearestZeroCrossing(viewState.getcurMouseItem().samplePoint);
 										}

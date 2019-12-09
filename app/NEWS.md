@@ -1,10 +1,11 @@
 # What's New
 
-## Version 1.1.1.9000
+## Version 1.1.1.9001
 
 ### bug fixes
 
 - fixed snap to nearest zero crossing for events (fixes \#265)
+- fixed snap to nearest zero crossing from final boundary of level (fixes \#265)
 
 ### new features / performance tweaks / improvements
 
