@@ -5,7 +5,7 @@
 ### bug fixes
 
 - fixed snap to nearest zero crossing for events (fixes \#265)
-- fixed snap to nearest zero crossing from final boundary of level (fixes \#265)
+- fixed snap to nearest zero crossing from final boundary of level (fixes \#267)
 
 ### new features / performance tweaks / improvements
 
