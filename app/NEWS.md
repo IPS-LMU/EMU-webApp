@@ -1,6 +1,6 @@
 # What's New
 
-## Version 1.1.1.9001
+## Version 1.1.2
 
 ### bug fixes
 
