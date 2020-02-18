@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.1.3
+
+### bug fixes
+
+-  added functionality for saveToWindowParent=true URL parameter
+
+### new features / performance tweaks / improvements
+
+
 ## Version 1.1.2
 
 ### bug fixes
