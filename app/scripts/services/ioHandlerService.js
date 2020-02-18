@@ -293,9 +293,7 @@ angular.module('emuwebApp')
 				var def = $q.defer();
 				getProm = def.promise;
 				window.parent.postMessage({
-					data: {
-						bundleData
-					}
+					data: bundleData
 				}, '*');
 				def.resolve();
 			}
