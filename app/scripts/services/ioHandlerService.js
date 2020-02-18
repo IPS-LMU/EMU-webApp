@@ -6,6 +6,7 @@ angular.module('emuwebApp')
 		$http, 
 		$location, 
 		$q, 
+		$window,
 		HistoryService, 
 		viewState, 
 		Soundhandlerservice, 
@@ -286,6 +287,17 @@ angular.module('emuwebApp')
 					body: JSON.stringify(payload)
 				})
 
+			} else if (ConfigProviderService.vals.main.comMode === 'EMBEDDED') {
+				// this can only be reached if URL parameter: saveToWindowParent=true
+				// send upload url to iframe owner
+				var def = $q.defer();
+				getProm = def.promise;
+				window.parent.postMessage({
+					data: {
+						bundleData
+					}
+				}, '*');
+				def.resolve();
 			}
 			// else if (ConfigProviderService.vals.main.comMode === 'DEMO') {
 			// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');

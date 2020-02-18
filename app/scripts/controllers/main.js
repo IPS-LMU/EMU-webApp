@@ -168,7 +168,9 @@ angular.module('emuwebApp')
 
 					//hide menu
 					if (viewState.getsubmenuOpen()) {
-						viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+						if(searchObject.saveToWindowParent !== "true"){
+							viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+						}
 					}
 
 					viewState.somethingInProgressTxt = 'Loading DB config...';
@@ -181,6 +183,9 @@ angular.module('emuwebApp')
 						DBconfigGetUrl = 'configFiles/embedded_emuwebappConfig.json';
 					}
 
+					
+					
+					
 					// then get the DBconfigFile
 					Iohandlerservice.httpGetPath(DBconfigGetUrl).then(function (resp) {
 						// first element of perspectives is default perspective
@@ -193,13 +198,16 @@ angular.module('emuwebApp')
 							if (ConfigProviderService.embeddedVals.fromUrlParams) {
 								ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
 							}
-							ConfigProviderService.curDbConfig = resp.data;
 
+							ConfigProviderService.curDbConfig = resp.data;
+							
 							// validate DBconfigFileSchema!
 							validRes = Validationservice.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
-
+							
 							if (validRes === true) {
-
+								if(searchObject.saveToWindowParent === "true"){
+									ConfigProviderService.vals.activeButtons.saveBundle = true;
+								}
 								var bndlList = [{'session': 'File(s)', 'name': 'from URL parameters'}];
 								loadedMetaDataService.setBundleList(bndlList);
 								loadedMetaDataService.setCurBndl(bndlList[0]);
