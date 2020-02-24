@@ -10,7 +10,25 @@
     "type": "git",
     "url": "https://github.com/IPS-LMU/EMU-webApp"
   },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-cookies": "^1.5.8",
+    "angular-filter": "~0.4.9",
+    "angular-resource": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "angular-sanitize": "^1.5.8",
+    "angular-touch": "^1.5.8",
+    "bootstrap-sass": "^3.4.1",
+    "d3": "^3.5.17",
+    "jquery": "^3.1.1",
+    "showdown": "^1.9.1",
+    "tv4": "~1.0.17",
+    "wav-range-requests": "git+https://git@github.com/IPS-LMU/wav-range-requests.git",
+    "webdriver-manager": "^12.0.6"
+  },
   "devDependencies": {
+    "angular-mocks": "^1.5.8",
     "autoprefixer": "^6.5.3",
     "filewalker": "~0.1.2",
     "grunt": "^1.0.1",
@@ -42,6 +60,7 @@
     "grunt-usemin": "^3.0.0",
     "grunt-wiredep": "^3.0.1",
     "jasmine-core": "^2.5.2",
+    "jasmine-jquery": "^2.1.1",
     "jit-grunt": "^0.10.0",
     "jshint-stylish": "^2.2.1",
     "jsonschema": "^1.1.0",
@@ -57,6 +76,7 @@
     "puppeteer": "^2.0.0",
     "serve-static": "^1.11.1",
     "time-grunt": "^1.0.0",
+    "wav-range-requests": "git+https://git@github.com/IPS-LMU/wav-range-requests.git",
     "ws": ">=3.3.1"
   },
   "engines": {
@@ -64,8 +84,5 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js"
-  },
-  "dependencies": {
-    "webdriver-manager": "^12.0.6"
   }
 }

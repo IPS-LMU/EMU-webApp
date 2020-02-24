@@ -10,75 +10,75 @@
 			<th>Function</th>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td>
+			<td><b>o</b></td>
 			<td>open bundleList sidebar (left)</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.toggleSideBarLeft)}}</b></td>
+			<td><b>SHIFT</b> + <b>o</b></td>
 			<td>open perspective sidebar (right)</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.showHierarchy)}}</b></td>
+			<td><b>h</b></td>
 			<td>open hierarchy View</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomIn)}}</b></td>
+			<td><b>w</b></td>
 			<td>zoom in <sup>1</sup></td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomOut)}}</b></td>
+			<td><b>s</b></td>
 			<td>zoom out <sup>1</sup></td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shiftViewPortLeft)}}</b></td>
+			<td><b>a</b></td>
 			<td>move viewport left</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shiftViewPortRight)}}</b></td>
+			<td><b>d</b></td>
 			<td>move viewport right</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomAll)}}</b></td>
+			<td><b>q</b></td>
 			<td>view all</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.zoomSel)}}</b></td>
+			<td><b>e</b></td>
 			<td>zoom in to selected area</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selNextPrevItem)}}</b></td>
+			<td><b>TAB</b></td>
 			<td>preselect next item</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}} + {{cps.getStrRep(cps.vals.keyMappings.selNextPrevItem)}}</b></td>
+			<td><b>SHIFT + TAB</b></td>
 			<td>preselect previous item</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</td>
+			<td><b>→</td>
 			<td>preselect next item</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td>
+			<td><b>←</b></td>
 			<td>preselect previous item</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.selNextItem)}}</b></td>
+			<td><b>SHIFT</b> + <b>→</b></td>
 			<td>add next item to preselection</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.selPrevItem)}}</b></td>
+			<td><b>SHIFT</b> + <b>←</b></td>
 			<td>add previous item to preselection</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selectItemsInSelection)}}</b></td>
+			<td><b>g</b></td>
 			<td>select all items in marked area</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.saveBndl)}}</b></td>
+			<td><b>SHIFT</b> + <b>S</b></td>
 			<td>save current bundle</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>1..9</b></td>
+			<td><b>SHIFT</b> + <b>1..9</b></td>
 			<td>switch to perspective 1..9</td>
 		</tr>
 
@@ -95,63 +95,63 @@
 			<th>Function</th>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool">undo last action</td>
+			<td><b>z</b></td>
+			<td>undo last action</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.undo)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize || cps.vals.restrictions.correctionTool">redo last action</td>
+			<td><b>SHIFT</b> + <b>z</b></td>
+			<td>redo last action</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.addItem"><b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b></td>
-			<td ng-show="cps.vals.restrictions.addItem">add boundary / event marker at marked position</td>
+			<td><b>ENTER</b></td>
+			<td>add boundary / event marker at marked position</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.addItem"><b>{{cps.getStrRep(cps.vals.keyMappings.createNewItemAtSelection)}}</b> (when single item is preselected)</td>
-			<td ng-show="cps.vals.restrictions.addItem">change label of item</td>
+			<td><b>ENTER</b> (when single item is preselected)</td>
+			<td>change label of item</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.deleteItemBoundary"><b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td>
-			<td ng-show="cps.vals.restrictions.deleteItemBoundary">delete preselected boundary / event marker</td>
+			<td><b>BACKSPACE</b></td>
+			<td>delete preselected boundary / event marker</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.deleteItem"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.deletePreselBoundary)}}</b></td>
-			<td ng-show="cps.vals.restrictions.deleteItem">delete selected event(s) or segment(s)</td>
+			<td><b>SHIFT</b> + <b>BACKSPACE</b></td>
+			<td>delete selected event(s) or segment(s)</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestTopBoundary)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize">snap preselected boundary / event marker to nearest boundary / event marker in level above</td>
+			<td><b>t</b></td>
+			<td>snap preselected boundary / event marker to nearest boundary / event marker in level above</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestBottomBoundary)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize">snap preselected boundary / event marker to nearest boundary / event marker in level below</td>
+			<td><b>b</b></td>
+			<td>snap preselected boundary / event marker to nearest boundary / event marker in level below</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.snapBoundaryToNearestZeroCrossing)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize">snap preselected boundary / event marker to nearest zero crossing</td>
+			<td><b>x</b></td>
+			<td>snap preselected boundary / event marker to nearest zero crossing</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsRight)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize">add time to preselected items (expand to right)</td>
+			<td><b>+</b></td>
+			<td>add time to preselected items (expand to right)</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsRight)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize">remove time from preselected items (shrink from right)</td>
+			<td><b>-</b></td>
+			<td>remove time from preselected items (shrink from right)</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.expandSelSegmentsLeft)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize">add time to preselected items (expand to left)</td>
+			<td><b>SHIFT</b> + <b>+</b></td>
+			<td>add time to preselected items (expand to left)</td>
 		</tr>
 		<tr>
-			<td ng-show="cps.vals.restrictions.editItemSize"><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.shrinkSelSegmentsLeft)}}</b></td>
-			<td ng-show="cps.vals.restrictions.editItemSize">remove time from preselected items (shrink from left)</td>
+			<td><b>SHIFT</b> + <b>-</b></td>
+			<td>remove time from preselected items (shrink from left)</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.levelUp)}}</b></td>
+			<td><b>↑</b></td>
 			<td>select level above</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.levelDown)}}</b></td>
+			<td><b>↓</b></td>
 			<td>select level below</td>
 		</tr>
 
@@ -159,62 +159,62 @@
 
 	</p>
 	<!-- ///////////////////////////////////////////// -->
-	<h2 ng-show="cps.vals.restrictions.playback">Playback shortcuts</h2>
-	<p ng-show="cps.vals.restrictions.playback">
+	<h2>Playback shortcuts</h2>
+	<p>
 		<table>
 		<tr>
 			<th>Keyboard Shortcut</th>
 			<th>Function</th>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.playEntireFile)}}</b></td>
+			<td><b>f</b></td>
 			<td>play entire file</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.playSelected)}}</b></td>
+			<td><b>c</b></td>
 			<td>play selected</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.playAllInView)}}</b></td>
+			<td><b>SPACE</b></td>
 			<td>play/pause in view (also use as general stop for playback)</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b> + <b>{{cps.getStrRep(cps.vals.keyMappings.playAllInView)}}</b></td>
+			<td><b>SHIFT</b> + <b>SPACE</b></td>
 			<td>play/pause in view to end of file with autoscrolling</td>
 		</tr>
 
 	</table>
 	</p>
 	<!-- ///////////////////////////////////////////// -->
-	<h2 ng-show="cps.vals.restrictions.correctionTool">Correction Tool shortcuts</h2>
-	<p ng-show="cps.vals.restrictions.correctionTool">
+	<h2>Correction Tool shortcuts</h2>
+	<p>
 		<table>
 		<tr>
 			<th>Keyboard Shortcut</th>
 			<th>Function</th>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFirstContourCorrectionTool)}}</b></td>
+			<td><b>1</b></td>
 			<td>choose correction tool for first contour</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selectSecondContourCorrectionTool)}}</b></td>
+			<td><b>2</b></td>
 			<td>choose correction tool for second contour</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selectThirdContourCorrectionTool)}}</b></td>
+			<td><b>3</b></td>
 			<td>choose correction tool for third contour</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFourthContourCorrectionTool)}}</b></td>
+			<td><b>4</b></td>
 			<td>choose correction tool for fourth contour</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selectFifthContourCorrectionTool)}}</b></td>
+			<td><b>5</b></td>
 			<td>choose correction tool for fifth contour</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.selectNoContourCorrectionTool)}}</b></td>
+			<td><b>0</b></td>
 			<td>disable correction tool</td>
 		</tr>
 	</table>
@@ -228,39 +228,39 @@
 				<th>Function</th>
 			</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyRotate)}}</b></td>
+			<td><b>r</b></td>
 			<td>rotate hierarchy by 90&deg;</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemBefore)}}</b></td>
+			<td><b>n</b></td>
 			<td>add item before the currently preselected one</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyAddItemAfter)}}</b></td>
+			<td><b>m</b></td>
 			<td>add item after the currently preselected one</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.shift)}}</b></td>
+			<td><b>SHIFT</b></td>
 			<td>draw a new link (press and hold)</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteItem)}}</b></td>
+			<td><b>y</b></td>
 			<td>delete the currently preselected item</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyDeleteLink)}}</b></td>
+			<td><b>BACKSPACE</b></td>
 			<td>delete the currently preselected link</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.hierarchyPlayback)}}</b></td>
+			<td><b>SPACE</b></td>
 			<td>play back the portion defined by the currently preselected item</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.levelDown)}}</b></td>
+			<td><b>↓</b></td>
 			<td>select next hierarchy path</td>
 		</tr>
 		<tr>
-			<td><b>{{cps.getStrRep(cps.vals.keyMappings.levelUp)}}</b></td>
+			<td><b>↑</b></td>
 			<td>select previous hierarchy path</td>
 		</tr>
 		</table>

@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('emuwebApp')
-	.controller('TabbedHelpCtrl', function ($scope, ConfigProviderService, Iohandlerservice) {
+	.controller('TabbedHelpCtrl', function ($scope, $sce, ConfigProviderService, Iohandlerservice) {
 		$scope.cps = ConfigProviderService;
 		$scope.tree = [];
+		$scope.converter = new showdown.Converter();
 		Iohandlerservice.httpGetPath('manual/index.json').then(function (resp) {
 			$scope.tree = resp.data;
 			// console.log($scope.tree);
@@ -17,14 +18,14 @@ angular.module('emuwebApp')
 		$scope.onClickTab = function (node) {
 			node.expanded = !node.expanded;
 			if (node.url !== false) {
-				if (node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
-					$scope.isMDFile = true;
-					$scope.currentTabUrl = node.url;
-				}
-				else {
-					$scope.isMDFile = false;
-					$scope.currentTabUrl = node.url;
-				}
+				Iohandlerservice.httpGetPath(node.url).then(function (resp) {
+					if (node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
+						$scope.htmlStr = $sce.trustAsHtml($scope.converter.makeHtml(resp.data));
+					} else {
+						$scope.htmlStr = $sce.trustAsHtml(resp.data);
+					}
+					console.log($scope.htmlStr);
+				});
 			}
 		};
 
