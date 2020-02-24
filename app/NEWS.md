@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.1.3.9000
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+-  removed bower dep.
+
 ## Version 1.1.3
 
 ### bug fixes
