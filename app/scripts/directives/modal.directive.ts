@@ -1,0 +1,38 @@
+import * as angular from 'angular';
+
+angular.module('emuwebApp')
+	.directive('modal', function ($animate, modalService) {
+		return {
+			restrict: 'E',
+			templateUrl: 'views/modal.html',
+			replace: true,
+			scope: {},
+			link: function (scope, element) {
+				scope.templateUrl = '';
+				scope.modal = modalService;
+				scope.isOpen = false;
+				scope.force = false;
+				scope.dataIn = '';
+				scope.$watch('modal.isOpen', function (newValue) {
+					if (newValue !== undefined) {
+						scope.templateUrl = modalService.getTemplateUrl();
+						scope.dataIn = modalService.dataIn;
+						scope.force = modalService.force;
+						if (newValue) {
+							element[0].classList.add('emuwebapp-modal-open');
+						}
+						else {
+							element[0].classList.remove('emuwebapp-modal-open');
+						}
+					}
+				});
+				scope.$watch('modal.templateUrl', function (newValue) {
+					if (newValue !== undefined) {
+						scope.templateUrl = newValue;
+						scope.dataIn = modalService.dataIn;
+						scope.force = modalService.force;
+					}
+				});
+			}
+		};
+	});

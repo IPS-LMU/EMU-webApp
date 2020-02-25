@@ -1,0 +1,11 @@
+import "./bundlelist-sidebar.controller";
+import "./export.controller";
+import "./login.controller";
+import "./main.controller";
+import "./manual.controller";
+import "./modal.controller";
+import "./search-annot.controller";
+import "./show-hierarchy.controller";
+import "./spect-settings.controller";
+import "./tabbed.controller";
+import "./tabbed-help.controller";
