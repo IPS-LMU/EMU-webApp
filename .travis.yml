@@ -4,8 +4,6 @@ node_js:
 before_script:
   - export COVERALLS_SERVICE_NAME=travis-ci
   - export COVERALLS_REPO_TOKEN=RlbMXWAIB77koRT19b19VJnvisXJcay9w
-  - npm install -g bower
-  - bower install
 
 # whitelist
 branches:

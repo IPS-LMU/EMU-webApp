@@ -11,6 +11,7 @@
     "url": "https://github.com/IPS-LMU/EMU-webApp"
   },
   "dependencies": {
+    "@types/jquery": "^3.3.33",
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
     "angular-cookies": "^1.5.8",
@@ -74,14 +75,21 @@
     "karma-phantomjs-shim": "^1.4.0",
     "protractor": "^5.3.2",
     "puppeteer": "^2.0.0",
+    "rimraf": "^3.0.2",
     "serve-static": "^1.11.1",
     "time-grunt": "^1.0.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.2",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "worker-loader": "^2.0.0",
     "ws": ">=3.3.1"
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "karma start test/karma.conf.js"
+    "test": "karma start test/karma.conf.js",
+    "build": "rimraf app/dist/ && webpack --bail --progress --profile"
   }
 }

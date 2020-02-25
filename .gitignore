@@ -70,7 +70,6 @@ autoprefixer
 
 # list form current yeoman angular gen. #
 #########################################
-/bower_components
 /node_modules
 #/dist
 /.tmp
