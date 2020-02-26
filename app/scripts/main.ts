@@ -1,6 +1,6 @@
 // Vendor
-import "jquery";
 import "angular";
+import "jquery";
 //import "bootstrap";
 import "angular-animate";
 import "angular-cookies";

@@ -7,7 +7,7 @@
  * @constructor
  * @param Worker {Worker} injection point for Worker
  */
-function SpectroDrawingWorker(Worker) {
+export function SpectroDrawingWorker(Worker) {
 	Worker = Worker || window.Worker;
 	this.url = this.getWorkerURL();
 	this.worker = new Worker(this.url);

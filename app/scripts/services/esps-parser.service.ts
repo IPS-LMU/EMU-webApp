@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import * as EspsParserWorker from '../workers/esps-parser.worker.js';
+import { EspsParserWorker } from '../workers/esps-parser.worker.js';
 
 angular.module('emuwebApp')
 	.service('Espsparserservice', function Espsparserservice($q, LevelService, Soundhandlerservice) {

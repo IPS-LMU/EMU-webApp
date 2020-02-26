@@ -5,7 +5,7 @@
  * @constructor
  * @param Worker {Worker} injection point for Worker
  */
-function EspsParserWorker(Worker) {
+export function EspsParserWorker(Worker) {
 	Worker = Worker || window.Worker;
 	this.url = this.getWorkerURL();
 	this.worker = new Worker(this.url);

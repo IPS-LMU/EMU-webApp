@@ -5,7 +5,7 @@
  * @constructor
  * @param Worker {Worker} injection point for Worker
  */
-function SsffParserWorker(Worker) {
+export function SsffParserWorker(Worker) {
 	Worker = Worker || window.Worker;
 	this.url = this.getWorkerURL();
 	this.worker = new Worker(this.url);

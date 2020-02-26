@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import * as SsffParserWorker from '../workers/ssff-parser.worker.js';
+import { SsffParserWorker } from '../workers/ssff-parser.worker.js';
 
 angular.module('emuwebApp')
 	.service('Ssffparserservice', function Ssffparserservice($q) {

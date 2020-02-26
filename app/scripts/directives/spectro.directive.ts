@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import * as SpectroDrawingWorker from '../workers/spectro-drawing.worker.js';
+import { SpectroDrawingWorker } from '../workers/spectro-drawing.worker';
 
 
 angular.module('emuwebApp')

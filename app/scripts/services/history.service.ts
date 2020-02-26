@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.service('HistoryService', function HistoryService($log, $compile, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice, loadedMetaDataService) {
+	.service('HistoryService', function HistoryService($log, $compile, $sce, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice, loadedMetaDataService) {
 
 		// shared service object
 		var sServObj = {} as any;
@@ -392,7 +392,7 @@ angular.module('emuwebApp')
 			if (!isUndo) {
 				front = '<i>REDO</i> &#8592; ';
 			}
-			viewState.historyActionTxt = front + text;
+			viewState.historyActionTxt = $sce.trustAsHtml(front + text);
 		};
 
 		// resetToInitState
