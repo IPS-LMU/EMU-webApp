@@ -11,7 +11,7 @@
 .emuwebapp-bundle-outer {
     height: 100%;
     width: 240px;
-    background: $color-darkGrey;
+    background: $color-grey;
     color: $color-white;
     margin-left: 0;
     padding-bottom: 500px;
@@ -34,17 +34,18 @@
         padding-top: 6px;
         padding-bottom: 6px;
         margin: 0;
-        border-bottom:thin solid $color-white;
+        border-bottom:thin solid $color-black;
     }
     > div {
         height: 100%;
+        border-right:thin solid $color-black;
         @extend .emuwebapp-font-small;
     }
     .emuwebapp-filter {
-        background: url(../img/search.svg) no-repeat 10px 6px $color-white;
         outline: none;
         border: 0 none;
         color: $color-grey;
+        background-color: $color-black;
         width: 75%;
         padding: 6px 15px 7px 35px;
         @include vendor-prefix(box-shadow, "0 1px 0 "+$color-transparent-grey+", 0 1px 3px "+$color-transparent-black+" inset");

@@ -123,12 +123,12 @@
 		width: 100%;
 		h2 {
 			padding-top: 17px;
-			color: #fff;
+			color: $color-black;
 			@extend .emuwebapp-font-large;
 		}
 		h3 {
 			padding-top: 17px;
-			color: #fff;
+			color: $color-black;
 			@extend .emuwebapp-font-large;
 		}
 	}
@@ -154,7 +154,9 @@
     position: relative;
 	clear: both;
 	overflow-y: auto;
-	overflow-x: hidden;
+    overflow-x: hidden;
+    background-color: $color-darkGrey;
+    color: $color-white;
     /*
 	&::-webkit-scrollbar {
 		width: 17px;  /!* for vertical scrollbars *!/

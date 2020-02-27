@@ -386,7 +386,7 @@ angular.module('emuwebApp')
 				// check if envelope is to be drawn
 				if (allPeakVals.minPeaks && allPeakVals.maxPeaks && allPeakVals.samplePerPx >= 1) {
 					// draw envelope
-					ctx.strokeStyle = ConfigProviderService.design.color.black;
+					ctx.strokeStyle = ConfigProviderService.design.color.white;
 					
 					ctx.beginPath();
 					yMax = ((allPeakVals.maxMaxPeak - allPeakVals.maxPeaks[0]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
@@ -422,8 +422,8 @@ angular.module('emuwebApp')
 					var hDbS = (1 / allPeakVals.samplePerPx) / 2; // half distance between samples
 					var sNr = viewState.curViewPort.sS;
 					// over sample exact
-					ctx.strokeStyle = ConfigProviderService.design.color.black;
-					ctx.fillStyle = ConfigProviderService.design.color.black;
+					ctx.strokeStyle = ConfigProviderService.design.color.white;
+					ctx.fillStyle = ConfigProviderService.design.color.white;
 					// ctx.beginPath();
 					if (viewState.curViewPort.sS === 0) {
 						ctx.moveTo(hDbS, (allPeakVals.samples[0] - allPeakVals.minSample) / (allPeakVals.maxSample - allPeakVals.minSample) * canvas.height);
@@ -544,20 +544,20 @@ angular.module('emuwebApp')
 
 			if (posS === posE) {
 
-				ctx.fillStyle = ConfigProviderService.design.color.transparent.black;
+				ctx.fillStyle = ConfigProviderService.design.color.transparent.white;
 				ctx.fillRect(posS + xOffset, 0, 2, ctx.canvas.height);
 
 				if (drawTimeAndSamples) {
 					if (viewState.curViewPort.sS !== viewState.curViewPort.selectS && viewState.curViewPort.selectS !== -1) {
 						scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 						space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), scaleX);
-						fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.black, true);
+						fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.white, true);
 					}
 				}
 			} else {
-				ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
+				ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;
 				ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
-				ctx.strokeStyle = ConfigProviderService.design.color.transparent.black;
+				ctx.strokeStyle = ConfigProviderService.design.color.transparent.white;
 				ctx.beginPath();
 				ctx.moveTo(posS, 0);
 				ctx.lineTo(posS, ctx.canvas.height);
@@ -570,10 +570,10 @@ angular.module('emuwebApp')
 					// start values
 					scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
 					space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), scaleX);
-					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posS - space - 5, 0, ConfigProviderService.design.color.black, false);
+					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posS - space - 5, 0, ConfigProviderService.design.color.white, false);
 
 					// end values
-					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectE, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectE / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.black, true);
+					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectE, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectE / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.white, true);
 					// dur values
 					// check if space
 					space = getScale(ctx, mathHelperService.roundToNdigitsAfterDecPoint((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.audioBuffer.sampleRate, 6), scaleX);
@@ -582,7 +582,7 @@ angular.module('emuwebApp')
 						var str1 = viewState.curViewPort.selectE - viewState.curViewPort.selectS - 1;
 						var str2 = mathHelperService.roundToNdigitsAfterDecPoint(((viewState.curViewPort.selectE - viewState.curViewPort.selectS) / Soundhandlerservice.audioBuffer.sampleRate), 6);
 						space = getScaleWidth(ctx, str1, str2, scaleX);
-						fontScaleService.drawUndistortedTextTwoLines(ctx, str1, str2, fontSize, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - space / 2, 0, ConfigProviderService.design.color.black, false);
+						fontScaleService.drawUndistortedTextTwoLines(ctx, str1, str2, fontSize, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - space / 2, 0, ConfigProviderService.design.color.white, false);
 					}
 				}
 
@@ -744,8 +744,8 @@ angular.module('emuwebApp')
 		 *
 		 */
 		sServObj.drawViewPortTimes = function (ctx) {
-			ctx.strokeStyle = ConfigProviderService.design.color.black;
-			ctx.fillStyle = ConfigProviderService.design.color.black;
+			ctx.strokeStyle = ConfigProviderService.design.color.white;
+			ctx.fillStyle = ConfigProviderService.design.color.white;
 			ctx.font = (ConfigProviderService.design.font.small.size + ' ' + ConfigProviderService.design.font.small.family);
 
 			var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
@@ -766,9 +766,9 @@ angular.module('emuwebApp')
 				//draw time and sample nr
 				sTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.sS / Soundhandlerservice.audioBuffer.sampleRate, 6);
 				eTime = mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.eS / Soundhandlerservice.audioBuffer.sampleRate, 6);
-				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.sS, sTime, fontSize, ConfigProviderService.design.font.small.family, 5, 0, ConfigProviderService.design.color.black, true);
+				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.sS, sTime, fontSize, ConfigProviderService.design.font.small.family, 5, 0, ConfigProviderService.design.color.white, true);
 				space = getScaleWidth(ctx, viewState.curViewPort.eS, eTime, scaleX);
-				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.eS, eTime, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - space - 5, 0, ConfigProviderService.design.color.black, false);
+				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.eS, eTime, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - space - 5, 0, ConfigProviderService.design.color.white, false);
 			}
 		};
 		return sServObj;

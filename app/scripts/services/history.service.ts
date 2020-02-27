@@ -377,7 +377,6 @@ angular.module('emuwebApp')
 			return undoStack.length;
 		};
 
-
 		// return current History Stack
 		sServObj.getCurrentStack = function () {
 			return {

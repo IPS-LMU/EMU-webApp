@@ -12,8 +12,8 @@
     height: -webkit-calc(100% - 133px);
     height: calc(100% - 133px);
     width: 200px;
-    background-color: $color-white;
-    color: #000;
+    background-color: $color-grey;
+    color: $color-white;
     border-left: thin solid $color-black;
     z-index: 1000;
     @extend .emuwebapp-font-small;

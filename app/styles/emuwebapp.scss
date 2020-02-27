@@ -27,7 +27,7 @@
     height: 100%;
     min-height: 100%;
     position: absolute;
-    background-color: $color-white;
+    background-color: $color-darkGrey;
     text-align: center;
     overflow:hidden;
     @include vendor-prefix(user-select, "none");

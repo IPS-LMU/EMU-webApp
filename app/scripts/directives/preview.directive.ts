@@ -18,7 +18,7 @@ angular.module('emuwebApp')
 				scope.vs = viewState;
 				scope.shs = Soundhandlerservice;
 				scope.backgroundCanvas = {
-					'background': '#eee',
+					'background': '#000',
 					'border': '1px solid gray',
 					'width': '100%',
 					'height': '100%'
@@ -49,7 +49,7 @@ angular.module('emuwebApp')
 					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
 						initialized = false;
 						scope.backgroundCanvas = {
-							'background': ConfigProviderService.design.color.lightGrey,
+							'background': ConfigProviderService.design.color.black,
 							'border': '1px solid gray',
 							'width': '100%',
 							'height': '100%'
@@ -93,9 +93,9 @@ angular.module('emuwebApp')
 					var posE = (markupCanvas.width / Soundhandlerservice.audioBuffer.length) * vs.curViewPort.eS;
 
 					ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
-					ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
+					ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;
 					ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
-					ctx.strokeStyle = ConfigProviderService.design.color.transparent.black;
+					ctx.strokeStyle = ConfigProviderService.design.color.white;
 					ctx.beginPath();
 					ctx.moveTo(posS, 0);
 					ctx.lineTo(posS, markupCanvas.height);

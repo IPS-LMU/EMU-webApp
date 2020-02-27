@@ -5,8 +5,8 @@
 .emuwebapp-nav-wrap {
 	z-index: 99999;
 	.emuwebapp-dropdown-container:hover .emuwebapp-mini-btn {
-	    background: $color-white;
-	    color: $color-black;
+	    background: $color-black;
+	    color: $color-white;
 	}
 	ul {
 		list-style:none;
@@ -64,8 +64,8 @@
 	display: inline-block;
     background: transparent;
     border-radius: 0;
-    border: 1px solid $color-white;
-    color: $color-white;
+    border: 1px solid $color-black;
+    color: $color-black;
     text-decoration: none;
     text-align: center;
     margin: 0;
@@ -75,8 +75,8 @@
     outline: none;
     @extend .emuwebapp-font-small;
     &:hover:enabled {
-		background-color: $color-white;
-		color: $color-black;
+		background-color: $color-black;
+		color: $color-white;
 	}
 	&:disabled {
 	    pointer-events: none;
@@ -108,11 +108,12 @@
     display:inline-block;
     position: relative;
     background: transparent;
-    border: 0;
+	border: 0;
     width: 40px;
     height: 40px;
     text-align: center;
-    top: 0;
+	top: 0;
+	filter: invert(100%);
     > ._20px {
 			width: 20px;
 			height:20px;
@@ -122,7 +123,7 @@
 			height:35px;
 		}
 		&:active {
-			background: $color-white;
+			background: $color-black;
 		}
 		&:focus {
 			outline: none;
