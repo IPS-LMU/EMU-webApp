@@ -1,0 +1,38 @@
+{
+	"description": "Schema for bundleList for the EMU-webApp",
+	"type": "array",
+	"items": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"type": "string"
+			},
+			"session": {
+				"type": "string"
+			},
+			"finishedEditing": {
+				"type": "boolean"
+			},
+			"comment": {
+				"type": "string"
+			},
+			"timeAnchors": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"sample_start": {
+							"type": "integer"
+						},
+						"sample_end": {
+							"type": "integer"
+						}
+					}
+				}
+			}
+		},
+		"required": ["name"],
+		"additionalProperties": true
+	},
+	"minItems": 1
+}

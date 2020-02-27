@@ -1,0 +1,58 @@
+
+\documentclass[tikz, convert={outfile=\jobname.svg}]{standalone}
+\usetikzlibrary{shapes,arrows, backgrounds}
+\begin{document}
+\definecolor{emublue}{RGB}{13, 197, 255}
+\definecolor{emulightgray}{RGB}{231, 231, 231}
+% Define block styles
+
+\tikzstyle{cmd} = [rectangle, draw, fill=emulightgray,
+    text centered, rounded corners, font=\small]
+\tikzstyle{states} = [draw, ellipse,fill=yellow, font=\small]
+
+\begin{tikzpicture}[node distance = 1.3cm, auto, show background rectangle,
+  background rectangle/.style={fill=white, opacity=0},
+  color=black,
+  help lines/.style={color=lightgray,line width=.2pt}]
+    % Place nodes
+    \node [states] (connect) {\texttt{disconnected state}};
+    \node [cmd, below of=connect] (GETPROTOCOL) {\texttt{GETPROTOCOL}};
+    \node [cmd, below of=GETPROTOCOL] (GETDOUSERMANAGEMENT) {\texttt{GETDOUSERMANAGEMENT}};
+    \node [cmd, below of=GETDOUSERMANAGEMENT] (GETGLOBALDBCONFIG) {\texttt{GETGLOBALDBCONFIG}};
+    \node [cmd, left of=GETDOUSERMANAGEMENT, node distance = 4cm] (LOGONUSER) {\texttt{LOGONUSER}};
+    \node [cmd, below of=GETGLOBALDBCONFIG] (GETBUNDLELIST) {\texttt{GETBUNDLELIST}};
+
+    \node [states, below of=GETBUNDLELIST] (connected) {\texttt{connected state}};
+
+    \node [right of=connected, node distance = 4cm] (dummyBundleNode) {};
+    \node [cmd, above of=dummyBundleNode] (GETBUNDLE) {\texttt{GETBUNDLE}};
+    \node [cmd, below of=dummyBundleNode] (SAVEBUNDLE) {\texttt{SAVEBUNDLE}};
+
+    \node [left of=connected, node distance = 4cm] (dummyBundleNode2) {};
+    \node [cmd, below of=dummyBundleNode2] (SAVECONFIG) {\texttt{SAVECONFIG}};
+
+    \node [cmd, above of=GETBUNDLE] (DISCONNECTWARNING) {\texttt{DISCONNECTWARNING}};
+
+    % \node [cmd, below of=connected, node distance = 2cm] (GETDOEDITDBCONFIG) {\texttt{GETDOEDITDBCONFIG}};
+    % \node [cmd, left of=GETDOEDITDBCONFIG, node distance = 4cm] (EDITDBCONFIG) {\texttt{EDITDBCONFIG$^{*1}$}};
+
+    % Draw edges
+    \draw [->] (connect) -- (GETPROTOCOL);
+    \draw [->] (GETPROTOCOL) -- (GETDOUSERMANAGEMENT);
+    \draw [->] (GETDOUSERMANAGEMENT) -- node {no} (GETGLOBALDBCONFIG);
+    \draw [->] (GETDOUSERMANAGEMENT) -- node {yes} (LOGONUSER);
+    \draw [->] (LOGONUSER) |-  (GETGLOBALDBCONFIG);
+    \draw [->] (GETGLOBALDBCONFIG) -- (GETBUNDLELIST);
+    \draw [->] (GETBUNDLELIST) -- (connected);
+    \draw [->] (connected) -- (DISCONNECTWARNING);
+    \draw [->] (DISCONNECTWARNING) to [bend right=25] (connect);
+    \draw [<->] (connected) -- (GETBUNDLE);
+    \draw [<->] (connected) -- (SAVEBUNDLE);
+    \draw [<->] (connected) -- (SAVECONFIG);
+    % \draw [->] (connected) -- (GETDOEDITDBCONFIG);
+    % \draw [->] (GETDOEDITDBCONFIG) -- node {yes} (EDITDBCONFIG);
+    % \draw [->] (EDITDBCONFIG) |-  (connected);
+    % \draw [->] (GETDOEDITDBCONFIG.west) to [bend left=45] node {no}  (connected);
+
+\end{tikzpicture}
+\end{document}

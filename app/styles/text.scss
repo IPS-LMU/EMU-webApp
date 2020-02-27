@@ -132,6 +132,7 @@
     }
     pre {
         text-align: left;
+        color: $color-black;
     }
 /*    p, h3, pre {
         padding-left: 35px;
@@ -197,10 +198,10 @@
       padding-right: 2px;
       &:nth-child(even) {
         background: $color-lightGrey;
+        color: $color-black;
       }
       &:nth-child(odd) {
         background: $color-grey;
-        color: $color-white;
       }
     }
     td {

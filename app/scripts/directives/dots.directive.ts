@@ -244,12 +244,12 @@ angular.module('emuwebApp')
 
 					var smallFontSize = scope.cps.design.font.input.size.slice(0, -2) * 3 / 4;
 					// ymax
-					scope.fontImage.drawUndistortedText(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, 5, 5, scope.cps.design.color.black, true);
+					scope.fontImage.drawUndistortedText(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, 5, 5, scope.cps.design.color.white, true);
 					// xmin + y min
-					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, 5, canvas.height - smallFontSize * scaleY * 2 - 5, scope.cps.design.color.black, true);
+					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, 5, canvas.height - smallFontSize * scaleY * 2 - 5, scope.cps.design.color.white, true);
 					// xmax
 					var tw = ctx.measureText('xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 5)).width * scaleX; // SIC why 5???
-					scope.fontImage.drawUndistortedText(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, scope.cps.design.color.black, true);
+					scope.fontImage.drawUndistortedText(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, scope.cps.design.color.white, true);
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 
@@ -278,7 +278,7 @@ angular.module('emuwebApp')
 					var degrees = 90;
 					ctx.save();
 					ctx.rotate(degrees * Math.PI / 180);
-					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, canvas.width / 2 - tw / 2, -canvas.height, scope.cps.design.color.black, true);
+					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, canvas.width / 2 - tw / 2, -canvas.height, scope.cps.design.color.white, true);
 					ctx.restore();
 
 					//////////////////////////////
@@ -330,7 +330,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 
 						// draw labels
-						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, x, y - 5, scope.cps.design.color.black, true);
+						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, x, y - 5, scope.cps.design.color.white, true);
 
 						// append to all dots
 						allDots.push({

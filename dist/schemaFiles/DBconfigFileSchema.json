@@ -1,0 +1,187 @@
+{
+	"description": "Schema for DBconfig files for the EMU system",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"UUID": {
+			"type": "string"
+		},
+		"mediafileExtension": {
+			"enum": ["wav"]
+		},
+		"ssffTrackDefinitions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"columnName": {
+						"type": "string"
+					},
+					"fileExtension": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": ["name", "columnName", "fileExtension"],
+				"additionalProperties": false
+			}
+		},
+		"levelDefinitions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"enum": ["ITEM", "SEGMENT", "EVENT"]
+					},
+					"attributeDefinitions": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"type": {
+									"enum": ["STRING"]
+								},
+								"description": {
+									"type": "string"
+								},
+								"legalLabels": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"labelGroups": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"name": {
+												"type": "string"
+											},
+											"values": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										},
+										"required": ["name", "values"],
+										"additionalProperties": false
+									}
+								}
+							},
+							"required": ["name", "type"],
+							"additionalProperties": false
+						}
+					},
+					"anagestConfig": {
+						"type": "object",
+						"properties": {
+							"verticalPosSsffTrackName": {
+								"type": "string"
+							},
+							"velocitySsffTrackName": {
+								"type": "string"
+							},
+							"autoLinkLevelName": {
+								"type": "string"
+							},
+							"gestureDirection": {
+								"enum": ["peak", "valley"]
+							},
+							"threshold": {
+								"type": "number",
+								"minimun": "0.0",
+								"maximum": "1.0"
+							},
+							"gestureOnOffsetLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"maxVelocityOnOffsetLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"constrictionPlateauBeginEndLabels": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"minItems": 2,
+								"maxItems": 2
+							},
+							"maxConstrictionLabel": {
+								"type": "string"
+							}
+						},
+						"required": ["verticalPosSsffTrackName", "velocitySsffTrackName", "autoLinkLevelName", "gestureDirection", "threshold", "gestureOnOffsetLabels", "maxVelocityOnOffsetLabels", "constrictionPlateauBeginEndLabels", "maxConstrictionLabel"],
+						"additionalProperties": false,
+						"uniqueItems": true
+					}
+				},
+				"required": ["name", "type", "attributeDefinitions"],
+				"additionalProperties": false,
+				"uniqueItems": true
+			}
+
+		},
+		"linkDefinitions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"type": {
+						"enum": ["ONE_TO_MANY", "MANY_TO_MANY", "ONE_TO_ONE"]
+					},
+					"superlevelName": {
+						"type": "string"
+					},
+					"sublevelName": {
+						"type": "string"
+					}
+				},
+				"required": ["type", "superlevelName", "sublevelName"],
+				"additionalProperties": false
+			}
+		},
+		"labelGroups": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"values": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"EMUwebAppConfig": { "$ref": "https://raw.githubusercontent.com/IPS-LMU/EMU-webApp/master/app/schemaFiles/emuwebappConfigSchema.json"}
+	},
+	"required": ["name", "UUID", "mediafileExtension", "ssffTrackDefinitions", "levelDefinitions", "linkDefinitions", "EMUwebAppConfig"],
+	"additionalProperties": false
+}

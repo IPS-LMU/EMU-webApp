@@ -1,0 +1,34 @@
+<div class="emuwebapp-modal-wrap">
+	<div class="emuwebapp-modal-header-large emuwebapp-modal-header">
+	  <h3 id="modalHeading">
+		Connect to Server
+	  </h3>
+	</div>
+	<div class="emuwebapp-modal-body" ng-controller="ModalCtrl">
+	    <div class="emuwebapp-text">
+	        <div>
+	            Please enter URL: <br />
+	            &nbsp;<br />
+	            <input class="emuwebapp-modal-URL-input" type="text" ng-model="modal.dataOut" ng-init="modal.dataOut=cps.vals.main.serverUrl" ng-focus="cursorInTextField();" ng-blur="cursorOutOfTextField();">
+	            <button id="emuwebapp-modal-save" ng-click="saveURL();" class="emuwebapp-mini-btn-save">(+)</button> 
+	            <button id="emuwebapp-modal-save" ng-click="deleteURL(mySelect);" class="emuwebapp-mini-btn-save">(-)</button><br />
+	            &nbsp;<br />
+	            <select size="10" 
+	                    name="url" 
+	                    class="emuwebapp-modal-list" 
+	                    ng-init="myUrls = getURLs(); mySelect=myUrls[0]" 
+	                    ng-model="mySelect" 
+	                    ng-change="setCurrentURL(mySelect)"
+	                    ng-dblclick="modal.confirmContent();">
+	            	<option ng-repeat="url in myUrls track by $index" ng-click="setCurrentURL(url)">{{url}}</option>
+	            </select>	            
+	            <br />
+				{{connectionError}}
+			</div>
+		</div>
+	</div>
+	<div class="emuwebapp-modal-footer">
+		<button id="emuwebapp-modal-cancel" ng-click="modal.close();" class="emuwebapp-mini-btn">Cancel</button>
+		<button id="emuwebapp-modal-confirm" ng-click="modal.confirmContent();" class="emuwebapp-mini-btn">Connect</button>
+	</div>
+</div>

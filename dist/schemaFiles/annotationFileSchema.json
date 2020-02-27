@@ -1,0 +1,90 @@
+{
+	"description": "Schema for annotation file for the EMU systems label file format",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"minLength": 1
+		},
+		"annotates": {
+			"type": "string",
+			"minLength": 1
+		},
+		"sampleRate": {
+			"type": "integer"
+		},
+
+		"levels": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"enum": ["ITEM", "SEGMENT", "EVENT"]
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "integer"
+								},
+								"sampleStart": {
+									"type": "integer"
+								},
+								"sampleDur": {
+									"type": "integer"
+								},
+								"samplePoint": {
+									"type": "integer"
+								},
+								"labels": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"name": {
+												"type": "string"
+											},
+											"value": {
+												"type": "string"
+											}
+										},
+										"required": ["name", "value"],
+										"additionalProperties": false
+									}
+								}
+							},
+							"required": ["id", "labels"],
+							"additionalProperties": false
+						}
+					}
+				},
+				"required": ["name", "type", "items"],
+				"additionalProperties": false
+			}
+		},
+		"links": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"fromID": {
+						"type": "integer"
+					},
+					"toID": {
+						"type": "integer"
+					}
+				},
+				"required": ["fromID", "toID"],
+				"additionalProperties": false
+			}
+		}
+	},
+	"required": ["name", "annotates", "sampleRate", "levels", "links"],
+	"additionalProperties": false
+}

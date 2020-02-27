@@ -10,7 +10,7 @@
     top: calc(100% - 200px);
     height: 200px;
     width: 200px;
-    background-color: $color-lightGrey;
+    background-color: $color-grey;
     color: $color-black;
     box-shadow: -4px -4px 18px -4px $color-transparent-black;
     border-radius: 0;
@@ -37,9 +37,9 @@
         left: 10px;
         height: 10px;
         width: calc(100% - 10px);
-        background-color: $color-white;
-        border-top: 1px solid $color-grey;
-        border-bottom: 1px solid $color-grey;
+        background-color: $color-grey;
+        border-top: 1px solid $color-black;
+        border-bottom: 1px solid $color-black;
         cursor: ns-resize;
     }
     .leftBorder{
@@ -47,9 +47,9 @@
         height: calc(100% - 10px);
         top: 10px;
         width: 10px;
-        background-color: $color-white;
-        border-left: 1px solid $color-grey;
-        border-right: 1px solid $color-grey;
+        background-color: $color-grey;
+        border-left: 1px solid $color-black;
+        border-right: 1px solid $color-black;
         cursor: ew-resize;
     }
 }

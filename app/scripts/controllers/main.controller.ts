@@ -79,7 +79,7 @@ angular.module('emuwebApp')
 
 		// Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
 		window.onbeforeunload = function () {
-			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && loadedMetaDataService.getBundleList().length > 0 && !ConfigProviderService.vals.main.autoConnect) {
+			if (ConfigProviderService.embeddedVals.audioGetUrl === '' && loadedMetaDataService.getBundleList().length > 0 && !ConfigProviderService.vals.main.autoConnect && HistoryService.movesAwayFromLastSave > 0) {
 				return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
 			}
 		};

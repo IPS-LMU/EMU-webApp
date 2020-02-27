@@ -1,0 +1,8 @@
+<div id="modalDialog" class="emuwebapp-modal">
+	<div ng-if="modal.isOpen">
+		<a href title="Close" id="modal-close" class="emuwebapp-close" ng-click="modal.close()" ng-hide="force">
+		    <img src="img/delete.svg" width="30" height="30" />
+		</a>
+		<p class="emuwebapp-modal-inner" ng-include="templateUrl"></p>
+	</div>
+</div>

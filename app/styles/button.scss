@@ -84,7 +84,9 @@
 	    border:1px solid rgb(33,217,255);
     }
 	&:active {
-	    top:1px;
+		top:1px;
+		background-color: $color-white;
+		color: $color-black;
     }
 }
 

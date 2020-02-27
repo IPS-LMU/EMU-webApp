@@ -744,7 +744,7 @@ angular.module('emuwebApp')
 				scope.background = '';
 				// set background according to config only if config is loaded
 				if (scope.cps.design.color !== undefined) {
-					scope.background = scope.cps.design.color.lightGrey;
+					scope.background = scope.cps.design.color.darkGrey;
 				}
 
 				// scaleExtent limits the amount of zooming possible

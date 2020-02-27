@@ -7,13 +7,14 @@
     height: calc(100% - 34px);
 }
 
-.emuhierarchy-node, .emuhierarchy-addbutton {
+.emuhierarchy-node, .emuhierarchy-addbutton, .emuhierarchy-levelcaption {
     cursor: pointer;
     circle {
         stroke-width: 1.5px;
     }
     text {
         @extend .emuwebapp-font-small;
+        fill: $color-white;
     }
 }
 
@@ -37,9 +38,10 @@
 .emuwebapp-modal-select {
   padding: 0;
   margin: 0;
-  border: 1px solid $color-blue;
   width: auto;
   overflow: hidden;
+  border-top: 1px solid $color-black;
+  border-bottom: 1px solid $color-black;
   background: url('data:image/gif;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==') no-repeat 100% 50%;
 }
 

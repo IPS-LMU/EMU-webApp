@@ -155,15 +155,15 @@
 				"connectLines": [{
 				  "fromDot": "tt",
 				  "toDot": "tm",
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(255,255,255)"
 				}, {
 				  "fromDot": "tm",
 				  "toDot": "tb",
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(255,255,255)"
 				}, {
 				  "fromDot": "ul",
 				  "toDot": "ll",
-				  "color": "rgb(0,0,0)"
+				  "color": "rgb(255,255,255)"
 				}],
 				"staticDots": [],
                 "staticContours":[{
@@ -172,7 +172,7 @@
                   "xContourNr": 0,
                   "ySsffTrack": "palate_z",
                   "yContourNr": 0,
-                  "color": "rgba(0,0,0,1)",
+                  "color": "rgba(255,255,255,1)",
                   "connect": true
                 },{
                   "name": "tt",
