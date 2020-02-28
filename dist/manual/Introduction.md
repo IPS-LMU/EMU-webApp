@@ -8,9 +8,6 @@ author: Raphael Winkelmann
 
 
 - **Version: @@versionnr**
-- *Build time stamp: @@timestamp*
-- *Build GIT SHA-1: @@sha1*
-- *EMU-webApp-websocket-protocol version: 0.0.2*
 
 --------------------- 
 

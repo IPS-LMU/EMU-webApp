@@ -1,6 +1,6 @@
 # What's New
 
-## Version 1.1.4
+## Version 1.2.0
 
 ### bug fixes
 
@@ -10,6 +10,7 @@
 - removed bower dep.
 - using webpack as loader
 - dark mode implementation
+- removed canvas expansion buttons
 
 ## Version 1.1.3
 
