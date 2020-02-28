@@ -13,32 +13,26 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 ## Tools for development
 
 * install [nodejs and npm](http://nodejs.org/)
-* install `grunt` with `npm install -g grunt`
 * install `compass` and `sass` with `gem install sass` and `gem install compass`
 * clone this repo with `git clone https://github.com/IPS-LMU/EMU-webApp.git`
 * navigate to the freshly cloned repo (the folder is usually named `EMU-webApp`) and install dependencies with the command `npm install`
-* run static file server at `http://localhost:9000`  with `grunt serve`
-* for livereload use the `livereload` browser plugin
-* a small websocket data provider server can be found under `exampleServers/nodeEmuProtocolWsServer.js`
+* run development server `http://localhost:9000`  with `npm run start`
+* a small websocket data provider server is provided and can be started like this: `node exampleServers/nodeEmuProtocolWsServer.js`.
 
-If `grunt serve` is not working make sure to install the latest dependencies by
-
-* updating `npm` by rerunning `npm install`
-* updating `sass` and compass by running `gem update sass` and `gem update compass`
 
 ## Tests
-* unit tests: run `grunt test`
-* end-to-end tests using protractor: run `grunt e2e`
+* unit tests: run `npm test` (currently not working)
+* end-to-end tests using protractor: run `npm e2e` (currently not working)
 
 ## Create and deploy new release
 
 These are the steps necessary to create and deploy a new release on [https://ips-lmu.github.io/EMU-webApp/](https://ips-lmu.github.io/EMU-webApp/) (push privileges to GitHub repo required)
 
-* prerequisite: make sure all unit tests and end-to-end test pass (`grunt test` and `grunt e2e`)
-* prerequisite: also run end-to-end tests on dist build (`grunt serve:dist` followed by `grunt e2e`) & manually inspect the release version (just in case)
-* update version numbers in `NEWS.md`, `package.json` and `manifest.json`
+* prerequisite: make sure all unit tests and end-to-end test pass (`npm test` and `npm e2e`)
+* prerequisite: also run end-to-end tests on dist build (`npm run build-start` followed by `npm e2e`) & manually inspect the release version (just in case)
 * update `NEWS.md` to reflect changes (== changelog)
-* `grunt serve:dist` also runs `grunt`'s `build` task so explicitly calling `grunt build` is unnecessary
+* update version numbers in `NEWS.md` and `package.json`
+* `npm run build-start` also runs `npm run build`s tasks so explicitly calling `npm run build` is unnecessary
 * this will have created a new release in the `dist` folder in the root directory of this repo
 * change `<base href="/">` entry in `dist/index.html` to `<base href="/EMU-webApp/">` 
 * push changes made to repo by build process to GitHub: `git push origin master`
