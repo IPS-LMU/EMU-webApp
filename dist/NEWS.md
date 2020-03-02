@@ -1,5 +1,15 @@
 # What's New
 
+## Version 1.2.1
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+- inverting the spectrogram is now configurable
+
+
 ## Version 1.2.0
 
 ### bug fixes

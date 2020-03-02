@@ -4,7 +4,7 @@
     <modal></modal>
     <!-- end: modal -->
     <!-- start: hint -->
-    <hint ng-show="internalVars.showAboutHint"></hint>
+    <hint ng-if="internalVars.showAboutHint"></hint>
     <!-- end: hint -->
     <!-- start: left side menu bar -->
     <bundle-list-side-bar ng-show="vs.submenuOpen"></bundle-list-side-bar>
@@ -57,10 +57,29 @@
                     </ul>
                 </bg-pane>
                 <bg-pane type="bottomPane" min-size="80">
+                    <!-- <div style="margin-top: 25px;">
+                        <ul>
+                            <li ng-repeat="level in dataServ.getLevelOrder(cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order) | levelsFilter track by $index">
+                                <ghost-level 
+                                open 
+                                level="level" 
+                                idx="$index" 
+                                order="{{$index}}" 
+                                id="{{level.name}}"
+                                viewPort="vs.curViewPort."
+                                ></ghost-level>
+                            </li>
+                        </ul>
+                    </div> -->
                     <div style="margin-top: 25px;">
                         <ul>
                             <li ng-repeat="level in dataServ.getLevelOrder(cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order) | levelsFilter track by $index">
-                                <level open level="level" idx="$index" order="{{$index}}" id="{{level.name}}"></level>
+                                <level 
+                                open 
+                                level="level" 
+                                idx="$index" 
+                                order="{{$index}}" 
+                                id="{{level.name}}"></level>
                             </li>
                         </ul>
                     </div>

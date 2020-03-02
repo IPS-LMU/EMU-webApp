@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 90);
+/******/ 	return __webpack_require__(__webpack_require__.s = 91);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -22026,6 +22026,12 @@ return tv4; // used by _header.js to globalise.
 
 /***/ }),
 /* 6 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"a\":\"1.2.1\"}");
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;;/*! showdown v 1.9.1 - 02-11-2019 */
@@ -27169,7 +27175,7 @@ if (true) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27617,7 +27623,12 @@ SpectroDrawingWorker.prototype = {
 						var y2 = y0 + (y1 - y0) / x1 * b;
 
 						// calculate corresponding color value for interpolation point [0...255]
-						rgb = Math.round(255 * y2);
+						// console.log(global.invert);
+						if (global.invert){
+							rgb = Math.round(255 * y2);
+						} else {
+							rgb = 255 - Math.round(255 * y2);
+						}
 
 						// set internal image buffer to calculated & interpolated value
 						px = Math.floor(xIdx);
@@ -27930,6 +27941,12 @@ SpectroDrawingWorker.prototype = {
 					renderError = 'heatMapColorAnchors';
 					render = false;
 				}
+				if (data.invert !== undefined) {
+					global.invert = data.invert;
+				} else {
+					renderError = 'invert';
+					render = false;
+				}
 				if (render) {
 					global.renderSpectrogram();
 				} else {
@@ -28004,12 +28021,6 @@ SpectroDrawingWorker.prototype = {
 	//
 	/////////////////////
 };
-
-/***/ }),
-/* 8 */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"a\":\"1.2.0\"}");
 
 /***/ }),
 /* 9 */
@@ -76844,7 +76855,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
 
 angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
+    .directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
     return {
         templateUrl: 'views/level.html',
         restrict: 'E',
@@ -76852,7 +76863,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
             level: '=',
             idx: '='
         },
-        link: function postLink(scope, element) {
+        link: function (scope, element) {
             // select the needed DOM items from the template
             var canvas = element.find('canvas');
             scope.open = true; // attr.open; // not using attr.open any more because minification changes open="true" to open
@@ -77825,7 +77836,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
 
 
 angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
@@ -77969,7 +77980,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
                 Drawhelperservice.drawCrossHairX(scope.markupCtx, scope.vs.curMouseX);
             };
             scope.killSpectroRenderingThread = function () {
-                scope.context.fillStyle = ConfigProviderService.design.color.lightGrey;
+                scope.context.fillStyle = ConfigProviderService.design.color.black;
                 scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
                 // draw current viewport selected
                 scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
@@ -78055,7 +78066,8 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
                         'audioBufferChannels': scope.shs.audioBuffer.numberOfChannels,
                         'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
                         'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
-                        'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
+                        'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors,
+                        'invert': scope.vs.spectroSettings.invert
                     }, [paddedSamples.buffer]);
                 }
             };
@@ -80581,10 +80593,317 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 
 /***/ }),
 /* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
+
+var GhostLevelComponent = {
+    selector: "ghostLevel",
+    template: "\n<div class=\"emuwebapp-level\">\n<div class=\"emuwebapp-level-container\">\n    <canvas class=\"emuwebapp-level-canvas\" id=\"levelCanvas\" width=\"2048\" height=\"64\" ng-style=\"backgroundCanvas\"></canvas>\n    <canvas class=\"emuwebapp-level-markup\" id=\"levelMarkupCanvas\" width=\"2048\" height=\"64\" track-mouse-in-level=\"{{idx}}\" level-name=\"$ctrl.level.name\" level-type=\"$ctrl.level.type\"></canvas>\n</div>\n</div>\n\n<div ng-if=\"$ctrl.levelDef.attributeDefinitions.length > 1\" class=\"emuwebapp-selectAttrDef\">\n<div>\n    <ul>\n    <li ng-repeat=\"attrDef in $ctrl.levelDef.attributeDefinitions\">\n        <button ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"></button>\n    </li>\n    </ul>\n</div>\n</div>  \n    ",
+    bindings: {
+        level: '=',
+        idx: '=',
+        viewPort: '<'
+    },
+    controller: /** @class */ (function () {
+        function GhostLevelController($scope, $element, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
+            this.$onChanges = function (changes) {
+                console.log(changes);
+                // if (changes.viewPort){
+                // }
+            };
+            this.$postLink = function () {
+                var _this = this;
+                this.levelDef = this.ConfigProviderService.getLevelDefinition(this.level.name);
+                this.canvas = this.$element.find('canvas');
+                this.levelCanvasContainer = this.$element.find('div');
+                this.redraw();
+                ///////////////
+                // bindings
+                // on mouse leave reset viewState.
+                this.$element.bind('mouseleave', function () {
+                    _this.viewState.setcurMouseItem(undefined, undefined, undefined);
+                    _this.drawLevelMarkup();
+                });
+            };
+            this.drawLevelDetails = function () {
+                var _this = this;
+                var labelFontFamily; // font family used for labels only
+                var fontFamily = this.ConfigProviderService.design.font.small.family; // font family used for everything else
+                if (typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined') {
+                    labelFontFamily = this.ConfigProviderService.design.font.small.family;
+                }
+                else {
+                    labelFontFamily = this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily;
+                }
+                var labelFontSize; // font family used for labels only
+                var fontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
+                if (typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
+                    labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
+                }
+                else {
+                    labelFontSize = this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontPxSize;
+                }
+                var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+                var isOpen = this.$element.parent().css('height') !== '25px'; // ? false : true;
+                if ($.isEmptyObject(this.level)) {
+                    //console.log('undef levelDetails');
+                    return;
+                }
+                if ($.isEmptyObject(this.viewState)) {
+                    //console.log('undef viewState');
+                    return;
+                }
+                if ($.isEmptyObject(this.ConfigProviderService)) {
+                    //console.log('undef config');
+                    return;
+                }
+                // draw hierarchy if canvas is displayed
+                // if(scope.drawHierarchy){
+                //     scope.drawHierarchyDetails();
+                // }
+                var ctx = this.canvas[0].getContext('2d');
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                //predef vars
+                var sDist, posS, posE;
+                sDist = this.viewState.getSampleDist(ctx.canvas.width);
+                // draw name of level and type
+                var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+                if (this.level.name === curAttrDef) {
+                    if (isOpen) {
+                        this.fontScaleService.drawUndistortedTextTwoLines(ctx, this.level.name, '(' + this.level.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
+                    }
+                    else {
+                        fontSize -= 2;
+                        this.fontScaleService.drawUndistortedText(ctx, this.level.name, fontSize, fontFamily, 4, ctx.canvas.height / 2 - (fontSize * scaleY / 2), this.ConfigProviderService.design.color.white, true);
+                    }
+                }
+                else {
+                    this.fontScaleService.drawUndistortedTextTwoLines(ctx, this.level.name + ':' + curAttrDef, '(' + this.level.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
+                }
+                var curID = -1;
+                // calculate generic max with of single char (m char used)
+                var mTxtImgWidth = ctx.measureText('m').width * this.fontScaleService.scaleX;
+                // calculate generic max with of single digit (0 digit used)
+                var zeroTxtImgWidth = ctx.measureText('0').width * this.fontScaleService.scaleX;
+                if (this.level.type === 'SEGMENT') {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                    // draw segments
+                    this.level.items.forEach(function (item) {
+                        ++curID;
+                        if (item.sampleStart >= _this.viewState.curViewPort.sS &&
+                            item.sampleStart <= _this.viewState.curViewPort.eS || //within segment
+                            item.sampleStart + item.sampleDur > _this.viewState.curViewPort.sS &&
+                                item.sampleStart + item.sampleDur < _this.viewState.curViewPort.eS || //end in segment
+                            item.sampleStart < _this.viewState.curViewPort.sS &&
+                                item.sampleStart + item.sampleDur > _this.viewState.curViewPort.eS // within sample
+                        ) {
+                            // get label
+                            var curLabVal;
+                            item.labels.forEach(function (lab) {
+                                if (lab.name === curAttrDef) {
+                                    curLabVal = lab.value;
+                                }
+                            });
+                            // draw segment start
+                            posS = _this.viewState.getPos(ctx.canvas.width, item.sampleStart);
+                            posE = _this.viewState.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
+                            ctx.fillStyle = _this.ConfigProviderService.design.color.white;
+                            ctx.fillRect(posS, 0, 2, ctx.canvas.height / 2);
+                            //draw segment end
+                            ctx.fillStyle = _this.ConfigProviderService.design.color.grey;
+                            ctx.fillRect(posE, ctx.canvas.height / 2, 2, ctx.canvas.height);
+                            ctx.font = (fontSize - 2 + 'px' + ' ' + labelFontFamily);
+                            //check for enough space to stroke text
+                            if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
+                                if (isOpen) {
+                                    _this.fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
+                                }
+                                else {
+                                    _this.fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - fontSize + 2, _this.ConfigProviderService.design.color.white, false);
+                                }
+                            }
+                            //draw helper lines
+                            if (_this.open && curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
+                                var labelCenter = posS + (posE - posS) / 2;
+                                var hlY = ctx.canvas.height / 4;
+                                // start helper line
+                                ctx.strokeStyle = _this.ConfigProviderService.design.color.white;
+                                ctx.beginPath();
+                                ctx.moveTo(posS, hlY);
+                                ctx.lineTo(labelCenter, hlY);
+                                ctx.lineTo(labelCenter, hlY + 5);
+                                ctx.stroke();
+                                hlY = ctx.canvas.height / 4 * 3;
+                                // end helper line
+                                ctx.strokeStyle = _this.ConfigProviderService.design.color.grey;
+                                ctx.beginPath();
+                                ctx.moveTo(posE, hlY);
+                                ctx.lineTo(labelCenter, hlY);
+                                ctx.lineTo(labelCenter, hlY - 5);
+                                ctx.stroke();
+                            }
+                            if (_this.open) {
+                                // draw sampleStart numbers
+                                //check for enough space to stroke text
+                                if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
+                                    _this.fontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, fontFamily, posS + 3, 0, _this.ConfigProviderService.design.color.grey, true);
+                                }
+                                // draw sampleDur numbers.
+                                var durtext = 'dur: ' + item.sampleDur + ' ';
+                                //check for enough space to stroke text
+                                if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
+                                    _this.fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, fontFamily, posE - (ctx.measureText(durtext).width * _this.fontScaleService.scaleX), ctx.canvas.height / 4 * 3, _this.ConfigProviderService.design.color.grey, true);
+                                }
+                            }
+                        }
+                    });
+                }
+                else if (this.level.type === 'EVENT') {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                    // predef. vars
+                    var perc;
+                    this.level.items.forEach(function (item) {
+                        if (item.samplePoint > _this.viewState.curViewPort.sS && item.samplePoint < _this.viewState.curViewPort.eS) {
+                            perc = Math.round(_this.viewState.getPos(ctx.canvas.width, item.samplePoint) + (sDist / 2));
+                            // get label
+                            var curLabVal;
+                            item.labels.forEach(function (lab) {
+                                if (lab.name === curAttrDef) {
+                                    curLabVal = lab.value;
+                                }
+                            });
+                            ctx.fillStyle = _this.ConfigProviderService.design.color.white;
+                            ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
+                            ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
+                            _this.fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, perc, (ctx.canvas.height / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
+                            if (isOpen) {
+                                _this.fontScaleService.drawUndistortedText(ctx, item.samplePoint, fontSize - 2, labelFontFamily, perc + 5, 0, _this.ConfigProviderService.design.color.grey, true);
+                            }
+                        }
+                    });
+                }
+                // draw cursor/selected area
+            };
+            /**
+             *
+             */
+            this.drawLevelMarkup = function () {
+                var _this = this;
+                var ctx = this.canvas[1].getContext('2d');
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                if (this.level.name === this.viewState.getcurClickLevelName()) {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.transparent.grey;
+                    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                }
+                // draw moving boundary line if moving
+                this.Drawhelperservice.drawMovingBoundaryLine(ctx);
+                // draw current viewport selected
+                this.Drawhelperservice.drawCurViewPortSelected(ctx);
+                var posS, posE, sDist, xOffset, item;
+                posS = this.viewState.getPos(ctx.canvas.width, this.viewState.curViewPort.selectS);
+                posE = this.viewState.getPos(ctx.canvas.width, this.viewState.curViewPort.selectE);
+                sDist = this.viewState.getSampleDist(ctx.canvas.width);
+                var segMId = this.viewState.getcurMouseItem();
+                var isFirst = this.viewState.getcurMouseisFirst();
+                var isLast = this.viewState.getcurMouseisLast();
+                var clickedSegs = this.viewState.getcurClickItems();
+                var levelId = this.viewState.getcurClickLevelName();
+                if (clickedSegs !== undefined) {
+                    // draw clicked on selected areas
+                    if (this.level.name === levelId && clickedSegs.length > 0) {
+                        clickedSegs.forEach(function (cs) {
+                            if (cs !== undefined) {
+                                // check if segment or event level
+                                if (cs.sampleStart !== undefined) {
+                                    posS = Math.round(_this.viewState.getPos(ctx.canvas.width, cs.sampleStart));
+                                    posE = Math.round(_this.viewState.getPos(ctx.canvas.width, cs.sampleStart + cs.sampleDur + 1));
+                                }
+                                else {
+                                    posS = Math.round(_this.viewState.getPos(ctx.canvas.width, cs.samplePoint) + sDist / 2);
+                                    posS = posS - 5;
+                                    posE = posS + 10;
+                                }
+                                ctx.fillStyle = _this.ConfigProviderService.design.color.transparent.yellow;
+                                ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
+                                ctx.fillStyle = _this.ConfigProviderService.design.color.white;
+                            }
+                        });
+                    }
+                }
+                // draw preselected boundary
+                item = this.viewState.getcurMouseItem();
+                if (this.level.items.length > 0 && item !== undefined && segMId !== undefined && this.level.name === this.viewState.getcurMouseLevelName()) {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.blue;
+                    if (isFirst === true) { // before first segment
+                        if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                            item = this.level.items[0];
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.sampleStart));
+                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
+                        }
+                    }
+                    else if (isLast === true) { // after last segment
+                        if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                            item = this.level.items[this.level.items.length - 1];
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
+                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
+                        }
+                    }
+                    else { // in the middle
+                        if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.sampleStart));
+                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
+                        }
+                        else {
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.samplePoint));
+                            xOffset = (sDist / 2);
+                            ctx.fillRect(posS + xOffset, 0, 3, ctx.canvas.height);
+                        }
+                    }
+                    ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                }
+                // draw cursor
+                this.Drawhelperservice.drawCrossHairX(ctx, this.viewState.curMouseX);
+            };
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$animate = $animate;
+            this.viewState = viewState;
+            this.ConfigProviderService = ConfigProviderService;
+            this.Drawhelperservice = Drawhelperservice;
+            this.HistoryService = HistoryService;
+            this.fontScaleService = fontScaleService;
+            this.modalService = modalService;
+            this.LevelService = LevelService;
+            this.loadedMetaDataService = loadedMetaDataService;
+            this.HierarchyLayoutService = HierarchyLayoutService;
+            this.DataService = DataService;
+            this.open = true;
+            // this.levelDef = this.ConfigProviderService.getLevelDefinition(this.$this.level.name);
+            // console.log(this.levelDef);
+        }
+        ;
+        GhostLevelController.prototype.redraw = function () {
+            this.drawLevelDetails();
+            this.drawLevelMarkup();
+        };
+        ;
+        return GhostLevelController;
+    }())
+};
+angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
+    .component(GhostLevelComponent.selector, GhostLevelComponent);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
+
+/***/ }),
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(41);
+            var content = __webpack_require__(42);
 
             content = content.__esModule ? content.default : content;
 
@@ -80606,7 +80925,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80619,11 +80938,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(43);
+            var content = __webpack_require__(44);
 
             content = content.__esModule ? content.default : content;
 
@@ -80645,7 +80964,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80658,11 +80977,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(45);
+            var content = __webpack_require__(46);
 
             content = content.__esModule ? content.default : content;
 
@@ -80684,7 +81003,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80697,11 +81016,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(47);
+            var content = __webpack_require__(48);
 
             content = content.__esModule ? content.default : content;
 
@@ -80723,7 +81042,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80736,11 +81055,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(49);
+            var content = __webpack_require__(50);
 
             content = content.__esModule ? content.default : content;
 
@@ -80762,7 +81081,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80775,11 +81094,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(51);
+            var content = __webpack_require__(52);
 
             content = content.__esModule ? content.default : content;
 
@@ -80801,7 +81120,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80814,11 +81133,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(53);
+            var content = __webpack_require__(54);
 
             content = content.__esModule ? content.default : content;
 
@@ -80840,7 +81159,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80853,11 +81172,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(55);
+            var content = __webpack_require__(56);
 
             content = content.__esModule ? content.default : content;
 
@@ -80879,7 +81198,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80892,11 +81211,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(57);
+            var content = __webpack_require__(58);
 
             content = content.__esModule ? content.default : content;
 
@@ -80918,7 +81237,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80931,11 +81250,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(59);
+            var content = __webpack_require__(60);
 
             content = content.__esModule ? content.default : content;
 
@@ -80957,7 +81276,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80970,11 +81289,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(61);
+            var content = __webpack_require__(62);
 
             content = content.__esModule ? content.default : content;
 
@@ -80996,7 +81315,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81009,11 +81328,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(63);
+            var content = __webpack_require__(64);
 
             content = content.__esModule ? content.default : content;
 
@@ -81035,7 +81354,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81048,11 +81367,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(65);
+            var content = __webpack_require__(66);
 
             content = content.__esModule ? content.default : content;
 
@@ -81074,24 +81393,24 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(2);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".emuwebapp-aboutHint{position:absolute;top:0;right:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99998;overflow:hidden}.emuwebapp-aboutHint .emuwebapp-aboutHint-content{position:relative;margin:0 auto;padding-top:80px;width:100%;height:90%;color:#fff;overflow:hidden}.emuwebapp-aboutHint .emuwebapp-aboutHint-content h1{font-size:2.75em;padding-bottom:5px}.emuwebapp-aboutHint .emuwebapp-aboutHint-content button{color:#fff;background-color:transparent;padding:10px;border-radius:0;border:1px solid #fff}.emuwebapp-aboutHint .emuwebapp-aboutHint-content button:hover{color:#000;background-color:#fff}.emuwebapp-aboutHint .emuwebapp-aboutHint-content .news{margin-left:20%;background-color:transparent;width:60%;max-height:80px;overflow:auto;border:1px solid #fff}.emuwebapp-aboutHint .emuwebapp-aboutHint-content>div{position:relative;height:50%;overflow:hidden}.emuwebapp-aboutHint .emuwebapp-aboutHint-content>div>img{height:100%}.emuwebapp-aboutHint .emuwebapp-aboutHint-arrow{position:absolute;color:#0DC5FF;font-size:200%;top:40px;right:8px;-webkit-animation:wiggleUpDown 0.5s infinite;-moz-animation:wiggleUpDown 0.5s infinite;-o-animation:wiggleUpDown 0.5s infinite;animation:wiggleUpDown 0.5s infinite}.emuwebapp-aboutHint .emuwebapp-aboutHint-hidden{position:absolute;top:0;right:0;width:40px;height:40px;border:0}.emuwebapp-aboutHint .emuwebapp-aboutHint-overlay{position:absolute;top:40%;text-align:center;width:100%;color:#424242;font-size:200%;-webkit-transform:rotate(15deg);-ms-transform:rotate(15deg);-moz-transform:rotate(15deg);-o-transform:rotate(15deg);transform:rotate(15deg)}.emuwebapp-aboutHint.ng-hide-add.ng-hide-add-active{-webkit-animation:shrinkToAboutButton 0.5s 1;-moz-animation:shrinkToAboutButton 0.5s 1;-o-animation:shrinkToAboutButton 0.5s 1;animation:shrinkToAboutButton 0.5s 1}@-webkit-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-moz-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-ms-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-o-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-webkit-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@-moz-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@-ms-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@-o-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}\n", ""]);
+exports.push([module.i, ".emuwebapp-aboutHint{position:absolute;top:0;right:0;width:400px;height:100px;background:rgba(0,0,0,0.7);border:1px solid #fff;z-index:99998;overflow:hidden;color:#fff;-moz-border-radius:10px 0px 10px 10px;-webkit-border-radius:10px 0px 10px 10px;border-radius:10px 0px 10px 10px}.emuwebapp-aboutHint:before{content:\"\";position:absolute;right:100%;top:26px;width:0;height:0;border-top:13px solid transparent;border-right:26px solid red;border-bottom:13px solid transparent}.emuwebapp-aboutHint .emuwebapp-aboutHint-content{position:relative;margin:0 auto;padding-top:80px;width:100%;height:90%;color:#fff;overflow:hidden}.emuwebapp-aboutHint .emuwebapp-aboutHint-content h1{font-size:2.75em;padding-bottom:5px}.emuwebapp-aboutHint .emuwebapp-aboutHint-content button{color:#fff;background-color:transparent;padding:10px;border-radius:0;border:1px solid #fff}.emuwebapp-aboutHint .emuwebapp-aboutHint-content button:hover{color:#000;background-color:#fff}.emuwebapp-aboutHint .emuwebapp-aboutHint-content .news{margin-left:20%;background-color:transparent;width:60%;max-height:80px;overflow:auto;border:1px solid #fff}.emuwebapp-aboutHint .emuwebapp-aboutHint-content>div{position:relative;height:50%;overflow:hidden}.emuwebapp-aboutHint .emuwebapp-aboutHint-content>div>img{height:100%}.emuwebapp-aboutHint .emuwebapp-aboutHint-arrow{position:absolute;color:#0DC5FF;font-size:200%;top:40px;right:8px;-webkit-animation:wiggleUpDown 0.5s infinite;-moz-animation:wiggleUpDown 0.5s infinite;-o-animation:wiggleUpDown 0.5s infinite;animation:wiggleUpDown 0.5s infinite}.emuwebapp-aboutHint .emuwebapp-aboutHint-hidden{position:absolute;background:linear-gradient(to right, #fff, 2%, transparent),linear-gradient(to left, #fff, 2%, transparent),linear-gradient(to bottom, #fff, 2%, transparent),linear-gradient(to top, #fff, 2%, transparent);top:0;right:0;width:40px;height:40px;border:0}.emuwebapp-aboutHint .emuwebapp-aboutHint-overlay{position:absolute;top:40%;text-align:center;width:100%;color:#424242;font-size:200%;-webkit-transform:rotate(15deg);-ms-transform:rotate(15deg);-moz-transform:rotate(15deg);-o-transform:rotate(15deg);transform:rotate(15deg)}.emuwebapp-aboutHint.ng-hide-add.ng-hide-add-active{-webkit-animation:shrinkToAboutButton 0.5s 1;-moz-animation:shrinkToAboutButton 0.5s 1;-o-animation:shrinkToAboutButton 0.5s 1;animation:shrinkToAboutButton 0.5s 1}@-webkit-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-moz-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-ms-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-o-keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@keyframes shrinkToAboutButton{25%{top:25px;right:25px;border-radius:10% 0 10% 10%}50%{border-radius:100% 0 100% 100%}100%{top:25px;right:25px;border-radius:100% 0 100% 100%;width:0;height:0}}@-webkit-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@-moz-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@-ms-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@-o-keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}@keyframes wiggleUpDown{0%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}50%{-moz-transform:translate(0, -2px);-o-transform:translate(0, -2px);-ms-transform:translate(0, -2px);-webkit-transform:translate(0, -2px);transform:translate(0, -2px)}100%{-moz-transform:translate(0, 2px);-o-transform:translate(0, 2px);-ms-transform:translate(0, 2px);-webkit-transform:translate(0, 2px);transform:translate(0, 2px)}}\n", ""]);
 // Exports
 module.exports = exports;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(67);
+            var content = __webpack_require__(68);
 
             content = content.__esModule ? content.default : content;
 
@@ -81113,7 +81432,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81126,11 +81445,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(69);
+            var content = __webpack_require__(70);
 
             content = content.__esModule ? content.default : content;
 
@@ -81152,7 +81471,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81165,11 +81484,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(71);
+            var content = __webpack_require__(72);
 
             content = content.__esModule ? content.default : content;
 
@@ -81191,7 +81510,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81204,11 +81523,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(73);
+            var content = __webpack_require__(74);
 
             content = content.__esModule ? content.default : content;
 
@@ -81230,7 +81549,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81243,11 +81562,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(75);
+            var content = __webpack_require__(76);
 
             content = content.__esModule ? content.default : content;
 
@@ -81269,7 +81588,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81282,11 +81601,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(77);
+            var content = __webpack_require__(78);
 
             content = content.__esModule ? content.default : content;
 
@@ -81308,7 +81627,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81321,11 +81640,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(79);
+            var content = __webpack_require__(80);
 
             content = content.__esModule ? content.default : content;
 
@@ -81347,7 +81666,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81360,11 +81679,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(81);
+            var content = __webpack_require__(82);
 
             content = content.__esModule ? content.default : content;
 
@@ -81386,7 +81705,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81399,11 +81718,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(83);
+            var content = __webpack_require__(84);
 
             content = content.__esModule ? content.default : content;
 
@@ -81425,7 +81744,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81438,11 +81757,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(85);
+            var content = __webpack_require__(86);
 
             content = content.__esModule ? content.default : content;
 
@@ -81464,7 +81783,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81477,11 +81796,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(87);
+            var content = __webpack_require__(88);
 
             content = content.__esModule ? content.default : content;
 
@@ -81503,7 +81822,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81516,11 +81835,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(89);
+            var content = __webpack_require__(90);
 
             content = content.__esModule ? content.default : content;
 
@@ -81542,7 +81861,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81555,7 +81874,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81595,7 +81914,7 @@ var d3 = __webpack_require__(3);
 var angular_filter = __webpack_require__(22);
 
 // EXTERNAL MODULE: ./node_modules/showdown/dist/showdown.js
-var showdown = __webpack_require__(6);
+var showdown = __webpack_require__(7);
 
 // CONCATENATED MODULE: ./app/scripts/app.ts
 
@@ -81835,7 +82154,7 @@ angular["module"]('emuwebApp')
 // CONCATENATED MODULE: ./app/scripts/controllers/main.controller.ts
 
 angular["module"]('emuwebApp')
-    .controller('MainController', function ($scope, $rootScope, $log, $compile, $timeout, $q, $window, $document, $location, viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, LevelService, Textgridparserservice, Espsparserservice, Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice, Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService, appStateService, DataService, modalService, browserDetector) {
+    .controller('MainController', function ($scope, $window, $document, $location, viewState, HistoryService, Iohandlerservice, Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice, LevelService, Textgridparserservice, Wavparserservice, Drawhelperservice, Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService, appStateService, DataService, modalService, browserDetector) {
     // hook up services to use abbreviated forms
     $scope.cps = ConfigProviderService;
     $scope.hists = HistoryService;
@@ -82150,7 +82469,7 @@ angular["module"]('emuwebApp')
             $scope.internalVars.showAboutHint = true;
         }
         // FOR DEVELOPMENT
-        //$scope.internalVars.showAboutHint = true;
+        // $scope.internalVars.showAboutHint = true;
     };
     $scope.getCurBndlName = function () {
         return loadedMetaDataService.getCurBndlName();
@@ -82191,8 +82510,8 @@ angular["module"]('emuwebApp')
                 $scope.handleConnectedToWSserver({ session: null, reload: null });
             }
         }
-        // init loading of files for testing
-        viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, ConfigProviderService.vals.spectrogramSettings.rangeFrom, ConfigProviderService.vals.spectrogramSettings.rangeTo, ConfigProviderService.vals.spectrogramSettings.dynamicRange, ConfigProviderService.vals.spectrogramSettings.window, ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors);
+        // setspectroSettings
+        viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, ConfigProviderService.vals.spectrogramSettings.rangeFrom, ConfigProviderService.vals.spectrogramSettings.rangeTo, ConfigProviderService.vals.spectrogramSettings.dynamicRange, ConfigProviderService.vals.spectrogramSettings.window, ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors, ConfigProviderService.vals.spectrogramSettings.invert);
         // setting transition values
         viewState.setTransitionTime(ConfigProviderService.design.animation.period);
     };
@@ -82262,6 +82581,8 @@ angular["module"]('emuwebApp')
                 if (validRes === true) {
                     ConfigProviderService.curDbConfig = data;
                     viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+                    // setspectroSettings
+                    viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, ConfigProviderService.vals.spectrogramSettings.rangeFrom, ConfigProviderService.vals.spectrogramSettings.rangeTo, ConfigProviderService.vals.spectrogramSettings.dynamicRange, ConfigProviderService.vals.spectrogramSettings.window, ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors, ConfigProviderService.vals.spectrogramSettings.invert);
                     validRes = Validationservice.validateJSO('DBconfigFileSchema', data);
                     if (validRes === true) {
                         // then get the DBconfigFile
@@ -83143,7 +83464,8 @@ angular["module"]('emuwebApp')
         'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
         'heatMapColorAnchors': $scope.vs.spectroSettings.heatMapColorAnchors,
         '_fftN': 512,
-        '_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs
+        '_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs,
+        'invert': $scope.vs.spectroSettings.invert
     };
     /**
      *
@@ -83202,7 +83524,8 @@ angular["module"]('emuwebApp')
             'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
             'heatMapColorAnchors': $scope.vs.spectroSettings.heatMapColorAnchors,
             '_fftN': 512,
-            '_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs
+            '_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs,
+            'invert': $scope.vs.spectroSettings.invert
         };
         modalService.close();
     };
@@ -83236,7 +83559,7 @@ angular["module"]('emuwebApp')
             }
         });
         if (!error) {
-            $scope.vs.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
+            $scope.vs.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors, $scope.modalVals.invert);
             $scope.vs.setOsciSettings($scope.osciChannel);
             $scope.reset();
         }
@@ -83486,7 +83809,7 @@ angular["module"]('emuwebApp')
 });
 
 // EXTERNAL MODULE: ./package.json
-var package_0 = __webpack_require__(8);
+var package_0 = __webpack_require__(6);
 
 // CONCATENATED MODULE: ./app/scripts/controllers/tabbed-help.controller.ts
 
@@ -85053,13 +85376,18 @@ var handle_key_strokes_directive = __webpack_require__(28);
 
 // CONCATENATED MODULE: ./app/scripts/directives/hint.directive.ts
 
+
 angular["module"]('emuwebApp')
-    .directive('hint', function () {
+    .directive('hint', function ($timeout) {
     return {
         templateUrl: 'views/hint.html',
         replace: true,
         restrict: 'E',
         link: function postLink(scope) {
+            scope.version = package_0["a" /* version */];
+            $timeout(function () {
+                scope.internalVars.showAboutHint = !scope.internalVars.showAboutHint;
+            }, 3000);
             scope.hideMe = function () {
                 scope.internalVars.showAboutHint = !scope.internalVars.showAboutHint;
                 scope.aboutBtnClick();
@@ -91998,7 +92326,7 @@ angular["module"]('emuwebApp')
     /**
      * setspectroSettings
      */
-    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm, preEmph, hmColorAnchors) {
+    sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm, preEmph, hmColorAnchors, invert) {
         sServObj.spectroSettings.windowSizeInSecs = len;
         sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
         sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
@@ -92007,6 +92335,7 @@ angular["module"]('emuwebApp')
         sServObj.spectroSettings.drawHeatMapColors = hm;
         sServObj.spectroSettings.preEmphasisFilterFactor = preEmph;
         sServObj.spectroSettings.heatMapColorAnchors = hmColorAnchors;
+        sServObj.spectroSettings.invert = invert;
     };
     /**
      * setOsciSettings
@@ -93356,80 +93685,86 @@ angular["module"]('emuwebApp')
 
 
 
+// EXTERNAL MODULE: ./app/scripts/components/ghostlevel.component.ts
+var ghostlevel_component = __webpack_require__(40);
+
+// CONCATENATED MODULE: ./app/scripts/components/index.ts
+
+
 // EXTERNAL MODULE: ./app/styles/font.scss
-var font = __webpack_require__(40);
+var font = __webpack_require__(41);
 
 // EXTERNAL MODULE: ./app/styles/text.scss
-var styles_text = __webpack_require__(42);
+var styles_text = __webpack_require__(43);
 
 // EXTERNAL MODULE: ./app/styles/button.scss
-var styles_button = __webpack_require__(44);
+var styles_button = __webpack_require__(45);
 
 // EXTERNAL MODULE: ./app/styles/media-query.scss
-var media_query = __webpack_require__(46);
+var media_query = __webpack_require__(47);
 
 // EXTERNAL MODULE: ./app/styles/emuwebapp.scss
-var emuwebapp = __webpack_require__(48);
+var emuwebapp = __webpack_require__(49);
 
 // EXTERNAL MODULE: ./app/styles/preview.scss
-var preview = __webpack_require__(50);
+var preview = __webpack_require__(51);
 
 // EXTERNAL MODULE: ./app/styles/modal.scss
-var modal = __webpack_require__(52);
+var modal = __webpack_require__(53);
 
 // EXTERNAL MODULE: ./app/styles/bundleListSideBar.scss
-var bundleListSideBar = __webpack_require__(54);
+var bundleListSideBar = __webpack_require__(55);
 
 // EXTERNAL MODULE: ./app/styles/rightSideMenu.scss
-var rightSideMenu = __webpack_require__(56);
+var rightSideMenu = __webpack_require__(57);
 
 // EXTERNAL MODULE: ./app/styles/twoDimCanvas.scss
-var twoDimCanvas = __webpack_require__(58);
+var twoDimCanvas = __webpack_require__(59);
 
 // EXTERNAL MODULE: ./app/styles/print.scss
-var print = __webpack_require__(60);
+var print = __webpack_require__(61);
 
 // EXTERNAL MODULE: ./app/styles/progressThing.scss
-var progressThing = __webpack_require__(62);
+var progressThing = __webpack_require__(63);
 
 // EXTERNAL MODULE: ./app/styles/aboutHint.scss
-var aboutHint = __webpack_require__(64);
+var aboutHint = __webpack_require__(65);
 
 // EXTERNAL MODULE: ./app/styles/drop.scss
-var drop = __webpack_require__(66);
+var drop = __webpack_require__(67);
 
 // EXTERNAL MODULE: ./app/styles/timeline.scss
-var timeline = __webpack_require__(68);
+var timeline = __webpack_require__(69);
 
 // EXTERNAL MODULE: ./app/styles/flexBoxGrid.scss
-var flexBoxGrid = __webpack_require__(70);
+var flexBoxGrid = __webpack_require__(71);
 
 // EXTERNAL MODULE: ./app/styles/levels.scss
-var levels = __webpack_require__(72);
+var levels = __webpack_require__(73);
 
 // EXTERNAL MODULE: ./app/styles/historyActionPopup.scss
-var historyActionPopup = __webpack_require__(74);
+var historyActionPopup = __webpack_require__(75);
 
 // EXTERNAL MODULE: ./app/styles/hierarchy.scss
-var hierarchy = __webpack_require__(76);
+var hierarchy = __webpack_require__(77);
 
 // EXTERNAL MODULE: ./app/styles/splitPanes.scss
-var splitPanes = __webpack_require__(78);
+var splitPanes = __webpack_require__(79);
 
 // EXTERNAL MODULE: ./app/styles/tabbed.scss
-var tabbed = __webpack_require__(80);
+var tabbed = __webpack_require__(81);
 
 // EXTERNAL MODULE: ./app/styles/animation.scss
-var animation = __webpack_require__(82);
+var animation = __webpack_require__(83);
 
 // EXTERNAL MODULE: ./app/styles/customAngularuiModal.scss
-var customAngularuiModal = __webpack_require__(84);
+var customAngularuiModal = __webpack_require__(85);
 
 // EXTERNAL MODULE: ./app/styles/largeTextInputField.scss
-var largeTextInputField = __webpack_require__(86);
+var largeTextInputField = __webpack_require__(87);
 
 // EXTERNAL MODULE: ./app/styles/levelCanvasesGrid.scss
-var levelCanvasesGrid = __webpack_require__(88);
+var levelCanvasesGrid = __webpack_require__(89);
 
 // CONCATENATED MODULE: ./app/scripts/main.ts
 // Vendor
@@ -93447,6 +93782,7 @@ var levelCanvasesGrid = __webpack_require__(88);
 
 
 // App
+
 
 
 

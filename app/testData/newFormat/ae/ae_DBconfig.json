@@ -197,7 +197,7 @@
 			"editEMUwebAppConfig": false
 		},
 		"spectrogramSettings": {
-			"invert": false
+			"invert": true
 		}
 	}
 }
