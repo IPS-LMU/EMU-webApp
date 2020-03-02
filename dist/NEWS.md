@@ -1,5 +1,15 @@
 # What's New
 
+## Version 1.2.2
+
+### bug fixes
+
+- fixed broken TextGrid parser worker + service
+
+### new features / performance tweaks / improvements
+
+- also parsing parallel labels in json files that are passed in via URL parameters
+
 ## Version 1.2.1
 
 ### bug fixes
