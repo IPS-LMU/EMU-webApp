@@ -8,6 +8,7 @@
 ### new features / performance tweaks / improvements
 
 - inverting the spectrogram is now configurable
+- tamed welcome dialog 
 
 
 ## Version 1.2.0
