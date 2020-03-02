@@ -244,17 +244,22 @@ angular.module('emuwebApp')
 
 														var lNames = [];
 														var levelDefs = [];
-														annot.levels.forEach(function (l) {
+														for(var i = 0, len = annot.levels.length; i < len; i++){
+															var l = annot.levels[i];
 															lNames.push(l.name);
+															var attrDefs = [];
+															for(var j = 0, len2 = l.items[0].labels.length; j < len2; j++){
+																attrDefs.push({
+																	'name': l.items[0].labels[j].name,
+																	'type': 'string'
+																});
+															}
 															levelDefs.push({
 																'name': l.name,
 																'type': l.type,
-																'attributeDefinitions': {
-																	'name': l.name,
-																	'type': 'string'
-																}
-															});
-														});
+																'attributeDefinitions': attrDefs
+															})
+														}
 
 														ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
 
