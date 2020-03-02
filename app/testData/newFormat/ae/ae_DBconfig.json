@@ -195,6 +195,9 @@
 			"saveBundle": true,
 			"showHierarchy": true,
 			"editEMUwebAppConfig": false
+		},
+		"spectrogramSettings": {
+			"invert": false
 		}
 	}
 }

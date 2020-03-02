@@ -26,7 +26,8 @@ angular.module('emuwebApp')
 			'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
 			'heatMapColorAnchors': $scope.vs.spectroSettings.heatMapColorAnchors,
 			'_fftN': 512,
-			'_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs
+			'_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs,
+			'invert': $scope.vs.spectroSettings.invert
 		};
 
 		/**
@@ -93,7 +94,9 @@ angular.module('emuwebApp')
 				'preEmphasisFilterFactor': $scope.vs.spectroSettings.preEmphasisFilterFactor,
 				'heatMapColorAnchors': $scope.vs.spectroSettings.heatMapColorAnchors,
 				'_fftN': 512,
-				'_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs
+				'_windowSizeInSamples': $scope.shs.audioBuffer.sampleRate * $scope.vs.spectroSettings.windowSizeInSecs,
+				'invert': $scope.vs.spectroSettings.invert
+
 			};
 			modalService.close();
 		};
@@ -131,7 +134,16 @@ angular.module('emuwebApp')
 				}
 			});
 			if (!error) {
-				$scope.vs.setspectroSettings($scope.modalVals.windowSizeInSecs, $scope.modalVals.rangeFrom, $scope.modalVals.rangeTo, $scope.modalVals.dynamicRange, $scope.selWindowInfo.name, $scope.modalVals.drawHeatMapColors, $scope.modalVals.preEmphasisFilterFactor, $scope.modalVals.heatMapColorAnchors);
+				$scope.vs.setspectroSettings(
+					$scope.modalVals.windowSizeInSecs, 
+					$scope.modalVals.rangeFrom, 
+					$scope.modalVals.rangeTo, 
+					$scope.modalVals.dynamicRange, 
+					$scope.selWindowInfo.name, 
+					$scope.modalVals.drawHeatMapColors, 
+					$scope.modalVals.preEmphasisFilterFactor, 
+					$scope.modalVals.heatMapColorAnchors,
+					$scope.modalVals.invert);
 				$scope.vs.setOsciSettings($scope.osciChannel);
 				$scope.reset();
 			}

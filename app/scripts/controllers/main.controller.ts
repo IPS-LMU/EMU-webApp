@@ -1,11 +1,9 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('MainController', function ($scope, $rootScope, $log, $compile, $timeout,
-	                                        $q, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
+	.controller('MainController', function ($scope, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
 	                                        Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
-	                                        LevelService, Textgridparserservice, Espsparserservice,
-	                                        Binarydatamaniphelper, Wavparserservice, Ssffparserservice, Drawhelperservice,
+	                                        LevelService, Textgridparserservice, Wavparserservice, Drawhelperservice,
 	                                        Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,
 	                                        appStateService, DataService, modalService, browserDetector) {
 		// hook up services to use abbreviated forms
@@ -370,7 +368,7 @@ angular.module('emuwebApp')
 			}
 
 			// FOR DEVELOPMENT
-			//$scope.internalVars.showAboutHint = true;
+			// $scope.internalVars.showAboutHint = true;
 		};
 
 		$scope.getCurBndlName = function () {
@@ -414,7 +412,7 @@ angular.module('emuwebApp')
 				}
 			}
 
-			// init loading of files for testing
+			// setspectroSettings
 			viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs,
 				ConfigProviderService.vals.spectrogramSettings.rangeFrom,
 				ConfigProviderService.vals.spectrogramSettings.rangeTo,
@@ -422,7 +420,8 @@ angular.module('emuwebApp')
 				ConfigProviderService.vals.spectrogramSettings.window,
 				ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors,
 				ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor,
-				ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors);
+				ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors,
+				ConfigProviderService.vals.spectrogramSettings.invert);
 
 			// setting transition values
 			viewState.setTransitionTime(ConfigProviderService.design.animation.period);
@@ -495,6 +494,16 @@ angular.module('emuwebApp')
 					if (validRes === true) {
 						ConfigProviderService.curDbConfig = data;
 						viewState.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
+						// setspectroSettings
+						viewState.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs,
+							ConfigProviderService.vals.spectrogramSettings.rangeFrom,
+							ConfigProviderService.vals.spectrogramSettings.rangeTo,
+							ConfigProviderService.vals.spectrogramSettings.dynamicRange,
+							ConfigProviderService.vals.spectrogramSettings.window,
+							ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors,
+							ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor,
+							ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors,
+							ConfigProviderService.vals.spectrogramSettings.invert);
 						validRes = Validationservice.validateJSO('DBconfigFileSchema', data);
 						if (validRes === true) {
 							// then get the DBconfigFile

@@ -441,7 +441,12 @@ SpectroDrawingWorker.prototype = {
 						var y2 = y0 + (y1 - y0) / x1 * b;
 
 						// calculate corresponding color value for interpolation point [0...255]
-						rgb = Math.round(255 * y2);
+						// console.log(global.invert);
+						if (global.invert){
+							rgb = Math.round(255 * y2);
+						} else {
+							rgb = 255 - Math.round(255 * y2);
+						}
 
 						// set internal image buffer to calculated & interpolated value
 						px = Math.floor(xIdx);
@@ -752,6 +757,12 @@ SpectroDrawingWorker.prototype = {
 					global.heatMapColorAnchors = data.heatMapColorAnchors;
 				} else {
 					renderError = 'heatMapColorAnchors';
+					render = false;
+				}
+				if (data.invert !== undefined) {
+					global.invert = data.invert;
+				} else {
+					renderError = 'invert';
 					render = false;
 				}
 				if (render) {

@@ -1,23 +1,25 @@
  <div class="emuwebapp-level">
   <div class="emuwebapp-level-container">
-    <canvas class="emuwebapp-level-canvas" id="levelCanvas" width="2048" height="64" ng-style="backgroundCanvas"></canvas>
-    <canvas class="emuwebapp-level-markup" id="levelMarkupCanvas" width="2048" height="64" track-mouse-in-level="{{idx}}" level-name="level.name" level-type="level.type"></canvas>
+    <canvas 
+    class="emuwebapp-level-canvas" 
+    id="levelCanvas" 
+    width="2048" 
+    height="64" 
+    ng-style="backgroundCanvas"></canvas>
+    
+    <canvas 
+    class="emuwebapp-level-markup" 
+    id="levelMarkupCanvas" 
+    width="2048" 
+    height="64" 
+    track-mouse-in-level="{{idx}}" 
+    level-name="level.name" 
+    level-type="level.type"></canvas>
   </div>
-
-  <!-- <div class="emuwebapp-level-buttons">
-   <div class="emuwebapp-level-button" id="emuwebapp-level-button-delete" ng-show="cps.vals.activeButtons.deleteSingleLevel" delete>
-     <img style="cursor: pointer;" src="img/delete.svg" />
-   </div>
-   <div class="emuwebapp-level-button" id="emuwebapp-level-button-resize" ng-show="cps.vals.activeButtons.resizeSingleLevel" resize>
-     <img style="cursor: pointer;" src="img/resize.svg" width="100" height="100" />
-   </div>
-   <div class="emuwebapp-level-button" id="emuwebapp-level-button-save" ng-show="cps.vals.activeButtons.saveSingleLevel" save>
-     <img style="cursor: pointer;" src="img/save.svg" />
-   </div>
- </div> -->
 </div>
 
-<div ng-if="levelDef.attributeDefinitions.length > 1" class="emuwebapp-selectAttrDef">
+<div ng-if="levelDef.attributeDefinitions.length > 1" 
+  class="emuwebapp-selectAttrDef">
   <div>
     <ul>
       <li ng-repeat="attrDef in levelDef.attributeDefinitions">

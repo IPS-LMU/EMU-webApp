@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('level', function ($timeout, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
+	.directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
 		return {
 			templateUrl: 'views/level.html',
 			restrict: 'E',
@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 				level: '=',
 				idx: '='
 			},
-			link: function postLink(scope, element) {
+			link: function (scope, element) {
 				// select the needed DOM items from the template
 				var canvas = element.find('canvas');
 				scope.open = true; // attr.open; // not using attr.open any more because minification changes open="true" to open

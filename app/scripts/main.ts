@@ -20,6 +20,7 @@ import "./directives";
 import "./filters";
 import "./prototypeexpansions";
 import "./services";
+import "./components";
 // import "./workers";
 
 // Styles

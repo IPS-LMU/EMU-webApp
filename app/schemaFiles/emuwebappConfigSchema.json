@@ -214,6 +214,9 @@
 						"minItems": 3,
 						"maxItems": 3
 					}
+				},
+				"invert": {
+					"type": "boolean"
 				}
 			},
 			"additionalProperties": false

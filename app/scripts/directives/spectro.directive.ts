@@ -170,7 +170,7 @@ angular.module('emuwebApp')
                 };
 
 				scope.killSpectroRenderingThread = function () {
-					scope.context.fillStyle = ConfigProviderService.design.color.lightGrey;
+					scope.context.fillStyle = ConfigProviderService.design.color.black;
 					scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
 					// draw current viewport selected
 					scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
@@ -259,7 +259,8 @@ angular.module('emuwebApp')
 							'audioBufferChannels': scope.shs.audioBuffer.numberOfChannels,
 							'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
 							'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
-							'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors
+							'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors,
+							'invert': scope.vs.spectroSettings.invert
 						}, [paddedSamples.buffer]);
 					}
 				};

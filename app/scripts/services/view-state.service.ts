@@ -427,7 +427,7 @@ angular.module('emuwebApp')
 		/**
 		 * setspectroSettings
 		 */
-		sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm, preEmph, hmColorAnchors) {
+		sServObj.setspectroSettings = function (len, rfrom, rto, dyn, win, hm, preEmph, hmColorAnchors, invert) {
 			sServObj.spectroSettings.windowSizeInSecs = len;
 			sServObj.spectroSettings.rangeFrom = parseInt(rfrom, 10);
 			sServObj.spectroSettings.rangeTo = parseInt(rto, 10);
@@ -436,6 +436,7 @@ angular.module('emuwebApp')
 			sServObj.spectroSettings.drawHeatMapColors = hm;
 			sServObj.spectroSettings.preEmphasisFilterFactor = preEmph;
 			sServObj.spectroSettings.heatMapColorAnchors = hmColorAnchors;
+			sServObj.spectroSettings.invert = invert;
 		};
 
 		/**
