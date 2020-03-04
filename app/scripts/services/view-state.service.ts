@@ -267,7 +267,7 @@ angular.module('emuwebApp')
 			sServObj.editing = false;
 			sServObj.cursorInTextField = false;
 			sServObj.saving = true;
-			sServObj.submenuOpen = false;
+			sServObj.bundleListSideBarOpen = false;
 			sServObj.rightSubmenuOpen = false;
 			sServObj.curClickItems = [];
 			sServObj.curMousePosSample = 0;
@@ -658,8 +658,8 @@ angular.module('emuwebApp')
 		/**
 		 * toggle boolean if left submenu is open
 		 */
-		sServObj.toggleSubmenu = function (time) {
-			this.submenuOpen = !this.submenuOpen;
+		sServObj.toggleBundleListSideBar = function (time) {
+			this.bundleListSideBarOpen = !this.bundleListSideBarOpen;
 			// hack to call $apply post animation
 			$timeout(function () {
 				var d = new Date();
@@ -670,15 +670,15 @@ angular.module('emuwebApp')
 		/**
 		 * get boolean if left submenu is open
 		 */
-		sServObj.getsubmenuOpen = function () {
-			return this.submenuOpen;
+		sServObj.getBundleListSideBarOpen = function () {
+			return this.bundleListSideBarOpen;
 		};
 
 		/**
 		 * set boolean if left submenu is open
 		 */
-		sServObj.setsubmenuOpen = function (s) {
-			this.submenuOpen = s;
+		sServObj.setBundleListSideBarOpen = function (s) {
+			this.bundleListSideBarOpen = s;
 		};
 
 

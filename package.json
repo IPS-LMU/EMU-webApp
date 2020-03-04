@@ -1,6 +1,6 @@
 {
   "name": "emuwebapp",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
   "main": "app/scripts/app.js",
   "author": "Raphael Winkelmann, Georg Raess",
@@ -26,7 +26,6 @@
     "jquery": "^3.1.1",
     "showdown": "^1.9.1",
     "tv4": "~1.0.17",
-    "wav-range-requests": "git+https://git@github.com/IPS-LMU/wav-range-requests.git",
     "webdriver-manager": "^12.0.6"
   },
   "devDependencies": {
@@ -88,6 +87,7 @@
     "time-grunt": "^1.0.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.2",
+    "wav-range-requests": "git+https://git@github.com/IPS-LMU/wav-range-requests.git",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",

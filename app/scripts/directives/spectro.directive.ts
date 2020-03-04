@@ -52,7 +52,7 @@ angular.module('emuwebApp')
 				});
 
 
-				scope.$watch('vs.submenuOpen', function () {
+				scope.$watch('vs.bundleListSideBarOpen', function () {
 					if (!$.isEmptyObject(scope.shs)) {
 						if (!$.isEmptyObject(scope.shs.audioBuffer)) {
 							$timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);

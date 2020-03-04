@@ -544,20 +544,33 @@ angular.module('emuwebApp')
 
 			if (posS === posE) {
 
-				ctx.fillStyle = ConfigProviderService.design.color.transparent.white;
+				ctx.fillStyle = ConfigProviderService.design.color.white;
 				ctx.fillRect(posS + xOffset, 0, 2, ctx.canvas.height);
 
 				if (drawTimeAndSamples) {
 					if (viewState.curViewPort.sS !== viewState.curViewPort.selectS && viewState.curViewPort.selectS !== -1) {
 						scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-						space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), scaleX);
-						fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.white, true);
+						space = getScaleWidth(
+							ctx, 
+							viewState.curViewPort.selectS, 
+							mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), 
+							scaleX);
+						fontScaleService.drawUndistortedTextTwoLines(
+							ctx, 
+							viewState.curViewPort.selectS, 
+							mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), 
+							fontSize, 
+							ConfigProviderService.design.font.small.family, 
+							posE + 5, 
+							0, 
+							ConfigProviderService.design.color.white, 
+							true);
 					}
 				}
 			} else {
 				ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;
 				ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
-				ctx.strokeStyle = ConfigProviderService.design.color.transparent.white;
+				ctx.strokeStyle = ConfigProviderService.design.color.white;
 				ctx.beginPath();
 				ctx.moveTo(posS, 0);
 				ctx.lineTo(posS, ctx.canvas.height);
@@ -569,8 +582,21 @@ angular.module('emuwebApp')
 				if (drawTimeAndSamples) {
 					// start values
 					scaleX = ctx.canvas.width / ctx.canvas.offsetWidth;
-					space = getScaleWidth(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), scaleX);
-					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectS, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posS - space - 5, 0, ConfigProviderService.design.color.white, false);
+					space = getScaleWidth(
+						ctx, 
+						viewState.curViewPort.selectS, 
+						mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), 
+						scaleX);
+					fontScaleService.drawUndistortedTextTwoLines(
+						ctx, 
+						viewState.curViewPort.selectS, 
+						mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectS / Soundhandlerservice.audioBuffer.sampleRate, 6), 
+						fontSize, 
+						ConfigProviderService.design.font.small.family, 
+						posS - space - 5, 
+						0, 
+						ConfigProviderService.design.color.white, 
+						false);
 
 					// end values
 					fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.selectE, mathHelperService.roundToNdigitsAfterDecPoint(viewState.curViewPort.selectE / Soundhandlerservice.audioBuffer.sampleRate, 6), fontSize, ConfigProviderService.design.font.small.family, posE + 5, 0, ConfigProviderService.design.color.white, true);
@@ -597,8 +623,8 @@ angular.module('emuwebApp')
 		 * on canvases where the mouse is currently not hovering over
          */
         sServObj.drawCrossHairX = function(ctx, mouseX){
-            ctx.strokeStyle = ConfigProviderService.design.color.transparent.red;
-            ctx.fillStyle = ConfigProviderService.design.color.transparent.red;
+            ctx.strokeStyle = ConfigProviderService.design.color.red;
+            ctx.fillStyle = ConfigProviderService.design.color.red;
             ctx.beginPath();
             ctx.moveTo(mouseX, 0);
             ctx.lineTo(mouseX, ctx.canvas.height);
@@ -615,8 +641,8 @@ angular.module('emuwebApp')
 
 				var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 				// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-				ctx.strokeStyle = ConfigProviderService.design.color.transparent.red;
-				ctx.fillStyle = ConfigProviderService.design.color.transparent.red;
+				ctx.strokeStyle = ConfigProviderService.design.color.red;
+				ctx.fillStyle = ConfigProviderService.design.color.red;
 
 				// see if Chrome -> dashed line
 				//if (navigator.vendor === 'Google Inc.') {
@@ -649,18 +675,15 @@ angular.module('emuwebApp')
 				if (max !== undefined || min !== undefined) {
 					if (trackname === 'OSCI') {
 						// no horizontal values
+						ctx.strokeStyle = ConfigProviderService.design.color.red;
+						ctx.fillStyle = ConfigProviderService.design.color.red;
 						ctx.beginPath();
-						//ctx.moveTo(0, mouseY);
-						//ctx.lineTo(5, mouseY + 5);
-						//ctx.moveTo(0, mouseY);
-						//ctx.lineTo(ctx.canvas.width, mouseY);
-						//ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
 						ctx.moveTo(mouseX, 0);
 						ctx.lineTo(mouseX, ctx.canvas.height);
 						ctx.stroke();
 					} else if (trackname === 'SPEC') {
-                        fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, y, ConfigProviderService.design.color.transparent.red, true);
-                        fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - tW, y, ConfigProviderService.design.color.transparent.red, true);
+                        fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, y, ConfigProviderService.design.color.red, true);
+                        fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - tW, y, ConfigProviderService.design.color.red, true);
 
                         ctx.beginPath();
 						ctx.moveTo(0, mouseY);

@@ -11,7 +11,7 @@ import "./handle-key-strokes.directive";
 import "./hint.directive";
 import "./history-action-popup.directive";
 import "./large-text-field-input.directive";
-import "./level.directive";
+// import "./level.directive";
 import "./line-chart.directive";
 import "./modal.directive";
 import "./mouse-track-and-correction-tool.directive";

@@ -316,6 +316,19 @@
 						"required": ["order", "assign", "contourLims"],
 						"additionalProperties": true
 					},
+					"ghostLevelCanvases": {
+						"type": "object",
+						"properties": {
+							"order": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						},
+						"required": ["order"],
+						"additionalProperties": false
+					},
 					"levelCanvases": {
 						"type": "object",
 						"properties": {

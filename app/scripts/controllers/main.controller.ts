@@ -30,7 +30,8 @@ angular.module('emuwebApp')
 		$scope.internalVars = {};
 		$scope.internalVars.showAboutHint = false;// this should probably be moved to viewState
 
-
+		$scope.xTmp = 123;
+		$scope.yTmp = 321;
 		// check for new version
 		$scope.ach.checkForNewVersion();
 
@@ -165,9 +166,9 @@ angular.module('emuwebApp')
 					loadedMetaDataService.setCurBndlName(tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length));
 
 					//hide menu
-					if (viewState.getsubmenuOpen()) {
+					if (viewState.getBundleListSideBarOpen()) {
 						if(searchObject.saveToWindowParent !== "true"){
-							viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+							viewState.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
 						}
 					}
 
@@ -385,8 +386,8 @@ angular.module('emuwebApp')
 		 */
 		$scope.handleDefaultConfigLoaded = function () {
 
-			if (!viewState.getsubmenuOpen()) {
-				viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+			if (!viewState.getBundleListSideBarOpen()) {
+				viewState.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
 			}
 			// check if either autoConnect is set in DBconfig or as get parameter
 			var searchObject = $location.search();
@@ -1067,5 +1068,14 @@ angular.module('emuwebApp')
 			}
 			return cl;
 		};
+
+		$scope.tmp = function () {
+			console.log("tmp btn click");
+			$scope.xTmp = $scope.xTmp + 1;
+			$scope.yTmp = $scope.yTmp + 1;
+		};
+		$scope.getTmp = function(){
+			return angular.copy($scope.xTmp)
+		}
 
 	});

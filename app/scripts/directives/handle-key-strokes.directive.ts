@@ -774,7 +774,7 @@ angular.module('emuwebApp')
 								if (viewState.getPermission('toggleSideBars')) {
 									// check if menu button in showing -> if not -> no submenu open
 									if (ConfigProviderService.vals.activeButtons.openMenu) {
-										viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+										viewState.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
 									}
 								}
 							}

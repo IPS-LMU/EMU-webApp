@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
-let GhostLevelComponent = {
-    selector: "ghostLevel",
+let LevelComponent = {
+    selector: "level",
     // inline HTML
     template: /*html*/`
 <div class="emuwebapp-level">
@@ -599,4 +599,4 @@ class="emuwebapp-selectAttrDef"
 };
 
 angular.module('emuwebApp')
-    .component(GhostLevelComponent.selector, GhostLevelComponent);
+    .component(LevelComponent.selector, LevelComponent);

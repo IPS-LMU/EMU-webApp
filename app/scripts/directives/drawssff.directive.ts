@@ -67,7 +67,7 @@ angular.module('emuwebApp')
 				}, true);
 
 				//
-				scope.$watch('vs.submenuOpen', function (oldValue, newValue) {
+				scope.$watch('vs.bundleListSideBarOpen', function (oldValue, newValue) {
 					if (oldValue !== newValue) {
 						$timeout(scope.handleUpdate, ConfigProviderService.design.animation.duration);
 					}

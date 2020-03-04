@@ -161,6 +161,9 @@
                     "yValues": [50, 150]
                 }]
 			},
+			"ghostLevelCanvases": {
+				"order": ["Word", "Syllable"]
+			},
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"],
 				"labelFontFamily": "Courier New",

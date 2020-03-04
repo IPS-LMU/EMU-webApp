@@ -40,6 +40,21 @@ angular.module('emuwebApp')
 		};
 
 		/**
+		 * returns level details by passing in level index
+		 * if the corresponding level exists
+		 * otherwise returns 'null'
+		 *    @param idx
+		 */
+		sServObj.getLevelDetailsByIdx = function (idx) {
+			var ret = null;
+			ret = DataService.getLevelData()[idx]
+			if(typeof ret === 'undefined'){
+				ret = null;
+			}
+			return ret;
+		};
+
+		/**
 		 * returns all levels with details for a specific type
 		 *    @param types
 		 */
