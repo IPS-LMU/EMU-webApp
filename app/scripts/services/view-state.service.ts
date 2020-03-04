@@ -714,7 +714,7 @@ angular.module('emuwebApp')
 		/**
 		 * get the height of the osci
 		 */
-		sServObj.getRightsubmenuOpen = function () {
+		sServObj.getPerspectivesSideBarOpen = function () {
 			return this.rightSubmenuOpen;
 		};
 
@@ -722,7 +722,7 @@ angular.module('emuwebApp')
 		/**
 		 * get the height of the osci
 		 */
-		sServObj.setRightsubmenuOpen = function (s) {
+		sServObj.setPerspectivesSideBarOpen = function (s) {
 			this.rightSubmenuOpen = s;
 		};
 

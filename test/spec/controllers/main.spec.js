@@ -362,12 +362,12 @@ describe('Controller: MainController', function () {
   });
 
   it('should changePerspective', function () {
-    spyOn(scope.vs, 'setRightsubmenuOpen').and.callThrough();
+    spyOn(scope.vs, 'setPerspectivesSideBarOpen').and.callThrough();
     scope.changePerspective({
       name: 'default'
     });
     expect(scope.vs.curPerspectiveIdx).toEqual(0);
-    expect(scope.vs.setRightsubmenuOpen).toHaveBeenCalled();
+    expect(scope.vs.setPerspectivesSideBarOpen).toHaveBeenCalled();
   });
 
   it('should cmdPlayAll', function () {

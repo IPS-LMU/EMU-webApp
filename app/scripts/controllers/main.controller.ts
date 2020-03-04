@@ -1051,8 +1051,8 @@ angular.module('emuwebApp')
 				}
 			}
 			viewState.switchPerspective(newIdx, ConfigProviderService.vals.perspectives);
-			// close submenu
-			viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
+			// close perspectivesSideBar
+			viewState.setPerspectivesSideBarOpen(!viewState.getPerspectivesSideBarOpen());
 		};
 
 		/**

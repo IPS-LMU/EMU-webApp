@@ -708,10 +708,10 @@ describe('Directive: handleglobalkeystrokes', function() {
     it('should toggleSideBarRight', function() {
         scope.cps.vals.activeButtons.openMenu = true;
         spyOn(scope.vs, 'getPermission').and.returnValue(true);
-        spyOn(scope.vs, 'setRightsubmenuOpen');
+        spyOn(scope.vs, 'setPerspectivesSideBarOpen');
         spyOn(scope.lvl, 'deleteEditArea');
         trigEvent(scope.cps.vals.keyMappings.toggleSideBarRight, false);
-        expect(scope.vs.setRightsubmenuOpen).toHaveBeenCalledWith(!scope.vs.getRightsubmenuOpen());
+        expect(scope.vs.setPerspectivesSideBarOpen).toHaveBeenCalledWith(!scope.vs.getPerspectivesSideBarOpen());
         expect(scope.lvl.deleteEditArea).toHaveBeenCalled();
     });
 
