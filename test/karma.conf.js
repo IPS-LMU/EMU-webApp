@@ -11,7 +11,7 @@ module.exports = function (config) {
     autoWatch: true,
 
     // base path, that will be used to resolve files and exclude
-    basePath: '../',
+    basePath: '../dist',
 
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: [
@@ -23,34 +23,21 @@ module.exports = function (config) {
     // NOTE: these are injected by wiredep and somehow
     // the bootstrap jquery dep
     files: [
-      'dist/dist/bundle.js',
-      // 'node_modules/jquery/dist/jquery.js',
-      // 'node_modules/angular/angular.js',
-      // 'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
-      // 'node_modules/angular-animate/angular-animate.js',
-      // 'node_modules/angular-cookies/angular-cookies.js',
-      // 'node_modules/angular-resource/angular-resource.js',
-      // 'node_modules/angular-route/angular-route.js',
-      // 'node_modules/angular-sanitize/angular-sanitize.js',
-      // 'node_modules/angular-touch/angular-touch.js',
-      // 'node_modules/tv4/tv4.js',
-      // 'node_modules/d3/d3.js',
-      // 'node_modules/angular-filter/dist/angular-filter.js',
-      // 'node_modules/showdown/dist/showdown.js',
-      'node_modules/jasmine/lib/jasmine-core/jasmine.js',
-      'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-      'node_modules/angular-mocks/angular-mocks.js',
+      'dist/emuwebapp.bundle.js',
+      '../node_modules/jasmine/lib/jasmine-core/jasmine.js',
+      '../node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+      '../node_modules/angular-mocks/angular-mocks.js',
       // 'test/spec/**/*.js',
       // try to get it to work on a single file first
-      'test/spec/controllers/bundlelistsidebar.spec.js',
+      '../test/spec/controllers/bundlelistsidebar.spec.js',
       //include the directory where directive templates are stored.
-      'app/views/**/*.html',
-      // 'app/img/*.svg',
-      // 'app/*.html',
+      'views/**/*.html',
+      'img/*.svg',
+      '*.html',
 
       // demoDBs JSON fixtures
       {
-        pattern: 'app/demoDBs/*/*.json',
+        pattern: 'demoDBs/*/*.json',
         watched: true,
         served: true,
         included: false
@@ -58,7 +45,7 @@ module.exports = function (config) {
 
       // configFiles JSON fixtures
       {
-        pattern: 'app/configFiles/*.json',
+        pattern: 'configFiles/*.json',
         watched: true,
         served: true,
         included: false
@@ -66,14 +53,14 @@ module.exports = function (config) {
 
       // schemaFiles fixtures
       {
-        pattern: 'app/schemaFiles/*.json',
+        pattern: 'schemaFiles/*.json',
         watched: true,
         served: true,
         included: false
       },
       // fixtures
       {
-        pattern: 'app/testData/oldFormat/msajc003/*',
+        pattern: 'testData/oldFormat/msajc003/*',
         watched: true,
         served: true,
         included: false
@@ -121,20 +108,20 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
 
     // Uncomment the following lines if you are using grunt's server to run the tests
-    proxies: {
+    // proxies: {
       // '/': 'http://localhost:9000/'
-      '/img/': '/base/app/img/',
-      '/assets/': '/base/app/assets/'
+      // '/img/': '/base/app/img/',
+      // '/assets/': '/base/app/assets/'
       // '/NEWS.md': 'http://localhost:9000/NEWS.md'
-    },
+    // },
     // // URL root prevent conflicts with the site root
     // urlRoot: '_karma_',
     //
     // generate js files from html templates to expose them during testing.
-    preprocessors: {
-      'app/views/**/*.html': 'ng-html2js'
+    // preprocessors: {
+      // 'app/views/**/*.html': 'ng-html2js'
       // 'app/scripts/**/*.js': 'coverage'
-    },
+    // },
 
     ngHtml2JsPreprocessor: {
       // If your build process changes the path to your templates,

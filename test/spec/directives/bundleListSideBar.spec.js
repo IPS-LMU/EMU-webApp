@@ -42,6 +42,4 @@ describe('Directive: bundleListSideBar', function() {
         expect(elm.html()).toContain('my-drop-zone-input');
     }));
     
-    
-    
 });

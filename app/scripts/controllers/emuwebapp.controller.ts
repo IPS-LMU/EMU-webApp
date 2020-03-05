@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('MainController', function ($scope, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
+	.controller('EmuWebAppController', function ($scope, $window, $document, $location, viewState, HistoryService, Iohandlerservice,
 	                                        Soundhandlerservice, ConfigProviderService, fontScaleService, Ssffdataservice,
 	                                        LevelService, Textgridparserservice, Wavparserservice, Drawhelperservice,
 	                                        Validationservice, Appcachehandler, loadedMetaDataService, dbObjLoadSaveService,

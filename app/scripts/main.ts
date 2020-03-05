@@ -12,7 +12,7 @@ import "tv4";
 import "d3";
 import "angular-filter";
 import "showdown";
-import "wav-range-requests";
+// import "wav-range-requests";
 
 // App
 import "./app";
