@@ -2,33 +2,32 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('DragnDropService', function DragnDropService($q, $rootScope, $window, modalService, DataService, Validationservice, ConfigProviderService, DragnDropDataService, Iohandlerservice, viewState, Soundhandlerservice, Binarydatamaniphelper, browserDetector, Wavparserservice, Textgridparserservice, loadedMetaDataService, LevelService) {
-		// shared service object
-		var sServObj = {} as any;
-		sServObj.drandropBundles = [];
-		sServObj.bundleList = [];
-		sServObj.sessionName = 'File(s)';
-		sServObj.maxDroppedBundles = 10;
+
+		this.drandropBundles = [];
+		this.bundleList = [];
+		this.sessionName = 'File(s)';
+		this.maxDroppedBundles = 10;
 
 		///////////////////////////////
 		// public api
 
 		///////////////////
 		// drag n drop data
-		sServObj.setData = function (bundles) {
+		this.setData = function (bundles) {
 			var count = 0;
-			angular.forEach(bundles, function (bundle, i) {
-				sServObj.setDragnDropData(bundle[0], i, 'wav', bundle[1]);
+			bundles.forEach((bundle, i) => {
+				this.setDragnDropData(bundle[0], i, 'wav', bundle[1]);
 				if (bundle[2] !== undefined) {
-					sServObj.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
+					this.setDragnDropData(bundle[0], i, 'annotation', bundle[2]);
 				}
 				count = i;
 			});
-			if (count <= sServObj.maxDroppedBundles) {
-				sServObj.convertDragnDropData(sServObj.drandropBundles, 0).then(function () {
-					loadedMetaDataService.setBundleList(sServObj.bundleList);
-					loadedMetaDataService.setCurBndlName(sServObj.bundleList[DragnDropDataService.sessionDefault]);
-					loadedMetaDataService.setDemoDbName(sServObj.bundleList[DragnDropDataService.sessionDefault]);
-					sServObj.handleLocalFiles();
+			if (count <= this.maxDroppedBundles) {
+				this.convertDragnDropData(this.drandropBundles, 0).then(function () {
+					loadedMetaDataService.setBundleList(this.bundleList);
+					loadedMetaDataService.setCurBndlName(this.bundleList[DragnDropDataService.sessionDefault]);
+					loadedMetaDataService.setDemoDbName(this.bundleList[DragnDropDataService.sessionDefault]);
+					this.handleLocalFiles();
 					return true;
 				});
 			}
@@ -37,61 +36,61 @@ angular.module('emuwebApp')
 			}
 		};
 
-		sServObj.resetToInitState = function () {
-			delete sServObj.drandropBundles;
-			sServObj.drandropBundles = [];
-			delete sServObj.bundleList;
-			sServObj.bundleList = [];
-			sServObj.sessionName = 'File(s)';
-			sServObj.maxDroppedBundles = 10;
+		this.resetToInitState = function () {
+			delete this.drandropBundles;
+			this.drandropBundles = [];
+			delete this.bundleList;
+			this.bundleList = [];
+			this.sessionName = 'File(s)';
+			this.maxDroppedBundles = 10;
 			DragnDropDataService.resetToInitState();
 			loadedMetaDataService.resetToInitState();
 		};
 
 		/**
-		 * setter sServObj.drandropBundles
+		 * setter this.drandropBundles
 		 */
-		sServObj.setDragnDropData = function (bundle, i, type, data) {
+		this.setDragnDropData = function (bundle, i, type, data) {
 			DragnDropDataService.setDefaultSession(i);
-			if (sServObj.drandropBundles[i] === undefined) {
-				sServObj.drandropBundles[i] = {};
+			if (this.drandropBundles[i] === undefined) {
+				this.drandropBundles[i] = {};
 				DragnDropDataService.convertedBundles[i] = {};
 				DragnDropDataService.convertedBundles[i].name = bundle;
-				sServObj.bundleList.push({
+				this.bundleList.push({
 					name: bundle,
-					session: sServObj.sessionName
+					session: this.sessionName
 				});
 
 			}
 			if (type === 'wav') {
-				sServObj.drandropBundles[i].wav = data;
+				this.drandropBundles[i].wav = data;
 			}
 			else if (type === 'annotation') {
-				sServObj.drandropBundles[i].annotation = data;
+				this.drandropBundles[i].annotation = data;
 			}
 		};
 
 		/**
-		 * getter sServObj.drandropBundles
+		 * getter this.drandropBundles
 		 */
-		sServObj.getDragnDropData = function (bundle, type) {
+		this.getDragnDropData = function (bundle, type) {
 			if (type === 'wav') {
-				return sServObj.drandropBundles[bundle].wav;
+				return this.drandropBundles[bundle].wav;
 			}
 			else if (type === 'annotation') {
-				return sServObj.drandropBundles[bundle].annotation;
+				return this.drandropBundles[bundle].annotation;
 			}
 			else {
 				return false;
 			}
 		};
 
-		sServObj.generateDrop = function (data) {
+		this.generateDrop = function (data) {
 			var objURL;
 			if (typeof URL !== 'object' && typeof webkitURL !== 'undefined') {
-				objURL = webkitURL.createObjectURL(sServObj.getBlob(data));
+				objURL = webkitURL.createObjectURL(this.getBlob(data));
 			} else {
-				objURL = URL.createObjectURL(sServObj.getBlob(data));
+				objURL = URL.createObjectURL(this.getBlob(data));
 			}
 			return objURL;
 		};
@@ -99,7 +98,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getBlob = function (data) {
+		this.getBlob = function (data) {
 			var blob;
 			try {
 				blob = new Blob([data], {type: 'text/plain'});
@@ -111,9 +110,9 @@ angular.module('emuwebApp')
 			return blob;
 		};
 
-		sServObj.convertDragnDropData = function (bundles, i) {
+		this.convertDragnDropData = function (bundles, i) {
 			var defer = $q.defer();
-			var data = sServObj.drandropBundles[i];
+			var data = this.drandropBundles[i];
 			var reader:any = new FileReader();
 			var reader2:any = new FileReader();
 			var res;
@@ -144,9 +143,9 @@ angular.module('emuwebApp')
 										annotates: bundle,
 										name: bundle
 									};
-									sServObj.convertDragnDropData(bundles, i + 1).then(function () {
-										delete sServObj.drandropBundles;
-										sServObj.drandropBundles = [];
+									this.convertDragnDropData(bundles, i + 1).then(function () {
+										delete this.drandropBundles;
+										this.drandropBundles = [];
 										defer.resolve();
 									});
 								}
@@ -157,7 +156,7 @@ angular.module('emuwebApp')
 											if (evt.target.readyState === FileReader.DONE) {
 												Textgridparserservice.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
 													DragnDropDataService.convertedBundles[i].annotation = parseMess;
-													sServObj.convertDragnDropData(bundles, i + 1).then(function () {
+													this.convertDragnDropData(bundles, i + 1).then(function () {
 														defer.resolve();
 													});
 												}, function (errMess) {
@@ -173,7 +172,7 @@ angular.module('emuwebApp')
 										reader2.onloadend = function (evt) {
 											if (evt.target.readyState === FileReader.DONE) {
 												DragnDropDataService.convertedBundles[i].annotation = angular.fromJson(evt.currentTarget.result);
-												sServObj.convertDragnDropData(bundles, i + 1).then(function () {
+												this.convertDragnDropData(bundles, i + 1).then(function () {
 													defer.resolve();
 												});
 											}
@@ -200,7 +199,7 @@ angular.module('emuwebApp')
 		/**
 		 * handling local file drops after loading them
 		 */
-		sServObj.handleLocalFiles = function () {
+		this.handleLocalFiles = function () {
 			// var ab = DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].mediaFile.audioBuffer;
 			var annotation;
 			if (DragnDropDataService.convertedBundles[DragnDropDataService.sessionDefault].annotation !== undefined) {
@@ -237,7 +236,7 @@ angular.module('emuwebApp')
 					DataService.setData(annotation);
 					var lNames = [];
 					var levelDefs = [];
-					annotation.levels.forEach(function (l) {
+					annotation.levels.forEach((l) => {
 						if (l.type === 'SEGMENT' || l.type === 'EVENT') {
 							lNames.push(l.name);
 							levelDefs.push({
@@ -268,7 +267,7 @@ angular.module('emuwebApp')
 					} else {
 						modalService.open('views/error.html', 'Error validating annotation file: ' + JSON.stringify(validRes, null, 4)).then(function () {
 							//appStateService.resetToInitState();
-							sServObj.resetToInitState();
+							this.resetToInitState();
 						});
 					}
 					// select first level
@@ -282,5 +281,5 @@ angular.module('emuwebApp')
 			});
 			viewState.somethingInProgress = false;
 		};
-		return sServObj;
+
 	});

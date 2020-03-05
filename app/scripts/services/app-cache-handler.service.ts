@@ -2,8 +2,6 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('Appcachehandler', function Appcachehandler($http, modalService) {
-		// shared service object
-		var sServObj = {} as any;
 
 		var appCache = window.applicationCache;
 
@@ -96,7 +94,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.handleUpdatereadyEvent = function () {
+		this.handleUpdatereadyEvent = function () {
             if(typeof appCache !== 'undefined') {
                 modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
                     if (res) {
@@ -130,7 +128,7 @@ angular.module('emuwebApp')
 			// appCache.addEventListener('downloading', handleDownloadingEvent, false);
 			// appCache.addEventListener('progress', handleProgressEvent, false);
 			// appCache.addEventListener('cached', handleCachedEvent, false);
-            appCache.addEventListener('updateready', sServObj.handleUpdatereadyEvent, false);
+            appCache.addEventListener('updateready', this.handleUpdatereadyEvent, false);
 
 			// appCache.addEventListener('obsolete', handleObsoleteEvent, false);
 			// appCache.addEventListener('error', handleErrorEvent, false);
@@ -138,7 +136,7 @@ angular.module('emuwebApp')
 		// /////////////////////////////////////////////////
 		// // public api
 
-		sServObj.checkForNewVersion = function () {
+		this.checkForNewVersion = function () {
 			// console.log('check for new version');
             if(typeof appCache !== 'undefined') {
 				if ((appCache.status !== 0 && appCache.status !== 3)) { // uncached == 0 & downloading == 3
@@ -160,5 +158,4 @@ angular.module('emuwebApp')
             }
 		};
 
-		return sServObj;
 	});

@@ -250,7 +250,8 @@ class="emuwebapp-selectAttrDef"
             var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
             if (attrDefName === curAttrDef) {
                 curColor = {
-                    'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
+                    'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)',
+                    'border-color': 'yellow'
                 };
             } else {
                 curColor = {

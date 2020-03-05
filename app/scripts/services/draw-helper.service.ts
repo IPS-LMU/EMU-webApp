@@ -3,10 +3,7 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.service('Drawhelperservice', function Drawhelperservice(viewState, ConfigProviderService, Soundhandlerservice, fontScaleService, Ssffdataservice, mathHelperService) {
 
-		//shared service object to be returned
-		var sServObj = {} as any;
-
-		sServObj.osciPeaks = {};
+		this.osciPeaks = {};
 
 		function getScale(ctx, str, scale) {
 			return ctx.measureText(str).width * scale;
@@ -23,7 +20,7 @@ angular.module('emuwebApp')
 		/**
 		 * 
 		 */
-		sServObj.calculateOsciPeaks = function () {
+		this.calculateOsciPeaks = function () {
 			var sampleRate = Soundhandlerservice.audioBuffer.sampleRate;
 			var numberOfChannels = Soundhandlerservice.audioBuffer.numberOfChannels;
 
@@ -38,7 +35,7 @@ angular.module('emuwebApp')
 			var winSize2 = sampleRate / 1;
 
 			// set initial result values
-			sServObj.osciPeaks = {
+			this.osciPeaks = {
 				'numberOfChannels': numberOfChannels,
 				'sampleRate': sampleRate,
 				'winSizes': [winSize0, winSize1, winSize2],
@@ -152,7 +149,7 @@ angular.module('emuwebApp')
 					curWindowIdxCounterWinSize2 += 1;
 				}
 
-				sServObj.osciPeaks.channelOsciPeaks[channelIdx] = {
+				this.osciPeaks.channelOsciPeaks[channelIdx] = {
 					'maxPeaks': [curChannelMaxPeaksWinSize0, curChannelMaxPeaksWinSize1, curChannelMaxPeaksWinSize2],
 					'minPeaks': [curChannelMinPeaksWinSize0, curChannelMinPeaksWinSize1, curChannelMinPeaksWinSize2]
 				};
@@ -170,7 +167,7 @@ angular.module('emuwebApp')
 		 * @param eS end sample
 		 */
 
-		sServObj.calculatePeaks = function (canvas, data, sS, eS) {
+		this.calculatePeaks = function (canvas, data, sS, eS) {
 			
 			var samplePerPx = (eS + 1 - sS) / canvas.width; // samples per pixel + one to correct for subtraction
 			// var numberOfChannels = 1; // hardcode for now...
@@ -261,13 +258,13 @@ angular.module('emuwebApp')
 		};
 
 
-		sServObj.findMinMaxPeaks = function(sS, eS, winIdx){
+		this.findMinMaxPeaks = function(sS, eS, winIdx){
 
 			var ssT = viewState.calcSampleTime(sS);
 			var esT = viewState.calcSampleTime(eS);
 
 			// calc exact peaks per second value (should be very close to or exactly 400|10|1 depending on  winSize)
-			var pps = sServObj.osciPeaks.sampleRate / sServObj.osciPeaks.winSizes[winIdx];
+			var pps = this.osciPeaks.sampleRate / this.osciPeaks.winSizes[winIdx];
 
 			var startPeakWinIdx = ssT * pps;
 			var endPeakWinIdx = esT * pps;
@@ -276,17 +273,17 @@ angular.module('emuwebApp')
 			var maxMaxPeak = -Infinity;
 
 			for(var i = Math.round(startPeakWinIdx); i < Math.round(endPeakWinIdx); i++){
-				if (sServObj.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i] > maxMaxPeak) {
-					maxMaxPeak = sServObj.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i];
+				if (this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i] > maxMaxPeak) {
+					maxMaxPeak = this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i];
 				}
-				if (sServObj.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i] < minMinPeak) {
-					minMinPeak = sServObj.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i];
+				if (this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i] < minMinPeak) {
+					minMinPeak = this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i];
 				}
 			}
 
 			return {
-				// 'minPeaks': sServObj.osciPeaks.channelOsciPeaks[0].minPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
-				// 'maxPeaks': sServObj.osciPeaks.channelOsciPeaks[0].maxPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
+				// 'minPeaks': this.osciPeaks.channelOsciPeaks[0].minPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
+				// 'maxPeaks': this.osciPeaks.channelOsciPeaks[0].maxPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
 				'minMinPeak': minMinPeak,
 				'maxMaxPeak': maxMaxPeak
 			};
@@ -297,19 +294,19 @@ angular.module('emuwebApp')
 		 *
 		 */
 
-		sServObj.freshRedrawDrawOsciOnCanvas = function (canvas, sS, eS, forceToCalcOsciPeaks) {
+		this.freshRedrawDrawOsciOnCanvas = function (canvas, sS, eS, forceToCalcOsciPeaks) {
 
 			// clear canvas
 			var ctx = canvas.getContext('2d');
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 			if(forceToCalcOsciPeaks){
-				sServObj.osciPeaks = {};
+				this.osciPeaks = {};
 			}
 
 			// calc osciPeaks if these have not been calculated yet
-			if(angular.equals({}, sServObj.osciPeaks)){
-				sServObj.calculateOsciPeaks();
+			if(angular.equals({}, this.osciPeaks)){
+				this.calculateOsciPeaks();
 			}
 
 			// samples per pixel + one to correct for subtraction
@@ -319,8 +316,8 @@ angular.module('emuwebApp')
 
 			// find current peaks array window size by checking if 
 			var winIdx = -1;
-			for (i = 0; i < sServObj.osciPeaks.winSizes.length; i++) {
-				if(samplesPerPx > sServObj.osciPeaks.winSizes[i]){
+			for (i = 0; i < this.osciPeaks.winSizes.length; i++) {
+				if(samplesPerPx > this.osciPeaks.winSizes[i]){
 					winIdx = i;
 				}
 			}
@@ -332,12 +329,12 @@ angular.module('emuwebApp')
 
             if(winIdx !== -1){
 				// use pre calcuated peaks
-				allPeakVals = sServObj.findMinMaxPeaks(sS, eS, winIdx);
+				allPeakVals = this.findMinMaxPeaks(sS, eS, winIdx);
 
 				var ssT = viewState.calcSampleTime(sS);
 
 				// calc exact peaks per second value (should be very close to or exactly 400|10|1 depending on  winSize)
-				var pps = sServObj.osciPeaks.sampleRate / sServObj.osciPeaks.winSizes[winIdx];
+				var pps = this.osciPeaks.sampleRate / this.osciPeaks.winSizes[winIdx];
 
 				var startPeakWinIdx = ssT * pps;
 
@@ -345,8 +342,8 @@ angular.module('emuwebApp')
 				
 				var peakIdx = Math.round(startPeakWinIdx);
 				ctx.beginPath();
-				yMax = ((allPeakVals.maxMaxPeak - sServObj.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
-				yMin = ((allPeakVals.maxMaxPeak - sServObj.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+				yMax = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+				yMin = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
 				ctx.moveTo(0, yMax);
 				// ctx.lineTo(0, yMin);
 				yMaxPrev = yMax;
@@ -359,8 +356,8 @@ angular.module('emuwebApp')
 					// calculate cur pixel sample time
 					sT = viewState.calcSampleTime(curSample);
 					peakIdx = Math.round(sT * pps);
-					yMax = ((allPeakVals.maxMaxPeak - sServObj.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
-					yMin = ((allPeakVals.maxMaxPeak - sServObj.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+					yMax = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+					yMin = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
 					// draw connection to previous peaks (neccesary to avoid gaps in osci when maxMaxPeak === minMinPeak)
 					ctx.moveTo(curPxIdx-1, yMaxPrev);
 					ctx.lineTo(curPxIdx-1, yMax);
@@ -381,7 +378,7 @@ angular.module('emuwebApp')
 
 			}else{
 				// if winIdx is -1 then calculate the peaks from the channel data
-				allPeakVals = sServObj.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), sS, eS);
+				allPeakVals = this.calculatePeaks(canvas, Soundhandlerservice.audioBuffer.getChannelData(viewState.osciSettings.curChannel), sS, eS);
 			
 				// check if envelope is to be drawn
 				if (allPeakVals.minPeaks && allPeakVals.maxPeaks && allPeakVals.samplePerPx >= 1) {
@@ -497,7 +494,7 @@ angular.module('emuwebApp')
 		 * drawing method to drawMovingBoundaryLine
 		 */
 
-		sServObj.drawMovingBoundaryLine = function (ctx) {
+		this.drawMovingBoundaryLine = function (ctx) {
 
 			var xOffset, sDist;
 			sDist = viewState.getSampleDist(ctx.canvas.width);
@@ -526,7 +523,7 @@ angular.module('emuwebApp')
 		 * drawing method to drawCurViewPortSelected
 		 */
 
-		sServObj.drawCurViewPortSelected = function (ctx, drawTimeAndSamples) {
+		this.drawCurViewPortSelected = function (ctx, drawTimeAndSamples) {
 
 			var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
 			var xOffset, sDist, space, scaleX;
@@ -622,7 +619,7 @@ angular.module('emuwebApp')
 		 * this is used to draw a red line at the current mouse position
 		 * on canvases where the mouse is currently not hovering over
          */
-        sServObj.drawCrossHairX = function(ctx, mouseX){
+        this.drawCrossHairX = function(ctx, mouseX){
             ctx.strokeStyle = ConfigProviderService.design.color.red;
             ctx.fillStyle = ConfigProviderService.design.color.red;
             ctx.beginPath();
@@ -635,7 +632,7 @@ angular.module('emuwebApp')
 		 * drawing method to drawCrossHairs
 		 */
 
-		sServObj.drawCrossHairs = function (ctx, mouseEvt, min, max, unit, trackname) {
+		this.drawCrossHairs = function (ctx, mouseEvt, min, max, unit, trackname) {
 			// console.log(mathHelperService.roundToNdigitsAfterDecPoint(min, round))
 			if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
 
@@ -726,7 +723,7 @@ angular.module('emuwebApp')
 		 * @param round value to round to for min/max values (== digits after comma)
 		 */
 
-		sServObj.drawMinMaxAndName = function (ctx, trackName, min, max, round) {
+		this.drawMinMaxAndName = function (ctx, trackName, min, max, round) {
 			// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 			ctx.strokeStyle = ConfigProviderService.design.color.black;
 			ctx.fillStyle = ConfigProviderService.design.color.black;
@@ -766,7 +763,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.drawViewPortTimes = function (ctx) {
+		this.drawViewPortTimes = function (ctx) {
 			ctx.strokeStyle = ConfigProviderService.design.color.white;
 			ctx.fillStyle = ConfigProviderService.design.color.white;
 			ctx.font = (ConfigProviderService.design.font.small.size + ' ' + ConfigProviderService.design.font.small.family);
@@ -794,5 +791,4 @@ angular.module('emuwebApp')
 				fontScaleService.drawUndistortedTextTwoLines(ctx, viewState.curViewPort.eS, eTime, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - space - 5, 0, ConfigProviderService.design.color.white, false);
 			}
 		};
-		return sServObj;
 	});

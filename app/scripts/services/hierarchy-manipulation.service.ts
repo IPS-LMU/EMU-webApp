@@ -2,8 +2,6 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('HierarchyManipulationService', function HierarchyManipulationService($q, HierarchyLayoutService, DataService, LevelService, ConfigProviderService) {
-		// shared service object
-		var sServObj = {} as any;
 
 		/**
 		 * Add a new link if it is valid and goes along the specfied path
@@ -18,8 +16,8 @@ angular.module('emuwebApp')
 		 * @return the link object that was added ({fromID: x, toID: y})
 		 * @return null if no link was added
 		 */
-		sServObj.addLink = function (path, from, to) {
-			var validity = sServObj.checkLinkValidity(path, from, to);
+		this.addLink = function (path, from, to) {
+			var validity = this.checkLinkValidity(path, from, to);
 			var obj;
 			if (validity.valid) {
 				obj = {fromID: from, toID: to};
@@ -28,7 +26,7 @@ angular.module('emuwebApp')
 			} else {
 				console.debug('Not adding invalid link:', from, '->', to, ' (Error code:', validity.reason, ')');
 				if (validity.reason === 3) {
-					validity = sServObj.checkLinkValidity(path, to, from);
+					validity = this.checkLinkValidity(path, to, from);
 					if (validity.valid) {
 						console.debug('Adding reverse link instead');
 						obj = {fromID: to, toID: from};
@@ -66,7 +64,7 @@ angular.module('emuwebApp')
 		 * 4: link does not meet the requirements of DBconfig.linkDefinitions (link type not satisified)
 		 * 5: link would cross another link
 		 **/
-		sServObj.checkLinkValidity = function (path, from, to) {
+		this.checkLinkValidity = function (path, from, to) {
 			var result = {valid: true, reason: 0};
 			var links = DataService.getLinkData();
 			var i, children, index;
@@ -230,5 +228,4 @@ angular.module('emuwebApp')
 			return result;
 		};
 
-		return sServObj;
 	});

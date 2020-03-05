@@ -10,44 +10,42 @@ angular.module('emuwebApp')
 			return self.indexOf(value) === index;
 		}
 
-		// shared service object
-		var sServObj = {} as any;
-		sServObj.vals = {};
-		sServObj.design = {};
-		sServObj.curDbConfig = {};
-		sServObj.initDbConfig = {};
+		this.vals = {};
+		this.design = {};
+		this.curDbConfig = {};
+		this.initDbConfig = {};
 
 		// embedded values -> if these are set this overrides the normal config
-		sServObj.embeddedVals = {
+		this.embeddedVals = {
 			audioGetUrl: '',
 			labelGetUrl: '',
 			labelType: '',
 			fromUrlParams: false
 		};
 
-		sServObj.setDesign = function (data) {
-			angular.copy(data, sServObj.design);
+		this.setDesign = function (data) {
+			angular.copy(data, this.design);
 		};
 
 		/**
 		 * depth of 2 = max
 		 */
-		sServObj.setVals = function (data) {
-			if ($.isEmptyObject(sServObj.vals)) {
-				sServObj.vals = data;
+		this.setVals = function (data) {
+			if ($.isEmptyObject(this.vals)) {
+				this.vals = data;
 			} else {
-				angular.forEach(Object.keys(data), function (key1) {
+				Object.keys(data).forEach((key1) => {
 					// if array... overwrite entire thing!
-					if (angular.isArray(sServObj.vals[key1])) {
+					if (angular.isArray(this.vals[key1])) {
 						//empty array
-						sServObj.vals[key1] = [];
-						angular.forEach(data[key1], function (itm) {
-							sServObj.vals[key1].push(itm);
+						this.vals[key1] = [];
+						data[key1].forEach((itm) => {
+							this.vals[key1].push(itm);
 						});
 					} else {
-						angular.forEach(Object.keys(data[key1]), function (key2) {
-							if (sServObj.vals[key1][key2] !== undefined) {
-								sServObj.vals[key1][key2] = data[key1][key2];
+						Object.keys(data[key1]).forEach((key2) => {
+							if (this.vals[key1][key2] !== undefined) {
+								this.vals[key1][key2] = data[key1][key2];
 							} else {
 								console.error('BAD ENTRY IN CONFIG! Key1: ' + key1 + ' key2: ' + key2);
 							}
@@ -58,16 +56,16 @@ angular.module('emuwebApp')
 			}
 		};
 
-		sServObj.getDelta = function (current) {
+		this.getDelta = function (current) {
 			var defer = $q.defer();
-			var ret = sServObj.getDeltas(current, sServObj.initDbConfig);
+			var ret = this.getDeltas(current, this.initDbConfig);
 			defer.resolve(ret);
 			return defer.promise;
 		};
 
-		sServObj.getDeltas = function (current, start) {
+		this.getDeltas = function (current, start) {
 			var ret = {};
-			angular.forEach(current, function (value, key) {
+			current.forEach( (value, key) => {
 				if (!angular.equals(value, start[key])) {
 					if(Array.isArray(value)) {
 						ret[key] = [];
@@ -75,7 +73,7 @@ angular.module('emuwebApp')
 					}
 					else if(typeof value === 'object'){
 						ret[key] = {};
-						ret[key] = sServObj.getDeltas(value, start[key]);
+						ret[key] = this.getDeltas(value, start[key]);
 					}
 					else {
 						if(key !== 'clear' && key !== 'openDemoDB' && key !== 'specSettings') {
@@ -91,10 +89,10 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getSsffTrackConfig = function (name) {
+		this.getSsffTrackConfig = function (name) {
 			var res;
-			if (sServObj.curDbConfig.ssffTrackDefinitions !== undefined) {
-				angular.forEach(sServObj.curDbConfig.ssffTrackDefinitions, function (tr) {
+			if (this.curDbConfig.ssffTrackDefinitions !== undefined) {
+				this.curDbConfig.ssffTrackDefinitions.forEach((tr) => {
 					if (tr.name === name) {
 						res = tr;
 					}
@@ -106,9 +104,9 @@ angular.module('emuwebApp')
         /**
          *
          */
-        sServObj.getValueLimsOfTrack = function (trackName) {
+        this.getValueLimsOfTrack = function (trackName) {
             var res = {};
-            angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.minMaxValLims, function (vL) {
+            this.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.minMaxValLims.forEach((vL) => {
                 if (vL.ssffTrackName === trackName) {
                     res = vL;
                 }
@@ -120,9 +118,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getHorizontalLinesOfTrack = function (trackName) {
+		this.getHorizontalLinesOfTrack = function (trackName) {
 			var res;
-			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.horizontalLines, function (vL) {
+			this.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.horizontalLines.forEach((vL) => {
 				if (vL.ssffTrackName === trackName) {
 					res = vL;
 				}
@@ -133,9 +131,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getContourLimsOfTrack = function (trackName) {
+		this.getContourLimsOfTrack = function (trackName) {
 			var res = {};
-			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims, function (cL) {
+			this.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourLims.forEach((cL) => {
 				if (cL.ssffTrackName === trackName) {
 					res = cL;
 				}
@@ -148,9 +146,9 @@ angular.module('emuwebApp')
         /**
 		 *
 		 */
-		sServObj.getContourColorsOfTrack = function (trackName) {
+		this.getContourColorsOfTrack = function (trackName) {
 			var res;
-			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors, function (cC) {
+			this.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors.forEach((cC) => {
 				if (cC.ssffTrackName === trackName) {
 					res = cC;
 				}
@@ -162,9 +160,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getAssignment = function (signalName) {
+		this.getAssignment = function (signalName) {
 			var res = {};
-			angular.forEach(sServObj.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign, function (a) {
+			this.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach((a) => {
 				if (a.signalCanvasName === signalName) {
 					res = a;
 				}
@@ -176,9 +174,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getLevelDefinition = function (levelName) {
+		this.getLevelDefinition = function (levelName) {
 			var res = {};
-			angular.forEach(sServObj.curDbConfig.levelDefinitions, function (ld) {
+			this.curDbConfig.levelDefinitions.forEach((ld) => {
 				if (ld.name === levelName) {
 					res = ld;
 				}
@@ -190,9 +188,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getAttrDefsNames = function (levelName) {
+		this.getAttrDefsNames = function (levelName) {
 			var res = [];
-			angular.forEach(sServObj.getLevelDefinition(levelName).attributeDefinitions, function (ad) {
+			this.getLevelDefinition(levelName).attributeDefinitions.forEach((ad) => {
 				res.push(ad.name);
 			});
 
@@ -203,12 +201,12 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.setPerspectivesOrder = function (curPerspective, levelName) {
-			if (sServObj.vals !== undefined) {
-				if (sServObj.vals.perspectives !== undefined) {
-					if (sServObj.vals.perspectives[curPerspective] !== undefined) {
-						if (sServObj.vals.perspectives[curPerspective].levelCanvases !== undefined) {
-							sServObj.vals.perspectives[curPerspective].levelCanvases.order = levelName;
+		this.setPerspectivesOrder = function (curPerspective, levelName) {
+			if (this.vals !== undefined) {
+				if (this.vals.perspectives !== undefined) {
+					if (this.vals.perspectives[curPerspective] !== undefined) {
+						if (this.vals.perspectives[curPerspective].levelCanvases !== undefined) {
+							this.vals.perspectives[curPerspective].levelCanvases.order = levelName;
 						}
 					}
 				}
@@ -218,7 +216,7 @@ angular.module('emuwebApp')
 		/**
 		 *  replace ascii codes from config with strings
 		 */
-		sServObj.getStrRep = function (code) {
+		this.getStrRep = function (code) {
 			var str;
 			switch (code) {
 				case 8:
@@ -273,12 +271,12 @@ angular.module('emuwebApp')
 	/**
 	 *
 	 */
-	sServObj.findAllTracksInDBconfigNeededByEMUwebApp = function() {
-		var DBconfig = sServObj.curDbConfig;
+	this.findAllTracksInDBconfigNeededByEMUwebApp = function() {
+		var DBconfig = this.curDbConfig;
 		var allTracks = [];
 
 	   // anagestConfig ssffTracks
-	   DBconfig.levelDefinitions.forEach(function (ld) {
+	   DBconfig.levelDefinitions.forEach((ld) => {
 		   if (ld.anagestConfig !== undefined) {
 			   allTracks.push(ld.anagestConfig.verticalPosSsffTrackName);
 			   allTracks.push(ld.anagestConfig.velocitySsffTrackName);
@@ -286,14 +284,14 @@ angular.module('emuwebApp')
 	   });
 
 
-	   DBconfig.EMUwebAppConfig.perspectives.forEach(function (p) {
+	   DBconfig.EMUwebAppConfig.perspectives.forEach((p) => {
 		   // tracks in signalCanvases.order
-		   p.signalCanvases.order.forEach(function (sco) {
+		   p.signalCanvases.order.forEach((sco) => {
 			   allTracks.push(sco);
 		   });
 		   // tracks in signalCanvases.assign
 		   if (p.signalCanvases.assign !== undefined) {
-			   p.signalCanvases.assign.forEach(function (sca) {
+			   p.signalCanvases.assign.forEach((sca) => {
 				   allTracks.push(sca.ssffTrackName);
 			   });
 		   }
@@ -303,8 +301,8 @@ angular.module('emuwebApp')
 				   allTracks.push('EPG');
 			   }
 			   if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
-				   p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
-					   tddd.dots.forEach(function (dot) {
+				   p.twoDimCanvases.twoDimDrawingDefinitions.forEach((tddd) => {
+					   tddd.dots.forEach((dot) => {
 						   allTracks.push(dot.xSsffTrack);
 						   allTracks.push(dot.ySsffTrack);
 					   });
@@ -326,7 +324,7 @@ angular.module('emuwebApp')
 
 	   // get corresponding ssffTrackDefinitions
 	   var allTrackDefs = [];
-	   DBconfig.ssffTrackDefinitions.forEach(function (std) {
+	   DBconfig.ssffTrackDefinitions.forEach((std) => {
 		   if (allTracks.indexOf(std.name) > -1) {
 			   allTrackDefs.push(std);
 		   }
@@ -335,9 +333,5 @@ angular.module('emuwebApp')
 	   return (allTrackDefs);
 
     };
-
-
-
-		return sServObj;
 
 	});

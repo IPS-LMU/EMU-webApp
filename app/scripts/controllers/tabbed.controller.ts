@@ -30,10 +30,10 @@ angular.module('emuwebApp')
 			$scope.signalTypes = Object.keys(viewState.getSignalTypes());
 			$scope.levelTypes = [];
 
-			angular.forEach(ConfigProviderService.curDbConfig.ssffTrackDefinitions, function (val) {
+			ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach((val) => {
 				$scope.signalTypes.push(val.name);
 			});
-			angular.forEach(ConfigProviderService.curDbConfig.levelDefinitions, function (val) {
+			ConfigProviderService.curDbConfig.levelDefinitions.forEach((val) => {
 				if (val.type === 'SEGMENT' || val.type === 'EVENT') {
 					$scope.levelTypes.push(val.name);
 				}
@@ -53,9 +53,9 @@ angular.module('emuwebApp')
 
 		$scope.getType = function (section, key) {
 			var val;
-			angular.forEach($scope.schema, function (schemaValue, schemaKey) {
+			$scope.schema.forEach((schemaValue, schemaKey) => {
 				if (schemaKey === section) {
-					angular.forEach(schemaValue.properties, function (value, configKey) {
+					schemaValue.properties.forEach((value, configKey) => {
 						if (configKey === key) {
 							val = value.type;
 						}

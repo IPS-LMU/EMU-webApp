@@ -62,14 +62,14 @@ angular.module('emuwebApp')
 					var curFrameVals = angular.copy(col.values[curFrame]);
 					curFrameVals.reverse();
 
-					angular.forEach(curFrameVals, function (el, elIdx) {
+					curFrameVals.forEach((el, elIdx) => {
 						binValStrArr = el.toString(2).split('').reverse();
 						// pad with zeros
 						while (binValStrArr.length < 8) {
 							binValStrArr.push('0');
 						}
 
-						binValStrArr.forEach(function (binStr, binStrIdx) {
+						binValStrArr.forEach((binStr, binStrIdx) => {
 							if (binStr === '1') {
 								ctx.fillStyle = 'grey';
 								ctx.fillRect(binStrIdx * gridWidth + 5, gridHeight * elIdx + 5, gridWidth - 10, gridHeight - 10);

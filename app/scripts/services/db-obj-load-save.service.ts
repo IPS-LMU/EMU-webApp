@@ -9,15 +9,13 @@ import * as angular from 'angular';
  */
 angular.module('emuwebApp')
 	.service('dbObjLoadSaveService', function dbObjLoadSaveService($log, $q, $http, DataService, viewState, HistoryService, loadedMetaDataService, Ssffdataservice, Iohandlerservice, Binarydatamaniphelper, Wavparserservice, Soundhandlerservice, Ssffparserservice, Validationservice, LevelService, modalService, ConfigProviderService, appStateService, StandardFuncsService) {
-		// shared service object
-		var sServObj = {} as any;
 
 		/**
 		 * general loadBundle method.
 		 * @param bndl object containing name attribute of currently loaded bundle
 		 * @param url if set the bundle is loaded from the given url
 		 */
-		sServObj.loadBundle = function (bndl, url) {
+		this.loadBundle = function (bndl, url) {
 			var defer = $q.defer();
 			// check if bndl has to be saved
 			viewState.setcurClickItem(null);
@@ -28,15 +26,15 @@ angular.module('emuwebApp')
 					modalService.open('views/saveChanges.html', curBndl.session + ':' + curBndl.name).then(function (messModal) {
 						if (messModal === 'saveChanges') {
 							// save current bundle
-							sServObj.saveBundle().then(function () {
+							this.saveBundle().then(function () {
 								// load new bundle
-								sServObj.loadBundle(bndl);
+								this.loadBundle(bndl);
 							});
 						} else if (messModal === 'discardChanges') {
 							// reset history
 							HistoryService.resetToInitState();
 							// load new bundle
-							sServObj.loadBundle(bndl);
+							this.loadBundle(bndl);
 						}
 					});
 				}
@@ -182,7 +180,7 @@ angular.module('emuwebApp')
 		 * general purpose save bundle function.
 		 * @return promise that is resolved after completion (rejected on error)
 		 */
-		sServObj.saveBundle = function () {
+		this.saveBundle = function () {
 			// check if something has changed
 			// if (HistoryService.movesAwayFromLastSave !== 0) {
 			if (viewState.getPermission('saveBndlBtnClick')) {
@@ -202,14 +200,14 @@ angular.module('emuwebApp')
 							'encoding': 'BASE64',
 							'data': Binarydatamaniphelper.arrayBufferToBase64(messParser.data)
 						});
-						sServObj.getAnnotationAndSaveBndl(bundleData, defer);
+						this.getAnnotationAndSaveBndl(bundleData, defer);
 						
 					}, function (errMess) {
 						modalService.open('views/error.html', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
 						defer.reject();
 					});
 				} else {
-					sServObj.getAnnotationAndSaveBndl(bundleData, defer);
+					this.getAnnotationAndSaveBndl(bundleData, defer);
 				}
 				
 				return defer.promise;
@@ -224,7 +222,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getAnnotationAndSaveBndl = function (bundleData, defer) {
+		this.getAnnotationAndSaveBndl = function (bundleData, defer) {
 			
 			// Validate annotation before saving
 			viewState.somethingInProgressTxt = 'Validating annotJSON ...';
@@ -292,5 +290,4 @@ angular.module('emuwebApp')
 				});
 			}
 		};
-		return (sServObj);
 	});

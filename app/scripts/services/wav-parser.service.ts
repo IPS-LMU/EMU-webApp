@@ -2,8 +2,6 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('Wavparserservice', function Wavparserservice($q, $window) {
-		// shared service object
-		var sServObj = {} as any;
 
 		var defer;
 
@@ -13,7 +11,7 @@ angular.module('emuwebApp')
          * SIC this should be in an external service shouldn't it?
          * @param ab array buffer containing string binary values
          */
-        sServObj.ab2str = function (ab) {
+        this.ab2str = function (ab) {
             var unis = [];
             for (var i = 0; i < ab.length; i++) {
                 unis.push(ab[i]);
@@ -27,7 +25,7 @@ angular.module('emuwebApp')
 		 * (currently duplicate of function in wavParserWorkerClass)
          * @param buf array buffer containing entire wav file
          */
-        sServObj.parseWavHeader = function(buf){
+        this.parseWavHeader = function(buf){
 
             var headerInfos = {} as any;
 
@@ -37,7 +35,7 @@ angular.module('emuwebApp')
             curBinIdx = 0;
             curBuffer = buf.subarray(curBinIdx, 4);
             curBufferView = new Uint8Array(curBuffer);
-            headerInfos.ChunkID = sServObj.ab2str(curBufferView);
+            headerInfos.ChunkID = this.ab2str(curBufferView);
 
             if (headerInfos.ChunkID !== 'RIFF') {
                 // console.error('Wav read error: ChunkID not RIFF. Got ' + headerInfos.ChunkID);
@@ -60,7 +58,7 @@ angular.module('emuwebApp')
             curBinIdx = 8;
             curBuffer = buf.subarray(curBinIdx, 4);
             curBufferView = new Uint8Array(curBuffer);
-            headerInfos.Format = sServObj.ab2str(curBufferView);
+            headerInfos.Format = this.ab2str(curBufferView);
             if (headerInfos.Format !== 'WAVE') {
                 // console.error('Wav read error: Format not WAVE. Got ' + headerInfos.Format);
                 return ({
@@ -77,7 +75,7 @@ angular.module('emuwebApp')
             while(!foundChunk){
                 curBuffer = buf.subarray(fmtBinIdx, 4);
                 curBufferView = new Uint8Array(curBuffer);
-                var cur4chars = sServObj.ab2str(curBufferView);
+                var cur4chars = this.ab2str(curBufferView);
                 if(cur4chars === 'fmt '){
                     // console.log('found fmt chunk at' + fmtBinIdx);
                     headerInfos.FmtSubchunkID = 'fmt ';
@@ -164,7 +162,7 @@ angular.module('emuwebApp')
 			while(!foundChunk){
 	            curBuffer = buf.subarray(dataBinIdx, 4);
     	        curBufferView = new Uint8Array(curBuffer);
-        	    var cur4chars = sServObj.ab2str(curBufferView);
+        	    var cur4chars = this.ab2str(curBufferView);
 				if(cur4chars === 'data'){
 					foundChunk = true;
 		            curBuffer = buf.subarray(dataBinIdx + 4, 4);
@@ -186,8 +184,8 @@ angular.module('emuwebApp')
 		 * @param buf
 		 * @returns promise
 		 */
-		sServObj.parseWavAudioBuf = function (buf) {
-            var headerInfos = sServObj.parseWavHeader(buf);
+		this.parseWavAudioBuf = function (buf) {
+            var headerInfos = this.parseWavHeader(buf);
             if(typeof headerInfos.status !== 'undefined' && headerInfos.status.type === 'ERROR'){
                 defer = $q.defer();
                 defer.reject(headerInfos); // headerInfos now contains only error message
@@ -229,7 +227,5 @@ angular.module('emuwebApp')
 
 
 		};
-
-		return sServObj;
 
 	});

@@ -1,9 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.factory('uuid', function () {
-		// shared service object
-		var sServObj = {} as any;
+	.service('uuid', function () {
 
 		function rand(s) {
 			var p = (Math.random().toString(16) + '000000000').substr(2, 8);
@@ -11,19 +9,17 @@ angular.module('emuwebApp')
 		}
 
 		//
-		sServObj.new = function () {
+		this.new = function () {
 			return rand(false) + rand(true) + rand(true) + rand(false);
 		};
 
-		sServObj.newHash = function () {
+		this.newHash = function () {
 			return rand(false) + rand(true) + rand(true) + rand(false);
 		};
 
 		//
-		sServObj.empty = function () {
+		this.empty = function () {
 			return '00000000-0000-0000-0000-000000000000';
 		};
 
-
-		return sServObj;
 	});

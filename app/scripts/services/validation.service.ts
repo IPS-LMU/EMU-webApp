@@ -4,8 +4,6 @@ import * as tv4 from 'tv4';
 angular.module('emuwebApp')
 	.service('Validationservice', function Validationservice($http, $q, ConfigProviderService) {
 
-		//shared service object to be returned
-		var sServObj = {} as any;
 		var schemasJsos = [];
 		var names = ['annotationFileSchema', 'emuwebappConfigSchema', 'DBconfigFileSchema', 'bundleListSchema', 'bundleSchema', 'designSchema'];
 
@@ -17,7 +15,7 @@ angular.module('emuwebApp')
 			var res = true as any;
 
 			// check levels are defined
-			DBconfig.levelDefinitions.forEach(function (ld) {
+			DBconfig.levelDefinitions.forEach((ld) => {
 				var lnIdx = levelNames.indexOf(ld.name);
 				while (lnIdx !== -1) {
 					levelNames.splice(lnIdx, 1);
@@ -46,7 +44,7 @@ angular.module('emuwebApp')
 				trackNames.splice(tnIdx, 1);
 			}
 			// check levels are defined
-			DBconfig.ssffTrackDefinitions.forEach(function (td) {
+			DBconfig.ssffTrackDefinitions.forEach((td) => {
 				var tnIdx = trackNames.indexOf(td.name);
 				while (tnIdx !== -1) {
 					trackNames.splice(tnIdx, 1);
@@ -67,17 +65,17 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.semCheckLoadedConfigs = function (EMUwebAppConfig, DBconfig) {
+		this.semCheckLoadedConfigs = function (EMUwebAppConfig, DBconfig) {
 			var res = true as any;
 			var keepGoing = true;
 			/////////////////////////////////////////////////////////////////////
 			// check DBconfig levelDefinitions
-			DBconfig.levelDefinitions.forEach(function (ld, ldIdx) {
+			DBconfig.levelDefinitions.forEach((ld, ldIdx) => {
 
 				// check for duplicate attributeDefinition names
-				ld.attributeDefinitions.forEach(function (ad1, ad1idx) {
+				ld.attributeDefinitions.forEach((ad1, ad1idx) => {
 					var counter = 0;
-					ld.attributeDefinitions.forEach(function (ad2) {
+					ld.attributeDefinitions.forEach((ad2) => {
 						if (ad1.name === ad2.name) {
 							counter = counter + 1;
 						}
@@ -95,7 +93,7 @@ angular.module('emuwebApp')
 
 			////////////////////////////////////////////////////////////////////
 			// check perspectives
-			EMUwebAppConfig.perspectives.forEach(function (p) {
+			EMUwebAppConfig.perspectives.forEach((p) => {
 				if (keepGoing) {
 					/////////////////////////
 					// check signalCanvases
@@ -108,7 +106,7 @@ angular.module('emuwebApp')
 					}
 					var assTrackNames = [];
 					// check only defined and displayed (in order array) assignments are present
-					p.signalCanvases.assign.forEach(function (ass) {
+					p.signalCanvases.assign.forEach((ass) => {
 						if (keepGoing) {
 							assTrackNames.push(ass.ssffTrackName);
 
@@ -139,7 +137,7 @@ angular.module('emuwebApp')
 					});
 
 					// check only defined and displayed contourLims are present
-					p.signalCanvases.contourLims.forEach(function (cl) {
+					p.signalCanvases.contourLims.forEach((cl) => {
 						if (keepGoing) {
 							// are defined
 							tDefRes = checkIfSsffTracksAreDefined([cl.ssffTrackName], DBconfig);
@@ -167,7 +165,7 @@ angular.module('emuwebApp')
 					}
 
 					// check only SEGMENT or EVENT levels are displayed
-					p.levelCanvases.order.forEach(function (ln) {
+					p.levelCanvases.order.forEach((ln) => {
 						if (keepGoing) {
 							var ld = ConfigProviderService.getLevelDefinition(ln);
 							if (ld.type !== 'SEGMENT' && ld.type !== 'EVENT') {
@@ -181,11 +179,11 @@ angular.module('emuwebApp')
 					// check twoDimCanvases
 					if (p.twoDimCanvases !== undefined) {
 						if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
-							p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
+							p.twoDimCanvases.twoDimDrawingDefinitions.forEach((tddd) => {
 								if (keepGoing) {
 									var dotNames = [];
 									// check dots
-									tddd.dots.forEach(function (d) {
+									tddd.dots.forEach((d) => {
 										if (keepGoing) {
 											dotNames.push(d.name);
 											// are defined
@@ -197,7 +195,7 @@ angular.module('emuwebApp')
 										}
 									});
 									// check connectLines
-									tddd.connectLines.forEach(function (cl) {
+									tddd.connectLines.forEach((cl) => {
 										if (keepGoing) {
 											// fromDot is defined
 											var tnIdx = dotNames.indexOf(cl.fromDot);
@@ -214,7 +212,7 @@ angular.module('emuwebApp')
 										}
 									});
 									// check staticDots
-									tddd.staticDots.forEach(function (sd) {
+									tddd.staticDots.forEach((sd) => {
 										if (keepGoing) {
 											// check array is of the same length
 											if (sd.xCoordinates.length !== sd.yCoordinates.length) {
@@ -239,7 +237,7 @@ angular.module('emuwebApp')
 			// get tack and level names of anagestConfigs
 			var trackNames = [];
 			var levelNames = [];
-			DBconfig.levelDefinitions.forEach(function (ld) {
+			DBconfig.levelDefinitions.forEach((ld) => {
 				if (ld.anagestConfig !== undefined) {
 					trackNames.push(ld.anagestConfig.verticalPosSsffTrackName);
 					trackNames.push(ld.anagestConfig.velocitySsffTrackName);
@@ -264,10 +262,10 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.loadSchemas = function () {
+		this.loadSchemas = function () {
 			var proms = [];
 			var uri;
-			angular.forEach(names, function (n) {
+			names.forEach((n) => {
 				uri = 'schemaFiles/' + n + '.json';
 				proms.push($http.get(uri));
 			});
@@ -277,8 +275,8 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.setSchemas = function (schemaArr) {
-			angular.forEach(schemaArr, function (s) {
+		this.setSchemas = function (schemaArr) {
+			schemaArr.forEach((s) => {
 				schemasJsos.push({
 					name: s.config.url,
 					data: s.data
@@ -293,9 +291,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getSchema = function (schemaName) {
+		this.getSchema = function (schemaName) {
 			var schema;
-			angular.forEach(schemasJsos, function (s) {
+			schemasJsos.forEach((s) => {
 				if (s.name === 'schemaFiles/' + schemaName + '.json') {
 					schema = s;
 				}
@@ -306,13 +304,13 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.validateJSO = function (schemaName, jso) {
-			var schema = sServObj.getSchema(schemaName);
+		this.validateJSO = function (schemaName, jso) {
+			var schema = this.getSchema(schemaName);
 			var res;
 
 			if (schema !== undefined && tv4.validate(jso, schema.data)) {
 				if (schemaName === 'DBconfigFileSchema') {
-					var semCheckRes = sServObj.semCheckLoadedConfigs(ConfigProviderService.vals, ConfigProviderService.curDbConfig);
+					var semCheckRes = this.semCheckLoadedConfigs(ConfigProviderService.vals, ConfigProviderService.curDbConfig);
 					if (semCheckRes === true) {
 						res = true;
 					} else {
@@ -332,5 +330,4 @@ angular.module('emuwebApp')
 			return res;
 		};
 
-		return sServObj;
 	});

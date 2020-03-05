@@ -2,11 +2,9 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('Ssffdataservice', function Ssffdataservice(viewState, Soundhandlerservice, ConfigProviderService) {
-		// shared service object
-		var sServObj = {} as any;
 
 		// stores files referred to by ssffTrackDefinitions
-		sServObj.data = [];
+		this.data = [];
 
 
 		/////////////////////
@@ -17,12 +15,12 @@ angular.module('emuwebApp')
 		 * file. Then search thought data and return file.
 		 * @param trackName name of track to get file for
 		 */
-		sServObj.getFile = function (trackName) {
+		this.getFile = function (trackName) {
 			var res;
 			if (ConfigProviderService.curDbConfig.ssffTrackDefinitions !== undefined) {
-				ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach(function (std) {
+				ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach((std) => {
 					if (std.name === trackName) {
-						sServObj.data.forEach(function (f) {
+						this.data.forEach((f) => {
 							if (f.fileExtension === std.fileExtension) {
 								res = f;
 							}
@@ -36,13 +34,13 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getColumnOfTrack = function (trackName, columnName) {
+		this.getColumnOfTrack = function (trackName, columnName) {
 			var res;
-			var file = sServObj.getFile(trackName);
+			var file = this.getFile(trackName);
 
 
 			if (file !== undefined) {
-				file.Columns.forEach(function (col) {
+				file.Columns.forEach((col) => {
 					if (col.name === columnName) {
 						res = col;
 					}
@@ -55,9 +53,9 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getSampleRateAndStartTimeOfTrack = function (trackName) {
+		this.getSampleRateAndStartTimeOfTrack = function (trackName) {
 			var res = {} as any;
-			var file = sServObj.getFile(trackName);
+			var file = this.getFile(trackName);
 
 			if (file !== undefined) {
 				res.sampleRate = file.sampleRate;
@@ -71,11 +69,10 @@ angular.module('emuwebApp')
 		 * calculates the closest audio sample of
 		 * the passed in column sample nr
 		 */
-		sServObj.calculateSamplePosInVP = function (colSampleNr, sampleRate, startTime) {
+		this.calculateSamplePosInVP = function (colSampleNr, sampleRate, startTime) {
 			var sampleTime = (colSampleNr / sampleRate) + startTime;
 			var audioSample = Math.round(sampleTime * Soundhandlerservice.audioBuffer.sampleRate);
 			return audioSample;
 		};
 
-		return sServObj;
 	});

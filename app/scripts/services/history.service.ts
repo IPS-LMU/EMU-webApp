@@ -3,9 +3,7 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.service('HistoryService', function HistoryService($log, $compile, $sce, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice, loadedMetaDataService) {
 
-		// shared service object
-		var sServObj = {} as any;
-		sServObj.movesAwayFromLastSave = 0;
+		this.movesAwayFromLastSave = 0;
 
 		//////////////////////////////////////////
 		// new dual stack implementation
@@ -17,17 +15,17 @@ angular.module('emuwebApp')
 
 		// applyChanges should be called by undo redo functions
 		function applyChange(changeObj, applyOldVal) {
-			Object.keys(changeObj).forEach(function (key) {
+			Object.keys(changeObj).forEach((key) => {
 				var tr, col, action;
 				var cur = changeObj[key];
 				if (cur.type === 'SSFF') {
 					if (applyOldVal) {
-						sServObj.setHistoryActionText(true, 'SSFF manipulation');
+						this.setHistoryActionText(true, 'SSFF manipulation');
 						tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 					} else {
-						sServObj.setHistoryActionText(false, 'SSFF manipulation');
+						this.setHistoryActionText(false, 'SSFF manipulation');
 						tr = ConfigProviderService.getSsffTrackConfig(cur.trackName);
 						col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 						col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
@@ -53,7 +51,7 @@ angular.module('emuwebApp')
 							}
 							break;
 					}
-					sServObj.setHistoryActionText(action, cur.action);
+					this.setHistoryActionText(action, cur.action);
 				} else if (cur.type === 'ANNOT') {
 					action = false;
 					switch (cur.action) {
@@ -194,7 +192,7 @@ angular.module('emuwebApp')
 							}
 							break;
 					}
-					sServObj.setHistoryActionText(action, cur.action);
+					this.setHistoryActionText(action, cur.action);
 				} else if (cur.type === 'HIERARCHY') {
 					action = false;
 					switch (cur.action) {
@@ -244,7 +242,7 @@ angular.module('emuwebApp')
 							}
 							break;
 					}
-					sServObj.setHistoryActionText(action, cur.action);
+					this.setHistoryActionText(action, cur.action);
 				}
 			});
 		}
@@ -255,7 +253,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.updateCurChangeObj = function (dataObj) {
+		this.updateCurChangeObj = function (dataObj) {
 			// console.log(dataObj);
 			var dataKey;
 			if (dataObj.type === 'SSFF') {
@@ -314,13 +312,13 @@ angular.module('emuwebApp')
 		};
 
 		// addCurChangeObjToUndoStack
-		sServObj.addCurChangeObjToUndoStack = function () {
+		this.addCurChangeObjToUndoStack = function () {
 			// empty redo stack
 			redoStack = [];
 			// add to undoStack
 			if (!$.isEmptyObject(curChangeObj)) {
 				undoStack.push(curChangeObj);
-				sServObj.movesAwayFromLastSave += 1;
+				this.movesAwayFromLastSave += 1;
 			}
 			$log.info(curChangeObj);
 			// reset curChangeObj
@@ -330,7 +328,7 @@ angular.module('emuwebApp')
 		};
 
 		// addCurChangeObjToUndoStack
-		sServObj.addObjToUndoStack = function (obj) {
+		this.addObjToUndoStack = function (obj) {
 			// empty redo stack
 			redoStack = [];
 			var tmpObj = {};
@@ -339,7 +337,7 @@ angular.module('emuwebApp')
 			// add to undoStack
 			if (!$.isEmptyObject(tmpObj)) {
 				undoStack.push(tmpObj);
-				sServObj.movesAwayFromLastSave += 1;
+				this.movesAwayFromLastSave += 1;
 			}
 			// reset curChangeObj
 			curChangeObj = {};
@@ -347,7 +345,7 @@ angular.module('emuwebApp')
 		};
 
 		// undo
-		sServObj.undo = function () {
+		this.undo = function () {
 			if (undoStack.length > 0) {
 				// add to redo stack
 				var oldChangeObj = angular.copy(undoStack[undoStack.length - 1]);
@@ -356,29 +354,29 @@ angular.module('emuwebApp')
 				applyChange(oldChangeObj, true);
 				// remove old
 				undoStack.pop();
-				sServObj.movesAwayFromLastSave -= 1;
+				this.movesAwayFromLastSave -= 1;
 			}
 
 		};
 
 		// redo
-		sServObj.redo = function () {
+		this.redo = function () {
 			if (redoStack.length > 0) {
 				var oldChangeObj = angular.copy(redoStack[redoStack.length - 1]);
 				undoStack.push(oldChangeObj);
 				applyChange(oldChangeObj, false);
 				redoStack.pop();
-				sServObj.movesAwayFromLastSave += 1;
+				this.movesAwayFromLastSave += 1;
 			}
 		};
 
 		// getNrOfPossibleUndos
-		sServObj.getNrOfPossibleUndos = function () {
+		this.getNrOfPossibleUndos = function () {
 			return undoStack.length;
 		};
 
 		// return current History Stack
-		sServObj.getCurrentStack = function () {
+		this.getCurrentStack = function () {
 			return {
 				'undo': undoStack,
 				'redo': redoStack
@@ -386,7 +384,7 @@ angular.module('emuwebApp')
 		};
 
 		// set the displayed text of the historyActionPopup
-		sServObj.setHistoryActionText = function (isUndo, text) {
+		this.setHistoryActionText = function (isUndo, text) {
 			var front = '<i>UNDO</i> &#8594; ';
 			if (!isUndo) {
 				front = '<i>REDO</i> &#8592; ';
@@ -395,12 +393,11 @@ angular.module('emuwebApp')
 		};
 
 		// resetToInitState
-		sServObj.resetToInitState = function () {
+		this.resetToInitState = function () {
 			undoStack = [];
 			redoStack = [];
 			curChangeObj = {};
-			sServObj.movesAwayFromLastSave = 0;
+			this.movesAwayFromLastSave = 0;
 		};
 
-		return sServObj;
 	});

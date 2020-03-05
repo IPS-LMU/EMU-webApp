@@ -19,7 +19,6 @@ let GhostLevelComponent = {
     id="levelMarkupCanvas" 
     width="2048" 
     height="64" 
-    track-mouse-in-level="{{idx}}"
     level-name="$ctrl.level.name"
     level-type="$ctrl.level.type"></canvas>
 </div>
@@ -78,6 +77,7 @@ class="emuwebapp-selectAttrDef"
         private levelCanvasContainer;
         private _inited;
         private backgroundCanvas;
+        private hierPaths;
 
         constructor($scope, $element, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService){
             this.$scope = $scope;
@@ -97,8 +97,9 @@ class="emuwebapp-selectAttrDef"
             this.open = true;
             this._inited = false;
             this.backgroundCanvas = {
-                'background': ConfigProviderService.design.color.black
+                'background': ConfigProviderService.design.color.grey
             };
+            this.hierPaths = this.HierarchyLayoutService.findAllNonPartialPaths();
         };
         
         $postLink = function(){
@@ -250,7 +251,8 @@ class="emuwebapp-selectAttrDef"
             var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
             if (attrDefName === curAttrDef) {
                 curColor = {
-                    'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
+                    'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)',
+                    'border-color': 'yellow'
                 };
             } else {
                 curColor = {
@@ -505,6 +507,10 @@ class="emuwebapp-selectAttrDef"
                         }
                     }
                 });
+            } else if (this.level.type === 'ITEM'){
+                console.log(this.level);
+                console.log(this.hierPaths.possible);
+                console.error("bad level type");
             }
             // draw cursor/selected area
         };

@@ -3,13 +3,10 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.service('Binarydatamaniphelper', function Binarydatamaniphelper() {
 
-		// shared service object
-		var sServObj = {} as any;
-
 		/**
 		 *
 		 */
-		sServObj.base64ToArrayBuffer = function (stringBase64) {
+		this.base64ToArrayBuffer = function (stringBase64) {
 			var binaryString = window.atob(stringBase64);
 			var len = binaryString.length;
 			var bytes = new Uint8Array(len);
@@ -23,7 +20,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.arrayBufferToBase64 = function (buffer) {
+		this.arrayBufferToBase64 = function (buffer) {
 			var binary = '';
 			var bytes = new Uint8Array(buffer);
 			var len = bytes.byteLength;
@@ -35,7 +32,7 @@ angular.module('emuwebApp')
 
 		/**
 		 *
-		 sServObj.stringToArrayBuffer = function (str) {
+		 this.stringToArrayBuffer = function (str) {
 			var ab = new ArrayBuffer(str.length);
 			var view = new Uint8Array(ab);
 			for (var i = 0; i < str.length; ++i) {
@@ -45,5 +42,4 @@ angular.module('emuwebApp')
 		};
 		 */
 
-		return sServObj;
 	});

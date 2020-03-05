@@ -2,8 +2,6 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('ArrayHelperService', function ArrayHelperService() {
-		// shared service object
-		var sServObj = {} as any;
 
 		/**
 		 * convert values of array to max values
@@ -11,7 +9,7 @@ angular.module('emuwebApp')
 		 * @param arr array to convert
 		 * @returns array containing Math.abs() values
 		 */
-		sServObj.convertToAbsValues = function (arr) {
+		this.convertToAbsValues = function (arr) {
 			for (var i = 0; i < arr.length; i++) {
 				arr[i] = Math.abs(arr[i]);
 			}
@@ -21,7 +19,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.multiplyEachElement = function (arr, val) {
+		this.multiplyEachElement = function (arr, val) {
 			for (var i = 0; i < arr.length; i++) {
 				arr[i] = arr[i] * val;
 			}
@@ -33,7 +31,7 @@ angular.module('emuwebApp')
 		 * find value between two points
 		 * by linearly interpolating them
 		 */
-		sServObj.interp2points = function (x0, y0, x1, y1, x) {
+		this.interp2points = function (x0, y0, x1, y1, x) {
 			return y0 + (y1 - y0) * ((x - x0) / (x1 - x0));
 		};
 
@@ -44,7 +42,7 @@ angular.module('emuwebApp')
 		 * @param minOrMax string value either 'min' or 'max'
 		 * @returns object with attributes val and idx
 		 */
-		sServObj.findMinMax = function (arr, minOrMax) {
+		this.findMinMax = function (arr, minOrMax) {
 			var val, idx, i;
 			if (minOrMax === 'min') {
 				val = Infinity;
@@ -73,7 +71,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.flattenArrayOfArray = function (arrOfArrs) {
+		this.flattenArrayOfArray = function (arrOfArrs) {
 			var merged = [];
 			merged = merged.concat.apply(merged, arrOfArrs);
 			return merged;
@@ -83,7 +81,7 @@ angular.module('emuwebApp')
 		 * convert array to an array that contains
 		 * objects of the form {x: i, y:y[i]}
 		 */
-		sServObj.convertArrayToXYjsoArray = function (y) {
+		this.convertArrayToXYjsoArray = function (y) {
 			var xyArray = [];
 			for (var i = 0; i < y.length; i++) {
 				xyArray.push({
@@ -94,6 +92,4 @@ angular.module('emuwebApp')
 			return xyArray;
 		};
 
-
-		return sServObj;
 	});
