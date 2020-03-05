@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = merge(common, {
     mode: 'production',
     output: {
-        filename: "./dist/bundle.js",
+        filename: "./dist/[name].bundle.js",
         path: path.resolve(__dirname, 'dist')
     },
     plugins: [

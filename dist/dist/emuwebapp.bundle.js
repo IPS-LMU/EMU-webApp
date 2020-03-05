@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 91);
+/******/ 	return __webpack_require__(__webpack_require__.s = 92);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -22028,7 +22028,7 @@ return tv4; // used by _header.js to globalise.
 /* 6 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.2.2\"}");
+module.exports = JSON.parse("{\"a\":\"1.2.3\"}");
 
 /***/ }),
 /* 7 */
@@ -74908,6 +74908,13 @@ angular.module('angular.filter', [
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+var wavRangeRequests=function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=1)}([function(e,t,n){e.exports=n(2).wrap(n(3)()),e.exports.__esModule=!0},function(e,t,n){"use strict";n.r(t),n.d(t,"numToString",(function(){return i}));var r=n(0),o=function(e,t,n,r){return new(n||(n=Promise))((function(o,a){function i(e){try{u(r.next(e))}catch(e){a(e)}}function s(e){try{u(r.throw(e))}catch(e){a(e)}}function u(e){var t;e.done?o(e.value):(t=e.value,t instanceof n?t:new n((function(e){e(t)}))).then(i,s)}u((r=r.apply(e,t||[])).next())}))},a=function(e,t){var n,r,o,a,i={label:0,sent:function(){if(1&o[0])throw o[1];return o[1]},trys:[],ops:[]};return a={next:s(0),throw:s(1),return:s(2)},"function"==typeof Symbol&&(a[Symbol.iterator]=function(){return this}),a;function s(a){return function(s){return function(a){if(n)throw new TypeError("Generator is already executing.");for(;i;)try{if(n=1,r&&(o=2&a[0]?r.return:a[0]?r.throw||((o=r.return)&&o.call(r),0):r.next)&&!(o=o.call(r,a[1])).done)return o;switch(r=0,o&&(a=[2&a[0],o.value]),a[0]){case 0:case 1:o=a;break;case 4:return i.label++,{value:a[1],done:!1};case 5:i.label++,r=a[1],a=[0];continue;case 7:a=i.ops.pop(),i.trys.pop();continue;default:if(!(o=(o=i.trys).length>0&&o[o.length-1])&&(6===a[0]||2===a[0])){i=0;continue}if(3===a[0]&&(!o||a[1]>o[0]&&a[1]<o[3])){i.label=a[1];break}if(6===a[0]&&i.label<o[1]){i.label=o[1],o=a;break}if(o&&i.label<o[2]){i.label=o[2],i.ops.push(a);break}o[2]&&i.ops.pop(),i.trys.pop();continue}a=t.call(e,i)}catch(e){a=[6,e],r=0}finally{n=o=0}if(5&a[0])throw a[1];return{value:a[0]?a[1]:void 0,done:!0}}([a,s])}}};function i(e){return e.toString()}!function(){o(this,void 0,void 0,(function(){var e,t,n,o,i,s,u,c;return a(this,(function(a){switch(a.label){case 0:return e=new URL("http://localhost:9001/please_call_stella.wav"),[4,new r.WavRangeReq];case 1:return[4,(t=a.sent()).setURL(e.href)];case 2:return a.sent(),[4,t.getWavFileInfo()];case 3:return n=a.sent(),console.log("fileInfo:"),console.log(n),[4,t.getRange(100,44100)];case 4:return o=a.sent(),console.log("wavRangeObj"),console.log(o),[4,new window.OfflineAudioContext(o.numberOfChannels,o.length,o.sampleRate).decodeAudioData(o.buffer)];case 5:return i=a.sent(),console.log(i.getChannelData(0)),console.log(o.buffer),s=new Blob([o.buffer],{type:"audio/wav"}),u=window.URL.createObjectURL(s),console.log(u),c=document.getElementById("audioel"),console.log(c),[2]}}))}))}(),console.log("here")},function(e,t,n){"use strict";n.r(t),n.d(t,"createEndpoint",(function(){return o})),n.d(t,"expose",(function(){return s})),n.d(t,"proxy",(function(){return p})),n.d(t,"proxyMarker",(function(){return r})),n.d(t,"transfer",(function(){return f})),n.d(t,"transferHandlers",(function(){return i})),n.d(t,"windowEndpoint",(function(){return d})),n.d(t,"wrap",(function(){return u}));const r=Symbol("Comlink.proxy"),o=Symbol("Comlink.endpoint"),a=new WeakSet,i=new Map([["proxy",{canHandle:e=>e&&e[r],serialize(e){const{port1:t,port2:n}=new MessageChannel;return s(e,t),[n,[n]]},deserialize:e=>(e.start(),u(e))}],["throw",{canHandle:e=>a.has(e),serialize(e){const t=e instanceof Error;let n=e;return t&&(n={isError:t,message:e.message,stack:e.stack}),[n,[]]},deserialize(e){if(e.isError)throw Object.assign(new Error,e);throw e}}]]);function s(e,t=self){t.addEventListener("message",async n=>{if(!n||!n.data)return;const{id:r,type:o,path:i}={path:[],...n.data},u=(n.data.argumentList||[]).map(h);let c;try{const t=i.slice(0,-1).reduce((e,t)=>e[t],e),r=i.reduce((e,t)=>e[t],e);switch(o){case 0:c=await r;break;case 1:t[i.slice(-1)[0]]=h(n.data.value),c=!0;break;case 2:c=await r.apply(t,u);break;case 3:c=p(await new r(...u));break;case 4:{const{port1:t,port2:n}=new MessageChannel;s(e,n),c=f(t,[t])}break;default:console.warn("Unrecognized message",n.data)}}catch(e){c=e,a.add(e)}const[l,d]=g(c);t.postMessage({...l,id:r},d)}),t.start&&t.start()}function u(e){return function e(t,n=[]){const r=new Proxy((function(){}),{get(o,a){if("then"===a){if(0===n.length)return{then:()=>r};const e=b(t,{type:0,path:n.map(e=>e.toString())}).then(h);return e.then.bind(e)}return e(t,[...n,a])},set(e,r,o){const[a,i]=g(o);return b(t,{type:1,path:[...n,r].map(e=>e.toString()),value:a},i).then(h)},apply(r,a,i){const s=n[n.length-1];if(s===o)return b(t,{type:4}).then(h);if("bind"===s)return e(t,n.slice(0,-1));const[u,l]=c(i);return b(t,{type:2,path:n.map(e=>e.toString()),argumentList:u},l).then(h)},construct(e,r){const[o,a]=c(r);return b(t,{type:3,path:n.map(e=>e.toString()),argumentList:o},a).then(h)}});return r}(e)}function c(e){const t=e.map(g);return[t.map(e=>e[0]),(n=t.map(e=>e[1]),Array.prototype.concat.apply([],n))];var n}const l=new WeakMap;function f(e,t){return l.set(e,t),e}function p(e){return Object.assign(e,{[r]:!0})}function d(e,t=self){return{postMessage:(t,n)=>e.postMessage(t,"*",n),addEventListener:t.addEventListener.bind(t),removeEventListener:t.removeEventListener.bind(t)}}function g(e){for(const[t,n]of i)if(n.canHandle(e)){const[r,o]=n.serialize(e);return[{type:3,name:t,value:r},o]}return[{type:0,value:e},l.get(e)||[]]}function h(e){switch(e.type){case 3:return i.get(e.name).deserialize(e.value);case 0:return e.value}}function b(e,t,n){return new Promise(r=>{const o=new Array(4).fill(0).map(()=>Math.floor(Math.random()*Number.MAX_SAFE_INTEGER).toString(16)).join("-");e.addEventListener("message",(function t(n){n.data&&n.data.id&&n.data.id===o&&(e.removeEventListener("message",t),r(n.data))})),e.start&&e.start(),e.postMessage({id:o,...t},n)})}},function(e,t,n){e.exports=function(){return new Worker(n.p+"9c1f9405db4e1bb467aa.worker.js")}}]);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly93YXZSYW5nZVJlcXVlc3RzL3dlYnBhY2svYm9vdHN0cmFwIiwid2VicGFjazovL3dhdlJhbmdlUmVxdWVzdHMvLi9zcmMvd2F2cmFuZ2VyZXEud29ya2VyLnRzIiwid2VicGFjazovL3dhdlJhbmdlUmVxdWVzdHMvLi9zcmMvaW5kZXgudHMiLCJ3ZWJwYWNrOi8vd2F2UmFuZ2VSZXF1ZXN0cy8uL25vZGVfbW9kdWxlcy9jb21saW5rL2Rpc3QvZXNtL2NvbWxpbmsubWpzIiwid2VicGFjazovL3dhdlJhbmdlUmVxdWVzdHMvLi9zcmMvd2F2cmFuZ2VyZXEud29ya2VyLnRzPzNjOWYiXSwibmFtZXMiOlsiaW5zdGFsbGVkTW9kdWxlcyIsIl9fd2VicGFja19yZXF1aXJlX18iLCJtb2R1bGVJZCIsImV4cG9ydHMiLCJtb2R1bGUiLCJpIiwibCIsIm1vZHVsZXMiLCJjYWxsIiwibSIsImMiLCJkIiwibmFtZSIsImdldHRlciIsIm8iLCJPYmplY3QiLCJkZWZpbmVQcm9wZXJ0eSIsImVudW1lcmFibGUiLCJnZXQiLCJyIiwiU3ltYm9sIiwidG9TdHJpbmdUYWciLCJ2YWx1ZSIsInQiLCJtb2RlIiwiX19lc01vZHVsZSIsIm5zIiwiY3JlYXRlIiwia2V5IiwiYmluZCIsIm4iLCJvYmplY3QiLCJwcm9wZXJ0eSIsInByb3RvdHlwZSIsImhhc093blByb3BlcnR5IiwicCIsInMiLCJ3cmFwIiwibnVtVG9TdHJpbmciLCJudW0iLCJ0b1N0cmluZyIsIndhdlVybCIsIlVSTCIsIndhdnJhbmdlcmVxIiwic2V0VVJMIiwiaHJlZiIsImdldFdhdkZpbGVJbmZvIiwiZmlsZUluZm8iLCJjb25zb2xlIiwibG9nIiwiZ2V0UmFuZ2UiLCJ3YXZSYW5nZU9iaiIsIndpbmRvdyIsIk9mZmxpbmVBdWRpb0NvbnRleHQiLCJudW1iZXJPZkNoYW5uZWxzIiwibGVuZ3RoIiwic2FtcGxlUmF0ZSIsImRlY29kZUF1ZGlvRGF0YSIsImJ1ZmZlciIsImF1ZGlvQnVmZmVyIiwiZ2V0Q2hhbm5lbERhdGEiLCJibG9iIiwiQmxvYiIsInR5cGUiLCJ1cmwiLCJjcmVhdGVPYmplY3RVUkwiLCJhdWRpb0VsZW1lbnQiLCJkb2N1bWVudCIsImdldEVsZW1lbnRCeUlkIiwiaW5pdCIsInByb3h5TWFya2VyIiwiY3JlYXRlRW5kcG9pbnQiLCJ0aHJvd1NldCIsIldlYWtTZXQiLCJ0cmFuc2ZlckhhbmRsZXJzIiwiTWFwIiwiY2FuSGFuZGxlIiwib2JqIiwicG9ydDEiLCJwb3J0MiIsIk1lc3NhZ2VDaGFubmVsIiwiZXhwb3NlIiwiZGVzZXJpYWxpemUiLCJwb3J0Iiwic3RhcnQiLCJoYXMiLCJpc0Vycm9yIiwiRXJyb3IiLCJzZXJpYWxpemVkIiwibWVzc2FnZSIsInN0YWNrIiwiYXNzaWduIiwiZXAiLCJzZWxmIiwiYWRkRXZlbnRMaXN0ZW5lciIsImV2IiwiZGF0YSIsImlkIiwicGF0aCIsImFyZ3VtZW50TGlzdCIsIm1hcCIsImZyb21XaXJlVmFsdWUiLCJyZXR1cm5WYWx1ZSIsInBhcmVudCIsInNsaWNlIiwicmVkdWNlIiwicHJvcCIsInJhd1ZhbHVlIiwiYXBwbHkiLCJwcm94eSIsInRyYW5zZmVyIiwid2FybiIsImUiLCJhZGQiLCJ3aXJlVmFsdWUiLCJ0cmFuc2ZlcmFibGVzIiwidG9XaXJlVmFsdWUiLCJwb3N0TWVzc2FnZSIsImNyZWF0ZVByb3h5IiwiUHJveHkiLCJfdGFyZ2V0IiwidGhlbiIsInJlcXVlc3RSZXNwb25zZU1lc3NhZ2UiLCJfdGhpc0FyZyIsInJhd0FyZ3VtZW50TGlzdCIsImxhc3QiLCJwcm9jZXNzQXJndW1lbnRzIiwicHJvY2Vzc2VkIiwidiIsImFyciIsIkFycmF5IiwiY29uY2F0IiwidHJhbnNmZXJDYWNoZSIsIldlYWtNYXAiLCJ0cmFuc2ZlcnMiLCJzZXQiLCJ3aW5kb3dFbmRwb2ludCIsInciLCJjb250ZXh0IiwibXNnIiwicmVtb3ZlRXZlbnRMaXN0ZW5lciIsImhhbmRsZXIiLCJzZXJpYWxpemVkVmFsdWUiLCJzZXJpYWxpemUiLCJQcm9taXNlIiwicmVzb2x2ZSIsImZpbGwiLCJNYXRoIiwiZmxvb3IiLCJyYW5kb20iLCJOdW1iZXIiLCJNQVhfU0FGRV9JTlRFR0VSIiwiam9pbiIsIldvcmtlciJdLCJtYXBwaW5ncyI6ImlDQUNFLElBQUlBLEVBQW1CLEdBR3ZCLFNBQVNDLEVBQW9CQyxHQUc1QixHQUFHRixFQUFpQkUsR0FDbkIsT0FBT0YsRUFBaUJFLEdBQVVDLFFBR25DLElBQUlDLEVBQVNKLEVBQWlCRSxHQUFZLENBQ3pDRyxFQUFHSCxFQUNISSxHQUFHLEVBQ0hILFFBQVMsSUFVVixPQU5BSSxFQUFRTCxHQUFVTSxLQUFLSixFQUFPRCxRQUFTQyxFQUFRQSxFQUFPRCxRQUFTRixHQUcvREcsRUFBT0UsR0FBSSxFQUdKRixFQUFPRCxRQTBEZixPQXJEQUYsRUFBb0JRLEVBQUlGLEVBR3hCTixFQUFvQlMsRUFBSVYsRUFHeEJDLEVBQW9CVSxFQUFJLFNBQVNSLEVBQVNTLEVBQU1DLEdBQzNDWixFQUFvQmEsRUFBRVgsRUFBU1MsSUFDbENHLE9BQU9DLGVBQWViLEVBQVNTLEVBQU0sQ0FBRUssWUFBWSxFQUFNQyxJQUFLTCxLQUtoRVosRUFBb0JrQixFQUFJLFNBQVNoQixHQUNYLG9CQUFYaUIsUUFBMEJBLE9BQU9DLGFBQzFDTixPQUFPQyxlQUFlYixFQUFTaUIsT0FBT0MsWUFBYSxDQUFFQyxNQUFPLFdBRTdEUCxPQUFPQyxlQUFlYixFQUFTLGFBQWMsQ0FBRW1CLE9BQU8sS0FRdkRyQixFQUFvQnNCLEVBQUksU0FBU0QsRUFBT0UsR0FFdkMsR0FEVSxFQUFQQSxJQUFVRixFQUFRckIsRUFBb0JxQixJQUMvQixFQUFQRSxFQUFVLE9BQU9GLEVBQ3BCLEdBQVcsRUFBUEUsR0FBOEIsaUJBQVZGLEdBQXNCQSxHQUFTQSxFQUFNRyxXQUFZLE9BQU9ILEVBQ2hGLElBQUlJLEVBQUtYLE9BQU9ZLE9BQU8sTUFHdkIsR0FGQTFCLEVBQW9Ca0IsRUFBRU8sR0FDdEJYLE9BQU9DLGVBQWVVLEVBQUksVUFBVyxDQUFFVCxZQUFZLEVBQU1LLE1B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LEVBZUgsSUFBSWlDLE1BQU0sR0FDWmdCLEtBQUssR0FDTDlDLElBQUksSUFBTStDLEtBQUtDLE1BQU1ELEtBQUtFLFNBQVdDLE9BQU9DLGtCQUFrQi9HLFNBQVMsS0FDdkVnSCxLQUFLLEtBakJONUQsRUFBR0UsaUJBQWlCLFdBQVcsU0FBU3hGLEVBQUV5RixHQUNqQ0EsRUFBR0MsTUFBU0QsRUFBR0MsS0FBS0MsSUFBTUYsRUFBR0MsS0FBS0MsS0FBT0EsSUFHOUNMLEVBQUdnRCxvQkFBb0IsVUFBV3RJLEdBQ2xDMkksRUFBUWxELEVBQUdDLFVBRVhKLEVBQUdSLE9BQ0hRLEVBQUdSLFFBRVBRLEVBQUd5QixZQUFZLENBQUVwQixRQUFPMEMsR0FBT0wsTyxnQkM3T3ZDbEksRUFBT0QsUUFBVSxXQUNmLE9BQU8sSUFBSXNKLE9BQU8sSUFBMEIiLCJmaWxlIjoid2F2LXJhbmdlLXJlcXVlc3RzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiIFx0Ly8gVGhlIG1vZHVsZSBjYWNoZVxuIFx0dmFyIGluc3RhbGxlZE1vZHVsZXMgPSB7fTtcblxuIFx0Ly8gVGhlIHJlcXVpcmUgZnVuY3Rpb25cbiBcdGZ1bmN0aW9uIF9fd2VicGFja19yZXF1aXJlX18obW9kdWxlSWQpIHtcblxuIFx0XHQvLyBDaGVjayBpZiBtb2R1bGUgaXMgaW4gY2FjaGVcbiBcdFx0aWYoaW5zdGFsbGVkTW9kdWxlc1ttb2R1bGVJZF0pIHtcbiBcdFx0XHRyZXR1cm4gaW5zdGFsbGVkTW9kdWxlc1ttb2R1bGVJZF0uZXhwb3J0cztcbiBcdFx0fVxuIFx0XHQvLyBDcmVhdGUgYSBuZXcgbW9kdWxlIChhbmQgcHV0IGl0IGludG8gdGhlIGNhY2hlKVxuIFx0XHR2YXIgbW9kdWxlID0gaW5zdGFsbGVkTW9kdWxlc1ttb2R1bGVJZF0gPSB7XG4gXHRcdFx0aTogbW9kdWxlSWQsXG4gXHRcdFx0bDogZmFsc2UsXG4gXHRcdFx0ZXhwb3J0czoge31cbiBcdFx0fTtcblxuIFx0XHQvLyBFeGVjdXRlIHRoZSBtb2R1bGUgZnVuY3Rpb25cbiBcdFx0bW9kdWxlc1ttb2R1bGVJZF0uY2FsbChtb2R1bGUuZXhwb3J0cywgbW9kdWxlLCBtb2R1bGUuZXhwb3J0cywgX193ZWJwYWNrX3JlcXVpcmVfXyk7XG5cbiBcdFx0Ly8gRmxhZyB0aGUgbW9kdWxlIGFzIGxvYWRlZFxuIFx0XHRtb2R1bGUubCA9IHRydWU7XG5cbiBcdFx0Ly8gUmV0dXJuIHRoZSBleHBvcnRzIG9mIHRoZSBtb2R1bGVcbiBcdFx0cmV0dXJuIG1vZHVsZS5leHBvcnRzO1xuIFx0fVxuXG5cbiBcdC8vIGV4cG9zZSB0aGUgbW9kdWxlcyBvYmplY3QgKF9fd2VicGFja19tb2R1bGVzX18pXG4gXHRfX3dlYnBhY2tfcmVxdWlyZV9fLm0gPSBtb2R1bGVzO1xuXG4gXHQvLyBleHBvc2UgdGhlIG1vZHVsZSBjYWNoZVxuIFx0X193ZWJwYWNrX3JlcXVpcmVfXy5jID0gaW5zdGFsbGVkTW9kdWxlcztcblxuIFx0Ly8gZGVmaW5lIGdldHRlciBmdW5jdGlvbiBmb3IgaGFybW9ueSBleHBvcnRzXG4gXHRfX3dlYnBhY2tfcmVxdWlyZV9fLmQgPSBmdW5jdGlvbihleHBvcnRzLCBuYW1lLCBnZXR0ZXIpIHtcbiBcdFx0aWYoIV9fd2VicGFja19yZXF1aXJlX18ubyhleHBvcnRzLCBuYW1lKSkge1xuIFx0XHRcdE9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBuYW1lLCB7IGVudW1lcmFibGU6IHRydWUsIGdldDogZ2V0dGVyIH0pO1xuIFx0XHR9XG4gXHR9O1xuXG4gXHQvLyBkZWZpbmUgX19lc01vZHVsZSBvbiBleHBvcnRzXG4gXHRfX3dlYnBhY2tfcmVxdWlyZV9fLnIgPSBmdW5jdGlvbihleHBvcnRzKSB7XG4gXHRcdGlmKHR5cGVvZiBTeW1ib2wgIT09ICd1bmRlZmluZWQnICYmIFN5bWJvbC50b1N0cmluZ1RhZykge1xuIFx0XHRcdE9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCBTeW1ib2wudG9TdHJpbmdUYWcsIHsgdmFsdWU6ICdNb2R1bGUnIH0pO1xuIFx0XHR9XG4gXHRcdE9iamVjdC5kZWZpbmVQcm9wZXJ0eShleHBvcnRzLCAnX19lc01vZHVsZScsIHsgdmFsdWU6IHRydWUgfSk7XG4gXHR9O1xuXG4gXHQvLyBjcmVhdGUgYSBmYWtlIG5hbWVzcGFjZSBvYmplY3RcbiBcdC8vIG1vZGUgJiAxOiB2YWx1ZSBpcyBhIG1vZHVsZSBpZCwgcmVxdWlyZSBpdFxuIFx0Ly8gbW9kZSAmIDI6IG1lcmdlIGFsbCBwcm9wZXJ0aWVzIG9mIHZhbHVlIGludG8gdGhlIG5zXG4gXHQvLyBtb2RlICYgNDogcmV0dXJuIHZhbHVlIHdoZW4gYWxyZWFkeSBucyBvYmplY3RcbiBcdC8vIG1vZGUgJiA4fDE6IGJlaGF2ZSBsaWtlIHJlcXVpcmVcbiBcdF9fd2VicGFja19yZXF1aXJlX18udCA9IGZ1bmN0aW9uKHZhbHVlLCBtb2RlKSB7XG4gXHRcdGlmKG1vZGUgJiAxKSB2YWx1ZSA9IF9fd2VicGFja19yZXF1aXJlX18odmFsdWUpO1xuIFx0XHRpZihtb2RlICYgOCkgcmV0dXJuIHZhbHVlO1xuIFx0XHRpZigobW9kZSAmIDQpICYmIHR5cGVvZiB2YWx1ZSA9PT0gJ29iamVjdCcgJiYgdmFsdWUgJiYgdmFsdWUuX19lc01vZHVsZSkgcmV0dXJuIHZhbHVlO1xuIFx0XHR2YXIgbnMgPSBPYmplY3QuY3JlYXRlKG51bGwpO1xuIFx0XHRfX3dlYnBhY2tfcmVxdWlyZV9fLnIobnMpO1xuIFx0XHRPYmplY3QuZGVmaW5lUHJvcGVydHkobnMsICdkZWZhdWx0JywgeyBlbnVtZXJhYmxlOiB0cnVlLCB2YWx1ZTogdmFsdWUgfSk7XG4gXHRcdGlmKG1vZGUgJiAyICYmIHR5cGVvZiB2YWx1ZSAhPSAnc3RyaW5nJykgZm9yKHZhciBrZXkgaW4gdmFsdWUpIF9fd2VicGFja19yZXF1aXJlX18uZChucywga2V5LCBmdW5jdGlvbihrZXkpIHsgcmV0dXJuIHZhbHVlW2tleV07IH0uYmluZChudWxsLCBrZXkpKTtcbiBcdFx0cmV0dXJuIG5zO1xuIFx0fTtcblxuIFx0Ly8gZ2V0RGVmYXVsdEV4cG9ydCBmdW5jdGlvbiBmb3IgY29tcGF0aWJpbGl0eSB3aXRoIG5vbi1oYXJtb255IG1vZHVsZXNcbiBcdF9fd2VicGFja19yZXF1aXJlX18ubiA9IGZ1bmN0aW9uKG1vZHVsZSkge1xuIFx0XHR2YXIgZ2V0dGVyID0gbW9kdWxlICYmIG1vZHVsZS5fX2VzTW9kdWxlID9cbiBcdFx0XHRmdW5jdGlvbiBnZXREZWZhdWx0KCkgeyByZXR1cm4gbW9kdWxlWydkZWZhdWx0J107IH0gOlxuIFx0XHRcdGZ1bmN0aW9uIGdldE1vZHVsZUV4cG9ydHMoKSB7IHJldHVybiBtb2R1bGU7IH07XG4gXHRcdF9fd2VicGFja19yZXF1aXJlX18uZChnZXR0ZXIsICdhJywgZ2V0dGVyKTtcbiBcdFx0cmV0dXJuIGdldHRlcjtcbiBcdH07XG5cbiBcdC8vIE9iamVjdC5wcm90b3R5cGUuaGFzT3duUHJvcGVydHkuY2FsbFxuIFx0X193ZWJwYWNrX3JlcXVpcmVfXy5vID0gZnVuY3Rpb24ob2JqZWN0LCBwcm9wZXJ0eSkgeyByZXR1cm4gT2JqZWN0LnByb3RvdHlwZS5oYXNPd25Qcm9wZXJ0eS5jYWxsKG9iamVjdCwgcHJvcGVydHkpOyB9O1xuXG4gXHQvLyBfX3dlYnBhY2tfcHVibGljX3BhdGhfX1xuIFx0X193ZWJwYWNrX3JlcXVpcmVfXy5wID0gXCJcIjtcblxuXG4gXHQvLyBMb2FkIGVudHJ5IG1vZHVsZSBhbmQgcmV0dXJuIGV4cG9ydHNcbiBcdHJldHVybiBfX3dlYnBhY2tfcmVxdWlyZV9fKF9fd2VicGFja19yZXF1aXJlX18ucyA9IDEpO1xuIiwibW9kdWxlLmV4cG9ydHMgPSByZXF1aXJlKCdjb21saW5rJykud3JhcChyZXF1aXJlKFwiIXdvcmtlci1sb2FkZXI/e30hL2hvbWVzL3JhcGhhZWwvRGV2ZWxvcGVyL3dhdi1yYW5nZS1yZXF1ZXN0cy9ub2RlX21vZHVsZXMvY29tbGluay1sb2FkZXIvZGlzdC9jb21saW5rLXdvcmtlci1sb2FkZXIuanMhL2hvbWVzL3JhcGhhZWwvRGV2ZWxvcGVyL3dhdi1yYW5nZS1yZXF1ZXN0cy9ub2RlX21vZHVsZXMvdHMtbG9hZGVyL2luZGV4LmpzIS9ob21lcy9yYXBoYWVsL0RldmVsb3Blci93YXYtcmFuZ2UtcmVxdWVzdHMvc3JjL3dhdnJhbmdlcmVxLndvcmtlci50c1wiKSgpKTttb2R1bGUuZXhwb3J0cy5fX2VzTW9kdWxlID0gdHJ1ZTsiLCJpbXBvcnQgeyBXYXZSYW5nZVJlcSB9IGZyb20gJy4vd2F2cmFuZ2VyZXEud29ya2VyJztcblxuYXN5bmMgZnVuY3Rpb24gaW5pdCgpe1xuICBjb25zdCB3YXZVcmwgPSBuZXcgVVJMKFwiaHR0cDovL2xvY2FsaG9zdDo5MDAxL3BsZWFzZV9jYWxsX3N0ZWxsYS53YXZcIik7XG4gIC8vIGNvbnN0cnVjdCBjbGFzc1xuICBjb25zdCB3YXZyYW5nZXJlcSA9IGF3YWl0IG5ldyBXYXZSYW5nZVJlcSgpO1xuICAvLyB1c2luZyBzZXR0ZXIgZm9yIG5vd1xuICBhd2FpdCB3YXZyYW5nZXJlcS5zZXRVUkwod2F2VXJsLmhyZWYpO1xuICAvLyBnZXQgaW5mbyBhYm91dCB0aGUgd2F2IGZpbGUgKG1vc3QgaW1wb3J0YW50bHkgKVxuICBsZXQgZmlsZUluZm8gPSBhd2FpdCB3YXZyYW5nZXJlcS5nZXRXYXZGaWxlSW5mbygpO1xuICBjb25zb2xlLmxvZyhcImZpbGVJbmZvOlwiKTtcbiAgY29uc29sZS5sb2coZmlsZUluZm8pO1xuICBcbiAgbGV0IHdhdlJhbmdlT2JqID0gYXdhaXQgd2F2cmFuZ2VyZXEuZ2V0UmFuZ2UoMTAwLCA0NDEwMCk7XG4gIGNvbnNvbGUubG9nKFwid2F2UmFuZ2VPYmpcIik7XG4gIGNvbnNvbGUubG9nKHdhdlJhbmdlT2JqKTtcbiAgXG4gIC8vIHBhcnNlIHJlcXVlc3RlZCByYW5nZVxuICBsZXQgb2ZmbGluZUN0eCA9IG5ldyB3aW5kb3cuT2ZmbGluZUF1ZGlvQ29udGV4dChcbiAgICB3YXZSYW5nZU9iai5udW1iZXJPZkNoYW5uZWxzLFxuICAgIHdhdlJhbmdlT2JqLmxlbmd0aCxcbiAgICB3YXZSYW5nZU9iai5zYW1wbGVSYXRlXG4gICAgKTtcbiAgICBcbiAgLy8gdGVzdCBkZWNvZGUgKHRoaXMgaGFzIHRvIGJlIGRvbmUgb24gdGhlIG1haW4gdGhyZWFkKVxuICBsZXQgYXVkaW9CdWZmZXI6IEF1ZGlvQnVmZmVyID0gYXdhaXQgb2ZmbGluZUN0eC5kZWNvZGVBdWRpb0RhdGEod2F2UmFuZ2VPYmouYnVmZmVyKTtcbiAgY29uc29sZS5sb2coYXVkaW9CdWZmZXIuZ2V0Q2hhbm5lbERhdGEoMCkpO1xuICBcbiAgXG4gIC8vIHRlc3QgYXBwZW5kIHRvIGF1ZGlvIGVsZW1lbnRcbiAgY29uc29sZS5sb2cod2F2UmFuZ2VPYmouYnVmZmVyKTtcbiAgY29uc3QgYmxvYjogQmxvYiA9IG5ldyBCbG9iKFt3YXZSYW5nZU9iai5idWZmZXJdLCB7IHR5cGU6IFwiYXVkaW8vd2F2XCIgfSk7XG4gIGNvbnN0IHVybCA9IHdpbmRvdy5VUkwuY3JlYXRlT2JqZWN0VVJMKGJsb2IpO1xuICBjb25zb2xlLmxvZyh1cmwpO1xuICBjb25zdCBhdWRpb0VsZW1lbnQ6IEhUTUxBdWRpb0VsZW1lbnQgfCBudWxsID0gPEhUTUxBdWRpb0VsZW1lbnQ+ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJhdWRpb2VsXCIpOyBcbiAgY29uc29sZS5sb2coYXVkaW9FbGVtZW50KTtcbiAgLy8gYXVkaW9FbGVtZW50LnNyYyA9IHVybDtcbiAgXG59XG5cbmluaXQoKTtcbmNvbnNvbGUubG9nKFwiaGVyZVwiKVxuXG5leHBvcnQgZnVuY3Rpb24gbnVtVG9TdHJpbmcobnVtOiBudW1iZXIpOiBzdHJpbmcge1xuICByZXR1cm4obnVtLnRvU3RyaW5nKCkpO1xufVxuIiwiLyoqXHJcbiAqIENvcHlyaWdodCAyMDE5IEdvb2dsZSBJbmMuIEFsbCBSaWdodHMgUmVzZXJ2ZWQuXHJcbiAqIExpY2Vuc2VkIHVuZGVyIHRoZSBBcGFjaGUgTGljZW5zZSwgVmVyc2lvbiAyLjAgKHRoZSBcIkxpY2Vuc2VcIik7XHJcbiAqIHlvdSBtYXkgbm90IHVzZSB0aGlzIGZpbGUgZXhjZXB0IGluIGNvbXBsaWFuY2Ugd2l0aCB0aGUgTGljZW5zZS5cclxuICogWW91IG1heSBvYnRhaW4gYSBjb3B5IG9mIHRoZSBMaWNlbnNlIGF0XHJcbiAqICAgICBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvTElDRU5TRS0yLjBcclxuICogVW5sZXNzIHJlcXVpcmVkIGJ5IGFwcGxpY2FibGUgbGF3IG9yIGFncmVlZCB0byBpbiB3cml0aW5nLCBzb2Z0d2FyZVxyXG4gKiBkaXN0cmlidXRlZCB1bmRlciB0aGUgTGljZW5zZSBpcyBkaXN0cmlidXRlZCBvbiBhbiBcIkFTIElTXCIgQkFTSVMsXHJcbiAqIFdJVEhPVVQgV0FSUkFOVElFUyBPUiBDT05ESVRJT05TIE9GIEFOWSBLSU5ELCBlaXRoZXIgZXhwcmVzcyBvciBpbXBsaWVkLlxyXG4gKiBTZWUgdGhlIExpY2Vuc2UgZm9yIHRoZSBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnMgYW5kXHJcbiAqIGxpbWl0YXRpb25zIHVuZGVyIHRoZSBMaWNlbnNlLlxyXG4gKi9cclxuY29uc3QgcHJveHlNYXJrZXIgPSBTeW1ib2woXCJDb21saW5rLnByb3h5XCIpO1xyXG5jb25zdCBjcmVhdGVFbmRwb2ludCA9IFN5bWJvbChcIkNvbWxpbmsuZW5kcG9pbnRcIik7XHJcbmNvbnN0IHRocm93U2V0ID0gbmV3IFdlYWtTZXQoKTtcclxuY29uc3QgdHJhbnNmZXJIYW5kbGVycyA9IG5ldyBNYXAoW1xyXG4gICAgW1xyXG4gICAgICAgIFwicHJveHlcIixcclxuICAgICAgICB7XHJcbiAgICAgICAgICAgIGNhbkhhbmRsZTogb2JqID0+IG9iaiAmJiBvYmpbcHJveHlNYXJrZXJdLFxyXG4gICAgICAgICAgICBzZXJpYWxpemUob2JqKSB7XHJcbiAgICAgICAgICAgICAgICBjb25zdCB7IHBvcnQxLCBwb3J0MiB9ID0gbmV3IE1lc3NhZ2VDaGFubmVsKCk7XHJcbiAgICAgICAgICAgICAgICBleHBvc2Uob2JqLCBwb3J0MSk7XHJcbiAgICAgICAgICAgICAgICByZXR1cm4gW3BvcnQyLCBbcG9ydDJdXTtcclxuICAgICAgICAgICAgfSxcclxuICAgICAgICAgICAgZGVzZXJpYWxpemU6IChwb3J0KSA9PiB7XHJcbiAgICAgICAgICAgICAgICBwb3J0LnN0YXJ0KCk7XHJcbiAgICAgICAgICAgICAgICByZXR1cm4gd3JhcChwb3J0KTtcclxuICAgICAgICAgICAgfVxyXG4gICAgICAgIH1cclxuICAgIF0sXHJcbiAgICBbXHJcbiAgICAgICAgXCJ0aHJvd1wiLFxyXG4gICAgICAgIHtcclxuICAgICAgICAgICAgY2FuSGFuZGxlOiBvYmogPT4gdGhyb3dTZXQuaGFzKG9iaiksXHJcbiAgICAgICAgICAgIHNlcmlhbGl6ZShvYmopIHtcclxuICAgICAgICAgICAgICAgIGNvbnN0IGlzRXJyb3IgPSBvYmogaW5zdGFuY2VvZiBFcnJvcjtcclxuICAgICAgICAgICAgICAgIGxldCBzZXJpYWxpemVkID0gb2JqO1xyXG4gICAgICAgICAgICAgICAgaWYgKGlzRXJyb3IpIHtcclxuICAgICAgICAgICAgICAgICAgICBzZXJpYWxpemVkID0ge1xyXG4gICAgICAgICAgICAgICAgICAgICAgICBpc0Vycm9yLFxyXG4gICAgICAgICAgICAgICAgICAgICAgICBtZXNzYWdlOiBvYmoubWVzc2FnZSxcclxuICAgICAgICAgICAgICAgICAgICAgICAgc3RhY2s6IG9iai5zdGFja1xyXG4gICAgICAgICAgICAgICAgICAgIH07XHJcbiAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICByZXR1cm4gW3NlcmlhbGl6ZWQsIFtdXTtcclxuICAgICAgICAgICAgfSxcclxuICAgICAgICAgICAgZGVzZXJpYWxpemUob2JqKSB7XHJcbiAgICAgICAgICAgICAgICBpZiAob2JqLmlzRXJyb3IpIHtcclxuICAgICAgICAgICAgICAgICAgICB0aHJvdyBPYmplY3QuYXNzaWduKG5ldyBFcnJvcigpLCBvYmopO1xyXG4gICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICAgICAgdGhyb3cgb2JqO1xyXG4gICAgICAgICAgICB9XHJcbiAgICAgICAgfVxyXG4gICAgXVxyXG5dKTtcclxuZnVuY3Rpb24gZXhwb3NlKG9iaiwgZXAgPSBzZWxmKSB7XHJcbiAgICBlcC5hZGRFdmVudExpc3RlbmVyKFwibWVzc2FnZVwiLCAoYXN5bmMgKGV2KSA9PiB7XHJcbiAgICAgICAgaWYgKCFldiB8fCAhZXYuZGF0YSkge1xyXG4gICAgICAgICAgICByZXR1cm47XHJcbiAgICAgICAgfVxyXG4gICAgICAgIGNvbnN0IHsgaWQsIHR5cGUsIHBhdGggfSA9IHtcclxuICAgICAgICAgICAgcGF0aDogW10sXHJcbiAgICAgICAgICAgIC4uLmV2LmRhdGFcclxuICAgICAgICB9O1xyXG4gICAgICAgIGNvbnN0IGFyZ3VtZW50TGlzdCA9IChldi5kYXRhLmFyZ3VtZW50TGlzdCB8fCBbXSkubWFwKGZyb21XaXJlVmFsdWUpO1xyXG4gICAgICAgIGxldCByZXR1cm5WYWx1ZTtcclxuICAgICAgICB0cnkge1xyXG4gICAgICAgICAgICBjb25zdCBwYXJlbnQgPSBwYXRoLnNsaWNlKDAsIC0xKS5yZWR1Y2UoKG9iaiwgcHJvcCkgPT4gb2JqW3Byb3BdLCBvYmopO1xyXG4gICAgICAgICAgICBjb25zdCByYXdWYWx1ZSA9IHBhdGgucmVkdWNlKChvYmosIHByb3ApID0+IG9ialtwcm9wXSwgb2JqKTtcclxuICAgICAgICAgICAgc3dpdGNoICh0eXBlKSB7XHJcbiAgICAgICAgICAgICAgICBjYXNlIDAgLyogR0VUICovOlxyXG4gICAgICAgICAgICAgICAgICAgIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuVmFsdWUgPSBhd2FpdCByYXdWYWx1ZTtcclxuICAgICAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICAgICAgYnJlYWs7XHJcbiAgICAgICAgICAgICAgICBjYXNlIDEgLyogU0VUICovOlxyXG4gICAgICAgICAgICAgICAgICAgIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgcGFyZW50W3BhdGguc2xpY2UoLTEpWzBdXSA9IGZyb21XaXJlVmFsdWUoZXYuZGF0YS52YWx1ZSk7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVyblZhbHVlID0gdHJ1ZTtcclxuICAgICAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICAgICAgYnJlYWs7XHJcbiAgICAgICAgICAgICAgICBjYXNlIDIgLyogQVBQTFkgKi86XHJcbiAgICAgICAgICAgICAgICAgICAge1xyXG4gICAgICAgICAgICAgICAgICAgICAgICByZXR1cm5WYWx1ZSA9IGF3YWl0IHJhd1ZhbHVlLmFwcGx5KHBhcmVudCwgYXJndW1lbnRMaXN0KTtcclxuICAgICAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICAgICAgYnJlYWs7XHJcbiAgICAgICAgICAgICAgICBjYXNlIDMgLyogQ09OU1RSVUNUICovOlxyXG4gICAgICAgICAgICAgICAgICAgIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgdmFsdWUgPSBhd2FpdCBuZXcgcmF3VmFsdWUoLi4uYXJndW1lbnRMaXN0KTtcclxuICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuVmFsdWUgPSBwcm94eSh2YWx1ZSk7XHJcbiAgICAgICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICAgICAgICAgIGJyZWFrO1xyXG4gICAgICAgICAgICAgICAgY2FzZSA0IC8qIEVORFBPSU5UICovOlxyXG4gICAgICAgICAgICAgICAgICAgIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgeyBwb3J0MSwgcG9ydDIgfSA9IG5ldyBNZXNzYWdlQ2hhbm5lbCgpO1xyXG4gICAgICAgICAgICAgICAgICAgICAgICBleHBvc2Uob2JqLCBwb3J0Mik7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIHJldHVyblZhbHVlID0gdHJhbnNmZXIocG9ydDEsIFtwb3J0MV0pO1xyXG4gICAgICAgICAgICAgICAgICAgIH1cclxuICAgICAgICAgICAgICAgICAgICBicmVhaztcclxuICAgICAgICAgICAgICAgIGRlZmF1bHQ6XHJcbiAgICAgICAgICAgICAgICAgICAgY29uc29sZS53YXJuKFwiVW5yZWNvZ25pemVkIG1lc3NhZ2VcIiwgZXYuZGF0YSk7XHJcbiAgICAgICAgICAgIH1cclxuICAgICAgICB9XHJcbiAgICAgICAgY2F0Y2ggKGUpIHtcclxuICAgICAgICAgICAgcmV0dXJuVmFsdWUgPSBlO1xyXG4gICAgICAgICAgICB0aHJvd1NldC5hZGQoZSk7XHJcbiAgICAgICAgfVxyXG4gICAgICAgIGNvbnN0IFt3aXJlVmFsdWUsIHRyYW5zZmVyYWJsZXNdID0gdG9XaXJlVmFsdWUocmV0dXJuVmFsdWUpO1xyXG4gICAgICAgIGVwLnBvc3RNZXNzYWdlKHsgLi4ud2lyZVZhbHVlLCBpZCB9LCB0cmFuc2ZlcmFibGVzKTtcclxuICAgIH0pKTtcclxuICAgIGlmIChlcC5zdGFydCkge1xyXG4gICAgICAgIGVwLnN0YXJ0KCk7XHJcbiAgICB9XHJcbn1cclxuZnVuY3Rpb24gd3JhcChlcCkge1xyXG4gICAgcmV0dXJuIGNyZWF0ZVByb3h5KGVwKTtcclxufVxyXG5mdW5jdGlvbiBjcmVhdGVQcm94eShlcCwgcGF0aCA9IFtdKSB7XHJcbiAgICBjb25zdCBwcm94eSA9IG5ldyBQcm94eShmdW5jdGlvbiAoKSB7IH0sIHtcclxuICAgICAgICBnZXQoX3RhcmdldCwgcHJvcCkge1xyXG4gICAgICAgICAgICBpZiAocHJvcCA9PT0gXCJ0aGVuXCIpIHtcclxuICAgICAgICAgICAgICAgIGlmIChwYXRoLmxlbmd0aCA9PT0gMCkge1xyXG4gICAgICAgICAgICAgICAgICAgIHJldHVybiB7IHRoZW46ICgpID0+IHByb3h5IH07XHJcbiAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICBjb25zdCByID0gcmVxdWVzdFJlc3BvbnNlTWVzc2FnZShlcCwge1xyXG4gICAgICAgICAgICAgICAgICAgIHR5cGU6IDAgLyogR0VUICovLFxyXG4gICAgICAgICAgICAgICAgICAgIHBhdGg6IHBhdGgubWFwKHAgPT4gcC50b1N0cmluZygpKVxyXG4gICAgICAgICAgICAgICAgfSkudGhlbihmcm9tV2lyZVZhbHVlKTtcclxuICAgICAgICAgICAgICAgIHJldHVybiByLnRoZW4uYmluZChyKTtcclxuICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICByZXR1cm4gY3JlYXRlUHJveHkoZXAsIFsuLi5wYXRoLCBwcm9wXSk7XHJcbiAgICAgICAgfSxcclxuICAgICAgICBzZXQoX3RhcmdldCwgcHJvcCwgcmF3VmFsdWUpIHtcclxuICAgICAgICAgICAgLy8gRklYTUU6IEVTNiBQcm94eSBIYW5kbGVyIGBzZXRgIG1ldGhvZHMgYXJlIHN1cHBvc2VkIHRvIHJldHVybiBhXHJcbiAgICAgICAgICAgIC8vIGJvb2xlYW4uIFRvIHNob3cgZ29vZCB3aWxsLCB3ZSByZXR1cm4gdHJ1ZSBhc3luY2hyb25vdXNseSDCr1xcXyjjg4QpXy/Cr1xyXG4gICAgICAgICAgICBjb25zdCBbdmFsdWUsIHRyYW5zZmVyYWJsZXNdID0gdG9XaXJlVmFsdWUocmF3VmFsdWUpO1xyXG4gICAgICAgICAgICByZXR1cm4gcmVxdWVzdFJlc3BvbnNlTWVzc2FnZShlcCwge1xyXG4gICAgICAgICAgICAgICAgdHlwZTogMSAvKiBTRVQgKi8sXHJcbiAgICAgICAgICAgICAgICBwYXRoOiBbLi4ucGF0aCwgcHJvcF0ubWFwKHAgPT4gcC50b1N0cmluZygpKSxcclxuICAgICAgICAgICAgICAgIHZhbHVlXHJcbiAgICAgICAgICAgIH0sIHRyYW5zZmVyYWJsZXMpLnRoZW4oZnJvbVdpcmVWYWx1ZSk7XHJcbiAgICAgICAgfSxcclxuICAgICAgICBhcHBseShfdGFyZ2V0LCBfdGhpc0FyZywgcmF3QXJndW1lbnRMaXN0KSB7XHJcbiAgICAgICAgICAgIGNvbnN0IGxhc3QgPSBwYXRoW3BhdGgubGVuZ3RoIC0gMV07XHJcbiAgICAgICAgICAgIGlmIChsYXN0ID09PSBjcmVhdGVFbmRwb2ludCkge1xyXG4gICAgICAgICAgICAgICAgcmV0dXJuIHJlcXVlc3RSZXNwb25zZU1lc3NhZ2UoZXAsIHtcclxuICAgICAgICAgICAgICAgICAgICB0eXBlOiA0IC8qIEVORFBPSU5UICovXHJcbiAgICAgICAgICAgICAgICB9KS50aGVuKGZyb21XaXJlVmFsdWUpO1xyXG4gICAgICAgICAgICB9XHJcbiAgICAgICAgICAgIC8vIFdlIGp1c3QgcHJldGVuZCB0aGF0IGBiaW5kKClgIGRpZG7igJl0IGhhcHBlbi5cclxuICAgICAgICAgICAgaWYgKGxhc3QgPT09IFwiYmluZFwiKSB7XHJcbiAgICAgICAgICAgICAgICByZXR1cm4gY3JlYXRlUHJveHkoZXAsIHBhdGguc2xpY2UoMCwgLTEpKTtcclxuICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICBjb25zdCBbYXJndW1lbnRMaXN0LCB0cmFuc2ZlcmFibGVzXSA9IHByb2Nlc3NBcmd1bWVudHMocmF3QXJndW1lbnRMaXN0KTtcclxuICAgICAgICAgICAgcmV0dXJuIHJlcXVlc3RSZXNwb25zZU1lc3NhZ2UoZXAsIHtcclxuICAgICAgICAgICAgICAgIHR5cGU6IDIgLyogQVBQTFkgKi8sXHJcbiAgICAgICAgICAgICAgICBwYXRoOiBwYXRoLm1hcChwID0+IHAudG9TdHJpbmcoKSksXHJcbiAgICAgICAgICAgICAgICBhcmd1bWVudExpc3RcclxuICAgICAgICAgICAgfSwgdHJhbnNmZXJhYmxlcykudGhlbihmcm9tV2lyZVZhbHVlKTtcclxuICAgICAgICB9LFxyXG4gICAgICAgIGNvbnN0cnVjdChfdGFyZ2V0LCByYXdBcmd1bWVudExpc3QpIHtcclxuICAgICAgICAgICAgY29uc3QgW2FyZ3VtZW50TGlzdCwgdHJhbnNmZXJhYmxlc10gPSBwcm9jZXNzQXJndW1lbnRzKHJhd0FyZ3VtZW50TGlzdCk7XHJcbiAgICAgICAgICAgIHJldHVybiByZXF1ZXN0UmVzcG9uc2VNZXNzYWdlKGVwLCB7XHJcbiAgICAgICAgICAgICAgICB0eXBlOiAzIC8qIENPTlNUUlVDVCAqLyxcclxuICAgICAgICAgICAgICAgIHBhdGg6IHBhdGgubWFwKHAgPT4gcC50b1N0cmluZygpKSxcclxuICAgICAgICAgICAgICAgIGFyZ3VtZW50TGlzdFxyXG4gICAgICAgICAgICB9LCB0cmFuc2ZlcmFibGVzKS50aGVuKGZyb21XaXJlVmFsdWUpO1xyXG4gICAgICAgIH1cclxuICAgIH0pO1xyXG4gICAgcmV0dXJuIHByb3h5O1xyXG59XHJcbmZ1bmN0aW9uIG15RmxhdChhcnIpIHtcclxuICAgIHJldHVybiBBcnJheS5wcm90b3R5cGUuY29uY2F0LmFwcGx5KFtdLCBhcnIpO1xyXG59XHJcbmZ1bmN0aW9uIHByb2Nlc3NBcmd1bWVudHMoYXJndW1lbnRMaXN0KSB7XHJcbiAgICBjb25zdCBwcm9jZXNzZWQgPSBhcmd1bWVudExpc3QubWFwKHRvV2lyZVZhbHVlKTtcclxuICAgIHJldHVybiBbcHJvY2Vzc2VkLm1hcCh2ID0+IHZbMF0pLCBteUZsYXQocHJvY2Vzc2VkLm1hcCh2ID0+IHZbMV0pKV07XHJcbn1cclxuY29uc3QgdHJhbnNmZXJDYWNoZSA9IG5ldyBXZWFrTWFwKCk7XHJcbmZ1bmN0aW9uIHRyYW5zZmVyKG9iaiwgdHJhbnNmZXJzKSB7XHJcbiAgICB0cmFuc2ZlckNhY2hlLnNldChvYmosIHRyYW5zZmVycyk7XHJcbiAgICByZXR1cm4gb2JqO1xyXG59XHJcbmZ1bmN0aW9uIHByb3h5KG9iaikge1xyXG4gICAgcmV0dXJuIE9iamVjdC5hc3NpZ24ob2JqLCB7IFtwcm94eU1hcmtlcl06IHRydWUgfSk7XHJcbn1cclxuZnVuY3Rpb24gd2luZG93RW5kcG9pbnQodywgY29udGV4dCA9IHNlbGYpIHtcclxuICAgIHJldHVybiB7XHJcbiAgICAgICAgcG9zdE1lc3NhZ2U6IChtc2csIHRyYW5zZmVyYWJsZXMpID0+IHcucG9zdE1lc3NhZ2UobXNnLCBcIipcIiwgdHJhbnNmZXJhYmxlcyksXHJcbiAgICAgICAgYWRkRXZlbnRMaXN0ZW5lcjogY29udGV4dC5hZGRFdmVudExpc3RlbmVyLmJpbmQoY29udGV4dCksXHJcbiAgICAgICAgcmVtb3ZlRXZlbnRMaXN0ZW5lcjogY29udGV4dC5yZW1vdmVFdmVudExpc3RlbmVyLmJpbmQoY29udGV4dClcclxuICAgIH07XHJcbn1cclxuZnVuY3Rpb24gdG9XaXJlVmFsdWUodmFsdWUpIHtcclxuICAgIGZvciAoY29uc3QgW25hbWUsIGhhbmRsZXJdIG9mIHRyYW5zZmVySGFuZGxlcnMpIHtcclxuICAgICAgICBpZiAoaGFuZGxlci5jYW5IYW5kbGUodmFsdWUpKSB7XHJcbiAgICAgICAgICAgIGNvbnN0IFtzZXJpYWxpemVkVmFsdWUsIHRyYW5zZmVyYWJsZXNdID0gaGFuZGxlci5zZXJpYWxpemUodmFsdWUpO1xyXG4gICAgICAgICAgICByZXR1cm4gW1xyXG4gICAgICAgICAgICAgICAge1xyXG4gICAgICAgICAgICAgICAgICAgIHR5cGU6IDMgLyogSEFORExFUiAqLyxcclxuICAgICAgICAgICAgICAgICAgICBuYW1lLFxyXG4gICAgICAgICAgICAgICAgICAgIHZhbHVlOiBzZXJpYWxpemVkVmFsdWVcclxuICAgICAgICAgICAgICAgIH0sXHJcbiAgICAgICAgICAgICAgICB0cmFuc2ZlcmFibGVzXHJcbiAgICAgICAgICAgIF07XHJcbiAgICAgICAgfVxyXG4gICAgfVxyXG4gICAgcmV0dXJuIFtcclxuICAgICAgICB7XHJcbiAgICAgICAgICAgIHR5cGU6IDAgLyogUkFXICovLFxyXG4gICAgICAgICAgICB2YWx1ZVxyXG4gICAgICAgIH0sXHJcbiAgICAgICAgdHJhbnNmZXJDYWNoZS5nZXQodmFsdWUpIHx8IFtdXHJcbiAgICBdO1xyXG59XHJcbmZ1bmN0aW9uIGZyb21XaXJlVmFsdWUodmFsdWUpIHtcclxuICAgIHN3aXRjaCAodmFsdWUudHlwZSkge1xyXG4gICAgICAgIGNhc2UgMyAvKiBIQU5ETEVSICovOlxyXG4gICAgICAgICAgICByZXR1cm4gdHJhbnNmZXJIYW5kbGVycy5nZXQodmFsdWUubmFtZSkuZGVzZXJpYWxpemUodmFsdWUudmFsdWUpO1xyXG4gICAgICAgIGNhc2UgMCAvKiBSQVcgKi86XHJcbiAgICAgICAgICAgIHJldHVybiB2YWx1ZS52YWx1ZTtcclxuICAgIH1cclxufVxyXG5mdW5jdGlvbiByZXF1ZXN0UmVzcG9uc2VNZXNzYWdlKGVwLCBtc2csIHRyYW5zZmVycykge1xyXG4gICAgcmV0dXJuIG5ldyBQcm9taXNlKHJlc29sdmUgPT4ge1xyXG4gICAgICAgIGNvbnN0IGlkID0gZ2VuZXJhdGVVVUlEKCk7XHJcbiAgICAgICAgZXAuYWRkRXZlbnRMaXN0ZW5lcihcIm1lc3NhZ2VcIiwgZnVuY3Rpb24gbChldikge1xyXG4gICAgICAgICAgICBpZiAoIWV2LmRhdGEgfHwgIWV2LmRhdGEuaWQgfHwgZXYuZGF0YS5pZCAhPT0gaWQpIHtcclxuICAgICAgICAgICAgICAgIHJldHVybjtcclxuICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICBlcC5yZW1vdmVFdmVudExpc3RlbmVyKFwibWVzc2FnZVwiLCBsKTtcclxuICAgICAgICAgICAgcmVzb2x2ZShldi5kYXRhKTtcclxuICAgICAgICB9KTtcclxuICAgICAgICBpZiAoZXAuc3RhcnQpIHtcclxuICAgICAgICAgICAgZXAuc3RhcnQoKTtcclxuICAgICAgICB9XHJcbiAgICAgICAgZXAucG9zdE1lc3NhZ2UoeyBpZCwgLi4ubXNnIH0sIHRyYW5zZmVycyk7XHJcbiAgICB9KTtcclxufVxyXG5mdW5jdGlvbiBnZW5lcmF0ZVVVSUQoKSB7XHJcbiAgICByZXR1cm4gbmV3IEFycmF5KDQpXHJcbiAgICAgICAgLmZpbGwoMClcclxuICAgICAgICAubWFwKCgpID0+IE1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSAqIE51bWJlci5NQVhfU0FGRV9JTlRFR0VSKS50b1N0cmluZygxNikpXHJcbiAgICAgICAgLmpvaW4oXCItXCIpO1xyXG59XG5cbmV4cG9ydCB7IGNyZWF0ZUVuZHBvaW50LCBleHBvc2UsIHByb3h5LCBwcm94eU1hcmtlciwgdHJhbnNmZXIsIHRyYW5zZmVySGFuZGxlcnMsIHdpbmRvd0VuZHBvaW50LCB3cmFwIH07XG4vLyMgc291cmNlTWFwcGluZ1VSTD1jb21saW5rLm1qcy5tYXBcbiIsIm1vZHVsZS5leHBvcnRzID0gZnVuY3Rpb24oKSB7XG4gIHJldHVybiBuZXcgV29ya2VyKF9fd2VicGFja19wdWJsaWNfcGF0aF9fICsgXCI5YzFmOTQwNWRiNGUxYmI0NjdhYS53b3JrZXIuanNcIik7XG59OyJdLCJzb3VyY2VSb290IjoiIn0=
+
+/***/ }),
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75257,7 +75264,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75320,7 +75327,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
                 scope.handleUpdate();
             }, true);
             //
-            scope.$watch('vs.submenuOpen', function (oldValue, newValue) {
+            scope.$watch('vs.bundleListSideBarOpen', function (oldValue, newValue) {
                 if (oldValue !== newValue) {
                     $timeout(scope.handleUpdate, ConfigProviderService.design.animation.duration);
                 }
@@ -75505,7 +75512,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75548,7 +75555,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75635,7 +75642,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -76393,7 +76400,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
                             if (viewState.getPermission('toggleSideBars')) {
                                 // check if menu button in showing -> if not -> no submenu open
                                 if (ConfigProviderService.vals.activeButtons.openMenu) {
-                                    viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+                                    viewState.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
                                 }
                             }
                         }
@@ -76402,7 +76409,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
                             if (viewState.getPermission('toggleSideBars')) {
                                 // check if menu button in showing -> if not -> no submenu open
                                 if (ConfigProviderService.vals.activeButtons.openMenu) {
-                                    viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
+                                    viewState.setPerspectivesSideBarOpen(!viewState.getPerspectivesSideBarOpen());
                                 }
                             }
                         }
@@ -76840,428 +76847,6 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
             scope.$on('$destroy', function () {
                 $(window).off('keydown');
             });
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
-
-/***/ }),
-/* 29 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('level', function ($animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
-    return {
-        templateUrl: 'views/level.html',
-        restrict: 'E',
-        scope: {
-            level: '=',
-            idx: '='
-        },
-        link: function (scope, element) {
-            // select the needed DOM items from the template
-            var canvas = element.find('canvas');
-            scope.open = true; // attr.open; // not using attr.open any more because minification changes open="true" to open
-            scope.vs = viewState;
-            scope.hists = HistoryService;
-            scope.cps = ConfigProviderService;
-            scope.modal = modalService;
-            scope.lmds = loadedMetaDataService;
-            scope.hls = HierarchyLayoutService;
-            scope.ds = DataService;
-            scope.ls = LevelService;
-            var levelCanvasContainer = element.find('div');
-            scope.levelDef = ConfigProviderService.getLevelDefinition(scope.level.name);
-            scope.backgroundCanvas = {
-                'background': ConfigProviderService.design.color.black
-            };
-            scope.drawHierarchy = false; // 
-            ///////////////
-            // watches
-            scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    scope.redraw();
-                }
-            });
-            //
-            scope.$watch('vs.curViewPort', function (newValue, oldValue) {
-                if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS || oldValue.windowWidth !== newValue.windowWidth) {
-                    scope.drawLevelDetails();
-                    scope.drawLevelMarkup();
-                }
-                else {
-                    scope.drawLevelMarkup();
-                }
-            }, true);
-            //
-            scope.$watch('vs.curMouseX', function () {
-                scope.drawLevelMarkup();
-            }, true);
-            //
-            scope.$watch('vs.curClickLevelName', function (newValue) {
-                if (newValue !== undefined) {
-                    scope.drawLevelMarkup();
-                }
-            }, true);
-            //
-            scope.$watch('vs.movingBoundarySample', function () {
-                if (scope.level.name === scope.vs.curMouseLevelName) {
-                    scope.drawLevelDetails();
-                }
-                scope.drawLevelMarkup();
-            }, true);
-            //
-            scope.$watch('vs.movingBoundary', function () {
-                scope.drawLevelMarkup();
-            }, true);
-            //
-            scope.$watch('hists.movesAwayFromLastSave', function () {
-                scope.drawLevelDetails();
-                scope.drawLevelMarkup();
-            }, true);
-            //
-            scope.$watch('vs.curPerspectiveIdx', function () {
-                scope.drawLevelDetails();
-                scope.drawLevelMarkup();
-            }, true);
-            //
-            scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
-                if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-                    scope.drawLevelDetails();
-                    scope.drawLevelMarkup();
-                }
-            }, true);
-            //
-            /////////////////
-            scope.redraw = function () {
-                scope.drawLevelDetails();
-                scope.drawLevelMarkup();
-            };
-            /**
-             *
-             */
-            scope.changeCurAttrDef = function (attrDefName, index) {
-                var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
-                if (curAttrDef !== attrDefName) {
-                    // curAttrDef = attrDefName;
-                    scope.vs.setCurAttrDef(scope.level.name, attrDefName, index);
-                    if (!element.hasClass('emuwebapp-level-animation')) {
-                        scope.vs.setEditing(false);
-                        LevelService.deleteEditArea();
-                        $animate.addClass(levelCanvasContainer, 'emuwebapp-level-animation').then(function () {
-                            $animate.removeClass(levelCanvasContainer, 'emuwebapp-level-animation');
-                            // redraw
-                            scope.drawLevelDetails();
-                            scope.drawLevelMarkup();
-                        });
-                    }
-                }
-            };
-            /**
-             *
-             */
-            scope.getAttrDefBtnColor = function (attrDefName) {
-                var curColor;
-                var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
-                if (attrDefName === curAttrDef) {
-                    curColor = {
-                        'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
-                    };
-                }
-                else {
-                    curColor = {
-                        'background-color': 'white'
-                    };
-                }
-                return curColor;
-            };
-            scope.updateView = function () {
-                if ($.isEmptyObject(scope.cps)) {
-                    return;
-                }
-                scope.drawLevelDetails();
-            };
-            ///////////////
-            // bindings
-            // on mouse leave reset viewState.
-            element.bind('mouseleave', function () {
-                scope.vs.setcurMouseItem(undefined, undefined, undefined);
-                scope.drawLevelMarkup();
-            });
-            /**
-             * draw level details
-             */
-            scope.drawLevelDetails = function () {
-                var labelFontFamily; // font family used for labels only
-                var fontFamily = scope.cps.design.font.small.family; // font family used for everything else
-                if (typeof scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined') {
-                    labelFontFamily = scope.cps.design.font.small.family;
-                }
-                else {
-                    labelFontFamily = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.labelFontFamily;
-                }
-                var labelFontSize; // font family used for labels only
-                var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
-                if (typeof scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
-                    labelFontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
-                }
-                else {
-                    labelFontSize = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].levelCanvases.labelFontPxSize;
-                }
-                var curAttrDef = scope.vs.getCurAttrDef(scope.level.name);
-                var isOpen = element.parent().css('height') !== '25px'; // ? false : true;
-                if ($.isEmptyObject(scope.level)) {
-                    //console.log('undef levelDetails');
-                    return;
-                }
-                if ($.isEmptyObject(scope.vs)) {
-                    //console.log('undef viewState');
-                    return;
-                }
-                if ($.isEmptyObject(scope.cps)) {
-                    //console.log('undef config');
-                    return;
-                }
-                // draw hierarchy if canvas is displayed
-                if (scope.drawHierarchy) {
-                    scope.drawHierarchyDetails();
-                }
-                var ctx = canvas[0].getContext('2d');
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                //predef vars
-                var sDist, posS, posE;
-                sDist = scope.vs.getSampleDist(ctx.canvas.width);
-                // draw name of level and type
-                var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
-                if (scope.level.name === curAttrDef) {
-                    if (isOpen) {
-                        fontScaleService.drawUndistortedTextTwoLines(ctx, scope.level.name, '(' + scope.level.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.white, true);
-                    }
-                    else {
-                        fontSize -= 2;
-                        fontScaleService.drawUndistortedText(ctx, scope.level.name, fontSize, fontFamily, 4, ctx.canvas.height / 2 - (fontSize * scaleY / 2), ConfigProviderService.design.color.white, true);
-                    }
-                }
-                else {
-                    fontScaleService.drawUndistortedTextTwoLines(ctx, scope.level.name + ':' + curAttrDef, '(' + scope.level.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, ConfigProviderService.design.color.white, true);
-                }
-                var curID = -1;
-                // calculate generic max with of single char (m char used)
-                //var mTxtImg = fontScaleService.drawUndistortedText(ctx, 'm', fontSize - 2, labelFontFamily, ConfigProviderService.design.color.white);
-                var mTxtImgWidth = ctx.measureText('m').width * fontScaleService.scaleX;
-                // calculate generic max with of single digit (0 digit used)
-                //var zeroTxtImg = fontScaleService.drawUndistortedText(ctx, '0', fontSize - 4, labelFontFamily, ConfigProviderService.design.color.white);
-                var zeroTxtImgWidth = ctx.measureText('0').width * fontScaleService.scaleX;
-                if (scope.level.type === 'SEGMENT') {
-                    ctx.fillStyle = ConfigProviderService.design.color.white;
-                    // draw segments
-                    scope.level.items.forEach(function (item) {
-                        ++curID;
-                        if (item.sampleStart >= scope.vs.curViewPort.sS &&
-                            item.sampleStart <= scope.vs.curViewPort.eS || //within segment
-                            item.sampleStart + item.sampleDur > scope.vs.curViewPort.sS &&
-                                item.sampleStart + item.sampleDur < scope.vs.curViewPort.eS || //end in segment
-                            item.sampleStart < scope.vs.curViewPort.sS &&
-                                item.sampleStart + item.sampleDur > scope.vs.curViewPort.eS // within sample
-                        ) {
-                            // get label
-                            var curLabVal;
-                            item.labels.forEach(function (lab) {
-                                if (lab.name === curAttrDef) {
-                                    curLabVal = lab.value;
-                                }
-                            });
-                            // draw segment start
-                            posS = scope.vs.getPos(ctx.canvas.width, item.sampleStart);
-                            posE = scope.vs.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
-                            ctx.fillStyle = ConfigProviderService.design.color.white;
-                            ctx.fillRect(posS, 0, 2, ctx.canvas.height / 2);
-                            //draw segment end
-                            ctx.fillStyle = ConfigProviderService.design.color.grey;
-                            ctx.fillRect(posE, ctx.canvas.height / 2, 2, ctx.canvas.height);
-                            ctx.font = (fontSize - 2 + 'px' + ' ' + labelFontFamily);
-                            //check for enough space to stroke text
-                            if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
-                                if (isOpen) {
-                                    fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - (fontSize - 2) + 2, ConfigProviderService.design.color.white, false);
-                                }
-                                else {
-                                    fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - fontSize + 2, ConfigProviderService.design.color.white, false);
-                                }
-                            }
-                            //draw helper lines
-                            if (scope.open && curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
-                                var labelCenter = posS + (posE - posS) / 2;
-                                var hlY = ctx.canvas.height / 4;
-                                // start helper line
-                                ctx.strokeStyle = ConfigProviderService.design.color.white;
-                                ctx.beginPath();
-                                ctx.moveTo(posS, hlY);
-                                ctx.lineTo(labelCenter, hlY);
-                                ctx.lineTo(labelCenter, hlY + 5);
-                                ctx.stroke();
-                                hlY = ctx.canvas.height / 4 * 3;
-                                // end helper line
-                                ctx.strokeStyle = ConfigProviderService.design.color.grey;
-                                ctx.beginPath();
-                                ctx.moveTo(posE, hlY);
-                                ctx.lineTo(labelCenter, hlY);
-                                ctx.lineTo(labelCenter, hlY - 5);
-                                ctx.stroke();
-                            }
-                            if (scope.open) {
-                                // draw sampleStart numbers
-                                //check for enough space to stroke text
-                                if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
-                                    fontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, fontFamily, posS + 3, 0, ConfigProviderService.design.color.grey, true);
-                                }
-                                // draw sampleDur numbers.
-                                var durtext = 'dur: ' + item.sampleDur + ' ';
-                                //check for enough space to stroke text
-                                if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
-                                    fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, fontFamily, posE - (ctx.measureText(durtext).width * fontScaleService.scaleX), ctx.canvas.height / 4 * 3, ConfigProviderService.design.color.grey, true);
-                                }
-                            }
-                        }
-                    });
-                }
-                else if (scope.level.type === 'EVENT') {
-                    ctx.fillStyle = ConfigProviderService.design.color.white;
-                    // predef. vars
-                    var perc;
-                    scope.level.items.forEach(function (item) {
-                        if (item.samplePoint > scope.vs.curViewPort.sS && item.samplePoint < scope.vs.curViewPort.eS) {
-                            perc = Math.round(scope.vs.getPos(ctx.canvas.width, item.samplePoint) + (sDist / 2));
-                            // get label
-                            var curLabVal;
-                            item.labels.forEach(function (lab) {
-                                if (lab.name === curAttrDef) {
-                                    curLabVal = lab.value;
-                                }
-                            });
-                            ctx.fillStyle = ConfigProviderService.design.color.white;
-                            ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
-                            ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
-                            fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, perc, (ctx.canvas.height / 2) - (fontSize - 2) + 2, ConfigProviderService.design.color.white, false);
-                            if (isOpen) {
-                                fontScaleService.drawUndistortedText(ctx, item.samplePoint, fontSize - 2, labelFontFamily, perc + 5, 0, ConfigProviderService.design.color.grey, true);
-                            }
-                        }
-                    });
-                }
-                // draw cursor/selected area
-            };
-            /**
-             *
-             */
-            scope.drawLevelMarkup = function () {
-                var ctx = canvas[1].getContext('2d');
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                if (scope.level.name === scope.vs.getcurClickLevelName()) {
-                    ctx.fillStyle = ConfigProviderService.design.color.transparent.grey;
-                    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                }
-                // draw moving boundary line if moving
-                Drawhelperservice.drawMovingBoundaryLine(ctx);
-                // draw current viewport selected
-                Drawhelperservice.drawCurViewPortSelected(ctx);
-                var posS, posE, sDist, xOffset, item;
-                posS = scope.vs.getPos(ctx.canvas.width, scope.vs.curViewPort.selectS);
-                posE = scope.vs.getPos(ctx.canvas.width, scope.vs.curViewPort.selectE);
-                sDist = scope.vs.getSampleDist(ctx.canvas.width);
-                var segMId = scope.vs.getcurMouseItem();
-                var isFirst = scope.vs.getcurMouseisFirst();
-                var isLast = scope.vs.getcurMouseisLast();
-                var clickedSegs = scope.vs.getcurClickItems();
-                var levelId = scope.vs.getcurClickLevelName();
-                if (clickedSegs !== undefined) {
-                    // draw clicked on selected areas
-                    if (scope.level.name === levelId && clickedSegs.length > 0) {
-                        clickedSegs.forEach(function (cs) {
-                            if (cs !== undefined) {
-                                // check if segment or event level
-                                if (cs.sampleStart !== undefined) {
-                                    posS = Math.round(scope.vs.getPos(ctx.canvas.width, cs.sampleStart));
-                                    posE = Math.round(scope.vs.getPos(ctx.canvas.width, cs.sampleStart + cs.sampleDur + 1));
-                                }
-                                else {
-                                    posS = Math.round(scope.vs.getPos(ctx.canvas.width, cs.samplePoint) + sDist / 2);
-                                    posS = posS - 5;
-                                    posE = posS + 10;
-                                }
-                                ctx.fillStyle = ConfigProviderService.design.color.transparent.yellow;
-                                ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
-                                ctx.fillStyle = ConfigProviderService.design.color.white;
-                            }
-                        });
-                    }
-                }
-                // draw preselected boundary
-                item = scope.vs.getcurMouseItem();
-                if (scope.level.items.length > 0 && item !== undefined && segMId !== undefined && scope.level.name === scope.vs.getcurMouseLevelName()) {
-                    ctx.fillStyle = ConfigProviderService.design.color.blue;
-                    if (isFirst === true) { // before first segment
-                        if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
-                            item = scope.level.items[0];
-                            posS = Math.round(scope.vs.getPos(ctx.canvas.width, item.sampleStart));
-                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
-                        }
-                    }
-                    else if (isLast === true) { // after last segment
-                        if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
-                            item = scope.level.items[scope.level.items.length - 1];
-                            posS = Math.round(scope.vs.getPos(ctx.canvas.width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
-                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
-                        }
-                    }
-                    else { // in the middle
-                        if (scope.vs.getcurMouseLevelType() === 'SEGMENT') {
-                            posS = Math.round(scope.vs.getPos(ctx.canvas.width, item.sampleStart));
-                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
-                        }
-                        else {
-                            posS = Math.round(scope.vs.getPos(ctx.canvas.width, item.samplePoint));
-                            xOffset = (sDist / 2);
-                            ctx.fillRect(posS + xOffset, 0, 3, ctx.canvas.height);
-                        }
-                    }
-                    ctx.fillStyle = ConfigProviderService.design.color.white;
-                }
-                // draw cursor
-                Drawhelperservice.drawCrossHairX(ctx, viewState.curMouseX);
-            };
-            /**
-             * draw level hierarchy
-             */
-            scope.drawHierarchyDetails = function () {
-                var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
-                var paths = scope.hls.findPaths(scope.level.name);
-                var curPath = paths[1];
-                var ctx = canvas[0].getContext('2d');
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                //var mTxtImgWidth = ctx.measureText('m').width * fontScaleService.scaleX;
-                ctx.strokeStyle = ConfigProviderService.design.color.white;
-                // find parents for every parent for every items hence building the annotation graph
-                scope.hls.findParents(curPath);
-                // draw ghost level
-                for (var i = 0; i < curPath.length; i++) {
-                    var curLevel = scope.ls.getLevelDetails(curPath[i]);
-                    var levelHeight = ctx.canvas.height / curPath.length;
-                    var curStartY = ctx.canvas.height - (i + 1) * levelHeight;
-                    for (var itemIdx = 0; itemIdx < curLevel.items.length; itemIdx++) {
-                        var posS = Math.round(scope.vs.getPos(ctx.canvas.width, curLevel.items[itemIdx]._derivedSampleStart));
-                        var posE = Math.round(scope.vs.getPos(ctx.canvas.width, curLevel.items[itemIdx]._derivedSampleEnd));
-                        ctx.strokeRect(posS, curStartY, posE - posS, curStartY + levelHeight);
-                        // draw label
-                        fontScaleService.drawUndistortedText(ctx, curLevel.items[itemIdx].labels[0].value, fontSize - 2, ConfigProviderService.design.font.small.family, posS + (posE - posS) / 2 - ctx.measureText(curLevel.items[itemIdx].labels[0].value).width / 2 - 2, curStartY + levelHeight / 2, ConfigProviderService.design.color.white, true);
-                    }
-                }
-            };
         }
     };
 });
@@ -77881,7 +77466,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
                     scope.clearAndDrawSpectMarkup();
                 }
             });
-            scope.$watch('vs.submenuOpen', function () {
+            scope.$watch('vs.bundleListSideBarOpen', function () {
                 if (!$.isEmptyObject(scope.shs)) {
                     if (!$.isEmptyObject(scope.shs.audioBuffer)) {
                         $timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
@@ -78997,6 +78582,20 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
                 ret = level;
             }
         });
+        return ret;
+    };
+    /**
+     * returns level details by passing in level index
+     * if the corresponding level exists
+     * otherwise returns 'null'
+     *    @param idx
+     */
+    sServObj.getLevelDetailsByIdx = function (idx) {
+        var ret = null;
+        ret = DataService.getLevelData()[idx];
+        if (typeof ret === 'undefined') {
+            ret = null;
+        }
         return ret;
     };
     /**
@@ -80601,25 +80200,34 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 
 var GhostLevelComponent = {
     selector: "ghostLevel",
-    template: "\n<div class=\"emuwebapp-level\">\n<div class=\"emuwebapp-level-container\">\n    <canvas class=\"emuwebapp-level-canvas\" id=\"levelCanvas\" width=\"2048\" height=\"64\" ng-style=\"backgroundCanvas\"></canvas>\n    <canvas class=\"emuwebapp-level-markup\" id=\"levelMarkupCanvas\" width=\"2048\" height=\"64\" track-mouse-in-level=\"{{idx}}\" level-name=\"$ctrl.level.name\" level-type=\"$ctrl.level.type\"></canvas>\n</div>\n</div>\n\n<div ng-if=\"$ctrl.levelDef.attributeDefinitions.length > 1\" class=\"emuwebapp-selectAttrDef\">\n<div>\n    <ul>\n    <li ng-repeat=\"attrDef in $ctrl.levelDef.attributeDefinitions\">\n        <button ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"></button>\n    </li>\n    </ul>\n</div>\n</div>  \n    ",
+    // inline HTML
+    template: /*html*/ "\n<div class=\"emuwebapp-level\">\n<div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"64\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n\n    <canvas \n    class=\"emuwebapp-level-markup\" \n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"64\" \n    track-mouse-in-level=\"{{idx}}\"\n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n</div>\n</div>\n\n<div \nng-if=\"$ctrl.levelDef.attributeDefinitions.length > 1\" \nclass=\"emuwebapp-selectAttrDef\"\n>\n<div>\n    <ul>\n    <li ng-repeat=\"attrDef in $ctrl.levelDef.attributeDefinitions\">\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n    </li>\n    </ul>\n</div>\n</div>  \n    ",
     bindings: {
-        level: '=',
-        idx: '=',
-        viewPort: '<'
+        level: '<',
+        idx: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<',
+        curMouseX: '<',
+        curClickLevelName: '<',
+        movingBoundarySample: '<',
+        movingBoundary: '<',
+        movesAwayFromLastSave: '<',
+        curPerspectiveIdx: '<',
+        curBndl: '<'
     },
     controller: /** @class */ (function () {
         function GhostLevelController($scope, $element, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
-            this.$onChanges = function (changes) {
-                console.log(changes);
-                // if (changes.viewPort){
-                // }
-            };
             this.$postLink = function () {
                 var _this = this;
                 this.levelDef = this.ConfigProviderService.getLevelDefinition(this.level.name);
                 this.canvas = this.$element.find('canvas');
                 this.levelCanvasContainer = this.$element.find('div');
-                this.redraw();
+                if (this._inited) {
+                    this.drawLevelDetails();
+                    this.drawLevelMarkup();
+                }
                 ///////////////
                 // bindings
                 // on mouse leave reset viewState.
@@ -80627,6 +80235,141 @@ var GhostLevelComponent = {
                     _this.viewState.setcurMouseItem(undefined, undefined, undefined);
                     _this.drawLevelMarkup();
                 });
+            };
+            this.$onChanges = function (changes) {
+                if (changes.viewPortSampleStart) {
+                    if (changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.viewPortSampleEnd) {
+                    if (changes.viewPortSampleEnd.currentValue !== changes.viewPortSampleEnd.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.viewPortSelectStart) {
+                    if (changes.viewPortSelectStart.currentValue !== changes.viewPortSelectStart.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.viewPortSelectEnd) {
+                    if (changes.viewPortSelectEnd.currentValue !== changes.viewPortSelectEnd.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curMouseX) {
+                    if (changes.curMouseX.currentValue !== changes.curMouseX.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curClickLevelName) {
+                    if (changes.curClickLevelName.currentValue !== changes.curClickLevelName.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.movingBoundarySample) {
+                    if (changes.movingBoundarySample.currentValue !== changes.movingBoundarySample.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                            if (this.level.name === this.viewState.curMouseLevelName) {
+                                this.drawLevelDetails();
+                            }
+                        }
+                    }
+                }
+                if (changes.movingBoundary) {
+                    if (changes.movingBoundary.currentValue !== changes.movingBoundary.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.movesAwayFromLastSave) {
+                    if (changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curPerspectiveIdx) {
+                    if (changes.curPerspectiveIdx.currentValue !== changes.curPerspectiveIdx.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curBndl) {
+                    if (changes.curBndl.currentValue !== changes.curBndl.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            // $doCheck = function(){
+            //     console.log(this.level);
+            //     console.log(this.viewPortSampleStart);
+            //     console.log(this.viewPortSampleEnd);
+            //     console.log("in $doCheck");
+            // }
+            /**
+             *
+             */
+            this.changeCurAttrDef = function (attrDefName, index) {
+                var _this = this;
+                var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+                if (curAttrDef !== attrDefName) {
+                    // curAttrDef = attrDefName;
+                    this.viewState.setCurAttrDef(this.level.name, attrDefName, index);
+                    if (!this.$element.hasClass('emuwebapp-level-animation')) {
+                        this.viewState.setEditing(false);
+                        this.LevelService.deleteEditArea();
+                        this.$animate.addClass(this.levelCanvasContainer, 'emuwebapp-level-animation').then(function () {
+                            _this.$animate.removeClass(_this.levelCanvasContainer, 'emuwebapp-level-animation');
+                            // redraw
+                            _this.drawLevelDetails();
+                            _this.drawLevelMarkup();
+                        });
+                    }
+                }
+            };
+            /**
+             *
+             */
+            this.getAttrDefBtnColor = function (attrDefName) {
+                var curColor;
+                var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+                if (attrDefName === curAttrDef) {
+                    curColor = {
+                        'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
+                    };
+                }
+                else {
+                    curColor = {
+                        'background-color': 'white'
+                    };
+                }
+                return curColor;
             };
             this.drawLevelDetails = function () {
                 var _this = this;
@@ -80660,10 +80403,6 @@ var GhostLevelComponent = {
                     //console.log('undef config');
                     return;
                 }
-                // draw hierarchy if canvas is displayed
-                // if(scope.drawHierarchy){
-                //     scope.drawHierarchyDetails();
-                // }
                 var ctx = this.canvas[0].getContext('2d');
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 //predef vars
@@ -80881,14 +80620,11 @@ var GhostLevelComponent = {
             this.HierarchyLayoutService = HierarchyLayoutService;
             this.DataService = DataService;
             this.open = true;
-            // this.levelDef = this.ConfigProviderService.getLevelDefinition(this.$this.level.name);
-            // console.log(this.levelDef);
+            this._inited = false;
+            this.backgroundCanvas = {
+                'background': ConfigProviderService.design.color.black
+            };
         }
-        ;
-        GhostLevelController.prototype.redraw = function () {
-            this.drawLevelDetails();
-            this.drawLevelMarkup();
-        };
         ;
         return GhostLevelController;
     }())
@@ -80900,10 +80636,454 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 
 /***/ }),
 /* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
+
+var LevelComponent = {
+    selector: "level",
+    // inline HTML
+    template: /*html*/ "\n<div class=\"emuwebapp-level\">\n<div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"64\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n\n    <canvas \n    class=\"emuwebapp-level-markup\" \n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"64\" \n    track-mouse-in-level=\"{{idx}}\"\n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n</div>\n</div>\n\n<div \nng-if=\"$ctrl.levelDef.attributeDefinitions.length > 1\" \nclass=\"emuwebapp-selectAttrDef\"\n>\n<div>\n    <ul>\n    <li ng-repeat=\"attrDef in $ctrl.levelDef.attributeDefinitions\">\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n    </li>\n    </ul>\n</div>\n</div>  \n    ",
+    bindings: {
+        level: '<',
+        idx: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<',
+        curMouseX: '<',
+        curClickLevelName: '<',
+        movingBoundarySample: '<',
+        movingBoundary: '<',
+        movesAwayFromLastSave: '<',
+        curPerspectiveIdx: '<',
+        curBndl: '<'
+    },
+    controller: /** @class */ (function () {
+        function GhostLevelController($scope, $element, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService) {
+            this.$postLink = function () {
+                var _this = this;
+                this.levelDef = this.ConfigProviderService.getLevelDefinition(this.level.name);
+                this.canvas = this.$element.find('canvas');
+                this.levelCanvasContainer = this.$element.find('div');
+                if (this._inited) {
+                    this.drawLevelDetails();
+                    this.drawLevelMarkup();
+                }
+                ///////////////
+                // bindings
+                // on mouse leave reset viewState.
+                this.$element.bind('mouseleave', function () {
+                    _this.viewState.setcurMouseItem(undefined, undefined, undefined);
+                    _this.drawLevelMarkup();
+                });
+            };
+            this.$onChanges = function (changes) {
+                if (changes.viewPortSampleStart) {
+                    if (changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.viewPortSampleEnd) {
+                    if (changes.viewPortSampleEnd.currentValue !== changes.viewPortSampleEnd.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.viewPortSelectStart) {
+                    if (changes.viewPortSelectStart.currentValue !== changes.viewPortSelectStart.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.viewPortSelectEnd) {
+                    if (changes.viewPortSelectEnd.currentValue !== changes.viewPortSelectEnd.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curMouseX) {
+                    if (changes.curMouseX.currentValue !== changes.curMouseX.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curClickLevelName) {
+                    if (changes.curClickLevelName.currentValue !== changes.curClickLevelName.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.movingBoundarySample) {
+                    if (changes.movingBoundarySample.currentValue !== changes.movingBoundarySample.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                            if (this.level.name === this.viewState.curMouseLevelName) {
+                                this.drawLevelDetails();
+                            }
+                        }
+                    }
+                }
+                if (changes.movingBoundary) {
+                    if (changes.movingBoundary.currentValue !== changes.movingBoundary.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.movesAwayFromLastSave) {
+                    if (changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curPerspectiveIdx) {
+                    if (changes.curPerspectiveIdx.currentValue !== changes.curPerspectiveIdx.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+                if (changes.curBndl) {
+                    if (changes.curBndl.currentValue !== changes.curBndl.previousValue) {
+                        if (this._inited) {
+                            this.drawLevelDetails();
+                            this.drawLevelMarkup();
+                        }
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            // $doCheck = function(){
+            //     console.log(this.level);
+            //     console.log(this.viewPortSampleStart);
+            //     console.log(this.viewPortSampleEnd);
+            //     console.log("in $doCheck");
+            // }
+            /**
+             *
+             */
+            this.changeCurAttrDef = function (attrDefName, index) {
+                var _this = this;
+                var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+                if (curAttrDef !== attrDefName) {
+                    // curAttrDef = attrDefName;
+                    this.viewState.setCurAttrDef(this.level.name, attrDefName, index);
+                    if (!this.$element.hasClass('emuwebapp-level-animation')) {
+                        this.viewState.setEditing(false);
+                        this.LevelService.deleteEditArea();
+                        this.$animate.addClass(this.levelCanvasContainer, 'emuwebapp-level-animation').then(function () {
+                            _this.$animate.removeClass(_this.levelCanvasContainer, 'emuwebapp-level-animation');
+                            // redraw
+                            _this.drawLevelDetails();
+                            _this.drawLevelMarkup();
+                        });
+                    }
+                }
+            };
+            /**
+             *
+             */
+            this.getAttrDefBtnColor = function (attrDefName) {
+                var curColor;
+                var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+                if (attrDefName === curAttrDef) {
+                    curColor = {
+                        'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)'
+                    };
+                }
+                else {
+                    curColor = {
+                        'background-color': 'white'
+                    };
+                }
+                return curColor;
+            };
+            this.drawLevelDetails = function () {
+                var _this = this;
+                var labelFontFamily; // font family used for labels only
+                var fontFamily = this.ConfigProviderService.design.font.small.family; // font family used for everything else
+                if (typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined') {
+                    labelFontFamily = this.ConfigProviderService.design.font.small.family;
+                }
+                else {
+                    labelFontFamily = this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily;
+                }
+                var labelFontSize; // font family used for labels only
+                var fontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
+                if (typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
+                    labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
+                }
+                else {
+                    labelFontSize = this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontPxSize;
+                }
+                var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+                var isOpen = this.$element.parent().css('height') !== '25px'; // ? false : true;
+                if ($.isEmptyObject(this.level)) {
+                    //console.log('undef levelDetails');
+                    return;
+                }
+                if ($.isEmptyObject(this.viewState)) {
+                    //console.log('undef viewState');
+                    return;
+                }
+                if ($.isEmptyObject(this.ConfigProviderService)) {
+                    //console.log('undef config');
+                    return;
+                }
+                var ctx = this.canvas[0].getContext('2d');
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                //predef vars
+                var sDist, posS, posE;
+                sDist = this.viewState.getSampleDist(ctx.canvas.width);
+                // draw name of level and type
+                var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+                if (this.level.name === curAttrDef) {
+                    if (isOpen) {
+                        this.fontScaleService.drawUndistortedTextTwoLines(ctx, this.level.name, '(' + this.level.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
+                    }
+                    else {
+                        fontSize -= 2;
+                        this.fontScaleService.drawUndistortedText(ctx, this.level.name, fontSize, fontFamily, 4, ctx.canvas.height / 2 - (fontSize * scaleY / 2), this.ConfigProviderService.design.color.white, true);
+                    }
+                }
+                else {
+                    this.fontScaleService.drawUndistortedTextTwoLines(ctx, this.level.name + ':' + curAttrDef, '(' + this.level.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
+                }
+                var curID = -1;
+                // calculate generic max with of single char (m char used)
+                var mTxtImgWidth = ctx.measureText('m').width * this.fontScaleService.scaleX;
+                // calculate generic max with of single digit (0 digit used)
+                var zeroTxtImgWidth = ctx.measureText('0').width * this.fontScaleService.scaleX;
+                if (this.level.type === 'SEGMENT') {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                    // draw segments
+                    this.level.items.forEach(function (item) {
+                        ++curID;
+                        if (item.sampleStart >= _this.viewState.curViewPort.sS &&
+                            item.sampleStart <= _this.viewState.curViewPort.eS || //within segment
+                            item.sampleStart + item.sampleDur > _this.viewState.curViewPort.sS &&
+                                item.sampleStart + item.sampleDur < _this.viewState.curViewPort.eS || //end in segment
+                            item.sampleStart < _this.viewState.curViewPort.sS &&
+                                item.sampleStart + item.sampleDur > _this.viewState.curViewPort.eS // within sample
+                        ) {
+                            // get label
+                            var curLabVal;
+                            item.labels.forEach(function (lab) {
+                                if (lab.name === curAttrDef) {
+                                    curLabVal = lab.value;
+                                }
+                            });
+                            // draw segment start
+                            posS = _this.viewState.getPos(ctx.canvas.width, item.sampleStart);
+                            posE = _this.viewState.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
+                            ctx.fillStyle = _this.ConfigProviderService.design.color.white;
+                            ctx.fillRect(posS, 0, 2, ctx.canvas.height / 2);
+                            //draw segment end
+                            ctx.fillStyle = _this.ConfigProviderService.design.color.grey;
+                            ctx.fillRect(posE, ctx.canvas.height / 2, 2, ctx.canvas.height);
+                            ctx.font = (fontSize - 2 + 'px' + ' ' + labelFontFamily);
+                            //check for enough space to stroke text
+                            if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
+                                if (isOpen) {
+                                    _this.fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
+                                }
+                                else {
+                                    _this.fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - fontSize + 2, _this.ConfigProviderService.design.color.white, false);
+                                }
+                            }
+                            //draw helper lines
+                            if (_this.open && curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
+                                var labelCenter = posS + (posE - posS) / 2;
+                                var hlY = ctx.canvas.height / 4;
+                                // start helper line
+                                ctx.strokeStyle = _this.ConfigProviderService.design.color.white;
+                                ctx.beginPath();
+                                ctx.moveTo(posS, hlY);
+                                ctx.lineTo(labelCenter, hlY);
+                                ctx.lineTo(labelCenter, hlY + 5);
+                                ctx.stroke();
+                                hlY = ctx.canvas.height / 4 * 3;
+                                // end helper line
+                                ctx.strokeStyle = _this.ConfigProviderService.design.color.grey;
+                                ctx.beginPath();
+                                ctx.moveTo(posE, hlY);
+                                ctx.lineTo(labelCenter, hlY);
+                                ctx.lineTo(labelCenter, hlY - 5);
+                                ctx.stroke();
+                            }
+                            if (_this.open) {
+                                // draw sampleStart numbers
+                                //check for enough space to stroke text
+                                if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
+                                    _this.fontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, fontFamily, posS + 3, 0, _this.ConfigProviderService.design.color.grey, true);
+                                }
+                                // draw sampleDur numbers.
+                                var durtext = 'dur: ' + item.sampleDur + ' ';
+                                //check for enough space to stroke text
+                                if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
+                                    _this.fontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, fontFamily, posE - (ctx.measureText(durtext).width * _this.fontScaleService.scaleX), ctx.canvas.height / 4 * 3, _this.ConfigProviderService.design.color.grey, true);
+                                }
+                            }
+                        }
+                    });
+                }
+                else if (this.level.type === 'EVENT') {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                    // predef. vars
+                    var perc;
+                    this.level.items.forEach(function (item) {
+                        if (item.samplePoint > _this.viewState.curViewPort.sS && item.samplePoint < _this.viewState.curViewPort.eS) {
+                            perc = Math.round(_this.viewState.getPos(ctx.canvas.width, item.samplePoint) + (sDist / 2));
+                            // get label
+                            var curLabVal;
+                            item.labels.forEach(function (lab) {
+                                if (lab.name === curAttrDef) {
+                                    curLabVal = lab.value;
+                                }
+                            });
+                            ctx.fillStyle = _this.ConfigProviderService.design.color.white;
+                            ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
+                            ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
+                            _this.fontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, perc, (ctx.canvas.height / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
+                            if (isOpen) {
+                                _this.fontScaleService.drawUndistortedText(ctx, item.samplePoint, fontSize - 2, labelFontFamily, perc + 5, 0, _this.ConfigProviderService.design.color.grey, true);
+                            }
+                        }
+                    });
+                }
+                // draw cursor/selected area
+            };
+            /**
+             *
+             */
+            this.drawLevelMarkup = function () {
+                var _this = this;
+                var ctx = this.canvas[1].getContext('2d');
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                if (this.level.name === this.viewState.getcurClickLevelName()) {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.transparent.grey;
+                    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                }
+                // draw moving boundary line if moving
+                this.Drawhelperservice.drawMovingBoundaryLine(ctx);
+                // draw current viewport selected
+                this.Drawhelperservice.drawCurViewPortSelected(ctx);
+                var posS, posE, sDist, xOffset, item;
+                posS = this.viewState.getPos(ctx.canvas.width, this.viewState.curViewPort.selectS);
+                posE = this.viewState.getPos(ctx.canvas.width, this.viewState.curViewPort.selectE);
+                sDist = this.viewState.getSampleDist(ctx.canvas.width);
+                var segMId = this.viewState.getcurMouseItem();
+                var isFirst = this.viewState.getcurMouseisFirst();
+                var isLast = this.viewState.getcurMouseisLast();
+                var clickedSegs = this.viewState.getcurClickItems();
+                var levelId = this.viewState.getcurClickLevelName();
+                if (clickedSegs !== undefined) {
+                    // draw clicked on selected areas
+                    if (this.level.name === levelId && clickedSegs.length > 0) {
+                        clickedSegs.forEach(function (cs) {
+                            if (cs !== undefined) {
+                                // check if segment or event level
+                                if (cs.sampleStart !== undefined) {
+                                    posS = Math.round(_this.viewState.getPos(ctx.canvas.width, cs.sampleStart));
+                                    posE = Math.round(_this.viewState.getPos(ctx.canvas.width, cs.sampleStart + cs.sampleDur + 1));
+                                }
+                                else {
+                                    posS = Math.round(_this.viewState.getPos(ctx.canvas.width, cs.samplePoint) + sDist / 2);
+                                    posS = posS - 5;
+                                    posE = posS + 10;
+                                }
+                                ctx.fillStyle = _this.ConfigProviderService.design.color.transparent.yellow;
+                                ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
+                                ctx.fillStyle = _this.ConfigProviderService.design.color.white;
+                            }
+                        });
+                    }
+                }
+                // draw preselected boundary
+                item = this.viewState.getcurMouseItem();
+                if (this.level.items.length > 0 && item !== undefined && segMId !== undefined && this.level.name === this.viewState.getcurMouseLevelName()) {
+                    ctx.fillStyle = this.ConfigProviderService.design.color.blue;
+                    if (isFirst === true) { // before first segment
+                        if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                            item = this.level.items[0];
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.sampleStart));
+                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
+                        }
+                    }
+                    else if (isLast === true) { // after last segment
+                        if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                            item = this.level.items[this.level.items.length - 1];
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
+                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
+                        }
+                    }
+                    else { // in the middle
+                        if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.sampleStart));
+                            ctx.fillRect(posS, 0, 3, ctx.canvas.height);
+                        }
+                        else {
+                            posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.samplePoint));
+                            xOffset = (sDist / 2);
+                            ctx.fillRect(posS + xOffset, 0, 3, ctx.canvas.height);
+                        }
+                    }
+                    ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                }
+                // draw cursor
+                this.Drawhelperservice.drawCrossHairX(ctx, this.viewState.curMouseX);
+            };
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$animate = $animate;
+            this.viewState = viewState;
+            this.ConfigProviderService = ConfigProviderService;
+            this.Drawhelperservice = Drawhelperservice;
+            this.HistoryService = HistoryService;
+            this.fontScaleService = fontScaleService;
+            this.modalService = modalService;
+            this.LevelService = LevelService;
+            this.loadedMetaDataService = loadedMetaDataService;
+            this.HierarchyLayoutService = HierarchyLayoutService;
+            this.DataService = DataService;
+            this.open = true;
+            this._inited = false;
+            this.backgroundCanvas = {
+                'background': ConfigProviderService.design.color.black
+            };
+        }
+        ;
+        return GhostLevelController;
+    }())
+};
+angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
+    .component(LevelComponent.selector, LevelComponent);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(42);
+            var content = __webpack_require__(43);
 
             content = content.__esModule ? content.default : content;
 
@@ -80925,7 +81105,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80938,11 +81118,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(44);
+            var content = __webpack_require__(45);
 
             content = content.__esModule ? content.default : content;
 
@@ -80964,7 +81144,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -80977,11 +81157,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(46);
+            var content = __webpack_require__(47);
 
             content = content.__esModule ? content.default : content;
 
@@ -81003,7 +81183,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81016,11 +81196,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(48);
+            var content = __webpack_require__(49);
 
             content = content.__esModule ? content.default : content;
 
@@ -81042,7 +81222,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81055,11 +81235,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(50);
+            var content = __webpack_require__(51);
 
             content = content.__esModule ? content.default : content;
 
@@ -81081,7 +81261,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81094,11 +81274,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(52);
+            var content = __webpack_require__(53);
 
             content = content.__esModule ? content.default : content;
 
@@ -81120,7 +81300,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81133,11 +81313,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(54);
+            var content = __webpack_require__(55);
 
             content = content.__esModule ? content.default : content;
 
@@ -81159,7 +81339,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81172,11 +81352,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(56);
+            var content = __webpack_require__(57);
 
             content = content.__esModule ? content.default : content;
 
@@ -81198,7 +81378,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81211,11 +81391,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(58);
+            var content = __webpack_require__(59);
 
             content = content.__esModule ? content.default : content;
 
@@ -81237,7 +81417,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81250,11 +81430,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(60);
+            var content = __webpack_require__(61);
 
             content = content.__esModule ? content.default : content;
 
@@ -81276,7 +81456,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81289,11 +81469,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(62);
+            var content = __webpack_require__(63);
 
             content = content.__esModule ? content.default : content;
 
@@ -81315,7 +81495,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81328,11 +81508,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(64);
+            var content = __webpack_require__(65);
 
             content = content.__esModule ? content.default : content;
 
@@ -81354,7 +81534,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81367,11 +81547,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(66);
+            var content = __webpack_require__(67);
 
             content = content.__esModule ? content.default : content;
 
@@ -81393,7 +81573,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81406,11 +81586,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(68);
+            var content = __webpack_require__(69);
 
             content = content.__esModule ? content.default : content;
 
@@ -81432,7 +81612,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81445,11 +81625,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(70);
+            var content = __webpack_require__(71);
 
             content = content.__esModule ? content.default : content;
 
@@ -81471,7 +81651,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81484,11 +81664,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(72);
+            var content = __webpack_require__(73);
 
             content = content.__esModule ? content.default : content;
 
@@ -81510,7 +81690,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81523,11 +81703,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(74);
+            var content = __webpack_require__(75);
 
             content = content.__esModule ? content.default : content;
 
@@ -81549,7 +81729,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81562,11 +81742,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(76);
+            var content = __webpack_require__(77);
 
             content = content.__esModule ? content.default : content;
 
@@ -81588,7 +81768,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81601,11 +81781,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(78);
+            var content = __webpack_require__(79);
 
             content = content.__esModule ? content.default : content;
 
@@ -81627,7 +81807,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81640,11 +81820,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(80);
+            var content = __webpack_require__(81);
 
             content = content.__esModule ? content.default : content;
 
@@ -81666,7 +81846,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81679,11 +81859,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(82);
+            var content = __webpack_require__(83);
 
             content = content.__esModule ? content.default : content;
 
@@ -81705,7 +81885,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81718,11 +81898,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(84);
+            var content = __webpack_require__(85);
 
             content = content.__esModule ? content.default : content;
 
@@ -81744,7 +81924,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81757,11 +81937,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(86);
+            var content = __webpack_require__(87);
 
             content = content.__esModule ? content.default : content;
 
@@ -81783,7 +81963,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81796,11 +81976,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(88);
+            var content = __webpack_require__(89);
 
             content = content.__esModule ? content.default : content;
 
@@ -81822,7 +82002,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81835,11 +82015,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(90);
+            var content = __webpack_require__(91);
 
             content = content.__esModule ? content.default : content;
 
@@ -81861,7 +82041,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -81874,7 +82054,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81915,6 +82095,9 @@ var angular_filter = __webpack_require__(22);
 
 // EXTERNAL MODULE: ./node_modules/showdown/dist/showdown.js
 var showdown = __webpack_require__(7);
+
+// EXTERNAL MODULE: ./node_modules/wav-range-requests/dist/wav-range-requests.js
+var wav_range_requests = __webpack_require__(24);
 
 // CONCATENATED MODULE: ./app/scripts/app.ts
 
@@ -82177,6 +82360,8 @@ angular["module"]('emuwebApp')
     $scope.windowWidth = $window.outerWidth;
     $scope.internalVars = {};
     $scope.internalVars.showAboutHint = false; // this should probably be moved to viewState
+    $scope.xTmp = 123;
+    $scope.yTmp = 321;
     // check for new version
     $scope.ach.checkForNewVersion();
     //////////////
@@ -82290,9 +82475,9 @@ angular["module"]('emuwebApp')
                 var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
                 loadedMetaDataService.setCurBndlName(tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length));
                 //hide menu
-                if (viewState.getsubmenuOpen()) {
+                if (viewState.getBundleListSideBarOpen()) {
                     if (searchObject.saveToWindowParent !== "true") {
-                        viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+                        viewState.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
                     }
                 }
                 viewState.somethingInProgressTxt = 'Loading DB config...';
@@ -82483,8 +82668,8 @@ angular["module"]('emuwebApp')
      * function called after default config was loaded
      */
     $scope.handleDefaultConfigLoaded = function () {
-        if (!viewState.getsubmenuOpen()) {
-            viewState.toggleSubmenu(ConfigProviderService.design.animation.period);
+        if (!viewState.getBundleListSideBarOpen()) {
+            viewState.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
         }
         // check if either autoConnect is set in DBconfig or as get parameter
         var searchObject = $location.search();
@@ -83100,8 +83285,8 @@ angular["module"]('emuwebApp')
             }
         }
         viewState.switchPerspective(newIdx, ConfigProviderService.vals.perspectives);
-        // close submenu
-        viewState.setRightsubmenuOpen(!viewState.getRightsubmenuOpen());
+        // close perspectivesSideBar
+        viewState.setPerspectivesSideBarOpen(!viewState.getPerspectivesSideBarOpen());
     };
     /**
      * function used by right side menu to get color of current perspecitve in ul
@@ -83116,6 +83301,14 @@ angular["module"]('emuwebApp')
             cl = 'emuwebapp-perspLi';
         }
         return cl;
+    };
+    $scope.tmp = function () {
+        console.log("tmp btn click");
+        $scope.xTmp = $scope.xTmp + 1;
+        $scope.yTmp = $scope.yTmp + 1;
+    };
+    $scope.getTmp = function () {
+        return angular["copy"]($scope.xTmp);
     };
 });
 
@@ -83931,7 +84124,7 @@ angular["module"]('emuwebApp')
 });
 
 // EXTERNAL MODULE: ./app/scripts/directives/dots.directive.ts
-var dots_directive = __webpack_require__(24);
+var dots_directive = __webpack_require__(25);
 
 // CONCATENATED MODULE: ./app/scripts/directives/dragout.directive.ts
 
@@ -84016,7 +84209,7 @@ angular["module"]('emuwebApp')
 });
 
 // EXTERNAL MODULE: ./app/scripts/directives/drawssff.directive.ts
-var drawssff_directive = __webpack_require__(25);
+var drawssff_directive = __webpack_require__(26);
 
 // CONCATENATED MODULE: ./app/scripts/directives/emuhierarchy.directive.ts
 
@@ -85371,13 +85564,13 @@ angular["module"]('emuwebApp')
 });
 
 // EXTERNAL MODULE: ./app/scripts/directives/enlarge.directive.ts
-var enlarge_directive = __webpack_require__(26);
+var enlarge_directive = __webpack_require__(27);
 
 // EXTERNAL MODULE: ./app/scripts/directives/epg.directive.ts
-var epg_directive = __webpack_require__(27);
+var epg_directive = __webpack_require__(28);
 
 // EXTERNAL MODULE: ./app/scripts/directives/handle-key-strokes.directive.ts
-var handle_key_strokes_directive = __webpack_require__(28);
+var handle_key_strokes_directive = __webpack_require__(29);
 
 // CONCATENATED MODULE: ./app/scripts/directives/hint.directive.ts
 
@@ -85446,9 +85639,6 @@ angular["module"]('emuwebApp')
         replace: true
     };
 });
-
-// EXTERNAL MODULE: ./app/scripts/directives/level.directive.ts
-var level_directive = __webpack_require__(29);
 
 // CONCATENATED MODULE: ./app/scripts/directives/line-chart.directive.ts
 
@@ -86561,7 +86751,7 @@ angular["module"]('emuwebApp')
 
 
 
-
+// import "./level.directive";
 
 
 
@@ -88565,7 +88755,7 @@ angular["module"]('emuwebApp')
         var posS = viewState.getPos(ctx.canvas.width, viewState.curViewPort.selectS);
         var posE = viewState.getPos(ctx.canvas.width, viewState.curViewPort.selectE);
         if (posS === posE) {
-            ctx.fillStyle = ConfigProviderService.design.color.transparent.white;
+            ctx.fillStyle = ConfigProviderService.design.color.white;
             ctx.fillRect(posS + xOffset, 0, 2, ctx.canvas.height);
             if (drawTimeAndSamples) {
                 if (viewState.curViewPort.sS !== viewState.curViewPort.selectS && viewState.curViewPort.selectS !== -1) {
@@ -88578,7 +88768,7 @@ angular["module"]('emuwebApp')
         else {
             ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;
             ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
-            ctx.strokeStyle = ConfigProviderService.design.color.transparent.white;
+            ctx.strokeStyle = ConfigProviderService.design.color.white;
             ctx.beginPath();
             ctx.moveTo(posS, 0);
             ctx.lineTo(posS, ctx.canvas.height);
@@ -88611,8 +88801,8 @@ angular["module"]('emuwebApp')
      * on canvases where the mouse is currently not hovering over
      */
     sServObj.drawCrossHairX = function (ctx, mouseX) {
-        ctx.strokeStyle = ConfigProviderService.design.color.transparent.red;
-        ctx.fillStyle = ConfigProviderService.design.color.transparent.red;
+        ctx.strokeStyle = ConfigProviderService.design.color.red;
+        ctx.fillStyle = ConfigProviderService.design.color.red;
         ctx.beginPath();
         ctx.moveTo(mouseX, 0);
         ctx.lineTo(mouseX, ctx.canvas.height);
@@ -88626,8 +88816,8 @@ angular["module"]('emuwebApp')
         if (ConfigProviderService.vals.restrictions.drawCrossHairs) {
             var fontSize = ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
             // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.strokeStyle = ConfigProviderService.design.color.transparent.red;
-            ctx.fillStyle = ConfigProviderService.design.color.transparent.red;
+            ctx.strokeStyle = ConfigProviderService.design.color.red;
+            ctx.fillStyle = ConfigProviderService.design.color.red;
             // see if Chrome -> dashed line
             //if (navigator.vendor === 'Google Inc.') {
             //	ctx.setLineDash([2]);
@@ -88655,19 +88845,16 @@ angular["module"]('emuwebApp')
             if (max !== undefined || min !== undefined) {
                 if (trackname === 'OSCI') {
                     // no horizontal values
+                    ctx.strokeStyle = ConfigProviderService.design.color.red;
+                    ctx.fillStyle = ConfigProviderService.design.color.red;
                     ctx.beginPath();
-                    //ctx.moveTo(0, mouseY);
-                    //ctx.lineTo(5, mouseY + 5);
-                    //ctx.moveTo(0, mouseY);
-                    //ctx.lineTo(ctx.canvas.width, mouseY);
-                    //ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
                     ctx.moveTo(mouseX, 0);
                     ctx.lineTo(mouseX, ctx.canvas.height);
                     ctx.stroke();
                 }
                 else if (trackname === 'SPEC') {
-                    fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, y, ConfigProviderService.design.color.transparent.red, true);
-                    fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - tW, y, ConfigProviderService.design.color.transparent.red, true);
+                    fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, 5, y, ConfigProviderService.design.color.red, true);
+                    fontScaleService.drawUndistortedText(ctx, mouseFreq + unit, fontSize, ConfigProviderService.design.font.small.family, ctx.canvas.width - tW, y, ConfigProviderService.design.color.red, true);
                     ctx.beginPath();
                     ctx.moveTo(0, mouseY);
                     ctx.lineTo(5, mouseY + 5);
@@ -92554,7 +92741,7 @@ angular["module"]('emuwebApp')
         sServObj.editing = false;
         sServObj.cursorInTextField = false;
         sServObj.saving = true;
-        sServObj.submenuOpen = false;
+        sServObj.bundleListSideBarOpen = false;
         sServObj.rightSubmenuOpen = false;
         sServObj.curClickItems = [];
         sServObj.curMousePosSample = 0;
@@ -92907,8 +93094,8 @@ angular["module"]('emuwebApp')
     /**
      * toggle boolean if left submenu is open
      */
-    sServObj.toggleSubmenu = function (time) {
-        this.submenuOpen = !this.submenuOpen;
+    sServObj.toggleBundleListSideBar = function (time) {
+        this.bundleListSideBarOpen = !this.bundleListSideBarOpen;
         // hack to call $apply post animation
         $timeout(function () {
             var d = new Date();
@@ -92918,14 +93105,14 @@ angular["module"]('emuwebApp')
     /**
      * get boolean if left submenu is open
      */
-    sServObj.getsubmenuOpen = function () {
-        return this.submenuOpen;
+    sServObj.getBundleListSideBarOpen = function () {
+        return this.bundleListSideBarOpen;
     };
     /**
      * set boolean if left submenu is open
      */
-    sServObj.setsubmenuOpen = function (s) {
-        this.submenuOpen = s;
+    sServObj.setBundleListSideBarOpen = function (s) {
+        this.bundleListSideBarOpen = s;
     };
     /**
      * get the height of the osci
@@ -92954,13 +93141,13 @@ angular["module"]('emuwebApp')
     /**
      * get the height of the osci
      */
-    sServObj.getRightsubmenuOpen = function () {
+    sServObj.getPerspectivesSideBarOpen = function () {
         return this.rightSubmenuOpen;
     };
     /**
      * get the height of the osci
      */
-    sServObj.setRightsubmenuOpen = function (s) {
+    sServObj.setPerspectivesSideBarOpen = function (s) {
         this.rightSubmenuOpen = s;
     };
     /**
@@ -94060,89 +94247,94 @@ angular["module"]('emuwebApp')
 // EXTERNAL MODULE: ./app/scripts/components/ghostlevel.component.ts
 var ghostlevel_component = __webpack_require__(40);
 
+// EXTERNAL MODULE: ./app/scripts/components/level.component.ts
+var level_component = __webpack_require__(41);
+
 // CONCATENATED MODULE: ./app/scripts/components/index.ts
 
 
+
 // EXTERNAL MODULE: ./app/styles/font.scss
-var font = __webpack_require__(41);
+var font = __webpack_require__(42);
 
 // EXTERNAL MODULE: ./app/styles/text.scss
-var styles_text = __webpack_require__(43);
+var styles_text = __webpack_require__(44);
 
 // EXTERNAL MODULE: ./app/styles/button.scss
-var styles_button = __webpack_require__(45);
+var styles_button = __webpack_require__(46);
 
 // EXTERNAL MODULE: ./app/styles/media-query.scss
-var media_query = __webpack_require__(47);
+var media_query = __webpack_require__(48);
 
 // EXTERNAL MODULE: ./app/styles/emuwebapp.scss
-var emuwebapp = __webpack_require__(49);
+var emuwebapp = __webpack_require__(50);
 
 // EXTERNAL MODULE: ./app/styles/preview.scss
-var preview = __webpack_require__(51);
+var preview = __webpack_require__(52);
 
 // EXTERNAL MODULE: ./app/styles/modal.scss
-var modal = __webpack_require__(53);
+var modal = __webpack_require__(54);
 
 // EXTERNAL MODULE: ./app/styles/bundleListSideBar.scss
-var bundleListSideBar = __webpack_require__(55);
+var bundleListSideBar = __webpack_require__(56);
 
 // EXTERNAL MODULE: ./app/styles/rightSideMenu.scss
-var rightSideMenu = __webpack_require__(57);
+var rightSideMenu = __webpack_require__(58);
 
 // EXTERNAL MODULE: ./app/styles/twoDimCanvas.scss
-var twoDimCanvas = __webpack_require__(59);
+var twoDimCanvas = __webpack_require__(60);
 
 // EXTERNAL MODULE: ./app/styles/print.scss
-var print = __webpack_require__(61);
+var print = __webpack_require__(62);
 
 // EXTERNAL MODULE: ./app/styles/progressThing.scss
-var progressThing = __webpack_require__(63);
+var progressThing = __webpack_require__(64);
 
 // EXTERNAL MODULE: ./app/styles/aboutHint.scss
-var aboutHint = __webpack_require__(65);
+var aboutHint = __webpack_require__(66);
 
 // EXTERNAL MODULE: ./app/styles/drop.scss
-var drop = __webpack_require__(67);
+var drop = __webpack_require__(68);
 
 // EXTERNAL MODULE: ./app/styles/timeline.scss
-var timeline = __webpack_require__(69);
+var timeline = __webpack_require__(70);
 
 // EXTERNAL MODULE: ./app/styles/flexBoxGrid.scss
-var flexBoxGrid = __webpack_require__(71);
+var flexBoxGrid = __webpack_require__(72);
 
 // EXTERNAL MODULE: ./app/styles/levels.scss
-var levels = __webpack_require__(73);
+var levels = __webpack_require__(74);
 
 // EXTERNAL MODULE: ./app/styles/historyActionPopup.scss
-var historyActionPopup = __webpack_require__(75);
+var historyActionPopup = __webpack_require__(76);
 
 // EXTERNAL MODULE: ./app/styles/hierarchy.scss
-var hierarchy = __webpack_require__(77);
+var hierarchy = __webpack_require__(78);
 
 // EXTERNAL MODULE: ./app/styles/splitPanes.scss
-var splitPanes = __webpack_require__(79);
+var splitPanes = __webpack_require__(80);
 
 // EXTERNAL MODULE: ./app/styles/tabbed.scss
-var tabbed = __webpack_require__(81);
+var tabbed = __webpack_require__(82);
 
 // EXTERNAL MODULE: ./app/styles/animation.scss
-var animation = __webpack_require__(83);
+var animation = __webpack_require__(84);
 
 // EXTERNAL MODULE: ./app/styles/customAngularuiModal.scss
-var customAngularuiModal = __webpack_require__(85);
+var customAngularuiModal = __webpack_require__(86);
 
 // EXTERNAL MODULE: ./app/styles/largeTextInputField.scss
-var largeTextInputField = __webpack_require__(87);
+var largeTextInputField = __webpack_require__(88);
 
 // EXTERNAL MODULE: ./app/styles/levelCanvasesGrid.scss
-var levelCanvasesGrid = __webpack_require__(89);
+var levelCanvasesGrid = __webpack_require__(90);
 
 // CONCATENATED MODULE: ./app/scripts/main.ts
 // Vendor
 
 
 //import "bootstrap";
+
 
 
 

@@ -23,24 +23,26 @@ module.exports = function (config) {
     // NOTE: these are injected by wiredep and somehow
     // the bootstrap jquery dep
     files: [
-      'node_modules/jquery/dist/jquery.js',
-      'node_modules/angular/angular.js',
-      'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
-      'node_modules/angular-animate/angular-animate.js',
-      'node_modules/angular-cookies/angular-cookies.js',
-      'node_modules/angular-resource/angular-resource.js',
-      'node_modules/angular-route/angular-route.js',
-      'node_modules/angular-sanitize/angular-sanitize.js',
-      'node_modules/angular-touch/angular-touch.js',
-      'node_modules/tv4/tv4.js',
-      'node_modules/d3/d3.js',
-      'node_modules/angular-filter/dist/angular-filter.js',
-      'node_modules/showdown/dist/showdown.js',
+      'dist/dist/bundle.js',
+      // 'node_modules/jquery/dist/jquery.js',
+      // 'node_modules/angular/angular.js',
+      // 'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
+      // 'node_modules/angular-animate/angular-animate.js',
+      // 'node_modules/angular-cookies/angular-cookies.js',
+      // 'node_modules/angular-resource/angular-resource.js',
+      // 'node_modules/angular-route/angular-route.js',
+      // 'node_modules/angular-sanitize/angular-sanitize.js',
+      // 'node_modules/angular-touch/angular-touch.js',
+      // 'node_modules/tv4/tv4.js',
+      // 'node_modules/d3/d3.js',
+      // 'node_modules/angular-filter/dist/angular-filter.js',
+      // 'node_modules/showdown/dist/showdown.js',
       'node_modules/jasmine/lib/jasmine-core/jasmine.js',
       'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'app/scripts/**/*.js',
-      'test/spec/**/*.js',
+      // 'test/spec/**/*.js',
+      // try to get it to work on a single file first
+      'test/spec/controllers/bundlelistsidebar.spec.js',
       //include the directory where directive templates are stored.
       'app/views/**/*.html',
       // 'app/img/*.svg',
@@ -148,14 +150,5 @@ module.exports = function (config) {
     captureTimeout: 60000,
 
     browserNoActivityTimeout: 40000
-
-
-    // coverage reporter
-    // reporters: ['progress', 'coverage'],
-    //
-    // coverageReporter: {
-    //   type: 'lcov',
-    //   dir: 'test/coverage/'
-    // }
   });
 };

@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.2.3
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+- level directive is now a component
+
 ## Version 1.2.2
 
 ### bug fixes

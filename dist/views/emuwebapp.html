@@ -7,7 +7,7 @@
     <hint ng-if="internalVars.showAboutHint"></hint>
     <!-- end: hint -->
     <!-- start: left side menu bar -->
-    <bundle-list-side-bar ng-show="vs.submenuOpen"></bundle-list-side-bar>
+    <bundle-list-side-bar ng-show="vs.bundleListSideBarOpen"></bundle-list-side-bar>
     <!-- end: left side menu bar -->
 
     <!-- start: main window -->
@@ -17,7 +17,7 @@
 
         <!-- start: top menu bar -->
         <div class="emuwebapp-top-menu">
-            <button ng-show="cps.vals.activeButtons.openMenu" id="submenuOpen" ng-click="vs.toggleSubmenu(cps.design.animation.period);" class="emuwebapp-button-icon" style="float:left"><img src="img/menu.svg" class="_20px" /></button>
+            <button ng-show="cps.vals.activeButtons.openMenu" id="bundleListSideBarOpen" ng-click="vs.toggleBundleListSideBar(cps.design.animation.period);" class="emuwebapp-button-icon" style="float:left"><img src="img/menu.svg" class="_20px" /></button>
             <button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelSegBtnClick();">add level (SEG.)</button>
             <button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelPointBtnClick();">add level (EVENT)</button>
             <button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn left" ng-click="renameSelLevelBtnClick();">rename sel. level</button>
@@ -50,53 +50,74 @@
                 <bg-pane type="topPane" min-size="80" max-size="500">
                     <ul class="emuwebapp-timeline-flexcontainer">
                         <li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge($index)}" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
-                            <osci ng-switch-when="OSCI" order="{{$index}}" track-name="{{curTrack}}"></osci>
-                            <spectro ng-switch-when="SPEC" order="{{$index}}" track-name="{{curTrack}}"></spectro>
-                            <ssff-track ng-switch-default order="{{$index}}" track-name="{{curTrack}}"></ssff-track>
+                            <osci 
+                            ng-switch-when="OSCI" 
+                            order="{{$index}}" 
+                            track-name="{{curTrack}}"
+                            ></osci>
+                            
+                            <spectro 
+                            ng-switch-when="SPEC" 
+                            order="{{$index}}" 
+                            track-name="{{curTrack}}"
+                            ></spectro>
+                            
+                            <ssff-track 
+                            ng-switch-default 
+                            order="{{$index}}" 
+                            track-name="{{curTrack}}"
+                            ></ssff-track>
                         </li>
                     </ul>
                 </bg-pane>
                 <bg-pane type="bottomPane" min-size="80">
-                    <!-- <div style="margin-top: 25px;">
+                    <!-- ghost level div containing ul of ghost levels-->
+                    <!-- <div ng-if="true" style="margin-top: 25px;">
                         <ul>
-                            <li ng-repeat="level in dataServ.getLevelOrder(cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order) | levelsFilter track by $index">
+                            <li ng-repeat="levelName in cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order">
                                 <ghost-level 
-                                open 
-                                level="level" 
+                                ng-if="levServ.getLevelDetails(levelName)"
+                                level="levServ.getLevelDetails(levelName)" 
                                 idx="$index" 
-                                order="{{$index}}" 
-                                id="{{level.name}}"
-                                viewPort="vs.curViewPort."
+                                view-port-sample-start="vs.curViewPort.sS"
+                                view-port-sample-end="vs.curViewPort.eS"
+                                view-port-select-start="vs.curViewPort.selectS"
+                                view-port-select-end="vs.curViewPort.selectE"
+                                cur-mouse-x="vs.curMouseX"
+                                cur-click-level-name="vs.curClickLevelName"
+                                moving-boundary-sample="vs.movingBoundarySample"
+                                moving-boundary="vs.movingBoundary",
+                                moves-away-from-last-save="hists.movesAwayFromLastSave"
+                                cur-perspective-idx="vs.curPerspectiveIdx"
+                                cur-bndl="lmds.getCurBndl()"
                                 ></ghost-level>
                             </li>
                         </ul>
                     </div> -->
-                    <div style="margin-top: 25px;">
+                    <!-- level div containing ul of levels -->
+                    <div ng-if="true" style="margin-top: 25px;">
                         <ul>
-                            <li ng-repeat="level in dataServ.getLevelOrder(cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order) | levelsFilter track by $index">
+                            <li ng-repeat="levelName in cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order">
                                 <level 
-                                open 
-                                level="level" 
+                                ng-if="levServ.getLevelDetails(levelName)"
+                                level="levServ.getLevelDetails(levelName)" 
                                 idx="$index" 
-                                order="{{$index}}" 
-                                id="{{level.name}}"></level>
+                                view-port-sample-start="vs.curViewPort.sS"
+                                view-port-sample-end="vs.curViewPort.eS"
+                                view-port-select-start="vs.curViewPort.selectS"
+                                view-port-select-end="vs.curViewPort.selectE"
+                                cur-mouse-x="vs.curMouseX"
+                                cur-click-level-name="vs.curClickLevelName"
+                                moving-boundary-sample="vs.movingBoundarySample"
+                                moving-boundary="vs.movingBoundary",
+                                moves-away-from-last-save="hists.movesAwayFromLastSave"
+                                cur-perspective-idx="vs.curPerspectiveIdx"
+                                cur-bndl="lmds.getCurBndl()"
+                                ></level>
                             </li>
                         </ul>
                     </div>
-                
-<!--                 <div class="allLevelCanvasesGrid">
-                    <div class="levelCanvasGrid">
-                        <div class="levelCanvasArea">1</div>
-                        <div class="levelCanvasButtonGrid">
-                            <div>b1</div><div>b2</div><div>b3</div>
-                        </div>
-                    </div>
-                    <div class="levelCanvasGrid">Two</div>
-                    <div class="levelCanvasGrid">Three</div>
-                    <div class="levelCanvasGrid">Four</div>
-                    <div class="levelCanvasGrid">Five</div>
-                </div>
- -->                </bg-pane>
+                </bg-pane>
                 <bg-pane type="emuwebapp-2d-map">
                     <ul>
                         <li ng-repeat="cur2dTrack in cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order" ng-switch on="cur2dTrack">
