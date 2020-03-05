@@ -128,7 +128,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.saveSettings = function () {
 			var error = false;
-			$scope.errorID.forEach(function (entry) {
+			$scope.errorID.forEach((entry) => {
 				if (entry === true) {
 					error = true;
 				}

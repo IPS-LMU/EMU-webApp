@@ -408,7 +408,7 @@ SsffParserWorker.prototype = {
 			headerStr += 'Record_Freq ' + global.round(jso.sampleRate, 1) + '\n';
 			headerStr += 'Start_Time ' + jso.startTime + '\n';
 
-			jso.Columns.forEach(function (col) {
+			jso.Columns.forEach((col) => {
 				// console.log(col.name)
 				headerStr += 'Column ' + col.name + ' ' + col.ssffdatatype + ' ' + col.length + '\n';
 			});
@@ -420,7 +420,7 @@ SsffParserWorker.prototype = {
 			var bytePerTime = 0;
 			var failed = false;
 
-			jso.Columns.forEach(function (col) {
+			jso.Columns.forEach((col) => {
 				if (col.ssffdatatype === 'SHORT') {
 					bytePerTime += 2 * col.length;
 				} else {
@@ -448,10 +448,10 @@ SsffParserWorker.prototype = {
 
 			// loop through vals and append array of each column to ssffBufView
 			var byteOffSet = 0;
-			jso.Columns[0].values.forEach(function (curArray, curArrayIDX) {
-				jso.Columns.forEach(function (curCol) {
+			jso.Columns[0].values.forEach((curArray, curArrayIDX) => {
+				jso.Columns.forEach((curCol) => {
 					if (curCol.ssffdatatype === 'SHORT') {
-						curCol.values[curArrayIDX].forEach(function (val) {
+						curCol.values[curArrayIDX].forEach((val) => {
 							dataBuffView.setInt16(byteOffSet, val, true);
 							byteOffSet += 2;
 						});

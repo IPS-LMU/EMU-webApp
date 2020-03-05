@@ -9,8 +9,6 @@ import * as angular from 'angular';
  */
 angular.module('emuwebApp')
 	.service('loadedMetaDataService', function loadedMetaDataService(Validationservice) {
-		// shared service object
-		var sServObj = {} as any;
 
 		//////////////////////
 		// private vars
@@ -25,7 +23,7 @@ angular.module('emuwebApp')
 		function genUniqSessionList(bndlList) {
 			var sList = [];
 			var fistSes;
-			bndlList.forEach(function (bndl, idx) {
+			bndlList.forEach((bndl, idx) => {
 				sList[bndl.session] = {
 					'collapsed': true
 				};
@@ -39,7 +37,7 @@ angular.module('emuwebApp')
 		}
 
 		function genRendOptBndlList(bndlList) {
-			bndlList.forEach(function (bndl) {
+			bndlList.forEach((bndl) => {
 				if (rendOptBndlList[bndl.session] === undefined) {
 					rendOptBndlList[bndl.session] = [];
 				}
@@ -59,7 +57,7 @@ angular.module('emuwebApp')
 		 * setter for bundleList
 		 * @returns validation result for bundle list
 		 */
-		sServObj.setBundleList = function (bList) {
+		this.setBundleList = function (bList) {
 			// validate
 			var validRes = Validationservice.validateJSO('bundleListSchema', bList);
 			if (validRes === true) {
@@ -76,14 +74,14 @@ angular.module('emuwebApp')
 		/**
 		 * getter for bundleList
 		 */
-		sServObj.getBundleList = function () {
+		this.getBundleList = function () {
 			return bundleList;
 		};
 
 		/**
 		 * getter for rendOptBndlList
 		 */
-		sServObj.getRendOptBndlList = function () {
+		this.getRendOptBndlList = function () {
 			return rendOptBndlList;
 		};
 
@@ -93,28 +91,28 @@ angular.module('emuwebApp')
 		/**
 		 * getter curBndl
 		 */
-		sServObj.getCurBndl = function () {
+		this.getCurBndl = function () {
 			return curBndl;
 		};
 
 		/**
 		 * setter curBndl
 		 */
-		sServObj.setCurBndl = function (bndl) {
+		this.setCurBndl = function (bndl) {
 			curBndl = bndl;
 		};
 
 		/**
 		 * remove BndlComment
 		 */
-		sServObj.setBndlComment = function (comment, key, index) {
+		this.setBndlComment = function (comment, key, index) {
 			rendOptBndlList[key][index].comment = comment;
 		};
 
 		/**
 		 * setter BndlFinished
 		 */
-		sServObj.setBndlFinished = function (finished, key, index) {
+		this.setBndlFinished = function (finished, key, index) {
 			rendOptBndlList[key][index].finishedEditing = finished;
 		};
 
@@ -122,14 +120,14 @@ angular.module('emuwebApp')
 		/**
 		 * getter curBndl name
 		 */
-		sServObj.getCurBndlName = function () {
+		this.getCurBndlName = function () {
 			return curBndl.name;
 		};
 
 		/**
 		 * setter curBndl name
 		 */
-		sServObj.setCurBndlName = function (name) {
+		this.setCurBndlName = function (name) {
 			curBndl.name = name;
 		};
 
@@ -139,7 +137,7 @@ angular.module('emuwebApp')
 		/**
 		 * setter timeAnchors
 		 */
-		sServObj.setTimeAnchors = function (timeAnchors) {
+		this.setTimeAnchors = function (timeAnchors) {
 			curBndl.timeAnchors = timeAnchors;
 		};
 
@@ -151,14 +149,14 @@ angular.module('emuwebApp')
 		/**
 		 * setter demoDbName
 		 */
-		sServObj.setDemoDbName = function (name) {
+		this.setDemoDbName = function (name) {
 			demoDbName = name;
 		};
 
 		/**
 		 * getter demoDbName
 		 */
-		sServObj.getDemoDbName = function () {
+		this.getDemoDbName = function () {
 			return demoDbName;
 		};
 
@@ -169,26 +167,26 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.toggleCollapseSession = function (session) {
+		this.toggleCollapseSession = function (session) {
 			// console.log(session);
 			if(uniqSessionList[session] === undefined) {
 				uniqSessionList[session] = {};
 			}
 			uniqSessionList[session].collapsed = !uniqSessionList[session].collapsed;
 			// close all other sessions
-			Object.keys(uniqSessionList).forEach(function (key) {
+			Object.keys(uniqSessionList).forEach((key) => {
 				if (key !== session) {
 					uniqSessionList[key].collapsed = true;
 				}
 			});
 		};
 		
-		sServObj.openCollapseSession = function (session) {
+		this.openCollapseSession = function (session) {
 			// console.log(session);
 			uniqSessionList[session] = {};
 			uniqSessionList[session].collapsed = false;
 			// close all other sessions
-			Object.keys(uniqSessionList).forEach(function (key) {
+			Object.keys(uniqSessionList).forEach((key) => {
 				if (key !== session) {
 					uniqSessionList[key].collapsed = true;
 				}
@@ -198,8 +196,8 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		// sServObj.updateCollapseSessionState = function (text) {
-		// 	angular.forEach(sServObj.getBundleList(), function (bundle) {
+		// this.updateCollapseSessionState = function (text) {
+		// 	angular.forEach(this.getBundleList(), (bundle) => {
 		// 		if (bundle.name.indexOf(text)) {
 		// 			uniqSessionList[bundle.session].collapsed = false;
 		// 		} else {
@@ -211,7 +209,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getSessionCollapseState = function (session) {
+		this.getSessionCollapseState = function (session) {
 			if(uniqSessionList[session] === undefined) {
 				return undefined;
 			}
@@ -227,12 +225,11 @@ angular.module('emuwebApp')
 		/**
 		 * reset all private vals to init state
 		 */
-		sServObj.resetToInitState = function () {
+		this.resetToInitState = function () {
 			uniqSessionList = [];
 			bundleList = [];
 			curBndl = {};
 			rendOptBndlList = {};
 		};
 
-		return (sServObj);
 	});

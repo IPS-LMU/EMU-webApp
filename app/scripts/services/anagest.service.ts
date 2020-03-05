@@ -2,8 +2,6 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, modalService, HistoryService, DataService) {
-		// shared service object
-		var sServObj = {} as any;
 
 		// defer object 
 		var defer;
@@ -11,7 +9,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.insertAnagestEvents = function () {
+		this.insertAnagestEvents = function () {
 
 			var defer = $q.defer();
 
@@ -99,7 +97,7 @@ angular.module('emuwebApp')
 			$log.info('Looking for gesture onset');
 
 
-			sServObj.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then(function (resp) {
+			this.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then(function (resp) {
 				// keyboard;
 				var on20 = resp;
 				gdat[0] = on20;
@@ -111,7 +109,7 @@ angular.module('emuwebApp')
 
 				// nucleus onset
 				$log.info('Looking for nucleus onset');
-				sServObj.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
+				this.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
 					var off20 = resp;
 					ndat[0] = off20 + vdat[0];
 
@@ -127,7 +125,7 @@ angular.module('emuwebApp')
 
 					// nucleus offset
 					$log.info('Looking for nucleus offset');
-					sServObj.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
+					this.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
 						var on20 = resp;
 						ndat[1] = on20 + minp;
 
@@ -138,7 +136,7 @@ angular.module('emuwebApp')
 						// gesture offset
 
 						$log.info('Looking for gesture offset');
-						sServObj.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
+						this.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
 							var off20 = resp;
 							gdat[1] = off20 + vdat[1];
 							// insert points
@@ -277,7 +275,7 @@ angular.module('emuwebApp')
 		 * @param descriptions describes the task
 		 * @returns promise that resolves to threshold value
 		 */
-		sServObj.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction, description) {
+		this.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction, description) {
 			// console.log('interactiveFindThresholds');
 			var i;
 
@@ -350,5 +348,4 @@ angular.module('emuwebApp')
 
 		};
 
-		return sServObj;
 	});

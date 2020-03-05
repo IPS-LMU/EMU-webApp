@@ -1092,11 +1092,11 @@ angular.module('emuwebApp')
 					// Transform relative coordinates (_posInLevel and _depth) to actual coordinates (_x and _y)
 
 
-					nodes.forEach(function (d) {
+					nodes.forEach((d) => {
 						d._x = scope.depthToX(d._depth);
 						d._y = scope.posInLevelToY(d._posInLevel);
 					});
-					links.forEach(function (d) {
+					links.forEach((d) => {
 						d._fromX = scope.depthToX(d._fromDepth);
 						d._fromY = scope.posInLevelToY(d._fromPosInLevel);
 						d._toX = scope.depthToX(d._toDepth);

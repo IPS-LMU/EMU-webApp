@@ -10,116 +10,111 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.service('modalService', function modalService($q, ArrayHelperService, viewState) {
 
-		// shared service object
-		var sServObj = {} as any;
-
-		sServObj.initialize = function() {
-            sServObj.isOpen = false;
-            sServObj.templateUrl = '';
-            sServObj.defer = undefined;
-            sServObj.deferChange = undefined;
-            sServObj.force = false;
-            sServObj.dataOut = undefined;
-            sServObj.dataIn = undefined;
-            sServObj.dataExport = undefined;
+		this.initialize = function() {
+            this.isOpen = false;
+            this.templateUrl = '';
+            this.defer = undefined;
+            this.deferChange = undefined;
+            this.force = false;
+            this.dataOut = undefined;
+            this.dataIn = undefined;
+            this.dataExport = undefined;
         };
 
 		/**
 		 * open modal normally
 		 */
-		sServObj.open = function (template, param1, param2, force) {
-		    sServObj.initialize();
+		this.open = function (template, param1, param2, force) {
+		    this.initialize();
 
 			if (param1 !== undefined) {
-				sServObj.dataIn = param1;
+				this.dataIn = param1;
 				if (param1.y !== undefined) {
-					sServObj.dataIn.chartData = ArrayHelperService.convertArrayToXYjsoArray(param1.y);
+					this.dataIn.chartData = ArrayHelperService.convertArrayToXYjsoArray(param1.y);
 				}
 			}
 			if (param2 !== undefined) {
-				sServObj.dataExport = param2;
+				this.dataExport = param2;
 			}
 			if (force !== undefined) { // force user to do sth
-				sServObj.force = force;
+				this.force = force;
 			}
-			sServObj.defer = $q.defer();
-			sServObj.templateUrl = template;
+			this.defer = $q.defer();
+			this.templateUrl = template;
 			viewState.setState('modalShowing');
-			sServObj.isOpen = true;
-			return sServObj.defer.promise;
+			this.isOpen = true;
+			return this.defer.promise;
 		};
 
 		/**
 		 *
 		 */
-		sServObj.error = function (msg) {
-            sServObj.initialize();
+		this.error = function (msg) {
+            this.initialize();
 
-			sServObj.dataIn = msg;
-			sServObj.templateUrl = 'views/error.html';
+			this.dataIn = msg;
+			this.templateUrl = 'views/error.html';
 			viewState.setState('modalShowing');
 		};
 
 		/**
 		 *
 		 */
-		sServObj.close = function () {
+		this.close = function () {
 			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
-			sServObj.isOpen = false;
+			this.isOpen = false;
 			if (viewState.hierarchyState.isShown()) {
 				viewState.hierarchyState.toggleHierarchy();
 			}
-			sServObj.defer.resolve(false);
+			this.defer.resolve(false);
 		};
 
 
 		/**
 		 *
 		 */
-		sServObj.closeAndResolve = function (status) {
+		this.closeAndResolve = function (status) {
 			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
-			sServObj.isOpen = false;
-			sServObj.defer.resolve(status);
+			this.isOpen = false;
+			this.defer.resolve(status);
 		};
 
 
 		/**
 		 *
 		 */
-		sServObj.confirm = function () {
+		this.confirm = function () {
 			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
-			sServObj.isOpen = false;
-			sServObj.defer.resolve(true);
+			this.isOpen = false;
+			this.defer.resolve(true);
 		};
 
 
 		/**
 		 *
 		 */
-		sServObj.select = function (idx) {
-			sServObj.closeAndResolve(idx);
+		this.select = function (idx) {
+			this.closeAndResolve(idx);
 		};
 
 		/**
 		 *
 		 */
-		sServObj.confirmContent = function () {
+		this.confirmContent = function () {
 			viewState.setEditing(false);
 			viewState.setState(viewState.prevState);
-			sServObj.isOpen = false;
-			sServObj.defer.resolve(sServObj.dataOut);
+			this.isOpen = false;
+			this.defer.resolve(this.dataOut);
 		};
 
 		/**
 		 *
 		 */
-		sServObj.getTemplateUrl = function () {
-			return sServObj.templateUrl;
+		this.getTemplateUrl = function () {
+			return this.templateUrl;
 		};
 
-
-		return sServObj;
 	});

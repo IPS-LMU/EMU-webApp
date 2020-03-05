@@ -797,7 +797,7 @@ angular.module('emuwebApp')
 									} else {
 										viewState.curClickItems = [];
 										var prev = null;
-										angular.forEach(viewState.getItemsInSelection(DataService.data.levels), function (item) {
+										viewState.getItemsInSelection(DataService.data.levels).forEach((item) => {
 											if(prev === null) {
 												viewState.setcurClickItem(item);
 											}

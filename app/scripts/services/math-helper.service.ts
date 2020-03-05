@@ -10,9 +10,6 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.service('mathHelperService', function () {
 
-		//shared service object to be returned
-		var sServObj = {} as any;
-
 		//////////////////////
 		//////////////////////
 		// public API
@@ -23,7 +20,7 @@ angular.module('emuwebApp')
 		 * @param num
 		 * @returns power of two value
 		 */
-		sServObj.calcClosestPowerOf2Gt = function (num) {
+		this.calcClosestPowerOf2Gt = function (num) {
 			var curExp = 0;
 
 			while (Math.pow(2, curExp) < num) {
@@ -42,7 +39,7 @@ angular.module('emuwebApp')
 		 * @param n digits after decimal point
 		 * @returns rounded number
 		 */
-		sServObj.roundToNdigitsAfterDecPoint = function (x, n) {
+		this.roundToNdigitsAfterDecPoint = function (x, n) {
 			if (n < 1 || n > 14) {
 				console.error('error in call of round function!!');
 			}
@@ -55,5 +52,4 @@ angular.module('emuwebApp')
 			return parseFloat(k.substring(0, k.indexOf('.') + n + 1));
 		};
 
-		return (sServObj);
 	});

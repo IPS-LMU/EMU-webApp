@@ -101,7 +101,7 @@ angular.module('emuwebApp')
 						if (Ssffdataservice.data.length !== 0) {
 							scope.assTrackName = '';
 							// check assignments (= overlays)
-							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach(function (ass) {
+							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach((ass) => {
 								if (ass.signalCanvasName === scope.trackName) {
 									scope.assTrackName = ass.ssffTrackName;
 									var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
@@ -165,7 +165,7 @@ angular.module('emuwebApp')
 					var horizontalLines = ConfigProviderService.getHorizontalLinesOfTrack(scope.trackName);
 					if (horizontalLines) {
 						// loop through array of yVals and draw blue line in canvas
-                        angular.forEach(horizontalLines.yValues, function(yVal){
+                        horizontalLines.yValues.forEach((yVal) => {
                         	ctx.beginPath();
                         	ctx.lineWidth = "2";
                         	ctx.strokeStyle = "blue";
@@ -188,7 +188,7 @@ angular.module('emuwebApp')
 						// NEW VERSION
 						////////////////////////////////
 
-						angular.forEach(curSampleArrs[0], function (contourVal, contourNr) {
+						curSampleArrs[0].forEach((contourVal, contourNr) => {
 
 							// console.log(contourNr);
 							if ($.isEmptyObject(minMaxContourLims) || (contourNr >= minMaxContourLims.minContourIdx && contourNr <= minMaxContourLims.maxContourIdx)) {
@@ -234,7 +234,7 @@ angular.module('emuwebApp')
 									ctx.moveTo(x, y);
 								}
 
-								angular.forEach(curSampleArrs, function (curArr, curArrIdx) {
+								curSampleArrs.forEach((curArr, curArrIdx) => {
 									// console.log(curArr[contourNr]);
 
 									curSampleInCol = colStartSampleNr + curArrIdx;

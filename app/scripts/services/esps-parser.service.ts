@@ -3,8 +3,6 @@ import { EspsParserWorker } from '../workers/esps-parser.worker.js';
 
 angular.module('emuwebApp')
 	.service('Espsparserservice', function Espsparserservice($q, LevelService, Soundhandlerservice) {
-		// shared service object
-		var sServObj = {} as any;
 
 		var worker = new EspsParserWorker();
 		var defer;
@@ -26,7 +24,7 @@ angular.module('emuwebApp')
 		 * @param name
 		 * @returns promise
 		 */
-		sServObj.asyncParseEsps = function (esps, annotates, name) {
+		this.asyncParseEsps = function (esps, annotates, name) {
 			defer = $q.defer();
 			worker.tell({
 				'cmd': 'parseESPS',
@@ -44,7 +42,7 @@ angular.module('emuwebApp')
 		 * @param sampleRate
 		 * @returns promise
 		 */
-		sServObj.asyncParseJSO = function (name) {
+		this.asyncParseJSO = function (name) {
 			defer = $q.defer();
 			worker.tell({
 				'cmd': 'parseJSO',
@@ -53,8 +51,5 @@ angular.module('emuwebApp')
 			});
 			return defer.promise;
 		};
-
-
-		return sServObj;
 
 	});

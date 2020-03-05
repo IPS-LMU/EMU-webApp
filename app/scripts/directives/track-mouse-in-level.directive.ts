@@ -161,7 +161,7 @@ angular.module('emuwebApp')
 										else if (scope.levelType === 'EVENT') {
 											seg = viewState.getcurClickItems();
 											if (seg[0] !== undefined) {
-												angular.forEach(seg, function (s) {
+												seg.forEach((s) => {
 													LevelService.moveEvent(scope.levelName, s.id, moveBy);
 													HistoryService.updateCurChangeObj({
 														'type': 'ANNOT',

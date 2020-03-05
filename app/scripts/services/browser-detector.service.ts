@@ -1,12 +1,10 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.factory('browserDetector', function () {
+	.service('browserDetector', function () {
 
-		//shared service object to be returned
-		var sServObj = {} as any;
 
-		sServObj.isMobile = {
+		this.isMobile = {
 			Android: function () {
 				return navigator.userAgent.match(/Android/i);
 			},
@@ -23,15 +21,15 @@ angular.module('emuwebApp')
 				return navigator.userAgent.match(/IEMobile/i);
 			},
 			any: function () {
-				return (sServObj.isMobile.Android() ||
-				sServObj.isMobile.BlackBerry() ||
-				sServObj.isMobile.iOS() ||
-				sServObj.isMobile.Opera() ||
-				sServObj.isMobile.Windows());
+				return (this.isMobile.Android() ||
+				this.isMobile.BlackBerry() ||
+				this.isMobile.iOS() ||
+				this.isMobile.Opera() ||
+				this.isMobile.Windows());
 			}
 		};
 
-		sServObj.isBrowser = {
+		this.isBrowser = {
 			Firefox: function () {
 				return navigator.userAgent.match(/Firefox/i);
 			},
@@ -54,17 +52,17 @@ angular.module('emuwebApp')
 				return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 			},
 			any: function () {
-				return (sServObj.isBrowser.Firefox() ||
-				sServObj.isBrowser.Chrome() ||
-				sServObj.isBrowser.InternetExplorer() ||
-				sServObj.isBrowser.Opera() ||
-				sServObj.isBrowser.Safari() ||
-				sServObj.isBrowser.PhantomJS());
+				return (this.isBrowser.Firefox() ||
+				this.isBrowser.Chrome() ||
+				this.isBrowser.InternetExplorer() ||
+				this.isBrowser.Opera() ||
+				this.isBrowser.Safari() ||
+				this.isBrowser.PhantomJS());
 			}
 		};
 
-		sServObj.isMobileDevice = function () {
-			var data = sServObj.isMobile.any();
+		this.isMobileDevice = function () {
+			var data = this.isMobile.any();
 			if (data === null) {
 				return false;
 			}
@@ -78,8 +76,8 @@ angular.module('emuwebApp')
 			}
 		};
 
-		sServObj.isDesktopDevice = function () {
-			var data = sServObj.isBrowser.any();
+		this.isDesktopDevice = function () {
+			var data = this.isBrowser.any();
 			if (data === null) {
 				return false;
 			}
@@ -92,7 +90,5 @@ angular.module('emuwebApp')
 				}
 			}
 		};
-
-		return sServObj;
 
 	});

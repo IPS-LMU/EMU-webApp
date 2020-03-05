@@ -8,9 +8,6 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.service('StandardFuncsService', function () {
 
-		// shared service object
-		var sServObj = {} as any;
-
 		/**
 		 * Recursively looks at all properties of a given object and
 		 * removes any whose name starts with an underscore
@@ -18,7 +15,7 @@ angular.module('emuwebApp')
 		 * @param o The object to traverse
 		 * @returns nothing
 		 */
-		sServObj.traverseAndClean = function (o) {
+		this.traverseAndClean = function (o) {
 			for (var i in o) {
 				if (i.substr(0, 1) === '_') {
 					delete o[i];
@@ -26,7 +23,7 @@ angular.module('emuwebApp')
 
 				if (o[i] !== null && typeof(o[i]) === 'object') {
 					// Go one step down in the object tree
-					sServObj.traverseAndClean(o[i]);
+					this.traverseAndClean(o[i]);
 				}
 			}
 		};
@@ -34,12 +31,11 @@ angular.module('emuwebApp')
 		/**
 		 * Return a reversed copy of an array
 		 */
-		sServObj.reverseCopy = function (a) {
+		this.reverseCopy = function (a) {
 			var r = angular.copy(a);
 			r.reverse();
 			return r;
 		};
 
-		return sServObj;
 	});
 	

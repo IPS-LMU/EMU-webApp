@@ -19,17 +19,15 @@ angular.module('emuwebApp')
 		Websockethandler, 
 		DragnDropDataService,
 		loadedMetaDataService) {
-		// shared service object
-		var sServObj = {} as any;
 
 		// $http.defaults.useXDomain = true;
 
-		sServObj.wsH = Websockethandler;
+		this.wsH = Websockethandler;
 
 		/**
 		 * default config is always loaded from same origin
 		 */
-		sServObj.httpGetDefaultConfig = function () {
+		this.httpGetDefaultConfig = function () {
 			var prom = $http.get('configFiles/default_emuwebappConfig.json');
 			return prom;
 		};
@@ -37,7 +35,7 @@ angular.module('emuwebApp')
 		/**
 		 * default design is always loaded from same origin
 		 */
-		sServObj.httpGetDefaultDesign = function () {
+		this.httpGetDefaultDesign = function () {
 			var prom = $http.get('configFiles/default_emuwebappDesign.json');
 			return prom;
 		};
@@ -45,7 +43,7 @@ angular.module('emuwebApp')
 		/**
 		 * default config is always loaded from same origin
 		 */
-		sServObj.httpGetPath = function (path, respType) {
+		this.httpGetPath = function (path, respType) {
 			if(ConfigProviderService.vals.main.comMode !== "GITLAB"){
 				var prom = $http.get(path, {
 					responseType: respType
@@ -76,7 +74,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getProtocol = function () {
+		this.getProtocol = function () {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -100,7 +98,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getDoUserManagement = function () {
+		this.getDoUserManagement = function () {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -121,7 +119,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.logOnUser = function (name, pwd) {
+		this.logOnUser = function (name, pwd) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -136,7 +134,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getDBconfigFile = function (nameOfDB) {
+		this.getDBconfigFile = function (nameOfDB) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -162,7 +160,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getBundleList = function (nameOfDB) {
+		this.getBundleList = function (nameOfDB) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -187,7 +185,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.getBundle = function (name, session, nameOfDB) {
+		this.getBundle = function (name, session, nameOfDB) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -205,7 +203,7 @@ angular.module('emuwebApp')
 				var neededTracks = ConfigProviderService.findAllTracksInDBconfigNeededByEMUwebApp();
 				var ssffFiles = [];
 
-				neededTracks.forEach(function (tr) {
+				neededTracks.forEach((tr) => {
 					ssffFiles.push({ 
 						encoding: "GETURL", 
 						data: bndlURL + name + "." + tr.fileExtension + '/raw?ref=master',
@@ -240,7 +238,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.saveBundle = function (bundleData) {
+		this.saveBundle = function (bundleData) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -311,7 +309,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		sServObj.saveConfiguration = function (configData) {
+		this.saveConfiguration = function (configData) {
 			var getProm;
 
 			if (ConfigProviderService.vals.main.comMode === 'CORS') {
@@ -329,7 +327,7 @@ angular.module('emuwebApp')
 		/**
 		 * pass through to according parser
 		 */
-		sServObj.parseLabelFile = function (string, annotates, name, fileType) {
+		this.parseLabelFile = function (string, annotates, name, fileType) {
 			var prom;
 			if (fileType === 'ESPS') {
 				prom = Espsparserservice.asyncParseEsps(string, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedESPS');
@@ -343,7 +341,4 @@ angular.module('emuwebApp')
 
 			return prom;
 		};
-
-
-		return sServObj;
 	});

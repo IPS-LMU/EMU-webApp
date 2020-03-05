@@ -4,8 +4,6 @@ import { TextGridParserWorker } from '../workers/textgrid-parser.worker.js';
 
 angular.module('emuwebApp')
 	.service('Textgridparserservice', function Textgridparserservice($q, DataService, viewState, Soundhandlerservice) {
-		// shared service object
-		var sServObj = {} as any;
 
 		var worker = new TextGridParserWorker();
 		var defer;
@@ -25,7 +23,7 @@ angular.module('emuwebApp')
 		 * @param level data
 		 * @returns promise
 		 */
-		sServObj.asyncToTextGrid = function () {
+		this.asyncToTextGrid = function () {
 			defer = $q.defer();
 			worker.tell({
 				'cmd': 'toTextGrid',
@@ -42,7 +40,7 @@ angular.module('emuwebApp')
 		 * @param array of ssff files encoded as base64 stings
 		 * @returns promise
 		 */
-		sServObj.asyncParseTextGrid = function (textGrid, annotates, name) {
+		this.asyncParseTextGrid = function (textGrid, annotates, name) {
 			defer = $q.defer();
 			worker.tell({
 				'cmd': 'parseTG',
@@ -53,8 +51,5 @@ angular.module('emuwebApp')
 			});
 			return defer.promise;
 		};
-
-
-		return sServObj;
 
 	});

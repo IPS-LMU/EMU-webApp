@@ -2,8 +2,6 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('LinkService', function LinkService(DataService, ConfigProviderService) {
-		// shared service object
-		var sServObj = {} as any;
 
 		/**
 		 * adds single links by pairing all childIds
@@ -11,7 +9,7 @@ angular.module('emuwebApp')
 		 * @param fromID father node
 		 * @param toID child node
 		 */
-		sServObj.insertLink = function (fromID, toID) {
+		this.insertLink = function (fromID, toID) {
 			DataService.insertLinkData({
 				'fromID': fromID,
 				'toID': toID
@@ -26,7 +24,7 @@ angular.module('emuwebApp')
 		 * @param toID child node
 		 * @param order position of the node pair
 		 */
-		sServObj.insertLinkAt = function (fromID, toID, order) {
+		this.insertLinkAt = function (fromID, toID, order) {
 			DataService.insertLinkDataAt(order, {
 				'fromID': fromID,
 				'toID': toID
@@ -37,9 +35,9 @@ angular.module('emuwebApp')
 		 * removes single link from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
-		sServObj.deleteLink = function (fromID, toID) {
+		this.deleteLink = function (fromID, toID) {
 			var ret = -1;
-			angular.forEach(DataService.getLinkData(), function (link, linkIdx) {
+			DataService.getLinkData().forEach((link, linkIdx) => {
 				if (link.fromID === fromID && link.toID === toID) {
 					DataService.deleteLinkDataAt(linkIdx);
 					ret = linkIdx;
@@ -52,9 +50,9 @@ angular.module('emuwebApp')
 		 * checks if a given link exists
 		 * that matches the form {'fromID':fromID, 'toID':toID}
 		 */
-		sServObj.linkExists = function (fromID, toID) {
+		this.linkExists = function (fromID, toID) {
 			var ret = false;
-			angular.forEach(DataService.getLinkData(), function (link) {
+			DataService.getLinkData().forEach((link) => {
 				if (link.fromID === fromID && link.toID === toID) {
 					ret = true;
 				}
@@ -66,9 +64,9 @@ angular.module('emuwebApp')
 		 * checks if a given node has parents
 		 * @param ID node to check
 		 */
-		sServObj.hasParents = function (ID) {
+		this.hasParents = function (ID) {
 			var ret = false;
-			angular.forEach(DataService.getLinkData(), function (link) {
+			DataService.getLinkData().forEach((link) => {
 				if (link.toID === ID) {
 					ret = true;
 				}
@@ -80,9 +78,9 @@ angular.module('emuwebApp')
 		 * checks if a given node has children
 		 * @param ID node to check
 		 */
-		sServObj.hasChildren = function (ID) {
+		this.hasChildren = function (ID) {
 			var ret = false;
-			angular.forEach(DataService.getLinkData(), function (link) {
+			DataService.getLinkData().forEach((link) => {
 				if (link.fromID === ID) {
 					ret = true;
 				}
@@ -94,8 +92,8 @@ angular.module('emuwebApp')
 		 * checks if a given node has parents or children
 		 * @param ID node to check
 		 */
-		sServObj.isLinked = function (ID) {
-			return (sServObj.hasChildren(ID) || sServObj.hasParents(ID));
+		this.isLinked = function (ID) {
+			return (this.hasChildren(ID) || this.hasParents(ID));
 		};
 
 		/**
@@ -103,9 +101,9 @@ angular.module('emuwebApp')
 		 * by pairing all childIds with the parent
 		 * id (form=={'fromID':fromID, 'toID':childId})
 		 */
-		sServObj.insertLinksTo = function (fromID, toIDs) {
-			angular.forEach(toIDs, function (toID) {
-				sServObj.insertLink(fromID, toID);
+		this.insertLinksTo = function (fromID, toIDs) {
+			toIDs.forEach((toID) => {
+				this.insertLink(fromID, toID);
 			});
 		};
 
@@ -113,10 +111,10 @@ angular.module('emuwebApp')
 		 * removes multiple links to children from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
-		sServObj.deleteLinksTo = function (fromID, toIDs) {
+		this.deleteLinksTo = function (fromID, toIDs) {
 			var ret = [];
-			angular.forEach(toIDs, function (toID) {
-				sServObj.deleteLink(fromID, toID);
+			toIDs.forEach((toID) => {
+				this.deleteLink(fromID, toID);
 				ret.push({fromID: fromID, toID: toID});
 			});
 			return ret;
@@ -127,9 +125,9 @@ angular.module('emuwebApp')
 		 * by pairing all parentIds with the child
 		 * id (form=={'fromID':fromID, 'toID':childId})
 		 */
-		sServObj.insertLinksFrom = function (fromIDs, toID) {
-			angular.forEach(fromIDs, function (fromID) {
-				sServObj.insertLink(fromID, toID);
+		this.insertLinksFrom = function (fromIDs, toID) {
+			fromIDs.forEach((fromID) => {
+				this.insertLink(fromID, toID);
 			});
 		};
 
@@ -137,11 +135,11 @@ angular.module('emuwebApp')
 		 * removes multiple links to parents from DataService
 		 * that match the form {'fromID':fromID, 'toID':toID}
 		 */
-		sServObj.deleteLinksFrom = function (fromIDs, toID) {
+		this.deleteLinksFrom = function (fromIDs, toID) {
 			var ret = [];
-			angular.forEach(fromIDs, function (fromID) {
+			fromIDs.forEach((fromID) => {
 				ret.push({fromID: fromID, toID: toID});
-				sServObj.deleteLink(fromID, toID);
+				this.deleteLink(fromID, toID);
 			});
 			return ret;
 		};
@@ -150,9 +148,9 @@ angular.module('emuwebApp')
 		 * returns all links
 		 * that match the form {'toID':toID}
 		 */
-		sServObj.getLinksTo = function (toID) {
+		this.getLinksTo = function (toID) {
 			var ret = [];
-			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
+			DataService.getLinkData().forEach((link, linkOrder) => {
 				if (link.toID === toID) {
 					ret.push({link: link, order: linkOrder});
 				}
@@ -164,9 +162,9 @@ angular.module('emuwebApp')
 		 * returns all links
 		 * that match the form {'toID':toID}
 		 */
-		sServObj.getLinksFrom = function (fromID) {
+		this.getLinksFrom = function (fromID) {
 			var ret = [];
-			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
+			DataService.getLinkData().forEach((link, linkOrder) => {
 				if (link.fromID === fromID) {
 					ret.push({link: link, order: linkOrder});
 				}
@@ -178,8 +176,8 @@ angular.module('emuwebApp')
 		 * change a Link (form=={'fromID':fromID, 'toID':toID})
 		 * to (to=={'fromID':fromID, 'toID':toNewID})
 		 */
-		sServObj.changeLinkTo = function (fromID, toID, toNewID) {
-			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
+		this.changeLinkTo = function (fromID, toID, toNewID) {
+			DataService.getLinkData().forEach((link, linkOrder) => {
 				if (link.fromID === fromID && link.toID === toID) {
 					DataService.changeLinkDataAt(linkOrder, fromID, toNewID);
 				}
@@ -191,8 +189,8 @@ angular.module('emuwebApp')
 		 * change a Link (form=={'fromID':fromID, 'toID':toID})
 		 * to (to=={'fromID':fromID, 'toID':toNewID})
 		 */
-		sServObj.changeLinkFrom = function (fromID, toID, fromNewID) {
-			angular.forEach(DataService.getLinkData(), function (link, linkOrder) {
+		this.changeLinkFrom = function (fromID, toID, fromNewID) {
+			DataService.getLinkData().forEach((link, linkOrder) => {
 				if (link.fromID === fromID && link.toID === toID) {
 					DataService.changeLinkDataAt(linkOrder, fromNewID, toID);
 				}
@@ -202,17 +200,17 @@ angular.module('emuwebApp')
 		/**
 		 * removes multiple links from and to ID
 		 */
-		sServObj.deleteLinkSegment = function (segments) {
+		this.deleteLinkSegment = function (segments) {
 			var linksTo = [];
 			var linksFrom = [];
-			angular.forEach(segments, function (segment) {
-				angular.forEach(sServObj.getLinksTo(segment.id), function (found) {
+			segments.forEach((segment) => {
+				this.getLinksTo(segment.id).forEach((found) => {
 					linksTo.push({fromID: found.link.fromID, toID: found.link.toID});
-					sServObj.deleteLink(found.link.fromID, found.link.toID);
+					this.deleteLink(found.link.fromID, found.link.toID);
 				});
-				angular.forEach(sServObj.getLinksFrom(segment.id), function (found) {
+				this.getLinksFrom(segment.id).forEach((found) => {
 					linksFrom.push({fromID: found.link.fromID, toID: found.link.toID});
-					sServObj.deleteLink(found.link.fromID, found.link.toID);
+					this.deleteLink(found.link.fromID, found.link.toID);
 				});
 			});
 			return {linksTo: linksTo, linksFrom: linksFrom};
@@ -222,12 +220,12 @@ angular.module('emuwebApp')
 		/**
 		 * removes multiple links from and to ID
 		 */
-		sServObj.deleteLinkSegmentInvers = function (deleted) {
-			angular.forEach(deleted.linksTo, function (found) {
-				sServObj.insertLink(found.fromID, found.toID);
+		this.deleteLinkSegmentInvers = function (deleted) {
+			deleted.linksTo.forEach((found) => {
+				this.insertLink(found.fromID, found.toID);
 			});
-			angular.forEach(deleted.linksFrom, function (found) {
-				sServObj.insertLink(found.fromID, found.toID);
+			deleted.linksFrom.forEach((found) => {
+				this.insertLink(found.fromID, found.toID);
 			});
 		};
 
@@ -235,14 +233,14 @@ angular.module('emuwebApp')
 		 * reorganizes multiple links from and to ID
 		 * if a boundary between two items is deleted
 		 */
-		sServObj.deleteLinkBoundary = function (ID, neighbourID, LevelService) {
+		this.deleteLinkBoundary = function (ID, neighbourID, LevelService) {
 			var linksTo = [];
 			var linksFrom = [];
 			var ord = 0;
 			var levelName = LevelService.getLevelName(neighbourID);
 
 			var onlyInM2m = true; // only in MANY_TO_MANY relationships
-            angular.forEach(ConfigProviderService.curDbConfig.linkDefinitions, function (linkDef) {
+            ConfigProviderService.curDbConfig.linkDefinitions.forEach((linkDef) => {
 				if(linkDef.superlevelName === levelName || linkDef.sublevelName === levelName){
 					if(linkDef.type !== 'MANY_TO_MANY'){
 						onlyInM2m = false;
@@ -252,14 +250,14 @@ angular.module('emuwebApp')
 
 
 			if (neighbourID >= 0) { // if not first item (neighbourID is -1 if it is the first item)
-				angular.forEach(sServObj.getLinksTo(ID), function (found) {
-					if (sServObj.linkExists(found.link.fromID, neighbourID)) {
-						ord = sServObj.deleteLink(found.link.fromID, ID);
+				this.getLinksTo(ID).forEach((found) => {
+					if (this.linkExists(found.link.fromID, neighbourID)) {
+						ord = this.deleteLink(found.link.fromID, ID);
 						linksTo.push({fromID: found.link.fromID, toID: ID, deleted: true, order: ord, neighbourID: 0});
 					}
 					else {
 						if(onlyInM2m){ // only relink in MANY_TO_MANY relationships
-							sServObj.changeLinkTo(found.link.fromID, ID, neighbourID);
+							this.changeLinkTo(found.link.fromID, ID, neighbourID);
 							linksTo.push({
 								fromID: found.link.fromID,
 								toID: ID,
@@ -270,13 +268,13 @@ angular.module('emuwebApp')
 						}
 					}
 				});
-				angular.forEach(sServObj.getLinksFrom(ID), function (found) {
-					if (sServObj.linkExists(neighbourID, found.link.toID)) {
-						ord = sServObj.deleteLink(ID, found.link.toID);
+				this.getLinksFrom(ID).forEach((found) => {
+					if (this.linkExists(neighbourID, found.link.toID)) {
+						ord = this.deleteLink(ID, found.link.toID);
 						linksFrom.push({fromID: ID, toID: found.link.toID, deleted: true, order: ord, neighbourID: 0});
 					}
 					else {
-						sServObj.changeLinkFrom(ID, found.link.toID, neighbourID);
+						this.changeLinkFrom(ID, found.link.toID, neighbourID);
 						linksFrom.push({
 							fromID: ID,
 							toID: found.link.toID,
@@ -289,12 +287,12 @@ angular.module('emuwebApp')
 				});
 			}
 			else {
-				angular.forEach(sServObj.getLinksTo(ID), function (found) {
-					ord = sServObj.deleteLink(found.link.fromID, ID);
+				this.getLinksTo(ID).forEach((found) => {
+					ord = this.deleteLink(found.link.fromID, ID);
 					linksTo.push({fromID: found.link.fromID, toID: ID, deleted: true, order: ord, neighbourID: 0});
 				});
-				angular.forEach(sServObj.getLinksFrom(ID), function (found) {
-					ord = sServObj.deleteLink(ID, found.link.toID);
+				this.getLinksFrom(ID).forEach((found) => {
+					ord = this.deleteLink(ID, found.link.toID);
 					linksFrom.push({fromID: ID, toID: found.link.toID, deleted: true, order: ord, neighbourID: 0});
 				});
 			}
@@ -304,24 +302,22 @@ angular.module('emuwebApp')
 		/**
 		 * removes multiple links from and to ID
 		 */
-		sServObj.deleteLinkBoundaryInvers = function (deleted) {
-			angular.forEach(deleted.linksTo, function (found) {
+		this.deleteLinkBoundaryInvers = function (deleted) {
+			deleted.linksTo.forEach((found) => {
 				if (found.deleted) {
-					sServObj.insertLinkAt(found.fromID, found.toID, found.order);
+					this.insertLinkAt(found.fromID, found.toID, found.order);
 				}
 				else {
-					sServObj.changeLinkTo(found.fromID, found.neighbourID, found.toID);
+					this.changeLinkTo(found.fromID, found.neighbourID, found.toID);
 				}
 			});
-			angular.forEach(deleted.linksFrom, function (found) {
+			deleted.linksFrom.forEach((found) => {
 				if (found.deleted) {
-					sServObj.insertLinkAt(found.fromID, found.toID, found.order);
+					this.insertLinkAt(found.fromID, found.toID, found.order);
 				}
 				else {
-					sServObj.changeLinkFrom(found.neighbourID, found.toID, found.fromID);
+					this.changeLinkFrom(found.neighbourID, found.toID, found.fromID);
 				}
 			});
 		};
-
-		return sServObj;
 	});

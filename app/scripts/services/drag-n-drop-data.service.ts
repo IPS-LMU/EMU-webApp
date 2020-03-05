@@ -2,17 +2,16 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.service('DragnDropDataService', function DragnDropDataService($q) {
-		// shared service object
-		var sServObj = {} as any;
-		sServObj.convertedBundles = [];
-		sServObj.sessionDefault = '';
+
+		this.convertedBundles = [];
+		this.sessionDefault = '';
 
 		///////////////////////////////
 		// public api
 
-		sServObj.getBundle = function (name) {
+		this.getBundle = function (name) {
 			var defer = $q.defer();
-			angular.forEach(sServObj.convertedBundles, function (bundle) {
+			this.convertedBundles.forEach((bundle) => {
 				if (bundle.name === name) {
 					var bc = angular.copy(bundle);
 					delete bc.name;
@@ -25,18 +24,17 @@ angular.module('emuwebApp')
 			return defer.promise;
 		};
 
-		sServObj.resetToInitState = function () {
-			sServObj.convertedBundles = [];
-			sServObj.sessionDefault = '';
+		this.resetToInitState = function () {
+			this.convertedBundles = [];
+			this.sessionDefault = '';
 		};
 
-		sServObj.setDefaultSession = function (name) {
-			sServObj.sessionDefault = name;
+		this.setDefaultSession = function (name) {
+			this.sessionDefault = name;
 		};
 
-		sServObj.getDefaultSession = function () {
-			return sServObj.sessionDefault;
+		this.getDefaultSession = function () {
+			return this.sessionDefault;
 		};
 
-		return sServObj;
 	});

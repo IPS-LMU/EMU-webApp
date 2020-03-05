@@ -109,8 +109,8 @@ angular.module('emuwebApp')
 					}
 
 					// also check staticDots
-					dD.staticDots.forEach(function (sD) {
-						sD.xCoordinates.forEach(function (xVal, xIdx) {
+					dD.staticDots.forEach((sD) => {
+						sD.xCoordinates.forEach((xVal, xIdx) => {
 							// check x
 							if (xVal < globalMinX) {
 								globalMinX = xVal;
@@ -129,7 +129,7 @@ angular.module('emuwebApp')
 					});
 
 					// and staticContours
-					angular.forEach(dD.staticContours, function (sC) {
+					dD.staticContours.forEach((sC) => {
 						// get xCol
 						var trConf = scope.cps.getSsffTrackConfig(sC.xSsffTrack);
 						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
@@ -343,8 +343,8 @@ angular.module('emuwebApp')
 					//////////////////////////
 					// draw connect lines
 					var f, t;
-					dD.connectLines.forEach(function (c) {
-						allDots.forEach(function (d) {
+					dD.connectLines.forEach((c) => {
+						allDots.forEach((d) => {
 							if (d.name === c.fromDot) {
 								f = d;
 							}
@@ -367,7 +367,7 @@ angular.module('emuwebApp')
 					startPoint = 0;
 					endPoint = (Math.PI / 180) * 360;
 
-					dD.staticDots.forEach(function (sD) {
+					dD.staticDots.forEach((sD) => {
 						ctx.strokeStyle = sD.color;
 						ctx.fillStyle = sD.color;
 						// draw name
@@ -376,7 +376,7 @@ angular.module('emuwebApp')
 
 						scope.fontImage.drawUndistortedText(ctx, sD.name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, labelX, labelY, sD.color, true);
 
-						sD.xCoordinates.forEach(function (xVal, xIdx) {
+						sD.xCoordinates.forEach((xVal, xIdx) => {
 							var x = ((xVal - globalMinX) / (globalMaxX - globalMinX) * canvas.width);
 							var y = canvas.height - ((sD.yCoordinates[xIdx] - globalMinY) / (globalMaxY - globalMinY) * canvas.height);
 							// draw dot

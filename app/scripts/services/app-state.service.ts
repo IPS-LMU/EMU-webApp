@@ -10,12 +10,10 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.service('appStateService', function appStateService($log, $rootScope, $location, DragnDropService, DragnDropDataService, viewState, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, DataService, Ssffdataservice, HistoryService) {
 
-		// shared service object
-		var sServObj = {} as any;
 		/**
 		 *
 		 */
-		sServObj.resetToInitState = function () {
+		this.resetToInitState = function () {
 			if (Iohandlerservice.wsH.isConnected()) {
 				Iohandlerservice.wsH.disconnectWarning().then(function () {
 					$log.info('Closing websocket connection to server');
@@ -40,7 +38,7 @@ angular.module('emuwebApp')
 			//$scope.loadDefaultConfig();
 		};
 		
-		sServObj.reloadToInitState = function (session) {
+		this.reloadToInitState = function (session) {
 			Iohandlerservice.wsH.closeConnect();
 			// $scope.curBndl = {};
 			var url = viewState.url;
@@ -58,5 +56,4 @@ angular.module('emuwebApp')
 			$rootScope.$broadcast('reloadToInitState', {url:url, session:session, reload:true });
 		};
 
-		return sServObj;
 	});
