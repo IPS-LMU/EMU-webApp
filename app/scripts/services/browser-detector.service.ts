@@ -1,9 +1,11 @@
 import * as angular from 'angular';
 
-angular.module('emuwebApp')
-	.service('browserDetector', function () {
-
-
+class BrowserDetector{
+	
+	private isMobile;
+	private isBrowser;
+	
+	constructor(){
 		this.isMobile = {
 			Android: function () {
 				return navigator.userAgent.match(/Android/i);
@@ -28,7 +30,7 @@ angular.module('emuwebApp')
 				this.isMobile.Windows());
 			}
 		};
-
+		
 		this.isBrowser = {
 			Firefox: function () {
 				return navigator.userAgent.match(/Firefox/i);
@@ -60,35 +62,41 @@ angular.module('emuwebApp')
 				this.isBrowser.PhantomJS());
 			}
 		};
-
-		this.isMobileDevice = function () {
-			var data = this.isMobile.any();
-			if (data === null) {
-				return false;
+		
+	}
+	
+	
+	public isMobileDevice = function () {
+		var data = this.isMobile.any();
+		if (data === null) {
+			return false;
+		}
+		else {
+			if (data.length > 0) {
+				return true;
 			}
 			else {
-				if (data.length > 0) {
-					return true;
-				}
-				else {
-					return false;
-				}
-			}
-		};
-
-		this.isDesktopDevice = function () {
-			var data = this.isBrowser.any();
-			if (data === null) {
 				return false;
 			}
-			else {
-				if (data.length > 0) {
-					return true;
-				}
-				else {
-					return false;
-				}
+		}
+	};
+	
+	public isDesktopDevice = function () {
+		var data = this.isBrowser.any();
+		if (data === null) {
+			return false;
+		}
+		else {
+			if (data.length > 0) {
+				return true;
 			}
-		};
+			else {
+				return false;
+			}
+		}
+	};
+	
+}
 
-	});
+angular.module('emuwebApp')
+.service('browserDetector', BrowserDetector);

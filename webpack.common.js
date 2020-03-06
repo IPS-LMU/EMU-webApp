@@ -22,12 +22,17 @@ module.exports = {
     },
     module: {
         rules: [
-            // {
-                //     test: /\.worker\.ts$/,
-                //     use: { loader: 'worker-loader' }
+                // {
+                //     test: /\.worker\.ts$/i,
+                //     use: [{
+                //         loader: 'comlink-loader',
+                //         options: {
+                //             singleton: true
+                //         }
+                //     }]
                 // },
-                // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
                 { 
+                    // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
                     test: /\.tsx?$/, 
                     loader: "ts-loader" 
                 },

@@ -1,351 +1,377 @@
 import * as angular from 'angular';
 
-angular.module('emuwebApp')
-	.service('AnagestService', function AnagestService($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, modalService, HistoryService, DataService) {
+class AnagestService{
+	private defer;
 
-		// defer object 
-		var defer;
+	private $q;
+	private $log;
+	private viewState;
+	private LevelService;
+	private LinkService;
+	private ConfigProviderService;
+	private Ssffdataservice;
+	private ArrayHelperService;
+	private modalService;
+	private HistoryService;
+	private DataService;
 
-		/**
-		 *
-		 */
-		this.insertAnagestEvents = function () {
+	constructor($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, modalService, HistoryService, DataService){
+		this.$q = $q;
+		this.$log = $log;
+		this.viewState = viewState;
+		this.LevelService = LevelService;
+		this.LinkService = LinkService;
+		this.ConfigProviderService = ConfigProviderService;
+		this.Ssffdataservice = Ssffdataservice;
+		this.ArrayHelperService = ArrayHelperService;
+		this.modalService = modalService;
+		this.HistoryService = HistoryService;
+		this.DataService = DataService;
+	}
 
-			var defer = $q.defer();
+	/**
+	 *
+	 */
+	insertAnagestEvents() {
 
-			// precheck if there are items in selection
-			var itemInSel = viewState.getItemsInSelection(DataService.data.levels);
-			if (itemInSel.length !== 0) {
-				modalService.open('views/error.html', 'There are already events in the selected area! This is not permitted...').then(function () {
-					defer.reject();
-				});
-				return defer;
-			}
+		var defer = this.$q.defer();
 
-			// vertical position signal
-			var trackName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.verticalPosSsffTrackName;
-			var tr = ConfigProviderService.getSsffTrackConfig(trackName);
-			var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+		// precheck if there are items in selection
+		var itemInSel = this.viewState.getItemsInSelection(this.DataService.data.levels);
+		if (itemInSel.length !== 0) {
+			this.modalService.open('views/error.html', 'There are already events in the selected area! This is not permitted...').then(() => {
+				defer.reject();
+			});
+			return defer;
+		}
 
-			var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+		// vertical position signal
+		var trackName = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.verticalPosSsffTrackName;
+		var tr = this.ConfigProviderService.getSsffTrackConfig(trackName);
+		var col = this.Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
 
-			// velocity signal
-			var vTrackName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.velocitySsffTrackName;
-			var vTr = ConfigProviderService.getSsffTrackConfig(vTrackName);
-			var vCol = Ssffdataservice.getColumnOfTrack(vTr.name, vTr.columnName);
+		var sRaSt = this.Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
 
-			if (col.length !== 1 || vCol.length !== 1) {
-				modalService.open('views/error.html', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(function () {
-					defer.reject();
-				});
-				return defer;
-			}
-			// flatten columns
-			var flatColVals = ArrayHelperService.flattenArrayOfArray(col.values);
-			var flatVcolVals = ArrayHelperService.flattenArrayOfArray(vCol.values);
+		// velocity signal
+		var vTrackName = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.velocitySsffTrackName;
+		var vTr = this.ConfigProviderService.getSsffTrackConfig(vTrackName);
+		var vCol = this.Ssffdataservice.getColumnOfTrack(vTr.name, vTr.columnName);
 
-			/////////////////////////////////////////
+		if (col.length !== 1 || vCol.length !== 1) {
+			this.modalService.open('views/error.html', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(() => {
+				defer.reject();
+			});
+			return defer;
+		}
+		// flatten columns
+		var flatColVals = this.ArrayHelperService.flattenArrayOfArray(col.values);
+		var flatVcolVals = this.ArrayHelperService.flattenArrayOfArray(vCol.values);
 
-			var gdat = [NaN, NaN]; // gesture on- and offset
-			var vdat = [NaN, NaN]; // peak velocities
-			var ndat = [NaN, NaN]; // plateatu/nucleus on- and offset
-			var cdat = [NaN]; // center
+		/////////////////////////////////////////
 
-
-			// Looking for peak or for valley?
-			var lookingForPeak;
-			if (ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureDirection === 'valley') {
-				lookingForPeak = false;
-			} else {
-				lookingForPeak = true;
-			}
-
-
-			// easiest way to handle non-tangential signals (and has no effect on tangential signals)
-			flatVcolVals = ArrayHelperService.convertToAbsValues(flatVcolVals);
-
-			// selected column samples
-			var startTimeSel = viewState.getSelectedStartTime();
-			var endTimeSel = viewState.getSelectedEndTime();
-			var colStartSampleNr = Math.round(startTimeSel * sRaSt.sampleRate + sRaSt.startTime);
-			var colEndSampleNr = Math.round(endTimeSel * sRaSt.sampleRate + sRaSt.startTime);
-
-			var nrOfSamples = colEndSampleNr - colStartSampleNr;
-
-			var selCol = flatColVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-			var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-
-
-			// maxConstr
-			var maxVerticalPos;
-			if (lookingForPeak) {
-				maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'max');
-				cdat[0] = maxVerticalPos.idx;
-			} else {
-				maxVerticalPos = ArrayHelperService.findMinMax(selCol, 'min');
-				cdat[0] = maxVerticalPos.idx;
-			}
-
-			// max vel before max constriction
-			var maxVelBeforeMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(0, cdat[0] + 1), 'max');
-			vdat[0] = maxVelBeforeMaxConstr.idx;
-
-			// min vel before max vel
-			var minVelBeforeMaxVel = ArrayHelperService.findMinMax(selVCol.slice(0, vdat[0] + 1), 'min');
-
-			// gesture onset
-			$log.info('Looking for gesture onset');
+		var gdat = [NaN, NaN]; // gesture on- and offset
+		var vdat = [NaN, NaN]; // peak velocities
+		var ndat = [NaN, NaN]; // plateatu/nucleus on- and offset
+		var cdat = [NaN]; // center
 
 
-			this.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then(function (resp) {
-				// keyboard;
-				var on20 = resp;
-				gdat[0] = on20;
-
-				// min vel between max vel 1 and max constriction
-				var minVelBetwMaxVel1maxConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0] + 1), 'min');
-
-				var minp = minVelBetwMaxVel1maxConstr.idx + vdat[0];
-
-				// nucleus onset
-				$log.info('Looking for nucleus onset');
-				this.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then(function (resp) {
-					var off20 = resp;
-					ndat[0] = off20 + vdat[0];
-
-					// max vel after max constriction
-					var maxVelAfterMaxConstr = ArrayHelperService.findMinMax(selVCol.slice(cdat[0]), 'max'); // max vel before max constriction
-					vdat[1] = maxVelAfterMaxConstr.idx + cdat[0];
+		// Looking for peak or for valley?
+		var lookingForPeak;
+		if (this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.gestureDirection === 'valley') {
+			lookingForPeak = false;
+		} else {
+			lookingForPeak = true;
+		}
 
 
-					// minimum between max constriction and max vel after constriction
-					var minBetwMaxConstrMaxVelConstr = ArrayHelperService.findMinMax(selVCol.slice(cdat[0], vdat[1] + 1), 'min');
+		// easiest way to handle non-tangential signals (and has no effect on tangential signals)
+		flatVcolVals = this.ArrayHelperService.convertToAbsValues(flatVcolVals);
 
-					minp = minBetwMaxConstrMaxVelConstr.idx + cdat[0];
+		// selected column samples
+		var startTimeSel = this.viewState.getSelectedStartTime();
+		var endTimeSel = this.viewState.getSelectedEndTime();
+		var colStartSampleNr = Math.round(startTimeSel * sRaSt.sampleRate + sRaSt.startTime);
+		var colEndSampleNr = Math.round(endTimeSel * sRaSt.sampleRate + sRaSt.startTime);
 
-					// nucleus offset
-					$log.info('Looking for nucleus offset');
-					this.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then(function (resp) {
-						var on20 = resp;
-						ndat[1] = on20 + minp;
+		var nrOfSamples = colEndSampleNr - colStartSampleNr;
 
-						// minimum velocity after max vel after constriction
-						var minVelAfterMaxVelAfterConstr = ArrayHelperService.findMinMax(selVCol.slice(vdat[1]), 'min');
+		var selCol = flatColVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
+		var selVCol = flatVcolVals.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
 
-						minp = minVelAfterMaxVelAfterConstr.idx + vdat[1];
-						// gesture offset
 
-						$log.info('Looking for gesture offset');
-						this.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then(function (resp) {
-							var off20 = resp;
-							gdat[1] = off20 + vdat[1];
-							// insert points
-							// var insPoint;
-							var curLabel;
+		// maxConstr
+		var maxVerticalPos;
+		if (lookingForPeak) {
+			maxVerticalPos = this.ArrayHelperService.findMinMax(selCol, 'max');
+			cdat[0] = maxVerticalPos.idx;
+		} else {
+			maxVerticalPos = this.ArrayHelperService.findMinMax(selCol, 'min');
+			cdat[0] = maxVerticalPos.idx;
+		}
 
-							// console.log(gdat)
-							gdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
-							gdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
-							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
-							var gdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), gdat[0], curLabel);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'INSERTEVENT',
-								'name': viewState.getcurClickLevelName(),
-								'start': gdat[0],
-								'id': gdat0insPoint.id,
-								'pointName': curLabel
-							});
+		// max vel before max constriction
+		var maxVelBeforeMaxConstr = this.ArrayHelperService.findMinMax(selVCol.slice(0, cdat[0] + 1), 'max');
+		vdat[0] = maxVelBeforeMaxConstr.idx;
 
-							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
-							var gdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), gdat[1], curLabel);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'INSERTEVENT',
-								'name': viewState.getcurClickLevelName(),
-								'start': gdat[1],
-								'id': gdat1insPoint.id,
-								'pointName': curLabel
-							});
+		// min vel before max vel
+		var minVelBeforeMaxVel = this.ArrayHelperService.findMinMax(selVCol.slice(0, vdat[0] + 1), 'min');
 
-							// console.log(vdat);
-							vdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
-							vdat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
-							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
-							var vdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), vdat[0], curLabel);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'INSERTEVENT',
-								'name': viewState.getcurClickLevelName(),
-								'start': vdat[0],
-								'id': vdat0insPoint.id,
-								'pointName': curLabel
-							});
+		// gesture onset
+		this.$log.info('Looking for gesture onset');
 
-							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
-							var vdat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), vdat[1], curLabel);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'INSERTEVENT',
-								'name': viewState.getcurClickLevelName(),
-								'start': vdat[1],
-								'id': vdat1insPoint.id,
-								'pointName': curLabel
-							});
 
-							// console.log(ndat);
-							ndat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
-							ndat[1] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
-							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
-							var ndat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), ndat[0], curLabel);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'INSERTEVENT',
-								'name': viewState.getcurClickLevelName(),
-								'start': ndat[0],
-								'id': ndat0insPoint.id,
-								'pointName': curLabel
-							});
+		this.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then((resp) => {
+			// keyboard;
+			var on20 = resp;
+			gdat[0] = on20;
 
-							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
-							var ndat1insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), ndat[1], curLabel);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'INSERTEVENT',
-								'name': viewState.getcurClickLevelName(),
-								'start': ndat[1],
-								'id': ndat1insPoint.id,
-								'pointName': curLabel
-							});
+			// min vel between max vel 1 and max constriction
+			var minVelBetwMaxVel1maxConstr = this.ArrayHelperService.findMinMax(selVCol.slice(vdat[0], cdat[0] + 1), 'min');
 
-							// console.log(cdat);
-							cdat[0] = Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
-							curLabel = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
-							var cdat0insPoint = LevelService.insertEvent(viewState.getcurClickLevelName(), cdat[0], curLabel);
-							HistoryService.updateCurChangeObj({
-								'type': 'ANNOT',
-								'action': 'INSERTEVENT',
-								'name': viewState.getcurClickLevelName(),
-								'start': cdat[0],
-								'id': cdat0insPoint.id,
-								'pointName': curLabel
-							});
+			var minp = minVelBetwMaxVel1maxConstr.idx + vdat[0];
 
-							var linkLevelName = ConfigProviderService.getLevelDefinition(viewState.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
-							var linkLevelDetails = LevelService.getLevelDetails(linkLevelName);
-							var linkLevelLabels = LevelService.getAllLabelsOfLevel(linkLevelDetails);
+			// nucleus onset
+			this.$log.info('Looking for nucleus onset');
+			this.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then((resp) => {
+				var off20 = resp;
+				ndat[0] = off20 + vdat[0];
 
-							modalService.open('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then(function (itemIdx) {
-								if (itemIdx !== false) {
-									var childIDs = [
-										gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
-										ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
-									];
-									LinkService.insertLinksTo(linkLevelDetails.items[itemIdx].id, childIDs);
-									HistoryService.updateCurChangeObj({
-										'type': 'ANNOT',
-										'action': 'INSERTLINKSTO',
-										'name': linkLevelDetails.name,
-										'parentID': linkLevelDetails.items[itemIdx].id,
-										'childIDs': childIDs
-									});
-									HistoryService.addCurChangeObjToUndoStack();
-								}
-							});
+				// max vel after max constriction
+				var maxVelAfterMaxConstr = this.ArrayHelperService.findMinMax(selVCol.slice(cdat[0]), 'max'); // max vel before max constriction
+				vdat[1] = maxVelAfterMaxConstr.idx + cdat[0];
 
-							defer.resolve();
+
+				// minimum between max constriction and max vel after constriction
+				var minBetwMaxConstrMaxVelConstr = this.ArrayHelperService.findMinMax(selVCol.slice(cdat[0], vdat[1] + 1), 'min');
+
+				minp = minBetwMaxConstrMaxVelConstr.idx + cdat[0];
+
+				// nucleus offset
+				this.$log.info('Looking for nucleus offset');
+				this.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then((resp) => {
+					var on20 = resp;
+					ndat[1] = on20 + minp;
+
+					// minimum velocity after max vel after constriction
+					var minVelAfterMaxVelAfterConstr = this.ArrayHelperService.findMinMax(selVCol.slice(vdat[1]), 'min');
+
+					minp = minVelAfterMaxVelAfterConstr.idx + vdat[1];
+					// gesture offset
+
+					this.$log.info('Looking for gesture offset');
+					this.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then((resp) => {
+						var off20 = resp;
+						gdat[1] = off20 + vdat[1];
+						// insert points
+						// var insPoint;
+						var curLabel;
+
+						// console.log(gdat)
+						gdat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
+						gdat[1] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
+						var gdat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), gdat[0], curLabel);
+						this.HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'INSERTEVENT',
+							'name': this.viewState.getcurClickLevelName(),
+							'start': gdat[0],
+							'id': gdat0insPoint.id,
+							'pointName': curLabel
 						});
+
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
+						var gdat1insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), gdat[1], curLabel);
+						this.HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'INSERTEVENT',
+							'name': this.viewState.getcurClickLevelName(),
+							'start': gdat[1],
+							'id': gdat1insPoint.id,
+							'pointName': curLabel
+						});
+
+						// console.log(vdat);
+						vdat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
+						vdat[1] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
+						var vdat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), vdat[0], curLabel);
+						this.HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'INSERTEVENT',
+							'name': this.viewState.getcurClickLevelName(),
+							'start': vdat[0],
+							'id': vdat0insPoint.id,
+							'pointName': curLabel
+						});
+
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
+						var vdat1insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), vdat[1], curLabel);
+						this.HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'INSERTEVENT',
+							'name': this.viewState.getcurClickLevelName(),
+							'start': vdat[1],
+							'id': vdat1insPoint.id,
+							'pointName': curLabel
+						});
+
+						// console.log(ndat);
+						ndat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
+						ndat[1] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
+						var ndat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), ndat[0], curLabel);
+						this.HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'INSERTEVENT',
+							'name': this.viewState.getcurClickLevelName(),
+							'start': ndat[0],
+							'id': ndat0insPoint.id,
+							'pointName': curLabel
+						});
+
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
+						var ndat1insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), ndat[1], curLabel);
+						this.HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'INSERTEVENT',
+							'name': this.viewState.getcurClickLevelName(),
+							'start': ndat[1],
+							'id': ndat1insPoint.id,
+							'pointName': curLabel
+						});
+
+						// console.log(cdat);
+						cdat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
+						var cdat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), cdat[0], curLabel);
+						this.HistoryService.updateCurChangeObj({
+							'type': 'ANNOT',
+							'action': 'INSERTEVENT',
+							'name': this.viewState.getcurClickLevelName(),
+							'start': cdat[0],
+							'id': cdat0insPoint.id,
+							'pointName': curLabel
+						});
+
+						var linkLevelName = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
+						var linkLevelDetails = this.LevelService.getLevelDetails(linkLevelName);
+						var linkLevelLabels = this.LevelService.getAllLabelsOfLevel(linkLevelDetails);
+
+						this.modalService.open('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then((itemIdx) => {
+							if (itemIdx !== false) {
+								var childIDs = [
+									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
+									ndat0insPoint.id, ndat1insPoint.id, cdat0insPoint.id
+								];
+								this.LinkService.insertLinksTo(linkLevelDetails.items[itemIdx].id, childIDs);
+								this.HistoryService.updateCurChangeObj({
+									'type': 'ANNOT',
+									'action': 'INSERTLINKSTO',
+									'name': linkLevelDetails.name,
+									'parentID': linkLevelDetails.items[itemIdx].id,
+									'childIDs': childIDs
+								});
+								this.HistoryService.addCurChangeObjToUndoStack();
+							}
+						});
+
+						defer.resolve();
 					});
 				});
+			});
 
-			}, function () {
+		}, function () {
+		});
+		return defer.promise;
+	};
+
+	/**
+	 * find threshold in array (an adapted reimplementation of findth.m by
+	 * Phil Hoole Version 17.6.2006)
+	 *
+	 * @param x
+	 * @param minVal
+	 * @param maxVal
+	 * @param threshold
+	 * @param direction
+	 * @param descriptions describes the task
+	 * @returns promise that resolves to threshold value
+	 */
+	public interactiveFindThresholds(x, minVal, maxVal, threshold, direction, description) {
+		// console.log('interactiveFindThresholds');
+		var i;
+
+		var thdat = minVal + (maxVal - minVal) * threshold;
+
+		var thdir = direction;
+
+		thdat = thdat * thdir;
+
+
+		var xx = this.ArrayHelperService.multiplyEachElement(x, thdir); // handle positive/neg.
+
+		var lx = xx.length;
+		var xsh = xx.slice(1, lx);
+		var loguk = 0;
+		var higuk = lx - 1;
+
+		// vz=find((xsh>=thdat)&(xx(1:(lx-1))<thdat));
+		var vz = [];
+		for (i = 0; i < xx.length; i++) {
+			if ((xsh[i] >= thdat) && (xx[i] < thdat)) {
+				vz.push(i);
+			}
+		}
+
+		// anavv=find(vz>=loguk & vz<=higuk);
+		var anavv = [];
+		for (i = 0; i < vz.length; i++) {
+			if ((vz[i] >= loguk) && vz[i] <= higuk) {
+				anavv.push(i);
+			}
+		}
+
+		if (anavv.length > 1) {
+			var defer = this.$q.defer();
+			var infos = {} as any;
+			infos.description = description;
+			infos.options = [];
+			infos.y = xx;
+			infos.minVal = minVal;
+			infos.maxVal = maxVal;
+			infos.threshold = threshold;
+			for (i = 0; i < vz.length; i++) {
+				infos.options.push({
+					'thresholdIdx': vz[i],
+					'thresholdValue': xx[i],
+				});
+			}
+
+			this.modalService.open('views/SelectThresholdModal.html', infos, undefined, true).then((resp) => {
+				// console.log(resp);
+				var ap = vz[anavv[resp]];
+				ap = this.ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
+				defer.resolve(ap);
 			});
 			return defer.promise;
-		};
+		} else if (anavv.length === 0) {
+			defer = this.$q.defer();
+			this.modalService.open('views/error.html', 'Could not find any values that step over the threshold!!').then(() => {
+				defer.reject('Could not find any values that step over the threshold!!');
+			});
+			return defer.promise;
+		} else {
+			defer = this.$q.defer();
+			var ap = vz[anavv[0]];
+			ap = this.ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
+			defer.resolve(ap);
+			return defer.promise;
+		}
 
-		/**
-		 * find threshold in array (an adapted reimplementation of findth.m by
-		 * Phil Hoole Version 17.6.2006)
-		 *
-		 * @param x
-		 * @param minVal
-		 * @param maxVal
-		 * @param threshold
-		 * @param direction
-		 * @param descriptions describes the task
-		 * @returns promise that resolves to threshold value
-		 */
-		this.interactiveFindThresholds = function (x, minVal, maxVal, threshold, direction, description) {
-			// console.log('interactiveFindThresholds');
-			var i;
+	};
 
-			var thdat = minVal + (maxVal - minVal) * threshold;
+}
 
-			var thdir = direction;
-
-			thdat = thdat * thdir;
-
-
-			var xx = ArrayHelperService.multiplyEachElement(x, thdir); // handle positive/neg.
-
-			var lx = xx.length;
-			var xsh = xx.slice(1, lx);
-			var loguk = 0;
-			var higuk = lx - 1;
-
-			// vz=find((xsh>=thdat)&(xx(1:(lx-1))<thdat));
-			var vz = [];
-			for (i = 0; i < xx.length; i++) {
-				if ((xsh[i] >= thdat) && (xx[i] < thdat)) {
-					vz.push(i);
-				}
-			}
-
-			// anavv=find(vz>=loguk & vz<=higuk);
-			var anavv = [];
-			for (i = 0; i < vz.length; i++) {
-				if ((vz[i] >= loguk) && vz[i] <= higuk) {
-					anavv.push(i);
-				}
-			}
-
-			if (anavv.length > 1) {
-				defer = $q.defer();
-				var infos = {} as any;
-				infos.description = description;
-				infos.options = [];
-				infos.y = xx;
-				infos.minVal = minVal;
-				infos.maxVal = maxVal;
-				infos.threshold = threshold;
-				for (i = 0; i < vz.length; i++) {
-					infos.options.push({
-						'thresholdIdx': vz[i],
-						'thresholdValue': xx[i],
-					});
-				}
-
-				modalService.open('views/SelectThresholdModal.html', infos, undefined, true).then(function (resp) {
-					// console.log(resp);
-					var ap = vz[anavv[resp]];
-					ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
-					defer.resolve(ap);
-				});
-				return defer.promise;
-			} else if (anavv.length === 0) {
-				defer = $q.defer();
-				modalService.open('views/error.html', 'Could not find any values that step over the threshold!!').then(function () {
-					defer.reject('Could not find any values that step over the threshold!!');
-				});
-				return defer.promise;
-			} else {
-				defer = $q.defer();
-				var ap = vz[anavv[0]];
-				ap = ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
-				defer.resolve(ap);
-				return defer.promise;
-			}
-
-		};
-
-	});
+angular.module('emuwebApp')
+	.service('AnagestService', AnagestService)

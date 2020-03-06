@@ -442,4 +442,4 @@ export class HierarchyLayoutService{
 };
 
 angular.module('emuwebApp')
-	.service('HierarchyLayoutService', HierarchyLayoutService)
+	.service('HierarchyLayoutService', HierarchyLayoutService);

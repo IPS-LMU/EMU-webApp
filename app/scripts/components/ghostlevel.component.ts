@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import { HierarchyWorker } from '../workers/hierarchy.worker';
 
 let GhostLevelComponent = {
     selector: "ghostLevel",
@@ -15,7 +16,8 @@ let GhostLevelComponent = {
     ></canvas>
 
     <canvas 
-    class="emuwebapp-level-markup" 
+    class="emuwebapp-level-markup"
+    style="background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);"
     id="levelMarkupCanvas" 
     width="2048" 
     height="64" 
@@ -97,7 +99,8 @@ class="emuwebapp-selectAttrDef"
             this.open = true;
             this._inited = false;
             this.backgroundCanvas = {
-                'background': ConfigProviderService.design.color.grey
+                'background': ConfigProviderService.design.color.black
+                // 'background-image': 'linear-gradient(to top, #e2ebf0 0%, #cfd9df 100%)'
             };
             this.hierPaths = this.HierarchyLayoutService.findAllNonPartialPaths();
         };
@@ -108,7 +111,7 @@ class="emuwebapp-selectAttrDef"
             this.canvas = this.$element.find('canvas');
             this.levelCanvasContainer = this.$element.find('div');
             if(this._inited){
-                this.drawLevelDetails();
+                this.drawLevelDetails(this.canvas);
                 this.drawLevelMarkup();
             }
             ///////////////
@@ -125,7 +128,7 @@ class="emuwebapp-selectAttrDef"
             if(changes.viewPortSampleStart){
                 if(changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue){
                     if(this._inited){
-                        this.drawLevelDetails();
+                        this.drawLevelDetails(this.canvas);
                         this.drawLevelMarkup();
                     }
                 }
@@ -133,7 +136,7 @@ class="emuwebapp-selectAttrDef"
             if(changes.viewPortSampleEnd){
                 if(changes.viewPortSampleEnd.currentValue !== changes.viewPortSampleEnd.previousValue){
                     if(this._inited){
-                        this.drawLevelDetails();
+                        this.drawLevelDetails(this.canvas);
                         this.drawLevelMarkup();
                     }
                 }
@@ -171,7 +174,7 @@ class="emuwebapp-selectAttrDef"
                     if(this._inited){
                         this.drawLevelMarkup();
                         if (this.level.name === this.viewState.curMouseLevelName) {
-                            this.drawLevelDetails();
+                            this.drawLevelDetails(this.canvas);
                         }
                     }
                 }
@@ -186,7 +189,7 @@ class="emuwebapp-selectAttrDef"
             if(changes.movesAwayFromLastSave){
                 if(changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue){
                     if(this._inited){
-                        this.drawLevelDetails();
+                        this.drawLevelDetails(this.canvas);
                         this.drawLevelMarkup();
                     }
                 }
@@ -194,7 +197,7 @@ class="emuwebapp-selectAttrDef"
             if(changes.curPerspectiveIdx){
                 if(changes.curPerspectiveIdx.currentValue !== changes.curPerspectiveIdx.previousValue){
                     if(this._inited){
-                        this.drawLevelDetails();
+                        this.drawLevelDetails(this.canvas);
                         this.drawLevelMarkup();
                     }
                 }
@@ -202,7 +205,7 @@ class="emuwebapp-selectAttrDef"
             if(changes.curBndl){
                 if(changes.curBndl.currentValue !== changes.curBndl.previousValue){
                     if(this._inited){
-                        this.drawLevelDetails();
+                        this.drawLevelDetails(this.canvas);
                         this.drawLevelMarkup();
                     }
                 }
@@ -262,8 +265,8 @@ class="emuwebapp-selectAttrDef"
             return curColor;
         };
 
-
-        private drawLevelDetails = function () {
+        // TODO: move to draw helper service and use from here and level.component
+        private drawLevelDetails = async function (canvas) {
             var labelFontFamily; // font family used for labels only
             var fontFamily = this.ConfigProviderService.design.font.small.family; // font family used for everything else
             if(typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined'){
@@ -296,7 +299,7 @@ class="emuwebapp-selectAttrDef"
                 return;
             }
 
-            var ctx = this.canvas[0].getContext('2d');
+            var ctx = canvas[0].getContext('2d');
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             //predef vars
@@ -346,12 +349,24 @@ class="emuwebapp-selectAttrDef"
 
             var curID = -1;
 
+            if (this.level.type === 'ITEM') {
+                console.log("calculating missing times because item level");
+                console.log(this.hierPaths.possible[0]); // SIC hard coded 4 now
+                const hierarchyWoker = await new HierarchyWorker();
+                // overwrite level with level with times calculated by worker
+                this.level = await hierarchyWoker.setAnnotation(
+                    this.DataService.getData(), 
+                    this.hierPaths.possible[1],
+                    this.level.name);
+                // this.HierarchyLayoutService.findParents(); // this should be done async
+                // console.log(x);
+            }
             // calculate generic max with of single char (m char used)
             var mTxtImgWidth = ctx.measureText('m').width * this.fontScaleService.scaleX;
 
             // calculate generic max with of single digit (0 digit used)
             var zeroTxtImgWidth = ctx.measureText('0').width * this.fontScaleService.scaleX;
-            if (this.level.type === 'SEGMENT') {
+            if (this.level.type === 'SEGMENT' || this.level.type === 'ITEM') {
                 ctx.fillStyle = this.ConfigProviderService.design.color.white;
                 // draw segments
                 this.level.items.forEach((item) => {
@@ -507,9 +522,7 @@ class="emuwebapp-selectAttrDef"
                         }
                     }
                 });
-            } else if (this.level.type === 'ITEM'){
-                console.log(this.level);
-                console.log(this.hierPaths.possible);
+            } else {
                 console.error("bad level type");
             }
             // draw cursor/selected area

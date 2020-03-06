@@ -1,55 +1,69 @@
 import * as angular from 'angular';
 import { EspsParserWorker } from '../workers/esps-parser.worker.js';
 
-angular.module('emuwebApp')
-	.service('Espsparserservice', function Espsparserservice($q, LevelService, Soundhandlerservice) {
-
-		var worker = new EspsParserWorker();
-		var defer;
-
+class Espsparserservice{
+	
+	private $q;
+	private LevelService;
+	private Soundhandlerservice;
+	
+	private worker;
+	private defer;
+	
+	constructor($q, LevelService, Soundhandlerservice){
+		this.$q = $q;
+		this.LevelService = LevelService;
+		this.Soundhandlerservice = Soundhandlerservice;
+		
+		this.worker = new EspsParserWorker();
 		// add event listener to worker to respond to messages
-		worker.says(function (e) {
+		this.worker.says((e) => {
 			if (e.status.type === 'SUCCESS') {
-				defer.resolve(e.data);
+				this.defer.resolve(e.data);
 			} else {
-				defer.reject(e.data);
+				this.defer.reject(e.data);
 			}
 		}, false);
 
+	}
 
 		/**
-		 * parse ESPS file using webworker
-		 * @param esps
-		 * @param annotates
-		 * @param name
-		 * @returns promise
-		 */
-		this.asyncParseEsps = function (esps, annotates, name) {
-			defer = $q.defer();
-			worker.tell({
-				'cmd': 'parseESPS',
-				'esps': esps,
-				'sampleRate': Soundhandlerservice.audioBuffer.sampleRate,
-				'annotates': annotates,
-				'name': name
-			});
-			return defer.promise;
-		};
+	* parse ESPS file using webworker
+	* @param esps
+	* @param annotates
+	* @param name
+	* @returns promise
+	*/
+	public asyncParseEsps(esps, annotates, name) {
+		this.defer = this.$q.defer();
+		this.worker.tell({
+			'cmd': 'parseESPS',
+			'esps': esps,
+			'sampleRate': this.Soundhandlerservice.audioBuffer.sampleRate,
+			'annotates': annotates,
+			'name': name
+		});
+		return this.defer.promise;
+	};
+	
+	/**
+	* parse JSO data to ESPS file using webworker
+	* @param name
+	* @param sampleRate
+	* @returns promise
+	*/
+	public asyncParseJSO(name) {
+		this.defer = this.$q.defer();
+		this.worker.tell({
+			'cmd': 'parseJSO',
+			'level': this.LevelService.getLevelDetails(name),
+			'sampleRate': this.Soundhandlerservice.audioBuffer.sampleRate
+		});
+		return this.defer.promise;
+	};
 
-		/**
-		 * parse JSO data to ESPS file using webworker
-		 * @param name
-		 * @param sampleRate
-		 * @returns promise
-		 */
-		this.asyncParseJSO = function (name) {
-			defer = $q.defer();
-			worker.tell({
-				'cmd': 'parseJSO',
-				'level': LevelService.getLevelDetails(name),
-				'sampleRate': Soundhandlerservice.audioBuffer.sampleRate
-			});
-			return defer.promise;
-		};
+}
 
-	});
+
+angular.module('emuwebApp')
+.service('Espsparserservice', Espsparserservice);
