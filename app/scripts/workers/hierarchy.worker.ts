@@ -6,21 +6,35 @@ export class HierarchyWorker {
     // public api
     constructor() {
     }
-
-
     
-    public async setAnnotation(annotation, path, levelName) {
-      this.createIdHashMap(path, annotation);
-      this.createLinkHashMap(annotation);
-      path.forEach(ln => {
-          if(ln !== path[path.length]){
-              this.giveTimeToParents(ln, annotation);
+    
+    
+    public async setAnnotation(annotation, path, levelName, viewPortStartSample, viewPortEndSample) {
+        let itemsInView = this.reduceToItemsInView(annotation, path, viewPortStartSample, viewPortEndSample);
+        console.log(itemsInView);
+        this.createIdHashMap(path, annotation);
+        this.createLinkHashMap(annotation);
+        path.forEach(ln => {
+            if(ln !== path[path.length]){
+                this.giveTimeToParents(ln, annotation);
             }
-      });
-      console.log(this.getLevelDetails(levelName, annotation));
-      return this.getLevelDetails(levelName, annotation);
+        });
+        console.log(this.getLevelDetails(levelName, annotation));
+        return this.getLevelDetails(levelName, annotation);
     }
 
+    private reduceToItemsInView(annotation, path, viewPortStartSample, viewPortEndSample){
+        let subLevelWithTime = this.getLevelDetails(path[0], annotation);
+        let itemsInView = [];
+        subLevelWithTime.items.forEach(item => {
+            if(item.sampleStart + item.sampleDur > viewPortStartSample && item.sampleStart < viewPortEndSample){
+                itemsInView.push(item)
+            }
+        });
+        return itemsInView;
+
+    }
+    
     private giveTimeToParents(levelName, annotation){
         let level = this.getLevelDetails(levelName, annotation);
         level.items.forEach(item => {
@@ -43,7 +57,7 @@ export class HierarchyWorker {
             }
         });
     }
-
+    
     private createIdHashMap(path, annotation){
         this.idHashMap = new Map();
         path.forEach(levelName => {
@@ -53,8 +67,8 @@ export class HierarchyWorker {
             });
         });
     }
-
-
+    
+    
     private createLinkHashMap(annotation){
         this.linkHashMap = new Map();
         annotation.links.forEach(link => {
@@ -67,16 +81,16 @@ export class HierarchyWorker {
             }
         });
     }
-
+    
     ///////////////////////////
     // private api
     
     /**
-     * returns level details by passing in level name
-     * if the corresponding level exists
-     * otherwise returns 'null'
-     *    @param name
-     */
+    * returns level details by passing in level name
+    * if the corresponding level exists
+    * otherwise returns 'null'
+    *    @param name
+    */
     private getLevelDetails(name, annotation) {
         var ret = null;
         annotation.levels.forEach((level) => {
@@ -86,5 +100,5 @@ export class HierarchyWorker {
         });
         return ret;
     };
-
+    
 }

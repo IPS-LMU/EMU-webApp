@@ -357,7 +357,9 @@ class="emuwebapp-selectAttrDef"
                 this.level = await hierarchyWoker.setAnnotation(
                     this.DataService.getData(), 
                     this.hierPaths.possible[1],
-                    this.level.name);
+                    this.level.name,
+                    this.ViewStateService.curViewPort.sS, 
+                    this.ViewStateService.curViewPort.eS);
                 // this.HierarchyLayoutService.findParents(); // this should be done async
                 // console.log(x);
             }
