@@ -2,8 +2,8 @@ import * as angular from 'angular';
 
 class BrowserDetector{
 	
-	private isMobile;
-	private isBrowser;
+	public isMobile;
+	public isBrowser;
 	
 	constructor(){
 		this.isMobile = {

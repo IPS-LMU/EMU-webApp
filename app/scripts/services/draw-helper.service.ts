@@ -356,7 +356,7 @@ class Drawhelperservice{
 
 			var startPeakWinIdx = ssT * pps;
 
-			ctx.strokeStyle = this.ConfigProviderService.design.color.black;
+			ctx.strokeStyle = this.ConfigProviderService.design.color.white;
 			
 			var peakIdx = Math.round(startPeakWinIdx);
 			ctx.beginPath();

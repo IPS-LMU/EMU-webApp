@@ -162,7 +162,7 @@ class DragnDropService{
 		if (bundles.length > i) {
 			if (data.wav !== undefined) {
 				reader.readAsArrayBuffer(data.wav);
-				reader.onloadend = function (evt) {
+				reader.onloadend = (evt) => {
 					if (evt.target.readyState === FileReader.DONE) {
 						if (this.browserDetector.isBrowser.Firefox()) {
 							res = evt.target.result;

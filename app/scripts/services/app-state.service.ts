@@ -42,10 +42,11 @@ class AppStateService{
 		 *
 		 */
 		public resetToInitState() {
-			if(this.Iohandlerservice.wsH.isConnected()) {
-				this.Iohandlerservice.wsH.disconnectWarning().then(function () {
+			// SIC Iohandlerservice.Websockethandler is private
+			if(this.Iohandlerservice.Websockethandler.isConnected()) {
+				this.Iohandlerservice.Websockethandler.disconnectWarning().then(function () {
 					this.$log.info('Closing websocket connection to server');
-					this.Iohandlerservice.wsH.closeConnect();
+					this.Iohandlerservice.Websockethandler.closeConnect();
 				});
 			}
 			// $scope.curBndl = {};
@@ -67,7 +68,8 @@ class AppStateService{
 		};
 		
 		public reloadToInitState = function (session) {
-			this.Iohandlerservice.wsH.closeConnect();
+			// SIC Iohandlerservice.Websockethandler is private
+			this.Iohandlerservice.Websockethandler.closeConnect();
 			// $scope.curBndl = {};
 			var url = this.viewState.url;
 			this.loadedMetaDataService.resetToInitState();

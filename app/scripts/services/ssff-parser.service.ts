@@ -1,49 +1,56 @@
 import * as angular from 'angular';
 import { SsffParserWorker } from '../workers/ssff-parser.worker.js';
 
-angular.module('emuwebApp')
-	.service('Ssffparserservice', function Ssffparserservice($q) {
-
-		var worker = new SsffParserWorker();
-		var defer;
+class Ssffparserservice{
+	private $q;
+	private worker;
+	private defer;
+	
+	constructor($q){
+		this.$q = $q;
+		this.worker = new SsffParserWorker();
 
 		// add event listener to worker to respond to messages
-		worker.says(function (e) {
+		this.worker.says((e) => {
 			if (e.status.type === 'SUCCESS') {
-				defer.resolve(e);
+				this.defer.resolve(e);
 			} else {
-				defer.reject(e);
+				this.defer.reject(e);
 			}
 		}, false);
+		
+	}
+	
+	/**
+	* parse array of ssff file using webworker
+	* @param array of ssff files encoded as base64 stings
+	* @returns promise
+	*/
+	public asyncParseSsffArr(ssffArray) {
+		this.defer = this.$q.defer();
+		this.worker.tell({
+			'cmd': 'parseArr',
+			'ssffArr': ssffArray
+		}); // Send data to our worker.
+		return this.defer.promise;
+	};
+	
+	
+	/**
+	* convert jso to ssff binary file using webworker
+	* @param java script object of ssff file (internal rep)
+	* @returns promise
+	*/
+	public asyncJso2ssff(jso) {
+		this.defer = this.$q.defer();
+		this.worker.tell({
+			'cmd': 'jso2ssff',
+			'jso': JSON.stringify(jso)
+		}); // Send data to our worker.
+		return this.defer.promise;
+	};
+	
+}
 
-
-		/**
-		 * parse array of ssff file using webworker
-		 * @param array of ssff files encoded as base64 stings
-		 * @returns promise
-		 */
-		this.asyncParseSsffArr = function (ssffArray) {
-			defer = $q.defer();
-			worker.tell({
-				'cmd': 'parseArr',
-				'ssffArr': ssffArray
-			}); // Send data to our worker.
-			return defer.promise;
-		};
-
-
-		/**
-		 * convert jso to ssff binary file using webworker
-		 * @param java script object of ssff file (internal rep)
-		 * @returns promise
-		 */
-		this.asyncJso2ssff = function (jso) {
-			defer = $q.defer();
-			worker.tell({
-				'cmd': 'jso2ssff',
-				'jso': JSON.stringify(jso)
-			}); // Send data to our worker.
-			return defer.promise;
-		};
-
-	});
+angular.module('emuwebApp')
+.service('Ssffparserservice', Ssffparserservice);
