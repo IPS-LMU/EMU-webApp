@@ -3,19 +3,18 @@ import { SpectroDrawingWorker } from '../workers/spectro-drawing.worker';
 
 
 angular.module('emuwebApp')
-	.directive('spectro', function ($timeout, viewState, ConfigProviderService, Drawhelperservice, fontScaleService, Soundhandlerservice, mathHelperService, loadedMetaDataService) {
+	.directive('spectro', function ($timeout, ViewStateService, ConfigProviderService, DrawHelperService, FontScaleService, SoundHandlerService, MathHelperService) {
 		return {
 			templateUrl: 'views/spectro.html',
 			restrict: 'E',
 			replace: true,
 			scope: {},
 			link: function postLink(scope, element, attrs) {
-				scope.shs = Soundhandlerservice;
+				scope.shs = SoundHandlerService;
 				scope.order = attrs.order;
-				scope.vs = viewState;
+				scope.vs = ViewStateService;
 				scope.cps = ConfigProviderService;
-				scope.dhs = Drawhelperservice;
-				scope.lmds = loadedMetaDataService;
+				scope.dhs = DrawHelperService;
 				scope.trackName = attrs.trackName;
 				// select the needed DOM elements from the template
 				scope.canvas0 = element.find('canvas')[0];
@@ -45,7 +44,7 @@ angular.module('emuwebApp')
 				});
 
 				//
-				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
+				scope.$watch('ViewStateService.lastUpdate', function (newValue, oldValue) {
 					if (newValue !== oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.audioBuffer)) {
 						scope.clearAndDrawSpectMarkup();
 					}
@@ -165,7 +164,7 @@ angular.module('emuwebApp')
 					// draw min max vals and name of track
 					scope.dhs.drawMinMaxAndName(scope.markupCtx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
                     // only draw corsshair x line if mouse currently not over canvas
-					Drawhelperservice.drawCrossHairX(scope.markupCtx, scope.vs.curMouseX);
+					DrawHelperService.drawCrossHairX(scope.markupCtx, scope.vs.curMouseX);
 
                 };
 
@@ -174,7 +173,7 @@ angular.module('emuwebApp')
 					scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
 					// draw current viewport selected
 					scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
-					fontScaleService.drawUndistortedText(scope.context, 'rendering...', ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, ConfigProviderService.design.font.small.family, 10, 50, ConfigProviderService.design.color.black, true);
+					FontScaleService.drawUndistortedText(scope.context, 'rendering...', ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, ConfigProviderService.design.font.small.family, 10, 50, ConfigProviderService.design.color.black, true);
 					if (scope.primeWorker !== null) {
 						scope.primeWorker.kill();
 						scope.primeWorker = null;
@@ -201,7 +200,7 @@ angular.module('emuwebApp')
 					if (buffer.length > 0) {
 						scope.primeWorker = new SpectroDrawingWorker();
 						var parseData = [];
-						var fftN = mathHelperService.calcClosestPowerOf2Gt(scope.shs.audioBuffer.sampleRate * scope.vs.spectroSettings.windowSizeInSecs);
+						var fftN = MathHelperService.calcClosestPowerOf2Gt(scope.shs.audioBuffer.sampleRate * scope.vs.spectroSettings.windowSizeInSecs);
 						// fftN must be greater than 512 (leads to better resolution of spectrogram)
 						if (fftN < 512) {
 							fftN = 512;

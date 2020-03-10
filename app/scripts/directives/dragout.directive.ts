@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('dragout', function ($window, DataService, loadedMetaDataService, browserDetector, ConfigProviderService) {
+	.directive('dragout', function ($window, DataService, LoadedMetaDataService, BrowserDetectorService, ConfigProviderService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -21,7 +21,7 @@ angular.module('emuwebApp')
 				};
 
 				scope.isActive = function () {
-					if (attrs.name === loadedMetaDataService.getCurBndl().name) {
+					if (attrs.name === LoadedMetaDataService.getCurBndl().name) {
 						return true;
 					}
 					else{
@@ -58,7 +58,7 @@ angular.module('emuwebApp')
 						if (scope.isActive()) {
 							this.classList.add('drag');
 							var url = scope.generateURL();
-							if (browserDetector.isBrowser.Firefox() || browserDetector.isBrowser.Chrome()) {
+							if (BrowserDetectorService.isBrowser.Firefox() || BrowserDetectorService.isBrowser.Chrome()) {
 								if(e.dataTransfer !== undefined){
 									// add image
 									// e.dataTransfer.setDragImage(dragIcon, -8, -8);

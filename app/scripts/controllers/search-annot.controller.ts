@@ -1,9 +1,9 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('searchAnnotCtrl', function ($scope, modalService, viewState, HierarchyLayoutService, LevelService, loadedMetaDataService, ConfigProviderService, StandardFuncsService, DataService) {
+	.controller('searchAnnotCtrl', function ($scope, ModalService, ViewStateService, HierarchyLayoutService, LevelService, LoadedMetaDataService, ConfigProviderService, StandardFuncsService, DataService) {
 
-		$scope.vs = viewState;
+		$scope.vs = ViewStateService;
 
 		$scope.hierPaths = HierarchyLayoutService.findAllNonPartialPaths();
 
@@ -61,16 +61,16 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.setEditing(true);
-			viewState.setcursorInTextField(true);
+			ViewStateService.setEditing(true);
+			ViewStateService.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.setEditing(false);
-			viewState.setcursorInTextField(false);
+			ViewStateService.setEditing(false);
+			ViewStateService.setcursorInTextField(false);
 		};
 
 		/**
@@ -112,9 +112,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.saveTimeAnchors = function () {
-			loadedMetaDataService.setTimeAnchors($scope.resultTimeAnchors);
+			LoadedMetaDataService.setTimeAnchors($scope.resultTimeAnchors);
 			StandardFuncsService.traverseAndClean(DataService.getData());
-			modalService.close();
+			ModalService.close();
 		};
 
 	});

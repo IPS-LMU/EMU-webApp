@@ -8,11 +8,11 @@ import * as angular from 'angular';
  * Controller of the bundleListSideBar
  */
 angular.module('emuwebApp')
-	.controller('bundleListSideBarCtrl', function ($scope, viewState, HistoryService, loadedMetaDataService, dbObjLoadSaveService, ConfigProviderService, LevelService) {
+	.controller('bundleListSideBarCtrl', function ($scope, ViewStateService, HistoryService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, LevelService) {
 
-		$scope.vs = viewState;
-		$scope.lmds = loadedMetaDataService;
-		$scope.dolss = dbObjLoadSaveService;
+		$scope.vs = ViewStateService;
+		$scope.lmds = LoadedMetaDataService;
+		$scope.dolss = DbObjLoadSaveService;
 		$scope.cps = ConfigProviderService;
 		$scope.ls = LevelService;
 
@@ -51,7 +51,7 @@ angular.module('emuwebApp')
 				};
 			}
 
-			var curBndl = loadedMetaDataService.getCurBndl();
+			var curBndl = LoadedMetaDataService.getCurBndl();
 			if (bndl.name === curBndl.name && bndl.session === curBndl.session) {
 				return curColor;
 			}
@@ -69,7 +69,7 @@ angular.module('emuwebApp')
 		 * zoom to next / previous time anchor
 		 */
 		$scope.nextPrevAnchor= function (next) {
-			var curBndl = loadedMetaDataService.getCurBndl();
+			var curBndl = LoadedMetaDataService.getCurBndl();
 			if(next){
 				if($scope.vs.curTimeAnchorIdx < curBndl.timeAnchors.length - 1){
 					$scope.vs.curTimeAnchorIdx = $scope.vs.curTimeAnchorIdx + 1;
@@ -90,7 +90,7 @@ angular.module('emuwebApp')
 		 * get max nr of time anchors
 		 */
 		$scope.getTimeAnchorIdxMax = function () {
-			var curBndl = loadedMetaDataService.getCurBndl();
+			var curBndl = LoadedMetaDataService.getCurBndl();
 			var res;
 			if(angular.equals({}, curBndl)){
 				res = -1;
@@ -102,7 +102,7 @@ angular.module('emuwebApp')
 
 
 		$scope.isCurBndl= function (bndl) {
-			var curBndl = loadedMetaDataService.getCurBndl();
+			var curBndl = LoadedMetaDataService.getCurBndl();
 			return (bndl.name === curBndl.name && bndl.session === curBndl.session);
 		};
 	});

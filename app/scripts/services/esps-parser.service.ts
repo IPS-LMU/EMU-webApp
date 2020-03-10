@@ -1,19 +1,19 @@
 import * as angular from 'angular';
 import { EspsParserWorker } from '../workers/esps-parser.worker.js';
 
-class Espsparserservice{
+class EspsParserService{
 	
 	private $q;
 	private LevelService;
-	private Soundhandlerservice;
+	private SoundHandlerService;
 	
 	private worker;
 	private defer;
 	
-	constructor($q, LevelService, Soundhandlerservice){
+	constructor($q, LevelService, SoundHandlerService){
 		this.$q = $q;
 		this.LevelService = LevelService;
-		this.Soundhandlerservice = Soundhandlerservice;
+		this.SoundHandlerService = SoundHandlerService;
 		
 		this.worker = new EspsParserWorker();
 		// add event listener to worker to respond to messages
@@ -39,7 +39,7 @@ class Espsparserservice{
 		this.worker.tell({
 			'cmd': 'parseESPS',
 			'esps': esps,
-			'sampleRate': this.Soundhandlerservice.audioBuffer.sampleRate,
+			'sampleRate': this.SoundHandlerService.audioBuffer.sampleRate,
 			'annotates': annotates,
 			'name': name
 		});
@@ -57,7 +57,7 @@ class Espsparserservice{
 		this.worker.tell({
 			'cmd': 'parseJSO',
 			'level': this.LevelService.getLevelDetails(name),
-			'sampleRate': this.Soundhandlerservice.audioBuffer.sampleRate
+			'sampleRate': this.SoundHandlerService.audioBuffer.sampleRate
 		});
 		return this.defer.promise;
 	};
@@ -66,4 +66,4 @@ class Espsparserservice{
 
 
 angular.module('emuwebApp')
-.service('Espsparserservice', Espsparserservice);
+.service('EspsParserService', EspsParserService);

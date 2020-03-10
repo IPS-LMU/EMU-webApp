@@ -3,7 +3,7 @@ import * as angular from 'angular';
 class ConfigProviderService {
 
 	private $q;
-	private viewState;
+	private ViewStateService;
 
 	private vals;
 	private design;
@@ -11,10 +11,10 @@ class ConfigProviderService {
 	private initDbConfig;
 	private embeddedVals;
 
-	constructor($q, viewState) {
+	constructor($q, ViewStateService) {
 
 		this.$q = $q;
-		this.viewState = viewState;
+		this.ViewStateService = ViewStateService;
 
 		this.vals = {};
 		this.design = {};
@@ -122,8 +122,8 @@ class ConfigProviderService {
 	 */
 	public getValueLimsOfTrack(trackName) {
 		var res = {};
-		if (typeof this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.minMaxValLims !== 'undefined') {
-			this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.minMaxValLims.forEach((vL) => {
+		if (typeof this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.minMaxValLims !== 'undefined') {
+			this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.minMaxValLims.forEach((vL) => {
 				if (vL.ssffTrackName === trackName) {
 					res = vL;
 				}
@@ -137,8 +137,8 @@ class ConfigProviderService {
 	 */
 	public getHorizontalLinesOfTrack(trackName) {
 		var res;
-		if (typeof this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.horizontalLines !== 'undefined') {
-			this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.horizontalLines.forEach((vL) => {
+		if (typeof this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.horizontalLines !== 'undefined') {
+			this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.horizontalLines.forEach((vL) => {
 				if (vL.ssffTrackName === trackName) {
 					res = vL;
 				}
@@ -152,8 +152,8 @@ class ConfigProviderService {
 	 */
 	public getContourLimsOfTrack(trackName) {
 		var res = {};
-		// if(typeof this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.contourLims !== 'undefined'){
-		this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.contourLims.forEach((cL) => {
+		// if(typeof this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.contourLims !== 'undefined'){
+		this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.contourLims.forEach((cL) => {
 			if (cL.ssffTrackName === trackName) {
 				res = cL;
 			}
@@ -168,8 +168,8 @@ class ConfigProviderService {
 	 */
 	public getContourColorsOfTrack(trackName) {
 		var res;
-		if (typeof this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.contourColors !== 'undefined') {
-			this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.contourColors.forEach((cC) => {
+		if (typeof this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.contourColors !== 'undefined') {
+			this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.contourColors.forEach((cC) => {
 				if (cC.ssffTrackName === trackName) {
 					res = cC;
 				}
@@ -184,7 +184,7 @@ class ConfigProviderService {
 	 */
 	public getAssignment(signalName) {
 		var res = {};
-		this.vals.perspectives[this.viewState.curPerspectiveIdx].signalCanvases.assign.forEach((a) => {
+		this.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.assign.forEach((a) => {
 			if (a.signalCanvasName === signalName) {
 				res = a;
 			}

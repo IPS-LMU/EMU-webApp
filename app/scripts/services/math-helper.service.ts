@@ -53,4 +53,4 @@ class MathHelperService{
 * Service in the emuwebApp.
 */
 angular.module('emuwebApp')
-.service('mathHelperService', MathHelperService)
+.service('MathHelperService', MathHelperService)

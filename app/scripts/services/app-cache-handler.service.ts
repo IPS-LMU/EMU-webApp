@@ -1,14 +1,14 @@
 import * as angular from 'angular';
 
-class Appcachehandler{
+class AppcacheHandlerService{
 
 	private $http;
-	private modalService;
+	private ModalService;
 	private appCache;
 
-	constructor($http, modalService){
+	constructor($http, ModalService){
 		this.$http = $http;
-		this.modalService = modalService;
+		this.ModalService = ModalService;
 		this.appCache = window.applicationCache;
 
 		// // bind evts
@@ -32,7 +32,7 @@ class Appcachehandler{
 		 */
 		private handleUpdatereadyEvent() {
             if(typeof this.appCache !== 'undefined') {
-                this.modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then((res) => {
+                this.ModalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then((res) => {
                     if (res) {
                         localStorage.removeItem('haveShownWelcomeModal');
                         this.appCache.swapCache();
@@ -75,4 +75,4 @@ class Appcachehandler{
 }
 
 angular.module('emuwebApp')
-	.service('Appcachehandler', Appcachehandler);
+	.service('AppcacheHandlerService', AppcacheHandlerService);

@@ -1,10 +1,10 @@
 import * as angular from 'angular';
 
-class ViewState{
+class ViewStateService{
 	private $rootScope;
 	private $timeout;
 	private $window;
-	private Soundhandlerservice;
+	private SoundHandlerService;
 	private DataService;
 	private StandardFuncsService;
 	
@@ -92,11 +92,11 @@ class ViewState{
 	public hierarchyState;
 	
 	
-	constructor($rootScope, $timeout, $window, Soundhandlerservice, DataService, StandardFuncsService){
+	constructor($rootScope, $timeout, $window, SoundHandlerService, DataService, StandardFuncsService){
 		this.$rootScope = $rootScope;
 		this.$timeout = $timeout;
 		this.$window = $window;
-		this.Soundhandlerservice = Soundhandlerservice;
+		this.SoundHandlerService = SoundHandlerService;
 		this.DataService = DataService;
 		this.StandardFuncsService = StandardFuncsService;
 		
@@ -444,7 +444,7 @@ class ViewState{
 	*/
 	public updatePlayHead(timestamp) {
 		// at first push animation !!!
-		if (this.Soundhandlerservice.isPlaying) {
+		if (this.SoundHandlerService.isPlaying) {
 			this.$window.requestAnimationFrame(this.updatePlayHead);
 		}
 		
@@ -453,10 +453,10 @@ class ViewState{
 			this.start = timestamp;
 		}
 		
-		var samplesPassed = (Math.floor(timestamp - this.start) / 1000) * this.Soundhandlerservice.audioBuffer.sampleRate;
+		var samplesPassed = (Math.floor(timestamp - this.start) / 1000) * this.SoundHandlerService.audioBuffer.sampleRate;
 		this.playHeadAnimationInfos.curS = Math.floor(this.playHeadAnimationInfos.sS + samplesPassed);
 		
-		if (this.Soundhandlerservice.isPlaying && this.playHeadAnimationInfos.curS <= this.playHeadAnimationInfos.eS) {
+		if (this.SoundHandlerService.isPlaying && this.playHeadAnimationInfos.curS <= this.playHeadAnimationInfos.eS) {
 			if (this.playHeadAnimationInfos.curS !== -1) {
 				this.curMousePosSample = this.playHeadAnimationInfos.curS;
 			}
@@ -1207,35 +1207,35 @@ class ViewState{
 	* calcs and returns start in secs
 	*/
 	public getViewPortStartTime() {
-		return (this.curViewPort.sS / this.Soundhandlerservice.audioBuffer.sampleRate) - 0.5 / this.Soundhandlerservice.audioBuffer.sampleRate;
+		return (this.curViewPort.sS / this.SoundHandlerService.audioBuffer.sampleRate) - 0.5 / this.SoundHandlerService.audioBuffer.sampleRate;
 	};
 	
 	/**
 	* calcs and returns end time in secs
 	*/
 	public getViewPortEndTime() {
-		return (this.curViewPort.eS / this.Soundhandlerservice.audioBuffer.sampleRate) + 0.5 / this.Soundhandlerservice.audioBuffer.sampleRate;
+		return (this.curViewPort.eS / this.SoundHandlerService.audioBuffer.sampleRate) + 0.5 / this.SoundHandlerService.audioBuffer.sampleRate;
 	};
 	
 	/**
 	* calcs and returns start in secs
 	*/
 	public getSelectedStartTime() {
-		return (this.curViewPort.selectS / this.Soundhandlerservice.audioBuffer.sampleRate) - 0.5 / this.Soundhandlerservice.audioBuffer.sampleRate;
+		return (this.curViewPort.selectS / this.SoundHandlerService.audioBuffer.sampleRate) - 0.5 / this.SoundHandlerService.audioBuffer.sampleRate;
 	};
 	
 	/**
 	* calcs and returns end time in secs
 	*/
 	public getSelectedEndTime() {
-		return (this.curViewPort.selectE / this.Soundhandlerservice.audioBuffer.sampleRate) + 0.5 / this.Soundhandlerservice.audioBuffer.sampleRate;
+		return (this.curViewPort.selectE / this.SoundHandlerService.audioBuffer.sampleRate) + 0.5 / this.SoundHandlerService.audioBuffer.sampleRate;
 	};
 	
 	/**
 	* calcs sample time in seconds
 	*/
 	public calcSampleTime(sample) {
-		return (sample / this.Soundhandlerservice.audioBuffer.sampleRate) + 0.5 / this.Soundhandlerservice.audioBuffer.sampleRate;
+		return (sample / this.SoundHandlerService.audioBuffer.sampleRate) + 0.5 / this.SoundHandlerService.audioBuffer.sampleRate;
 	};
 	
 	
@@ -1266,9 +1266,9 @@ class ViewState{
 		}
 		if (oldStart < this.curViewPort.sS && oldEnd < this.curViewPort.eS) {
 			//moved right
-			if (this.curViewPort.eS > this.Soundhandlerservice.audioBuffer.length) {
+			if (this.curViewPort.eS > this.SoundHandlerService.audioBuffer.length) {
 				this.curViewPort.sS = oldStart;
-				this.curViewPort.eS = this.Soundhandlerservice.audioBuffer.length;
+				this.curViewPort.eS = this.SoundHandlerService.audioBuffer.length;
 			}
 		}
 		
@@ -1276,8 +1276,8 @@ class ViewState{
 		if (this.curViewPort.sS < 0) {
 			this.curViewPort.sS = 0;
 		}
-		if (this.curViewPort.eS > this.Soundhandlerservice.audioBuffer.length) {
-			this.curViewPort.eS = this.Soundhandlerservice.audioBuffer.length;
+		if (this.curViewPort.eS > this.SoundHandlerService.audioBuffer.length) {
+			this.curViewPort.eS = this.SoundHandlerService.audioBuffer.length;
 		}
 		// check if at least 4 samples are showing (fixed max zoom size)
 		if (this.curViewPort.eS - this.curViewPort.sS < 4) {
@@ -1489,4 +1489,4 @@ class ViewState{
 }
 
 angular.module('emuwebApp')
-.service('viewState', ViewState);
+.service('ViewStateService', ViewStateService);

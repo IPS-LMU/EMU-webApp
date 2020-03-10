@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import * as tv4 from 'tv4';
 
-class Validationservice{
+class ValidationService{
 	private $http;
 	private $q;
 	private ConfigProviderService;
@@ -344,4 +344,4 @@ class Validationservice{
 }
 
 angular.module('emuwebApp')
-.service('Validationservice', Validationservice);
+.service('ValidationService', ValidationService);

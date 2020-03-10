@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, viewState, modalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
+	.controller('ShowhierarchyCtrl', function ($scope, ViewStateService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
 
 		// Scope data
 
@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 			selected: ''
 		};
 
-		$scope.vs = viewState;
+		$scope.vs = ViewStateService;
 		$scope.standardFuncServ = StandardFuncsService;
 
 		var pathInfo = HierarchyLayoutService.findAllNonPartialPaths();
@@ -19,7 +19,7 @@ angular.module('emuwebApp')
 		$scope.paths.possibleAsStr = pathInfo.possibleAsStr;
 
 		// select first possible path on load
-		$scope.paths.selected = $scope.paths.possibleAsStr[viewState.hierarchyState.curPathIdx];
+		$scope.paths.selected = $scope.paths.possibleAsStr[ViewStateService.hierarchyState.curPathIdx];
 
 		$scope.vs.hierarchyState.curNrOfPaths = $scope.paths.possibleAsStr.length;
 
@@ -27,14 +27,14 @@ angular.module('emuwebApp')
 		// watches
 
 		$scope.$watch ('paths.selected', function () {
-			viewState.hierarchyState.path = $scope.paths.possible[$scope.getSelIdx()];
-			viewState.hierarchyState.curPathIdx = $scope.getSelIdx();
+			ViewStateService.hierarchyState.path = $scope.paths.possible[$scope.getSelIdx()];
+			ViewStateService.hierarchyState.curPathIdx = $scope.getSelIdx();
 		}, false);
 
         $scope.$watch ('vs.hierarchyState.curPathIdx', function () {
-            //console.log('watch on viewstate working!');
-            viewState.hierarchyState.path = $scope.paths.possible[$scope.vs.hierarchyState.curPathIdx];
-            $scope.paths.selected = $scope.paths.possibleAsStr[viewState.hierarchyState.curPathIdx];
+            //console.log('watch on ViewStateService working!');
+            ViewStateService.hierarchyState.path = $scope.paths.possible[$scope.vs.hierarchyState.curPathIdx];
+            $scope.paths.selected = $scope.paths.possibleAsStr[ViewStateService.hierarchyState.curPathIdx];
         }, false);
 
 
@@ -50,26 +50,26 @@ angular.module('emuwebApp')
 		};
 
 		$scope.rotateHierarchy = function () {
-			viewState.hierarchyState.toggleRotation();
+			ViewStateService.hierarchyState.toggleRotation();
 		};
 
 		$scope.getRotation = function () {
-			return viewState.hierarchyState.isRotated();
+			return ViewStateService.hierarchyState.isRotated();
 		};
 
 		$scope.playSelection = function () {
-			++viewState.hierarchyState.playing;
+			++ViewStateService.hierarchyState.playing;
 		};
 
 		$scope.getPlaying = function () {
-			return viewState.hierarchyState.playing;
+			return ViewStateService.hierarchyState.playing;
 		};
 
 		/**
 		 *
 		 */
 		$scope.isCurrentAttrDef = function (levelName, attrDef) {
-			if (viewState.getCurAttrDef(levelName) === attrDef) {
+			if (ViewStateService.getCurAttrDef(levelName) === attrDef) {
 				return true;
 			} else {
 				return false;
@@ -78,13 +78,13 @@ angular.module('emuwebApp')
 
 		/**
 		 * set current attribute definition
-		 * just delegates same fuction call to viewState
+		 * just delegates same fuction call to ViewStateService
 		 *
 		 * @param levelName name of level
 		 * @param attrDef name of attribute definition
 		 */
 		$scope.setCurrentAttrDef = function (levelName, attrDefName, attrDefIndex) {
-			viewState.setCurAttrDef(levelName, attrDefName, attrDefIndex);
+			ViewStateService.setCurAttrDef(levelName, attrDefName, attrDefIndex);
 		};
 
 		/**
@@ -99,6 +99,6 @@ angular.module('emuwebApp')
 		 * cancel dialog i.e. close
 		 */
 		$scope.cancel = function () {
-			modalService.close();
+			ModalService.close();
 		};
 	});

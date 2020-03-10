@@ -61,14 +61,14 @@ class="emuwebapp-selectAttrDef"
         private $element;
         private $animate;
 
-        private viewState;
+        private ViewStateService;
         private ConfigProviderService;
-        private Drawhelperservice;
+        private DrawHelperService;
         private HistoryService;
-        private fontScaleService;
-        private modalService;
+        private FontScaleService;
+        private ModalService;
         private LevelService;
-        private loadedMetaDataService;
+        private LoadedMetaDataService;
         private HierarchyLayoutService;
         private DataService;
         
@@ -79,18 +79,18 @@ class="emuwebapp-selectAttrDef"
         private _inited;
         private backgroundCanvas;
 
-        constructor($scope, $element, $animate, viewState, ConfigProviderService, Drawhelperservice, HistoryService, fontScaleService, modalService, LevelService, loadedMetaDataService, HierarchyLayoutService, DataService){
+        constructor($scope, $element, $animate, ViewStateService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService){
             this.$scope = $scope;
             this.$element = $element;
             this.$animate = $animate;
-            this.viewState = viewState;
+            this.ViewStateService = ViewStateService;
             this.ConfigProviderService = ConfigProviderService;
-            this.Drawhelperservice = Drawhelperservice;
+            this.DrawHelperService = DrawHelperService;
             this.HistoryService = HistoryService;
-            this.fontScaleService = fontScaleService;
-            this.modalService = modalService;
+            this.FontScaleService = FontScaleService;
+            this.ModalService = ModalService;
             this.LevelService = LevelService;
-            this.loadedMetaDataService = loadedMetaDataService;
+            this.LoadedMetaDataService = LoadedMetaDataService;
             this.HierarchyLayoutService = HierarchyLayoutService;
             this.DataService = DataService;
 
@@ -113,9 +113,9 @@ class="emuwebapp-selectAttrDef"
             ///////////////
             // bindings
 
-            // on mouse leave reset viewState.
+            // on mouse leave reset ViewStateService.
             this.$element.bind('mouseleave', () => {
-                this.viewState.setcurMouseItem(undefined, undefined, undefined);
+                this.ViewStateService.setcurMouseItem(undefined, undefined, undefined);
                 this.drawLevelMarkup();
             });
         };
@@ -169,7 +169,7 @@ class="emuwebapp-selectAttrDef"
                 if(changes.movingBoundarySample.currentValue !== changes.movingBoundarySample.previousValue){
                     if(this._inited){
                         this.drawLevelMarkup();
-                        if (this.level.name === this.viewState.curMouseLevelName) {
+                        if (this.level.name === this.ViewStateService.curMouseLevelName) {
                             this.drawLevelDetails();
                         }
                     }
@@ -224,13 +224,13 @@ class="emuwebapp-selectAttrDef"
          *
          */
         private changeCurAttrDef = function (attrDefName, index) {
-            var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+            var curAttrDef = this.ViewStateService.getCurAttrDef(this.level.name);
             if (curAttrDef !== attrDefName) {
                 // curAttrDef = attrDefName;
-                this.viewState.setCurAttrDef(this.level.name, attrDefName, index);
+                this.ViewStateService.setCurAttrDef(this.level.name, attrDefName, index);
 
                 if (!this.$element.hasClass('emuwebapp-level-animation')) {
-                    this.viewState.setEditing(false);
+                    this.ViewStateService.setEditing(false);
                     this.LevelService.deleteEditArea();
                     this.$animate.addClass(this.levelCanvasContainer, 'emuwebapp-level-animation').then(() => {
                         this.$animate.removeClass(this.levelCanvasContainer, 'emuwebapp-level-animation');
@@ -247,7 +247,7 @@ class="emuwebapp-selectAttrDef"
          */
         private getAttrDefBtnColor = function (attrDefName) {
             var curColor;
-            var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+            var curAttrDef = this.ViewStateService.getCurAttrDef(this.level.name);
             if (attrDefName === curAttrDef) {
                 curColor = {
                     'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)',
@@ -265,29 +265,29 @@ class="emuwebapp-selectAttrDef"
         private drawLevelDetails = function () {
             var labelFontFamily; // font family used for labels only
             var fontFamily = this.ConfigProviderService.design.font.small.family; // font family used for everything else
-            if(typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined'){
+            if(typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined'){
                 labelFontFamily = this.ConfigProviderService.design.font.small.family;
             }else{
-                labelFontFamily = this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily;
+                labelFontFamily = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily;
             }
 
             var labelFontSize; // font family used for labels only
             var fontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
-            if(typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
+            if(typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
                 labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
             }else{
-                labelFontSize = this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontPxSize;
+                labelFontSize = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontPxSize;
             }
 
 
-            var curAttrDef = this.viewState.getCurAttrDef(this.level.name);
+            var curAttrDef = this.ViewStateService.getCurAttrDef(this.level.name);
             var isOpen = this.$element.parent().css('height') !== '25px';// ? false : true;
             if ($.isEmptyObject(this.level)) {
                 //console.log('undef levelDetails');
                 return;
             }
-            if ($.isEmptyObject(this.viewState)) {
-                //console.log('undef viewState');
+            if ($.isEmptyObject(this.ViewStateService)) {
+                //console.log('undef ViewStateService');
                 return;
             }
             if ($.isEmptyObject(this.ConfigProviderService)) {
@@ -301,14 +301,14 @@ class="emuwebapp-selectAttrDef"
             //predef vars
             var sDist, posS, posE;
 
-            sDist = this.viewState.getSampleDist(ctx.canvas.width);
+            sDist = this.ViewStateService.getSampleDist(ctx.canvas.width);
 
             // draw name of level and type
             var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
             if (this.level.name === curAttrDef) {
                 if (isOpen) {
-                    this.fontScaleService.drawUndistortedTextTwoLines(
+                    this.FontScaleService.drawUndistortedTextTwoLines(
                         ctx, 
                         this.level.name, 
                         '(' + this.level.type + ')', 
@@ -321,7 +321,7 @@ class="emuwebapp-selectAttrDef"
                 }
                 else {
                     fontSize -= 2;
-                    this.fontScaleService.drawUndistortedText(
+                    this.FontScaleService.drawUndistortedText(
                         ctx, 
                         this.level.name, 
                         fontSize, 
@@ -331,7 +331,7 @@ class="emuwebapp-selectAttrDef"
                         this.ConfigProviderService.design.color.white, true);
                 }
             } else {
-                this.fontScaleService.drawUndistortedTextTwoLines(
+                this.FontScaleService.drawUndistortedTextTwoLines(
                     ctx, 
                     this.level.name + ':' + curAttrDef, 
                     '(' + this.level.type + ')', 
@@ -346,22 +346,22 @@ class="emuwebapp-selectAttrDef"
             var curID = -1;
 
             // calculate generic max with of single char (m char used)
-            var mTxtImgWidth = ctx.measureText('m').width * this.fontScaleService.scaleX;
+            var mTxtImgWidth = ctx.measureText('m').width * this.FontScaleService.scaleX;
 
             // calculate generic max with of single digit (0 digit used)
-            var zeroTxtImgWidth = ctx.measureText('0').width * this.fontScaleService.scaleX;
+            var zeroTxtImgWidth = ctx.measureText('0').width * this.FontScaleService.scaleX;
             if (this.level.type === 'SEGMENT') {
                 ctx.fillStyle = this.ConfigProviderService.design.color.white;
                 // draw segments
                 this.level.items.forEach((item) => {
                     ++curID;
 
-                    if (item.sampleStart >= this.viewState.curViewPort.sS &&
-                        item.sampleStart <= this.viewState.curViewPort.eS || //within segment
-                        item.sampleStart + item.sampleDur > this.viewState.curViewPort.sS &&
-                        item.sampleStart + item.sampleDur < this.viewState.curViewPort.eS || //end in segment
-                        item.sampleStart < this.viewState.curViewPort.sS &&
-                        item.sampleStart + item.sampleDur > this.viewState.curViewPort.eS // within sample
+                    if (item.sampleStart >= this.ViewStateService.curViewPort.sS &&
+                        item.sampleStart <= this.ViewStateService.curViewPort.eS || //within segment
+                        item.sampleStart + item.sampleDur > this.ViewStateService.curViewPort.sS &&
+                        item.sampleStart + item.sampleDur < this.ViewStateService.curViewPort.eS || //end in segment
+                        item.sampleStart < this.ViewStateService.curViewPort.sS &&
+                        item.sampleStart + item.sampleDur > this.ViewStateService.curViewPort.eS // within sample
                     ) {
                         // get label
                         var curLabVal;
@@ -372,8 +372,8 @@ class="emuwebapp-selectAttrDef"
                         });
 
                         // draw segment start
-                        posS = this.viewState.getPos(ctx.canvas.width, item.sampleStart);
-                        posE = this.viewState.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
+                        posS = this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart);
+                        posE = this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
 
                         ctx.fillStyle = this.ConfigProviderService.design.color.white;
                         ctx.fillRect(posS, 0, 2, ctx.canvas.height / 2);
@@ -387,7 +387,7 @@ class="emuwebapp-selectAttrDef"
                         //check for enough space to stroke text
                         if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
                             if (isOpen) {
-                                this.fontScaleService.drawUndistortedText(
+                                this.FontScaleService.drawUndistortedText(
                                     ctx, 
                                     curLabVal, 
                                     labelFontSize - 2, 
@@ -397,7 +397,7 @@ class="emuwebapp-selectAttrDef"
                                     this.ConfigProviderService.design.color.white, 
                                     false);
                             } else {
-                                this.fontScaleService.drawUndistortedText(
+                                this.FontScaleService.drawUndistortedText(
                                     ctx, 
                                     curLabVal, 
                                     labelFontSize - 2, 
@@ -436,7 +436,7 @@ class="emuwebapp-selectAttrDef"
                             // draw sampleStart numbers
                             //check for enough space to stroke text
                             if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
-                                this.fontScaleService.drawUndistortedText(
+                                this.FontScaleService.drawUndistortedText(
                                     ctx, 
                                     item.sampleStart, 
                                     fontSize - 2, 
@@ -451,12 +451,12 @@ class="emuwebapp-selectAttrDef"
                             var durtext = 'dur: ' + item.sampleDur + ' ';
                             //check for enough space to stroke text
                             if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
-                                this.fontScaleService.drawUndistortedText(
+                                this.FontScaleService.drawUndistortedText(
                                     ctx, 
                                     durtext, 
                                     fontSize - 2, 
                                     fontFamily, 
-                                    posE - (ctx.measureText(durtext).width * this.fontScaleService.scaleX), 
+                                    posE - (ctx.measureText(durtext).width * this.FontScaleService.scaleX), 
                                     ctx.canvas.height / 4 * 3, 
                                     this.ConfigProviderService.design.color.grey, 
                                     true);
@@ -470,8 +470,8 @@ class="emuwebapp-selectAttrDef"
                 var perc;
 
                 this.level.items.forEach((item) => {
-                    if (item.samplePoint > this.viewState.curViewPort.sS && item.samplePoint < this.viewState.curViewPort.eS) {
-                        perc = Math.round(this.viewState.getPos(ctx.canvas.width, item.samplePoint) + (sDist / 2));
+                    if (item.samplePoint > this.ViewStateService.curViewPort.sS && item.samplePoint < this.ViewStateService.curViewPort.eS) {
+                        perc = Math.round(this.ViewStateService.getPos(ctx.canvas.width, item.samplePoint) + (sDist / 2));
                         // get label
                         var curLabVal;
                         item.labels.forEach((lab) => {
@@ -484,7 +484,7 @@ class="emuwebapp-selectAttrDef"
                         ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
                         ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
 
-                        this.fontScaleService.drawUndistortedText(
+                        this.FontScaleService.drawUndistortedText(
                             ctx, 
                             curLabVal, 
                             labelFontSize - 2, 
@@ -494,7 +494,7 @@ class="emuwebapp-selectAttrDef"
                             this.ConfigProviderService.design.color.white, 
                             false);
                         if (isOpen) {
-                            this.fontScaleService.drawUndistortedText(
+                            this.FontScaleService.drawUndistortedText(
                                 ctx, 
                                 item.samplePoint, 
                                 fontSize - 2, 
@@ -516,29 +516,29 @@ class="emuwebapp-selectAttrDef"
         private drawLevelMarkup = function () {
             var ctx = this.canvas[1].getContext('2d');
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            if (this.level.name === this.viewState.getcurClickLevelName()) {
+            if (this.level.name === this.ViewStateService.getcurClickLevelName()) {
                 ctx.fillStyle = this.ConfigProviderService.design.color.transparent.grey;
                 ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             }
 
             // draw moving boundary line if moving
-            this.Drawhelperservice.drawMovingBoundaryLine(ctx);
+            this.DrawHelperService.drawMovingBoundaryLine(ctx);
 
             // draw current viewport selected
-            this.Drawhelperservice.drawCurViewPortSelected(ctx);
+            this.DrawHelperService.drawCurViewPortSelected(ctx);
 
 
             var posS, posE, sDist, xOffset, item;
-            posS = this.viewState.getPos(ctx.canvas.width, this.viewState.curViewPort.selectS);
-            posE = this.viewState.getPos(ctx.canvas.width, this.viewState.curViewPort.selectE);
-            sDist = this.viewState.getSampleDist(ctx.canvas.width);
+            posS = this.ViewStateService.getPos(ctx.canvas.width, this.ViewStateService.curViewPort.selectS);
+            posE = this.ViewStateService.getPos(ctx.canvas.width, this.ViewStateService.curViewPort.selectE);
+            sDist = this.ViewStateService.getSampleDist(ctx.canvas.width);
 
 
-            var segMId = this.viewState.getcurMouseItem();
-            var isFirst = this.viewState.getcurMouseisFirst();
-            var isLast = this.viewState.getcurMouseisLast();
-            var clickedSegs = this.viewState.getcurClickItems();
-            var levelId = this.viewState.getcurClickLevelName();
+            var segMId = this.ViewStateService.getcurMouseItem();
+            var isFirst = this.ViewStateService.getcurMouseisFirst();
+            var isLast = this.ViewStateService.getcurMouseisLast();
+            var clickedSegs = this.ViewStateService.getcurClickItems();
+            var levelId = this.ViewStateService.getcurClickLevelName();
             if (clickedSegs !== undefined) {
                 // draw clicked on selected areas
                 if (this.level.name === levelId && clickedSegs.length > 0) {
@@ -546,10 +546,10 @@ class="emuwebapp-selectAttrDef"
                         if (cs !== undefined) {
                             // check if segment or event level
                             if (cs.sampleStart !== undefined) {
-                                posS = Math.round(this.viewState.getPos(ctx.canvas.width, cs.sampleStart));
-                                posE = Math.round(this.viewState.getPos(ctx.canvas.width, cs.sampleStart + cs.sampleDur + 1));
+                                posS = Math.round(this.ViewStateService.getPos(ctx.canvas.width, cs.sampleStart));
+                                posE = Math.round(this.ViewStateService.getPos(ctx.canvas.width, cs.sampleStart + cs.sampleDur + 1));
                             } else {
-                                posS = Math.round(this.viewState.getPos(ctx.canvas.width, cs.samplePoint) + sDist / 2);
+                                posS = Math.round(this.ViewStateService.getPos(ctx.canvas.width, cs.samplePoint) + sDist / 2);
                                 posS = posS - 5;
                                 posE = posS + 10;
                             }
@@ -563,27 +563,27 @@ class="emuwebapp-selectAttrDef"
 
 
             // draw preselected boundary
-            item = this.viewState.getcurMouseItem();
-            if (this.level.items.length > 0 && item !== undefined && segMId !== undefined && this.level.name === this.viewState.getcurMouseLevelName()) {
+            item = this.ViewStateService.getcurMouseItem();
+            if (this.level.items.length > 0 && item !== undefined && segMId !== undefined && this.level.name === this.ViewStateService.getcurMouseLevelName()) {
                 ctx.fillStyle = this.ConfigProviderService.design.color.blue;
                 if (isFirst === true) { // before first segment
-                    if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                    if (this.ViewStateService.getcurMouseLevelType() === 'SEGMENT') {
                         item = this.level.items[0];
-                        posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.sampleStart));
+                        posS = Math.round(this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart));
                         ctx.fillRect(posS, 0, 3, ctx.canvas.height);
                     }
                 } else if (isLast === true) { // after last segment
-                    if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
+                    if (this.ViewStateService.getcurMouseLevelType() === 'SEGMENT') {
                         item = this.level.items[this.level.items.length - 1];
-                        posS = Math.round(this.viewState.getPos(ctx.canvas.width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
+                        posS = Math.round(this.ViewStateService.getPos(ctx.canvas.width, (item.sampleStart + item.sampleDur + 1))); // +1 because boundaries are drawn on sampleStart
                         ctx.fillRect(posS, 0, 3, ctx.canvas.height);
                     }
                 } else { // in the middle
-                    if (this.viewState.getcurMouseLevelType() === 'SEGMENT') {
-                        posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.sampleStart));
+                    if (this.ViewStateService.getcurMouseLevelType() === 'SEGMENT') {
+                        posS = Math.round(this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart));
                         ctx.fillRect(posS, 0, 3, ctx.canvas.height);
                     } else {
-                        posS = Math.round(this.viewState.getPos(ctx.canvas.width, item.samplePoint));
+                        posS = Math.round(this.ViewStateService.getPos(ctx.canvas.width, item.samplePoint));
                         xOffset = (sDist / 2);
                         ctx.fillRect(posS + xOffset, 0, 3, ctx.canvas.height);
 
@@ -594,7 +594,7 @@ class="emuwebapp-selectAttrDef"
             }
 
             // draw cursor
-            this.Drawhelperservice.drawCrossHairX(ctx, this.viewState.curMouseX);
+            this.DrawHelperService.drawCrossHairX(ctx, this.ViewStateService.curMouseX);
         };
     }
 };

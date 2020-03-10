@@ -1,21 +1,21 @@
 import * as angular from 'angular';
 
-class Websockethandler{
+class WebSocketHandlerService{
 	private $q;
 	private $rootScope;
 	private $location;
 	private $timeout;
 	private HistoryService;
-	private Ssffparserservice;
+	private SsffParserService;
 	private ConfigProviderService;
-	private viewState;
-	private Wavparserservice;
-	private Soundhandlerservice
-	private Espsparserservice;
-	private uuid;
-	private Binarydatamaniphelper;
-	private Ssffdataservice;
-	private modalService;
+	private ViewStateService;
+	private WavParserService;
+	private SoundHandlerService
+	private EspsParserService;
+	private UuidService;
+	private BinaryDataManipHelperService;
+	private SsffDataService;
+	private ModalService;
 	
 	// Keep all pending requests here until they get responses
 	private callbacks;
@@ -28,22 +28,22 @@ class Websockethandler{
 	// Create our websocket object with the address to the websocket
 	public ws;
 
-	constructor($q, $rootScope, $location, $timeout, HistoryService, Ssffparserservice, ConfigProviderService, viewState, Wavparserservice, Soundhandlerservice, Espsparserservice, uuid, Binarydatamaniphelper, Ssffdataservice, modalService){
+	constructor($q, $rootScope, $location, $timeout, HistoryService, SsffParserService, ConfigProviderService, ViewStateService, WavParserService, SoundHandlerService, EspsParserService, UuidService, BinaryDataManipHelperService, SsffDataService, ModalService){
 		this.$q = $q;
 		this.$rootScope = $rootScope;
 		this.$location = $location;
 		this.$timeout = $timeout;
 		this.HistoryService = HistoryService;
-		this.Ssffparserservice = Ssffparserservice;
+		this.SsffParserService = SsffParserService;
 		this.ConfigProviderService = ConfigProviderService;
-		this.viewState = viewState;
-		this.Wavparserservice = Wavparserservice;
-		this.Soundhandlerservice = Soundhandlerservice;
-		this.Espsparserservice = Espsparserservice;
-		this.uuid = uuid;
-		this.Binarydatamaniphelper = Binarydatamaniphelper;
-		this.Ssffdataservice = Ssffdataservice;
-		this.modalService = modalService;
+		this.ViewStateService = ViewStateService;
+		this.WavParserService = WavParserService;
+		this.SoundHandlerService = SoundHandlerService;
+		this.EspsParserService = EspsParserService;
+		this.UuidService = UuidService;
+		this.BinaryDataManipHelperService = BinaryDataManipHelperService;
+		this.SsffDataService = SsffDataService;
+		this.ModalService = ModalService;
 		
 		// Keep all pending requests here until they get responses
 		this.callbacks = {} as any;
@@ -87,26 +87,26 @@ class Websockethandler{
 				// show protocol error and disconnect from server
 				this.closeConnect();
 				this.$rootScope.$broadcast('resetToInitState');
-				this.$rootScope.$apply(this.modalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message));
+				this.$rootScope.$apply(this.ModalService.open('views/error.html', 'Communication error with server! Error message is: ' + messageObj.status.message));
 			}
 			
 			delete this.callbacks[messageObj.callbackID];
 		} else {
 			if(typeof messageObj.status === 'undefined'){
-				this.modalService.open('views/error.html', 'Just got JSON message from server that the EMU-webApp does not know how to deal with! This is not allowed!');
+				this.ModalService.open('views/error.html', 'Just got JSON message from server that the EMU-webApp does not know how to deal with! This is not allowed!');
 			}
 			else if (messageObj.status.type === 'ERROR:TIMEOUT') {
 				// do nothing
 			} else {
-				this.modalService.open('views/error.html', 'Received invalid messageObj.callbackID that could not be resolved to a request! This should not happen and indicates a bad server response! The invalid callbackID was: ' + messageObj.callbackID);
+				this.ModalService.open('views/error.html', 'Received invalid messageObj.callbackID that could not be resolved to a request! This should not happen and indicates a bad server response! The invalid callbackID was: ' + messageObj.callbackID);
 			}
 		}
 	}
 	
 	// This creates a new callback ID for a request
 	private getCallbackId() {
-		var newUUID = this.uuid.new();
-		return newUUID;
+		var newUuidService = this.UuidService.new();
+		return newUuidService;
 	}
 	
 	// broadcast on open
@@ -120,7 +120,7 @@ class Websockethandler{
 			var jsonMessage = angular.fromJson(message.data);
 			this.listener(jsonMessage);
 		}catch(e){
-			this.modalService.open('views/error.html', 'Got non-JSON string as message from server! This is not allowed! The message was: ' + message.data + ' which caused the angular.fromJson error: ' + e).then(() => {
+			this.ModalService.open('views/error.html', 'Got non-JSON string as message from server! This is not allowed! The message was: ' + message.data + ' which caused the angular.fromJson error: ' + e).then(() => {
 				this.closeConnect();
 				this.$rootScope.$broadcast('resetToInitState');
 			});
@@ -135,7 +135,7 @@ class Websockethandler{
 	
 	private wsonclose(message) {
 		if (!message.wasClean && this.connected) {
-			this.modalService.open('views/error.html', 'A non clean disconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(() => {
+			this.ModalService.open('views/error.html', 'A non clean disconnect to the server occurred! This probably means that the server is down. Please check the server and reconnect!').then(() => {
 				this.$rootScope.$broadcast('connectionDisrupted');
 			});
 		}
@@ -337,4 +337,4 @@ class Websockethandler{
 }
 
 angular.module('emuwebApp')
-.service('Websockethandler', Websockethandler);
+.service('WebSocketHandlerService', WebSocketHandlerService);

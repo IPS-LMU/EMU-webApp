@@ -25,4 +25,4 @@ class UuidService{
 }
 
 angular.module('emuwebApp')
-	.service('uuid', UuidService);
+	.service('UuidService', UuidService);

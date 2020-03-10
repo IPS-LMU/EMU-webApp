@@ -5,26 +5,26 @@ class AnagestService{
 
 	private $q;
 	private $log;
-	private viewState;
+	private ViewStateService;
 	private LevelService;
 	private LinkService;
 	private ConfigProviderService;
-	private Ssffdataservice;
+	private SsffDataService;
 	private ArrayHelperService;
-	private modalService;
+	private ModalService;
 	private HistoryService;
 	private DataService;
 
-	constructor($q, $log, viewState, LevelService, LinkService, ConfigProviderService, Ssffdataservice, ArrayHelperService, modalService, HistoryService, DataService){
+	constructor($q, $log, ViewStateService, LevelService, LinkService, ConfigProviderService, SsffDataService, ArrayHelperService, ModalService, HistoryService, DataService){
 		this.$q = $q;
 		this.$log = $log;
-		this.viewState = viewState;
+		this.ViewStateService = ViewStateService;
 		this.LevelService = LevelService;
 		this.LinkService = LinkService;
 		this.ConfigProviderService = ConfigProviderService;
-		this.Ssffdataservice = Ssffdataservice;
+		this.SsffDataService = SsffDataService;
 		this.ArrayHelperService = ArrayHelperService;
-		this.modalService = modalService;
+		this.ModalService = ModalService;
 		this.HistoryService = HistoryService;
 		this.DataService = DataService;
 	}
@@ -37,28 +37,28 @@ class AnagestService{
 		var defer = this.$q.defer();
 
 		// precheck if there are items in selection
-		var itemInSel = this.viewState.getItemsInSelection(this.DataService.data.levels);
+		var itemInSel = this.ViewStateService.getItemsInSelection(this.DataService.data.levels);
 		if (itemInSel.length !== 0) {
-			this.modalService.open('views/error.html', 'There are already events in the selected area! This is not permitted...').then(() => {
+			this.ModalService.open('views/error.html', 'There are already events in the selected area! This is not permitted...').then(() => {
 				defer.reject();
 			});
 			return defer;
 		}
 
 		// vertical position signal
-		var trackName = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.verticalPosSsffTrackName;
+		var trackName = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.verticalPosSsffTrackName;
 		var tr = this.ConfigProviderService.getSsffTrackConfig(trackName);
-		var col = this.Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+		var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
 
-		var sRaSt = this.Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+		var sRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(tr.name);
 
 		// velocity signal
-		var vTrackName = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.velocitySsffTrackName;
+		var vTrackName = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.velocitySsffTrackName;
 		var vTr = this.ConfigProviderService.getSsffTrackConfig(vTrackName);
-		var vCol = this.Ssffdataservice.getColumnOfTrack(vTr.name, vTr.columnName);
+		var vCol = this.SsffDataService.getColumnOfTrack(vTr.name, vTr.columnName);
 
 		if (col.length !== 1 || vCol.length !== 1) {
-			this.modalService.open('views/error.html', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(() => {
+			this.ModalService.open('views/error.html', 'UPS... the column length of of one of the tracks is != 1 this means something is badly configured in the DB!!!').then(() => {
 				defer.reject();
 			});
 			return defer;
@@ -77,7 +77,7 @@ class AnagestService{
 
 		// Looking for peak or for valley?
 		var lookingForPeak;
-		if (this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.gestureDirection === 'valley') {
+		if (this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.gestureDirection === 'valley') {
 			lookingForPeak = false;
 		} else {
 			lookingForPeak = true;
@@ -88,8 +88,8 @@ class AnagestService{
 		flatVcolVals = this.ArrayHelperService.convertToAbsValues(flatVcolVals);
 
 		// selected column samples
-		var startTimeSel = this.viewState.getSelectedStartTime();
-		var endTimeSel = this.viewState.getSelectedEndTime();
+		var startTimeSel = this.ViewStateService.getSelectedStartTime();
+		var endTimeSel = this.ViewStateService.getSelectedEndTime();
 		var colStartSampleNr = Math.round(startTimeSel * sRaSt.sampleRate + sRaSt.startTime);
 		var colEndSampleNr = Math.round(endTimeSel * sRaSt.sampleRate + sRaSt.startTime);
 
@@ -120,7 +120,7 @@ class AnagestService{
 		this.$log.info('Looking for gesture onset');
 
 
-		this.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then((resp) => {
+		this.interactiveFindThresholds(selVCol.slice(0, vdat[0] + 1), minVelBeforeMaxVel.val, maxVelBeforeMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for gesture onset').then((resp) => {
 			// keyboard;
 			var on20 = resp;
 			gdat[0] = on20;
@@ -132,7 +132,7 @@ class AnagestService{
 
 			// nucleus onset
 			this.$log.info('Looking for nucleus onset');
-			this.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then((resp) => {
+			this.interactiveFindThresholds(selVCol.slice(vdat[0], minp + 1), minVelBetwMaxVel1maxConstr.val, maxVelBeforeMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for nucleus onset').then((resp) => {
 				var off20 = resp;
 				ndat[0] = off20 + vdat[0];
 
@@ -148,7 +148,7 @@ class AnagestService{
 
 				// nucleus offset
 				this.$log.info('Looking for nucleus offset');
-				this.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then((resp) => {
+				this.interactiveFindThresholds(selVCol.slice(minp, vdat[1] + 1), minBetwMaxConstrMaxVelConstr.val, maxVelAfterMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.threshold, 1, 'Looking for nucleus offset').then((resp) => {
 					var on20 = resp;
 					ndat[1] = on20 + minp;
 
@@ -159,7 +159,7 @@ class AnagestService{
 					// gesture offset
 
 					this.$log.info('Looking for gesture offset');
-					this.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then((resp) => {
+					this.interactiveFindThresholds(selVCol.slice(vdat[1], minp + 1), minVelAfterMaxVelAfterConstr.val, maxVelAfterMaxConstr.val, this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.threshold, -1, 'Looking for gesture offset').then((resp) => {
 						var off20 = resp;
 						gdat[1] = off20 + vdat[1];
 						// insert points
@@ -167,98 +167,98 @@ class AnagestService{
 						var curLabel;
 
 						// console.log(gdat)
-						gdat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
-						gdat[1] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
-						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
-						var gdat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), gdat[0], curLabel);
+						gdat[0] = this.SsffDataService.calculateSamplePosInVP(colStartSampleNr + gdat[0], sRaSt.sampleRate, sRaSt.startTime);
+						gdat[1] = this.SsffDataService.calculateSamplePosInVP(colStartSampleNr + gdat[1], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[0];
+						var gdat0insPoint = this.LevelService.insertEvent(this.ViewStateService.getcurClickLevelName(), gdat[0], curLabel);
 						this.HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'INSERTEVENT',
-							'name': this.viewState.getcurClickLevelName(),
+							'name': this.ViewStateService.getcurClickLevelName(),
 							'start': gdat[0],
 							'id': gdat0insPoint.id,
 							'pointName': curLabel
 						});
 
-						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
-						var gdat1insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), gdat[1], curLabel);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.gestureOnOffsetLabels[1];
+						var gdat1insPoint = this.LevelService.insertEvent(this.ViewStateService.getcurClickLevelName(), gdat[1], curLabel);
 						this.HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'INSERTEVENT',
-							'name': this.viewState.getcurClickLevelName(),
+							'name': this.ViewStateService.getcurClickLevelName(),
 							'start': gdat[1],
 							'id': gdat1insPoint.id,
 							'pointName': curLabel
 						});
 
 						// console.log(vdat);
-						vdat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
-						vdat[1] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
-						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
-						var vdat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), vdat[0], curLabel);
+						vdat[0] = this.SsffDataService.calculateSamplePosInVP(colStartSampleNr + vdat[0], sRaSt.sampleRate, sRaSt.startTime);
+						vdat[1] = this.SsffDataService.calculateSamplePosInVP(colStartSampleNr + vdat[1], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[0];
+						var vdat0insPoint = this.LevelService.insertEvent(this.ViewStateService.getcurClickLevelName(), vdat[0], curLabel);
 						this.HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'INSERTEVENT',
-							'name': this.viewState.getcurClickLevelName(),
+							'name': this.ViewStateService.getcurClickLevelName(),
 							'start': vdat[0],
 							'id': vdat0insPoint.id,
 							'pointName': curLabel
 						});
 
-						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
-						var vdat1insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), vdat[1], curLabel);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.maxVelocityOnOffsetLabels[1];
+						var vdat1insPoint = this.LevelService.insertEvent(this.ViewStateService.getcurClickLevelName(), vdat[1], curLabel);
 						this.HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'INSERTEVENT',
-							'name': this.viewState.getcurClickLevelName(),
+							'name': this.ViewStateService.getcurClickLevelName(),
 							'start': vdat[1],
 							'id': vdat1insPoint.id,
 							'pointName': curLabel
 						});
 
 						// console.log(ndat);
-						ndat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
-						ndat[1] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
-						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
-						var ndat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), ndat[0], curLabel);
+						ndat[0] = this.SsffDataService.calculateSamplePosInVP(colStartSampleNr + ndat[0], sRaSt.sampleRate, sRaSt.startTime);
+						ndat[1] = this.SsffDataService.calculateSamplePosInVP(colStartSampleNr + ndat[1], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[0];
+						var ndat0insPoint = this.LevelService.insertEvent(this.ViewStateService.getcurClickLevelName(), ndat[0], curLabel);
 						this.HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'INSERTEVENT',
-							'name': this.viewState.getcurClickLevelName(),
+							'name': this.ViewStateService.getcurClickLevelName(),
 							'start': ndat[0],
 							'id': ndat0insPoint.id,
 							'pointName': curLabel
 						});
 
-						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
-						var ndat1insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), ndat[1], curLabel);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.constrictionPlateauBeginEndLabels[1];
+						var ndat1insPoint = this.LevelService.insertEvent(this.ViewStateService.getcurClickLevelName(), ndat[1], curLabel);
 						this.HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'INSERTEVENT',
-							'name': this.viewState.getcurClickLevelName(),
+							'name': this.ViewStateService.getcurClickLevelName(),
 							'start': ndat[1],
 							'id': ndat1insPoint.id,
 							'pointName': curLabel
 						});
 
 						// console.log(cdat);
-						cdat[0] = this.Ssffdataservice.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
-						curLabel = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
-						var cdat0insPoint = this.LevelService.insertEvent(this.viewState.getcurClickLevelName(), cdat[0], curLabel);
+						cdat[0] = this.SsffDataService.calculateSamplePosInVP(colStartSampleNr + cdat[0], sRaSt.sampleRate, sRaSt.startTime);
+						curLabel = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.maxConstrictionLabel;
+						var cdat0insPoint = this.LevelService.insertEvent(this.ViewStateService.getcurClickLevelName(), cdat[0], curLabel);
 						this.HistoryService.updateCurChangeObj({
 							'type': 'ANNOT',
 							'action': 'INSERTEVENT',
-							'name': this.viewState.getcurClickLevelName(),
+							'name': this.ViewStateService.getcurClickLevelName(),
 							'start': cdat[0],
 							'id': cdat0insPoint.id,
 							'pointName': curLabel
 						});
 
-						var linkLevelName = this.ConfigProviderService.getLevelDefinition(this.viewState.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
+						var linkLevelName = this.ConfigProviderService.getLevelDefinition(this.ViewStateService.getcurClickLevelName()).anagestConfig.autoLinkLevelName;
 						var linkLevelDetails = this.LevelService.getLevelDetails(linkLevelName);
 						var linkLevelLabels = this.LevelService.getAllLabelsOfLevel(linkLevelDetails);
 
-						this.modalService.open('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then((itemIdx) => {
+						this.ModalService.open('views/SelectLabelModal.html', linkLevelLabels, undefined, true).then((itemIdx) => {
 							if (itemIdx !== false) {
 								var childIDs = [
 									gdat0insPoint.id, gdat1insPoint.id, vdat0insPoint.id, vdat1insPoint.id,
@@ -348,7 +348,7 @@ class AnagestService{
 				});
 			}
 
-			this.modalService.open('views/SelectThresholdModal.html', infos, undefined, true).then((resp) => {
+			this.ModalService.open('views/SelectThresholdModal.html', infos, undefined, true).then((resp) => {
 				// console.log(resp);
 				var ap = vz[anavv[resp]];
 				ap = this.ArrayHelperService.interp2points(xx[ap], ap, xx[ap + 1], ap + 1, thdat);
@@ -357,7 +357,7 @@ class AnagestService{
 			return defer.promise;
 		} else if (anavv.length === 0) {
 			defer = this.$q.defer();
-			this.modalService.open('views/error.html', 'Could not find any values that step over the threshold!!').then(() => {
+			this.ModalService.open('views/error.html', 'Could not find any values that step over the threshold!!').then(() => {
 				defer.reject('Could not find any values that step over the threshold!!');
 			});
 			return defer.promise;

@@ -9,13 +9,13 @@ export class HistoryService {
 	private $log; 
 	private $compile;
 	private $sce;
-	private Ssffdataservice;
+	private SsffDataService;
 	private LevelService;
 	private LinkService;
 	private ConfigProviderService ;
-	private viewState;
-	private Soundhandlerservice;
-	private loadedMetaDataService;
+	private ViewStateService;
+	private SoundHandlerService;
+	private LoadedMetaDataService;
 	
 	// private vars
 	private movesAwayFromLastSave = 0;
@@ -23,17 +23,17 @@ export class HistoryService {
 	private redoStack = [];
 	private curChangeObj = {};
 	
-	constructor($log, $compile, $sce, Ssffdataservice, LevelService, LinkService, ConfigProviderService, viewState, Soundhandlerservice, loadedMetaDataService){
+	constructor($log, $compile, $sce, SsffDataService, LevelService, LinkService, ConfigProviderService, ViewStateService, SoundHandlerService, LoadedMetaDataService){
 		this.$log = $log; 
 		this.$compile = $compile;
 		this.$sce = $sce;
-		this.Ssffdataservice = Ssffdataservice;
+		this.SsffDataService = SsffDataService;
 		this.LevelService = LevelService;
 		this.LinkService = LinkService;
 		this.ConfigProviderService = ConfigProviderService; 
-		this.viewState = viewState;
-		this.Soundhandlerservice = Soundhandlerservice;
-		this.loadedMetaDataService = loadedMetaDataService;
+		this.ViewStateService = ViewStateService;
+		this.SoundHandlerService = SoundHandlerService;
+		this.LoadedMetaDataService = LoadedMetaDataService;
 	}
 	
 	// applyChanges should be called by undo redo functions
@@ -45,12 +45,12 @@ export class HistoryService {
 				if (applyOldVal) {
 					this.setHistoryActionText(true, 'SSFF manipulation');
 					tr = this.ConfigProviderService.getSsffTrackConfig(cur.trackName);
-					col = this.Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+					col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
 					col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.oldValue;
 				} else {
 					this.setHistoryActionText(false, 'SSFF manipulation');
 					tr = this.ConfigProviderService.getSsffTrackConfig(cur.trackName);
-					col = this.Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
+					col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
 					col.values[cur.sampleBlockIdx][cur.sampleIdx] = cur.newValue;
 				}
 			} else if (cur.type === 'WEBAPP') {
@@ -60,17 +60,17 @@ export class HistoryService {
 					// The order of links is not preserved on undo
 					if (applyOldVal) {
 						action = true;
-						this.loadedMetaDataService.setBndlComment(cur.initial, cur.key, cur.index);
+						this.LoadedMetaDataService.setBndlComment(cur.initial, cur.key, cur.index);
 					} else {
-						this.loadedMetaDataService.setBndlComment(cur.comment, cur.key, cur.index);
+						this.LoadedMetaDataService.setBndlComment(cur.comment, cur.key, cur.index);
 					}
 					break;
 					case 'FINISHED':
 					if (applyOldVal) {
 						action = true;
-						this.loadedMetaDataService.setBndlFinished(!cur.finished, cur.key, cur.index);
+						this.LoadedMetaDataService.setBndlFinished(!cur.finished, cur.key, cur.index);
 					} else {
-						this.loadedMetaDataService.setBndlFinished(cur.finished, cur.key, cur.index);
+						this.LoadedMetaDataService.setBndlFinished(cur.finished, cur.key, cur.index);
 					}
 					break;
 				}
@@ -410,7 +410,7 @@ export class HistoryService {
 		if (!isUndo) {
 			front = '<i>REDO</i> &#8592; ';
 		}
-		this.viewState.historyActionTxt = this.$sce.trustAsHtml(front + text);
+		this.ViewStateService.historyActionTxt = this.$sce.trustAsHtml(front + text);
 	}
 	
 	// resetToInitState

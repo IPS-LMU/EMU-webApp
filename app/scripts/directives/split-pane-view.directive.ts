@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('bgSplitter', function ($rootScope, viewState) {
+	.directive('bgSplitter', function ($rootScope, ViewStateService) {
 		return {
 			restrict: 'E',
 			replace: true,
@@ -105,7 +105,7 @@ angular.module('emuwebApp')
 						pane1.elem.css('height', pos + 'px');
 						pane2.elem.css('top', pos + 'px');
 
-						viewState.setdragBarHeight(pos);
+						ViewStateService.setdragBarHeight(pos);
 						$rootScope.$digest();
 
 					}
@@ -159,7 +159,7 @@ angular.module('emuwebApp')
 					ev.preventDefault();
 					drag = true;
 					dragSplitPaneResizer = true;
-					viewState.setdragBarActive(true);
+					ViewStateService.setdragBarActive(true);
 					$rootScope.$digest();
 				});
 
@@ -167,7 +167,7 @@ angular.module('emuwebApp')
 					ev.preventDefault();
 					drag = true;
 					dragBottomRightResizePaneTopResizer = true;
-					viewState.setdragBarActive(true);
+					ViewStateService.setdragBarActive(true);
 					$rootScope.$digest();
 
 				});
@@ -176,7 +176,7 @@ angular.module('emuwebApp')
 					ev.preventDefault();
 					drag = true;
 					dragBottomRightResizePaneLeftResizer = true;
-					viewState.setdragBarActive(true);
+					ViewStateService.setdragBarActive(true);
 					$rootScope.$digest();
 				});
 
@@ -184,7 +184,7 @@ angular.module('emuwebApp')
 					ev.preventDefault();
 					drag = true;
 					dragBottomRightResizePaneCornerResizer = true;
-					viewState.setdragBarActive(true);
+					ViewStateService.setdragBarActive(true);
 					$rootScope.$digest();
 				});
 
@@ -194,7 +194,7 @@ angular.module('emuwebApp')
 					dragBottomRightResizePaneTopResizer = false;
 					dragBottomRightResizePaneLeftResizer = false;
 					dragBottomRightResizePaneCornerResizer = false;
-					viewState.setdragBarActive(false);
+					ViewStateService.setdragBarActive(false);
 					$rootScope.$digest();
 				});
 			}

@@ -2,7 +2,7 @@ import * as angular from 'angular';
 import * as d3 from 'd3';
 
 angular.module('emuwebApp')
-	.directive('emuhierarchy', function (viewState, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, Soundhandlerservice, ConfigProviderService, $timeout) {
+	.directive('emuhierarchy', function (ViewStateService, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, SoundHandlerService, ConfigProviderService, $timeout) {
 		return {
 			template: '<div class="emuwebapp-hierarchy-container" ng-mousemove="checkLink($event)"></div>',
 			restrict: 'E',
@@ -16,7 +16,7 @@ angular.module('emuwebApp')
 				//////////////////////
 				// private variables
 
-				// FIXME move these to viewState
+				// FIXME move these to ViewStateService
 				// scope.selectedItem;
 				// scope.selectedLink;
 				// scope.newLinkSrc;
@@ -74,8 +74,8 @@ angular.module('emuwebApp')
 				//////////////////////
 				// watches
 
-				scope.viewState = viewState;
-				scope.hierarchyState = viewState.hierarchyState;
+				scope.ViewStateService = ViewStateService;
+				scope.hierarchyState = ViewStateService.hierarchyState;
 				scope.historyService = HistoryService;
 				scope.cps = ConfigProviderService;
 
@@ -94,7 +94,7 @@ angular.module('emuwebApp')
 					}
 				}, false);
 
-				scope.$watch('viewState.curLevelAttrDefs', function (newValue, oldValue) {
+				scope.$watch('ViewStateService.curLevelAttrDefs', function (newValue, oldValue) {
 					if (newValue !== oldValue) {
 						console.debug('Rendering due to attribute change: ', newValue);
 						scope.render();
@@ -124,7 +124,7 @@ angular.module('emuwebApp')
 					}
 				}, false);
 
-				scope.$watch('viewState.hierarchyState.isShown()', function (newValue) {
+				scope.$watch('ViewStateService.hierarchyState.isShown()', function (newValue) {
 					if (newValue === true) {
 						console.debug ('Hierarchy modal activated, rendering');
 						scope.render();
@@ -156,13 +156,13 @@ angular.module('emuwebApp')
 				 */
 				scope.selectItem = function (item) {
 					scope.selectedItem = item;
-					viewState.hierarchyState.selectedItemID = item.id;
+					ViewStateService.hierarchyState.selectedItemID = item.id;
 				};
 
 				scope.selectLink = function (link) {
 					scope.selectedLink = link;
-					viewState.hierarchyState.selectedLinkFromID = link.fromID;
-					viewState.hierarchyState.selectedLinkToID = link.toID;
+					ViewStateService.hierarchyState.selectedLinkFromID = link.fromID;
+					ViewStateService.hierarchyState.selectedLinkToID = link.toID;
 				};
 
 				/**
@@ -187,8 +187,8 @@ angular.module('emuwebApp')
 					scope.limitPanning();
 
 					// Save translate and scale so they can be re-used when the modal is re-opened
-					viewState.hierarchyState.translate = scope.zoomListener.translate();
-					viewState.hierarchyState.scaleFactor = scope.zoomListener.scale();
+					ViewStateService.hierarchyState.translate = scope.zoomListener.translate();
+					ViewStateService.hierarchyState.scaleFactor = scope.zoomListener.scale();
 
 					// Transform all SVG elements
 					// Note that scope.svg is actually not the svg itself but rather the main <g> within it
@@ -360,7 +360,7 @@ angular.module('emuwebApp')
 				};
 
 				scope.getNodeText = function (d) {
-					var level = viewState.getCurAttrDef(LevelService.getLevelName(d.id));
+					var level = ViewStateService.getCurAttrDef(LevelService.getLevelName(d.id));
 					for (var i = 0; i < d.labels.length; ++i) {
 						if (d.labels[i].name === level) {
 							return d.labels[i].value;
@@ -371,7 +371,7 @@ angular.module('emuwebApp')
 				};
 
 				scope.getLevelCaptionText = function (levelName) {
-					var attributeDefinition = viewState.getCurAttrDef(levelName);
+					var attributeDefinition = ViewStateService.getCurAttrDef(levelName);
 					if (levelName === attributeDefinition) {
 						return levelName;
 					} else {
@@ -381,13 +381,13 @@ angular.module('emuwebApp')
 
 				scope.getOrientatedNodeCollapseText = function (d) {
 					if (scope.vertical) {
-						if (viewState.hierarchyState.getCollapsed(d.id)) {
+						if (ViewStateService.hierarchyState.getCollapsed(d.id)) {
 							return '↓';
 						} else {
 							return '↑';
 						}
 					} else {
-						if (viewState.hierarchyState.getCollapsed(d.id)) {
+						if (ViewStateService.hierarchyState.getCollapsed(d.id)) {
 							return '→';
 						} else {
 							return '←';
@@ -434,7 +434,7 @@ angular.module('emuwebApp')
 				};
 
 				scope.getOrientatedLevelCaptionTransform = function (d) {
-					var revArr = angular.copy(viewState.hierarchyState.path).reverse();
+					var revArr = angular.copy(ViewStateService.hierarchyState.path).reverse();
 					if (scope.vertical) {
 						return 'translate(25, ' + scope.depthToX(revArr.indexOf(d)) + ')';
 					} else {
@@ -511,13 +511,13 @@ angular.module('emuwebApp')
 				 * If the link is invalid, this function will try reversing the link.
 				 */
 				scope.getPreviewColor = function () {
-					var validity = HierarchyManipulationService.checkLinkValidity(viewState.hierarchyState.path, scope.newLinkSrc.id, scope.selectedItem.id);
+					var validity = HierarchyManipulationService.checkLinkValidity(ViewStateService.hierarchyState.path, scope.newLinkSrc.id, scope.selectedItem.id);
 
 					if (validity.valid) {
 						return 'green';
 					} else {
 						if (validity.reason === 3) {
-							validity = HierarchyManipulationService.checkLinkValidity(viewState.hierarchyState.path, scope.selectedItem.id, scope.newLinkSrc.id);
+							validity = HierarchyManipulationService.checkLinkValidity(ViewStateService.hierarchyState.path, scope.selectedItem.id, scope.newLinkSrc.id);
 							if (validity.valid) {
 								return 'green';
 							}
@@ -529,7 +529,7 @@ angular.module('emuwebApp')
 				scope.getLabelLegalnessColor = function (d) {
 					var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
 					var levelName = LevelService.getLevelName(d.id);
-					var attrIndex = viewState.getCurAttrIndex(levelName);
+					var attrIndex = ViewStateService.getCurAttrIndex(levelName);
 					var legalLabels = scope.cps.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
 
 					if (legalLabels === undefined || (dom.value.length > 0 && legalLabels.indexOf(dom.value) >= 0)) {
@@ -553,9 +553,9 @@ angular.module('emuwebApp')
 				};
 
 				scope.svgOnClick = function () {
-					if (viewState.hierarchyState.contextMenuID !== undefined) {
+					if (ViewStateService.hierarchyState.contextMenuID !== undefined) {
 						scope.$apply(function () {
-							viewState.hierarchyState.contextMenuID = undefined;
+							ViewStateService.hierarchyState.contextMenuID = undefined;
 						});
 					}
 				};
@@ -563,16 +563,16 @@ angular.module('emuwebApp')
 				scope.nodeOnClick = function (d) {
 					console.debug('Clicked node', d);
 
-					if (viewState.hierarchyState.contextMenuID === undefined) {
+					if (ViewStateService.hierarchyState.contextMenuID === undefined) {
 						d3.event.stopPropagation();
-						viewState.hierarchyState.contextMenuID = d.id;
-						viewState.hierarchyState.setEditValue(scope.getNodeText(d));
+						ViewStateService.hierarchyState.contextMenuID = d.id;
+						ViewStateService.hierarchyState.setEditValue(scope.getNodeText(d));
 						scope.$apply(function () {
 							scope.render();
 						});
 					}
 
-					if (viewState.hierarchyState.contextMenuID === d.id) {
+					if (ViewStateService.hierarchyState.contextMenuID === d.id) {
 						d3.event.stopPropagation();
 					}
 				};
@@ -584,7 +584,7 @@ angular.module('emuwebApp')
 				scope.nodeOnCollapseClick = function (d) {
 					console.debug('collapsing', d);
 					// (De-)Collapse sub-tree
-					HierarchyLayoutService.toggleCollapse(d, viewState.hierarchyState.path);
+					HierarchyLayoutService.toggleCollapse(d, ViewStateService.hierarchyState.path);
 					scope.render();
 				};
 
@@ -598,18 +598,18 @@ angular.module('emuwebApp')
 					// a multi-dimensional array with [0][0] being the DOM node I'm
 					// looking for
 					var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
-					viewState.hierarchyState.setEditValue(dom.value);
+					ViewStateService.hierarchyState.setEditValue(dom.value);
 
 					// Give feedback on legalness
 					dom.style.backgroundColor = scope.getLabelLegalnessColor(d);
 				};
 
 				scope.nodeOnFocusIn = function () {
-					viewState.hierarchyState.inputFocus = true;
+					ViewStateService.hierarchyState.inputFocus = true;
 				};
 
 				scope.nodeOnFocusOut = function () {
-					viewState.hierarchyState.inputFocus = false;
+					ViewStateService.hierarchyState.inputFocus = false;
 				};
 
 				scope.linkOnMouseOver = function (d) {
@@ -632,7 +632,7 @@ angular.module('emuwebApp')
 
 
 				scope.play = function (d) {
-					var timeInfoLevel = viewState.hierarchyState.path[0];
+					var timeInfoLevel = ViewStateService.hierarchyState.path[0];
 					if (typeof timeInfoLevel === 'undefined') {
 						console.debug('Likely a bug: There is no path selection. Not executing play():', d);
 						return;
@@ -666,7 +666,7 @@ angular.module('emuwebApp')
 								}
 							}
 						}
-						itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, viewState.hierarchyState.path));
+						itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, ViewStateService.hierarchyState.path));
 					}
 
 					console.debug('Node info for playback: ', timeInfoType, d, startSample, endSample);
@@ -676,7 +676,7 @@ angular.module('emuwebApp')
 						return;
 					}
 
-					Soundhandlerservice.playFromTo(startSample, endSample);
+					SoundHandlerService.playFromTo(startSample, endSample);
 				};
 
 				/***********************************************************************
@@ -705,7 +705,7 @@ angular.module('emuwebApp')
 						offset = scope.offsetX;
 					}
 
-					var result = depth / viewState.hierarchyState.path.length * crossAxisSize;
+					var result = depth / ViewStateService.hierarchyState.path.length * crossAxisSize;
 					if (scope.allowCrossAxisZoom) {
 						result *= scope.zoomListener.scale();
 					}
@@ -767,15 +767,15 @@ angular.module('emuwebApp')
 
 				scope.checkLink = function (event) {
 					if (event.shiftKey && !scope.shiftMode) {
-						if (viewState.hierarchyState.newLinkFromID === undefined) {
-							viewState.hierarchyState.newLinkFromID = viewState.hierarchyState.selectedItemID;
+						if (ViewStateService.hierarchyState.newLinkFromID === undefined) {
+							ViewStateService.hierarchyState.newLinkFromID = ViewStateService.hierarchyState.selectedItemID;
 							scope.shiftMode = true;
 						}
 					}
 					if (!event.shiftKey && scope.shiftMode) {
 						scope.shiftMode = false;
-						var linkObj = HierarchyManipulationService.addLink(viewState.hierarchyState.path, viewState.hierarchyState.newLinkFromID, viewState.hierarchyState.selectedItemID);
-						viewState.hierarchyState.newLinkFromID = undefined;
+						var linkObj = HierarchyManipulationService.addLink(ViewStateService.hierarchyState.path, ViewStateService.hierarchyState.newLinkFromID, ViewStateService.hierarchyState.selectedItemID);
+						ViewStateService.hierarchyState.newLinkFromID = undefined;
 						if (linkObj !== null) {
 							HistoryService.addObjToUndoStack({
 								type: 'HIERARCHY',
@@ -801,8 +801,8 @@ angular.module('emuwebApp')
 
 
 				// read previously stored zoom and pan values
-				scope.zoomListener.translate(viewState.hierarchyState.translate);
-				scope.zoomListener.scale(viewState.hierarchyState.scaleFactor);
+				scope.zoomListener.translate(ViewStateService.hierarchyState.translate);
+				scope.zoomListener.scale(ViewStateService.hierarchyState.scaleFactor);
 
 				//
 				/////////////////////////////
@@ -928,7 +928,7 @@ angular.module('emuwebApp')
 					// for reference on the .data() call, compare the comment on
 					// scope.render() above
 					var levelCaptionSet = scope.captionLayer.selectAll('g.emuhierarchy-levelcaption')
-						.data(viewState.hierarchyState.path, function (d) {
+						.data(ViewStateService.hierarchyState.path, function (d) {
 							return d;
 						});
 
@@ -1011,11 +1011,11 @@ angular.module('emuwebApp')
 					// Compute the new tree layout (first nodes and then links)
 					//
 					var nodes = [];
-					HierarchyLayoutService.calculateWeightsBottomUp(viewState.hierarchyState.path);
+					HierarchyLayoutService.calculateWeightsBottomUp(ViewStateService.hierarchyState.path);
 
-					for (i = 0; i < viewState.hierarchyState.path.length; ++i) {
+					for (i = 0; i < ViewStateService.hierarchyState.path.length; ++i) {
 						// Add all nodes that are not collapsed
-						var levelItems = LevelService.getLevelDetails(viewState.hierarchyState.path[i]).items;
+						var levelItems = LevelService.getLevelDetails(ViewStateService.hierarchyState.path[i]).items;
 						for (var ii = 0; ii < levelItems.length; ++ii) {
 							if (levelItems[ii]._visible) {
 								nodes.push(levelItems[ii]);
@@ -1025,32 +1025,32 @@ angular.module('emuwebApp')
 
 
 					// Make sure the selected things are visible, otherwise un-select them
-					var selectedItem = LevelService.getItemByID(viewState.hierarchyState.selectedItemID);
-					var contextMenuItem = LevelService.getItemByID(viewState.hierarchyState.contextMenuID);
-					var selectedLinkFromItem = LevelService.getItemByID(viewState.hierarchyState.selectedLinkFromID);
-					var selectedLinkToItem = LevelService.getItemByID(viewState.hierarchyState.selectedLinkToID);
+					var selectedItem = LevelService.getItemByID(ViewStateService.hierarchyState.selectedItemID);
+					var contextMenuItem = LevelService.getItemByID(ViewStateService.hierarchyState.contextMenuID);
+					var selectedLinkFromItem = LevelService.getItemByID(ViewStateService.hierarchyState.selectedLinkFromID);
+					var selectedLinkToItem = LevelService.getItemByID(ViewStateService.hierarchyState.selectedLinkToID);
 
 
 					if (selectedItem !== undefined && !selectedItem._visible) {
 						console.debug('Unselecting node');
-						viewState.hierarchyState.selectedItemID = undefined;
+						ViewStateService.hierarchyState.selectedItemID = undefined;
 					}
 
 					if (selectedLinkFromItem !== undefined && !selectedLinkFromItem._visible) {
 						console.debug('Unselecting link');
-						viewState.hierarchyState.selectedLinkFromID = undefined;
-						viewState.hierarchyState.selectedLinkToID = undefined;
+						ViewStateService.hierarchyState.selectedLinkFromID = undefined;
+						ViewStateService.hierarchyState.selectedLinkToID = undefined;
 					}
 
 					if (selectedLinkToItem !== undefined && !selectedLinkToItem._visible) {
 						console.debug('Unselecting link');
-						viewState.hierarchyState.selectedLinkFromID = undefined;
-						viewState.hierarchyState.selectedLinkToID = undefined;
+						ViewStateService.hierarchyState.selectedLinkFromID = undefined;
+						ViewStateService.hierarchyState.selectedLinkToID = undefined;
 					}
 
 					if (contextMenuItem !== undefined && !contextMenuItem._visible) {
 						console.debug('Closing context menu (node became invisible)');
-						viewState.hierarchyState.contextMenuID = undefined;
+						ViewStateService.hierarchyState.contextMenuID = undefined;
 					}
 
 
@@ -1067,9 +1067,9 @@ angular.module('emuwebApp')
 					var links = [];
 					var allLinks = DataService.getData().links;
 					for (var l = 0; l < allLinks.length; ++l) {
-						for (i = 0; i < viewState.hierarchyState.path.length - 1; ++i) {
-							var element = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i], allLinks[l].toID);
-							var parentElement = LevelService.getItemFromLevelById(viewState.hierarchyState.path[i + 1], allLinks[l].fromID);
+						for (i = 0; i < ViewStateService.hierarchyState.path.length - 1; ++i) {
+							var element = LevelService.getItemFromLevelById(ViewStateService.hierarchyState.path[i], allLinks[l].toID);
+							var parentElement = LevelService.getItemFromLevelById(ViewStateService.hierarchyState.path[i + 1], allLinks[l].fromID);
 
 							if (element === null) {
 								continue;
@@ -1080,7 +1080,7 @@ angular.module('emuwebApp')
 							if (!element._visible) {
 								continue;
 							}
-							if (viewState.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
+							if (ViewStateService.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
 								continue;
 							}
 
@@ -1168,11 +1168,11 @@ angular.module('emuwebApp')
 					// Make sure that nodes that appear due to their ancestry being uncollapsed do not fly in from the origin
 					// (as do all other nodes)
 					newNodes.attr('transform', function (d) {
-						var position = viewState.hierarchyState.getCollapsePosition(d.id);
+						var position = ViewStateService.hierarchyState.getCollapsePosition(d.id);
 						if (typeof position !== 'undefined') {
 							var x = position[0];
 							var y = position[1];
-							viewState.hierarchyState.setCollapsePosition(d.id, undefined);
+							ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
 							return 'translate(' + x + ',' + y + ')' + scope.getOrientatedNodeTransform();
 						}
 					});
@@ -1188,11 +1188,11 @@ angular.module('emuwebApp')
 							.transition()
 							.duration(scope.transition.duration)
 							.attr('transform', function (d) {
-								var collapsePosition = viewState.hierarchyState.getCollapsePosition(d.id);
+								var collapsePosition = ViewStateService.hierarchyState.getCollapsePosition(d.id);
 								if (typeof collapsePosition !== 'undefined') {
 									var x = collapsePosition[0];
 									var y = collapsePosition[1];
-									viewState.hierarchyState.setCollapsePosition(d.id, undefined);
+									ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
 									return 'translate(' + x + ',' + y + ')';
 								} else {
 									return 'translate(' + 0 + ',' + 0 + ')';
@@ -1202,11 +1202,11 @@ angular.module('emuwebApp')
 					} else {
 						oldNodes = oldNodes
 							.attr('transform', function (d) {
-								var collapsePosition = viewState.hierarchyState.getCollapsePosition(d.id);
+								var collapsePosition = ViewStateService.hierarchyState.getCollapsePosition(d.id);
 								if (typeof collapsePosition !== 'undefined') {
 									var x = collapsePosition[0];
 									var y = collapsePosition[1];
-									viewState.hierarchyState.setCollapsePosition(d.id, undefined);
+									ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
 									return 'translate(' + x + ',' + y + ')';
 								} else {
 									return 'translate(' + 0 + ',' + 0 + ')';
@@ -1244,7 +1244,7 @@ angular.module('emuwebApp')
 						})
 						// Highlight collapsed items
 						.style('stroke', function (d) {
-							if (viewState.hierarchyState.getCollapsed(d.id)) {
+							if (ViewStateService.hierarchyState.getCollapsed(d.id)) {
 								return scope.cps.design.color.red;
 							} else {
 								return scope.cps.design.color.grey;
@@ -1273,7 +1273,7 @@ angular.module('emuwebApp')
 					// Create context menu
 
 					// If the context menu has been closed, remove the elements
-					if (viewState.hierarchyState.contextMenuID === undefined) {
+					if (ViewStateService.hierarchyState.contextMenuID === undefined) {
 						scope.svg.selectAll('.emuhierarchy-contextmenu')
 							.remove()
 						;
@@ -1285,7 +1285,7 @@ angular.module('emuwebApp')
 					if (contextMenu[0][0] === null) {
 						contextMenu = dataSet
 							.filter(function (d) {
-								return d.id === viewState.hierarchyState.contextMenuID;
+								return d.id === ViewStateService.hierarchyState.contextMenuID;
 							})
 							.append('g')
 							.attr('class', 'emuhierarchy-contextmenu')
@@ -1388,10 +1388,10 @@ angular.module('emuwebApp')
 					// one in the SVG, otherwise the succeeding elements are drawn
 					// visually on top of the context menu.
 					scope.svg.selectAll('.emuhierarchy-node').sort (function (a, b) {
-						if (a.id === viewState.hierarchyState.contextMenuID) {
+						if (a.id === ViewStateService.hierarchyState.contextMenuID) {
 							return 1;
 						}
-						if (b.id === viewState.hierarchyState.contextMenuID) {
+						if (b.id === ViewStateService.hierarchyState.contextMenuID) {
 							return -1;
 						}
 						return 0;

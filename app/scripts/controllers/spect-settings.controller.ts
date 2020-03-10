@@ -1,10 +1,10 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('spectSettingsCtrl', function ($scope, modalService, viewState, DataService, mathHelperService, Soundhandlerservice) {
+	.controller('spectSettingsCtrl', function ($scope, ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService) {
 
-		$scope.vs = viewState;
-		$scope.shs = Soundhandlerservice;
+		$scope.vs = ViewStateService;
+		$scope.shs = SoundHandlerService;
 		$scope.windowOptions = Object.keys($scope.vs.getWindowFunctions());
 		$scope.selWindowInfo = {};
 		$scope.selWindowInfo.name = Object.keys($scope.vs.getWindowFunctions())[$scope.vs.spectroSettings.window - 1];
@@ -60,7 +60,7 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.calcFftN = function () {
-			var fftN = mathHelperService.calcClosestPowerOf2Gt($scope.modalVals._windowSizeInSamples);
+			var fftN = MathHelperService.calcClosestPowerOf2Gt($scope.modalVals._windowSizeInSamples);
 			// fftN must be greater than 512 (leads to better resolution of spectrogram)
 			if (fftN < 512) {
 				fftN = 512;
@@ -98,7 +98,7 @@ angular.module('emuwebApp')
 				'invert': $scope.vs.spectroSettings.invert
 
 			};
-			modalService.close();
+			ModalService.close();
 		};
 
 		/**
@@ -167,13 +167,13 @@ angular.module('emuwebApp')
 			else {
 				$scope.errorID[8] = false;
 			}
-			if (isNaN($scope.modalVals.preEmphasisFilterFactor * Soundhandlerservice.audioBuffer.sampleRate)) {
+			if (isNaN($scope.modalVals.preEmphasisFilterFactor * SoundHandlerService.audioBuffer.sampleRate)) {
 				$scope.errorID[7] = true;
 			}
 			else {
 				$scope.errorID[7] = false;
 			}
-			if (isNaN(Soundhandlerservice.audioBuffer.sampleRate * $scope.modalVals.windowSizeInSecs)) {
+			if (isNaN(SoundHandlerService.audioBuffer.sampleRate * $scope.modalVals.windowSizeInSecs)) {
 				$scope.errorID[6] = true;
 			}
 			else {

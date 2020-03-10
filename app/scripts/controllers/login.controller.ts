@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, Iohandlerservice, viewState, modalService) {
+	.controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, IoHandlerService, ViewStateService, ModalService) {
 
 		$scope.loginData = {
 			'username': '',
@@ -12,9 +12,9 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.tryLogin = function () {
-			Iohandlerservice.logOnUser($scope.loginData.username, $scope.loginData.password).then((res) => {
+			IoHandlerService.logOnUser($scope.loginData.username, $scope.loginData.password).then((res) => {
 				if (res === 'LOGGEDON') {
-					modalService.confirm();
+					ModalService.confirm();
 				} else {
 					$scope.loginData.errorMsg = 'ERROR: ' + res;
 				}
@@ -27,22 +27,22 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.setEditing(true);
-			viewState.setcursorInTextField(true);
+			ViewStateService.setEditing(true);
+			ViewStateService.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.setEditing(false);
-			viewState.setcursorInTextField(false);
+			ViewStateService.setEditing(false);
+			ViewStateService.setcursorInTextField(false);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cancel = function () {
-			modalService.close();
+			ModalService.close();
 		};
 	});

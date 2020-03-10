@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 /**
  * @ngdoc service
- * @name emuwebApp.appStateService
+ * @name emuwebApp.AppStateService
  * @description
  * # AppStateService
  * Service in the emuwebApp.
@@ -14,26 +14,26 @@ class AppStateService{
 	private $location;
 	private DragnDropService;
 	private DragnDropDataService;
-	private viewState;
-	private Iohandlerservice;
-	private loadedMetaDataService;
-	private Soundhandlerservice;
+	private ViewStateService;
+	private IoHandlerService;
+	private LoadedMetaDataService;
+	private SoundHandlerService;
 	private DataService;
-	private Ssffdataservice;
+	private SsffDataService;
 	private HistoryService;
 
-	constructor($log, $rootScope, $location, DragnDropService, DragnDropDataService, viewState, Iohandlerservice, loadedMetaDataService, Soundhandlerservice, DataService, Ssffdataservice, HistoryService){
+	constructor($log, $rootScope, $location, DragnDropService, DragnDropDataService, ViewStateService, IoHandlerService, LoadedMetaDataService, SoundHandlerService, DataService, SsffDataService, HistoryService){
 		this.$log = $log;
 		this.$rootScope = $rootScope;
 		this.$location = $location;
 		this.DragnDropService = DragnDropService;
 		this.DragnDropDataService = DragnDropDataService;
-		this.viewState = viewState;
-		this.Iohandlerservice = Iohandlerservice;
-		this.loadedMetaDataService = loadedMetaDataService;
-		this.Soundhandlerservice = Soundhandlerservice;
+		this.ViewStateService = ViewStateService;
+		this.IoHandlerService = IoHandlerService;
+		this.LoadedMetaDataService = LoadedMetaDataService;
+		this.SoundHandlerService = SoundHandlerService;
 		this.DataService = DataService;
-		this.Ssffdataservice = Ssffdataservice;
+		this.SsffDataService = SsffDataService;
 		this.HistoryService = HistoryService;
 
 	}
@@ -42,47 +42,47 @@ class AppStateService{
 		 *
 		 */
 		public resetToInitState() {
-			// SIC Iohandlerservice.Websockethandler is private
-			if(this.Iohandlerservice.Websockethandler.isConnected()) {
-				this.Iohandlerservice.Websockethandler.disconnectWarning().then(() => {
+			// SIC IoHandlerService.WebSocketHandlerService is private
+			if(this.IoHandlerService.WebSocketHandlerService.isConnected()) {
+				this.IoHandlerService.WebSocketHandlerService.disconnectWarning().then(() => {
 					this.$log.info('Closing websocket connection to server');
-					this.Iohandlerservice.Websockethandler.closeConnect();
+					this.IoHandlerService.WebSocketHandlerService.closeConnect();
 				});
 			}
 			// $scope.curBndl = {};
-			this.loadedMetaDataService.resetToInitState();
-			this.Soundhandlerservice.audioBuffer = {};
+			this.LoadedMetaDataService.resetToInitState();
+			this.SoundHandlerService.audioBuffer = {};
 			this.DataService.setData({});
 			this.DragnDropDataService.resetToInitState();
 			this.DragnDropService.resetToInitState();
-			this.Ssffdataservice.data = [];
+			this.SsffDataService.data = [];
 			this.HistoryService.resetToInitState();
-			this.viewState.setState('noDBorFilesloaded');
-			this.viewState.somethingInProgress = false;
-			this.viewState.resetToInitState();
+			this.ViewStateService.setState('noDBorFilesloaded');
+			this.ViewStateService.somethingInProgress = false;
+			this.ViewStateService.resetToInitState();
 			this.HistoryService.resetToInitState();
-			this.viewState.showDropZone = true;
+			this.ViewStateService.showDropZone = true;
 			this.$location.url(this.$location.path()); // reset URL without get values
 			this.$rootScope.$broadcast('resetToInitState');
 			//$scope.loadDefaultConfig();
 		};
 		
 		public reloadToInitState = function (session) {
-			// SIC Iohandlerservice.Websockethandler is private
-			this.Iohandlerservice.Websockethandler.closeConnect();
+			// SIC IoHandlerService.WebSocketHandlerService is private
+			this.IoHandlerService.WebSocketHandlerService.closeConnect();
 			// $scope.curBndl = {};
-			var url = this.viewState.url;
-			this.loadedMetaDataService.resetToInitState();
-			this.Soundhandlerservice.audioBuffer = {};
+			var url = this.ViewStateService.url;
+			this.LoadedMetaDataService.resetToInitState();
+			this.SoundHandlerService.audioBuffer = {};
 			this.DataService.setData({});
 			this.DragnDropDataService.resetToInitState();
 			this.DragnDropService.resetToInitState();
-			this.Ssffdataservice.data = [];
+			this.SsffDataService.data = [];
 			this.HistoryService.resetToInitState();
-			this.viewState.setState('noDBorFilesloaded');
-			this.viewState.somethingInProgress = false;
+			this.ViewStateService.setState('noDBorFilesloaded');
+			this.ViewStateService.somethingInProgress = false;
 			this.HistoryService.resetToInitState();
-			this.viewState.resetToInitState();
+			this.ViewStateService.resetToInitState();
 			this.$rootScope.$broadcast('reloadToInitState', {url:url, session:session, reload:true });
 		};
 
@@ -90,4 +90,4 @@ class AppStateService{
 
 
 angular.module('emuwebApp')
-	.service('appStateService', AppStateService);
+	.service('AppStateService', AppStateService);

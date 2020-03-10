@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-class fontScaleService{
+class FontScaleService{
 	
 	private lastTextWidth;
 	private spaceTop;
@@ -67,4 +67,4 @@ class fontScaleService{
 }
 
 angular.module('emuwebApp')
-.service('fontScaleService', fontScaleService);
+.service('FontScaleService', FontScaleService);

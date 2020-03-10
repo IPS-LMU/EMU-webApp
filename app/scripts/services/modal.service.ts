@@ -3,7 +3,7 @@ import * as angular from 'angular';
 class ModalService{
 	private $q;
 	private ArrayHelperService;
-	private viewState;
+	private ViewStateService;
 
 	private isOpen;
 	private templateUrl;
@@ -15,10 +15,10 @@ class ModalService{
 	private dataExport;
 
 	
-	constructor($q, ArrayHelperService, viewState){
+	constructor($q, ArrayHelperService, ViewStateService){
 		this.$q = $q;
 		this.ArrayHelperService = ArrayHelperService;
-		this.viewState = viewState;
+		this.ViewStateService = ViewStateService;
 
 	}
 
@@ -54,7 +54,7 @@ class ModalService{
 		}
 		this.defer = this.$q.defer();
 		this.templateUrl = template;
-		this.viewState.setState('modalShowing');
+		this.ViewStateService.setState('modalShowing');
 		this.isOpen = true;
 		return this.defer.promise;
 	};
@@ -67,18 +67,18 @@ class ModalService{
 		
 		this.dataIn = msg;
 		this.templateUrl = 'views/error.html';
-		this.viewState.setState('modalShowing');
+		this.ViewStateService.setState('modalShowing');
 	};
 	
 	/**
 	*
 	*/
 	public close() {
-		this.viewState.setEditing(false);
-		this.viewState.setState(this.viewState.prevState);
+		this.ViewStateService.setEditing(false);
+		this.ViewStateService.setState(this.ViewStateService.prevState);
 		this.isOpen = false;
-		if (this.viewState.hierarchyState.isShown()) {
-			this.viewState.hierarchyState.toggleHierarchy();
+		if (this.ViewStateService.hierarchyState.isShown()) {
+			this.ViewStateService.hierarchyState.toggleHierarchy();
 		}
 		this.defer.resolve(false);
 	};
@@ -88,8 +88,8 @@ class ModalService{
 	*
 	*/
 	public closeAndResolve(status) {
-		this.viewState.setEditing(false);
-		this.viewState.setState(this.viewState.prevState);
+		this.ViewStateService.setEditing(false);
+		this.ViewStateService.setState(this.ViewStateService.prevState);
 		this.isOpen = false;
 		this.defer.resolve(status);
 	};
@@ -99,8 +99,8 @@ class ModalService{
 	*
 	*/
 	public confirm() {
-		this.viewState.setEditing(false);
-		this.viewState.setState(this.viewState.prevState);
+		this.ViewStateService.setEditing(false);
+		this.ViewStateService.setState(this.ViewStateService.prevState);
 		this.isOpen = false;
 		this.defer.resolve(true);
 	};
@@ -117,8 +117,8 @@ class ModalService{
 	*
 	*/
 	public confirmContent() {
-		this.viewState.setEditing(false);
-		this.viewState.setState(this.viewState.prevState);
+		this.ViewStateService.setEditing(false);
+		this.ViewStateService.setState(this.ViewStateService.prevState);
 		this.isOpen = false;
 		this.defer.resolve(this.dataOut);
 	};
@@ -135,10 +135,10 @@ class ModalService{
 
 /**
 * @ngdoc service
-* @name emuwebApp.modalService
+* @name emuwebApp.ModalService
 * @description
-* # modalService
+* # ModalService
 * Service in the emuwebApp.
 */
 angular.module('emuwebApp')
-.service('modalService', ModalService)
+.service('ModalService', ModalService)

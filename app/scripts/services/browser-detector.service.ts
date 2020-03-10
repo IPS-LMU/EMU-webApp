@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-class BrowserDetector{
+class BrowserDetectorService{
 	
 	public isMobile;
 	public isBrowser;
@@ -99,4 +99,4 @@ class BrowserDetector{
 }
 
 angular.module('emuwebApp')
-.service('browserDetector', BrowserDetector);
+.service('BrowserDetectorService', BrowserDetectorService);

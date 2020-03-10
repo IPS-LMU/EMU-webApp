@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import { SsffParserWorker } from '../workers/ssff-parser.worker.js';
 
-class Ssffparserservice{
+class SsffParserService{
 	private $q;
 	private worker;
 	private defer;
@@ -53,4 +53,4 @@ class Ssffparserservice{
 }
 
 angular.module('emuwebApp')
-.service('Ssffparserservice', Ssffparserservice);
+.service('SsffParserService', SsffParserService);

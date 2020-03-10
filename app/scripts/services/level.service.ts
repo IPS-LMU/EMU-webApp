@@ -6,21 +6,21 @@ class LevelService{
 	private DataService;
 	private LinkService;
 	private ConfigProviderService;
-	private Soundhandlerservice;
-	private viewState;
+	private SoundHandlerService;
+	private ViewStateService;
 	
 	private lasteditArea; // holding current edit area
 	private lasteditAreaElem; // holding current edit area element
 	
 	
-	constructor($q, DataService, LinkService, ConfigProviderService, Soundhandlerservice, viewState){
+	constructor($q, DataService, LinkService, ConfigProviderService, SoundHandlerService, ViewStateService){
 		
 		this.$q = $q;
 		this.DataService = DataService;
 		this.LinkService = LinkService;
 		this.ConfigProviderService = ConfigProviderService;
-		this.Soundhandlerservice = Soundhandlerservice;
-		this.viewState = viewState;	
+		this.SoundHandlerService = SoundHandlerService;
+		this.ViewStateService = ViewStateService;	
 		
 		this.lasteditArea = null; // holding current edit area
 		this.lasteditAreaElem = null; // holding current edit area element
@@ -241,7 +241,7 @@ class LevelService{
 	* @return array containing all labels (form==['x','y','z'])
 	*/
 	public getAllLabelsOfLevel(levelDetails) {
-		var curAttrDef = this.viewState.getCurAttrDef(levelDetails.name);
+		var curAttrDef = this.ViewStateService.getCurAttrDef(levelDetails.name);
 		var labels = [];
 		levelDetails.items.forEach((item) => {
 			var pos = item.labels.map(function (e) {
@@ -365,16 +365,16 @@ class LevelService{
 	
 	/**
 	* Remove currently open html textarea (if there is a textarea open)
-	* and set viewState.editing to false.
+	* and set ViewStateService.editing to false.
 	*/
 	public deleteEditArea() {
 		if (null !== this.getlasteditArea()) {
 			$('.' + this.getlasteditArea()).remove();
 		}
-		this.viewState.editing = false;
+		this.ViewStateService.editing = false;
 		// close large text input field
-		this.viewState.largeTextFieldInputFieldCurLabel =  '';
-		this.viewState.largeTextFieldInputFieldVisable = false;
+		this.ViewStateService.largeTextFieldInputFieldCurLabel =  '';
+		this.ViewStateService.largeTextFieldInputFieldVisable = false;
 		
 	};
 	
@@ -387,8 +387,8 @@ class LevelService{
 	*   @param type the current Level type
 	*/
 	public openEditArea(lastEventClick, element, type) {
-		var levelName = this.viewState.getcurClickLevelName();
-		var attrDefName = this.viewState.getCurAttrDef(levelName);
+		var levelName = this.ViewStateService.getcurClickLevelName();
+		var attrDefName = this.ViewStateService.getCurAttrDef(levelName);
 		
 		// find labelIdx
 		var labelIdx = this.getLabelIdx(attrDefName, lastEventClick.labels);
@@ -416,28 +416,28 @@ class LevelService{
 		}
 		if(!this.ConfigProviderService.vals.restrictions.useLargeTextInputField){
 			if (type === 'SEGMENT') {
-				start = Math.floor(this.viewState.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
-				end = Math.ceil(this.viewState.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
+				start = Math.floor(this.ViewStateService.getPos(clientWidth, lastEventClick.sampleStart) + clientOffset);
+				end = Math.ceil(this.ViewStateService.getPos(clientWidth, (lastEventClick.sampleStart + lastEventClick.sampleDur + 1)) + clientOffset);
 				this.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 				
 				/*
 				zooming in disabled
 				
 				if (width < (2 * len)) {
-					var zoom = viewState.curViewPort.eS - viewState.curViewPort.sS;
+					var zoom = ViewStateService.curViewPort.eS - ViewStateService.curViewPort.sS;
 					if (zoom <= 10) { // if already zoomed in but text is still too long
 						this.createEditAreaElement(element, start, top, end - start, height, lastEventClick.labels[labelIdx].value, lastEventClick.id);
 					}
 					else {
-						viewState.zoomViewPort(true, this);
+						ViewStateService.zoomViewPort(true, this);
 						this.openEditArea(lastEventClick, element, type);
 						return;
 					}
 				}
 				*/
 			} else {
-				start = this.viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
-				end = this.viewState.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
+				start = this.ViewStateService.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset - (len / 2);
+				end = this.ViewStateService.getPos(clientWidth, lastEventClick.samplePoint) + clientOffset + (len / 2);
 				width = end - start;
 				if (width < (2 * len)) {
 					width = (2 * len);
@@ -446,8 +446,8 @@ class LevelService{
 			}
 			this.createSelection(element.find('textarea')[0], 0, editText.length);
 		}else{
-			this.viewState.largeTextFieldInputFieldVisable = true;
-			this.viewState.largeTextFieldInputFieldCurLabel =  editText;
+			this.ViewStateService.largeTextFieldInputFieldVisable = true;
+			this.ViewStateService.largeTextFieldInputFieldCurLabel =  editText;
 		}
 	};
 	
@@ -493,8 +493,8 @@ class LevelService{
 			'padding-top': Math.round(height / 3 + 1) + 'px'
 		};
 		// add custom label font to CSS if specified
-		if(typeof this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily !== 'undefined'){
-			cssObj['font-family'] = this.ConfigProviderService.vals.perspectives[this.viewState.curPerspectiveIdx].levelCanvases.labelFontFamily;
+		if(typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily !== 'undefined'){
+			cssObj['font-family'] = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily;
 		}
 		element.prepend($('<textarea>').attr({
 			id: textid,
@@ -509,7 +509,7 @@ class LevelService{
 	*/
 	public insertItemDetails(id, levelname, position, labelname, start, duration) {
 		var attrdefs = this.ConfigProviderService.getLevelDefinition(levelname).attributeDefinitions;
-		var curAttrDef = this.viewState.getCurAttrDef(levelname);
+		var curAttrDef = this.ViewStateService.getCurAttrDef(levelname);
 		var newElement;
 		if (attrdefs === undefined) { // ugly hack if attrdefs undefined
 			attrdefs = [];
@@ -786,12 +786,12 @@ class LevelService{
 		this.DataService.getLevelData().forEach((level) => {
 			if (level.name === oldname) {
 				level.name = newname;
-				this.viewState.curLevelAttrDefs.forEach((def, i) => {
+				this.ViewStateService.curLevelAttrDefs.forEach((def, i) => {
 					if (def.curAttrDefName === oldname && def.levelName === oldname) {
-						this.viewState.curLevelAttrDefs.slice(i, 1);
+						this.ViewStateService.curLevelAttrDefs.slice(i, 1);
 					}
 				});
-				this.viewState.curLevelAttrDefs.push({curAttrDefName: newname, levelName: newname});
+				this.ViewStateService.curLevelAttrDefs.push({curAttrDefName: newname, levelName: newname});
 				// rename all first label names to match new
 				level.items.forEach((item) => {
 					item.labels[0].name = newname;
@@ -806,7 +806,7 @@ class LevelService{
 	*
 	*/
 	public deleteSegmentsInvers(name, id, length, deletedSegment) {
-		var attrDefName = this.viewState.getCurAttrDef(name);
+		var attrDefName = this.ViewStateService.getCurAttrDef(name);
 		var labelIdx;
 		var x, insertPoint;
 		insertPoint = 0;
@@ -848,7 +848,7 @@ class LevelService{
 		var deleteOrder = null;
 		var deletedSegment = null;
 		var clickSeg = null;
-		var attrDefName = this.viewState.getCurAttrDef(name);
+		var attrDefName = this.ViewStateService.getCurAttrDef(name);
 		var labelIdx = this.getLabelIdx(attrDefName, firstSegment.labels);
 		
 		for (var i = firstOrder; i < (firstOrder + length); i++) {
@@ -880,7 +880,7 @@ class LevelService{
 			clickSeg = neighbours.right;
 		} else if ((neighbours.left === undefined) && (neighbours.right === undefined)) {
 			// nothing left to do level empty now
-			this.viewState.setcurMouseItem(undefined, undefined, undefined);
+			this.ViewStateService.setcurMouseItem(undefined, undefined, undefined);
 		} else {
 			this.updateSegment(name, neighbours.left.id, undefined, labelIdx, neighbours.left.sampleStart, (neighbours.left.sampleDur + timeLeft));
 			this.updateSegment(name, neighbours.right.id, undefined, labelIdx, neighbours.right.sampleStart - timeRight, (neighbours.right.sampleDur + timeRight));
@@ -1251,7 +1251,7 @@ class LevelService{
 	*/
 	public moveBoundary(levelName, id, changeTime, isFirst, isLast) {
 		var orig = this.getItemFromLevelById(levelName, id);
-		var attrDefName = this.viewState.getCurAttrDef(levelName);
+		var attrDefName = this.ViewStateService.getCurAttrDef(levelName);
 		var labelIdx = this.getLabelIdx(attrDefName, orig.labels);
 		var origRight;
 		var ln = this.getItemNeighboursFromLevel(levelName, id, id);
@@ -1262,12 +1262,12 @@ class LevelService{
 					this.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			} else {
-				if ((orig.sampleStart + changeTime) >= 0 && (orig.sampleDur - changeTime) >= 0 && (orig.sampleStart + orig.sampleDur + changeTime) <= this.Soundhandlerservice.audioBuffer.length) {
+				if ((orig.sampleStart + changeTime) >= 0 && (orig.sampleDur - changeTime) >= 0 && (orig.sampleStart + orig.sampleDur + changeTime) <= this.SoundHandlerService.audioBuffer.length) {
 					this.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 				}
 			}
 		} else if (isLast) { // after last item
-			if ((orig.sampleDur + changeTime) >= 0 && (orig.sampleDur + orig.sampleStart + changeTime) <= this.Soundhandlerservice.audioBuffer.length) {
+			if ((orig.sampleDur + changeTime) >= 0 && (orig.sampleDur + orig.sampleStart + changeTime) <= this.SoundHandlerService.audioBuffer.length) {
 				this.updateSegment(levelName, orig.id, undefined, labelIdx, orig.sampleStart, (orig.sampleDur + changeTime));
 			}
 		} else {
@@ -1278,7 +1278,7 @@ class LevelService{
 						this.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				} else {
-					if (((orig.sampleStart + changeTime) >= 0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= this.Soundhandlerservice.audioBuffer.length)) {
+					if (((orig.sampleStart + changeTime) >= 0) && ((orig.sampleStart + orig.sampleDur + changeTime) <= this.SoundHandlerService.audioBuffer.length)) {
 						this.updateSegment(levelName, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), (orig.sampleDur - changeTime));
 					}
 				}
@@ -1297,12 +1297,12 @@ class LevelService{
 	*/
 	public moveEvent(name, id, changeTime) {
 		var orig = this.getItemFromLevelById(name, id);
-		var attrDefName = this.viewState.getCurAttrDef(name);
+		var attrDefName = this.ViewStateService.getCurAttrDef(name);
 		var labelIdx = this.getLabelIdx(attrDefName, orig.labels);
 		
 		if (this.LinkService.isLinked(id)) {
 			var neighbour = this.getItemNeighboursFromLevel(name, id, id);
-			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= this.Soundhandlerservice.audioBuffer.length) { // if within audio
+			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= this.SoundHandlerService.audioBuffer.length) { // if within audio
 				if (neighbour.left !== undefined && neighbour.right !== undefined) { // if between two events
 					// console.log('between two events')
 					if ((orig.samplePoint + changeTime) > (neighbour.left.samplePoint) && (orig.samplePoint + changeTime) < (neighbour.right.samplePoint)) {
@@ -1318,7 +1318,7 @@ class LevelService{
 					}
 				} else if (neighbour.left !== undefined && neighbour.right === undefined) { // if last event
 					// console.log('last event')
-					if ((orig.samplePoint + changeTime) > neighbour.left.samplePoint && (orig.samplePoint + changeTime) <= this.Soundhandlerservice.audioBuffer.length) {
+					if ((orig.samplePoint + changeTime) > neighbour.left.samplePoint && (orig.samplePoint + changeTime) <= this.SoundHandlerService.audioBuffer.length) {
 						this.updatePoint(name, orig.id, orig.labels[0].value, labelIdx, (orig.samplePoint + changeTime));
 					}
 				}
@@ -1326,13 +1326,13 @@ class LevelService{
 		}
 		else {
 			// console.log('unlinked event')
-			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= this.Soundhandlerservice.audioBuffer.length) {
+			if ((orig.samplePoint + changeTime) > 0 && (orig.samplePoint + changeTime) <= this.SoundHandlerService.audioBuffer.length) {
 				this.updatePoint(name, orig.id, orig.labels[0].value, labelIdx, (orig.samplePoint + changeTime));
 			}
 			//resort Points after moving
 			this.DataService.getLevelData().forEach((t) => {
 				if (t.name === name) {
-					t.items.sort(this.viewState.sortbystart);
+					t.items.sort(this.ViewStateService.sortbystart);
 				}
 			});
 		}
@@ -1363,7 +1363,7 @@ class LevelService{
 		var orig, i;
 		if (firstSegment !== null && lastSegment !== null) {
 			var lastNeighbours = this.getItemNeighboursFromLevel(name, firstSegment.id, lastSegment.id);
-			var attrDefName = this.viewState.getCurAttrDef(name);
+			var attrDefName = this.ViewStateService.getCurAttrDef(name);
 			var labelIdx = this.getLabelIdx(attrDefName, firstSegment.labels);
 			if ((lastNeighbours.left === undefined) && (lastNeighbours.right !== undefined)) {
 				var right = this.getItemFromLevelById(name, lastNeighbours.right.id);
@@ -1377,7 +1377,7 @@ class LevelService{
 			} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left !== undefined)) {
 				var left = this.getItemFromLevelById(name, lastNeighbours.left.id);
 				if ((lastNeighbours.left.sampleDur + changeTime) >= 0) {
-					if ((lastSegment.sampleStart + lastSegment.sampleDur + changeTime) < this.Soundhandlerservice.audioBuffer.length) {
+					if ((lastSegment.sampleStart + lastSegment.sampleDur + changeTime) < this.SoundHandlerService.audioBuffer.length) {
 						this.updateSegment(name, left.id, undefined, labelIdx, left.sampleStart, (left.sampleDur + changeTime));
 						for (i = firstOrder; i < (firstOrder + length); i++) {
 							orig = this.getItemDetails(name, i);
@@ -1399,7 +1399,7 @@ class LevelService{
 			} else if ((lastNeighbours.right === undefined) && (lastNeighbours.left === undefined)) {
 				var first = this.getItemDetails(name, firstOrder);
 				var last = this.getItemDetails(name, (firstOrder + length - 1));
-				if (((first.sampleStart + changeTime) > 0) && (((last.sampleDur + last.sampleStart) + changeTime) < this.Soundhandlerservice.audioBuffer.length)) {
+				if (((first.sampleStart + changeTime) > 0) && (((last.sampleDur + last.sampleStart) + changeTime) < this.SoundHandlerService.audioBuffer.length)) {
 					for (i = firstOrder; i < (firstOrder + length); i++) {
 						orig = this.getItemDetails(name, i);
 						this.updateSegment(name, orig.id, undefined, labelIdx, (orig.sampleStart + changeTime), orig.sampleDur);
@@ -1416,7 +1416,7 @@ class LevelService{
 	public expandSegment(rightSide, segments, name, changeTime) {
 		var startTime = 0;
 		var neighbours = this.getItemNeighboursFromLevel(name, segments[0].id, segments[segments.length - 1].id);
-		var attrDefName = this.viewState.getCurAttrDef(name);
+		var attrDefName = this.ViewStateService.getCurAttrDef(name);
 		var labelIdx = this.getLabelIdx(attrDefName, segments[0].labels);
 		var tempItem;
 		var allow = true;
@@ -1424,7 +1424,7 @@ class LevelService{
 		if (rightSide) { // if expand or shrink on RIGHT side
 			if (neighbours.right === undefined) { // last element
 				var lastLength = segments[segments.length - 1].sampleStart + segments[segments.length - 1].sampleDur + (changeTime * segments.length);
-				if (lastLength <= this.Soundhandlerservice.audioBuffer.length) {
+				if (lastLength <= this.SoundHandlerService.audioBuffer.length) {
 					segments.forEach((seg) => {
 						tempItem = this.getItemFromLevelById(name, seg.id);
 						this.updateSegment(name, tempItem.id, undefined, labelIdx, tempItem.sampleStart + startTime, tempItem.sampleDur + changeTime);
@@ -1481,9 +1481,9 @@ class LevelService{
 		// walk right
 		var distRight = Infinity;
 		var distLeft = Infinity;
-		var channelData = this.Soundhandlerservice.audioBuffer.getChannelData(this.viewState.osciSettings.curChannel);
+		var channelData = this.SoundHandlerService.audioBuffer.getChannelData(this.ViewStateService.osciSettings.curChannel);
 		var i;
-		for (i = sample; i < this.Soundhandlerservice.audioBuffer.length - 1; i++) {
+		for (i = sample; i < this.SoundHandlerService.audioBuffer.length - 1; i++) {
 			if (channelData[i] >= 0 && channelData[i + 1] < 0 || channelData[i] < 0 && channelData[i + 1] >= 0) {
 				distRight = i - sample;
 				break;

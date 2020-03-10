@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-class Soundhandlerservice{
+class SoundHandlerService{
 	private $window;
 	// private vars
 	private audioContext;
@@ -127,4 +127,4 @@ class Soundhandlerservice{
 }
 
 angular.module('emuwebApp')
-.service('Soundhandlerservice', Soundhandlerservice);
+.service('SoundHandlerService', SoundHandlerService);

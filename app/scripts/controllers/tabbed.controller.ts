@@ -1,9 +1,9 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, $timeout, ConfigProviderService, Validationservice, viewState, modalService) {
+	.controller('TabbedCtrl', function ($scope, $timeout, ConfigProviderService, ValidationService, ViewStateService, ModalService) {
 		$scope.cps = ConfigProviderService;
-		$scope.vs = viewState;
+		$scope.vs = ViewStateService;
 
 		// all available tabs
 		$scope.tree = [{
@@ -18,16 +18,16 @@ angular.module('emuwebApp')
 		}];
 
 		$scope.cps = ConfigProviderService;
-		$scope.modal = modalService;
-		$scope.schema = Validationservice.getSchema('emuwebappConfigSchema').data.properties;
+		$scope.modal = ModalService;
+		$scope.schema = ValidationService.getSchema('emuwebappConfigSchema').data.properties;
 		$scope.modal.dataOut = angular.copy(ConfigProviderService.vals);
 		$scope.warning = '';
 
 		$scope.init = function () {
-			$scope.options = Object.keys(viewState.getWindowFunctions());
-			$scope.timeMode = Object.keys(viewState.getTimeModes());
-			$scope.comMode = Object.keys(viewState.getCommunicationModes());
-			$scope.signalTypes = Object.keys(viewState.getSignalTypes());
+			$scope.options = Object.keys(ViewStateService.getWindowFunctions());
+			$scope.timeMode = Object.keys(ViewStateService.getTimeModes());
+			$scope.comMode = Object.keys(ViewStateService.getCommunicationModes());
+			$scope.signalTypes = Object.keys(ViewStateService.getSignalTypes());
 			$scope.levelTypes = [];
 
 			ConfigProviderService.curDbConfig.ssffTrackDefinitions.forEach((val) => {
@@ -180,16 +180,16 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.setEditing(true);
-			viewState.setcursorInTextField(true);
+			ViewStateService.setEditing(true);
+			ViewStateService.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.setEditing(false);
-			viewState.setcursorInTextField(false);
+			ViewStateService.setEditing(false);
+			ViewStateService.setcursorInTextField(false);
 		};
 
 

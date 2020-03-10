@@ -1,13 +1,13 @@
 import * as angular from 'angular';
 
-class Ssffdataservice{
-	private Soundhandlerservice;
+class SsffDataService{
+	private SoundHandlerService;
 	private ConfigProviderService;
 	
 	// stores files referred to by ssffTrackDefinitions
 	public data;
-	constructor(Soundhandlerservice, ConfigProviderService){
-		this.Soundhandlerservice = Soundhandlerservice; 
+	constructor(SoundHandlerService, ConfigProviderService){
+		this.SoundHandlerService = SoundHandlerService; 
 		this.ConfigProviderService = ConfigProviderService;
 		this.data = [];
 	}
@@ -76,7 +76,7 @@ class Ssffdataservice{
 	*/
 	public calculateSamplePosInVP(colSampleNr, sampleRate, startTime) {
 		var sampleTime = (colSampleNr / sampleRate) + startTime;
-		var audioSample = Math.round(sampleTime * this.Soundhandlerservice.audioBuffer.sampleRate);
+		var audioSample = Math.round(sampleTime * this.SoundHandlerService.audioBuffer.sampleRate);
 		return audioSample;
 	};
 	
@@ -84,4 +84,4 @@ class Ssffdataservice{
 }
 
 angular.module('emuwebApp')
-.service('Ssffdataservice', Ssffdataservice);
+.service('SsffDataService', SsffDataService);

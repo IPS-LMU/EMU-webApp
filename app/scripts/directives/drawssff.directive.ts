@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('drawssff', function ($timeout, viewState, ConfigProviderService, Ssffdataservice, HistoryService, fontScaleService, loadedMetaDataService) {
+	.directive('drawssff', function ($timeout, ViewStateService, ConfigProviderService, SsffDataService, HistoryService, FontScaleService, LoadedMetaDataService) {
 		return {
 			restrict: 'A',
 			scope: {},
@@ -11,11 +11,11 @@ angular.module('emuwebApp')
 				scope.lastDraw = Date.now();
 
 				// add watch vars to scope
-				scope.vs = viewState;
+				scope.vs = ViewStateService;
 				scope.hists = HistoryService;
-				scope.ssffds = Ssffdataservice;
+				scope.ssffds = SsffDataService;
 				scope.cps = ConfigProviderService;
-				scope.lmds = loadedMetaDataService;
+				scope.lmds = LoadedMetaDataService;
 
 				////////////////////
 				// observes
@@ -97,20 +97,20 @@ angular.module('emuwebApp')
 					var ctx = element[0].getContext('2d');
 					ctx.clearRect(0, 0, element[0].width, element[0].height);
 
-					if (!$.isEmptyObject(Ssffdataservice.data)) {
-						if (Ssffdataservice.data.length !== 0) {
+					if (!$.isEmptyObject(SsffDataService.data)) {
+						if (SsffDataService.data.length !== 0) {
 							scope.assTrackName = '';
 							// check assignments (= overlays)
-							ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.assign.forEach((ass) => {
+							ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.assign.forEach((ass) => {
 								if (ass.signalCanvasName === scope.trackName) {
 									scope.assTrackName = ass.ssffTrackName;
 									var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
-									var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-									var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+									var col = SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+									var sRaSt = SsffDataService.getSampleRateAndStartTimeOfTrack(tr.name);
 									var minMaxCountourLims = ConfigProviderService.getContourLimsOfTrack(tr.name);
                                     var minMaxValLims = ConfigProviderService.getValueLimsOfTrack(tr.name);
 									// draw values
-									scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxCountourLims, minMaxValLims);
+									scope.drawValues(ViewStateService, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxCountourLims, minMaxValLims);
 								}
 							});
 							scope.assTrackName = '';
@@ -118,14 +118,14 @@ angular.module('emuwebApp')
 							if (scope.trackName !== 'OSCI' && scope.trackName !== 'SPEC') {
 
 								var tr = ConfigProviderService.getSsffTrackConfig(scope.trackName);
-								var col = Ssffdataservice.getColumnOfTrack(tr.name, tr.columnName);
-								var sRaSt = Ssffdataservice.getSampleRateAndStartTimeOfTrack(tr.name);
+								var col = SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+								var sRaSt = SsffDataService.getSampleRateAndStartTimeOfTrack(tr.name);
 
 								var minMaxContourLims = ConfigProviderService.getContourLimsOfTrack(tr.name);
                                 var minMaxValLims = ConfigProviderService.getValueLimsOfTrack(tr.name);
                                 //console.log(minMaxValLims);
 								// draw values
-								scope.drawValues(viewState, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxContourLims, minMaxValLims);
+								scope.drawValues(ViewStateService, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxContourLims, minMaxValLims);
 							}
 						}
 					} else {
@@ -136,14 +136,14 @@ angular.module('emuwebApp')
 				/**
 				 * draw values onto canvas
 				 */
-				scope.drawValues = function (viewState, canvas, config, col, sR, sT, minMaxContourLims, minMaxValLims) {
+				scope.drawValues = function (ViewStateService, canvas, config, col, sR, sT, minMaxContourLims, minMaxValLims) {
 
 					var ctx = canvas.getContext('2d');
 					var minVal, maxVal;
 
 					if (scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
-						minVal = viewState.spectroSettings.rangeFrom;
-						maxVal = viewState.spectroSettings.rangeTo;
+						minVal = ViewStateService.spectroSettings.rangeFrom;
+						maxVal = ViewStateService.spectroSettings.rangeTo;
 					} else {
 						minVal = col._minVal;
 						maxVal = col._maxVal;
@@ -154,8 +154,8 @@ angular.module('emuwebApp')
                         maxVal = minMaxValLims.maxVal;
 					}
 
-					var startTimeVP = viewState.getViewPortStartTime();
-					var endTimeVP = viewState.getViewPortEndTime();
+					var startTimeVP = ViewStateService.getViewPortStartTime();
+					var endTimeVP = ViewStateService.getViewPortEndTime();
 					var colStartSampleNr = Math.round(startTimeVP * sR + sT);
 					var colEndSampleNr = Math.round(endTimeVP * sR + sT);
 					var nrOfSamples = colEndSampleNr - colStartSampleNr;
@@ -207,14 +207,14 @@ angular.module('emuwebApp')
 								var contColors = ConfigProviderService.getContourColorsOfTrack(scope.assTrackName);
 								if (contColors !== undefined) {
 									if (contColors.colors[contourNr] !== undefined) {
-										ctx.strokeStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
-										ctx.fillStyle = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
+										ctx.strokeStyle = ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
+										ctx.fillStyle = ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
 									}
 								}
 
 								// mark selected
-								// console.log(viewState.curCorrectionToolNr);
-								if (viewState.curCorrectionToolNr - 1 === contourNr && scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
+								// console.log(ViewStateService.curCorrectionToolNr);
+								if (ViewStateService.curCorrectionToolNr - 1 === contourNr && scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
 									ctx.strokeStyle = ConfigProviderService.design.color.green;
 									ctx.fillStyle = ConfigProviderService.design.color.green;
 								}
@@ -268,9 +268,9 @@ angular.module('emuwebApp')
 					} else {
 						ctx.strokeStyle = 'red';
 						if (nrOfSamples <= 2) {
-							fontScaleService.drawUndistortedTextTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0, -2) / 1.05, ConfigProviderService.design.font.small.family, canvas.width / 2 - (ctx.measureText('see contour(s)').width * ctx.canvas.width / ctx.canvas.offsetWidth / 2), 25, ConfigProviderService.design.color.transparent.red);
+							FontScaleService.drawUndistortedTextTwoLines(ctx, 'Zoom out to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0, -2) / 1.05, ConfigProviderService.design.font.small.family, canvas.width / 2 - (ctx.measureText('see contour(s)').width * ctx.canvas.width / ctx.canvas.offsetWidth / 2), 25, ConfigProviderService.design.color.transparent.red);
 						} else {
-							fontScaleService.drawUndistortedTextTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0, -2) / 1.05, ConfigProviderService.design.font.small.family, canvas.width / 2 - (ctx.measureText('see contour(s)').width * ctx.canvas.width / ctx.canvas.offsetWidth / 2), 25, ConfigProviderService.design.color.transparent.red);
+							FontScaleService.drawUndistortedTextTwoLines(ctx, 'Zoom in to', 'see contour(s)', ConfigProviderService.design.font.small.size.slice(0, -2) / 1.05, ConfigProviderService.design.font.small.family, canvas.width / 2 - (ctx.measureText('see contour(s)').width * ctx.canvas.width / ctx.canvas.offsetWidth / 2), 25, ConfigProviderService.design.color.transparent.red);
 						}
 					}
 				}; //function

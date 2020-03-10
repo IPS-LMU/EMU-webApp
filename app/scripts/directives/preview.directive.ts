@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('preview', function (viewState, Soundhandlerservice, Drawhelperservice, ConfigProviderService) {
+	.directive('preview', function (ViewStateService, SoundHandlerService, DrawHelperService, ConfigProviderService) {
 		return {
 			templateUrl: 'views/preview.html',
 			restrict: 'E',
@@ -15,8 +15,8 @@ angular.module('emuwebApp')
 				var initialized = false;
 
 				// hook up scope vars for watches
-				scope.vs = viewState;
-				scope.shs = Soundhandlerservice;
+				scope.vs = ViewStateService;
+				scope.shs = SoundHandlerService;
 				scope.backgroundCanvas = {
 					'background': '#000',
 					'border': '1px solid gray',
@@ -29,7 +29,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.curViewPort', function (newVal, oldVal) {
-					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+					if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 						if (oldVal.sS !== newVal.sS || oldVal.eS !== newVal.eS) {
 							scope.drawPreview();
 						}
@@ -38,7 +38,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('vs.osciSettings', function () {
-					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+					if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 						initialized = false; // reset to uninitialized when channels change
 						scope.drawPreview();
 					}
@@ -46,7 +46,7 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('currentBundleName', function () {
-					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+					if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 						initialized = false;
 						scope.backgroundCanvas = {
 							'background': ConfigProviderService.design.color.black,
@@ -74,11 +74,11 @@ angular.module('emuwebApp')
 				 */
 				scope.drawPreview = function () {
 					if (!initialized) {
-						Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, 0, scope.shs.audioBuffer.length, false);
+						DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, 0, scope.shs.audioBuffer.length, false);
 						initialized = true;
-						scope.drawVpOsciMarkup(viewState);
+						scope.drawVpOsciMarkup(ViewStateService);
 					} else {
-						scope.drawVpOsciMarkup(viewState);
+						scope.drawVpOsciMarkup(ViewStateService);
 					}
 				};
 
@@ -89,8 +89,8 @@ angular.module('emuwebApp')
 				 */
 				scope.drawVpOsciMarkup = function (vs) {
 					var ctx = markupCanvas.getContext('2d');
-					var posS = (markupCanvas.width / Soundhandlerservice.audioBuffer.length) * vs.curViewPort.sS;
-					var posE = (markupCanvas.width / Soundhandlerservice.audioBuffer.length) * vs.curViewPort.eS;
+					var posS = (markupCanvas.width / SoundHandlerService.audioBuffer.length) * vs.curViewPort.sS;
+					var posE = (markupCanvas.width / SoundHandlerService.audioBuffer.length) * vs.curViewPort.eS;
 
 					ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;

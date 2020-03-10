@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-class Wavparserservice{
+class WavParserService{
     private $q;
     private $window;
     
@@ -237,4 +237,4 @@ class Wavparserservice{
         }
         
         angular.module('emuwebApp')
-        .service('Wavparserservice', Wavparserservice);
+        .service('WavParserService', WavParserService);

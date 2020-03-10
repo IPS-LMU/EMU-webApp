@@ -1,20 +1,20 @@
 import * as angular from 'angular';
 import { TextGridParserWorker } from '../workers/textgrid-parser.worker.js';
 
-class Textgridparserservice{
+class TextGridParserService{
 	private $q;
 	private DataService;
-	private viewState;
-	private Soundhandlerservice;
+	private ViewStateService;
+	private SoundHandlerService;
 	
 	private worker;
 	private defer;	
 	
-	constructor($q, DataService, viewState, Soundhandlerservice){
+	constructor($q, DataService, ViewStateService, SoundHandlerService){
 		this.$q = $q;
 		this.DataService = DataService;
-		this.viewState = viewState;
-		this.Soundhandlerservice = Soundhandlerservice;
+		this.ViewStateService = ViewStateService;
+		this.SoundHandlerService = SoundHandlerService;
 		
 		this.worker = new TextGridParserWorker();
 		
@@ -38,8 +38,8 @@ class Textgridparserservice{
 		this.worker.tell({
 			'cmd': 'toTextGrid',
 			'levels': this.DataService.getData().levels,
-			'sampleRate': this.Soundhandlerservice.audioBuffer.sampleRate,
-			'buffLength': this.Soundhandlerservice.audioBuffer.length
+			'sampleRate': this.SoundHandlerService.audioBuffer.sampleRate,
+			'buffLength': this.SoundHandlerService.audioBuffer.length
 		});
 		return this.defer.promise;
 	};
@@ -55,7 +55,7 @@ class Textgridparserservice{
 		this.worker.tell({
 			'cmd': 'parseTG',
 			'textGrid': textGrid,
-			'sampleRate': this.Soundhandlerservice.audioBuffer.sampleRate,
+			'sampleRate': this.SoundHandlerService.audioBuffer.sampleRate,
 			'annotates': annotates,
 			'name': name
 		});
@@ -64,4 +64,4 @@ class Textgridparserservice{
 }
 
 angular.module('emuwebApp')
-.service('Textgridparserservice', Textgridparserservice);
+.service('TextGridParserService', TextGridParserService);

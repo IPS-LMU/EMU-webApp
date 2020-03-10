@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('modal', function ($animate, modalService) {
+	.directive('modal', function ($animate, ModalService) {
 		return {
 			restrict: 'E',
 			templateUrl: 'views/modal.html',
@@ -9,15 +9,15 @@ angular.module('emuwebApp')
 			scope: {},
 			link: function (scope, element) {
 				scope.templateUrl = '';
-				scope.modal = modalService;
+				scope.modal = ModalService;
 				scope.isOpen = false;
 				scope.force = false;
 				scope.dataIn = '';
 				scope.$watch('modal.isOpen', function (newValue) {
 					if (newValue !== undefined) {
-						scope.templateUrl = modalService.getTemplateUrl();
-						scope.dataIn = modalService.dataIn;
-						scope.force = modalService.force;
+						scope.templateUrl = ModalService.getTemplateUrl();
+						scope.dataIn = ModalService.dataIn;
+						scope.force = ModalService.force;
 						if (newValue) {
 							element[0].classList.add('emuwebapp-modal-open');
 						}
@@ -29,8 +29,8 @@ angular.module('emuwebApp')
 				scope.$watch('modal.templateUrl', function (newValue) {
 					if (newValue !== undefined) {
 						scope.templateUrl = newValue;
-						scope.dataIn = modalService.dataIn;
-						scope.force = modalService.force;
+						scope.dataIn = ModalService.dataIn;
+						scope.force = ModalService.force;
 					}
 				});
 			}

@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('emuwebapp', function (viewState, Iohandlerservice, ConfigProviderService) {
+	.directive('emuwebapp', function (ViewStateService, ConfigProviderService) {
 		return {
 			template: /*html*/`
 			<div ng-controller="EmuWebAppController" class="emuwebapp-main" id="MainCtrl" handleglobalkeystrokes>
@@ -175,12 +175,12 @@ angular.module('emuwebApp')
 				////////////////////////
 				// Bindings
 				element.bind('mouseenter', function () {
-					viewState.mouseInEmuWebApp = true;
+					ViewStateService.mouseInEmuWebApp = true;
 
 				});
 
 				element.bind('mouseleave', function () {
-					viewState.mouseInEmuWebApp = false;
+					ViewStateService.mouseInEmuWebApp = false;
 				});
 
 				///////////////////////

@@ -1,14 +1,14 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('enlarge', function ($rootScope, viewState, ConfigProviderService) {
+	.directive('enlarge', function ($rootScope, ViewStateService, ConfigProviderService) {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attrs) {
-				scope.$watch('viewState.curPerspectiveIdx', function () {
+				scope.$watch('ViewStateService.curPerspectiveIdx', function () {
 					if (!$.isEmptyObject(ConfigProviderService.vals.perspectives)) {
-						if (!$.isEmptyObject(viewState.curPerspectiveIdx)) {
-							if (ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.length === 1) {
+						if (!$.isEmptyObject(ViewStateService.curPerspectiveIdx)) {
+							if (ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.length === 1) {
 								element.hide();
 							}
 							else {
@@ -21,10 +21,10 @@ angular.module('emuwebApp')
 				element.bind('click', function () {
 					if (open) {
 						open = false;
-						viewState.setenlarge(-1);
+						ViewStateService.setenlarge(-1);
 					} else {
 						open = true;
-						viewState.setenlarge(parseInt(attrs.enlarge));
+						ViewStateService.setenlarge(parseInt(attrs.enlarge));
 					}
 					$rootScope.$apply();
 				});

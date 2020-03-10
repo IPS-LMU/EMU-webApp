@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('osci', function ($timeout, viewState, Soundhandlerservice, ConfigProviderService, Drawhelperservice, loadedMetaDataService) {
+	.directive('osci', function ($timeout, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, LoadedMetaDataService) {
 		return {
 			templateUrl: 'views/osci.html',
 			replace: true,
@@ -22,17 +22,17 @@ angular.module('emuwebApp')
 				scope.order = attrs.order;
 				scope.trackName = attrs.trackName;
 				scope.cps = ConfigProviderService;
-				scope.viewState = viewState;
-				scope.lmds = loadedMetaDataService;
+				scope.ViewStateService = ViewStateService;
+				scope.lmds = LoadedMetaDataService;
 
 				///////////////
 				// watches
 
 				//
-				scope.$watch('viewState.osciSettings', function () {
-					if (!$.isEmptyObject(Soundhandlerservice)) {
-						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
-							Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, viewState.curViewPort.sS, viewState.curViewPort.eS, false);
+				scope.$watch('ViewStateService.osciSettings', function () {
+					if (!$.isEmptyObject(SoundHandlerService)) {
+						if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
+							DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS, false);
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
@@ -41,46 +41,46 @@ angular.module('emuwebApp')
 
 
 				//
-				scope.$watch('viewState.lastUpdate', function (newValue, oldValue) {
+				scope.$watch('ViewStateService.lastUpdate', function (newValue, oldValue) {
 					if (newValue !== oldValue) {
 						scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 					}
 				});
 
 				//
-				scope.$watch('viewState.timelineSize', function () {
+				scope.$watch('ViewStateService.timelineSize', function () {
 					$timeout(scope.redraw, ConfigProviderService.design.animation.duration);
 				});
 
 				//
-				scope.$watch('viewState.curPerspectiveIdx', function () {
+				scope.$watch('ViewStateService.curPerspectiveIdx', function () {
 					scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 				}, true);
 
 				//
-				scope.$watch('viewState.playHeadAnimationInfos', function () {
-					if (!$.isEmptyObject(Soundhandlerservice)) {
-						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+				scope.$watch('ViewStateService.playHeadAnimationInfos', function () {
+					if (!$.isEmptyObject(SoundHandlerService)) {
+						if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 							scope.drawPlayHead(scope, ConfigProviderService);
 						}
 					}
 				}, true);
 
 				//
-				scope.$watch('viewState.movingBoundarySample', function () {
-					if (!$.isEmptyObject(Soundhandlerservice)) {
-						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+				scope.$watch('ViewStateService.movingBoundarySample', function () {
+					if (!$.isEmptyObject(SoundHandlerService)) {
+						if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
 				}, true);
 
                 //
-                scope.$watch('viewState.curMouseX', function () {
-                    if (!$.isEmptyObject(Soundhandlerservice)) {
-                        if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+                scope.$watch('ViewStateService.curMouseX', function () {
+                    if (!$.isEmptyObject(SoundHandlerService)) {
+                        if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
                             // only draw corsshair x line if mouse currently not over canvas
-                            if(viewState.curMouseTrackName !== scope.trackName) {
+                            if(ViewStateService.curMouseTrackName !== scope.trackName) {
                                 scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
                             }
                         }
@@ -88,21 +88,21 @@ angular.module('emuwebApp')
                 }, true);
 
                 //
-				scope.$watch('viewState.movingBoundary', function () {
-					if (!$.isEmptyObject(Soundhandlerservice)) {
-						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+				scope.$watch('ViewStateService.movingBoundary', function () {
+					if (!$.isEmptyObject(SoundHandlerService)) {
+						if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
 					}
 				}, true);
 
 				//
-				scope.$watch('viewState.curViewPort', function (newValue, oldValue) {
-					if (!$.isEmptyObject(Soundhandlerservice)) {
-						if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
+				scope.$watch('ViewStateService.curViewPort', function (newValue, oldValue) {
+					if (!$.isEmptyObject(SoundHandlerService)) {
+						if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 							// check for changed zoom
 							if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-								Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, viewState.curViewPort.sS, viewState.curViewPort.eS, false);
+								DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS, false);
 							}
 							scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
 						}
@@ -112,7 +112,7 @@ angular.module('emuwebApp')
 				//
 				scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
 					if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-						Drawhelperservice.freshRedrawDrawOsciOnCanvas(canvas, viewState.curViewPort.sS, viewState.curViewPort.eS, true);
+						DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS, true);
 					}
 				}, true);
 
@@ -129,8 +129,8 @@ angular.module('emuwebApp')
 				scope.drawPlayHead = function (scope, config) {
 					var ctx = markupCanvas.getContext('2d');
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					var posS = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.sS);
-					var posCur = viewState.getPos(markupCanvas.width, viewState.playHeadAnimationInfos.curS);
+					var posS = ViewStateService.getPos(markupCanvas.width, ViewStateService.playHeadAnimationInfos.sS);
+					var posCur = ViewStateService.getPos(markupCanvas.width, ViewStateService.playHeadAnimationInfos.curS);
 					ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;
 					ctx.fillRect(posS, 0, posCur - posS, canvas.height);
 					scope.drawVpOsciMarkup(scope, config, false);
@@ -147,12 +147,12 @@ angular.module('emuwebApp')
 						ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
 					}
 					// draw moving boundary line if moving
-					Drawhelperservice.drawMovingBoundaryLine(ctx);
-					Drawhelperservice.drawViewPortTimes(ctx, true);
+					DrawHelperService.drawMovingBoundaryLine(ctx);
+					DrawHelperService.drawViewPortTimes(ctx, true);
 					// draw current viewport selected
-					Drawhelperservice.drawCurViewPortSelected(ctx, true);
+					DrawHelperService.drawCurViewPortSelected(ctx, true);
 
-                    Drawhelperservice.drawCrossHairX(ctx, viewState.curMouseX);
+                    DrawHelperService.drawCrossHairX(ctx, ViewStateService.curMouseX);
 				};
 			}
 		};

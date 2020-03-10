@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('ssffTrack', function ($timeout, viewState, ConfigProviderService, loadedMetaDataService, Drawhelperservice) {
+	.directive('ssffTrack', function ($timeout, ViewStateService, ConfigProviderService, LoadedMetaDataService, DrawHelperService) {
 		return {
 			templateUrl: 'views/ssffTrack.html',
 			restrict: 'E',
@@ -12,7 +12,7 @@ angular.module('emuwebApp')
 				// var context = canvas0.getContext('2d');
 				var markupCtx = markupCanvas.getContext('2d');
 				var trackName;
-				scope.lmds = loadedMetaDataService;
+				scope.lmds = LoadedMetaDataService;
 
 				attrs.$observe('trackName', function (val) {
 					if (val) {
@@ -75,7 +75,7 @@ angular.module('emuwebApp')
                     if (!$.isEmptyObject(scope.shs)) {
                         if (!$.isEmptyObject(scope.shs.audioBuffer)) {
                             // only draw corsshair x line if mouse currently not over canvas
-                            if(viewState.curMouseTrackName !== trackName) {
+                            if(ViewStateService.curMouseTrackName !== trackName) {
                                 scope.drawSsffTrackMarkup();
                             }
                         }
@@ -126,7 +126,7 @@ angular.module('emuwebApp')
 							}
 
 							scope.dhs.drawMinMaxAndName(markupCtx, trackName, minVal, maxVal, 2);
-                            Drawhelperservice.drawCrossHairX(markupCtx, viewState.curMouseX);
+                            DrawHelperService.drawCrossHairX(markupCtx, ViewStateService.curMouseX);
 						}
 					}
 				};

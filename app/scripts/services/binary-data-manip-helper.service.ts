@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 
-class Binarydatamaniphelper{
+class BinaryDataManipHelperService{
 	
 	constructor(){}
 	/**
@@ -47,4 +47,4 @@ class Binarydatamaniphelper{
 }
 
 angular.module('emuwebApp')
-.service('Binarydatamaniphelper', Binarydatamaniphelper);
+.service('BinaryDataManipHelperService', BinaryDataManipHelperService);

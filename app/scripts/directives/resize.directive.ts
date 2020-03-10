@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('resize', function (LevelService, viewState) {
+	.directive('resize', function (LevelService, ViewStateService) {
 		return {
 			restrict: 'A',
 			link: function (scope, element) {
@@ -13,7 +13,7 @@ angular.module('emuwebApp')
 
 				element.bind('click', function () {
 					LevelService.deleteEditArea();
-					viewState.setEditing(false);
+					ViewStateService.setEditing(false);
 					if (scope.open) {
 						scope.open = false;
 						elemHeight = elem.css('height');

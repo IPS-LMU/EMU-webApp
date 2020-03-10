@@ -1,9 +1,9 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('ExportCtrl', function ($scope, $window, modalService, browserDetector, viewState, HistoryService) {
+	.controller('ExportCtrl', function ($scope, $window, ModalService, BrowserDetectorService, ViewStateService, HistoryService) {
 
-		$scope.firefox = browserDetector.isBrowser.Firefox();
+		$scope.firefox = BrowserDetectorService.isBrowser.Firefox();
 
 		/**
 		 *
@@ -11,7 +11,7 @@ angular.module('emuwebApp')
 		$scope.getBlob = function () {
 			var blob;
 			try {
-				blob = new Blob([modalService.dataExport], {type: 'text/plain'});
+				blob = new Blob([ModalService.dataExport], {type: 'text/plain'});
 			} catch (e) { // Backwards-compatibility
 				blob = new ($window.BlobBuilder || $window.WebKitBlobBuilder || $window.MozBlobBuilder);
 				blob.append($scope.exportData);
@@ -31,16 +31,16 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.setEditing(true);
-			viewState.setcursorInTextField(true);
+			ViewStateService.setEditing(true);
+			ViewStateService.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.setEditing(false);
-			viewState.setcursorInTextField(false);
+			ViewStateService.setEditing(false);
+			ViewStateService.setcursorInTextField(false);
 		};
 
 		/**
@@ -53,8 +53,8 @@ angular.module('emuwebApp')
 			} else {
 				objURL = URL.createObjectURL($scope.getBlob());
 			}
-			$scope.SaveToDisk(objURL, modalService.dataIn);
-			modalService.close();
+			$scope.SaveToDisk(objURL, ModalService.dataIn);
+			ModalService.close();
 		};
 
 		/**

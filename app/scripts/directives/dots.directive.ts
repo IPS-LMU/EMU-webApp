@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('dots', function (viewState, ConfigProviderService, Ssffdataservice, fontScaleService, Soundhandlerservice, loadedMetaDataService, mathHelperService) {
+	.directive('dots', function (ViewStateService, ConfigProviderService, SsffDataService, FontScaleService, SoundHandlerService, MathHelperService) {
 		return {
 			template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas class="emuwebapp-twoDimCanvasStatic" width="512" height="512"></canvas><canvas class="emuwebapp-twoDimCanvasDots" width="512" height="512"></canvas></div>',
 			restrict: 'E',
@@ -9,12 +9,11 @@ angular.module('emuwebApp')
 			scope: {},
 			link: function postLink(scope, element) {
 				scope.cps = ConfigProviderService;
-				scope.ssffds = Ssffdataservice;
-				scope.vs = viewState;
-				scope.fontImage = fontScaleService;
-				scope.shs = Soundhandlerservice;
-				scope.lmds = loadedMetaDataService;
-				scope.mhs = mathHelperService;
+				scope.ssffds = SsffDataService;
+				scope.vs = ViewStateService;
+				scope.fontImage = FontScaleService;
+				scope.shs = SoundHandlerService;
+				scope.mhs = MathHelperService;
 				var staticContoursCanvas = element.find('canvas')[0];
 				var canvas = element.find('canvas')[1];
 				var globalMinX = Infinity;

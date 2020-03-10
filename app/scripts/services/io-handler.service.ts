@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-class Iohandlerservice{
+class IoHandlerService{
 	
 	private $rootScope;
 	private $http; 
@@ -8,19 +8,19 @@ class Iohandlerservice{
 	private $q; 
 	private $window;
 	private HistoryService; 
-	private viewState; 
-	private Soundhandlerservice; 
-	private Ssffparserservice; 
-	private Wavparserservice; 
-	private Textgridparserservice; 
+	private ViewStateService; 
+	private SoundHandlerService; 
+	private SsffParserService; 
+	private WavParserService; 
+	private TextGridParserService; 
 	private ConfigProviderService; 
-	private Espsparserservice; 
-	private Ssffdataservice; 
-	private Websockethandler; 
+	private EspsParserService; 
+	private SsffDataService; 
+	private WebSocketHandlerService; 
 	private DragnDropDataService;
-	private loadedMetaDataService;
+	private LoadedMetaDataService;
 	
-	constructor($rootScope, $http, $location, $q, $window, HistoryService, viewState, Soundhandlerservice, Ssffparserservice, Wavparserservice, Textgridparserservice, ConfigProviderService, Espsparserservice, Ssffdataservice, Websockethandler, DragnDropDataService, loadedMetaDataService) {
+	constructor($rootScope, $http, $location, $q, $window, HistoryService, ViewStateService, SoundHandlerService, SsffParserService, WavParserService, TextGridParserService, ConfigProviderService, EspsParserService, SsffDataService, WebSocketHandlerService, DragnDropDataService, LoadedMetaDataService) {
 		
 		this.$rootScope = $rootScope;
 		this.$http = $http; 
@@ -28,17 +28,17 @@ class Iohandlerservice{
 		this.$q = $q; 
 		this.$window = $window;
 		this.HistoryService = HistoryService; 
-		this.viewState = viewState; 
-		this.Soundhandlerservice = Soundhandlerservice; 
-		this.Ssffparserservice = Ssffparserservice; 
-		this.Wavparserservice = Wavparserservice; 
-		this.Textgridparserservice = Textgridparserservice; 
+		this.ViewStateService = ViewStateService; 
+		this.SoundHandlerService = SoundHandlerService; 
+		this.SsffParserService = SsffParserService; 
+		this.WavParserService = WavParserService; 
+		this.TextGridParserService = TextGridParserService; 
 		this.ConfigProviderService = ConfigProviderService; 
-		this.Espsparserservice = Espsparserservice; 
-		this.Ssffdataservice = Ssffdataservice; 
-		this.Websockethandler = Websockethandler; 
+		this.EspsParserService = EspsParserService; 
+		this.SsffDataService = SsffDataService; 
+		this.WebSocketHandlerService = WebSocketHandlerService; 
 		this.DragnDropDataService = DragnDropDataService;
-		this.loadedMetaDataService = loadedMetaDataService;
+		this.LoadedMetaDataService = LoadedMetaDataService;
 		
 	}
 	/**
@@ -97,7 +97,7 @@ class Iohandlerservice{
 		if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
 			// console.error('CORS version of getProtocol not implemented');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-			getProm = this.Websockethandler.getProtocol();
+			getProm = this.WebSocketHandlerService.getProtocol();
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB'){
 			// return mock values
 			var defer = this.$q.defer();
@@ -121,7 +121,7 @@ class Iohandlerservice{
 		if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
 			// console.error('CORS version of getDoUserManagement not implemented');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-			getProm = this.Websockethandler.getDoUserManagement();
+			getProm = this.WebSocketHandlerService.getDoUserManagement();
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB'){
 			// return mock values
 			var defer = this.$q.defer();
@@ -142,7 +142,7 @@ class Iohandlerservice{
 		if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
 			// console.error('CORS version of logOnUser not implemented');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-			getProm = this.Websockethandler.logOnUser(name, pwd);
+			getProm = this.WebSocketHandlerService.logOnUser(name, pwd);
 		}
 		
 		return getProm;
@@ -157,7 +157,7 @@ class Iohandlerservice{
 		if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
 			// console.error('CORS version of getDBconfigFile not implemented');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-			getProm = this.Websockethandler.getDBconfigFile();
+			getProm = this.WebSocketHandlerService.getDBconfigFile();
 		} else if (this.ConfigProviderService.vals.main.comMode === 'DEMO') {
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_DBconfig.json');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB'){
@@ -183,7 +183,7 @@ class Iohandlerservice{
 		if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
 			// console.error('CORS version of getBundleList not implemented');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-			getProm = this.Websockethandler.getBundleList();
+			getProm = this.WebSocketHandlerService.getBundleList();
 		} else if (this.ConfigProviderService.vals.main.comMode === 'DEMO') {
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
@@ -210,7 +210,7 @@ class Iohandlerservice{
 		} else if (this.ConfigProviderService.vals.main.comMode === 'EMBEDDED') {
 			getProm = this.DragnDropDataService.getBundle(name, session);
 		} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-			getProm = this.Websockethandler.getBundle(name, session);
+			getProm = this.WebSocketHandlerService.getBundle(name, session);
 		} else if (this.ConfigProviderService.vals.main.comMode === 'DEMO') {
 			// getProm = $http.get('testData/newAE/SES0000/' + name + '/' + name + '.json');
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + name + '_bndl.json');
@@ -261,7 +261,7 @@ class Iohandlerservice{
 		if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
 			// console.error('CORS version of saveBundle not implemented');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-			getProm = this.Websockethandler.saveBundle(bundleData);
+			getProm = this.WebSocketHandlerService.saveBundle(bundleData);
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
 			// console.log(bundleData);
 			var searchObject = this.$location.search();
@@ -276,7 +276,7 @@ class Iohandlerservice{
 			{ 
 				action: "update", // _bundleList.json
 				file_path: 'bundleLists/' + searchObject.bundleListName + "_bundleList.json",
-				content: JSON.stringify(this.loadedMetaDataService.getBundleList(), null, 4),
+				content: JSON.stringify(this.LoadedMetaDataService.getBundleList(), null, 4),
 				encoding: "JSON"
 			}
 		];
@@ -332,7 +332,7 @@ public saveConfiguration(configData) {
 	if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
 		console.error('CORS version of saveBundle not implemented');
 	} else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-		getProm = this.Websockethandler.saveConfiguration(configData);
+		getProm = this.WebSocketHandlerService.saveConfiguration(configData);
 	}
 	return getProm;
 };
@@ -347,9 +347,9 @@ public saveConfiguration(configData) {
 public parseLabelFile(string, annotates, name, fileType) {
 	var prom;
 	if (fileType === 'ESPS') {
-		prom = this.Espsparserservice.asyncParseEsps(string, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedESPS');
+		prom = this.EspsParserService.asyncParseEsps(string, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedESPS');
 	} else if (fileType === 'TEXTGRID') {
-		prom = this.Textgridparserservice.asyncParseTextGrid(string, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTEXTGRID');
+		prom = this.TextGridParserService.asyncParseTextGrid(string, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTEXTGRID');
 	} else if (fileType === 'annotJSON') {
 		var def = this.$q.defer();
 		prom = def.promise;
@@ -362,4 +362,4 @@ public parseLabelFile(string, annotates, name, fileType) {
 }
 
 angular.module('emuwebApp')
-.service('Iohandlerservice', Iohandlerservice);
+.service('IoHandlerService', IoHandlerService);

@@ -3,11 +3,11 @@ import * as showdown from 'showdown';
 import { version } from "../../../package.json";
 
 angular.module('emuwebApp')
-.controller('TabbedHelpCtrl', function ($scope, $sce, ConfigProviderService, Iohandlerservice) {
+.controller('TabbedHelpCtrl', function ($scope, $sce, ConfigProviderService, IoHandlerService) {
 	$scope.cps = ConfigProviderService;
 	$scope.tree = [];
 	$scope.converter = new showdown.Converter();
-	Iohandlerservice.httpGetPath('manual/index.json').then((resp) => {
+	IoHandlerService.httpGetPath('manual/index.json').then((resp) => {
 		$scope.tree = resp.data;
 		// console.log($scope.tree);
 		// load root element
@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 	$scope.onClickTab = function (node) {
 		node.expanded = !node.expanded;
 		if (node.url !== false) {
-			Iohandlerservice.httpGetPath(node.url).then((resp) => {
+			IoHandlerService.httpGetPath(node.url).then((resp) => {
 				if (node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
 					resp.data = resp.data.replace("@@versionnr", version);
 					$scope.htmlStr = $sce.trustAsHtml($scope.converter.makeHtml(resp.data));

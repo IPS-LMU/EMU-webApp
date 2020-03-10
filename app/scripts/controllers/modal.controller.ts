@@ -1,10 +1,10 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('ModalCtrl', function ($scope, ArrayHelperService, browserDetector, modalService, viewState, LevelService, HistoryService, ConfigProviderService) {
+	.controller('ModalCtrl', function ($scope, ArrayHelperService, BrowserDetectorService, ModalService, ViewStateService, LevelService, HistoryService, ConfigProviderService) {
 
 		$scope.cps = ConfigProviderService;
-		$scope.vs = viewState;
+		$scope.vs = ViewStateService;
 		$scope.data = undefined;
 		$scope.mySelect = null;
 
@@ -12,23 +12,23 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.cursorInTextField = function () {
-			viewState.setEditing(true);
-			viewState.setcursorInTextField(true);
+			ViewStateService.setEditing(true);
+			ViewStateService.setcursorInTextField(true);
 		};
 
 		/**
 		 *
 		 */
 		$scope.cursorOutOfTextField = function () {
-			viewState.setEditing(false);
-			viewState.setcursorInTextField(false);
+			ViewStateService.setEditing(false);
+			ViewStateService.setcursorInTextField(false);
 		};
 
 		/**
 		 *  Save changes made on SSFF
 		 */
 		$scope.saveChanges = function () {
-			modalService.close();
+			ModalService.close();
 		};
 
 
@@ -36,7 +36,7 @@ angular.module('emuwebApp')
 		 *  Save changes made on SSFF
 		 */
 		$scope.discardChanges = function () {
-			modalService.close();
+			ModalService.close();
 		};
 
 		/**
@@ -44,8 +44,8 @@ angular.module('emuwebApp')
 		 */
 		$scope.saveURL = function () {
 			var currentURLS = $scope.getURLs();
-			if (currentURLS.indexOf(modalService.dataOut) === -1) {
-				currentURLS.push(modalService.dataOut);
+			if (currentURLS.indexOf(ModalService.dataOut) === -1) {
+				currentURLS.push(ModalService.dataOut);
 			}
 			localStorage.setItem('urls', JSON.stringify(currentURLS));
 			$scope.myUrls = currentURLS;
@@ -58,7 +58,7 @@ angular.module('emuwebApp')
 		$scope.getURLs = function () {
 			var curVal = localStorage.getItem('urls');
 			var urlData = [];
-			if (!browserDetector.isBrowser.PhantomJS() && curVal !== null) {
+			if (!BrowserDetectorService.isBrowser.PhantomJS() && curVal !== null) {
 				urlData = JSON.parse(curVal);
 			}
 			return urlData;
@@ -68,7 +68,7 @@ angular.module('emuwebApp')
 		 *  Return all URLs from localStorage
 		 */
 		$scope.setCurrentURL = function (data) {
-			modalService.dataOut = data;
+			ModalService.dataOut = data;
 		};
 
 
@@ -90,31 +90,31 @@ angular.module('emuwebApp')
 		 *  Rename a level
 		 */
 		$scope.renameLevel = function () {
-			LevelService.renameLevel(modalService.dataIn, $scope.data, viewState.curPerspectiveIdx);
+			LevelService.renameLevel(ModalService.dataIn, $scope.data, ViewStateService.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ANNOT',
 				'action': 'RENAMELEVEL',
 				'newname': $scope.data,
-				'name': modalService.dataIn,
-				'curPerspectiveIdx': viewState.curPerspectiveIdx
+				'name': ModalService.dataIn,
+				'curPerspectiveIdx': ViewStateService.curPerspectiveIdx
 			});
-			modalService.close();
+			ModalService.close();
 		};
 
 		/**
 		 *  Delete a complete level from LevelService
 		 */
 		$scope.deleteLevel = function () {
-			var lvl = LevelService.getLevelDetails(viewState.getcurClickLevelName());
-			LevelService.deleteLevel(viewState.getcurClickLevelIndex(), viewState.curPerspectiveIdx);
+			var lvl = LevelService.getLevelDetails(ViewStateService.getcurClickLevelName());
+			LevelService.deleteLevel(ViewStateService.getcurClickLevelIndex(), ViewStateService.curPerspectiveIdx);
 			HistoryService.addObjToUndoStack({
 				'type': 'ANNOT',
 				'action': 'DELETELEVEL',
 				'level': lvl,
-				'id': viewState.getcurClickLevelIndex(),
-				'curPerspectiveIdx': viewState.curPerspectiveIdx
+				'id': ViewStateService.getcurClickLevelIndex(),
+				'curPerspectiveIdx': ViewStateService.curPerspectiveIdx
 			});
-			modalService.close();
+			ModalService.close();
 		};
 
 	});

@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('previewtrack', function (viewState, Soundhandlerservice) {
+	.directive('previewtrack', function (ViewStateService, SoundHandlerService) {
 		return {
 			restrict: 'A',
 			scope: {},
@@ -14,18 +14,18 @@ angular.module('emuwebApp')
 
 
 				element.bind('click', function (x) {
-					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
-						var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
-						startPCM = viewState.getX(x) * (Soundhandlerservice.audioBuffer.length / x.originalEvent.target.width);
+					if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
+						var width = ViewStateService.curViewPort.eS - ViewStateService.curViewPort.sS;
+						startPCM = ViewStateService.getX(x) * (SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
 						if (startPCM - (width / 2) < 0) {
 							startPCM = Math.ceil(width / 2);
 						}
-						else if (startPCM + (width / 2) > Soundhandlerservice.audioBuffer.length) {
-							startPCM = Math.floor(Soundhandlerservice.audioBuffer.length - (width / 2));
+						else if (startPCM + (width / 2) > SoundHandlerService.audioBuffer.length) {
+							startPCM = Math.floor(SoundHandlerService.audioBuffer.length - (width / 2));
 						}
-						if (!viewState.isEditing()) {
+						if (!ViewStateService.isEditing()) {
 							scope.$apply(function () {
-								viewState.setViewPort(startPCM - (width / 2), startPCM + (width / 2));
+								ViewStateService.setViewPort(startPCM - (width / 2), startPCM + (width / 2));
 							});
 						}
 					}
@@ -33,8 +33,8 @@ angular.module('emuwebApp')
 
 				//
 				element.bind('mousedown', function (x) {
-					if (!$.isEmptyObject(Soundhandlerservice.audioBuffer)) {
-						startPCM = viewState.getX(x) * (Soundhandlerservice.audioBuffer.length / x.originalEvent.target.width);
+					if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
+						startPCM = ViewStateService.getX(x) * (SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
 					}
 				});
 
@@ -49,11 +49,11 @@ angular.module('emuwebApp')
 					switch (mbutton) {
 						case 1:
 							if (startPCM !== -1) {
-								var width = viewState.curViewPort.eS - viewState.curViewPort.sS;
-								startPCM = viewState.getX(x) * (Soundhandlerservice.audioBuffer.length / x.originalEvent.target.width);
-								if (!viewState.isEditing()) {
+								var width = ViewStateService.curViewPort.eS - ViewStateService.curViewPort.sS;
+								startPCM = ViewStateService.getX(x) * (SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
+								if (!ViewStateService.isEditing()) {
 									scope.$apply(function () {
-										viewState.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
+										ViewStateService.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
 									});
 								}
 							}

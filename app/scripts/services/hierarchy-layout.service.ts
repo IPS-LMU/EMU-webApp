@@ -16,14 +16,14 @@ import * as angular from 'angular';
  */
 
 export class HierarchyLayoutService{
-	private viewState;
+	private ViewStateService;
 	private ConfigProviderService;
 	private LevelService;
 	private DataService;
 	private StandardFuncsService;
 
-	constructor(viewState, ConfigProviderService, LevelService, DataService, StandardFuncsService){
-		this.viewState = viewState;
+	constructor(ViewStateService, ConfigProviderService, LevelService, DataService, StandardFuncsService){
+		this.ViewStateService = ViewStateService;
 		this.ConfigProviderService = ConfigProviderService;
 		this.LevelService = LevelService;
 		this.DataService = DataService;
@@ -399,7 +399,7 @@ export class HierarchyLayoutService{
 
 			while (items.length > 0) {
 				currentItem = items.pop();
-				if (!this.viewState.hierarchyState.getCollapsed(currentItem.id)) {
+				if (!this.ViewStateService.hierarchyState.getCollapsed(currentItem.id)) {
 					items = items.concat(this.findChildren(currentItem, selectedPath));
 				}
 
@@ -414,8 +414,8 @@ export class HierarchyLayoutService{
 	public toggleCollapse = function (d, selectedPath) {
 
 		// Find out whether we're collapsing or decollapsing
-		var isCollapsing = !this.viewState.hierarchyState.getCollapsed (d.id);
-		this.viewState.hierarchyState.setCollapsed (d.id, isCollapsing);
+		var isCollapsing = !this.ViewStateService.hierarchyState.getCollapsed (d.id);
+		this.ViewStateService.hierarchyState.setCollapsed (d.id, isCollapsing);
 
 		// Traverse sub-tree and change each item's number of collapsed parents
 		//
@@ -428,15 +428,15 @@ export class HierarchyLayoutService{
 			currentDescendant = descendants.pop();
 			descendants = descendants.concat(this.findChildren(currentDescendant, selectedPath));
 
-			var num = this.viewState.hierarchyState.getNumCollapsedParents(currentDescendant.id);
+			var num = this.ViewStateService.hierarchyState.getNumCollapsedParents(currentDescendant.id);
 
 			if (isCollapsing) {
-				this.viewState.hierarchyState.setNumCollapsedParents(currentDescendant.id, num + 1);
+				this.ViewStateService.hierarchyState.setNumCollapsedParents(currentDescendant.id, num + 1);
 			} else {
-				this.viewState.hierarchyState.setNumCollapsedParents(currentDescendant.id, num - 1);
+				this.ViewStateService.hierarchyState.setNumCollapsedParents(currentDescendant.id, num - 1);
 			}
 
-			this.viewState.hierarchyState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
+			this.ViewStateService.hierarchyState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
 		}
 	};
 };

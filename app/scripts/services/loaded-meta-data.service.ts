@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
-class loadedMetaDataService{
-	private Validationservice;
+class LoadedMetaDataService{
+	private ValidationService;
 	
 	private uniqSessionList;
 	private bundleList;
@@ -9,8 +9,8 @@ class loadedMetaDataService{
 	private demoDbName;
 	private rendOptBndlList; // render optimized bundle list
 	
-	constructor(Validationservice){
-		this.Validationservice = Validationservice;
+	constructor(ValidationService){
+		this.ValidationService = ValidationService;
 		
 		this.uniqSessionList = [];
 		this.bundleList = [];
@@ -53,7 +53,7 @@ class loadedMetaDataService{
 	*/
 	public setBundleList(bList) {
 		// validate
-		var validRes = this.Validationservice.validateJSO('bundleListSchema', bList);
+		var validRes = this.ValidationService.validateJSO('bundleListSchema', bList);
 		if (validRes === true) {
 			// set
 			this.bundleList = bList;
@@ -237,4 +237,4 @@ class loadedMetaDataService{
 * Service in the emuwebApp.
 */
 angular.module('emuwebApp')
-.service('loadedMetaDataService', loadedMetaDataService);
+.service('LoadedMetaDataService', LoadedMetaDataService);
