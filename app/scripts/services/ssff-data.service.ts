@@ -3,7 +3,7 @@ import * as angular from 'angular';
 class Ssffdataservice{
 	private Soundhandlerservice;
 	private ConfigProviderService;
-
+	
 	// stores files referred to by ssffTrackDefinitions
 	public data;
 	constructor(Soundhandlerservice, ConfigProviderService){

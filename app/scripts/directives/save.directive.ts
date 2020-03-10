@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 			link: function (scope, element, attr) {
 				element.bind('click', function () {
 					scope.vs.setcurClickLevelName(scope.level.name, attr.save);
-					Espsparserservice.asyncParseJSO(scope.level.name).then(function (result) {
+					Espsparserservice.asyncParseJSO(scope.level.name).then((result) => {
 						modalService.open('views/export.html', name + '_esps.txt', result);
 					});
 				});

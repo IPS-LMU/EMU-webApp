@@ -32,7 +32,7 @@ class Appcachehandler{
 		 */
 		private handleUpdatereadyEvent() {
             if(typeof this.appCache !== 'undefined') {
-                this.modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then(function (res) {
+                this.modalService.open('views/confirmModal.html', 'A new version of the EMU-WebApp is available and has already been downloaded and cached in your browser. Would you like to use it? CAUTION: A reload will delete all current changes... TIP: the next time you use the EMU-webApp you will automatically use the updated version)').then((res) => {
                     if (res) {
                         localStorage.removeItem('haveShownWelcomeModal');
                         this.appCache.swapCache();
@@ -61,7 +61,7 @@ class Appcachehandler{
             if ('serviceWorker' in navigator) {
 				// console.log("service worker available")
                 // navigator.serviceWorker.register('/sw-test/sw.js', {scope: '/sw-test/'})
-                //     .then(function(reg) {
+                //     .then((reg) => {
                 //         // registration worked
                 //         console.log('Registration succeeded. Scope is ' + reg.scope);
                 //     }).catch(function(error) {

@@ -12,9 +12,9 @@ angular.module('emuwebApp')
 				scope.cps = ConfigProviderService;
 				scope.$watch('vs.historyActionTxt', function () {
 					if (scope.vs.historyActionTxt !== '') {
-						$animate.addClass(element, 'emuwebapp-history-fade').then(function () {
+						$animate.addClass(element, 'emuwebapp-history-fade').then(() => {
 							$timeout(function () {
-								$animate.removeClass(element, 'emuwebapp-history-fade').then(function () {
+								$animate.removeClass(element, 'emuwebapp-history-fade').then(() => {
 									$timeout(function () {
 										scope.vs.historyActionTxt = '';
 									}, scope.cps.design.animation.period);

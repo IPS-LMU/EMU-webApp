@@ -103,7 +103,7 @@ angular.module('emuwebApp')
 					// If all the files we expect have shown up, then flush the queue.
 					if (scope.count === scope.handles.length) {
 						if (DragnDropService.setData(scope.bundles) === false) {
-							modalService.open('views/error.html', 'Sorry you dropped too many bundles (' + scope.handles.length + '). The maximum currently allowed is: ' + DragnDropService.maxDroppedBundles).then(function () {
+							modalService.open('views/error.html', 'Sorry you dropped too many bundles (' + scope.handles.length + '). The maximum currently allowed is: ' + DragnDropService.maxDroppedBundles).then(() => {
 								appStateService.resetToInitState();
 							});
 						}
@@ -193,7 +193,7 @@ angular.module('emuwebApp')
 						}
 						else {
 							// no browser support for FileAPI
-							modalService.open('views/error.html', scope.dropTextErrorAPI).then(function () {
+							modalService.open('views/error.html', scope.dropTextErrorAPI).then(() => {
 								scope.dropText = scope.dropTextDefault;
 								scope.dropClass = scope.dropClassDefault;
 								appStateService.resetToInitState();

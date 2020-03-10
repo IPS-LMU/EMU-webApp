@@ -115,16 +115,16 @@ angular.module('emuwebApp')
 			viewState.url = data.url;
 			viewState.somethingInProgressTxt = 'Connecting to server...';
 			viewState.somethingInProgress = true;
-			Iohandlerservice.wsH.initConnect(data.url).then(function (message) {
+			Iohandlerservice.Websockethandler.initConnect(data.url).then((message) => {
 				if (message.type === 'error') {
-					modalService.open('views/error.html', 'Could not connect to websocket server: ' + data.url).then(function () {
+					modalService.open('views/error.html', 'Could not connect to websocket server: ' + data.url).then(() => {
 						appStateService.resetToInitState();
 					});
 				} else {
 					$scope.handleConnectedToWSserver(data);
 				}
 			}, function (errMess) {
-				modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+				modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(() => {
 					appStateService.resetToInitState();
 				});
 			});
@@ -159,7 +159,7 @@ angular.module('emuwebApp')
                     var promise = Iohandlerservice.httpGetPath(searchObject.bndlJsonGetUrl, "application/json");
 				}
 
-				promise.then(function (data) {
+				promise.then((data) => {
 					viewState.showDropZone = false;
 					// set bundle name
 					var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
@@ -186,7 +186,7 @@ angular.module('emuwebApp')
 					
 					
 					// then get the DBconfigFile
-					Iohandlerservice.httpGetPath(DBconfigGetUrl).then(function (resp) {
+					Iohandlerservice.httpGetPath(DBconfigGetUrl).then((resp) => {
 						// first element of perspectives is default perspective
 						viewState.curPerspectiveIdx = 0;
 						ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
@@ -216,7 +216,7 @@ angular.module('emuwebApp')
 								viewState.somethingInProgressTxt = 'Parsing WAV file...';
 
 								if(searchObject.audioGetUrl){
-									Wavparserservice.parseWavAudioBuf(data.data).then(function (messWavParser) {
+									Wavparserservice.parseWavAudioBuf(data.data).then((messWavParser) => {
 										var audioBuffer = messWavParser;
 										viewState.curViewPort.sS = 0;
 										viewState.curViewPort.eS = audioBuffer.length;
@@ -233,9 +233,9 @@ angular.module('emuwebApp')
 										}
 										// get + parse file
 										if(searchObject.labelGetUrl){
-											Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
+											Iohandlerservice.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then((data2) => {
 												viewState.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
-												Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
+												Iohandlerservice.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then((parseMess) => {
 
 													var annot = parseMess;
 													DataService.setData(annot);
@@ -321,11 +321,11 @@ angular.module('emuwebApp')
 			viewState.somethingInProgress = true;
 			viewState.somethingInProgressTxt = 'Loading schema files';
 			// load schemas first
-			Validationservice.loadSchemas().then(function (replies) {
+			Validationservice.loadSchemas().then((replies) => {
 				Validationservice.setSchemas(replies);
-				Iohandlerservice.httpGetDefaultDesign().then(function onSuccess (response) {
+				Iohandlerservice.httpGetDefaultDesign().then((response) => {
 					ConfigProviderService.setDesign(response.data);
-					Iohandlerservice.httpGetDefaultConfig().then(function onSuccess (response) {
+					Iohandlerservice.httpGetDefaultConfig().then((response) => {
 						viewState.somethingInProgressTxt = 'Validating emuwebappConfig';
 						var validRes = Validationservice.validateJSO('emuwebappConfigSchema', response.data);
 						if (validRes === true) {
@@ -339,23 +339,23 @@ angular.module('emuwebApp')
 							// $scope.aboutBtnClick();
 							viewState.somethingInProgress = false;
 						} else {
-							modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(() => {
 								appStateService.resetToInitState();
 							});
 						}
 
-					}, function onError (response) {
-						modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
+					}, (response) => { // onError
+						modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(() => {
 							appStateService.resetToInitState();
 						});
 					});
-				}, function onError (response) {
-					modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
+				}, (response) => {
+					modalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(() => {
 						appStateService.resetToInitState();
 					});
 				});
-			}, function (errMess) {
-				modalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
+			}, (errMess) => {
+				modalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(() => {
 					appStateService.resetToInitState();
 				});
 			});
@@ -397,16 +397,17 @@ angular.module('emuwebApp')
 					ConfigProviderService.vals.main.serverUrl = searchObject.serverUrl;
 				}
 				if(searchObject.comMode !== "GITLAB"){
-					Iohandlerservice.wsH.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
+					// sic Iohandlerservice.Websockethandler is private!
+					Iohandlerservice.Websockethandler.initConnect(ConfigProviderService.vals.main.serverUrl).then((message) => {
 						if (message.type === 'error') {
-							modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl).then(function () {
+							modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl).then(() => {
 							appStateService.resetToInitState();
 						});
 						} else {
 							$scope.handleConnectedToWSserver({session: null, reload: null});
 						}
 					}, function (errMess) {
-						modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(() => {
 							appStateService.resetToInitState();
 						});
 					});
@@ -450,16 +451,16 @@ angular.module('emuwebApp')
 			viewState.somethingInProgress = true;
 			viewState.somethingInProgressTxt = 'Checking protocol...';
 			// Check if server speaks the same protocol
-			Iohandlerservice.getProtocol().then(function (res) {
+			Iohandlerservice.getProtocol().then((res) => {
 				if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.2') {
 					viewState.somethingInProgressTxt = 'Checking user management...';
 					// then ask if server does user management
-					Iohandlerservice.getDoUserManagement().then(function (doUsrData) {
+					Iohandlerservice.getDoUserManagement().then((doUsrData) => {
 						if (doUsrData === 'NO') {
 							$scope.innerHandleConnectedToWSserver({session: session, reload: reload});
 						} else {
 							// show user management error
-							modalService.open('views/loginModal.html').then(function (res) {
+							modalService.open('views/loginModal.html').then((res) => {
 								if (res) {
 									$scope.innerHandleConnectedToWSserver({session: session, reload: reload});
 								} else {
@@ -471,7 +472,7 @@ angular.module('emuwebApp')
 					
 				} else {
 					// show protocol error and disconnect from server
-					modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
+					modalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(() => {
 						appStateService.resetToInitState();
 					});
 				}
@@ -486,9 +487,9 @@ angular.module('emuwebApp')
 			var reload = data.reload;
 			viewState.somethingInProgressTxt = 'Loading DB config...';
 			// then get the DBconfigFile
-			Iohandlerservice.httpGetDefaultDesign().then(function onSuccess(response) {
+			Iohandlerservice.httpGetDefaultDesign().then((response) => {
 				ConfigProviderService.setDesign(response.data);
-				Iohandlerservice.getDBconfigFile().then(function (data) {
+				Iohandlerservice.getDBconfigFile().then((data) => {
 					// first element of perspectives is default perspective
 					viewState.curPerspectiveIdx = 0;
 					ConfigProviderService.setVals(data.EMUwebAppConfig);
@@ -514,7 +515,7 @@ angular.module('emuwebApp')
 						if (validRes === true) {
 							// then get the DBconfigFile
 							viewState.somethingInProgressTxt = 'Loading bundle list...';
-							Iohandlerservice.getBundleList().then(function (bdata) {
+							Iohandlerservice.getBundleList().then((bdata) => {
 								validRes = loadedMetaDataService.setBundleList(bdata);
 								// show standard buttons
 								ConfigProviderService.vals.activeButtons.clear = true;
@@ -525,7 +526,7 @@ angular.module('emuwebApp')
 									if(session === null) {
 										session = loadedMetaDataService.getBundleList()[0];
 									}
-									dbObjLoadSaveService.loadBundle(session).then(function (){
+									dbObjLoadSaveService.loadBundle(session).then(() => {
 										// FOR DEVELOPMENT:
 										// dbObjLoadSaveService.saveBundle(); // for testing save function
 										// $scope.menuBundleSaveBtnClick(); // for testing save button
@@ -542,20 +543,20 @@ angular.module('emuwebApp')
 										loadedMetaDataService.openCollapseSession(session.session);
 									}
 								} else {
-									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+									modalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(() => {
 										appStateService.resetToInitState();
 									});
 								}
 							});
 
 						} else {
-							modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(() => {
 								appStateService.resetToInitState();
 							});
 						}
 
 					} else {
-						modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+						modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(() => {
 							appStateService.resetToInitState();
 						});
 					}
@@ -715,7 +716,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.downloadTextGridBtnClick = function () {
 			if (viewState.getPermission('downloadTextGridBtnClick')) {
-				Textgridparserservice.asyncToTextGrid().then(function (parseMess) {
+				Textgridparserservice.asyncToTextGrid().then((parseMess) => {
 					parseMess = parseMess.replace(/\t/g, '    '); // replace all tabs with 4 spaces
 					modalService.open('views/export.html', loadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
 				});
@@ -747,21 +748,22 @@ angular.module('emuwebApp')
 		 */
 		$scope.connectBtnClick = function () {
 			if (viewState.getPermission('connectBtnClick')) {
-				modalService.open('views/connectModal.html').then(function (url) {
+				modalService.open('views/connectModal.html').then((url) => {
 					if (url) {
 						viewState.somethingInProgressTxt = 'Connecting to server...';
 						viewState.somethingInProgress = true;
 						viewState.url = url;
-						Iohandlerservice.wsH.initConnect(url).then(function (message) {
+						// SIC Iohandlerservice.Websockethandler is private
+						Iohandlerservice.Websockethandler.initConnect(url).then((message) => {
 							if (message.type === 'error') {
-								modalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(function () {
+								modalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(() => {
 									appStateService.resetToInitState();
 								});
 							} else {
 								$scope.handleConnectedToWSserver({session: null, reload: null});
 							}
 						}, function (errMess) {
-							modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(() => {
 								appStateService.resetToInitState();
 							});
 						});
@@ -788,9 +790,9 @@ angular.module('emuwebApp')
 				viewState.setState('loadingSaving');
 				ConfigProviderService.vals.main.comMode = 'DEMO';
 				viewState.somethingInProgressTxt = 'Loading DB config...';
-				Iohandlerservice.httpGetDefaultDesign().then(function onSuccess(response) {
+				Iohandlerservice.httpGetDefaultDesign().then((response) => {
 					ConfigProviderService.setDesign(response.data);
-					Iohandlerservice.getDBconfigFile(nameOfDB).then(function (res) {
+					Iohandlerservice.getDBconfigFile(nameOfDB).then((res) => {
 						var data = res.data;
 						// first element of perspectives is default perspective
 						viewState.curPerspectiveIdx = 0;
@@ -806,7 +808,7 @@ angular.module('emuwebApp')
 								// then get the DBconfigFile
 								viewState.somethingInProgressTxt = 'Loading bundle list...';
 
-								Iohandlerservice.getBundleList(nameOfDB).then(function (res) {
+								Iohandlerservice.getBundleList(nameOfDB).then((res) => {
 									var bdata = res.data;
 									// validRes = Validationservice.validateJSO('bundleListSchema', bdata);
 									// if (validRes === true) {
@@ -819,25 +821,25 @@ angular.module('emuwebApp')
 									dbObjLoadSaveService.loadBundle(loadedMetaDataService.getBundleList()[0]);
 
 								}, function (err) {
-									modalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+									modalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(() => {
 										appStateService.resetToInitState();
 									});
 								});
 							} else {
-								modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+								modalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(() => {
 									appStateService.resetToInitState();
 								});
 							}
 
 
 						} else {
-							modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+							modalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(() => {
 								appStateService.resetToInitState();
 							});
 						}
 
 					}, function (err) {
-						modalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+						modalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(() => {
 							appStateService.resetToInitState();
 						});
 					});
@@ -868,16 +870,16 @@ angular.module('emuwebApp')
 		 *
 		 */
 		$scope.showEditDBconfigBtnClick = function () {
-			modalService.open('views/tabbed.html').then(function (res) {
+			modalService.open('views/tabbed.html').then((res) => {
 				if (res === false) {
 					// do nothing when user clicks on cancle
 				}
 				else {
 					if (Validationservice.validateJSO('emuwebappConfigSchema', res)) {
-						$scope.cps.getDelta(res).then(function (delta) {
-							Iohandlerservice.saveConfiguration(angular.toJson(delta, true)).then(function () {
+						$scope.cps.getDelta(res).then((delta) => {
+							Iohandlerservice.saveConfiguration(angular.toJson(delta, true)).then(() => {
 								if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-									modalService.open('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.').then(function (res) {
+									modalService.open('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.').then((res) => {
 										if (res) {
 											appStateService.reloadToInitState();
 										}
@@ -918,7 +920,7 @@ angular.module('emuwebApp')
 			} else {
 				modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.';
 			}
-			modalService.open('views/confirmModal.html', modalText).then(function (res) {
+			modalService.open('views/confirmModal.html', modalText).then((res) => {
 				if (res) {
 					appStateService.resetToInitState();
 				}

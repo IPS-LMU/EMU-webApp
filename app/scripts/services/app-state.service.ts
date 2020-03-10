@@ -44,7 +44,7 @@ class AppStateService{
 		public resetToInitState() {
 			// SIC Iohandlerservice.Websockethandler is private
 			if(this.Iohandlerservice.Websockethandler.isConnected()) {
-				this.Iohandlerservice.Websockethandler.disconnectWarning().then(function () {
+				this.Iohandlerservice.Websockethandler.disconnectWarning().then(() => {
 					this.$log.info('Closing websocket connection to server');
 					this.Iohandlerservice.Websockethandler.closeConnect();
 				});

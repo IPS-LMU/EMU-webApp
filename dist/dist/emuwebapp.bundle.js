@@ -32593,7 +32593,7 @@ function annotate(fn, strictDi, name) {
  * ```javascript
  * app.factory('loadModule', function($injector) {
  *   return function loadModule(moduleName, bundleUrl) {
- *     return getScript(bundleUrl).then(function() { $injector.loadNewModules([moduleName]); });
+ *     return getScript(bundleUrl).then(() => { $injector.loadNewModules([moduleName]); });
  *   };
  * })
  * ```
@@ -38885,7 +38885,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       $compileNode.empty();
 
       $templateRequest(templateUrl)
-        .then(function(content) {
+        .then((content) => {
           var compileNode, tempTemplateAttrs, $template, childBoundTranscludeFn;
 
           content = denormalizeTemplate(content);
