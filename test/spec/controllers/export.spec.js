@@ -8,13 +8,13 @@ describe('Controller: ExportCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, browserDetector, ConfigProviderService, modalService, viewState, HistoryService) {
+     beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, ModalService, ViewStateService, HistoryService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.modal = modalService;
-       scope.vs = viewState;
+       scope.modal = ModalService;
+       scope.vs = ViewStateService;
        scope.history = HistoryService;
        ExportCtrl = $controller('ExportCtrl', {
          $scope: scope

@@ -10,14 +10,14 @@ describe('Controller: LoginCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, $q, ConfigProviderService, modalService, viewState, Iohandlerservice) {
+     beforeEach(inject(function ($controller, $rootScope, $q, ConfigProviderService, ModalService, ViewStateService, IoHandlerService) {
        scope = $rootScope.$new();
        scope.cps = ConfigProviderService;
        scope.cps.setVals(defaultEmuwebappConfig);
        scope.cps.curDbConfig = aeDbConfig;
-       scope.modal = modalService;
-       scope.vs = viewState;
-       scope.io = Iohandlerservice;
+       scope.modal = ModalService;
+       scope.vs = ViewStateService;
+       scope.io = IoHandlerService;
        deferred1 = $q.defer();
        deferred1.resolve('LOGGEDON'); 
        deferred2 = $q.defer();

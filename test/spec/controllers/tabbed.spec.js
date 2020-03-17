@@ -8,13 +8,13 @@ describe('Controller: TabbedCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, modalService, viewState, Validationservice, Websockethandler) {
+     beforeEach(inject(function ($controller, $rootScope, ConfigProviderService, ModalService, ViewStateService, ValidationService) {
        // initiate the controller and mock the scope
        var tmpEmuwebappConfig = angular.copy(defaultEmuwebappConfig);
        var tmpEmuwebappDesign = angular.copy(defaultEmuwebappDesign);
        var tmpaeDbConfig = angular.copy(aeDbConfig);
        scope = $rootScope.$new();
-       scope.valid = Validationservice;
+       scope.valid = ValidationService;
        spyOn(scope.valid, 'getSchema').and.returnValue({ data: { properties: { spectrogramSettings: {properties: {}}, levelDefinitions: {items: { properties: {}}}, linkDefinitions: {items: { properties: {}}}}}});
        TabbedCtrl = $controller('TabbedCtrl', {
          $scope: scope
@@ -23,8 +23,8 @@ describe('Controller: TabbedCtrl', function () {
        scope.cps.setVals(tmpEmuwebappConfig);
        scope.cps.curDbConfig = tmpaeDbConfig;
        scope.cps.design = tmpEmuwebappDesign;
-       scope.modal = modalService;
-       scope.vs = viewState;
+       scope.modal = ModalService;
+       scope.vs = ViewStateService;
      }));  
      
    it('should set cursorInTextField', function () {

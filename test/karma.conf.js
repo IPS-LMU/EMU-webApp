@@ -24,12 +24,16 @@ module.exports = function (config) {
     // the bootstrap jquery dep
     files: [
       'dist/emuwebapp.bundle.js',
-      '../node_modules/jasmine/lib/jasmine-core/jasmine.js',
+      '../node_modules/jquery/dist/jquery.js',
       '../node_modules/jasmine-jquery/lib/jasmine-jquery.js',
       '../node_modules/angular-mocks/angular-mocks.js',
       // 'test/spec/**/*.js',
       // try to get it to work on a single file first
+      '../test/spec/mockedData.js',
       '../test/spec/controllers/bundlelistsidebar.spec.js',
+      '../test/spec/controllers/export.spec.js',
+      '../test/spec/controllers/login.spec.js',
+      '../test/spec/controllers/emuwebapp.spec.js',
       //include the directory where directive templates are stored.
       'views/**/*.html',
       'img/*.svg',
@@ -60,7 +64,7 @@ module.exports = function (config) {
       },
       // fixtures
       {
-        pattern: 'testData/oldFormat/msajc003/*',
+        pattern: '../app/testData/oldFormat/msajc003/*',
         watched: true,
         served: true,
         included: false

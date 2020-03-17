@@ -26,41 +26,41 @@ describe('Controller: MainController', function () {
     LevelService,
     DataService,
     ConfigProviderService,
-    viewState,
-    Soundhandlerservice,
-    modalService,
+    ViewStateService,
+    SoundHandlerService,
+    ModalService,
     HistoryService,
-    Iohandlerservice,
-    Validationservice,
-    Wavparserservice,
-    loadedMetaDataService,
-    Textgridparserservice, _$window_, _$location_) {
+    IoHandlerService,
+    ValidationService,
+    WavParserService,
+    LoadedMetaDataService,
+    TextGridParserService, _$window_, _$location_) {
 
     $window = _$window_;
     $location = _$location_;
 
     // initiate the controller and mock the scope
     scope = $rootScope.$new();
-    MainCtrl = $controller('MainController', {
+    MainCtrl = $controller('EmuWebAppController', {
       $scope: scope,
       appStateService: mockAppStateService
     });
 
     scope.lvl = LevelService;
-    scope.vs = viewState;
+    scope.vs = ViewStateService;
     scope.cps = ConfigProviderService;
-    scope.shs = Soundhandlerservice;
-    scope.modal = modalService;
-    scope.io = Iohandlerservice;
-    scope.valid = Validationservice;
+    scope.shs = SoundHandlerService;
+    scope.modal = ModalService;
+    scope.io = IoHandlerService;
+    scope.valid = ValidationService;
     scope.shs.audioBuffer.length = testSizeAll;
     scope.cps.setVals(defaultEmuwebappConfig);
     scope.cps.design = defaultEmuwebappDesign;
     scope.cps.curDbConfig = aeDbConfig;
     scope.history = HistoryService;
-    scope.txtgrid = Textgridparserservice;
-    scope.lmds = loadedMetaDataService;
-    scope.wav = Wavparserservice;
+    scope.txtgrid = TextGridParserService;
+    scope.lmds = LoadedMetaDataService;
+    scope.wav = WavParserService;
     scope.data = DataService;
 
     deferred = $q.defer();
@@ -101,34 +101,34 @@ describe('Controller: MainController', function () {
     expect(scope.windowWidth).toBeDefined;
   });
 
-  it('all services should exist', inject(function (viewState,
+  it('all services should exist', inject(function (ViewStateService,
     ConfigProviderService,
     HistoryService,
     fontScaleService,
     LevelService,
-    modalService,
+    ModalService,
     Ssffdataservice,
-    Soundhandlerservice,
+    SoundHandlerService,
     Drawhelperservice,
-    Wavparserservice,
-    Iohandlerservice,
+    WavParserService,
+    IoHandlerService,
     Appcachehandler) {
-    expect(viewState).toBeDefined();
+    expect(ViewStateService).toBeDefined();
     expect(ConfigProviderService).toBeDefined();
     expect(HistoryService).toBeDefined();
     expect(fontScaleService).toBeDefined();
     expect(LevelService).toBeDefined();
-    expect(modalService).toBeDefined();
+    expect(ModalService).toBeDefined();
     expect(Ssffdataservice).toBeDefined();
-    expect(Soundhandlerservice).toBeDefined();
+    expect(SoundHandlerService).toBeDefined();
     expect(Drawhelperservice).toBeDefined();
-    expect(Wavparserservice).toBeDefined();
-    expect(Iohandlerservice).toBeDefined();
+    expect(WavParserService).toBeDefined();
+    expect(IoHandlerService).toBeDefined();
     expect(Appcachehandler).toBeDefined();
 
   }));
 
-  it('should have a working uninitialized viewState service', function () {
+  it('should have a working uninitialized ViewStateService service', function () {
     expect(scope.vs.curViewPort.sS).toBe(0);
     expect(scope.vs.curViewPort.eS).toBe(0);
     expect(scope.vs.curViewPort.selectS).toBe(-1);
@@ -538,79 +538,79 @@ describe('Controller: MainController', function () {
     expect(scope.modal.open).toHaveBeenCalledWith('views/tabbed.html');
   }));
 
-  it('should addLevelPoint on BtnClick', inject(function (ConfigProviderService, viewState) {
-  	viewState.curPerspectiveIdx = 0;
+  it('should addLevelPoint on BtnClick', inject(function (ConfigProviderService, ViewStateService) {
+  	ViewStateService.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
-    spyOn(viewState, 'selectLevel');
+    spyOn(ViewStateService, 'selectLevel');
     spyOn(scope.lvl, 'insertLevel');
     spyOn(scope.history, 'addObjToUndoStack');
     scope.addLevelPointBtnClick();
     expect(scope.lvl.insertLevel).toHaveBeenCalled();
     expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelPointBtnClick');
-    expect(viewState.selectLevel).toHaveBeenCalled();
+    expect(ViewStateService.selectLevel).toHaveBeenCalled();
   }));
 
-  it('should addLevelSeg on BtnClick', inject(function (ConfigProviderService, viewState) {
-    viewState.curPerspectiveIdx = 0;
+  it('should addLevelSeg on BtnClick', inject(function (ConfigProviderService, ViewStateService) {
+    ViewStateService.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
-    spyOn(viewState, 'selectLevel');
+    spyOn(ViewStateService, 'selectLevel');
     spyOn(scope.lvl, 'insertLevel');
     spyOn(scope.history, 'addObjToUndoStack');
     scope.addLevelSegBtnClick();
     expect(scope.lvl.insertLevel).toHaveBeenCalled();
     expect(scope.history.addObjToUndoStack).toHaveBeenCalled();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('addLevelSegBtnClick');
-    expect(viewState.selectLevel).toHaveBeenCalled();
+    expect(ViewStateService.selectLevel).toHaveBeenCalled();
   }));
 
-   it('should getEnlarge (-1)', inject(function (viewState) {
-    viewState.curPerspectiveIdx = 0;
+   it('should getEnlarge (-1)', inject(function (ViewStateService) {
+    ViewStateService.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getenlarge').and.returnValue(-1);
     var ret = scope.getEnlarge();
     expect(ret).toEqual('auto');
   }));
 
-   it('should getEnlarge (2 / small)', inject(function (viewState) {
-    viewState.curPerspectiveIdx = 0;
+   it('should getEnlarge (2 / small)', inject(function (ViewStateService) {
+    ViewStateService.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(2);
     expect(ret).toEqual('27%');
   }));
 
-   it('should getEnlarge (2 / large)', inject(function (viewState) {
-    viewState.curPerspectiveIdx = 0;
+   it('should getEnlarge (2 / large)', inject(function (ViewStateService) {
+    ViewStateService.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(3);
     expect(ret).toEqual('70%');
   }));
 
-   it('should getEnlarge (3 / small)', inject(function (viewState, ConfigProviderService) {
-    viewState.curPerspectiveIdx = 0;
-    orig = ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order;
-    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
+   it('should getEnlarge (3 / small)', inject(function (ViewStateService, ConfigProviderService) {
+    ViewStateService.curPerspectiveIdx = 0;
+    orig = ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order;
+    ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(2);
     expect(ret).toEqual('22.5%');
   }));
 
-   it('should getEnlarge (3 / large)', inject(function (viewState, ConfigProviderService) {
-    viewState.curPerspectiveIdx = 0;
-    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
+   it('should getEnlarge (3 / large)', inject(function (ViewStateService, ConfigProviderService) {
+    ViewStateService.curPerspectiveIdx = 0;
+    ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.push({empty: ''})
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(3);
     expect(ret).toEqual('50%');
   }));
 
-   it('should getEnlarge (1)', inject(function (viewState, ConfigProviderService) {
-    viewState.curPerspectiveIdx = 0;
-    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
-    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
-    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order.pop();
+   it('should getEnlarge (1)', inject(function (ViewStateService, ConfigProviderService) {
+    ViewStateService.curPerspectiveIdx = 0;
+    ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.pop();
+    ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.pop();
+    ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.pop();
     spyOn(scope.vs, 'getenlarge').and.returnValue(3);
     var ret = scope.getEnlarge(2);
     expect(ret).toEqual('auto');
-    ConfigProviderService.vals.perspectives[viewState.curPerspectiveIdx].signalCanvases.order = orig;
+    ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order = orig;
   }));
 
    it('should toggleCollapseSession', function () {
@@ -656,11 +656,11 @@ describe('Controller: MainController', function () {
      expect(scope.data.setData).toHaveBeenCalled();
   }));
 
-   it('should loadDefaultConfig', inject(function ($httpBackend, $q, Validationservice, Iohandlerservice) {
+   it('should loadDefaultConfig', inject(function ($httpBackend, $q, ValidationService, IoHandlerService) {
      var ioDeferred = $q.defer();
      var jsonDeferred = $q.defer();
-     spyOn(Validationservice, 'loadSchemas').and.returnValue(ioDeferred.promise);
-     spyOn(Validationservice, 'validateJSO').and.returnValue(jsonDeferred.promise);
+     spyOn(ValidationService, 'loadSchemas').and.returnValue(ioDeferred.promise);
+     spyOn(ValidationService, 'validateJSO').and.returnValue(jsonDeferred.promise);
      scope.loadDefaultConfig();
      ioDeferred.resolve();
      scope.$apply();
