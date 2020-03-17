@@ -9,6 +9,7 @@
 
 - implemented hierarchy-path-canvas (only top level of path is drawn)
 - sampleStart + dur now drawn in blue to up contrast
+- using text instead of JSON encoding for gitlab commit payload 
 
 ## Version 1.2.3
 

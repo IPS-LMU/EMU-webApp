@@ -271,13 +271,13 @@ class IoHandlerService{
 				action: "update", // _annot.json
 				file_path: bndlPath + bundleData.annotation.name + "_annot.json",
 				content: JSON.stringify(bundleData.annotation, null, 4),
-				encoding: "JSON"
+				encoding: "text"
 			},
 			{ 
 				action: "update", // _bundleList.json
 				file_path: 'bundleLists/' + searchObject.bundleListName + "_bundleList.json",
 				content: JSON.stringify(this.LoadedMetaDataService.getBundleList(), null, 4),
-				encoding: "JSON"
+				encoding: "text"
 			}
 		];
 		//console.log(bundleData.ssffFiles.length);

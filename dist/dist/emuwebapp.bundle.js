@@ -90624,13 +90624,13 @@ var io_handler_service_IoHandlerService = /** @class */ (function () {
                     action: "update",
                     file_path: bndlPath + bundleData.annotation.name + "_annot.json",
                     content: JSON.stringify(bundleData.annotation, null, 4),
-                    encoding: "JSON"
+                    encoding: "text"
                 },
                 {
                     action: "update",
                     file_path: 'bundleLists/' + searchObject.bundleListName + "_bundleList.json",
                     content: JSON.stringify(this.LoadedMetaDataService.getBundleList(), null, 4),
-                    encoding: "JSON"
+                    encoding: "text"
                 }
             ];
             //console.log(bundleData.ssffFiles.length);
