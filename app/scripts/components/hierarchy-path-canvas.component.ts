@@ -13,7 +13,7 @@ let HierarchyPathCanvasComponent = {
     class="emuwebapp-level-canvas" 
     id="levelCanvas" 
     width="2048" 
-    height="512" 
+    height="256" 
     ng-style="$ctrl.backgroundCanvas"
     ></canvas>
     
@@ -22,7 +22,7 @@ let HierarchyPathCanvasComponent = {
     style="background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);"
     id="levelMarkupCanvas" 
     width="2048" 
-    height="512" 
+    height="246" 
     level-name="$ctrl.level.name"
     level-type="$ctrl.level.type"></canvas>
     </div>
@@ -210,7 +210,7 @@ let HierarchyPathCanvasComponent = {
                 let hierarchyWorker = await new HierarchyWorker();
                 let reducedAnnotation = await hierarchyWorker.reduceAnnotationToViewableTimeAndPath(this.annotation, this.path, this.viewPortSampleStart, this.viewPortSampleEnd);
                 let levelDetails = await hierarchyWorker.getLevelDetails(this.path[this.path.length -1], reducedAnnotation);
-
+                
                 this.drawLevelDetails(this.canvas, levelDetails);
                 this.drawLevelMarkup();
             }
@@ -263,9 +263,10 @@ let HierarchyPathCanvasComponent = {
             
             // draw name of level and type
             var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
-            
+            console.log(scaleY);
             if (levelDetails.name === curAttrDef) {
                 if (isOpen) {
+                    console.log("here")
                     this.FontScaleService.drawUndistortedTextTwoLines(
                         ctx, 
                         levelDetails.name, 
@@ -273,11 +274,10 @@ let HierarchyPathCanvasComponent = {
                         fontSize, 
                         fontFamily, 
                         4, 
-                        ctx.canvas.height / 2 - fontSize * scaleY, 
+                        (ctx.canvas.height / 2) - fontSize * scaleY, 
                         this.ConfigProviderService.design.color.white, 
                         true);
-                    }
-                    else {
+                    } else {
                         fontSize -= 2;
                         this.FontScaleService.drawUndistortedText(
                             ctx, 
@@ -286,7 +286,8 @@ let HierarchyPathCanvasComponent = {
                             fontFamily, 
                             4, 
                             ctx.canvas.height / 2 - (fontSize * scaleY / 2), 
-                            this.ConfigProviderService.design.color.white, true);
+                            this.ConfigProviderService.design.color.white, 
+                            true);
                         }
                     } else {
                         this.FontScaleService.drawUndistortedTextTwoLines(

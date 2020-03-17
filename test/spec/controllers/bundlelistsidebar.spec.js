@@ -8,7 +8,7 @@ describe('Controller: bundleListSideBarCtrl', function () {
   beforeEach(module('emuwebApp'));
   
      //Initialize the controller and a mock scope
-     beforeEach(inject(function (_$controller_, _$rootScope_, viewState, loadedMetaDataService, dbObjLoadSaveService, ConfigProviderService, HistoryService) {
+     beforeEach(inject(function (_$controller_, _$rootScope_, ViewStateService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, HistoryService) {
          $controller = _$controller_;
          $rootScope = _$rootScope_;
 
@@ -20,9 +20,9 @@ describe('Controller: bundleListSideBarCtrl', function () {
        $scope.cps = ConfigProviderService;
        $scope.cps.setVals(defaultEmuwebappConfig);
        $scope.cps.curDbConfig = aeDbConfig;
-       $scope.vs = viewState;
-       $scope.lmds = loadedMetaDataService;
-       $scope.dolss = dbObjLoadSaveService;
+       $scope.vs = ViewStateService;
+       $scope.lmds = LoadedMetaDataService;
+       $scope.dolss = DbObjLoadSaveService;
        $scope.history = HistoryService;
      }));
 

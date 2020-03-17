@@ -17,10 +17,10 @@ describe('Directive: bundleListSideBar', function() {
         scope.$digest();
     }
 
-    it('should have correct css values', inject(function (viewState) {
+    it('should have correct css values', inject(function (ViewStateService) {
         scope.filterText = '';
         scope.bundleList = [];
-        scope.vs = viewState;
+        scope.vs = ViewStateService;
         scope.vs.submenuOpen = true;
         compileDirective();
         expect(elm.prop('className')).not.toContain('ng-hide');
@@ -30,10 +30,10 @@ describe('Directive: bundleListSideBar', function() {
     }));
     
 
-    it('should have correct html values', inject(function (viewState) {
+    it('should have correct html values', inject(function (ViewStateService) {
         scope.filterText = '';
         scope.bundleList = [];
-        scope.vs = viewState;
+        scope.vs = ViewStateService;
         scope.vs.submenuOpen = true;
         compileDirective();
         expect(elm.html()).toContain('emuwebapp-filter');

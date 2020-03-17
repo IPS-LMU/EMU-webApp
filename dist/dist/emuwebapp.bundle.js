@@ -80342,7 +80342,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var HierarchyPathCanvasComponent = {
     selector: "hierarchyPathCanvas",
     // inline HTML
-    template: "\n    <div \n    class=\"emuwebapp-level\" \n    style=\"height: 256px\">\n    <div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"512\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n    \n    <canvas \n    class=\"emuwebapp-level-markup\"\n    style=\"background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);\"\n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"512\" \n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n    </div>\n    </div>\n    ",
+    template: "\n    <div \n    class=\"emuwebapp-level\" \n    style=\"height: 256px\">\n    <div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"256\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n    \n    <canvas \n    class=\"emuwebapp-level-markup\"\n    style=\"background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);\"\n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"246\" \n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n    </div>\n    </div>\n    ",
     bindings: {
         annotation: '<',
         path: '<',
@@ -80501,9 +80501,11 @@ var HierarchyPathCanvasComponent = {
                         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                         sDist = this.ViewStateService.getSampleDist(ctx.canvas.width);
                         scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
+                        console.log(scaleY);
                         if (levelDetails.name === curAttrDef) {
                             if (isOpen) {
-                                this.FontScaleService.drawUndistortedTextTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
+                                console.log("here");
+                                this.FontScaleService.drawUndistortedTextTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, fontFamily, 4, (ctx.canvas.height / 2) - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
                             }
                             else {
                                 fontSize -= 2;
