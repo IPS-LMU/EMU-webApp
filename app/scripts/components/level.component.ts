@@ -443,7 +443,7 @@ class="emuwebapp-selectAttrDef"
                                     fontFamily, 
                                     posS + 3, 
                                     0, 
-                                    this.ConfigProviderService.design.color.grey, 
+                                    this.ConfigProviderService.design.color.blue, 
                                     true);
                             }
 
@@ -458,7 +458,7 @@ class="emuwebapp-selectAttrDef"
                                     fontFamily, 
                                     posE - (ctx.measureText(durtext).width * this.FontScaleService.scaleX), 
                                     ctx.canvas.height / 4 * 3, 
-                                    this.ConfigProviderService.design.color.grey, 
+                                    this.ConfigProviderService.design.color.blue, 
                                     true);
                             }
                         }
@@ -501,7 +501,7 @@ class="emuwebapp-selectAttrDef"
                                 labelFontFamily, 
                                 perc + 5, 
                                 0, 
-                                this.ConfigProviderService.design.color.grey, 
+                                this.ConfigProviderService.design.color.blue, 
                                 true);
                         }
                     }

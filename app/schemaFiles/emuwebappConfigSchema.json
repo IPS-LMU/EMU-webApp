@@ -316,13 +316,23 @@
 						"required": ["order", "assign", "contourLims"],
 						"additionalProperties": true
 					},
-					"ghostLevelCanvases": {
+					"hierarchyPathCanvases": {
 						"type": "object",
 						"properties": {
 							"order": {
 								"type": "array",
 								"items": {
-									"type": "string"
+									"type": "object",
+									"properties": {
+										"path": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										},
+									"required": ["path"],
+									"additionalProperties": false
+									}
 								}
 							}
 						},

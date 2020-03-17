@@ -1,2 +1,2 @@
-import "./ghostlevel.component";
+import "./hierarchy-path-canvas.component";
 import "./level.component";

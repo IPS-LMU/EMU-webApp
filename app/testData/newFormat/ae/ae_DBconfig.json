@@ -161,8 +161,12 @@
                     "yValues": [50, 150]
                 }]
 			},
-			"ghostLevelCanvases": {
-				"order": ["Word", "Syllable"]
+			"hierarchyPathCanvases": {
+				"order": [
+					{
+						"path": ["Phonetic", "Phoneme", "Syllable"]
+					}
+				]
 			},
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"],

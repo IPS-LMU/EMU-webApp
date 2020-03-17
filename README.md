@@ -17,8 +17,8 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 * clone this repo with `git clone https://github.com/IPS-LMU/EMU-webApp.git`
 * navigate to the freshly cloned repo (the folder is usually named `EMU-webApp`) and install dependencies with the command `npm install`
 * run development server `http://localhost:9000`  with `npm run start`
-* a small websocket data provider server is provided and can be started like this: `node exampleServers/nodeEmuProtocolWsServer.js`.
-
+* a small websocket data provider server is provided and can be started like this: `cd exampleServers; node nodeEmuProtocolWsServer.js`.
+* navigate to `http://localhost:9000/?autoConnect=true` to have an autoconnecting auto-reloading develp
 
 ## Tests
 * unit tests: run `npm test` (currently not working)

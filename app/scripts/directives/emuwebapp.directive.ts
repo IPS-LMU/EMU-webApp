@@ -3,7 +3,7 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.directive('emuwebapp', function (ViewStateService, ConfigProviderService) {
 		return {
-			template: /*html*/`
+			template: `
 			<div ng-controller="EmuWebAppController" class="emuwebapp-main" id="MainCtrl" handleglobalkeystrokes>
 				<!-- start: modal -->
 				<modal></modal>
@@ -77,13 +77,12 @@ angular.module('emuwebApp')
 							</bg-pane>
 							<bg-pane type="bottomPane" min-size="80">
 								<!-- ghost level div containing ul of ghost levels-->
-								<div ng-if="true" style="margin-top: 25px;">
+								<div ng-if="cps.vals.perspectives[vs.curPerspectiveIdx].hierarchyPathCanvases" style="margin-top: 25px;">
 									<ul>
-										<li ng-repeat="levelName in cps.vals.perspectives[vs.curPerspectiveIdx].ghostLevelCanvases.order">
-											<ghost-level 
-											ng-if="levServ.getLevelDetails(levelName)"
-											level="levServ.getLevelDetails(levelName)" 
-											idx="$index" 
+										<li ng-repeat="canvasDef in cps.vals.perspectives[vs.curPerspectiveIdx].hierarchyPathCanvases.order">
+											<hierarchy-path-canvas 
+											annotation="dataServ.getData()" 
+											path="canvasDef.path"
 											view-port-sample-start="vs.curViewPort.sS"
 											view-port-sample-end="vs.curViewPort.eS"
 											view-port-select-start="vs.curViewPort.selectS"
@@ -95,7 +94,7 @@ angular.module('emuwebApp')
 											moves-away-from-last-save="hists.movesAwayFromLastSave"
 											cur-perspective-idx="vs.curPerspectiveIdx"
 											cur-bndl="lmds.getCurBndl()"
-											></ghost-level>
+											></hierarchy-path-canvas>
 										</li>
 									</ul>
 								</div>
