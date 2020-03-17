@@ -1,5 +1,15 @@
 # What's New
 
+## Version 1.2.4
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+- implemented hierarchy-path-canvas (only top level of path is drawn)
+- sampleStart + dur now drawn in blue to up contrast
+
 ## Version 1.2.3
 
 ### bug fixes
