@@ -23,13 +23,11 @@ export class HierarchyWorker {
         // clone and empty annotation
         let annotationClone = JSON.parse(JSON.stringify(annotation));
         annotationClone.levels = [];
+        annotationClone.levels.push(JSON.parse(JSON.stringify(childLevel)));
         annotationClone.links = [];
         let reachedTargetLevel = false;
         path.forEach((ln, lnIdx) => {
-            if(ln === path[path.length - 1]){
-                reachedTargetLevel = true;
-            }
-            if(!reachedTargetLevel){
+            if(ln !== path[path.length - 1]){
                 if(ln !== path[path.length - 1]){
                     let parentLevelClone = JSON.parse(JSON.stringify(this.getLevelDetails(path[lnIdx + 1], annotation)));
                     parentLevelClone.items = [];

@@ -164,7 +164,7 @@
 			"hierarchyPathCanvases": {
 				"order": [
 					{
-						"path": ["Phonetic", "Phoneme", "Syllable"]
+						"path": ["Phonetic", "Phoneme", "Syllable", "Word"]
 					}
 				]
 			},
