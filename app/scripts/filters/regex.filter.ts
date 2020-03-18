@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 angular.module('emuwebApp')
 	.filter('regex', function () {
-		return function (input, regex) {
+		return (input, regex) => {
 			var patt = new RegExp(regex.toLowerCase());
 			var out = [];
 			for (var i = 0; i < input.length; i++) {

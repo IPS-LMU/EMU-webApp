@@ -1,4 +1,3 @@
-import "./bundlelist-sidebar.controller";
 import "./export.controller";
 import "./login.controller";
 import "./emuwebapp.controller";

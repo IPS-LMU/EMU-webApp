@@ -1,4 +1,3 @@
-import "./bundlelist-sidebar.directive";
 import "./delete.directive";
 import "./dots.directive";
 import "./dragout.directive";

@@ -263,10 +263,9 @@ let HierarchyPathCanvasComponent = {
             
             // draw name of level and type
             var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
-            console.log(scaleY);
+            
             if (levelDetails.name === curAttrDef) {
                 if (isOpen) {
-                    console.log("here")
                     this.FontScaleService.drawUndistortedTextTwoLines(
                         ctx, 
                         levelDetails.name, 
