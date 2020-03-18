@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.2.5
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+- hierarchy-path-canvas now draws entire path instead of just the top level
+
 ## Version 1.2.4
 
 ### bug fixes

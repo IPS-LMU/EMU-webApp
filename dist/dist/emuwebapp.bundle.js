@@ -22028,7 +22028,7 @@ return tv4; // used by _header.js to globalise.
 /* 6 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.2.4\"}");
+module.exports = JSON.parse("{\"a\":\"1.2.5\"}");
 
 /***/ }),
 /* 7 */
@@ -80464,7 +80464,9 @@ var HierarchyPathCanvasComponent = {
                 this._inited = true;
             };
             // TODO: move to draw helper service or new service and use from here and level.component
-            this.drawLevelDetails = function (canvas, levelDetails) {
+            this.drawLevelDetails = function (canvas, levelDetails, topLimitPxl, bottomLimitPxl) {
+                if (topLimitPxl === void 0) { topLimitPxl = 0; }
+                if (bottomLimitPxl === void 0) { bottomLimitPxl = 256; }
                 return __awaiter(this, void 0, void 0, function () {
                     var labelFontFamily, fontFamily, labelFontSize, fontSize, curAttrDef, isOpen, ctx, sDist, posS, posE, scaleY, curID, mTxtImgWidth, zeroTxtImgWidth, perc;
                     var _this = this;
@@ -80498,22 +80500,20 @@ var HierarchyPathCanvasComponent = {
                             return [2 /*return*/];
                         }
                         ctx = canvas[0].getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                        ctx.clearRect(0, topLimitPxl, ctx.canvas.width, bottomLimitPxl);
                         sDist = this.ViewStateService.getSampleDist(ctx.canvas.width);
                         scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
-                        console.log(scaleY);
                         if (levelDetails.name === curAttrDef) {
                             if (isOpen) {
-                                console.log("here");
-                                this.FontScaleService.drawUndistortedTextTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, fontFamily, 4, (ctx.canvas.height / 2) - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
+                                this.FontScaleService.drawUndistortedTextTwoLines(ctx, levelDetails.name, '(' + levelDetails.type + ')', fontSize, fontFamily, 4, (topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2) - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
                             }
                             else {
                                 fontSize -= 2;
-                                this.FontScaleService.drawUndistortedText(ctx, levelDetails.name, fontSize, fontFamily, 4, ctx.canvas.height / 2 - (fontSize * scaleY / 2), this.ConfigProviderService.design.color.white, true);
+                                this.FontScaleService.drawUndistortedText(ctx, levelDetails.name, fontSize, fontFamily, 4, topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2 - (fontSize * scaleY / 2), this.ConfigProviderService.design.color.white, true);
                             }
                         }
                         else {
-                            this.FontScaleService.drawUndistortedTextTwoLines(ctx, levelDetails.name + ':' + curAttrDef, '(' + levelDetails.type + ')', fontSize, fontFamily, 4, ctx.canvas.height / 2 - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
+                            this.FontScaleService.drawUndistortedTextTwoLines(ctx, levelDetails.name + ':' + curAttrDef, '(' + levelDetails.type + ')', fontSize, fontFamily, 4, topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2 - fontSize * scaleY, this.ConfigProviderService.design.color.white, true);
                         }
                         curID = -1;
                         mTxtImgWidth = ctx.measureText('m').width * this.FontScaleService.scaleX;
@@ -80541,24 +80541,19 @@ var HierarchyPathCanvasComponent = {
                                     posS = _this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart);
                                     posE = _this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
                                     ctx.fillStyle = _this.ConfigProviderService.design.color.white;
-                                    ctx.fillRect(posS, 0, 2, ctx.canvas.height / 2);
+                                    ctx.fillRect(posS, topLimitPxl, 2, (bottomLimitPxl - topLimitPxl) / 2);
                                     //draw segment end
                                     ctx.fillStyle = _this.ConfigProviderService.design.color.grey;
-                                    ctx.fillRect(posE, ctx.canvas.height / 2, 2, ctx.canvas.height);
+                                    ctx.fillRect(posE, topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2, 2, (bottomLimitPxl - topLimitPxl) / 2);
                                     ctx.font = (fontSize - 2 + 'px' + ' ' + labelFontFamily);
                                     //check for enough space to stroke text
                                     if ((curLabVal !== undefined) && posE - posS > (mTxtImgWidth * curLabVal.length)) {
-                                        if (isOpen) {
-                                            _this.FontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
-                                        }
-                                        else {
-                                            _this.FontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (ctx.canvas.height / 2) - fontSize + 2, _this.ConfigProviderService.design.color.white, false);
-                                        }
+                                        _this.FontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, posS + (posE - posS) / 2, (topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
                                     }
                                     //draw helper lines
-                                    if (_this.open && curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
+                                    if (curLabVal !== undefined && curLabVal.length !== 0) { // only draw if label is not empty
                                         var labelCenter = posS + (posE - posS) / 2;
-                                        var hlY = ctx.canvas.height / 4;
+                                        var hlY = topLimitPxl + (bottomLimitPxl - topLimitPxl) / 4;
                                         // start helper line
                                         ctx.strokeStyle = _this.ConfigProviderService.design.color.white;
                                         ctx.beginPath();
@@ -80566,7 +80561,7 @@ var HierarchyPathCanvasComponent = {
                                         ctx.lineTo(labelCenter, hlY);
                                         ctx.lineTo(labelCenter, hlY + 5);
                                         ctx.stroke();
-                                        hlY = ctx.canvas.height / 4 * 3;
+                                        hlY = topLimitPxl + (bottomLimitPxl - topLimitPxl) / 4 * 3;
                                         // end helper line
                                         ctx.strokeStyle = _this.ConfigProviderService.design.color.grey;
                                         ctx.beginPath();
@@ -80575,18 +80570,16 @@ var HierarchyPathCanvasComponent = {
                                         ctx.lineTo(labelCenter, hlY - 5);
                                         ctx.stroke();
                                     }
-                                    if (_this.open) {
-                                        // draw sampleStart numbers
-                                        //check for enough space to stroke text
-                                        if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
-                                            _this.FontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, fontFamily, posS + 3, 0, _this.ConfigProviderService.design.color.blue, true);
-                                        }
-                                        // draw sampleDur numbers.
-                                        var durtext = 'dur: ' + item.sampleDur + ' ';
-                                        //check for enough space to stroke text
-                                        if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
-                                            _this.FontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, fontFamily, posE - (ctx.measureText(durtext).width * _this.FontScaleService.scaleX), ctx.canvas.height / 4 * 3, _this.ConfigProviderService.design.color.blue, true);
-                                        }
+                                    // draw sampleStart numbers
+                                    //check for enough space to stroke text
+                                    if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
+                                        _this.FontScaleService.drawUndistortedText(ctx, item.sampleStart, fontSize - 2, fontFamily, posS + 3, topLimitPxl, _this.ConfigProviderService.design.color.blue, true);
+                                    }
+                                    // draw sampleDur numbers.
+                                    var durtext = 'dur: ' + item.sampleDur + ' ';
+                                    //check for enough space to stroke text
+                                    if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
+                                        _this.FontScaleService.drawUndistortedText(ctx, durtext, fontSize - 2, fontFamily, posE - (zeroTxtImgWidth * (durtext.length - 3)), topLimitPxl + (bottomLimitPxl - topLimitPxl) / 4 * 3, _this.ConfigProviderService.design.color.blue, true);
                                     }
                                 }
                             });
@@ -80604,9 +80597,9 @@ var HierarchyPathCanvasComponent = {
                                         }
                                     });
                                     ctx.fillStyle = _this.ConfigProviderService.design.color.white;
-                                    ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
-                                    ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
-                                    _this.FontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, perc, (ctx.canvas.height / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
+                                    ctx.fillRect(perc, 0, 1, (bottomLimitPxl - topLimitPxl) / 2 - (bottomLimitPxl - topLimitPxl) / 5);
+                                    ctx.fillRect(perc, (bottomLimitPxl - topLimitPxl) / 2 + (bottomLimitPxl - topLimitPxl) / 5, 1, (bottomLimitPxl - topLimitPxl) / 2 - (bottomLimitPxl - topLimitPxl) / 5);
+                                    _this.FontScaleService.drawUndistortedText(ctx, curLabVal, labelFontSize - 2, labelFontFamily, perc, ((bottomLimitPxl - topLimitPxl) / 2) - (fontSize - 2) + 2, _this.ConfigProviderService.design.color.white, false);
                                     if (isOpen) {
                                         _this.FontScaleService.drawUndistortedText(ctx, item.samplePoint, fontSize - 2, labelFontFamily, perc + 5, 0, _this.ConfigProviderService.design.color.blue, true);
                                     }
@@ -80694,22 +80687,41 @@ var HierarchyPathCanvasComponent = {
         ;
         GhostLevelController.prototype.redrawAll = function () {
             return __awaiter(this, void 0, void 0, function () {
-                var hierarchyWorker, reducedAnnotation, levelDetails;
+                var ctx, hierarchyWorker_1, reducedAnnotation_1, nrOfPxlsPerLevel_1, topLimitPxl_1, bottomLimitPxl_1, pathClone;
+                var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
                             if (!(this.annotation.levels.length > 0)) return [3 /*break*/, 4];
+                            ctx = this.canvas[0].getContext('2d');
+                            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                             return [4 /*yield*/, new _workers_hierarchy_worker__WEBPACK_IMPORTED_MODULE_1__["HierarchyWorker"]()];
                         case 1:
-                            hierarchyWorker = _a.sent();
-                            return [4 /*yield*/, hierarchyWorker.reduceAnnotationToViewableTimeAndPath(this.annotation, this.path, this.viewPortSampleStart, this.viewPortSampleEnd)];
+                            hierarchyWorker_1 = _a.sent();
+                            return [4 /*yield*/, hierarchyWorker_1.reduceAnnotationToViewableTimeAndPath(this.annotation, this.path, this.viewPortSampleStart, this.viewPortSampleEnd)];
                         case 2:
-                            reducedAnnotation = _a.sent();
-                            return [4 /*yield*/, hierarchyWorker.getLevelDetails(this.path[this.path.length - 1], reducedAnnotation)];
+                            reducedAnnotation_1 = _a.sent();
+                            nrOfPxlsPerLevel_1 = 256 / this.path.length;
+                            topLimitPxl_1 = 0;
+                            bottomLimitPxl_1 = nrOfPxlsPerLevel_1;
+                            pathClone = JSON.parse(JSON.stringify(this.path));
+                            return [4 /*yield*/, pathClone.reverse().forEach(function (levelName) { return __awaiter(_this, void 0, void 0, function () {
+                                    var levelDetails;
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0: return [4 /*yield*/, hierarchyWorker_1.getLevelDetails(levelName, reducedAnnotation_1)];
+                                            case 1:
+                                                levelDetails = _a.sent();
+                                                this.drawLevelDetails(this.canvas, levelDetails, topLimitPxl_1, bottomLimitPxl_1);
+                                                this.drawLevelMarkup();
+                                                topLimitPxl_1 = topLimitPxl_1 + nrOfPxlsPerLevel_1;
+                                                bottomLimitPxl_1 = bottomLimitPxl_1 + nrOfPxlsPerLevel_1;
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); })];
                         case 3:
-                            levelDetails = _a.sent();
-                            this.drawLevelDetails(this.canvas, levelDetails);
-                            this.drawLevelMarkup();
+                            _a.sent();
                             _a.label = 4;
                         case 4: return [2 /*return*/];
                     }
@@ -81036,7 +81048,7 @@ function generateUUID() {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
-  return new Worker(__webpack_require__.p + "c67b3593626feca27ece.worker.js");
+  return new Worker(__webpack_require__.p + "307b8ae9e2d26e215976.worker.js");
 };
 
 /***/ }),
@@ -82507,108 +82519,6 @@ var showdown = __webpack_require__(7);
 angular["module"]('emuwebApp', ['ngAnimate', 'angular.filter', 'ngRoute'])
     .config(function ($locationProvider) {
     $locationProvider.html5Mode(true);
-});
-
-// CONCATENATED MODULE: ./app/scripts/controllers/bundlelist-sidebar.controller.ts
-
-/**
- * @ngdoc function
- * @name emuwebApp.controller:BundlelistsidebarctrlCtrl
- * @description
- * # bundleListSideBarCtrl
- * Controller of the bundleListSideBar
- */
-angular["module"]('emuwebApp')
-    .controller('bundleListSideBarCtrl', function ($scope, ViewStateService, HistoryService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, LevelService) {
-    $scope.vs = ViewStateService;
-    $scope.lmds = LoadedMetaDataService;
-    $scope.dolss = DbObjLoadSaveService;
-    $scope.cps = ConfigProviderService;
-    $scope.ls = LevelService;
-    $scope.filterText = '';
-    $scope.vs.pageSize = 500;
-    $scope.vs.currentPage = 0;
-    $scope.turn = function (direction) {
-        if (direction) {
-            $scope.vs.currentPage++;
-        }
-        else {
-            $scope.vs.currentPage--;
-        }
-    };
-    /**
-     * returns jso with css defining color dependent
-     * on if changes have been made that have not been saved
-     * @param bndl object containing name attribute of bundle item
-     * requesting color
-     * @returns color as jso object used by ng-style
-     */
-    $scope.getBndlColor = function (bndl) {
-        var curColor;
-        if (HistoryService.movesAwayFromLastSave !== 0) {
-            curColor = {
-                'background-color': '#f00',
-                'color': 'white'
-            };
-        }
-        else {
-            curColor = {
-                'background-color': '#999',
-                'color': 'black'
-            };
-        }
-        var curBndl = LoadedMetaDataService.getCurBndl();
-        if (bndl.name === curBndl.name && bndl.session === curBndl.session) {
-            return curColor;
-        }
-    };
-    /**
-     * checks if name is undefined
-     * @return bool
-     */
-    $scope.isSessionDefined = function (ses) {
-        return ses !== 'undefined';
-    };
-    /**
-     * zoom to next / previous time anchor
-     */
-    $scope.nextPrevAnchor = function (next) {
-        var curBndl = LoadedMetaDataService.getCurBndl();
-        if (next) {
-            if ($scope.vs.curTimeAnchorIdx < curBndl.timeAnchors.length - 1) {
-                $scope.vs.curTimeAnchorIdx = $scope.vs.curTimeAnchorIdx + 1;
-                $scope.vs.select(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
-                $scope.vs.setViewPort(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
-                $scope.vs.zoomViewPort(false, $scope.ls);
-            }
-        }
-        else {
-            if ($scope.vs.curTimeAnchorIdx > 0) {
-                $scope.vs.curTimeAnchorIdx = $scope.vs.curTimeAnchorIdx - 1;
-                $scope.vs.select(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
-                $scope.vs.setViewPort(curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[$scope.vs.curTimeAnchorIdx].sample_end);
-                $scope.vs.zoomViewPort(false, $scope.ls);
-            }
-        }
-    };
-    /**
-     * get max nr of time anchors
-     */
-    $scope.getTimeAnchorIdxMax = function () {
-        var curBndl = LoadedMetaDataService.getCurBndl();
-        var res;
-        if (angular["equals"]({}, curBndl)) {
-            res = -1;
-        }
-        else {
-            res = curBndl.timeAnchors.length - 1;
-        }
-        return (res);
-    };
-    $scope.isCurBndl = function (bndl) {
-        var curBndl = LoadedMetaDataService.getCurBndl();
-        return (bndl.name === curBndl.name && bndl.session === curBndl.session);
-    };
 });
 
 // CONCATENATED MODULE: ./app/scripts/controllers/export.controller.ts
@@ -84466,51 +84376,6 @@ angular["module"]('emuwebApp')
 
 
 
-
-
-// CONCATENATED MODULE: ./app/scripts/directives/bundlelist-sidebar.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('bundleListSideBar', function (HistoryService) {
-    return {
-        template: /*html*/ "\n\t\t\t<div class=\"emuwebapp-bundle-outer\">\n\t\t\t{{filterText}}\n\t\t\t<div ng-controller=\"bundleListSideBarCtrl\">\n\t\t\t\t<h3>\n\t\t\t\t\t<div>\n\t\t\t\t\t\t<input type=\"text\" ng-model=\"filterText\" placeholder=\"&#x1f50d; Bundle Filter\" ng-focus=\"vs.setcursorInTextField(true)\" ng-blur=\"vs.setcursorInTextField(false)\" class=\"emuwebapp-filter\"/>\n\t\t\t\t\t</div>\n\t\t\t\t</h3>\n\t\t\t\t<my-drop-zone ng-if=\"vs.showDropZone\"></my-drop-zone>\n\t\t\t\t<div id=\"emuwebapp-bundleListContainer\" class=\"emuwebapp-bundle-container\" ng-if=\"!vs.showDropZone\">\n\t\t\t\t\t<ul ng-repeat=\"(key, value) in lmds.getRendOptBndlList()\" ng-class=\"{'emuwebapp-bundle-last':$last}\">\n\t\t\t\t\t\t<div class=\"emuwebapp-bundle-session\" ng-if=\"isSessionDefined(key)\" ng-click=\"lmds.toggleCollapseSession(key)\">\n\t\t\t\t\t\t\t<div ng-if=\"lmds.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\t\t\u25B7{{key}}\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div ng-if=\"!lmds.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\t\t\u25BD{{key}}\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionBndlsContainer\" ng-if=\"!lmds.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > vs.pageSize\">\n\t\t\t\t\t\t\t\t<button ng-disabled=\"vs.currentPage == 0\" ng-click=\"turn(false);\">\n\t\t\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t\t{{vs.currentPage+1}}/{{vs.numberOfPages(value.length)}}\n\t\t\t\t\t\t\t\t<button ng-disabled=\"vs.currentPage >= value.length/vs.pageSize - 1\" ng-click=\"turn(true);\">\n\t\t\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div ng-repeat=\"bundle in value | startFrom:vs.currentPage*vs.pageSize | limitTo:vs.pageSize | regex:filterText track by $index\">\n\t\t\t\t\t\t\t\t<div class=\"emuwebapp-bundle-item\" id=\"uttListItem\" ng-style=\"getBndlColor(bundle);\" ng-click=\"dolss.loadBundle(bundle);\" dragout draggable=\"true\" name=\"{{bundle.name}}\">\n\t\t\t\t\t\t\t\t\t<b>{{bundle.name}}</b>\n\t\t\t\t\t\t\t\t\t<button ng-if=\"cps.vals.activeButtons.saveBundle && isCurBndl(bundle)\" class=\"emuwebapp-saveBundleButton\" ng-click=\"dolss.saveBundle();\"><img class=\"emuwebapp-saveBundleButton-img\" src=\"img/save.svg\" /></button>\n\t\t\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t\t\t<!--regulate finished editing display-->\n\t\t\t\t\t\t\t\t\t<!--display checkbox if current-->\n\t\t\t\t\t\t\t\t\t<div ng-if=\"cps.vals.restrictions.bundleFinishedEditing && isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t\t\t<input type=\"checkbox\" ng-model=\"bundle.finishedEditing\" ng-change=\"finishedEditing(bundle.finishedEditing, key, $index)\"/>\n\t\t\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\n\t\t\t\t\t\t\t\t\t<!--display text \"true\" or \"false\" depending on model if not current-->\n\t\t\t\t\t\t\t\t\t<div ng-if=\"cps.vals.restrictions.bundleFinishedEditing && !isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t\t\t<strong ng-if=\"bundle.finishedEditing\" style=\"color:green;\">true</strong>\n\t\t\t\t\t\t\t\t\t\t<strong ng-if=\"!bundle.finishedEditing\" style=\"color:red;\">false</strong>\n\t\t\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\n\t\t\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t\t\t<!--regulate comment editing display-->\n\t\t\t\t\t\t\t\t\t<!--display text input if current-->\n\t\t\t\t\t\t\t\t\t<div ng-if=\"cps.vals.restrictions.bundleComments && isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t\t\tcomment:\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" ng-focus=\"vs.setcursorInTextField(true); startHistory(bundle);\" ng-blur=\"vs.setcursorInTextField(false); updateHistory(bundle, key, $index); endHistory(bundle);\" ng-model=\"bundle.comment\"/>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\n\t\t\t\t\t\t\t\t\t<div ng-if=\"cps.vals.restrictions.bundleComments && !isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t\t\tcomment: <strong style=\"font-style: italic;max-height: 20px; overflow-y: auto\">{{bundle.comment}}</strong>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\n\t\t\n\t\t\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t\t\t<!--timeAnchors controlls-->\n\t\t\t\t\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"bundle.timeAnchors.length > 0 && isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t\t\t<button ng-disabled=\"vs.curTimeAnchorIdx == 0\" ng-click=\"nextPrevAnchor(false);\">\n\t\t\t\t\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t\t\t\ttime anchor idx: {{vs.curTimeAnchorIdx}}\n\t\t\t\t\t\t\t\t\t\t<button ng-disabled=\"vs.curTimeAnchorIdx == getTimeAnchorIdxMax()\" ng-click=\"nextPrevAnchor(true);\">\n\t\t\t\t\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > vs.pageSize\">\n\t\t\t\t\t\t\t\t<button ng-disabled=\"vs.currentPage == 0\" ng-click=\"turn(false);\">\n\t\t\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t\t{{vs.currentPage+1}}/{{vs.numberOfPages(value.length)}}\n\t\t\t\t\t\t\t\t<button ng-disabled=\"vs.currentPage >= value.length/vs.pageSize - 1\" ng-click=\"turn(true);\">\n\t\t\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t",
-        restrict: 'E',
-        replace: true,
-        scope: {},
-        link: function postLink(scope) {
-            scope.comment = '';
-            scope.finishedEditing = function (finished, key, index) {
-                HistoryService.addObjToUndoStack({
-                    type: 'WEBAPP',
-                    action: 'FINISHED',
-                    finished: finished,
-                    key: key,
-                    index: index
-                });
-            };
-            scope.updateHistory = function (bundle, key, index) {
-                if (scope.comment !== bundle.comment) {
-                    HistoryService.updateCurChangeObj({
-                        type: 'WEBAPP',
-                        action: 'COMMENT',
-                        initial: scope.comment,
-                        comment: bundle.comment,
-                        key: key,
-                        index: index
-                    });
-                }
-            };
-            scope.endHistory = function (bundle) {
-                if (scope.comment !== bundle.comment) {
-                    HistoryService.addCurChangeObjToUndoStack();
-                }
-            };
-            scope.startHistory = function (bundle) {
-                scope.comment = bundle.comment;
-            };
-        }
-    };
-});
 
 // CONCATENATED MODULE: ./app/scripts/directives/delete.directive.ts
 
@@ -87143,7 +87008,6 @@ angular["module"]('emuwebApp')
 });
 
 // CONCATENATED MODULE: ./app/scripts/directives/index.ts
-
 
 
 
@@ -94995,7 +94859,157 @@ var hierarchy_path_canvas_component = __webpack_require__(40);
 // EXTERNAL MODULE: ./app/scripts/components/level.component.ts
 var level_component = __webpack_require__(43);
 
+// CONCATENATED MODULE: ./app/scripts/components/bundlelist-sidebar.component.ts
+
+var BundleListSideBarComponent = {
+    selector: "bundleListSideBar",
+    template: "\n\t<div class=\"emuwebapp-bundle-outer\">\n\t<div>\n\t\t<h3>\n\t\t\t<div>\n\t\t\t\t<input type=\"text\" ng-model=\"$ctrl.filterText\" placeholder=\"&#x1f50d; Bundle Filter\" ng-focus=\"$ctrl.ViewStateService.setcursorInTextField(true)\" ng-blur=\"$ctrl.ViewStateService.setcursorInTextField(false)\" class=\"emuwebapp-filter\"/>\n\t\t\t</div>\n\t\t</h3>\n\t\t<my-drop-zone ng-if=\"$ctrl.ViewStateService.showDropZone\"></my-drop-zone>\n\t\t<div id=\"emuwebapp-bundleListContainer\" class=\"emuwebapp-bundle-container\" ng-if=\"!$ctrl.ViewStateService.showDropZone\">\n\t\t\t<ul ng-repeat=\"(key, value) in $ctrl.LoadedMetaDataService.getRendOptBndlList()\" ng-class=\"{'emuwebapp-bundle-last':$last}\">\n\t\t\t\t<div class=\"emuwebapp-bundle-session\" ng-if=\"$ctrl.isSessionDefined(key)\" ng-click=\"$ctrl.LoadedMetaDataService.toggleCollapseSession(key)\">\n\t\t\t\t\t<div ng-if=\"$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\u25B7{{key}}\n\t\t\t\t\t</div>\n\t\t\t\t\t<div ng-if=\"!$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\u25BD{{key}}\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"emuwebapp-bundleListSessionBndlsContainer\" ng-if=\"!$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > $ctrl.ViewStateService.pageSize\">\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage == 0\" ng-click=\"$ctrl.turn(false);\">\n\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t{{$ctrl.ViewStateService.currentPage+1}}/{{$ctrl.ViewStateService.numberOfPages(value.length)}}\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage >= value.length/$ctrl.ViewStateService.pageSize - 1\" ng-click=\"$ctrl.turn(true);\">\n\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div ng-repeat=\"bundle in value | startFrom:$ctrl.ViewStateService.currentPage*$ctrl.ViewStateService.pageSize | limitTo:$ctrl.ViewStateService.pageSize | regex:$ctrl.filterText track by $index\">\n\t\t\t\t\t\t<div class=\"emuwebapp-bundle-item\" id=\"uttListItem\" ng-style=\"$ctrl.getBndlColor(bundle);\" ng-click=\"$ctrl.DbObjLoadSaveService.loadBundle(bundle);\" dragout draggable=\"true\" name=\"{{bundle.name}}\">\n\t\t\t\t\t\t\t<b>{{bundle.name}}</b>\n\t\t\t\t\t\t\t<button ng-if=\"$ctrl.ConfigProviderService.vals.activeButtons.saveBundle && $ctrl.isCurBndl(bundle)\" class=\"emuwebapp-saveBundleButton\" ng-click=\"$ctrl.DbObjLoadSaveService.saveBundle();\"><img class=\"emuwebapp-saveBundleButton-img\" src=\"img/save.svg\" /></button>\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--regulate finished editing display-->\n\t\t\t\t\t\t\t<!--display checkbox if current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleFinishedEditing && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t<input type=\"checkbox\" ng-model=\"bundle.finishedEditing\" ng-change=\"$ctrl.finishedEditing(bundle.finishedEditing, key, $index)\"/>\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<!--display text \"true\" or \"false\" depending on model if not current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleFinishedEditing && !$ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t<strong ng-if=\"bundle.finishedEditing\" style=\"color:green;\">true</strong>\n\t\t\t\t\t\t\t\t<strong ng-if=\"!bundle.finishedEditing\" style=\"color:red;\">false</strong>\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--regulate comment editing display-->\n\t\t\t\t\t\t\t<!--display text input if current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleComments && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tcomment:\n\t\t\t\t\t\t\t\t<input type=\"text\" ng-focus=\"$ctrl.ViewStateService.setcursorInTextField(true); $ctrl.startHistory(bundle);\" ng-blur=\"$ctrl.ViewStateService.setcursorInTextField(false); $ctrl.updateHistory(bundle, key, $index); $ctrl.endHistory(bundle);\" ng-model=\"bundle.comment\"/>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleComments && !$ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tcomment: <strong style=\"font-style: italic;max-height: 20px; overflow-y: auto\">{{bundle.comment}}</strong>\n\t\t\t\t\t\t\t</div>\n\n\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--timeAnchors controlls-->\n\t\t\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"bundle.timeAnchors.length > 0 && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.curTimeAnchorIdx == 0\" ng-click=\"nextPrevAnchor(false);\">\n\t\t\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t\ttime anchor idx: {{$ctrl.ViewStateService.curTimeAnchorIdx}}\n\t\t\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.curTimeAnchorIdx == getTimeAnchorIdxMax()\" ng-click=\"$ctrl.nextPrevAnchor(true);\">\n\t\t\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > $ctrl.ViewStateService.pageSize\">\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage == 0\" ng-click=\"$ctrl.turn(false);\">\n\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t{{$ctrl.ViewStateService.currentPage+1}}/{{$ctrl.ViewStateService.numberOfPages(value.length)}}\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage >= value.length/$ctrl.ViewStateService.pageSize - 1\" ng-click=\"ctrl.turn(true);\">\n\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</ul>\n\t\t</div>\n\t</div>\n</div>\n",
+    bindings: {},
+    controller: /** @class */ (function () {
+        function BundleListSideBarController(ViewStateService, HistoryService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, LevelService) {
+            this.$postLink = function () {
+            };
+            this.ViewStateService = ViewStateService;
+            this.HistoryService = HistoryService;
+            this.LoadedMetaDataService = LoadedMetaDataService;
+            this.DbObjLoadSaveService = DbObjLoadSaveService;
+            this.ConfigProviderService = ConfigProviderService;
+            this.LevelService = LevelService;
+            this.comment = '';
+            this.filterText = '';
+            this.ViewStateService.pageSize = 500;
+            this.ViewStateService.currentPage = 0;
+        }
+        // functions from directive 
+        BundleListSideBarController.prototype.finishedEditing = function (finished, key, index) {
+            this.HistoryService.addObjToUndoStack({
+                type: 'WEBAPP',
+                action: 'FINISHED',
+                finished: finished,
+                key: key,
+                index: index
+            });
+        };
+        ;
+        BundleListSideBarController.prototype.updateHistory = function (bundle, key, index) {
+            if (this.comment !== bundle.comment) {
+                this.HistoryService.updateCurChangeObj({
+                    type: 'WEBAPP',
+                    action: 'COMMENT',
+                    initial: this.comment,
+                    comment: bundle.comment,
+                    key: key,
+                    index: index
+                });
+            }
+        };
+        ;
+        BundleListSideBarController.prototype.endHistory = function (bundle) {
+            if (this.comment !== bundle.comment) {
+                this.HistoryService.addCurChangeObjToUndoStack();
+            }
+        };
+        ;
+        BundleListSideBarController.prototype.startHistory = function (bundle) {
+            this.comment = bundle.comment;
+        };
+        ;
+        // functions from controller
+        BundleListSideBarController.prototype.turn = function (direction) {
+            if (direction) {
+                this.ViewStateService.currentPage++;
+            }
+            else {
+                this.ViewStateService.currentPage--;
+            }
+        };
+        ;
+        /**
+         * returns jso with css defining color dependent
+         * on if changes have been made that have not been saved
+         * @param bndl object containing name attribute of bundle item
+         * requesting color
+         * @returns color as jso object used by ng-style
+         */
+        BundleListSideBarController.prototype.$ctrlgetBndlColor = function (bndl) {
+            var curColor;
+            if (this.HistoryService.movesAwayFromLastSave !== 0) {
+                curColor = {
+                    'background-color': '#f00',
+                    'color': 'white'
+                };
+            }
+            else {
+                curColor = {
+                    'background-color': '#999',
+                    'color': 'black'
+                };
+            }
+            var curBndl = this.LoadedMetaDataService.getCurBndl();
+            if (bndl.name === curBndl.name && bndl.session === curBndl.session) {
+                return curColor;
+            }
+        };
+        ;
+        /**
+         * checks if name is undefined
+         * @return bool
+         */
+        BundleListSideBarController.prototype.isSessionDefined = function (ses) {
+            return ses !== 'undefined';
+        };
+        ;
+        /**
+         * zoom to next / previous time anchor
+         */
+        BundleListSideBarController.prototype.nextPrevAnchor = function (next) {
+            var curBndl = this.LoadedMetaDataService.getCurBndl();
+            if (next) {
+                if (this.ViewStateService.curTimeAnchorIdx < curBndl.timeAnchors.length - 1) {
+                    this.ViewStateService.curTimeAnchorIdx = this.ViewStateService.curTimeAnchorIdx + 1;
+                    this.ViewStateService.select(curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_end);
+                    this.ViewStateService.setViewPort(curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_end);
+                    this.ViewStateService.zoomViewPort(false, this.LevelService);
+                }
+            }
+            else {
+                if (this.ViewStateService.curTimeAnchorIdx > 0) {
+                    this.ViewStateService.curTimeAnchorIdx = this.ViewStateService.curTimeAnchorIdx - 1;
+                    this.ViewStateService.select(curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_end);
+                    this.ViewStateService.setViewPort(curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_start, curBndl.timeAnchors[this.ViewStateService.curTimeAnchorIdx].sample_end);
+                    this.ViewStateService.zoomViewPort(false, this.LevelService);
+                }
+            }
+        };
+        ;
+        /**
+         * get max nr of time anchors
+         */
+        BundleListSideBarController.prototype.getTimeAnchorIdxMax = function () {
+            var curBndl = this.LoadedMetaDataService.getCurBndl();
+            var res;
+            if (angular["equals"]({}, curBndl)) {
+                res = -1;
+            }
+            else {
+                res = curBndl.timeAnchors.length - 1;
+            }
+            return (res);
+        };
+        ;
+        BundleListSideBarController.prototype.isCurBndl = function (bndl) {
+            var curBndl = this.LoadedMetaDataService.getCurBndl();
+            return (bndl.name === curBndl.name && bndl.session === curBndl.session);
+        };
+        ;
+        return BundleListSideBarController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(BundleListSideBarComponent.selector, BundleListSideBarComponent);
+
 // CONCATENATED MODULE: ./app/scripts/components/index.ts
+
 
 
 
