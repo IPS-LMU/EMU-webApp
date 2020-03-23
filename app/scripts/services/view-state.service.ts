@@ -262,7 +262,7 @@ class ViewStateService{
 			path: [],
 			curPathIdx: 0,
 			curNrOfPaths: 0,
-			rotated: false,
+			rotated: true,
 			playing: 0, //this is only watched indirectly (the view injects this value into the directive)
 			resize: 0,
 			
@@ -445,7 +445,7 @@ class ViewStateService{
 	public updatePlayHead(timestamp) {
 		// at first push animation !!!
 		if (this.SoundHandlerService.isPlaying) {
-			this.$window.requestAnimationFrame(this.updatePlayHead);
+			this.$window.requestAnimationFrame(this.updatePlayHead.bind(this));
 		}
 		
 		// do work in this animation round now
@@ -485,7 +485,7 @@ class ViewStateService{
 		if(autoscroll !== undefined){
 			this.playHeadAnimationInfos.autoscroll = autoscroll;
 		}
-		this.$window.requestAnimationFrame(this.updatePlayHead);
+		this.$window.requestAnimationFrame(this.updatePlayHead.bind(this));
 	};
 	
 	

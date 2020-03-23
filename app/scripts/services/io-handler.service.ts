@@ -60,8 +60,8 @@ class IoHandlerService{
 	/**
 	* default config is always loaded from same origin
 	*/
-	public httpGetPath(path, respType) {
-		if(this.ConfigProviderService.vals.main.comMode !== "GITLAB"){
+	public httpGetPath(path, respType, ignoreComMode: boolean = false) {
+		if(this.ConfigProviderService.vals.main.comMode !== "GITLAB" || ignoreComMode){
 			var prom = this.$http.get(path, {
 				responseType: respType
 			});

@@ -7,7 +7,7 @@ angular.module('emuwebApp')
 	$scope.cps = ConfigProviderService;
 	$scope.tree = [];
 	$scope.converter = new showdown.Converter();
-	IoHandlerService.httpGetPath('manual/index.json').then((resp) => {
+	IoHandlerService.httpGetPath('manual/index.json', undefined, true).then((resp) => {
 		$scope.tree = resp.data;
 		// console.log($scope.tree);
 		// load root element
@@ -20,7 +20,7 @@ angular.module('emuwebApp')
 	$scope.onClickTab = function (node) {
 		node.expanded = !node.expanded;
 		if (node.url !== false) {
-			IoHandlerService.httpGetPath(node.url).then((resp) => {
+			IoHandlerService.httpGetPath(node.url, undefined, true).then((resp) => {
 				if (node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
 					resp.data = resp.data.replace("@@versionnr", version);
 					$scope.htmlStr = $sce.trustAsHtml($scope.converter.makeHtml(resp.data));

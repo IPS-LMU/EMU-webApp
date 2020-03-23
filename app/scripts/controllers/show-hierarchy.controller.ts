@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, ViewStateService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
+	.controller('ShowhierarchyCtrl', function ($scope, ViewStateService, HistoryService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
 
 		// Scope data
 
@@ -12,6 +12,7 @@ angular.module('emuwebApp')
 		};
 
 		$scope.vs = ViewStateService;
+		$scope.HistoryService = HistoryService;
 		$scope.standardFuncServ = StandardFuncsService;
 
 		var pathInfo = HierarchyLayoutService.findAllNonPartialPaths();

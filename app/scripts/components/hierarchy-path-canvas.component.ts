@@ -44,7 +44,7 @@ let HierarchyPathCanvasComponent = {
         curPerspectiveIdx: '<',
         curBndl: '<'
     },
-    controller: class GhostLevelController{
+    controller: class HierarchyPathCanvasController{
         private $scope;
         private $element;
         private $animate;

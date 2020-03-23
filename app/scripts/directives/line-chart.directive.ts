@@ -44,8 +44,8 @@ angular.module('emuwebApp')
 					.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 				//Create the scales we need for the graph
-				var x = d3.scale.linear().range([0, width]);
-				var y = d3.scale.linear().range([height, 0]);
+				var x = d3.scaleLinear().range([0, width]);
+				var y = d3.scaleLinear().range([height, 0]);
 
 				//Create the axes we need for the graph
 				var xAxis = d3.svg.axis()
