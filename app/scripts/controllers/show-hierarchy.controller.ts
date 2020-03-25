@@ -24,6 +24,9 @@ angular.module('emuwebApp')
 
 		$scope.vs.hierarchyState.curNrOfPaths = $scope.paths.possibleAsStr.length;
 
+		// counter to get update for EmuHierarchyComponent
+		$scope.attributeDefinitionClickCounter = 0;
+
 		//////////////
 		// watches
 
@@ -85,6 +88,7 @@ angular.module('emuwebApp')
 		 * @param attrDef name of attribute definition
 		 */
 		$scope.setCurrentAttrDef = function (levelName, attrDefName, attrDefIndex) {
+			$scope.attributeDefinitionClickCounter = $scope.attributeDefinitionClickCounter + 1;
 			ViewStateService.setCurAttrDef(levelName, attrDefName, attrDefIndex);
 		};
 

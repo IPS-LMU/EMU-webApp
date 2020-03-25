@@ -12,7 +12,7 @@ export class HierarchyWorker {
     
     
     public reduceAnnotationToViewableTimeAndPath(annotation, path, viewPortStartSample, viewPortEndSample) {
-
+        
         this.idHashMap = undefined; // reset 4       
         this.linkHashMap = undefined; 
         this.createIdHashMap(path, annotation);
@@ -80,35 +80,37 @@ export class HierarchyWorker {
         
         childLevel.items.forEach(item => {
             let parentIds = this.linkHashMap.get(item.id);
-            parentIds.forEach(parentId => {
-                let parentItem = this.idHashMap.get(parentId);
-                // console.log(parentId);
-                // console.log(parentItem);
-                if(typeof parentItem !== 'undefined'){ // as only levels in path are in idHashMap 
-                    if(parentItem.labels[0].name === parentLevel.name){
-                        // append link
-                        annotation.links.push(
-                            {
-                                fromID: parentId,
-                                toID: item.id
-                            });
-                            // add time info
-                            if (typeof parentItem.sampleStart === 'undefined'){
-                                parentItem.sampleStart = item.sampleStart
-                                parentItem.sampleDur = item.sampleDur
-                            } else if (item.sampleStart < parentItem.sampleStart){
-                                parentItem.sampleStart = item.sampleStart;
-                            } else if (item.sampleStart + item.sampleDur > parentItem.sampleStart + parentItem.sampleDur) {
-                                parentItem.sampleDur = item.sampleStart + item.sampleDur - parentItem.sampleStart;
-                            }                    
-                            // append item
-                            parentLevel.items.push(parentItem);
-                            
+            if(typeof parentIds !== 'undefined'){
+                parentIds.forEach(parentId => {
+                    let parentItem = this.idHashMap.get(parentId);
+                    // console.log(parentId);
+                    // console.log(parentItem);
+                    if(typeof parentItem !== 'undefined'){ // as only levels in path are in idHashMap 
+                        if(parentItem.labels[0].name === parentLevel.name){
+                            // append link
+                            annotation.links.push(
+                                {
+                                    fromID: parentId,
+                                    toID: item.id
+                                });
+                                // add time info
+                                if (typeof parentItem.sampleStart === 'undefined'){
+                                    parentItem.sampleStart = item.sampleStart
+                                    parentItem.sampleDur = item.sampleDur
+                                } else if (item.sampleStart < parentItem.sampleStart){
+                                    parentItem.sampleStart = item.sampleStart;
+                                } else if (item.sampleStart + item.sampleDur > parentItem.sampleStart + parentItem.sampleDur) {
+                                    parentItem.sampleDur = item.sampleStart + item.sampleDur - parentItem.sampleStart;
+                                }                    
+                                // append item
+                                parentLevel.items.push(parentItem);
+                                
+                            }
                         }
-                    }
-                    // check if parent is on right level
-                    
-                });
+                        // check if parent is on right level
+                        
+                    });
+                }
             })
             
         }
