@@ -83105,7 +83105,7 @@ angular["module"]('emuwebApp')
                                     // FOR DEVELOPMENT:
                                     // DbObjLoadSaveService.saveBundle(); // for testing save function
                                     // $scope.menuBundleSaveBtnClick(); // for testing save button
-                                    $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
+                                    // $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
                                     // $scope.spectSettingsBtnClick(); // for testing spect settings dial
                                     // $scope.searchBtnClick();
                                     // ViewStateService.curViewPort.sS = 27455;
