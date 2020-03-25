@@ -9,7 +9,7 @@
 						</button>
 						<ul class="emuwebapp-dropdown-menu" ng-mouseover="dropdown[key] = true" ng-mouseleave="dropdown[key] = false" ng-init="dropdown[key] = false" ng-show="dropdown[key]">
 							<li class="divider"></li>
-							<li ng-repeat="(key2, attrDef) in getAllAttrDefs(levelName)" ng-click="setCurrentAttrDef(levelName, attrDef.name, $index);">
+							<li ng-repeat="(key2, attrDef) in getAllAttrDefs(levelName)" ng-click="setCurrentAttrDef(levelName, attrDef.name, $index); dropdown[key] = false;">
 								&rarr; {{attrDef.name}}
 							</li>
 						</ul>
@@ -23,7 +23,18 @@
         <select id="emuwebapp-selection" name="emuwebapp-selection" ng-model="paths.selected" ng-options="value for value in paths.possibleAsStr"></select>
     </div>
 		<history-action-popup ng-show="vs.historyActionTxt !=''"></history-action-popup>
-		<emuhierarchy playing="getPlaying();" vertical="getRotation();"></emuhierarchy>
+		<emuhierarchy 
+		playing="getPlaying();" 
+		vertical="getRotation();"
+		cur-level-attr-defs="vs.curLevelAttrDefs"
+		hierarchy-path="vs.hierarchyState.path"
+		moves-away-from-last-save="HistoryService.movesAwayFromLastSave"
+		new-link-from-id="vs.hierarchyState.newLinkFromID"
+		is-shown="vs.hierarchyState.isShown()"
+		context-menu-id="vs.hierarchyState.contextMenuID"
+		hierarchy-resize="vs.hierarchyState.resize"
+		attribute-definition-click-counter="attributeDefinitionClickCounter"
+		></emuhierarchy>
 	</div>
 	<div class="emuwebapp-modal-footer">
 	    <button class="emuwebapp-mini-btn" id="modalPlayBtn" ng-click="playSelection()">play selected</button>

@@ -1,5 +1,18 @@
 # What's New
 
+## Version 1.2.6
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+- fixed help if comMode ist GITLAB
+- fixed requestAnimationFrame binding of this
+- D3 hierarchy SVG now a component
+- emuhierarchy directive now a component
+
+
 ## Version 1.2.5
 
 ### bug fixes

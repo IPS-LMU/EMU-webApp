@@ -311,7 +311,7 @@ let EmuHierarchyComponent = {
 		//////////////////////
 		// helper functions
 		
-		private checkLink(event) {
+		public checkLink(event) {
 			if (event.shiftKey && !this.shiftMode) {
 				if (this.ViewStateService.hierarchyState.newLinkFromID === undefined) {
 					this.ViewStateService.hierarchyState.newLinkFromID = this.ViewStateService.hierarchyState.selectedItemID;

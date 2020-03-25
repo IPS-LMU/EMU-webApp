@@ -22028,7 +22028,7 @@ return tv4; // used by _header.js to globalise.
 /* 6 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.2.5\"}");
+module.exports = JSON.parse("{\"a\":\"1.2.6\"}");
 
 /***/ }),
 /* 7 */
@@ -80360,7 +80360,7 @@ var HierarchyPathCanvasComponent = {
         curBndl: '<'
     },
     controller: /** @class */ (function () {
-        function GhostLevelController($scope, $element, $animate, ViewStateService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService) {
+        function HierarchyPathCanvasController($scope, $element, $animate, ViewStateService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService) {
             this.$postLink = function () {
                 var _this = this;
                 // levelDetailsDef = this.ConfigProviderService.getLevelDefinition(levelDetails.name);
@@ -80685,7 +80685,7 @@ var HierarchyPathCanvasComponent = {
             this.hierPaths = this.HierarchyLayoutService.findAllNonPartialPaths();
         }
         ;
-        GhostLevelController.prototype.redrawAll = function () {
+        HierarchyPathCanvasController.prototype.redrawAll = function () {
             return __awaiter(this, void 0, void 0, function () {
                 var ctx, hierarchyWorker_1, reducedAnnotation_1, nrOfPxlsPerLevel_1, topLimitPxl_1, bottomLimitPxl_1, pathClone;
                 var _this = this;
@@ -80728,7 +80728,7 @@ var HierarchyPathCanvasComponent = {
                 });
             });
         };
-        return GhostLevelController;
+        return HierarchyPathCanvasController;
     }())
 };
 angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
@@ -81048,7 +81048,7 @@ function generateUUID() {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
-  return new Worker(__webpack_require__.p + "307b8ae9e2d26e215976.worker.js");
+  return new Worker(__webpack_require__.p + "8b1b2bd8047bd956833d.worker.js");
 };
 
 /***/ }),
@@ -83105,7 +83105,7 @@ angular["module"]('emuwebApp')
                                     // FOR DEVELOPMENT:
                                     // DbObjLoadSaveService.saveBundle(); // for testing save function
                                     // $scope.menuBundleSaveBtnClick(); // for testing save button
-                                    // $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
+                                    $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
                                     // $scope.spectSettingsBtnClick(); // for testing spect settings dial
                                     // $scope.searchBtnClick();
                                     // ViewStateService.curViewPort.sS = 27455;
@@ -83869,7 +83869,7 @@ angular["module"]('emuwebApp')
 // CONCATENATED MODULE: ./app/scripts/controllers/show-hierarchy.controller.ts
 
 angular["module"]('emuwebApp')
-    .controller('ShowhierarchyCtrl', function ($scope, ViewStateService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
+    .controller('ShowhierarchyCtrl', function ($scope, ViewStateService, HistoryService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
     // Scope data
     $scope.paths = {
         possible: [],
@@ -83877,6 +83877,7 @@ angular["module"]('emuwebApp')
         selected: ''
     };
     $scope.vs = ViewStateService;
+    $scope.HistoryService = HistoryService;
     $scope.standardFuncServ = StandardFuncsService;
     var pathInfo = HierarchyLayoutService.findAllNonPartialPaths();
     $scope.paths.possible = pathInfo.possible;
@@ -83884,6 +83885,8 @@ angular["module"]('emuwebApp')
     // select first possible path on load
     $scope.paths.selected = $scope.paths.possibleAsStr[ViewStateService.hierarchyState.curPathIdx];
     $scope.vs.hierarchyState.curNrOfPaths = $scope.paths.possibleAsStr.length;
+    // counter to get update for EmuHierarchyComponent
+    $scope.attributeDefinitionClickCounter = 0;
     //////////////
     // watches
     $scope.$watch('paths.selected', function () {
@@ -83935,6 +83938,7 @@ angular["module"]('emuwebApp')
      * @param attrDef name of attribute definition
      */
     $scope.setCurrentAttrDef = function (levelName, attrDefName, attrDefIndex) {
+        $scope.attributeDefinitionClickCounter = $scope.attributeDefinitionClickCounter + 1;
         ViewStateService.setCurAttrDef(levelName, attrDefName, attrDefIndex);
     };
     /**
@@ -84333,7 +84337,7 @@ angular["module"]('emuwebApp')
     $scope.cps = ConfigProviderService;
     $scope.tree = [];
     $scope.converter = new showdown["Converter"]();
-    IoHandlerService.httpGetPath('manual/index.json').then(function (resp) {
+    IoHandlerService.httpGetPath('manual/index.json', undefined, true).then(function (resp) {
         $scope.tree = resp.data;
         // console.log($scope.tree);
         // load root element
@@ -84344,7 +84348,7 @@ angular["module"]('emuwebApp')
     $scope.onClickTab = function (node) {
         node.expanded = !node.expanded;
         if (node.url !== false) {
-            IoHandlerService.httpGetPath(node.url).then(function (resp) {
+            IoHandlerService.httpGetPath(node.url, undefined, true).then(function (resp) {
                 if (node.url.substr(node.url.lastIndexOf('.') + 1).toLowerCase() === 'md') {
                     resp.data = resp.data.replace("@@versionnr", package_0["a" /* version */]);
                     $scope.htmlStr = $sce.trustAsHtml($scope.converter.makeHtml(resp.data));
@@ -84480,1316 +84484,6 @@ angular["module"]('emuwebApp')
 
 // EXTERNAL MODULE: ./app/scripts/directives/drawssff.directive.ts
 var drawssff_directive = __webpack_require__(26);
-
-// CONCATENATED MODULE: ./app/scripts/directives/emuhierarchy.directive.ts
-
-
-angular["module"]('emuwebApp')
-    .directive('emuhierarchy', function (ViewStateService, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, SoundHandlerService, ConfigProviderService, $timeout) {
-    return {
-        template: '<div class="emuwebapp-hierarchy-container" ng-mousemove="checkLink($event)"></div>',
-        restrict: 'E',
-        scope: {
-            vertical: '=',
-            playing: '='
-        },
-        replace: true,
-        link: function postLink(scope, element) {
-            //////////////////////
-            // private variables
-            // FIXME move these to ViewStateService
-            // scope.selectedItem;
-            // scope.selectedLink;
-            // scope.newLinkSrc;
-            // END FIXME
-            // Graphical offset from the SVG's border to the first nodes
-            // Note that level captions are drawn within that offset
-            scope.offsetX = 25;
-            scope.offsetY = 30;
-            // The same when in rotated mode
-            scope.vertOffsetX = 150;
-            scope.vertOffsetY = 25;
-            // Settings for CSS transitions
-            scope.transition = {
-                duration: 750,
-                links: false,
-                nodes: false,
-                rotation: false,
-                contextMenu: false
-            };
-            // Possible zoom range
-            scope.scaleExtent = [0.5, 10];
-            // Possible pan range
-            scope.panningLimit = 0.95;
-            scope.allowCrossAxisZoom = false;
-            scope.allowCrossAxisPan = false;
-            // Boundaries for enforcing pan range
-            scope.timeAxisStartPosition = undefined;
-            scope.timeAxisEndPosition = undefined;
-            scope.crossAxisStartPosition = undefined;
-            scope.crossAxisEndPosition = undefined;
-            scope.northernBoundary = undefined;
-            scope.southernBoundary = undefined;
-            scope.westernBoundary = undefined;
-            scope.easternBoundary = undefined;
-            // While the user zooms (scrolls mouse wheel), many zoom events are
-            // fired. The last zoom event must be treated differently than the ones
-            // before it:
-            // A promise that can be cancelled from within scope.zoom()
-            scope.zoomTimeoutPromise = null;
-            // The last scale factor that was applied by a "final zoom event"
-            scope.lastScaleFactor = 1;
-            //
-            //////////////////////
-            //////////////////////
-            // watches
-            scope.ViewStateService = ViewStateService;
-            scope.hierarchyState = ViewStateService.hierarchyState;
-            scope.historyService = HistoryService;
-            scope.cps = ConfigProviderService;
-            scope.$watch('hierarchyState.path', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    console.debug('Rendering due to path change: ', newValue);
-                    scope.hierarchyState.newLinkFromID = undefined;
-                    scope.render();
-                }
-            }, false);
-            scope.$watch('vertical', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    console.debug('Rendering due to rotation: ', newValue);
-                    scope.rotate();
-                }
-            }, false);
-            scope.$watch('ViewStateService.curLevelAttrDefs', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    console.debug('Rendering due to attribute change: ', newValue);
-                    scope.render();
-                }
-            }, true);
-            scope.$watch('playing', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    console.debug('Play() triggered', newValue, scope.selectedItem);
-                    if (typeof scope.selectedItem !== 'undefined' && newValue !== 0) {
-                        scope.play(scope.selectedItem);
-                    }
-                }
-            }, true);
-            scope.$watch('historyService.movesAwayFromLastSave', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    console.debug('history service is active, rendering');
-                    scope.render();
-                }
-            }, false);
-            scope.$watch('hierarchyState.newLinkFromID', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    scope.newLinkSrc = LevelService.getItemByID(newValue);
-                    scope.render();
-                }
-            }, false);
-            scope.$watch('ViewStateService.hierarchyState.isShown()', function (newValue) {
-                if (newValue === true) {
-                    console.debug('Hierarchy modal activated, rendering');
-                    scope.render();
-                }
-            }, false);
-            scope.$watch('hierarchyState.contextMenuID', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    scope.render();
-                }
-            }, false);
-            scope.$watch('hierarchyState.resize', function (newValue, oldValue) {
-                console.debug('Rendering due to window resize');
-                if (newValue !== oldValue) {
-                    scope.render();
-                }
-            }, false);
-            //
-            //////////////////////
-            //////////////////////
-            // helper functions
-            /**
-             *
-             */
-            scope.selectItem = function (item) {
-                scope.selectedItem = item;
-                ViewStateService.hierarchyState.selectedItemID = item.id;
-            };
-            scope.selectLink = function (link) {
-                scope.selectedLink = link;
-                ViewStateService.hierarchyState.selectedLinkFromID = link.fromID;
-                ViewStateService.hierarchyState.selectedLinkToID = link.toID;
-            };
-            /**
-             * Function to center node when clicked/dropped so node doesn't get lost when
-             * collapsing/moving with large amount of children.
-             *
-             scope.centerNode = function (node) {
-    var x = -node._x + scope.width/2;
-    var y = -node._y  + scope.height/2;
-    scope.svg.transition()
-        .duration(scope.transition.duration)
-        .attr('transform', scope.getOrientatedTransform()+'translate(' + x + ',' + y + ')');
-    scope.zoomListener.translate([x, y]);
-};
-             */
-            /**
-             * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
-             */
-            scope.zoom = function () {
-                // Make sure panning is within allowed regions
-                scope.limitPanning();
-                // Save translate and scale so they can be re-used when the modal is re-opened
-                ViewStateService.hierarchyState.translate = scope.zoomListener.translate();
-                ViewStateService.hierarchyState.scaleFactor = scope.zoomListener.scale();
-                // Transform all SVG elements
-                // Note that scope.svg is actually not the svg itself but rather the main <g> within it
-                // Note further that scope.captionLayer is a sibling and not a descendant of scope.svg
-                scope.svg.attr('transform', scope.getOrientatedTransform(true));
-                scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
-                scope.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', scope.getOrientatedLevelCaptionTransform);
-                // Call scope.render(), but make sure it's only called once a rush of zoom events has finished
-                if (scope.zoomTimeoutPromise !== null) {
-                    $timeout.cancel(scope.zoomTimeoutPromise);
-                    scope.zoomTimeoutPromise = null;
-                }
-                scope.zoomTimeoutPromise = $timeout(scope.render, 200);
-            };
-            /**
-             * Check if user's chosen panning value is within such limits that the
-             * graph is still visible.
-             *
-             * Actually, a portion of the graph defined by (1-scope.limit)%.
-             *
-             * If the factor is not within that limit, reset it.
-             */
-            scope.limitPanning = function () {
-                // Read user's panning value
-                var x = scope.zoomListener.translate()[0];
-                var y = scope.zoomListener.translate()[1];
-                if (scope.vertical) {
-                    if (!scope.allowCrossAxisPan) {
-                        y = 0;
-                    }
-                    else {
-                        if (y > scope.southernBoundary - scope.crossAxisStartPosition) {
-                            y = scope.southernBoundary - scope.crossAxisStartPosition;
-                        }
-                        if (y < scope.northernBoundary - scope.crossAxisEndPosition) {
-                            y = scope.northernBoundary - scope.crossAxisEndPosition;
-                        }
-                    }
-                    if (x > scope.easternBoundary - scope.timeAxisStartPosition) {
-                        x = scope.easternBoundary - scope.timeAxisStartPosition;
-                    }
-                    if (x < scope.westernBoundary - scope.timeAxisEndPosition) {
-                        x = scope.westernBoundary - scope.timeAxisEndPosition;
-                    }
-                }
-                else {
-                    if (!scope.allowCrossAxisPan) {
-                        x = 0;
-                    }
-                    else {
-                        if (x > scope.easternBoundary - scope.crossAxisStartPosition) {
-                            x = scope.easternBoundary - scope.crossAxisStartPosition;
-                        }
-                        if (x < scope.westernBoundary - scope.crossAxisEndPosition) {
-                            x = scope.westernBoundary - scope.crossAxisEndPosition;
-                        }
-                    }
-                    if (y > scope.southernBoundary - scope.timeAxisStartPosition) {
-                        y = scope.southernBoundary - scope.timeAxisStartPosition;
-                    }
-                    if (y < scope.northernBoundary - scope.timeAxisEndPosition) {
-                        y = scope.northernBoundary - scope.timeAxisEndPosition;
-                    }
-                }
-                scope.zoomListener.translate([x, y]);
-            };
-            scope.rotate = function () {
-                // When rotating, we should preserve (to some accuracy)
-                // the part of the graph we're looking at.
-                // We therefore calculate how much of the graph is
-                // panned away before the rotation and try to restore
-                // that value afterwards.
-                var translate = scope.zoomListener.translate();
-                var percentageAwayTimeAxis, percentageAwayCrossAxis;
-                if (scope.vertical === true) {
-                    // Changing from horizontal to vertical
-                    percentageAwayTimeAxis = (translate[1]) / scope.timeAxisEndPosition;
-                    percentageAwayCrossAxis = (translate[0]) / scope.crossAxisEndPosition;
-                }
-                else {
-                    // Changing from vertical to horizontal
-                    percentageAwayTimeAxis = (translate[0]) / scope.timeAxisEndPosition;
-                    percentageAwayCrossAxis = (translate[1]) / scope.crossAxisEndPosition;
-                }
-                scope.render();
-                percentageAwayTimeAxis = percentageAwayTimeAxis * scope.timeAxisEndPosition;
-                percentageAwayCrossAxis = percentageAwayCrossAxis * scope.crossAxisEndPosition;
-                if (scope.vertical === true) {
-                    // Changing from horizontal to vertical
-                    scope.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
-                }
-                else {
-                    // Changing from vertical to horizontal
-                    scope.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
-                }
-                scope.limitPanning();
-                // Make sure the programmatic changes to the translate vector are applied
-                scope.zoomListener.event(scope.svg);
-            };
-            /**
-             * This transform is applied to the main <g> within the SVG
-             * That <g> contains all the nodes and links but not the level captions
-             * and neither the time arrow
-             */
-            scope.getOrientatedTransform = function (zoomInProgress) {
-                var transform = '';
-                if (scope.vertical) {
-                    transform += 'translate(' + scope.zoomListener.translate()[0] + ',' + scope.zoomListener.translate()[1] + ')';
-                    transform += 'scale(-1,1),rotate(90)';
-                }
-                else {
-                    transform += 'translate(' + scope.zoomListener.translate()[0] + ',' + scope.zoomListener.translate()[1] + ')';
-                    transform += 'rotate(0)';
-                }
-                if (zoomInProgress === true) {
-                    var factor = scope.zoomListener.scale() / scope.lastScaleFactor;
-                    if (scope.allowCrossAxisZoom) {
-                        transform += 'scale(' + factor + ')';
-                    }
-                    else {
-                        transform += 'scale(1,' + factor + ')';
-                    }
-                }
-                return transform;
-            };
-            /**
-             * This transform is applied to each individual node, which includes
-             * both the circle and the label.
-             *
-             * It reverses the zoom factor applied to the complete graphics so that
-             * the text doesn't consume more space than needed.
-             */
-            scope.getOrientatedNodeTransform = function () {
-                // Parameter d is never used because this is independent from the node's position
-                if (scope.vertical) {
-                    return 'scale(-1,1)rotate(90)';
-                }
-                else {
-                    return 'rotate(0)';
-                }
-            };
-            //
-            // This returns the stroke width for links
-            // It does not really depend on the orientation but rather on the zoom
-            // scale. It is named getORIENTATEDLinkStrokeWidth anyway because all
-            // functions are named like that, althoug they depend on both zoom
-            // scale and orientation.
-            scope.getOrientatedLinkStrokeWidth = function () {
-                return '2px';
-            };
-            scope.getOrientatedGhostLinkStrokeWidth = function () {
-                return '15px';
-            };
-            scope.getNodeText = function (d) {
-                var level = ViewStateService.getCurAttrDef(LevelService.getLevelName(d.id));
-                for (var i = 0; i < d.labels.length; ++i) {
-                    if (d.labels[i].name === level) {
-                        return d.labels[i].value;
-                    }
-                }
-                console.debug('Likely a bug: Did not find the label selected for display', 'Selected level:', level, 'Node: ', d);
-                return 'NO VALUE';
-            };
-            scope.getLevelCaptionText = function (levelName) {
-                var attributeDefinition = ViewStateService.getCurAttrDef(levelName);
-                if (levelName === attributeDefinition) {
-                    return levelName;
-                }
-                else {
-                    return levelName + ':' + attributeDefinition;
-                }
-            };
-            scope.getOrientatedNodeCollapseText = function (d) {
-                if (scope.vertical) {
-                    if (ViewStateService.hierarchyState.getCollapsed(d.id)) {
-                        return '↓';
-                    }
-                    else {
-                        return '↑';
-                    }
-                }
-                else {
-                    if (ViewStateService.hierarchyState.getCollapsed(d.id)) {
-                        return '→';
-                    }
-                    else {
-                        return '←';
-                    }
-                }
-            };
-            /**
-             * This transform is applied to all nodes' text labels
-             */
-            scope.getOrientatedTextTransform = function () {
-            };
-            scope.getOrientatedTextAnchor = function () {
-                if (scope.vertical) {
-                    return 'middle';
-                }
-                else {
-                    return 'begin';
-                }
-            };
-            scope.getOrientatedTextX = function () {
-                if (scope.vertical) {
-                    return 0;
-                }
-                else {
-                    return 10;
-                }
-            };
-            scope.getOrientatedTextY = function () {
-                if (scope.vertical) {
-                    return '1.45em';
-                }
-                else {
-                    return '0.35em';
-                }
-            };
-            scope.getOrientatedLevelCaptionLayerTransform = function () {
-                if (scope.vertical) {
-                    return 'translate(0, ' + scope.zoomListener.translate()[1] + ')';
-                }
-                else {
-                    return 'translate(' + scope.zoomListener.translate()[0] + ', 0)';
-                }
-            };
-            scope.getOrientatedLevelCaptionTransform = function (d) {
-                var revArr = angular["copy"](ViewStateService.hierarchyState.path).reverse();
-                if (scope.vertical) {
-                    return 'translate(25, ' + scope.depthToX(revArr.indexOf(d)) + ')';
-                }
-                else {
-                    return 'translate(' + scope.depthToX(revArr.indexOf(d)) + ', 20)';
-                }
-            };
-            scope.getOrientatedAddItemButtonTransform = function () {
-                if (scope.vertical) {
-                    return 'translate(-12, -5)';
-                }
-                else {
-                    return 'translate(-12, -5)';
-                }
-            };
-            scope.getOrientatedTimeLevelBackgroundTransform = function () {
-                if (scope.vertical) {
-                    return 'translate(' + (scope.vertOffsetX - 25) + ',-8)';
-                }
-                else {
-                    return 'translate(-8,' + (scope.offsetY - 20) + ')';
-                }
-            };
-            scope.getOrientatedTimeLevelBackgroundWidth = function () {
-                if (scope.vertical) {
-                    return '100%';
-                }
-                else {
-                    return '15px';
-                }
-            };
-            scope.getOrientatedTimeLevelBackgroundHeight = function () {
-                if (scope.vertical) {
-                    return '15px';
-                }
-                else {
-                    return '100%';
-                }
-            };
-            scope.getOrientatedMousePosition = function (mouse) {
-                if (scope.vertical) {
-                    return [
-                        (mouse[1] - scope.zoomListener.translate()[1]),
-                        (mouse[0] - scope.zoomListener.translate()[0])
-                    ];
-                }
-                else {
-                    return [
-                        (mouse[0] - scope.zoomListener.translate()[0]),
-                        (mouse[1] - scope.zoomListener.translate()[1])
-                    ];
-                }
-            };
-            scope.getPath = function (d) {
-                return 'M' + d._fromX + ' ' + d._fromY + 'Q' + d._fromX + ' ' + d._toY + ' ' + d._toX + ' ' + d._toY;
-            };
-            /**
-             * Calculate the path for the dashed preview link that is shown when
-             * trying to add a new link.
-             */
-            scope.getPreviewPath = function () {
-                var from = { x: scope.newLinkSrc._x, y: scope.newLinkSrc._y };
-                var to = { x: scope.selectedItem._x, y: scope.selectedItem._y };
-                return 'M' + from.x + ' ' + from.y + 'Q' + from.x + ' ' + to.y + ' ' + to.x + ' ' + to.y;
-            };
-            /**
-             * Return a color depending on the validity of the link the user is
-             * trying to create.
-             *
-             * If the link is invalid, this function will try reversing the link.
-             */
-            scope.getPreviewColor = function () {
-                var validity = HierarchyManipulationService.checkLinkValidity(ViewStateService.hierarchyState.path, scope.newLinkSrc.id, scope.selectedItem.id);
-                if (validity.valid) {
-                    return 'green';
-                }
-                else {
-                    if (validity.reason === 3) {
-                        validity = HierarchyManipulationService.checkLinkValidity(ViewStateService.hierarchyState.path, scope.selectedItem.id, scope.newLinkSrc.id);
-                        if (validity.valid) {
-                            return 'green';
-                        }
-                    }
-                    return 'red';
-                }
-            };
-            scope.getLabelLegalnessColor = function (d) {
-                var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
-                var levelName = LevelService.getLevelName(d.id);
-                var attrIndex = ViewStateService.getCurAttrIndex(levelName);
-                var legalLabels = scope.cps.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
-                if (legalLabels === undefined || (dom.value.length > 0 && legalLabels.indexOf(dom.value) >= 0)) {
-                    return 'lightgreen';
-                }
-                else {
-                    return 'red';
-                }
-            };
-            scope.svgOnMouseMove = function () {
-                if (scope.newLinkSrc !== undefined) {
-                    var mouse = scope.getOrientatedMousePosition(d3["mouse"](this));
-                    var x = mouse[0];
-                    var y = mouse[1];
-                    scope.svg.select('path.emuhierarchy-newlink')
-                        .attr('d', 'M' + scope.newLinkSrc._x + ',' + scope.newLinkSrc._y + ' L' + x + ',' + y);
-                }
-            };
-            scope.svgOnClick = function () {
-                if (ViewStateService.hierarchyState.contextMenuID !== undefined) {
-                    scope.$apply(function () {
-                        ViewStateService.hierarchyState.contextMenuID = undefined;
-                    });
-                }
-            };
-            scope.nodeOnClick = function (d) {
-                console.debug('Clicked node', d);
-                if (ViewStateService.hierarchyState.contextMenuID === undefined) {
-                    d3["event"].stopPropagation();
-                    ViewStateService.hierarchyState.contextMenuID = d.id;
-                    ViewStateService.hierarchyState.setEditValue(scope.getNodeText(d));
-                    scope.$apply(function () {
-                        scope.render();
-                    });
-                }
-                if (ViewStateService.hierarchyState.contextMenuID === d.id) {
-                    d3["event"].stopPropagation();
-                }
-            };
-            scope.nodeOnPlayClick = function (d) {
-                scope.play(d);
-            };
-            scope.nodeOnCollapseClick = function (d) {
-                console.debug('collapsing', d);
-                // (De-)Collapse sub-tree
-                HierarchyLayoutService.toggleCollapse(d, ViewStateService.hierarchyState.path);
-                scope.render();
-            };
-            scope.nodeOnMouseOver = function (d) {
-                scope.selectItem(d);
-                scope.renderSelectionOnly();
-            };
-            scope.nodeOnInput = function (d) {
-                // select() returns a single-element selection, which is always
-                // a multi-dimensional array with [0][0] being the DOM node I'm
-                // looking for
-                var dom = scope.svg.select('.emuhierarchy-contextmenu input')[0][0];
-                ViewStateService.hierarchyState.setEditValue(dom.value);
-                // Give feedback on legalness
-                dom.style.backgroundColor = scope.getLabelLegalnessColor(d);
-            };
-            scope.nodeOnFocusIn = function () {
-                ViewStateService.hierarchyState.inputFocus = true;
-            };
-            scope.nodeOnFocusOut = function () {
-                ViewStateService.hierarchyState.inputFocus = false;
-            };
-            scope.linkOnMouseOver = function (d) {
-                scope.selectLink(d);
-                scope.renderSelectionOnly();
-            };
-            scope.addButtonOnClick = function (d) {
-                var id = LevelService.pushNewItem(d);
-                if (id !== -1) {
-                    scope.historyService.addObjToUndoStack({
-                        type: 'HIERARCHY',
-                        action: 'PUSHITEM',
-                        newID: id,
-                        level: d
-                    });
-                }
-                scope.$apply();
-            };
-            scope.play = function (d) {
-                var timeInfoLevel = ViewStateService.hierarchyState.path[0];
-                if (typeof timeInfoLevel === 'undefined') {
-                    console.debug('Likely a bug: There is no path selection. Not executing play():', d);
-                    return;
-                }
-                var timeInfoType = LevelService.getLevelDetails(timeInfoLevel).type;
-                var startSample = null;
-                var endSample = null;
-                var itemList = [d];
-                var currentItem;
-                while (itemList.length > 0) {
-                    currentItem = itemList.pop();
-                    if (currentItem.labels[0].name === timeInfoLevel) {
-                        if (timeInfoType === 'EVENT') {
-                            if (currentItem.samplePoint < startSample || startSample === null) {
-                                startSample = currentItem.samplePoint;
-                            }
-                            if (currentItem.samplePoint > endSample || endSample === null) {
-                                endSample = currentItem.samplePoint;
-                            }
-                        }
-                        else if (timeInfoType === 'SEGMENT') {
-                            if (currentItem.sampleStart < startSample || startSample === null) {
-                                startSample = currentItem.sampleStart;
-                            }
-                            // I promise I'll never again use tmp as a variable name :-)
-                            var tmp = currentItem.sampleStart + currentItem.sampleDur;
-                            if (tmp > endSample || endSample === null) {
-                                endSample = tmp;
-                            }
-                        }
-                    }
-                    itemList = itemList.concat(HierarchyLayoutService.findChildren(currentItem, ViewStateService.hierarchyState.path));
-                }
-                console.debug('Node info for playback: ', timeInfoType, d, startSample, endSample);
-                if (startSample === null || endSample === null) {
-                    console.debug('No time information found for node, aborting playback', d);
-                    return;
-                }
-                SoundHandlerService.playFromTo(startSample, endSample);
-            };
-            /***********************************************************************
-             * Transform relative into absolute coordinates
-             *
-             * Uses the two functions depthToX() and posInLevelToY()
-             *
-             * The relative coordinates are defined on the time-axis and on the
-             * cross-axis.
-             *
-             * In vertical mode, the time-axis is X and the cross-axis is Y.
-             * In default mode, the time-axis is Y and the cross-axis is X.
-             *
-             * The relative coordinate on the cross-axis is specified as "number of
-             * levels away from the time level".
-             *
-             * On the time-axis, the relative coordinate is a number within [0;1].
-             */
-            scope.depthToX = function (depth) {
-                var crossAxisSize, offset;
-                if (scope.vertical) {
-                    crossAxisSize = scope.height;
-                    offset = scope.vertOffsetY;
-                }
-                else {
-                    crossAxisSize = scope.width;
-                    offset = scope.offsetX;
-                }
-                var result = depth / ViewStateService.hierarchyState.path.length * crossAxisSize;
-                if (scope.allowCrossAxisZoom) {
-                    result *= scope.zoomListener.scale();
-                }
-                result += offset;
-                return result;
-            };
-            scope.posInLevelToY = function (posInLevel) {
-                var offset, timeAxisSize;
-                if (scope.vertical) {
-                    offset = scope.vertOffsetX;
-                    timeAxisSize = scope.width - offset;
-                }
-                else {
-                    offset = scope.offsetY;
-                    timeAxisSize = scope.height - offset;
-                }
-                var result = posInLevel * timeAxisSize * scope.zoomListener.scale();
-                result += offset;
-                return result;
-            };
-            //
-            /////////////////////////////
-            /////////////////////////////
-            // inital d3.js setup stuff
-            scope.element = element;
-            scope.width = 0;
-            scope.height = 0;
-            // lazy loading
-            scope.background = '';
-            // set background according to config only if config is loaded
-            if (scope.cps.design.color !== undefined) {
-                scope.background = scope.cps.design.color.darkGrey;
-            }
-            // scaleExtent limits the amount of zooming possible
-            scope.zoomListener = d3["behavior"].zoom().scaleExtent(scope.scaleExtent).on('zoom', scope.zoom);
-            // Create the d3 element and position it based on margins
-            scope.svg = d3["select"](element[0])
-                .append('svg')
-                .attr('width', '100%')
-                .attr('height', '100%')
-                .style('background-color', scope.background)
-                .call(scope.zoomListener)
-                .on('dblclick.zoom', null)
-                .on('mousemove', scope.svgOnMouseMove)
-                .on('click', scope.svgOnClick)
-                .append('g');
-            scope.shiftMode = false;
-            scope.checkLink = function (event) {
-                if (event.shiftKey && !scope.shiftMode) {
-                    if (ViewStateService.hierarchyState.newLinkFromID === undefined) {
-                        ViewStateService.hierarchyState.newLinkFromID = ViewStateService.hierarchyState.selectedItemID;
-                        scope.shiftMode = true;
-                    }
-                }
-                if (!event.shiftKey && scope.shiftMode) {
-                    scope.shiftMode = false;
-                    var linkObj = HierarchyManipulationService.addLink(ViewStateService.hierarchyState.path, ViewStateService.hierarchyState.newLinkFromID, ViewStateService.hierarchyState.selectedItemID);
-                    ViewStateService.hierarchyState.newLinkFromID = undefined;
-                    if (linkObj !== null) {
-                        HistoryService.addObjToUndoStack({
-                            type: 'HIERARCHY',
-                            action: 'ADDLINK',
-                            link: linkObj
-                        });
-                    }
-                }
-            };
-            // Append a group which holds all overlay captions and which do not react to zooming
-            scope.captionLayer = scope.svg.append('g').style('z-index', 5);
-            scope.timeArrow = scope.svg.append('g')
-                .append('text')
-                .text('time →');
-            scope.scaleFactorDisplay = scope.svg.append('g');
-            scope.scaleFactorDisplay.append('text');
-            // Append a group which holds all nodes and which the zoom Listener can act upon.
-            scope.svg = scope.svg.append('g').style('z-index', 1);
-            // read previously stored zoom and pan values
-            scope.zoomListener.translate(ViewStateService.hierarchyState.translate);
-            scope.zoomListener.scale(ViewStateService.hierarchyState.scaleFactor);
-            //
-            /////////////////////////////
-            ////////////
-            // Here come the two main functions of the directive
-            //
-            // scope.render() and scope.renderSelectionOnly() do the bulk of the
-            // work
-            /**
-             * Adjust the colors of all nodes and links to reflect the user's
-             * selection.
-             *
-             * @param nothing
-             * @returns nothing
-             */
-            scope.renderSelectionOnly = function () {
-                // Change the circle fill of all nodes depending on whether they are selected
-                scope.svg.selectAll('circle.emuhierarchy-nodeCircle')
-                    .style('fill', function (d) {
-                    var color = ConfigProviderService.design.color.white;
-                    if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
-                        color = ConfigProviderService.design.color.blue;
-                    }
-                    return color;
-                });
-                scope.svg.selectAll('path.emuhierarchy-link')
-                    .style('stroke', function (d) {
-                    if (scope.selectedLink === d) {
-                        return ConfigProviderService.design.color.yellow;
-                    }
-                    else {
-                        return ConfigProviderService.design.color.grey;
-                    }
-                });
-                scope.svg.select('.emuhierarchy-newlinkpreview')
-                    .attr('d', scope.getPreviewPath)
-                    .style('stroke', scope.getPreviewColor);
-            };
-            /**
-             * (Re-)Render the complete hierarchical structure
-             *
-             * Calls HierarchyLayoutService to calculate the relative positions of
-             * all nodes and links within the graph and then uses the above helper
-             * functions to calculate the absolute positons within the SVG.
-             *
-             * Makes use of D3JS data joins at various positions. For an
-             * introduction to the concept, see: http://bost.ocks.org/mike/join/
-             *
-             * It basically works by associating a data set with an SVG selection.
-             * D3 then divides this data set in three sections: enter, update and
-             * exit.
-             *
-             */
-            scope.render = function () {
-                scope.lastScaleFactor = scope.zoomListener.scale();
-                var i;
-                // Get current width and height of SVG
-                scope.width = parseInt(d3["select"](scope.element[0]).style('width'), 10);
-                scope.height = parseInt(d3["select"](scope.element[0]).style('height'), 10);
-                // Set orientation
-                if (scope.transition.rotation) {
-                    scope.svg.transition()
-                        .duration(scope.transition.duration)
-                        .attr('transform', scope.getOrientatedTransform());
-                }
-                else {
-                    scope.svg.attr('transform', scope.getOrientatedTransform());
-                }
-                /////////
-                // Draw time arrow
-                if (scope.vertical) {
-                    scope.timeArrow.attr('transform', 'translate(' + (scope.width / 2) + ',' + (scope.height - 10) + ')');
-                }
-                else {
-                    scope.timeArrow.attr('transform', 'translate(' + (scope.width - 20) + ',' + (scope.height / 2) + ')rotate(90)');
-                }
-                /////////
-                // Draw scale factor display
-                if (scope.vertical) {
-                    scope.scaleFactorDisplay
-                        .attr('transform', 'translate(' + scope.width + ', 20)');
-                    scope.scaleFactorDisplay
-                        .select('text')
-                        .attr('text-anchor', 'end')
-                        .text('Zoom: ' + Math.round(scope.zoomListener.scale() * 100) + ' %');
-                }
-                else {
-                    scope.scaleFactorDisplay
-                        .attr('transform', 'translate(0, ' + scope.height + ')');
-                    scope.scaleFactorDisplay
-                        .select('text')
-                        .attr('text-anchor', 'start')
-                        .text('Zoom: ' + Math.round(scope.zoomListener.scale() * 100) + ' %');
-                }
-                /////////
-                // Draw level captions and 'add item buttons' (which append
-                // nodes to the respective levels
-                scope.captionLayer.attr('transform', scope.getOrientatedLevelCaptionLayerTransform);
-                // for reference on the .data() call, compare the comment on
-                // scope.render() above
-                var levelCaptionSet = scope.captionLayer.selectAll('g.emuhierarchy-levelcaption')
-                    .data(ViewStateService.hierarchyState.path, function (d) {
-                    return d;
-                });
-                var newLevelCaptions = levelCaptionSet.enter();
-                var oldLevelCaptions = levelCaptionSet.exit();
-                newLevelCaptions = newLevelCaptions.append('g')
-                    .attr('class', 'emuhierarchy-levelcaption');
-                newLevelCaptions
-                    .append('text');
-                var addItemButtons = newLevelCaptions
-                    .filter(function (d) {
-                    var levelType = LevelService.getLevelDetails(d).type;
-                    return (levelType === 'ITEM');
-                })
-                    .append('g')
-                    .attr('class', 'emuhierarchy-addbutton')
-                    .attr('transform', scope.getOrientatedAddItemButtonTransform)
-                    .on('click', scope.addButtonOnClick);
-                addItemButtons
-                    .append('circle')
-                    .style('fill', scope.cps.design.color.blue)
-                    .attr('r', 8);
-                addItemButtons
-                    .append('path')
-                    .style('stroke', scope.cps.design.color.white)
-                    .attr('d', 'M0,-6 V6 M-6,0 H6');
-                newLevelCaptions
-                    .filter(function (d) {
-                    var levelType = LevelService.getLevelDetails(d).type;
-                    return (levelType === 'SEGMENT' || levelType === 'EVENT');
-                })
-                    .append('rect')
-                    .attr('class', 'emuhierarchy-timelevelbackground')
-                    .style('fill', scope.cps.design.color.transparent.grey);
-                levelCaptionSet
-                    .attr('transform', scope.getOrientatedLevelCaptionTransform);
-                levelCaptionSet
-                    .select('text')
-                    .text(scope.getLevelCaptionText);
-                levelCaptionSet
-                    .select('.emuhierarchy-timelevelbackground')
-                    .attr('transform', scope.getOrientatedTimeLevelBackgroundTransform)
-                    .style('width', scope.getOrientatedTimeLevelBackgroundWidth)
-                    .style('height', scope.getOrientatedTimeLevelBackgroundHeight);
-                if (scope.transition.rotation) {
-                    oldLevelCaptions = oldLevelCaptions.transition()
-                        .duration(scope.transition.duration)
-                        .remove();
-                }
-                else {
-                    oldLevelCaptions.remove();
-                }
-                oldLevelCaptions.select('text')
-                    .style('fill-opacity', 0);
-                //
-                /////////
-                /////////
-                // Compute the new tree layout (first nodes and then links)
-                //
-                var nodes = [];
-                HierarchyLayoutService.calculateWeightsBottomUp(ViewStateService.hierarchyState.path);
-                for (i = 0; i < ViewStateService.hierarchyState.path.length; ++i) {
-                    // Add all nodes that are not collapsed
-                    var levelItems = LevelService.getLevelDetails(ViewStateService.hierarchyState.path[i]).items;
-                    for (var ii = 0; ii < levelItems.length; ++ii) {
-                        if (levelItems[ii]._visible) {
-                            nodes.push(levelItems[ii]);
-                        }
-                    }
-                }
-                // Make sure the selected things are visible, otherwise un-select them
-                var selectedItem = LevelService.getItemByID(ViewStateService.hierarchyState.selectedItemID);
-                var contextMenuItem = LevelService.getItemByID(ViewStateService.hierarchyState.contextMenuID);
-                var selectedLinkFromItem = LevelService.getItemByID(ViewStateService.hierarchyState.selectedLinkFromID);
-                var selectedLinkToItem = LevelService.getItemByID(ViewStateService.hierarchyState.selectedLinkToID);
-                if (selectedItem !== undefined && !selectedItem._visible) {
-                    console.debug('Unselecting node');
-                    ViewStateService.hierarchyState.selectedItemID = undefined;
-                }
-                if (selectedLinkFromItem !== undefined && !selectedLinkFromItem._visible) {
-                    console.debug('Unselecting link');
-                    ViewStateService.hierarchyState.selectedLinkFromID = undefined;
-                    ViewStateService.hierarchyState.selectedLinkToID = undefined;
-                }
-                if (selectedLinkToItem !== undefined && !selectedLinkToItem._visible) {
-                    console.debug('Unselecting link');
-                    ViewStateService.hierarchyState.selectedLinkFromID = undefined;
-                    ViewStateService.hierarchyState.selectedLinkToID = undefined;
-                }
-                if (contextMenuItem !== undefined && !contextMenuItem._visible) {
-                    console.debug('Closing context menu (node became invisible)');
-                    ViewStateService.hierarchyState.contextMenuID = undefined;
-                }
-                ////////
-                // Now layout links
-                //
-                // We must only draw links that are part of the currently selected path.
-                // We must therefore filter the links.
-                //
-                // We must also filter out links that are collapsed
-                //
-                // What follows below is a probably very low-performance approach to filtering
-                //
-                var links = [];
-                var allLinks = DataService.getData().links;
-                for (var l = 0; l < allLinks.length; ++l) {
-                    for (i = 0; i < ViewStateService.hierarchyState.path.length - 1; ++i) {
-                        var element = LevelService.getItemFromLevelById(ViewStateService.hierarchyState.path[i], allLinks[l].toID);
-                        var parentElement = LevelService.getItemFromLevelById(ViewStateService.hierarchyState.path[i + 1], allLinks[l].fromID);
-                        if (element === null) {
-                            continue;
-                        }
-                        if (parentElement === null) {
-                            continue;
-                        }
-                        if (!element._visible) {
-                            continue;
-                        }
-                        if (ViewStateService.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
-                            continue;
-                        }
-                        links.push(allLinks[l]);
-                    }
-                }
-                // Transform relative coordinates (_posInLevel and _depth) to actual coordinates (_x and _y)
-                nodes.forEach(function (d) {
-                    d._x = scope.depthToX(d._depth);
-                    d._y = scope.posInLevelToY(d._posInLevel);
-                });
-                links.forEach(function (d) {
-                    d._fromX = scope.depthToX(d._fromDepth);
-                    d._fromY = scope.posInLevelToY(d._fromPosInLevel);
-                    d._toX = scope.depthToX(d._toDepth);
-                    d._toY = scope.posInLevelToY(d._toPosInLevel);
-                });
-                //////
-                // Now that all actual coordinates have been calculated, we
-                // update our SVG using d3js data joins
-                //
-                // for reference on the .data() call, compare the comment on
-                // scope.render() above
-                //
-                // Define the data set to be visualised
-                var dataSet = scope.svg.selectAll('g.emuhierarchy-node')
-                    .data(nodes, function (d) {
-                    return d.id;
-                });
-                var newNodes = dataSet.enter();
-                var oldNodes = dataSet.exit();
-                //
-                // Add nodes that were previously not part of the svg.
-                //
-                // Any node will consist of an svg group ("g"), a circle, a
-                // text and a second, invisible circle for mouseover handling.
-                //
-                // Note that properties that can be changed after the node is
-                // added will be set further below
-                newNodes = newNodes.append('g') // append() will return a set of all appended elements
-                    .attr('class', 'emuhierarchy-node')
-                    // event handlers
-                    //.call(dragListener)
-                    .attr('pointer-events', 'mouseover')
-                    .on('click', scope.nodeOnClick)
-                    //.on('dblclick', scope.nodeOnRightClick)
-                    .on('mouseover', scope.nodeOnMouseOver);
-                var circle = newNodes.append('circle')
-                    .attr('class', 'emuhierarchy-nodeCircle')
-                    .style('stroke', scope.cps.design.color.grey);
-                if (scope.transition.nodes) {
-                    circle
-                        // Make circle invisible at first
-                        .attr('r', 0)
-                        // And then transition it to its normal size
-                        .transition()
-                        .duration(scope.transition.duration)
-                        .attr('r', 4.5);
-                }
-                else {
-                    circle.attr('r', 4.5);
-                }
-                newNodes.append('text')
-                    .attr('class', 'emuhierarchy-nodeText');
-                // Make sure that nodes that appear due to their ancestry being uncollapsed do not fly in from the origin
-                // (as do all other nodes)
-                newNodes.attr('transform', function (d) {
-                    var position = ViewStateService.hierarchyState.getCollapsePosition(d.id);
-                    if (typeof position !== 'undefined') {
-                        var x = position[0];
-                        var y = position[1];
-                        ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
-                        return 'translate(' + x + ',' + y + ')' + scope.getOrientatedNodeTransform();
-                    }
-                });
-                //
-                // Remove nodes that shall no longer be part of the svg
-                // Transition exiting nodes to the origin
-                // FIXME put that anyonymous transform function on scope
-                if (scope.transition.nodes) {
-                    oldNodes = oldNodes
-                        .transition()
-                        .duration(scope.transition.duration)
-                        .attr('transform', function (d) {
-                        var collapsePosition = ViewStateService.hierarchyState.getCollapsePosition(d.id);
-                        if (typeof collapsePosition !== 'undefined') {
-                            var x = collapsePosition[0];
-                            var y = collapsePosition[1];
-                            ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
-                            return 'translate(' + x + ',' + y + ')';
-                        }
-                        else {
-                            return 'translate(' + 0 + ',' + 0 + ')';
-                        }
-                    })
-                        .remove();
-                }
-                else {
-                    oldNodes = oldNodes
-                        .attr('transform', function (d) {
-                        var collapsePosition = ViewStateService.hierarchyState.getCollapsePosition(d.id);
-                        if (typeof collapsePosition !== 'undefined') {
-                            var x = collapsePosition[0];
-                            var y = collapsePosition[1];
-                            ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
-                            return 'translate(' + x + ',' + y + ')';
-                        }
-                        else {
-                            return 'translate(' + 0 + ',' + 0 + ')';
-                        }
-                    })
-                        .remove();
-                }
-                oldNodes.select('text')
-                    .style('fill-opacity', 0);
-                //
-                // Set or update properties that are subject to change after
-                // the node is added.
-                dataSet.select('text')
-                    .attr('x', scope.getOrientatedTextX)
-                    .attr('y', scope.getOrientatedTextY)
-                    .attr('text-anchor', scope.getOrientatedTextAnchor)
-                    .attr('transform', scope.getOrientatedTextTransform)
-                    .text(scope.getNodeText);
-                // Change the circle fill depending on whether it is collapsed and/or selected
-                dataSet.select('circle.emuhierarchy-nodeCircle')
-                    // Highlight selected item
-                    .style('fill', function (d) {
-                    var color = scope.cps.design.color.white;
-                    if (typeof scope.selectedItem !== 'undefined' && d.id === scope.selectedItem.id) {
-                        color = scope.cps.design.color.blue;
-                    }
-                    return color;
-                })
-                    // Highlight collapsed items
-                    .style('stroke', function (d) {
-                    if (ViewStateService.hierarchyState.getCollapsed(d.id)) {
-                        return scope.cps.design.color.red;
-                    }
-                    else {
-                        return scope.cps.design.color.grey;
-                    }
-                });
-                // Transition nodes to their new position
-                if (scope.transition.nodes) {
-                    dataSet
-                        .transition()
-                        .duration(scope.transition.duration)
-                        .attr('transform', function (d) {
-                        return 'translate(' + d._x + ',' + d._y + ')' + scope.getOrientatedNodeTransform();
-                    });
-                }
-                else {
-                    dataSet
-                        .attr('transform', function (d) {
-                        return 'translate(' + d._x + ',' + d._y + ')' + scope.getOrientatedNodeTransform();
-                    });
-                }
-                /////
-                // Create context menu
-                // If the context menu has been closed, remove the elements
-                if (ViewStateService.hierarchyState.contextMenuID === undefined) {
-                    scope.svg.selectAll('.emuhierarchy-contextmenu')
-                        .remove();
-                }
-                // If the context menu does not yet exist, create it
-                var contextMenu = scope.svg.select('.emuhierarchy-contextmenu');
-                if (contextMenu[0][0] === null) {
-                    contextMenu = dataSet
-                        .filter(function (d) {
-                        return d.id === ViewStateService.hierarchyState.contextMenuID;
-                    })
-                        .append('g')
-                        .attr('class', 'emuhierarchy-contextmenu');
-                    contextMenu
-                        .append('circle')
-                        .style('fill', 'darkgrey')
-                        .attr('r', 50)
-                        .style('cursor', 'default');
-                    if (scope.transition.contextMenu) {
-                        contextMenu
-                            .style('opacity', 0)
-                            .transition()
-                            .duration(scope.transition.duration)
-                            .style('opacity', 0.5);
-                    }
-                    contextMenu
-                        .append('text')
-                        .text(scope.getOrientatedNodeCollapseText)
-                        .attr('x', -25)
-                        .attr('y', -25)
-                        .attr('text-anchor', 'middle')
-                        .on('click', scope.nodeOnCollapseClick);
-                    if (scope.transition.contextMenu) {
-                        contextMenu
-                            .style('opacity', 0)
-                            .transition()
-                            .duration(scope.transition.duration)
-                            .style('opacity', 1);
-                    }
-                    contextMenu
-                        .append('text')
-                        .text('play')
-                        .attr('x', -25)
-                        .attr('y', +25)
-                        .attr('text-anchor', 'middle')
-                        .on('click', scope.nodeOnPlayClick);
-                    if (scope.transition.contextMenu) {
-                        contextMenu
-                            .style('opacity', 0)
-                            .transition()
-                            .duration(scope.transition.duration)
-                            .style('opacity', 1);
-                    }
-                    var foreignObject = contextMenu
-                        .append('foreignObject')
-                        .attr('height', 30)
-                        .attr('x', 10)
-                        .attr('y', -15)
-                        .attr('width', 0);
-                    if (scope.transition.contextMenu) {
-                        foreignObject
-                            .transition()
-                            .duration(scope.transition.duration)
-                            .attr('width', 100);
-                    }
-                    else {
-                        foreignObject.attr('width', 100);
-                    }
-                    foreignObject
-                        .append('xhtml:body')
-                        .append('input').attr('value', scope.getNodeText)
-                        .style('width', '100%')
-                        .style('height', '100%')
-                        .style('outline', 'none')
-                        .style('border', '0')
-                        .style('background-color', scope.getLabelLegalnessColor)
-                        .on('input', scope.nodeOnInput)
-                        .on('focus', scope.nodeOnFocusIn)
-                        .on('blur', scope.nodeOnFocusOut);
-                    if (foreignObject[0].length !== 0) {
-                        foreignObject.select('input')[0][0].focus();
-                        foreignObject.select('input')[0][0].select();
-                    }
-                }
-                else {
-                    scope.svg.select('.emuhierarchy-contextmenu text').text(scope.getOrientatedNodeCollapseText);
-                }
-                // Make sure the node containing the context menu is the last
-                // one in the SVG, otherwise the succeeding elements are drawn
-                // visually on top of the context menu.
-                scope.svg.selectAll('.emuhierarchy-node').sort(function (a, b) {
-                    if (a.id === ViewStateService.hierarchyState.contextMenuID) {
-                        return 1;
-                    }
-                    if (b.id === ViewStateService.hierarchyState.contextMenuID) {
-                        return -1;
-                    }
-                    return 0;
-                });
-                //
-                //
-                // Now we turn to visualising links
-                //
-                // for reference on the .data() call, compare the comment on
-                // scope.render() above
-                var linkSet = scope.svg.selectAll('.emuhierarchy-linkgroup')
-                    .data(links, function (d) {
-                    // Form unique link ID
-                    return 's' + d.fromID + 't' + d.toID;
-                });
-                var newLinks = linkSet.enter();
-                var oldLinks = linkSet.exit();
-                // The new link's paths are inserted within the svg element
-                // that linkSet was generated from.
-                // They must be inserted at the beginning (before the nodes,
-                // which have already been appended), because there is no CSS
-                // z-index for SVG.
-                // So the order of insertion is the only way to make sure that
-                // the lines are painted under the nodes.
-                newLinks = newLinks
-                    .insert('g', ':first-child')
-                    .attr('class', 'emuhierarchy-linkgroup');
-                // Append thicker ghost lines for better mouseover
-                newLinks
-                    .append('path')
-                    .attr('class', 'emuhierarchy-ghostlink')
-                    .style('stroke-width', scope.getOrientatedGhostLinkStrokeWidth)
-                    .on('mouseover', scope.linkOnMouseOver);
-                newLinks
-                    .append('path')
-                    .attr('class', 'emuhierarchy-link')
-                    .style('stroke-width', scope.getOrientatedLinkStrokeWidth);
-                if (scope.transition.links) {
-                    newLinks
-                        .style('opacity', 0)
-                        .transition()
-                        .duration(scope.transition.duration)
-                        .style('opacity', 1);
-                }
-                // Remove old links
-                if (scope.transition.links) {
-                    oldLinks
-                        .transition()
-                        .duration(scope.transition.duration)
-                        .style('opacity', 0)
-                        .remove();
-                }
-                else {
-                    oldLinks.remove();
-                }
-                // Set color depending on whether the link is selected
-                linkSet
-                    .selectAll('.emuhierarchy-link')
-                    .style('stroke', function (d) {
-                    if (scope.selectedLink === d) {
-                        return scope.cps.design.color.yellow;
-                    }
-                    else {
-                        return scope.cps.design.color.grey;
-                    }
-                });
-                // Transition links to their new position.
-                if (scope.transition.links) {
-                    linkSet
-                        .selectAll('.emuhierarchy-link')
-                        .transition()
-                        .duration(scope.transition.duration)
-                        .attr('d', scope.getPath)
-                        .style('stroke-width', scope.getOrientatedLinkStrokeWidth)
-                        .style('opacity', 1);
-                }
-                else {
-                    linkSet
-                        .selectAll('.emuhierarchy-link')
-                        .attr('d', scope.getPath)
-                        .style('stroke-width', scope.getOrientatedLinkStrokeWidth);
-                }
-                linkSet
-                    .selectAll('.emuhierarchy-ghostlink')
-                    .attr('d', scope.getPath);
-                // If the user is trying to add a new link,
-                // visualise what he's doing
-                scope.svg.selectAll('.emuhierarchy-newlink').remove();
-                scope.svg.selectAll('.emuhierarchy-newlinkpreview').remove();
-                if (scope.newLinkSrc !== undefined) {
-                    scope.svg.append('path')
-                        .attr('class', 'emuhierarchy-newlink')
-                        .style('stroke', 'black')
-                        .style('stroke-width', scope.getOrientatedLinkStrokeWidth);
-                    scope.svg.append('path')
-                        .attr('class', 'emuhierarchy-newlinkpreview')
-                        .attr('d', scope.getPreviewPath)
-                        .style('stroke', scope.getPreviewColor)
-                        .style('stroke-width', scope.getOrientatedLinkStrokeWidth);
-                }
-                // Set boundaries within which the graph has to stay when the
-                // user is panning. That is, the graph can never *completely*
-                // leave these boundaries
-                if (scope.vertical) {
-                    scope.northernBoundary = scope.vertOffsetY + scope.height * (1 - scope.panningLimit);
-                    scope.southernBoundary = scope.height * scope.panningLimit;
-                    scope.westernBoundary = scope.vertOffsetX + scope.width * (1 - scope.panningLimit);
-                    scope.easternBoundary = scope.width * scope.panningLimit;
-                }
-                else {
-                    scope.northernBoundary = scope.offsetY + scope.height * (1 - scope.panningLimit);
-                    scope.southernBoundary = scope.height * scope.panningLimit;
-                    scope.westernBoundary = scope.offsetX + scope.width * (1 - scope.panningLimit);
-                    scope.easternBoundary = scope.width * scope.panningLimit;
-                }
-                // Find out where the time and cross axis start and end, to
-                // prevent that these points leave the above boundaries.
-                // Note that these do not depend on scope.vertical because they
-                // are transformed when the user is in "scope.vertical mode".
-                scope.timeAxisStartPosition = scope.svg.node().getBBox().y;
-                scope.timeAxisEndPosition = scope.timeAxisStartPosition + scope.svg.node().getBBox().height;
-                scope.crossAxisStartPosition = scope.svg.node().getBBox().x;
-                scope.crossAxisEndPosition = scope.crossAxisStartPosition + scope.svg.node().getBBox().width;
-            };
-        }
-    };
-});
 
 // CONCATENATED MODULE: ./app/scripts/directives/emuwebapp.directive.ts
 
@@ -85949,8 +84643,8 @@ angular["module"]('emuwebApp')
                 .append('g')
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
             //Create the scales we need for the graph
-            var x = d3["scale"].linear().range([0, width]);
-            var y = d3["scale"].linear().range([height, 0]);
+            var x = d3["scaleLinear"]().range([0, width]);
+            var y = d3["scaleLinear"]().range([height, 0]);
             //Create the axes we need for the graph
             var xAxis = d3["svg"].axis()
                 .scale(x)
@@ -87019,8 +85713,6 @@ angular["module"]('emuwebApp')
 
 
 
-
-// import "./level.directive";
 
 
 
@@ -90306,8 +88998,9 @@ var io_handler_service_IoHandlerService = /** @class */ (function () {
     /**
     * default config is always loaded from same origin
     */
-    IoHandlerService.prototype.httpGetPath = function (path, respType) {
-        if (this.ConfigProviderService.vals.main.comMode !== "GITLAB") {
+    IoHandlerService.prototype.httpGetPath = function (path, respType, ignoreComMode) {
+        if (ignoreComMode === void 0) { ignoreComMode = false; }
+        if (this.ConfigProviderService.vals.main.comMode !== "GITLAB" || ignoreComMode) {
             var prom = this.$http.get(path, {
                 responseType: respType
             });
@@ -93136,7 +91829,7 @@ var view_state_service_ViewStateService = /** @class */ (function () {
             path: [],
             curPathIdx: 0,
             curNrOfPaths: 0,
-            rotated: false,
+            rotated: true,
             playing: 0,
             resize: 0,
             // member functions
@@ -93304,7 +91997,7 @@ var view_state_service_ViewStateService = /** @class */ (function () {
     ViewStateService.prototype.updatePlayHead = function (timestamp) {
         // at first push animation !!!
         if (this.SoundHandlerService.isPlaying) {
-            this.$window.requestAnimationFrame(this.updatePlayHead);
+            this.$window.requestAnimationFrame(this.updatePlayHead.bind(this));
         }
         // do work in this animation round now
         if (this.start === null) {
@@ -93341,7 +92034,7 @@ var view_state_service_ViewStateService = /** @class */ (function () {
         if (autoscroll !== undefined) {
             this.playHeadAnimationInfos.autoscroll = autoscroll;
         }
-        this.$window.requestAnimationFrame(this.updatePlayHead);
+        this.$window.requestAnimationFrame(this.updatePlayHead.bind(this));
     };
     ;
     /**
@@ -95008,7 +93701,1400 @@ var BundleListSideBarComponent = {
 angular["module"]('emuwebApp')
     .component(BundleListSideBarComponent.selector, BundleListSideBarComponent);
 
+// CONCATENATED MODULE: ./app/scripts/components/emuhierarchy.component.ts
+
+
+var EmuHierarchyComponent = {
+    selector: "emuhierarchy",
+    template: "<div class=\"emuwebapp-hierarchy-container\" ng-mousemove=\"$ctrl.checkLink($event)\"></div>",
+    bindings: {
+        vertical: '<',
+        playing: '<',
+        curLevelAttrDefs: '<',
+        hierarchyPath: '<',
+        movesAwayFromLastSave: '<',
+        newLinkFromId: '<',
+        isShown: '<',
+        contextMenuId: '<',
+        hierarchyResize: '<',
+        attributeDefinitionClickCounter: '<'
+    },
+    controller: /** @class */ (function () {
+        function EmuHierarchyController($scope, $element, $timeout, ViewStateService, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, SoundHandlerService, ConfigProviderService) {
+            this.$postLink = function () {
+                /////////////////////////////
+                // inital d3.js setup stuff
+                this.element = this.$element;
+                this.width = 0;
+                this.height = 0;
+                // lazy loading
+                this.background = '';
+                // set background according to config only if config is loaded
+                if (this.ConfigProviderService.design.color !== undefined) {
+                    this.background = this.ConfigProviderService.design.color.darkGrey;
+                }
+                // scaleExtent limits the amount of zooming possible
+                this.zoomListener = d3["behavior"].zoom().scaleExtent(this.scaleExtent).on('zoom', this.zoom.bind(this));
+                // Create the d3 element and position it based on margins
+                this.svg = d3["select"](this.element.find('div')[0])
+                    .append('svg')
+                    .attr('width', '100%')
+                    .attr('height', '100%')
+                    .style('background-color', this.background)
+                    .call(this.zoomListener)
+                    .on('dblclick.zoom', null)
+                    .on('mousemove', this.svgOnMouseMove.bind(this))
+                    .on('click', this.svgOnClick.bind(this))
+                    .append('g');
+                this.shiftMode = false;
+                // Append a group which holds all overlay captions and which do not react to zooming
+                this.captionLayer = this.svg.append('g').style('z-index', 5);
+                this.timeArrow = this.svg.append('g')
+                    .append('text')
+                    .text('time →');
+                this.scaleFactorDisplay = this.svg.append('g');
+                this.scaleFactorDisplay.append('text');
+                // Append a group which holds all nodes and which the zoom Listener can act upon.
+                this.svg = this.svg.append('g').style('z-index', 1);
+                // read previously stored zoom and pan values
+                this.zoomListener.translate(this.ViewStateService.hierarchyState.translate);
+                this.zoomListener.scale(this.ViewStateService.hierarchyState.scaleFactor);
+                // this.render();
+            };
+            this.$onChanges = function (changes) {
+                console.log(changes);
+                if (changes.vertical) {
+                    if (changes.vertical.currentValue !== changes.vertical.previousValue) {
+                        if (this._inited) {
+                            this.rotate();
+                        }
+                    }
+                }
+                if (changes.curLevelAttrDefs) {
+                    if (changes.curLevelAttrDefs.currentValue !== changes.curLevelAttrDefs.previousValue) {
+                        if (this._inited) {
+                            this.render();
+                        }
+                    }
+                }
+                if (changes.playing) {
+                    if (changes.playing.currentValue !== changes.playing.previousValue) {
+                        if (this._inited) {
+                            if (typeof this.selectedItem !== 'undefined') {
+                                this.play(this.selectedItem);
+                            }
+                        }
+                    }
+                }
+                if (changes.hierarchyPath) {
+                    if (changes.hierarchyPath.currentValue !== changes.hierarchyPath.previousValue) {
+                        if (this._inited) {
+                            this.newLinkFromID = undefined;
+                            this.render();
+                        }
+                    }
+                }
+                if (changes.movesAwayFromLastSave) {
+                    if (changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue) {
+                        if (this._inited) {
+                            this.render();
+                        }
+                    }
+                }
+                if (changes.newLinkFromId) {
+                    if (changes.newLinkFromId.currentValue !== changes.newLinkFromId.previousValue) {
+                        if (this._inited) {
+                            this.newLinkSrc = this.LevelService.getItemByID(changes.newLinkFromId.currentValue);
+                            this.render();
+                        }
+                    }
+                }
+                if (changes.isShown) {
+                    if (changes.isShown.currentValue !== changes.isShown.previousValue) {
+                        if (changes.isShown.currentValue) {
+                            if (this._inited) {
+                                this.render();
+                            }
+                        }
+                    }
+                }
+                if (changes.contextMenuId) {
+                    if (changes.contextMenuId.currentValue !== changes.contextMenuId.previousValue) {
+                        if (this._inited) {
+                            this.render();
+                        }
+                    }
+                }
+                if (changes.hierarchyResize) {
+                    if (changes.hierarchyResize.currentValue !== changes.hierarchyResize.previousValue) {
+                        if (this._inited) {
+                            this.render();
+                        }
+                    }
+                }
+                // number is increased by controller to get update (hacky but don't see any other alternative for now)
+                if (changes.attributeDefinitionClickCounter) {
+                    if (changes.attributeDefinitionClickCounter.currentValue !== changes.attributeDefinitionClickCounter.previousValue) {
+                        if (this._inited) {
+                            this.render();
+                        }
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$timeout = $timeout;
+            this.ViewStateService = ViewStateService;
+            this.HistoryService = HistoryService;
+            this.DataService = DataService;
+            this.LevelService = LevelService;
+            this.HierarchyManipulationService = HierarchyManipulationService;
+            this.HierarchyLayoutService = HierarchyLayoutService;
+            this.SoundHandlerService = SoundHandlerService;
+            this.ConfigProviderService = ConfigProviderService;
+            // Graphical offset from the SVG's border to the first nodes
+            // Note that level captions are drawn within that offset
+            this.offsetX = 25;
+            this.offsetY = 30;
+            // The same when in rotated mode
+            this.vertOffsetX = 150;
+            this.vertOffsetY = 25;
+            // Settings for CSS transitions
+            this.transition = {
+                duration: 750,
+                links: false,
+                nodes: false,
+                rotation: false,
+                contextMenu: false
+            };
+            // Possible zoom range
+            this.scaleExtent = [0.5, 10];
+            // Possible pan range
+            this.panningLimit = 0.95;
+            this.allowCrossAxisZoom = false;
+            this.allowCrossAxisPan = false;
+            // Boundaries for enforcing pan range
+            this.timeAxisStartPosition = undefined;
+            this.timeAxisEndPosition = undefined;
+            this.crossAxisStartPosition = undefined;
+            this.crossAxisEndPosition = undefined;
+            this.northernBoundary = undefined;
+            this.southernBoundary = undefined;
+            this.westernBoundary = undefined;
+            this.easternBoundary = undefined;
+            // While the user zooms (scrolls mouse wheel), many zoom events are
+            // fired. The last zoom event must be treated differently than the ones
+            // before it:
+            // A promise that can be cancelled from within this.zoom()
+            this.zoomTimeoutPromise = null;
+            // The last scale factor that was applied by a "final zoom event"
+            this.lastScaleFactor = 1;
+            this._inited = false;
+        }
+        //////////////////////
+        // helper functions
+        EmuHierarchyController.prototype.checkLink = function (event) {
+            if (event.shiftKey && !this.shiftMode) {
+                if (this.ViewStateService.hierarchyState.newLinkFromID === undefined) {
+                    this.ViewStateService.hierarchyState.newLinkFromID = this.ViewStateService.hierarchyState.selectedItemID;
+                    this.shiftMode = true;
+                }
+            }
+            if (!event.shiftKey && this.shiftMode) {
+                this.shiftMode = false;
+                var linkObj = this.HierarchyManipulationService.addLink(this.ViewStateService.hierarchyState.path, this.ViewStateService.hierarchyState.newLinkFromID, this.ViewStateService.hierarchyState.selectedItemID);
+                this.ViewStateService.hierarchyState.newLinkFromID = undefined;
+                if (linkObj !== null) {
+                    this.HistoryService.addObjToUndoStack({
+                        type: 'HIERARCHY',
+                        action: 'ADDLINK',
+                        link: linkObj
+                    });
+                }
+            }
+        };
+        ;
+        /**
+        *
+        */
+        EmuHierarchyController.prototype.selectItem = function (item) {
+            this.selectedItem = item;
+            this.ViewStateService.hierarchyState.selectedItemID = item.id;
+        };
+        ;
+        EmuHierarchyController.prototype.selectLink = function (link) {
+            this.selectedLink = link;
+            this.ViewStateService.hierarchyState.selectedLinkFromID = link.fromID;
+            this.ViewStateService.hierarchyState.selectedLinkToID = link.toID;
+        };
+        ;
+        /**
+        * Function to center node when clicked/dropped so node doesn't get lost when
+        * collapsing/moving with large amount of children.
+        *
+        private centerNode(node) {
+            var x = -node._x + this.width/2;
+            var y = -node._y  + this.height/2;
+            this.svg.transition()
+            .duration(this.transition.duration)
+            .attr('transform', this.getOrientatedTransform()+'translate(' + x + ',' + y + ')');
+            this.zoomListener.translate([x, y]);
+        };
+        */
+        /**
+        * The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
+        */
+        EmuHierarchyController.prototype.zoom = function () {
+            // Make sure panning is within allowed regions
+            this.limitPanning();
+            // Save translate and scale so they can be re-used when the modal is re-opened
+            this.ViewStateService.hierarchyState.translate = this.zoomListener.translate();
+            this.ViewStateService.hierarchyState.scaleFactor = this.zoomListener.scale();
+            // Transform all SVG elements
+            // Note that this.svg is actually not the svg itself but rather the main <g> within it
+            // Note further that this.captionLayer is a sibling and not a descendant of this.svg
+            this.svg.attr('transform', this.getOrientatedTransform(true));
+            this.captionLayer.attr('transform', this.getOrientatedLevelCaptionLayerTransform.bind(this));
+            this.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', this.getOrientatedLevelCaptionTransform.bind(this));
+            // Call this.render(), but make sure it's only called once a rush of zoom events has finished
+            if (this.zoomTimeoutPromise !== null) {
+                this.$timeout.cancel(this.zoomTimeoutPromise);
+                this.zoomTimeoutPromise = null;
+            }
+            this.zoomTimeoutPromise = this.$timeout(this.render.bind(this), 200);
+        };
+        ;
+        /**
+        * Check if user's chosen panning value is within such limits that the
+        * graph is still visible.
+        *
+        * Actually, a portion of the graph defined by (1-this.limit)%.
+        *
+        * If the factor is not within that limit, reset it.
+        */
+        EmuHierarchyController.prototype.limitPanning = function () {
+            // Read user's panning value
+            var x = this.zoomListener.translate()[0];
+            var y = this.zoomListener.translate()[1];
+            if (this.vertical) {
+                if (!this.allowCrossAxisPan) {
+                    y = 0;
+                }
+                else {
+                    if (y > this.southernBoundary - this.crossAxisStartPosition) {
+                        y = this.southernBoundary - this.crossAxisStartPosition;
+                    }
+                    if (y < this.northernBoundary - this.crossAxisEndPosition) {
+                        y = this.northernBoundary - this.crossAxisEndPosition;
+                    }
+                }
+                if (x > this.easternBoundary - this.timeAxisStartPosition) {
+                    x = this.easternBoundary - this.timeAxisStartPosition;
+                }
+                if (x < this.westernBoundary - this.timeAxisEndPosition) {
+                    x = this.westernBoundary - this.timeAxisEndPosition;
+                }
+            }
+            else {
+                if (!this.allowCrossAxisPan) {
+                    x = 0;
+                }
+                else {
+                    if (x > this.easternBoundary - this.crossAxisStartPosition) {
+                        x = this.easternBoundary - this.crossAxisStartPosition;
+                    }
+                    if (x < this.westernBoundary - this.crossAxisEndPosition) {
+                        x = this.westernBoundary - this.crossAxisEndPosition;
+                    }
+                }
+                if (y > this.southernBoundary - this.timeAxisStartPosition) {
+                    y = this.southernBoundary - this.timeAxisStartPosition;
+                }
+                if (y < this.northernBoundary - this.timeAxisEndPosition) {
+                    y = this.northernBoundary - this.timeAxisEndPosition;
+                }
+            }
+            this.zoomListener.translate([x, y]);
+        };
+        ;
+        EmuHierarchyController.prototype.rotate = function () {
+            // When rotating, we should preserve (to some accuracy)
+            // the part of the graph we're looking at.
+            // We therefore calculate how much of the graph is
+            // panned away before the rotation and try to restore
+            // that value afterwards.
+            var translate = this.zoomListener.translate();
+            var percentageAwayTimeAxis, percentageAwayCrossAxis;
+            if (this.vertical === true) {
+                // Changing from horizontal to vertical
+                percentageAwayTimeAxis = (translate[1]) / this.timeAxisEndPosition;
+                percentageAwayCrossAxis = (translate[0]) / this.crossAxisEndPosition;
+            }
+            else {
+                // Changing from vertical to horizontal
+                percentageAwayTimeAxis = (translate[0]) / this.timeAxisEndPosition;
+                percentageAwayCrossAxis = (translate[1]) / this.crossAxisEndPosition;
+            }
+            this.render();
+            percentageAwayTimeAxis = percentageAwayTimeAxis * this.timeAxisEndPosition;
+            percentageAwayCrossAxis = percentageAwayCrossAxis * this.crossAxisEndPosition;
+            if (this.vertical === true) {
+                // Changing from horizontal to vertical
+                this.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
+            }
+            else {
+                // Changing from vertical to horizontal
+                this.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
+            }
+            this.limitPanning();
+            // Make sure the programmatic changes to the translate vector are applied
+            this.zoomListener.event(this.svg);
+        };
+        ;
+        /**
+        * This transform is applied to the main <g> within the SVG
+        * That <g> contains all the nodes and links but not the level captions
+        * and neither the time arrow
+        */
+        EmuHierarchyController.prototype.getOrientatedTransform = function (zoomInProgress) {
+            var transform = '';
+            if (this.vertical) {
+                transform += 'translate(' + this.zoomListener.translate()[0] + ',' + this.zoomListener.translate()[1] + ')';
+                transform += 'scale(-1,1),rotate(90)';
+            }
+            else {
+                transform += 'translate(' + this.zoomListener.translate()[0] + ',' + this.zoomListener.translate()[1] + ')';
+                transform += 'rotate(0)';
+            }
+            if (zoomInProgress === true) {
+                var factor = this.zoomListener.scale() / this.lastScaleFactor;
+                if (this.allowCrossAxisZoom) {
+                    transform += 'scale(' + factor + ')';
+                }
+                else {
+                    transform += 'scale(1,' + factor + ')';
+                }
+            }
+            return transform;
+        };
+        ;
+        /**
+        * This transform is applied to each individual node, which includes
+        * both the circle and the label.
+        *
+        * It reverses the zoom factor applied to the complete graphics so that
+        * the text doesn't consume more space than needed.
+        */
+        EmuHierarchyController.prototype.getOrientatedNodeTransform = function () {
+            // Parameter d is never used because this is independent from the node's position
+            if (this.vertical) {
+                return 'scale(-1,1)rotate(90)';
+            }
+            else {
+                return 'rotate(0)';
+            }
+        };
+        ;
+        //
+        // This returns the stroke width for links
+        // It does not really depend on the orientation but rather on the zoom
+        // scale. It is named getORIENTATEDLinkStrokeWidth anyway because all
+        // functions are named like that, althoug they depend on both zoom
+        // scale and orientation.
+        EmuHierarchyController.prototype.getOrientatedLinkStrokeWidth = function () {
+            return '2px';
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedGhostLinkStrokeWidth = function () {
+            return '15px';
+        };
+        ;
+        EmuHierarchyController.prototype.getNodeText = function (d) {
+            var level = this.ViewStateService.getCurAttrDef(this.LevelService.getLevelName(d.id));
+            for (var i = 0; i < d.labels.length; ++i) {
+                if (d.labels[i].name === level) {
+                    return d.labels[i].value;
+                }
+            }
+            console.debug('Likely a bug: Did not find the label selected for display', 'Selected level:', level, 'Node: ', d);
+            return 'NO VALUE';
+        };
+        ;
+        EmuHierarchyController.prototype.getLevelCaptionText = function (levelName) {
+            var attributeDefinition = this.ViewStateService.getCurAttrDef(levelName);
+            if (levelName === attributeDefinition) {
+                return levelName;
+            }
+            else {
+                return levelName + ':' + attributeDefinition;
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedNodeCollapseText = function (d) {
+            if (this.vertical) {
+                if (this.ViewStateService.hierarchyState.getCollapsed(d.id)) {
+                    return '↓';
+                }
+                else {
+                    return '↑';
+                }
+            }
+            else {
+                if (this.ViewStateService.hierarchyState.getCollapsed(d.id)) {
+                    return '→';
+                }
+                else {
+                    return '←';
+                }
+            }
+        };
+        ;
+        /**
+        * This transform is applied to all nodes' text labels
+        */
+        EmuHierarchyController.prototype.getOrientatedTextTransform = function () {
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedTextAnchor = function () {
+            if (this.vertical) {
+                return 'middle';
+            }
+            else {
+                return 'begin';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedTextX = function () {
+            if (this.vertical) {
+                return 0;
+            }
+            else {
+                return 10;
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedTextY = function () {
+            if (this.vertical) {
+                return '1.45em';
+            }
+            else {
+                return '0.35em';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedLevelCaptionLayerTransform = function () {
+            if (this.vertical) {
+                return 'translate(0, ' + this.zoomListener.translate()[1] + ')';
+            }
+            else {
+                return 'translate(' + this.zoomListener.translate()[0] + ', 0)';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedLevelCaptionTransform = function (d) {
+            var revArr = angular["copy"](this.ViewStateService.hierarchyState.path).reverse();
+            if (this.vertical) {
+                return 'translate(25, ' + this.depthToX(revArr.indexOf(d)) + ')';
+            }
+            else {
+                return 'translate(' + this.depthToX(revArr.indexOf(d)) + ', 20)';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedAddItemButtonTransform = function () {
+            if (this.vertical) {
+                return 'translate(-12, -5)';
+            }
+            else {
+                return 'translate(-12, -5)';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedTimeLevelBackgroundTransform = function () {
+            if (this.vertical) {
+                return 'translate(' + (this.vertOffsetX - 25) + ',-8)';
+            }
+            else {
+                return 'translate(-8,' + (this.offsetY - 20) + ')';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedTimeLevelBackgroundWidth = function () {
+            if (this.vertical) {
+                return '100%';
+            }
+            else {
+                return '15px';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedTimeLevelBackgroundHeight = function () {
+            if (this.vertical) {
+                return '15px';
+            }
+            else {
+                return '100%';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getOrientatedMousePosition = function (mouse) {
+            if (this.vertical) {
+                return [
+                    (mouse[1] - this.zoomListener.translate()[1]),
+                    (mouse[0] - this.zoomListener.translate()[0])
+                ];
+            }
+            else {
+                return [
+                    (mouse[0] - this.zoomListener.translate()[0]),
+                    (mouse[1] - this.zoomListener.translate()[1])
+                ];
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getPath = function (d) {
+            return 'M' + d._fromX + ' ' + d._fromY + 'Q' + d._fromX + ' ' + d._toY + ' ' + d._toX + ' ' + d._toY;
+        };
+        ;
+        /**
+        * Calculate the path for the dashed preview link that is shown when
+        * trying to add a new link.
+        */
+        EmuHierarchyController.prototype.getPreviewPath = function () {
+            var from = { x: this.newLinkSrc._x, y: this.newLinkSrc._y };
+            var to = { x: this.selectedItem._x, y: this.selectedItem._y };
+            return 'M' + from.x + ' ' + from.y + 'Q' + from.x + ' ' + to.y + ' ' + to.x + ' ' + to.y;
+        };
+        ;
+        /**
+        * Return a color depending on the validity of the link the user is
+        * trying to create.
+        *
+        * If the link is invalid, this function will try reversing the link.
+        */
+        EmuHierarchyController.prototype.getPreviewColor = function () {
+            var validity = this.HierarchyManipulationService.checkLinkValidity(this.ViewStateService.hierarchyState.path, this.newLinkSrc.id, this.selectedItem.id);
+            if (validity.valid) {
+                return 'green';
+            }
+            else {
+                if (validity.reason === 3) {
+                    validity = this.HierarchyManipulationService.checkLinkValidity(this.ViewStateService.hierarchyState.path, this.selectedItem.id, this.newLinkSrc.id);
+                    if (validity.valid) {
+                        return 'green';
+                    }
+                }
+                return 'red';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.getLabelLegalnessColor = function (d) {
+            var dom = this.svg.select('.emuhierarchy-contextmenu input')[0][0];
+            var levelName = this.LevelService.getLevelName(d.id);
+            var attrIndex = this.ViewStateService.getCurAttrIndex(levelName);
+            var legalLabels = this.ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
+            if (legalLabels === undefined || (dom.value.length > 0 && legalLabels.indexOf(dom.value) >= 0)) {
+                return 'lightgreen';
+            }
+            else {
+                return 'red';
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.svgOnMouseMove = function () {
+            if (this.newLinkSrc !== undefined) {
+                var mouse = this.getOrientatedMousePosition(d3["mouse"](this.element.find('svg')[0]));
+                var x = mouse[0];
+                var y = mouse[1];
+                this.svg.select('path.emuhierarchy-newlink')
+                    .attr('d', 'M' + this.newLinkSrc._x + ',' + this.newLinkSrc._y + ' L' + x + ',' + y);
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.svgOnClick = function () {
+            var _this = this;
+            if (this.ViewStateService.hierarchyState.contextMenuID !== undefined) {
+                this.$scope.$apply(function () {
+                    _this.ViewStateService.hierarchyState.contextMenuID = undefined;
+                });
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.nodeOnClick = function (d) {
+            var _this = this;
+            console.debug('Clicked node', d);
+            if (this.ViewStateService.hierarchyState.contextMenuID === undefined) {
+                d3["event"].stopPropagation();
+                this.ViewStateService.hierarchyState.contextMenuID = d.id;
+                this.ViewStateService.hierarchyState.setEditValue(this.getNodeText(d));
+                this.$scope.$apply(function () {
+                    _this.render();
+                });
+            }
+            if (this.ViewStateService.hierarchyState.contextMenuID === d.id) {
+                d3["event"].stopPropagation();
+            }
+        };
+        ;
+        EmuHierarchyController.prototype.nodeOnPlayClick = function (d) {
+            this.play(d);
+        };
+        ;
+        EmuHierarchyController.prototype.nodeOnCollapseClick = function (d) {
+            console.debug('collapsing', d);
+            // (De-)Collapse sub-tree
+            this.HierarchyLayoutService.toggleCollapse(d, this.ViewStateService.hierarchyState.path);
+            this.render();
+        };
+        ;
+        EmuHierarchyController.prototype.nodeOnMouseOver = function (d) {
+            this.selectItem(d);
+            this.renderSelectionOnly();
+        };
+        ;
+        EmuHierarchyController.prototype.nodeOnInput = function (d) {
+            // select() returns a single-element selection, which is always
+            // a multi-dimensional array with [0][0] being the DOM node I'm
+            // looking for
+            var dom = this.svg.select('.emuhierarchy-contextmenu input')[0][0];
+            this.ViewStateService.hierarchyState.setEditValue(dom.value);
+            // Give feedback on legalness
+            dom.style.backgroundColor = this.getLabelLegalnessColor(d);
+        };
+        ;
+        EmuHierarchyController.prototype.nodeOnFocusIn = function () {
+            this.ViewStateService.hierarchyState.inputFocus = true;
+        };
+        ;
+        EmuHierarchyController.prototype.nodeOnFocusOut = function () {
+            this.ViewStateService.hierarchyState.inputFocus = false;
+        };
+        ;
+        EmuHierarchyController.prototype.linkOnMouseOver = function (d) {
+            this.selectLink(d);
+            this.renderSelectionOnly();
+        };
+        ;
+        EmuHierarchyController.prototype.addButtonOnClick = function (d) {
+            var id = this.LevelService.pushNewItem(d);
+            if (id !== -1) {
+                this.HistoryService.addObjToUndoStack({
+                    type: 'HIERARCHY',
+                    action: 'PUSHITEM',
+                    newID: id,
+                    level: d
+                });
+            }
+            this.$scope.$apply();
+        };
+        ;
+        EmuHierarchyController.prototype.play = function (d) {
+            var timeInfoLevel = this.ViewStateService.hierarchyState.path[0];
+            if (typeof timeInfoLevel === 'undefined') {
+                console.debug('Likely a bug: There is no path selection. Not executing play():', d);
+                return;
+            }
+            var timeInfoType = this.LevelService.getLevelDetails(timeInfoLevel).type;
+            var startSample = null;
+            var endSample = null;
+            var itemList = [d];
+            var currentItem;
+            while (itemList.length > 0) {
+                currentItem = itemList.pop();
+                if (currentItem.labels[0].name === timeInfoLevel) {
+                    if (timeInfoType === 'EVENT') {
+                        if (currentItem.samplePoint < startSample || startSample === null) {
+                            startSample = currentItem.samplePoint;
+                        }
+                        if (currentItem.samplePoint > endSample || endSample === null) {
+                            endSample = currentItem.samplePoint;
+                        }
+                    }
+                    else if (timeInfoType === 'SEGMENT') {
+                        if (currentItem.sampleStart < startSample || startSample === null) {
+                            startSample = currentItem.sampleStart;
+                        }
+                        // I promise I'll never again use tmp as a variable name :-)
+                        var tmp = currentItem.sampleStart + currentItem.sampleDur;
+                        if (tmp > endSample || endSample === null) {
+                            endSample = tmp;
+                        }
+                    }
+                }
+                itemList = itemList.concat(this.HierarchyLayoutService.findChildren(currentItem, this.ViewStateService.hierarchyState.path));
+            }
+            console.debug('Node info for playback: ', timeInfoType, d, startSample, endSample);
+            if (startSample === null || endSample === null) {
+                console.debug('No time information found for node, aborting playback', d);
+                return;
+            }
+            this.SoundHandlerService.playFromTo(startSample, endSample);
+        };
+        ;
+        /***********************************************************************
+        * Transform relative into absolute coordinates
+        *
+        * Uses the two functions depthToX() and posInLevelToY()
+        *
+        * The relative coordinates are defined on the time-axis and on the
+        * cross-axis.
+        *
+        * In vertical mode, the time-axis is X and the cross-axis is Y.
+        * In default mode, the time-axis is Y and the cross-axis is X.
+        *
+        * The relative coordinate on the cross-axis is specified as "number of
+        * levels away from the time level".
+        *
+        * On the time-axis, the relative coordinate is a number within [0;1].
+        */
+        EmuHierarchyController.prototype.depthToX = function (depth) {
+            var crossAxisSize, offset;
+            if (this.vertical) {
+                crossAxisSize = this.height;
+                offset = this.vertOffsetY;
+            }
+            else {
+                crossAxisSize = this.width;
+                offset = this.offsetX;
+            }
+            var result = depth / this.ViewStateService.hierarchyState.path.length * crossAxisSize;
+            if (this.allowCrossAxisZoom) {
+                result *= this.zoomListener.scale();
+            }
+            result += offset;
+            return result;
+        };
+        ;
+        EmuHierarchyController.prototype.posInLevelToY = function (posInLevel) {
+            var offset, timeAxisSize;
+            if (this.vertical) {
+                offset = this.vertOffsetX;
+                timeAxisSize = this.width - offset;
+            }
+            else {
+                offset = this.offsetY;
+                timeAxisSize = this.height - offset;
+            }
+            var result = posInLevel * timeAxisSize * this.zoomListener.scale();
+            result += offset;
+            return result;
+        };
+        ;
+        //
+        /////////////////////////////
+        //
+        /////////////////////////////
+        ////////////
+        // Here come the two main functions of the directive
+        //
+        // this.render() and this.renderSelectionOnly() do the bulk of the
+        // work
+        /**
+        * Adjust the colors of all nodes and links to reflect the user's
+        * selection.
+        *
+        * @param nothing
+        * @returns nothing
+        */
+        EmuHierarchyController.prototype.renderSelectionOnly = function () {
+            var _this = this;
+            // Change the circle fill of all nodes depending on whether they are selected
+            this.svg.selectAll('circle.emuhierarchy-nodeCircle')
+                .style('fill', function (d) {
+                var color = _this.ConfigProviderService.design.color.white;
+                if (typeof _this.selectedItem !== 'undefined' && d.id === _this.selectedItem.id) {
+                    color = _this.ConfigProviderService.design.color.blue;
+                }
+                return color;
+            });
+            this.svg.selectAll('path.emuhierarchy-link')
+                .style('stroke', function (d) {
+                if (_this.selectedLink === d) {
+                    return _this.ConfigProviderService.design.color.yellow;
+                }
+                else {
+                    return _this.ConfigProviderService.design.color.grey;
+                }
+            });
+            this.svg.select('.emuhierarchy-newlinkpreview')
+                .attr('d', this.getPreviewPath.bind(this))
+                .style('stroke', this.getPreviewColor.bind(this));
+        };
+        ;
+        /**
+        * (Re-)Render the complete hierarchical structure
+        *
+        * Calls HierarchyLayoutService to calculate the relative positions of
+        * all nodes and links within the graph and then uses the above helper
+        * functions to calculate the absolute positons within the SVG.
+        *
+        * Makes use of D3JS data joins at various positions. For an
+        * introduction to the concept, see: http://bost.ocks.org/mike/join/
+        *
+        * It basically works by associating a data set with an SVG selection.
+        * D3 then divides this data set in three sections: enter, update and
+        * exit.
+        *
+        */
+        EmuHierarchyController.prototype.render = function () {
+            var _this = this;
+            this.lastScaleFactor = this.zoomListener.scale();
+            var i;
+            // Get current width and height of SVG
+            this.width = parseInt(d3["select"](this.element.find('svg')[0]).style('width'), 10);
+            this.height = parseInt(d3["select"](this.element.find('svg')[0]).style('height'), 10);
+            // Set orientation
+            if (this.transition.rotation) {
+                this.svg.transition()
+                    .duration(this.transition.duration)
+                    .attr('transform', this.getOrientatedTransform(false));
+            }
+            else {
+                this.svg.attr('transform', this.getOrientatedTransform(false));
+            }
+            /////////
+            // Draw time arrow
+            if (this.vertical) {
+                this.timeArrow.attr('transform', 'translate(' + (this.width / 2) + ',' + (this.height - 10) + ')');
+            }
+            else {
+                this.timeArrow.attr('transform', 'translate(' + (this.width - 20) + ',' + (this.height / 2) + ')rotate(90)');
+            }
+            /////////
+            // Draw scale factor display
+            if (this.vertical) {
+                this.scaleFactorDisplay
+                    .attr('transform', 'translate(' + this.width + ', 20)');
+                this.scaleFactorDisplay
+                    .select('text')
+                    .attr('text-anchor', 'end')
+                    .text('Zoom: ' + Math.round(this.zoomListener.scale() * 100) + ' %');
+            }
+            else {
+                this.scaleFactorDisplay
+                    .attr('transform', 'translate(0, ' + this.height + ')');
+                this.scaleFactorDisplay
+                    .select('text')
+                    .attr('text-anchor', 'start')
+                    .text('Zoom: ' + Math.round(this.zoomListener.scale() * 100) + ' %');
+            }
+            /////////
+            // Draw level captions and 'add item buttons' (which append
+            // nodes to the respective levels
+            this.captionLayer.attr('transform', this.getOrientatedLevelCaptionLayerTransform.bind(this));
+            // for reference on the .data() call, compare the comment on
+            // this.render() above
+            var levelCaptionSet = this.captionLayer.selectAll('g.emuhierarchy-levelcaption')
+                .data(this.ViewStateService.hierarchyState.path, function (d) {
+                return d;
+            });
+            var newLevelCaptions = levelCaptionSet.enter();
+            var oldLevelCaptions = levelCaptionSet.exit();
+            newLevelCaptions = newLevelCaptions.append('g')
+                .attr('class', 'emuhierarchy-levelcaption');
+            newLevelCaptions
+                .append('text');
+            var addItemButtons = newLevelCaptions
+                .filter(function (d) {
+                var levelType = _this.LevelService.getLevelDetails(d).type;
+                return (levelType === 'ITEM');
+            })
+                .append('g')
+                .attr('class', 'emuhierarchy-addbutton')
+                .attr('transform', this.getOrientatedAddItemButtonTransform.bind(this))
+                .on('click', this.addButtonOnClick.bind(this));
+            addItemButtons
+                .append('circle')
+                .style('fill', this.ConfigProviderService.design.color.blue)
+                .attr('r', 8);
+            addItemButtons
+                .append('path')
+                .style('stroke', this.ConfigProviderService.design.color.white)
+                .attr('d', 'M0,-6 V6 M-6,0 H6');
+            newLevelCaptions
+                .filter(function (d) {
+                var levelType = _this.LevelService.getLevelDetails(d).type;
+                return (levelType === 'SEGMENT' || levelType === 'EVENT');
+            })
+                .append('rect')
+                .attr('class', 'emuhierarchy-timelevelbackground')
+                .style('fill', this.ConfigProviderService.design.color.transparent.grey);
+            levelCaptionSet
+                .attr('transform', this.getOrientatedLevelCaptionTransform.bind(this));
+            levelCaptionSet
+                .select('text')
+                .text(this.getLevelCaptionText.bind(this));
+            levelCaptionSet
+                .select('.emuhierarchy-timelevelbackground')
+                .attr('transform', this.getOrientatedTimeLevelBackgroundTransform.bind(this))
+                .style('width', this.getOrientatedTimeLevelBackgroundWidth.bind(this))
+                .style('height', this.getOrientatedTimeLevelBackgroundHeight.bind(this));
+            if (this.transition.rotation) {
+                oldLevelCaptions = oldLevelCaptions.transition()
+                    .duration(this.transition.duration)
+                    .remove();
+            }
+            else {
+                oldLevelCaptions.remove();
+            }
+            oldLevelCaptions.select('text')
+                .style('fill-opacity', 0);
+            //
+            /////////
+            /////////
+            // Compute the new tree layout (first nodes and then links)
+            //
+            var nodes = [];
+            this.HierarchyLayoutService.calculateWeightsBottomUp(this.ViewStateService.hierarchyState.path);
+            for (i = 0; i < this.ViewStateService.hierarchyState.path.length; ++i) {
+                // Add all nodes that are not collapsed
+                var levelItems = this.LevelService.getLevelDetails(this.ViewStateService.hierarchyState.path[i]).items;
+                for (var ii = 0; ii < levelItems.length; ++ii) {
+                    if (levelItems[ii]._visible) {
+                        nodes.push(levelItems[ii]);
+                    }
+                }
+            }
+            // Make sure the selected things are visible, otherwise un-select them
+            var selectedItem = this.LevelService.getItemByID(this.ViewStateService.hierarchyState.selectedItemID);
+            var contextMenuItem = this.LevelService.getItemByID(this.ViewStateService.hierarchyState.contextMenuID);
+            var selectedLinkFromItem = this.LevelService.getItemByID(this.ViewStateService.hierarchyState.selectedLinkFromID);
+            var selectedLinkToItem = this.LevelService.getItemByID(this.ViewStateService.hierarchyState.selectedLinkToID);
+            if (selectedItem !== undefined && !selectedItem._visible) {
+                console.debug('Unselecting node');
+                this.ViewStateService.hierarchyState.selectedItemID = undefined;
+            }
+            if (selectedLinkFromItem !== undefined && !selectedLinkFromItem._visible) {
+                console.debug('Unselecting link');
+                this.ViewStateService.hierarchyState.selectedLinkFromID = undefined;
+                this.ViewStateService.hierarchyState.selectedLinkToID = undefined;
+            }
+            if (selectedLinkToItem !== undefined && !selectedLinkToItem._visible) {
+                console.debug('Unselecting link');
+                this.ViewStateService.hierarchyState.selectedLinkFromID = undefined;
+                this.ViewStateService.hierarchyState.selectedLinkToID = undefined;
+            }
+            if (contextMenuItem !== undefined && !contextMenuItem._visible) {
+                console.debug('Closing context menu (node became invisible)');
+                this.ViewStateService.hierarchyState.contextMenuID = undefined;
+            }
+            ////////
+            // Now layout links
+            //
+            // We must only draw links that are part of the currently selected path.
+            // We must therefore filter the links.
+            //
+            // We must also filter out links that are collapsed
+            //
+            // What follows below is a probably very low-performance approach to filtering
+            //
+            var links = [];
+            var allLinks = this.DataService.getData().links;
+            for (var l = 0; l < allLinks.length; ++l) {
+                for (i = 0; i < this.ViewStateService.hierarchyState.path.length - 1; ++i) {
+                    var element = this.LevelService.getItemFromLevelById(this.ViewStateService.hierarchyState.path[i], allLinks[l].toID);
+                    var parentElement = this.LevelService.getItemFromLevelById(this.ViewStateService.hierarchyState.path[i + 1], allLinks[l].fromID);
+                    if (element === null) {
+                        continue;
+                    }
+                    if (parentElement === null) {
+                        continue;
+                    }
+                    if (!element._visible) {
+                        continue;
+                    }
+                    if (this.ViewStateService.hierarchyState.getCollapsed(parentElement.id) || !parentElement._visible) {
+                        continue;
+                    }
+                    links.push(allLinks[l]);
+                }
+            }
+            // Transform relative coordinates (_posInLevel and _depth) to actual coordinates (_x and _y)
+            nodes.forEach(function (d) {
+                d._x = _this.depthToX(d._depth);
+                d._y = _this.posInLevelToY(d._posInLevel);
+            });
+            links.forEach(function (d) {
+                d._fromX = _this.depthToX(d._fromDepth);
+                d._fromY = _this.posInLevelToY(d._fromPosInLevel);
+                d._toX = _this.depthToX(d._toDepth);
+                d._toY = _this.posInLevelToY(d._toPosInLevel);
+            });
+            //////
+            // Now that all actual coordinates have been calculated, we
+            // update our SVG using d3js data joins
+            //
+            // for reference on the .data() call, compare the comment on
+            // this.render() above
+            //
+            // Define the data set to be visualised
+            var dataSet = this.svg.selectAll('g.emuhierarchy-node')
+                .data(nodes, function (d) {
+                return d.id;
+            });
+            var newNodes = dataSet.enter();
+            var oldNodes = dataSet.exit();
+            //
+            // Add nodes that were previously not part of the svg.
+            //
+            // Any node will consist of an svg group ("g"), a circle, a
+            // text and a second, invisible circle for mouseover handling.
+            //
+            // Note that properties that can be changed after the node is
+            // added will be set further below
+            newNodes = newNodes.append('g') // append() will return a set of all appended elements
+                .attr('class', 'emuhierarchy-node')
+                // event handlers
+                //.call(dragListener)
+                .attr('pointer-events', 'mouseover')
+                .on('click', this.nodeOnClick.bind(this))
+                //.on('dblclick', this.nodeOnRightClick)
+                .on('mouseover', this.nodeOnMouseOver.bind(this));
+            var circle = newNodes.append('circle')
+                .attr('class', 'emuhierarchy-nodeCircle')
+                .style('stroke', this.ConfigProviderService.design.color.grey);
+            if (this.transition.nodes) {
+                circle
+                    // Make circle invisible at first
+                    .attr('r', 0)
+                    // And then transition it to its normal size
+                    .transition()
+                    .duration(this.transition.duration)
+                    .attr('r', 4.5);
+            }
+            else {
+                circle.attr('r', 4.5);
+            }
+            newNodes.append('text')
+                .attr('class', 'emuhierarchy-nodeText');
+            // Make sure that nodes that appear due to their ancestry being uncollapsed do not fly in from the origin
+            // (as do all other nodes)
+            newNodes.attr('transform', function (d) {
+                var position = _this.ViewStateService.hierarchyState.getCollapsePosition(d.id);
+                if (typeof position !== 'undefined') {
+                    var x = position[0];
+                    var y = position[1];
+                    _this.ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
+                    return 'translate(' + x + ',' + y + ')' + _this.getOrientatedNodeTransform();
+                }
+            });
+            //
+            // Remove nodes that shall no longer be part of the svg
+            // Transition exiting nodes to the origin
+            // FIXME put that anyonymous transform function on scope
+            if (this.transition.nodes) {
+                oldNodes = oldNodes
+                    .transition()
+                    .duration(this.transition.duration)
+                    .attr('transform', function (d) {
+                    var collapsePosition = _this.ViewStateService.hierarchyState.getCollapsePosition(d.id);
+                    if (typeof collapsePosition !== 'undefined') {
+                        var x = collapsePosition[0];
+                        var y = collapsePosition[1];
+                        _this.ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
+                        return 'translate(' + x + ',' + y + ')';
+                    }
+                    else {
+                        return 'translate(' + 0 + ',' + 0 + ')';
+                    }
+                })
+                    .remove();
+            }
+            else {
+                oldNodes = oldNodes
+                    .attr('transform', function (d) {
+                    var collapsePosition = _this.ViewStateService.hierarchyState.getCollapsePosition(d.id);
+                    if (typeof collapsePosition !== 'undefined') {
+                        var x = collapsePosition[0];
+                        var y = collapsePosition[1];
+                        _this.ViewStateService.hierarchyState.setCollapsePosition(d.id, undefined);
+                        return 'translate(' + x + ',' + y + ')';
+                    }
+                    else {
+                        return 'translate(' + 0 + ',' + 0 + ')';
+                    }
+                })
+                    .remove();
+            }
+            oldNodes.select('text')
+                .style('fill-opacity', 0);
+            //
+            // Set or update properties that are subject to change after
+            // the node is added.
+            dataSet.select('text')
+                .attr('x', this.getOrientatedTextX.bind(this))
+                .attr('y', this.getOrientatedTextY.bind(this))
+                .attr('text-anchor', this.getOrientatedTextAnchor.bind(this))
+                .attr('transform', this.getOrientatedTextTransform.bind(this))
+                .text(this.getNodeText.bind(this));
+            // Change the circle fill depending on whether it is collapsed and/or selected
+            dataSet.select('circle.emuhierarchy-nodeCircle')
+                // Highlight selected item
+                .style('fill', function (d) {
+                var color = _this.ConfigProviderService.design.color.white;
+                if (typeof _this.selectedItem !== 'undefined' && d.id === _this.selectedItem.id) {
+                    color = _this.ConfigProviderService.design.color.blue;
+                }
+                return color;
+            })
+                // Highlight collapsed items
+                .style('stroke', function (d) {
+                if (_this.ViewStateService.hierarchyState.getCollapsed(d.id)) {
+                    return _this.ConfigProviderService.design.color.red;
+                }
+                else {
+                    return _this.ConfigProviderService.design.color.grey;
+                }
+            });
+            // Transition nodes to their new position
+            if (this.transition.nodes) {
+                dataSet
+                    .transition()
+                    .duration(this.transition.duration)
+                    .attr('transform', function (d) {
+                    return 'translate(' + d._x + ',' + d._y + ')' + _this.getOrientatedNodeTransform();
+                });
+            }
+            else {
+                dataSet
+                    .attr('transform', function (d) {
+                    return 'translate(' + d._x + ',' + d._y + ')' + _this.getOrientatedNodeTransform();
+                });
+            }
+            /////
+            // Create context menu
+            // If the context menu has been closed, remove the elements
+            if (this.ViewStateService.hierarchyState.contextMenuID === undefined) {
+                this.svg.selectAll('.emuhierarchy-contextmenu')
+                    .remove();
+            }
+            // If the context menu does not yet exist, create it
+            var contextMenu = this.svg.select('.emuhierarchy-contextmenu');
+            if (contextMenu[0][0] === null) {
+                contextMenu = dataSet
+                    .filter(function (d) {
+                    return d.id === _this.ViewStateService.hierarchyState.contextMenuID;
+                })
+                    .append('g')
+                    .attr('class', 'emuhierarchy-contextmenu');
+                contextMenu
+                    .append('circle')
+                    .style('fill', 'darkgrey')
+                    .attr('r', 50)
+                    .style('cursor', 'default');
+                if (this.transition.contextMenu) {
+                    contextMenu
+                        .style('opacity', 0)
+                        .transition()
+                        .duration(this.transition.duration)
+                        .style('opacity', 0.5);
+                }
+                contextMenu
+                    .append('text')
+                    .text(this.getOrientatedNodeCollapseText.bind(this))
+                    .attr('x', -25)
+                    .attr('y', -25)
+                    .attr('text-anchor', 'middle')
+                    .on('click', this.nodeOnCollapseClick.bind(this));
+                if (this.transition.contextMenu) {
+                    contextMenu
+                        .style('opacity', 0)
+                        .transition()
+                        .duration(this.transition.duration)
+                        .style('opacity', 1);
+                }
+                contextMenu
+                    .append('text')
+                    .text('play')
+                    .attr('x', -25)
+                    .attr('y', +25)
+                    .attr('text-anchor', 'middle')
+                    .on('click', this.nodeOnPlayClick.bind(this));
+                if (this.transition.contextMenu) {
+                    contextMenu
+                        .style('opacity', 0)
+                        .transition()
+                        .duration(this.transition.duration)
+                        .style('opacity', 1);
+                }
+                var foreignObject = contextMenu
+                    .append('foreignObject')
+                    .attr('height', 30)
+                    .attr('x', 10)
+                    .attr('y', -15)
+                    .attr('width', 0);
+                if (this.transition.contextMenu) {
+                    foreignObject
+                        .transition()
+                        .duration(this.transition.duration)
+                        .attr('width', 100);
+                }
+                else {
+                    foreignObject.attr('width', 100);
+                }
+                foreignObject
+                    .append('xhtml:body')
+                    .append('input').attr('value', this.getNodeText.bind(this))
+                    .style('width', '100%')
+                    .style('height', '100%')
+                    .style('outline', 'none')
+                    .style('border', '0')
+                    .style('background-color', this.getLabelLegalnessColor.bind(this))
+                    .on('input', this.nodeOnInput.bind(this))
+                    .on('focus', this.nodeOnFocusIn.bind(this))
+                    .on('blur', this.nodeOnFocusOut.bind(this));
+                if (foreignObject[0].length !== 0) {
+                    foreignObject.select('input')[0][0].focus();
+                    foreignObject.select('input')[0][0].select();
+                }
+            }
+            else {
+                this.svg.select('.emuhierarchy-contextmenu text').text(this.getOrientatedNodeCollapseText.bind(this));
+            }
+            // Make sure the node containing the context menu is the last
+            // one in the SVG, otherwise the succeeding elements are drawn
+            // visually on top of the context menu.
+            this.svg.selectAll('.emuhierarchy-node').sort(function (a, b) {
+                if (a.id === _this.ViewStateService.hierarchyState.contextMenuID) {
+                    return 1;
+                }
+                if (b.id === _this.ViewStateService.hierarchyState.contextMenuID) {
+                    return -1;
+                }
+                return 0;
+            });
+            //
+            //
+            // Now we turn to visualising links
+            //
+            // for reference on the .data() call, compare the comment on
+            // this.render() above
+            var linkSet = this.svg.selectAll('.emuhierarchy-linkgroup')
+                .data(links, function (d) {
+                // Form unique link ID
+                return 's' + d.fromID + 't' + d.toID;
+            });
+            var newLinks = linkSet.enter();
+            var oldLinks = linkSet.exit();
+            // The new link's paths are inserted within the svg element
+            // that linkSet was generated from.
+            // They must be inserted at the beginning (before the nodes,
+            // which have already been appended), because there is no CSS
+            // z-index for SVG.
+            // So the order of insertion is the only way to make sure that
+            // the lines are painted under the nodes.
+            newLinks = newLinks
+                .insert('g', ':first-child')
+                .attr('class', 'emuhierarchy-linkgroup');
+            // Append thicker ghost lines for better mouseover
+            newLinks
+                .append('path')
+                .attr('class', 'emuhierarchy-ghostlink')
+                .style('stroke-width', this.getOrientatedGhostLinkStrokeWidth.bind(this))
+                .on('mouseover', this.linkOnMouseOver.bind(this));
+            newLinks
+                .append('path')
+                .attr('class', 'emuhierarchy-link')
+                .style('stroke-width', this.getOrientatedLinkStrokeWidth.bind(this));
+            if (this.transition.links) {
+                newLinks
+                    .style('opacity', 0)
+                    .transition()
+                    .duration(this.transition.duration)
+                    .style('opacity', 1);
+            }
+            // Remove old links
+            if (this.transition.links) {
+                oldLinks
+                    .transition()
+                    .duration(this.transition.duration)
+                    .style('opacity', 0)
+                    .remove();
+            }
+            else {
+                oldLinks.remove();
+            }
+            // Set color depending on whether the link is selected
+            linkSet
+                .selectAll('.emuhierarchy-link')
+                .style('stroke', function (d) {
+                if (_this.selectedLink === d) {
+                    return _this.ConfigProviderService.design.color.yellow;
+                }
+                else {
+                    return _this.ConfigProviderService.design.color.grey;
+                }
+            });
+            // Transition links to their new position.
+            if (this.transition.links) {
+                linkSet
+                    .selectAll('.emuhierarchy-link')
+                    .transition()
+                    .duration(this.transition.duration)
+                    .attr('d', this.getPath.bind(this))
+                    .style('stroke-width', this.getOrientatedLinkStrokeWidth.bind(this))
+                    .style('opacity', 1);
+            }
+            else {
+                linkSet
+                    .selectAll('.emuhierarchy-link')
+                    .attr('d', this.getPath.bind(this))
+                    .style('stroke-width', this.getOrientatedLinkStrokeWidth);
+            }
+            linkSet
+                .selectAll('.emuhierarchy-ghostlink')
+                .attr('d', this.getPath.bind(this));
+            // If the user is trying to add a new link,
+            // visualise what he's doing
+            this.svg.selectAll('.emuhierarchy-newlink').remove();
+            this.svg.selectAll('.emuhierarchy-newlinkpreview').remove();
+            if (this.newLinkSrc !== undefined) {
+                this.svg.append('path')
+                    .attr('class', 'emuhierarchy-newlink')
+                    .style('stroke', 'black')
+                    .style('stroke-width', this.getOrientatedLinkStrokeWidth.bind(this));
+                this.svg.append('path')
+                    .attr('class', 'emuhierarchy-newlinkpreview')
+                    .attr('d', this.getPreviewPath.bind(this))
+                    .style('stroke', this.getPreviewColor.bind(this))
+                    .style('stroke-width', this.getOrientatedLinkStrokeWidth.bind(this));
+            }
+            // Set boundaries within which the graph has to stay when the
+            // user is panning. That is, the graph can never *completely*
+            // leave these boundaries
+            if (this.vertical) {
+                this.northernBoundary = this.vertOffsetY + this.height * (1 - this.panningLimit);
+                this.southernBoundary = this.height * this.panningLimit;
+                this.westernBoundary = this.vertOffsetX + this.width * (1 - this.panningLimit);
+                this.easternBoundary = this.width * this.panningLimit;
+            }
+            else {
+                this.northernBoundary = this.offsetY + this.height * (1 - this.panningLimit);
+                this.southernBoundary = this.height * this.panningLimit;
+                this.westernBoundary = this.offsetX + this.width * (1 - this.panningLimit);
+                this.easternBoundary = this.width * this.panningLimit;
+            }
+            // Find out where the time and cross axis start and end, to
+            // prevent that these points leave the above boundaries.
+            // Note that these do not depend on this.vertical because they
+            // are transformed when the user is in "this.vertical mode".
+            this.timeAxisStartPosition = this.svg.node().getBBox().y;
+            this.timeAxisEndPosition = this.timeAxisStartPosition + this.svg.node().getBBox().height;
+            this.crossAxisStartPosition = this.svg.node().getBBox().x;
+            this.crossAxisEndPosition = this.crossAxisStartPosition + this.svg.node().getBBox().width;
+        };
+        ;
+        return EmuHierarchyController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(EmuHierarchyComponent.selector, EmuHierarchyComponent);
+
 // CONCATENATED MODULE: ./app/scripts/components/index.ts
+
 
 
 
