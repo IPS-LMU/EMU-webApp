@@ -30,6 +30,11 @@ angular.module('emuwebApp')
 
 				//
 				scope.$watch('ViewStateService.osciSettings', function () {
+					if(ViewStateService.osciSettings.invert){
+						canvas.style.background = ConfigProviderService.design.color.white; 
+					} else {
+						canvas.style.background = ConfigProviderService.design.color.black; 
+					}
 					if (!$.isEmptyObject(SoundHandlerService)) {
 						if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
 							DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS, false);

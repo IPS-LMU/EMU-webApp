@@ -8,7 +8,9 @@
 	        <div>
 	            <h2>Current channel</h2>
 	            <select ng-model="osciChannel" ng-options="channel for channel in osciAvailableChannels"></select>
-		    </div>	
+		    <h2>Invert</h2>
+		    <span>Invert colors of osciliscope: <input type="checkbox" ng-model="osciInvert"></span>
+		</div>	
 	    	<h1>SPEC Settings</h1>
 	        <div>
 	            <h2>View Range (Hz)</h2>

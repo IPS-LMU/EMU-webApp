@@ -169,7 +169,8 @@ class ViewStateService{
 		};
 		
 		this.osciSettings = {
-			curChannel: 0
+			curChannel: 0,
+			invert: false 
 		};
 		
 		this.playHeadAnimationInfos = {
@@ -534,8 +535,9 @@ class ViewStateService{
 	/**
 	* setOsciSettings
 	*/
-	public setOsciSettings(curCh) {
+	public setOsciSettings(curCh, invert) {
 		this.osciSettings.curChannel = curCh;
+		this.osciSettings.invert = invert;
 	};
 	
 	

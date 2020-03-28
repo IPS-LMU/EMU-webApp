@@ -12,6 +12,7 @@ angular.module('emuwebApp')
 		$scope.upperBoundary = '';
 
 		$scope.osciChannel = $scope.vs.osciSettings.curChannel;
+		$scope.osciInvert = $scope.vs.osciSettings.invert;
 		if(typeof $scope.shs.audioBuffer.numberOfChannels === 'number'){ // testing if available for unit tests
 			$scope.osciAvailableChannels = Array.from(Array($scope.shs.audioBuffer.numberOfChannels).keys());
 		}
@@ -144,7 +145,7 @@ angular.module('emuwebApp')
 					$scope.modalVals.preEmphasisFilterFactor, 
 					$scope.modalVals.heatMapColorAnchors,
 					$scope.modalVals.invert);
-				$scope.vs.setOsciSettings($scope.osciChannel);
+				$scope.vs.setOsciSettings($scope.osciChannel, $scope.osciInvert);
 				$scope.reset();
 			}
 		};
