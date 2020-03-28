@@ -73,7 +73,7 @@ class DbObjLoadSaveService{
 			this.SoundHandlerService.audioBuffer = audioBuffer;
 			// fetch ssff files (if encoding == GETURL)
 			var promises = [];
-			bundleData.ssffFiles.forEach(function(file) {
+			bundleData.ssffFiles.forEach((file) => {
 				if(file.encoding === 'GETURL'){ // BASE64 & ARRAYBUFFER are handled by worker
 					file.data = this.IoHandlerService.httpGetPath(file.data, 'arraybuffer');
 					promises.push(file.data);
@@ -191,9 +191,6 @@ class DbObjLoadSaveService{
 							this.innerLoadBundle(bndl, bundleData, arrBuff, defer);
 						}else if(bundleData.mediaFile.encoding === 'GETURL'){
 							this.IoHandlerService.httpGetPath(bundleData.mediaFile.data, 'arraybuffer').then((res) => {
-								if(res.status === 200){
-									res = res.data;
-								}
 								this.innerLoadBundle(bndl, bundleData, res, defer);
 							});
 						}
