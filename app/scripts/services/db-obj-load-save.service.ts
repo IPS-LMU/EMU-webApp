@@ -73,7 +73,7 @@ class DbObjLoadSaveService{
 			this.SoundHandlerService.audioBuffer = audioBuffer;
 			// fetch ssff files (if encoding == GETURL)
 			var promises = [];
-			bundleData.ssffFiles.forEach(function(file) {
+			bundleData.ssffFiles.forEach((file) => {
 				if(file.encoding === 'GETURL'){ // BASE64 & ARRAYBUFFER are handled by worker
 					file.data = this.IoHandlerService.httpGetPath(file.data, 'arraybuffer');
 					promises.push(file.data);
@@ -109,13 +109,13 @@ class DbObjLoadSaveService{
 					this.ViewStateService.somethingInProgress = false;
 					this.ViewStateService.somethingInProgressTxt = 'Done!';
 					defer.resolve();
-				}, function (errMess) {
+				}, (errMess) => {
 					this.ModalService.open('views/error.html', 'Error parsing SSFF file: ' + errMess.status.message).then(() => {
 						this.AppStateService.resetToInitState();
 					});
 				});
 			});
-		}, function (errMess) {
+		}, (errMess) => {
 			this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(() => {
 				this.AppStateService.resetToInitState();
 			});
@@ -204,7 +204,7 @@ class DbObjLoadSaveService{
 					}
 					
 					
-				}, function (errMess) {
+				}, (errMess) => {
 					// check for http vs websocket response
 					if (errMess.data) {
 						this.ModalService.open('views/error.html', 'Error loading bundle: ' + errMess.data).then(() => {
@@ -248,7 +248,7 @@ class DbObjLoadSaveService{
 					});
 					this.getAnnotationAndSaveBndl(bundleData, defer);
 					
-				}, function (errMess) {
+				}, (errMess) => {
 					this.ModalService.open('views/error.html', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
 					defer.reject();
 				});
@@ -328,7 +328,7 @@ class DbObjLoadSaveService{
 				this.HistoryService.movesAwayFromLastSave = 0;
 				defer.resolve();
 				this.ViewStateService.setState('labeling');
-			}, function (errMess) {
+			}, (errMess) => {
 				this.ModalService.open('views/error.html', 'Error saving bundle: ' + errMess.status.message).then(() => {
 					this.AppStateService.resetToInitState();
 				});
