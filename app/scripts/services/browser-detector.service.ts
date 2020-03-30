@@ -7,22 +7,22 @@ class BrowserDetectorService{
 	
 	constructor(){
 		this.isMobile = {
-			Android: function () {
+			Android: () => {
 				return navigator.userAgent.match(/Android/i);
 			},
-			BlackBerry: function () {
+			BlackBerry: () => {
 				return navigator.userAgent.match(/BlackBerry/i);
 			},
-			iOS: function () {
+			iOS: () => {
 				return navigator.userAgent.match(/iPhone|iPad|iPod/i);
 			},
-			Opera: function () {
+			Opera: () => {
 				return navigator.userAgent.match(/Opera Mini/i);
 			},
-			Windows: function () {
+			Windows: () => {
 				return navigator.userAgent.match(/IEMobile/i);
 			},
-			any: function () {
+			any: () => {
 				return (this.isMobile.Android() ||
 				this.isMobile.BlackBerry() ||
 				this.isMobile.iOS() ||
@@ -32,28 +32,28 @@ class BrowserDetectorService{
 		};
 		
 		this.isBrowser = {
-			Firefox: function () {
+			Firefox: () => {
 				return navigator.userAgent.match(/Firefox/i);
 			},
-			Chrome: function () {
+			Chrome: () => {
 				return navigator.userAgent.match(/Chrome/i);
 			},
-			InternetExplorer: function () {
+			InternetExplorer: () => {
 				return navigator.userAgent.match(/MSIE/i);
 			},
-			Opera: function () {
+			Opera: () => {
 				return navigator.userAgent.match(/Opera/i);
 			},
-			PhantomJS: function () {
+			PhantomJS: () => {
 				return navigator.userAgent.match(/PhantomJS/i);
 			},
-			HeadlessChrome: function(){
+			HeadlessChrome: () => {
 				return navigator.userAgent.match(/HeadlessChrome/i);
 			},
-			Safari: function () {
+			Safari: () => {
 				return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 			},
-			any: function () {
+			any: () => {
 				return (this.isBrowser.Firefox() ||
 				this.isBrowser.Chrome() ||
 				this.isBrowser.InternetExplorer() ||
@@ -66,7 +66,7 @@ class BrowserDetectorService{
 	}
 	
 	
-	public isMobileDevice = function () {
+	public isMobileDevice() {
 		var data = this.isMobile.any();
 		if (data === null) {
 			return false;
@@ -81,7 +81,7 @@ class BrowserDetectorService{
 		}
 	};
 	
-	public isDesktopDevice = function () {
+	public isDesktopDevice () {
 		var data = this.isBrowser.any();
 		if (data === null) {
 			return false;

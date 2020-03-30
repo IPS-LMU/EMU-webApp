@@ -195,14 +195,14 @@ class DragnDropService{
 							else {
 								if (data.annotation.type === 'textgrid') {
 									reader2.readAsText(data.annotation.file);
-									reader2.onloadend = function (evt) {
+									reader2.onloadend = (evt) => {
 										if (evt.target.readyState === FileReader.DONE) {
 											this.TextGridParserService.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then((parseMess) => {
 												this.DragnDropDataService.convertedBundles[i].annotation = parseMess;
 												this.convertDragnDropData(bundles, i + 1).then(() => {
 													defer.resolve();
 												});
-											}, function (errMess) {
+											}, (errMess) => {
 												this.ModalService.open('views/error.html', 'Error parsing TextGrid file: ' + errMess.status.message).then(() => {
 													defer.reject();
 												});
@@ -212,7 +212,7 @@ class DragnDropService{
 								}
 								else if (data.annotation.type === 'annotation') {
 									reader2.readAsText(data.annotation.file);
-									reader2.onloadend = function (evt) {
+									reader2.onloadend = (evt) => {
 										if (evt.target.readyState === FileReader.DONE) {
 											this.DragnDropDataService.convertedBundles[i].annotation = angular.fromJson(evt.currentTarget.result);
 											this.convertDragnDropData(bundles, i + 1).then(() => {
@@ -222,7 +222,7 @@ class DragnDropService{
 									};
 								}
 							}
-						}, function (errMess){
+						}, (errMess) => {
 							this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(() => {
 								defer.reject();
 							});

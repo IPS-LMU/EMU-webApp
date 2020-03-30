@@ -244,7 +244,7 @@ class LevelService{
 		var curAttrDef = this.ViewStateService.getCurAttrDef(levelDetails.name);
 		var labels = [];
 		levelDetails.items.forEach((item) => {
-			var pos = item.labels.map(function (e) {
+			var pos = item.labels.map((e) => {
 				return e.name;
 			}).indexOf(curAttrDef);
 			if (pos >= 0) {
@@ -262,7 +262,7 @@ class LevelService{
 	public getLevelName(nodeID) {
 		var ret = null;
 		this.DataService.getLevelData().forEach((level) => {
-			var pos = level.items.map(function (e) {
+			var pos = level.items.map((e) => {
 				return e.id;
 			}).indexOf(nodeID);
 			if (pos >= 0) {
@@ -295,7 +295,7 @@ class LevelService{
 	public getItemByID(nodeID) {
 		var ret;
 		this.DataService.getLevelData().forEach((level) => {
-			var pos = level.items.map(function (e) {
+			var pos = level.items.map((e) => {
 				return e.id;
 			}).indexOf(nodeID);
 			if (pos >= 0) {

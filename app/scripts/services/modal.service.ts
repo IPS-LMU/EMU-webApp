@@ -62,7 +62,7 @@ class ModalService{
 	/**
 	*
 	*/
-	public error = function (msg) {
+	public error (msg) {
 		this.initialize();
 		
 		this.dataIn = msg;

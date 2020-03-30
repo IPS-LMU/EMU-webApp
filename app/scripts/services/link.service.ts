@@ -193,7 +193,7 @@ class LinkService{
 	* change a Link (form=={'fromID':fromID, 'toID':toID})
 	* to (to=={'fromID':fromID, 'toID':toNewID})
 	*/
-	public changeLinkFrom = function (fromID, toID, fromNewID) {
+	public changeLinkFrom(fromID, toID, fromNewID) {
 		this.DataService.getLinkData().forEach((link, linkOrder) => {
 			if (link.fromID === fromID && link.toID === toID) {
 				this.DataService.changeLinkDataAt(linkOrder, fromNewID, toID);

@@ -46,7 +46,7 @@ class DataService{
 	*/
 	public getLevelOrder(order) {
 		if (this.data.levels !== undefined) {
-			return this.data.levels.sort(function (a, b) {
+			return this.data.levels.sort((a, b) => {
 				return order.indexOf(a.name) - order.indexOf(b.name);
 			});
 		}
