@@ -293,7 +293,7 @@ class ConfigProviderService {
 	/**
 	 *
 	 */
-	public findAllTracksInDBconfigNeededByEMUwebApp = function () {
+	public findAllTracksInDBconfigNeededByEMUwebApp() {
 		var DBconfig = this.curDbConfig;
 		var allTracks = [];
 

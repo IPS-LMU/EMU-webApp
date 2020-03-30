@@ -151,7 +151,7 @@ class IoHandlerService{
 	/**
 	*
 	*/
-	public getDBconfigFile = function (nameOfDB) {
+	public getDBconfigFile(nameOfDB) {
 		var getProm;
 		
 		if (this.ConfigProviderService.vals.main.comMode === 'CORS') {

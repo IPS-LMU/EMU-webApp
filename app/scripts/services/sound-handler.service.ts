@@ -55,7 +55,7 @@ class SoundHandlerService{
 		this.curSource.buffer = this.audioBuffer;
 		this.curSource.connect(this.audioContext.destination);
 		this.curSource.start(0, startTime, durTime);
-		this.curSource.onended = function () {
+		this.curSource.onended = () => {
 			this.isPlaying = false;
 		};
 		

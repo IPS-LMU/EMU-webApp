@@ -30,7 +30,7 @@ export class HierarchyLayoutService{
 		this.StandardFuncsService = StandardFuncsService;
 	}
 
-	public findAllNonPartialPaths = function () {
+	public findAllNonPartialPaths () {
 
 		var paths = {
 			possible: [],
@@ -38,7 +38,7 @@ export class HierarchyLayoutService{
 		};
 		// Find all levels to start calculating possible paths through the hierarchy of levels
 		this.ConfigProviderService.curDbConfig.levelDefinitions.forEach( (l) => {
-			paths.possible = paths.possible.concat(this.findPaths(l.name));
+			paths.possible = paths.possible.concat(this.findPaths(l.name, undefined));
 		});
 
 
@@ -88,7 +88,7 @@ export class HierarchyLayoutService{
 
 
 	// paths are arrays of level names (strings) in reverse order
-	public pathStartsWith = function(superPath, subPathCandidate) {
+	public pathStartsWith(superPath, subPathCandidate) {
 		if (subPathCandidate.length > superPath.length) {
 			return false;
 		}
@@ -112,7 +112,7 @@ export class HierarchyLayoutService{
 	 * @param startLevel The name of the level from which to start
 	 * @param path An array of levels' names that form a path to startLevel (optional; shouldn't be an empty array)
 	 */
-	public findPaths = function (startLevel, path) {
+	public findPaths(startLevel, path) {
 		if (typeof path === 'undefined') {
 			path = [startLevel];
 		} else {
@@ -145,7 +145,7 @@ export class HierarchyLayoutService{
 	 * @param childLevel The name of the level whose parents to find
 	 * @returns An array of names of childLevel's parent levels
 	 */
-	public findParentLevels = function (childLevel) {
+	public findParentLevels(childLevel) {
 		var parents = [];
 		for (var i = 0; i < this.ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
 			if (this.ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === childLevel) {
@@ -162,7 +162,7 @@ export class HierarchyLayoutService{
 	 * This is most likely rather slow and -definitely needs- could
 	 * use some tweaking
 	 */
-	public calculateWeightsBottomUp = function (selectedPath) {
+	public calculateWeightsBottomUp(selectedPath) {
 		var i, ii;
 
 		/////
@@ -229,7 +229,7 @@ export class HierarchyLayoutService{
 	 * @return an array of children nodes
 	 * @return empty array if there are no children (previously would return null due to a d3 dependency that no longer exists)
 	 */
-	public findChildren = function (d, selectedPath) {
+	public findChildren(d, selectedPath) {
 		var children = [];
 
 		// Find the level that d is a part of
@@ -285,7 +285,7 @@ export class HierarchyLayoutService{
 	 * _parents property that is either an empty array (if it has
 	 * no parents) or an array containing its parents.
 	 */
-	public findParents = function (selectedPath) {
+	public findParents(selectedPath) {
 		var i, ii, c, j;
 
 		//////
@@ -347,7 +347,7 @@ export class HierarchyLayoutService{
 	 * Will add a boolean attribute _visible to all items on the
 	 * currently selected path.
 	 */
-	public findVisibility = function (selectedPath) {
+	public findVisibility (selectedPath) {
 		// Root nodes are all nodes that have no parents and
 		// thus form a sub-graph.
 		//
@@ -411,7 +411,7 @@ export class HierarchyLayoutService{
 	/**
 	 * Toggle the state of a single item with its subtree
 	 */
-	public toggleCollapse = function (d, selectedPath) {
+	public toggleCollapse(d, selectedPath) {
 
 		// Find out whether we're collapsing or decollapsing
 		var isCollapsing = !this.ViewStateService.hierarchyState.getCollapsed (d.id);

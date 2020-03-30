@@ -67,7 +67,7 @@ class AppStateService{
 			//$scope.loadDefaultConfig();
 		};
 		
-		public reloadToInitState = function (session) {
+		public reloadToInitState (session) {
 			// SIC IoHandlerService.WebSocketHandlerService is private
 			this.IoHandlerService.WebSocketHandlerService.closeConnect();
 			// $scope.curBndl = {};

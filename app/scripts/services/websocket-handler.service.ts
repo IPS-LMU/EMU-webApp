@@ -194,7 +194,7 @@ class WebSocketHandlerService{
 	// close connection with ws
 	public closeConnect() {
 		if (this.isConnected()) {
-			this.ws.onclose = function () {
+			this.ws.onclose = () => {
 			};
 			this.ws.close();
 		}

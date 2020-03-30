@@ -276,7 +276,7 @@ class DrawHelperService{
 	};
 
 
-	public findMinMaxPeaks = function(sS, eS, winIdx){
+	public findMinMaxPeaks(sS, eS, winIdx){
 
 		var ssT = this.ViewStateService.calcSampleTime(sS);
 		var esT = this.ViewStateService.calcSampleTime(eS);

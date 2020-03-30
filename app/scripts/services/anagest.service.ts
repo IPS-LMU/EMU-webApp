@@ -281,7 +281,7 @@ class AnagestService{
 				});
 			});
 
-		}, function () {
+		}, () => {
 		});
 		return defer.promise;
 	};
