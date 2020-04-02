@@ -87,6 +87,7 @@ let EmuHierarchyComponent = {
 		private element;
 		private zoomListener;
 		private svg;
+		private zoomer;
 		private captionLayer;
 		
 		private newLinkSrc;
@@ -173,7 +174,9 @@ let EmuHierarchyComponent = {
 			}
 			
 			// scaleExtent limits the amount of zooming possible
-			this.zoomListener = d3.behavior.zoom().scaleExtent(this.scaleExtent).on('zoom', this.zoom.bind(this));
+			this.zoomListener = d3.zoom()
+			.scaleExtent(this.scaleExtent)
+			.on('zoom', this.zoom.bind(this));
 			
 			// Create the d3 element and position it based on margins
 			this.svg = d3.select(this.element.find('div')[0])
@@ -188,6 +191,13 @@ let EmuHierarchyComponent = {
 			.append('g')
 			;
 			
+			this.zoomer = this.svg.append("rect")
+			.attr("width", '100%')
+			.attr("height", '100%')
+			.style("fill", "none")
+			.style("pointer-events", "all")
+			.call(this.zoomListener);
+			
 			this.shiftMode = false;
 			
 			
@@ -197,6 +207,7 @@ let EmuHierarchyComponent = {
 			
 			this.timeArrow = this.svg.append('g')
 			.append('text')
+			.style('fill', this.ConfigProviderService.design.color.white)
 			.text('time →');
 			
 			this.scaleFactorDisplay = this.svg.append('g');
@@ -207,13 +218,15 @@ let EmuHierarchyComponent = {
 			
 			
 			// read previously stored zoom and pan values
-			this.zoomListener.translate(this.ViewStateService.hierarchyState.translate);
-			this.zoomListener.scale(this.ViewStateService.hierarchyState.scaleFactor);
+			// this.zoomListener.translate(this.ViewStateService.hierarchyState.translate);
+			// this.zoomListener.scale(this.ViewStateService.hierarchyState.scaleFactor);
 			// this.render();
+			var t = d3.zoomTransform(this.zoomer.node());
+			this.zoomer.call(this.zoomListener.transform, d3.zoomIdentity.translate(t.x, t.y).scale(t.k));
 		}
 		
 		$onChanges = function(changes){
-			console.log(changes);
+			// console.log(changes);
 			
 			if(changes.vertical){
 				if(changes.vertical.currentValue !== changes.vertical.previousValue){
@@ -292,7 +305,7 @@ let EmuHierarchyComponent = {
 					}
 				}
 			}
-
+			
 			// number is increased by controller to get update (hacky but don't see any other alternative for now)
 			if(changes.attributeDefinitionClickCounter){
 				if(changes.attributeDefinitionClickCounter.currentValue !== changes.attributeDefinitionClickCounter.previousValue){
@@ -363,18 +376,19 @@ let EmuHierarchyComponent = {
 		* The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 		*/
 		private zoom() {
+			var t = d3.zoomTransform(this.zoomer.node());
 			// Make sure panning is within allowed regions
-			this.limitPanning();
+			t = this.limitPanning(t);
 			
 			// Save translate and scale so they can be re-used when the modal is re-opened
-			this.ViewStateService.hierarchyState.translate = this.zoomListener.translate();
-			this.ViewStateService.hierarchyState.scaleFactor = this.zoomListener.scale();
+			this.ViewStateService.hierarchyState.translate = [t.x, t.y]//this.zoomListener.translate();
+			this.ViewStateService.hierarchyState.scaleFactor = t.k; //this.zoomListener.scale();
 			
 			// Transform all SVG elements
 			// Note that this.svg is actually not the svg itself but rather the main <g> within it
 			// Note further that this.captionLayer is a sibling and not a descendant of this.svg
 			this.svg.attr('transform', this.getOrientatedTransform(true));
-			this.captionLayer.attr('transform', this.getOrientatedLevelCaptionLayerTransform.bind(this));
+			this.captionLayer.attr('transform', this.getOrientatedLevelCaptionLayerTransform());
 			this.captionLayer.selectAll('g.emuhierarchy-levelcaption').attr('transform', this.getOrientatedLevelCaptionTransform.bind(this));
 			
 			// Call this.render(), but make sure it's only called once a rush of zoom events has finished
@@ -394,10 +408,10 @@ let EmuHierarchyComponent = {
 		*
 		* If the factor is not within that limit, reset it.
 		*/
-		private limitPanning() {
+		private limitPanning(t) {
 			// Read user's panning value
-			var x = this.zoomListener.translate()[0];
-			var y = this.zoomListener.translate()[1];
+			var x = t.x;
+			var y = t.y;
 			
 			if (this.vertical) {
 				if (!this.allowCrossAxisPan) {
@@ -437,7 +451,11 @@ let EmuHierarchyComponent = {
 				}
 			}
 			
-			this.zoomListener.translate([x, y]);
+			return({x: x, y: y, k: t.k})
+
+			// this.zoomListener.translate([x, y]);
+			// SIC this causes issue
+			// this.zoomer.call(this.zoomListener.transform, d3.zoomIdentity.translate(t.x,t.y).scale(t.k));
 		};
 		
 		private rotate() {
@@ -447,17 +465,18 @@ let EmuHierarchyComponent = {
 			// panned away before the rotation and try to restore
 			// that value afterwards.
 			
-			var translate = this.zoomListener.translate();
-			
+			// var translate = this.zoomListener.translate();
+			var t = d3.zoomTransform(this.zoomer.node());
+
 			var percentageAwayTimeAxis, percentageAwayCrossAxis;
 			if (this.vertical === true) {
 				// Changing from horizontal to vertical
-				percentageAwayTimeAxis = (translate[1]) / this.timeAxisEndPosition;
-				percentageAwayCrossAxis = (translate[0]) / this.crossAxisEndPosition;
+				percentageAwayTimeAxis = (t.y) / this.timeAxisEndPosition;
+				percentageAwayCrossAxis = (t.x) / this.crossAxisEndPosition;
 			} else {
 				// Changing from vertical to horizontal
-				percentageAwayTimeAxis = (translate[0]) / this.timeAxisEndPosition;
-				percentageAwayCrossAxis = (translate[1]) / this.crossAxisEndPosition;
+				percentageAwayTimeAxis = (t.x) / this.timeAxisEndPosition;
+				percentageAwayCrossAxis = (t.y) / this.crossAxisEndPosition;
 			}
 			
 			this.render();
@@ -467,16 +486,19 @@ let EmuHierarchyComponent = {
 			
 			if (this.vertical === true) {
 				// Changing from horizontal to vertical
-				this.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
+				// this.zoomListener.translate([percentageAwayTimeAxis, percentageAwayCrossAxis]);
+				this.zoomer.call(this.zoomListener.transform, d3.zoomIdentity.translate(percentageAwayTimeAxis, percentageAwayCrossAxis).scale(t.k));
 			} else {
 				// Changing from vertical to horizontal
-				this.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
+				// this.zoomListener.translate([percentageAwayCrossAxis, percentageAwayTimeAxis]);
+				this.zoomer.call(this.zoomListener.transform, d3.zoomIdentity.translate(percentageAwayCrossAxis, percentageAwayTimeAxis).scale(t.k));
 			}
 			
-			this.limitPanning();
+			this.limitPanning(t);
 			
 			// Make sure the programmatic changes to the translate vector are applied
-			this.zoomListener.event(this.svg);
+			// TODO: do we need this?
+			// this.zoomListener.event(this.svg);
 		};
 		
 		/**
@@ -486,18 +508,19 @@ let EmuHierarchyComponent = {
 		*/
 		private getOrientatedTransform(zoomInProgress) {
 			var transform = '';
-			
+			var t = d3.zoomTransform(this.zoomer.node());
+			t = this.limitPanning(t);
+
 			if (this.vertical) {
-				transform += 'translate(' + this.zoomListener.translate()[0] + ',' + this.zoomListener.translate()[1] + ')';
+				transform += 'translate(' + t.x + ',' + t.y + ')';
 				transform += 'scale(-1,1),rotate(90)';
 			} else {
-				transform += 'translate(' + this.zoomListener.translate()[0] + ',' + this.zoomListener.translate()[1] + ')';
+				transform += 'translate(' + t.x + ',' + t.y + ')';
 				transform += 'rotate(0)';
 			}
-			
+
 			if (zoomInProgress === true) {
-				var factor = this.zoomListener.scale() / this.lastScaleFactor;
-				
+				var factor = t.k / this.lastScaleFactor; //this.zoomListener.scale() / this.lastScaleFactor;
 				if (this.allowCrossAxisZoom) {
 					transform += 'scale(' + factor + ')';
 				} else {
@@ -606,10 +629,12 @@ let EmuHierarchyComponent = {
 		};
 		
 		private getOrientatedLevelCaptionLayerTransform() {
+			var t = d3.zoomTransform(this.zoomer.node());
+			t = this.limitPanning(t);
 			if (this.vertical) {
-				return 'translate(0, ' + this.zoomListener.translate()[1] + ')';
+				return 'translate(0, ' + t.y + ')';
 			} else {
-				return 'translate(' + this.zoomListener.translate()[0] + ', 0)';
+				return 'translate(' + t.x + ', 0)';
 			}
 		};
 		
@@ -655,15 +680,17 @@ let EmuHierarchyComponent = {
 		};
 		
 		private getOrientatedMousePosition(mouse) {
+			var t = d3.zoomTransform(this.zoomer.node());
+			t = this.limitPanning(t);
 			if (this.vertical) {
 				return [
-					( mouse[1] - this.zoomListener.translate()[1] ),
-					( mouse[0] - this.zoomListener.translate()[0] )
+					( mouse[1] - t.y ),
+					( mouse[0] - t.x )
 				];
 			} else {
 				return [
-					( mouse[0] - this.zoomListener.translate()[0] ),
-					( mouse[1] - this.zoomListener.translate()[1] )
+					( mouse[0] - t.x ),
+					( mouse[1] - t.y )
 				];
 			}
 		};
@@ -707,7 +734,7 @@ let EmuHierarchyComponent = {
 		};
 		
 		private getLabelLegalnessColor(d) {
-			var dom = this.svg.select('.emuhierarchy-contextmenu input')[0][0];
+			var dom = this.svg.select('.emuhierarchy-contextmenu input').node();
 			var levelName = this.LevelService.getLevelName(d.id);
 			var attrIndex = this.ViewStateService.getCurAttrIndex(levelName);
 			var legalLabels = this.ConfigProviderService.getLevelDefinition(levelName).attributeDefinitions[attrIndex].legalLabels;
@@ -765,7 +792,10 @@ let EmuHierarchyComponent = {
 			console.debug('collapsing', d);
 			// (De-)Collapse sub-tree
 			this.HierarchyLayoutService.toggleCollapse(d, this.ViewStateService.hierarchyState.path);
-			this.render();
+			this.$scope.$apply(() => {
+				this.render();
+				// this.render(); // no idea why this needs 2 calls
+			});
 		};
 		
 		private nodeOnMouseOver(d) {
@@ -774,10 +804,7 @@ let EmuHierarchyComponent = {
 		};
 		
 		private nodeOnInput(d) {
-			// select() returns a single-element selection, which is always
-			// a multi-dimensional array with [0][0] being the DOM node I'm
-			// looking for
-			var dom = this.svg.select('.emuhierarchy-contextmenu input')[0][0];
+			var dom = this.svg.select('.emuhierarchy-contextmenu input').node();
 			this.ViewStateService.hierarchyState.setEditValue(dom.value);
 			
 			// Give feedback on legalness
@@ -807,7 +834,9 @@ let EmuHierarchyComponent = {
 					level: d
 				});
 			}
-			this.$scope.$apply();
+			this.$scope.$apply(() => {
+				this.render();
+			});
 		};
 		
 		
@@ -896,6 +925,8 @@ let EmuHierarchyComponent = {
 		};
 		
 		private posInLevelToY(posInLevel) {
+			var t = d3.zoomTransform(this.zoomer.node());
+			var t = this.limitPanning(t);
 			var offset, timeAxisSize;
 			if (this.vertical) {
 				offset = this.vertOffsetX;
@@ -905,7 +936,7 @@ let EmuHierarchyComponent = {
 				timeAxisSize = this.height - offset;
 			}
 			
-			var result = posInLevel * timeAxisSize * this.zoomListener.scale();
+			var result = posInLevel * timeAxisSize * t.k;
 			result += offset;
 			return result;
 		};
@@ -981,8 +1012,13 @@ let EmuHierarchyComponent = {
 		*
 		*/
 		private render() {
-			this.lastScaleFactor = this.zoomListener.scale();
+			// console.log(this.lastScaleFactor);
 			var i;
+			var t = d3.zoomTransform(this.zoomer.node());
+			t = this.limitPanning(t);
+			// this.lastScaleFactor = this.zoomListener.scale();
+			this.lastScaleFactor = t.k;
+			// console.log(t);
 			
 			// Get current width and height of SVG
 			this.width = parseInt(d3.select(this.element.find('svg')[0]).style('width'), 10);
@@ -1018,7 +1054,8 @@ let EmuHierarchyComponent = {
 				this.scaleFactorDisplay
 				.select('text')
 				.attr('text-anchor', 'end')
-				.text('Zoom: ' + Math.round(this.zoomListener.scale() * 100) + ' %');
+				.style('fill', this.ConfigProviderService.design.color.white)
+				.text('Zoom: ' + Math.round(t.k * 100) + ' %');
 			} else {
 				this.scaleFactorDisplay
 				.attr('transform', 'translate(0, ' + this.height + ')')
@@ -1027,7 +1064,8 @@ let EmuHierarchyComponent = {
 				this.scaleFactorDisplay
 				.select('text')
 				.attr('text-anchor', 'start')
-				.text('Zoom: ' + Math.round(this.zoomListener.scale() * 100) + ' %')
+				.style('fill', this.ConfigProviderService.design.color.white)
+				.text('Zoom: ' + Math.round(t.k * 100) + ' %')
 				;
 			}
 			
@@ -1035,7 +1073,7 @@ let EmuHierarchyComponent = {
 			/////////
 			// Draw level captions and 'add item buttons' (which append
 			// nodes to the respective levels
-			this.captionLayer.attr('transform', this.getOrientatedLevelCaptionLayerTransform.bind(this));
+			this.captionLayer.attr('transform', this.getOrientatedLevelCaptionLayerTransform());
 			
 			// for reference on the .data() call, compare the comment on
 			// this.render() above
@@ -1202,8 +1240,6 @@ let EmuHierarchyComponent = {
 			
 			
 			// Transform relative coordinates (_posInLevel and _depth) to actual coordinates (_x and _y)
-			
-			
 			nodes.forEach((d) => {
 				d._x = this.depthToX(d._depth);
 				d._y = this.posInLevelToY(d._posInLevel);
@@ -1293,7 +1329,6 @@ let EmuHierarchyComponent = {
 			// Remove nodes that shall no longer be part of the svg
 			
 			// Transition exiting nodes to the origin
-			// FIXME put that anyonymous transform function on scope
 			
 			if (this.transition.nodes) {
 				oldNodes = oldNodes
@@ -1394,7 +1429,7 @@ let EmuHierarchyComponent = {
 			// If the context menu does not yet exist, create it
 			var contextMenu = this.svg.select('.emuhierarchy-contextmenu');
 			
-			if (contextMenu[0][0] === null) {
+			if (contextMenu.empty()) {
 				contextMenu = dataSet
 				.filter((d) => {
 					return d.id === this.ViewStateService.hierarchyState.contextMenuID;
@@ -1487,9 +1522,9 @@ let EmuHierarchyComponent = {
 				.on('blur', this.nodeOnFocusOut.bind(this))
 				;
 				
-				if (foreignObject[0].length !== 0) {
-					foreignObject.select('input')[0][0].focus();
-					foreignObject.select('input')[0][0].select();
+				if (!foreignObject.empty()) {
+					foreignObject.select('input').node().focus();
+					foreignObject.select('input').node().select();
 				}
 				
 			} else {

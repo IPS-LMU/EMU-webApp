@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.2.7.9000
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+- updated to d3.js version >= 5
+
 ## Version 1.2.7
 
 ### bug fixes
