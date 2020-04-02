@@ -22028,7 +22028,7 @@ return tv4; // used by _header.js to globalise.
 /* 6 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.2.6\"}");
+module.exports = JSON.parse("{\"a\":\"1.2.7\"}");
 
 /***/ }),
 /* 7 */
@@ -77809,65 +77809,6 @@ ArrayBuffer.prototype.subarray = function (offset, length) {
 
 var ConfigProviderService = /** @class */ (function () {
     function ConfigProviderService($q, ViewStateService) {
-        /**
-         *
-         */
-        this.findAllTracksInDBconfigNeededByEMUwebApp = function () {
-            var DBconfig = this.curDbConfig;
-            var allTracks = [];
-            // anagestConfig ssffTracks
-            DBconfig.levelDefinitions.forEach(function (ld) {
-                if (ld.anagestConfig !== undefined) {
-                    allTracks.push(ld.anagestConfig.verticalPosSsffTrackName);
-                    allTracks.push(ld.anagestConfig.velocitySsffTrackName);
-                }
-            });
-            DBconfig.EMUwebAppConfig.perspectives.forEach(function (p) {
-                // tracks in signalCanvases.order
-                p.signalCanvases.order.forEach(function (sco) {
-                    allTracks.push(sco);
-                });
-                // tracks in signalCanvases.assign
-                if (p.signalCanvases.assign !== undefined) {
-                    p.signalCanvases.assign.forEach(function (sca) {
-                        allTracks.push(sca.ssffTrackName);
-                    });
-                }
-                // tracks in twoDimCanvases
-                if (p.twoDimCanvases !== undefined) {
-                    if (p.twoDimCanvases.order[0] === 'EPG') {
-                        allTracks.push('EPG');
-                    }
-                    if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
-                        p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
-                            tddd.dots.forEach(function (dot) {
-                                allTracks.push(dot.xSsffTrack);
-                                allTracks.push(dot.ySsffTrack);
-                            });
-                        });
-                    }
-                }
-            });
-            // uniq tracks
-            allTracks = allTracks.filter(this.onlyUnique);
-            // # remove OSCI and SPEC tracks
-            var osciIdx = allTracks.indexOf('OSCI');
-            if (osciIdx > -1) {
-                allTracks.splice(osciIdx, 1);
-            }
-            var specIdx = allTracks.indexOf('SPEC');
-            if (specIdx > -1) {
-                allTracks.splice(specIdx, 1);
-            }
-            // get corresponding ssffTrackDefinitions
-            var allTrackDefs = [];
-            DBconfig.ssffTrackDefinitions.forEach(function (std) {
-                if (allTracks.indexOf(std.name) > -1) {
-                    allTrackDefs.push(std);
-                }
-            });
-            return (allTrackDefs);
-        };
         this.$q = $q;
         this.ViewStateService = ViewStateService;
         this.vals = {};
@@ -78134,6 +78075,66 @@ var ConfigProviderService = /** @class */ (function () {
                 str = String.fromCharCode(code);
         }
         return str;
+    };
+    ;
+    /**
+     *
+     */
+    ConfigProviderService.prototype.findAllTracksInDBconfigNeededByEMUwebApp = function () {
+        var DBconfig = this.curDbConfig;
+        var allTracks = [];
+        // anagestConfig ssffTracks
+        DBconfig.levelDefinitions.forEach(function (ld) {
+            if (ld.anagestConfig !== undefined) {
+                allTracks.push(ld.anagestConfig.verticalPosSsffTrackName);
+                allTracks.push(ld.anagestConfig.velocitySsffTrackName);
+            }
+        });
+        DBconfig.EMUwebAppConfig.perspectives.forEach(function (p) {
+            // tracks in signalCanvases.order
+            p.signalCanvases.order.forEach(function (sco) {
+                allTracks.push(sco);
+            });
+            // tracks in signalCanvases.assign
+            if (p.signalCanvases.assign !== undefined) {
+                p.signalCanvases.assign.forEach(function (sca) {
+                    allTracks.push(sca.ssffTrackName);
+                });
+            }
+            // tracks in twoDimCanvases
+            if (p.twoDimCanvases !== undefined) {
+                if (p.twoDimCanvases.order[0] === 'EPG') {
+                    allTracks.push('EPG');
+                }
+                if (p.twoDimCanvases.twoDimDrawingDefinitions !== undefined) {
+                    p.twoDimCanvases.twoDimDrawingDefinitions.forEach(function (tddd) {
+                        tddd.dots.forEach(function (dot) {
+                            allTracks.push(dot.xSsffTrack);
+                            allTracks.push(dot.ySsffTrack);
+                        });
+                    });
+                }
+            }
+        });
+        // uniq tracks
+        allTracks = allTracks.filter(this.onlyUnique);
+        // # remove OSCI and SPEC tracks
+        var osciIdx = allTracks.indexOf('OSCI');
+        if (osciIdx > -1) {
+            allTracks.splice(osciIdx, 1);
+        }
+        var specIdx = allTracks.indexOf('SPEC');
+        if (specIdx > -1) {
+            allTracks.splice(specIdx, 1);
+        }
+        // get corresponding ssffTrackDefinitions
+        var allTrackDefs = [];
+        DBconfig.ssffTrackDefinitions.forEach(function (std) {
+            if (allTracks.indexOf(std.name) > -1) {
+                allTrackDefs.push(std);
+            }
+        });
+        return (allTrackDefs);
     };
     ;
     return ConfigProviderService;
@@ -86189,24 +86190,6 @@ angular["module"]('emuwebApp')
  */
 var app_state_service_AppStateService = /** @class */ (function () {
     function AppStateService($log, $rootScope, $location, DragnDropService, DragnDropDataService, ViewStateService, IoHandlerService, LoadedMetaDataService, SoundHandlerService, DataService, SsffDataService, HistoryService) {
-        this.reloadToInitState = function (session) {
-            // SIC IoHandlerService.WebSocketHandlerService is private
-            this.IoHandlerService.WebSocketHandlerService.closeConnect();
-            // $scope.curBndl = {};
-            var url = this.ViewStateService.url;
-            this.LoadedMetaDataService.resetToInitState();
-            this.SoundHandlerService.audioBuffer = {};
-            this.DataService.setData({});
-            this.DragnDropDataService.resetToInitState();
-            this.DragnDropService.resetToInitState();
-            this.SsffDataService.data = [];
-            this.HistoryService.resetToInitState();
-            this.ViewStateService.setState('noDBorFilesloaded');
-            this.ViewStateService.somethingInProgress = false;
-            this.HistoryService.resetToInitState();
-            this.ViewStateService.resetToInitState();
-            this.$rootScope.$broadcast('reloadToInitState', { url: url, session: session, reload: true });
-        };
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$location = $location;
@@ -86248,6 +86231,25 @@ var app_state_service_AppStateService = /** @class */ (function () {
         this.$location.url(this.$location.path()); // reset URL without get values
         this.$rootScope.$broadcast('resetToInitState');
         //$scope.loadDefaultConfig();
+    };
+    ;
+    AppStateService.prototype.reloadToInitState = function (session) {
+        // SIC IoHandlerService.WebSocketHandlerService is private
+        this.IoHandlerService.WebSocketHandlerService.closeConnect();
+        // $scope.curBndl = {};
+        var url = this.ViewStateService.url;
+        this.LoadedMetaDataService.resetToInitState();
+        this.SoundHandlerService.audioBuffer = {};
+        this.DataService.setData({});
+        this.DragnDropDataService.resetToInitState();
+        this.DragnDropService.resetToInitState();
+        this.SsffDataService.data = [];
+        this.HistoryService.resetToInitState();
+        this.ViewStateService.setState('noDBorFilesloaded');
+        this.ViewStateService.somethingInProgress = false;
+        this.HistoryService.resetToInitState();
+        this.ViewStateService.resetToInitState();
+        this.$rootScope.$broadcast('reloadToInitState', { url: url, session: session, reload: true });
     };
     ;
     return AppStateService;
@@ -86394,34 +86396,7 @@ angular["module"]('emuwebApp')
 
 var browser_detector_service_BrowserDetectorService = /** @class */ (function () {
     function BrowserDetectorService() {
-        this.isMobileDevice = function () {
-            var data = this.isMobile.any();
-            if (data === null) {
-                return false;
-            }
-            else {
-                if (data.length > 0) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        };
-        this.isDesktopDevice = function () {
-            var data = this.isBrowser.any();
-            if (data === null) {
-                return false;
-            }
-            else {
-                if (data.length > 0) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        };
+        var _this = this;
         this.isMobile = {
             Android: function () {
                 return navigator.userAgent.match(/Android/i);
@@ -86439,11 +86414,11 @@ var browser_detector_service_BrowserDetectorService = /** @class */ (function ()
                 return navigator.userAgent.match(/IEMobile/i);
             },
             any: function () {
-                return (this.isMobile.Android() ||
-                    this.isMobile.BlackBerry() ||
-                    this.isMobile.iOS() ||
-                    this.isMobile.Opera() ||
-                    this.isMobile.Windows());
+                return (_this.isMobile.Android() ||
+                    _this.isMobile.BlackBerry() ||
+                    _this.isMobile.iOS() ||
+                    _this.isMobile.Opera() ||
+                    _this.isMobile.Windows());
             }
         };
         this.isBrowser = {
@@ -86469,15 +86444,45 @@ var browser_detector_service_BrowserDetectorService = /** @class */ (function ()
                 return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
             },
             any: function () {
-                return (this.isBrowser.Firefox() ||
-                    this.isBrowser.Chrome() ||
-                    this.isBrowser.InternetExplorer() ||
-                    this.isBrowser.Opera() ||
-                    this.isBrowser.Safari() ||
-                    this.isBrowser.PhantomJS());
+                return (_this.isBrowser.Firefox() ||
+                    _this.isBrowser.Chrome() ||
+                    _this.isBrowser.InternetExplorer() ||
+                    _this.isBrowser.Opera() ||
+                    _this.isBrowser.Safari() ||
+                    _this.isBrowser.PhantomJS());
             }
         };
     }
+    BrowserDetectorService.prototype.isMobileDevice = function () {
+        var data = this.isMobile.any();
+        if (data === null) {
+            return false;
+        }
+        else {
+            if (data.length > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    };
+    ;
+    BrowserDetectorService.prototype.isDesktopDevice = function () {
+        var data = this.isBrowser.any();
+        if (data === null) {
+            return false;
+        }
+        else {
+            if (data.length > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    };
+    ;
     return BrowserDetectorService;
 }());
 angular["module"]('emuwebApp')
@@ -86710,7 +86715,7 @@ var db_obj_load_save_service_DbObjLoadSaveService = /** @class */ (function () {
             var promises = [];
             bundleData.ssffFiles.forEach(function (file) {
                 if (file.encoding === 'GETURL') { // BASE64 & ARRAYBUFFER are handled by worker
-                    file.data = this.IoHandlerService.httpGetPath(file.data, 'arraybuffer');
+                    file.data = _this.IoHandlerService.httpGetPath(file.data, 'arraybuffer');
                     promises.push(file.data);
                     file.encoding = 'ARRAYBUFFER';
                 }
@@ -86743,15 +86748,13 @@ var db_obj_load_save_service_DbObjLoadSaveService = /** @class */ (function () {
                     _this.ViewStateService.somethingInProgressTxt = 'Done!';
                     defer.resolve();
                 }, function (errMess) {
-                    var _this = this;
-                    this.ModalService.open('views/error.html', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
+                    _this.ModalService.open('views/error.html', 'Error parsing SSFF file: ' + errMess.status.message).then(function () {
                         _this.AppStateService.resetToInitState();
                     });
                 });
             });
         }, function (errMess) {
-            var _this = this;
-            this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
+            _this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
                 _this.AppStateService.resetToInitState();
             });
         });
@@ -86838,15 +86841,14 @@ var db_obj_load_save_service_DbObjLoadSaveService = /** @class */ (function () {
                         });
                     }
                 }, function (errMess) {
-                    var _this = this;
                     // check for http vs websocket response
                     if (errMess.data) {
-                        this.ModalService.open('views/error.html', 'Error loading bundle: ' + errMess.data).then(function () {
+                        _this.ModalService.open('views/error.html', 'Error loading bundle: ' + errMess.data).then(function () {
                             _this.AppStateService.resetToInitState();
                         });
                     }
                     else {
-                        this.ModalService.open('views/error.html', 'Error loading bundle: ' + errMess.status.message).then(function () {
+                        _this.ModalService.open('views/error.html', 'Error loading bundle: ' + errMess.status.message).then(function () {
                             _this.AppStateService.resetToInitState();
                         });
                     }
@@ -86883,7 +86885,7 @@ var db_obj_load_save_service_DbObjLoadSaveService = /** @class */ (function () {
                     });
                     _this.getAnnotationAndSaveBndl(bundleData, defer);
                 }, function (errMess) {
-                    this.ModalService.open('views/error.html', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
+                    _this.ModalService.open('views/error.html', 'Error converting javascript object to SSFF file: ' + errMess.status.message);
                     defer.reject();
                 });
             }
@@ -86953,8 +86955,7 @@ var db_obj_load_save_service_DbObjLoadSaveService = /** @class */ (function () {
                 defer.resolve();
                 _this.ViewStateService.setState('labeling');
             }, function (errMess) {
-                var _this = this;
-                this.ModalService.open('views/error.html', 'Error saving bundle: ' + errMess.status.message).then(function () {
+                _this.ModalService.open('views/error.html', 'Error saving bundle: ' + errMess.status.message).then(function () {
                     _this.AppStateService.resetToInitState();
                 });
                 defer.reject();
@@ -87184,15 +87185,14 @@ var drag_n_drop_service_DragnDropService = /** @class */ (function () {
                                 if (data.annotation.type === 'textgrid') {
                                     reader2.readAsText(data.annotation.file);
                                     reader2.onloadend = function (evt) {
-                                        var _this = this;
                                         if (evt.target.readyState === FileReader.DONE) {
-                                            this.TextGridParserService.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
+                                            _this.TextGridParserService.asyncParseTextGrid(evt.currentTarget.result, data.wav.name, bundle).then(function (parseMess) {
                                                 _this.DragnDropDataService.convertedBundles[i].annotation = parseMess;
                                                 _this.convertDragnDropData(bundles, i + 1).then(function () {
                                                     defer.resolve();
                                                 });
                                             }, function (errMess) {
-                                                this.ModalService.open('views/error.html', 'Error parsing TextGrid file: ' + errMess.status.message).then(function () {
+                                                _this.ModalService.open('views/error.html', 'Error parsing TextGrid file: ' + errMess.status.message).then(function () {
                                                     defer.reject();
                                                 });
                                             });
@@ -87203,8 +87203,8 @@ var drag_n_drop_service_DragnDropService = /** @class */ (function () {
                                     reader2.readAsText(data.annotation.file);
                                     reader2.onloadend = function (evt) {
                                         if (evt.target.readyState === FileReader.DONE) {
-                                            this.DragnDropDataService.convertedBundles[i].annotation = angular["fromJson"](evt.currentTarget.result);
-                                            this.convertDragnDropData(bundles, i + 1).then(function () {
+                                            _this.DragnDropDataService.convertedBundles[i].annotation = angular["fromJson"](evt.currentTarget.result);
+                                            _this.convertDragnDropData(bundles, i + 1).then(function () {
                                                 defer.resolve();
                                             });
                                         }
@@ -87212,7 +87212,7 @@ var drag_n_drop_service_DragnDropService = /** @class */ (function () {
                                 }
                             }
                         }, function (errMess) {
-                            this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
+                            _this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message).then(function () {
                                 defer.reject();
                             });
                         });
@@ -87319,30 +87319,6 @@ angular["module"]('emuwebApp')
 
 var draw_helper_service_DrawHelperService = /** @class */ (function () {
     function DrawHelperService(ViewStateService, ConfigProviderService, SoundHandlerService, FontScaleService, SsffDataService, MathHelperService) {
-        this.findMinMaxPeaks = function (sS, eS, winIdx) {
-            var ssT = this.ViewStateService.calcSampleTime(sS);
-            var esT = this.ViewStateService.calcSampleTime(eS);
-            // calc exact peaks per second value (should be very close to or exactly 400|10|1 depending on  winSize)
-            var pps = this.osciPeaks.sampleRate / this.osciPeaks.winSizes[winIdx];
-            var startPeakWinIdx = ssT * pps;
-            var endPeakWinIdx = esT * pps;
-            var minMinPeak = Infinity;
-            var maxMaxPeak = -Infinity;
-            for (var i = Math.round(startPeakWinIdx); i < Math.round(endPeakWinIdx); i++) {
-                if (this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i] > maxMaxPeak) {
-                    maxMaxPeak = this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i];
-                }
-                if (this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i] < minMinPeak) {
-                    minMinPeak = this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i];
-                }
-            }
-            return {
-                // 'minPeaks': this.osciPeaks.channelOsciPeaks[0].minPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
-                // 'maxPeaks': this.osciPeaks.channelOsciPeaks[0].maxPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
-                'minMinPeak': minMinPeak,
-                'maxMaxPeak': maxMaxPeak
-            };
-        };
         this.ViewStateService = ViewStateService;
         this.ConfigProviderService = ConfigProviderService;
         this.SoundHandlerService = SoundHandlerService;
@@ -87558,6 +87534,31 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
             'minMinPeak': minMinPeak,
             'maxMaxPeak': maxMaxPeak,
             'samplePerPx': samplePerPx
+        };
+    };
+    ;
+    DrawHelperService.prototype.findMinMaxPeaks = function (sS, eS, winIdx) {
+        var ssT = this.ViewStateService.calcSampleTime(sS);
+        var esT = this.ViewStateService.calcSampleTime(eS);
+        // calc exact peaks per second value (should be very close to or exactly 400|10|1 depending on  winSize)
+        var pps = this.osciPeaks.sampleRate / this.osciPeaks.winSizes[winIdx];
+        var startPeakWinIdx = ssT * pps;
+        var endPeakWinIdx = esT * pps;
+        var minMinPeak = Infinity;
+        var maxMaxPeak = -Infinity;
+        for (var i = Math.round(startPeakWinIdx); i < Math.round(endPeakWinIdx); i++) {
+            if (this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i] > maxMaxPeak) {
+                maxMaxPeak = this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i];
+            }
+            if (this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i] < minMinPeak) {
+                minMinPeak = this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i];
+            }
+        }
+        return {
+            // 'minPeaks': this.osciPeaks.channelOsciPeaks[0].minPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
+            // 'maxPeaks': this.osciPeaks.channelOsciPeaks[0].maxPeaks.subarray(startPeakWinIdx, endPeakWinIdx),
+            'minMinPeak': minMinPeak,
+            'maxMaxPeak': maxMaxPeak
         };
     };
     ;
@@ -88355,354 +88356,363 @@ angular["module"]('emuwebApp')
  */
 var hierarchy_layout_service_HierarchyLayoutService = /** @class */ (function () {
     function HierarchyLayoutService(ViewStateService, ConfigProviderService, LevelService, DataService, StandardFuncsService) {
-        this.findAllNonPartialPaths = function () {
-            var _this = this;
-            var paths = {
-                possible: [],
-                possibleAsStr: []
-            };
-            // Find all levels to start calculating possible paths through the hierarchy of levels
-            this.ConfigProviderService.curDbConfig.levelDefinitions.forEach(function (l) {
-                paths.possible = paths.possible.concat(_this.findPaths(l.name));
-            });
-            // remove partial paths
-            var partialPathsIdx = [];
-            // loop twice to compare each item against each other item
-            paths.possible.forEach(function (path1, index1) {
-                paths.possible.forEach(function (path2, index2) {
-                    if (index1 === index2) {
-                        // Do not compare item against itself
-                        return;
-                    }
-                    if (partialPathsIdx.indexOf(index1) !== -1) {
-                        // path1 is already known to be a partial of some other
-                        // path; do not consider path1 again
-                        return;
-                    }
-                    // See if the beginning of path2 is path1; if so, throw
-                    // path1 away
-                    if (_this.pathStartsWith(path2, path1)) {
-                        partialPathsIdx.push(index1);
-                    }
-                });
-            });
-            partialPathsIdx.reverse().forEach(function (idx) {
-                paths.possible.splice(idx, 1);
-            });
-            // convert array paths to strings
-            paths.possible.forEach(function (arr) {
-                var revArr = _this.StandardFuncsService.reverseCopy(arr);
-                var curPathStr = revArr.join(' → ');
-                paths.possibleAsStr.push(curPathStr);
-            });
-            return paths;
-        };
-        // paths are arrays of level names (strings) in reverse order
-        this.pathStartsWith = function (superPath, subPathCandidate) {
-            if (subPathCandidate.length > superPath.length) {
-                return false;
-            }
-            var lengthDifference = superPath.length - subPathCandidate.length;
-            for (var i = subPathCandidate.length - 1; i >= 0; --i) {
-                if (subPathCandidate[i] !== superPath[i + lengthDifference]) {
-                    return false;
-                }
-            }
-            return true;
-        };
-        /**
-         * Recursively find all paths through the hierarchy of levels.
-         * This is done bottom-up because there is no explicit root element in the levelDefinitions.
-         *
-         * @param startLevel The name of the level from which to start
-         * @param path An array of levels' names that form a path to startLevel (optional; shouldn't be an empty array)
-         */
-        this.findPaths = function (startLevel, path) {
-            if (typeof path === 'undefined') {
-                path = [startLevel];
-            }
-            else {
-                path = path.concat([startLevel]);
-            }
-            // Find all parents of startLevel
-            var parents = this.findParentLevels(startLevel);
-            // If we have no more parents, we're at the end of the
-            // path and thus returning it
-            if (parents.length === 0) {
-                return [path];
-            }
-            // If, on the other hand, there are parents, we start
-            // recursion to find all paths
-            var paths = [];
-            for (var i = 0; i < parents.length; ++i) {
-                paths = paths.concat(this.findPaths(parents[i], path));
-            }
-            return paths;
-        };
-        /**
-         * Find all parent levels of a given level by iterating through the
-         * current database's linkDefinitions.
-         *
-         * @param childLevel The name of the level whose parents to find
-         * @returns An array of names of childLevel's parent levels
-         */
-        this.findParentLevels = function (childLevel) {
-            var parents = [];
-            for (var i = 0; i < this.ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
-                if (this.ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === childLevel) {
-                    parents.push(this.ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName);
-                }
-            }
-            return parents;
-        };
-        /**
-         * Calculate the weights (size within their level) of all
-         * nodes bottom-up.
-         *
-         * This is most likely rather slow and -definitely needs- could
-         * use some tweaking
-         */
-        this.calculateWeightsBottomUp = function (selectedPath) {
-            var i, ii;
-            /////
-            // Make sure all items have proper _parents and
-            // _visibile attributes
-            this.findParents(selectedPath);
-            this.findVisibility(selectedPath);
-            /////
-            // Iterate through levels bottom-up
-            for (i = 0; i < selectedPath.length; ++i) {
-                var level = this.LevelService.getLevelDetails(selectedPath[i]);
-                // This will be the total of the weights of all
-                // items on this level
-                level._weight = 0;
-                //////
-                // Iterate through items to calculate their
-                // _weight and the level's _weight
-                for (ii = 0; ii < level.items.length; ++ii) {
-                    if (level.items[ii]._visible === false) {
-                        level.items[ii]._weight = 0.35;
-                    }
-                    else {
-                        level.items[ii]._weight = 1;
-                    }
-                    // Calculate weight of the level
-                    level._weight += level.items[ii]._weight;
-                }
-                /////
-                // Iterate through items again to calculate
-                // their _posInLevel and _depth.
-                // This is done in a new for loop because it
-                // depends on the correctness of level._weight
-                var posInLevel = 0;
-                for (ii = 0; ii < level.items.length; ++ii) {
-                    level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight / 2) / level._weight;
-                    posInLevel += level.items[ii]._weight;
-                    level.items[ii]._depth = selectedPath.length - i - 1;
-                    //////
-                    // Additionally, calculate link positions
-                    var links = this.DataService.getData().links;
-                    for (var l = 0; l < links.length; ++l) {
-                        if (links[l].toID === level.items[ii].id) {
-                            links[l]._toPosInLevel = level.items[ii]._posInLevel;
-                            links[l]._toDepth = level.items[ii]._depth;
-                        }
-                        if (links[l].fromID === level.items[ii].id) {
-                            links[l]._fromPosInLevel = level.items[ii]._posInLevel;
-                            links[l]._fromDepth = level.items[ii]._depth;
-                        }
-                    }
-                }
-            }
-        };
-        /**
-         * Find all children of a node d that are part of the currently selected
-         * path through the hierarchy
-         *
-         * @return an array of children nodes
-         * @return empty array if there are no children (previously would return null due to a d3 dependency that no longer exists)
-         */
-        this.findChildren = function (d, selectedPath) {
-            var children = [];
-            // Find the level that d is a part of
-            // Return empty array if that fails (which shouldn't happen at all)
-            var currentLevel = this.LevelService.getLevelName(d.id);
-            if (currentLevel === null) {
-                console.log('Likely a bug: failed to find a node\'s level', d);
-                return [];
-            }
-            // Find the child level
-            var childLevel = null;
-            for (var i = 0; i < selectedPath.length - 1; ++i) {
-                if (selectedPath[i + 1] === currentLevel) {
-                    childLevel = selectedPath[i];
-                    break;
-                }
-            }
-            if (childLevel === null) {
-                return [];
-            }
-            // Iterate over links to find children
-            for (var li = 0; li < this.DataService.getData().links.length; ++li) {
-                if (this.DataService.getData().links[li].fromID === d.id) {
-                    // Iterate over levels to find the object corresponding to d.id
-                    for (var l = 0; l < this.DataService.getData().levels.length; ++l) {
-                        if (this.DataService.getData().levels[l].name !== childLevel) {
-                            continue;
-                        }
-                        for (var it = 0; it < this.DataService.getData().levels[l].items.length; ++it) {
-                            if (this.DataService.getData().levels[l].items[it].id === this.DataService.getData().links[li].toID) {
-                                children.push(this.DataService.getData().levels[l].items[it]);
-                            }
-                        }
-                    }
-                }
-            }
-            return children;
-        };
-        /**
-         * This function aims to find and store the parents of every
-         * node (along the selected path).
-         *
-         * First clears the _parents attribute from all item and then
-         * re-calculates them.
-         *
-         * All items on the currently selected path will then have a
-         * _parents property that is either an empty array (if it has
-         * no parents) or an array containing its parents.
-         */
-        this.findParents = function (selectedPath) {
-            var i, ii, c, j;
-            //////
-            // Clear _parents from all items
-            var level;
-            for (i = 0; i < selectedPath.length; ++i) {
-                level = this.LevelService.getLevelDetails(selectedPath[i]);
-                for (ii = 0; ii < level.items.length; ++ii) {
-                    level.items[ii]._parents = [];
-                }
-            }
-            /////
-            // Iterate through levels
-            for (i = 0; i < selectedPath.length; ++i) {
-                level = this.LevelService.getLevelDetails(selectedPath[i]);
-                // if segment level copy start and end time information
-                // to _ variables else
-                for (j = 0; j < level.items.length; ++j) {
-                    if (level.type === 'SEGMENT') {
-                        level.items[j]._derivedSampleStart = level.items[j].sampleStart;
-                        level.items[j]._derivedSampleEnd = level.items[j].sampleStart + level.items[j].sampleDur; // should we add 1 to this?
-                    }
-                    else {
-                        level.items[j]._derivedSampleStart = Infinity;
-                        level.items[j]._derivedSampleEnd = -Infinity;
-                    }
-                }
-                // Iterate through the current level's items
-                // And save them as _parents in their children
-                for (ii = 0; ii < level.items.length; ++ii) {
-                    var children = this.findChildren(level.items[ii], selectedPath);
-                    for (c = 0; c < children.length; ++c) {
-                        children[c]._parents.push(level.items[ii]);
-                        // update parent _derivedSample attributes
-                        if (children[c]._derivedSampleStart < level.items[ii]._derivedSampleStart) {
-                            level.items[ii]._derivedSampleStart = children[c]._derivedSampleStart;
-                        }
-                        if (children[c]._derivedSampleEnd > level.items[ii]._derivedSampleEnd) {
-                            level.items[ii]._derivedSampleEnd = children[c]._derivedSampleEnd;
-                        }
-                    }
-                }
-            }
-        };
-        /**
-         * Find out, which paths ought to be drawn because they are not
-         * collapsed.
-         *
-         * Will add a boolean attribute _visible to all items on the
-         * currently selected path.
-         */
-        this.findVisibility = function (selectedPath) {
-            // Root nodes are all nodes that have no parents and
-            // thus form a sub-graph.
-            //
-            // Note that some descendants of a given root node
-            // might also be the descendant of another root node.
-            // thus "connecting" the different sub-graphs. If this
-            // were a real connection, the different sub-graphs
-            // would actually be one graph. But it is not a real
-            // connection since the whole graph is directed and the
-            // connections can never be along the direction of an
-            // edge.
-            if (selectedPath !== undefined && selectedPath.length > 0) {
-                var rootLevelItems = [];
-                var level;
-                for (var i = 0; i < selectedPath.length; ++i) {
-                    level = this.LevelService.getLevelDetails(selectedPath[i]);
-                    for (var ii = 0; ii < level.items.length; ++ii) {
-                        if (level.items[ii]._parents.length === 0) {
-                            rootLevelItems.push(level.items[ii]);
-                        }
-                    }
-                }
-                // First, set all nodes invisible. Later we will search
-                // all paths and if we find one uncollasped path to a
-                // node, that node will be set visible.
-                var currentItem;
-                var items = [];
-                items = items.concat(rootLevelItems);
-                while (items.length > 0) {
-                    currentItem = items.pop();
-                    items = items.concat(this.findChildren(currentItem, selectedPath));
-                    currentItem._visible = false;
-                }
-                // Now all nodes on the selectedPath have been set
-                // invisible. Try and find those that must be visible,
-                // i.e. either they are a root node or there is an
-                // uncollapsed path to them from a root node.
-                items = [];
-                items = items.concat(rootLevelItems);
-                while (items.length > 0) {
-                    currentItem = items.pop();
-                    if (!this.ViewStateService.hierarchyState.getCollapsed(currentItem.id)) {
-                        items = items.concat(this.findChildren(currentItem, selectedPath));
-                    }
-                    currentItem._visible = true;
-                }
-            }
-        };
-        /**
-         * Toggle the state of a single item with its subtree
-         */
-        this.toggleCollapse = function (d, selectedPath) {
-            // Find out whether we're collapsing or decollapsing
-            var isCollapsing = !this.ViewStateService.hierarchyState.getCollapsed(d.id);
-            this.ViewStateService.hierarchyState.setCollapsed(d.id, isCollapsing);
-            // Traverse sub-tree and change each item's number of collapsed parents
-            //
-            // Set each item's collapsePosition as well
-            // collapsePosition is the coordinate where they fade out to or fade in from
-            var currentDescendant;
-            var descendants = this.findChildren(d, selectedPath);
-            while (descendants.length > 0) {
-                currentDescendant = descendants.pop();
-                descendants = descendants.concat(this.findChildren(currentDescendant, selectedPath));
-                var num = this.ViewStateService.hierarchyState.getNumCollapsedParents(currentDescendant.id);
-                if (isCollapsing) {
-                    this.ViewStateService.hierarchyState.setNumCollapsedParents(currentDescendant.id, num + 1);
-                }
-                else {
-                    this.ViewStateService.hierarchyState.setNumCollapsedParents(currentDescendant.id, num - 1);
-                }
-                this.ViewStateService.hierarchyState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
-            }
-        };
         this.ViewStateService = ViewStateService;
         this.ConfigProviderService = ConfigProviderService;
         this.LevelService = LevelService;
         this.DataService = DataService;
         this.StandardFuncsService = StandardFuncsService;
     }
+    HierarchyLayoutService.prototype.findAllNonPartialPaths = function () {
+        var _this = this;
+        var paths = {
+            possible: [],
+            possibleAsStr: []
+        };
+        // Find all levels to start calculating possible paths through the hierarchy of levels
+        this.ConfigProviderService.curDbConfig.levelDefinitions.forEach(function (l) {
+            paths.possible = paths.possible.concat(_this.findPaths(l.name, undefined));
+        });
+        // remove partial paths
+        var partialPathsIdx = [];
+        // loop twice to compare each item against each other item
+        paths.possible.forEach(function (path1, index1) {
+            paths.possible.forEach(function (path2, index2) {
+                if (index1 === index2) {
+                    // Do not compare item against itself
+                    return;
+                }
+                if (partialPathsIdx.indexOf(index1) !== -1) {
+                    // path1 is already known to be a partial of some other
+                    // path; do not consider path1 again
+                    return;
+                }
+                // See if the beginning of path2 is path1; if so, throw
+                // path1 away
+                if (_this.pathStartsWith(path2, path1)) {
+                    partialPathsIdx.push(index1);
+                }
+            });
+        });
+        partialPathsIdx.reverse().forEach(function (idx) {
+            paths.possible.splice(idx, 1);
+        });
+        // convert array paths to strings
+        paths.possible.forEach(function (arr) {
+            var revArr = _this.StandardFuncsService.reverseCopy(arr);
+            var curPathStr = revArr.join(' → ');
+            paths.possibleAsStr.push(curPathStr);
+        });
+        return paths;
+    };
+    ;
+    // paths are arrays of level names (strings) in reverse order
+    HierarchyLayoutService.prototype.pathStartsWith = function (superPath, subPathCandidate) {
+        if (subPathCandidate.length > superPath.length) {
+            return false;
+        }
+        var lengthDifference = superPath.length - subPathCandidate.length;
+        for (var i = subPathCandidate.length - 1; i >= 0; --i) {
+            if (subPathCandidate[i] !== superPath[i + lengthDifference]) {
+                return false;
+            }
+        }
+        return true;
+    };
+    ;
+    /**
+     * Recursively find all paths through the hierarchy of levels.
+     * This is done bottom-up because there is no explicit root element in the levelDefinitions.
+     *
+     * @param startLevel The name of the level from which to start
+     * @param path An array of levels' names that form a path to startLevel (optional; shouldn't be an empty array)
+     */
+    HierarchyLayoutService.prototype.findPaths = function (startLevel, path) {
+        if (typeof path === 'undefined') {
+            path = [startLevel];
+        }
+        else {
+            path = path.concat([startLevel]);
+        }
+        // Find all parents of startLevel
+        var parents = this.findParentLevels(startLevel);
+        // If we have no more parents, we're at the end of the
+        // path and thus returning it
+        if (parents.length === 0) {
+            return [path];
+        }
+        // If, on the other hand, there are parents, we start
+        // recursion to find all paths
+        var paths = [];
+        for (var i = 0; i < parents.length; ++i) {
+            paths = paths.concat(this.findPaths(parents[i], path));
+        }
+        return paths;
+    };
+    ;
+    /**
+     * Find all parent levels of a given level by iterating through the
+     * current database's linkDefinitions.
+     *
+     * @param childLevel The name of the level whose parents to find
+     * @returns An array of names of childLevel's parent levels
+     */
+    HierarchyLayoutService.prototype.findParentLevels = function (childLevel) {
+        var parents = [];
+        for (var i = 0; i < this.ConfigProviderService.curDbConfig.linkDefinitions.length; ++i) {
+            if (this.ConfigProviderService.curDbConfig.linkDefinitions[i].sublevelName === childLevel) {
+                parents.push(this.ConfigProviderService.curDbConfig.linkDefinitions[i].superlevelName);
+            }
+        }
+        return parents;
+    };
+    ;
+    /**
+     * Calculate the weights (size within their level) of all
+     * nodes bottom-up.
+     *
+     * This is most likely rather slow and -definitely needs- could
+     * use some tweaking
+     */
+    HierarchyLayoutService.prototype.calculateWeightsBottomUp = function (selectedPath) {
+        var i, ii;
+        /////
+        // Make sure all items have proper _parents and
+        // _visibile attributes
+        this.findParents(selectedPath);
+        this.findVisibility(selectedPath);
+        /////
+        // Iterate through levels bottom-up
+        for (i = 0; i < selectedPath.length; ++i) {
+            var level = this.LevelService.getLevelDetails(selectedPath[i]);
+            // This will be the total of the weights of all
+            // items on this level
+            level._weight = 0;
+            //////
+            // Iterate through items to calculate their
+            // _weight and the level's _weight
+            for (ii = 0; ii < level.items.length; ++ii) {
+                if (level.items[ii]._visible === false) {
+                    level.items[ii]._weight = 0.35;
+                }
+                else {
+                    level.items[ii]._weight = 1;
+                }
+                // Calculate weight of the level
+                level._weight += level.items[ii]._weight;
+            }
+            /////
+            // Iterate through items again to calculate
+            // their _posInLevel and _depth.
+            // This is done in a new for loop because it
+            // depends on the correctness of level._weight
+            var posInLevel = 0;
+            for (ii = 0; ii < level.items.length; ++ii) {
+                level.items[ii]._posInLevel = (posInLevel + level.items[ii]._weight / 2) / level._weight;
+                posInLevel += level.items[ii]._weight;
+                level.items[ii]._depth = selectedPath.length - i - 1;
+                //////
+                // Additionally, calculate link positions
+                var links = this.DataService.getData().links;
+                for (var l = 0; l < links.length; ++l) {
+                    if (links[l].toID === level.items[ii].id) {
+                        links[l]._toPosInLevel = level.items[ii]._posInLevel;
+                        links[l]._toDepth = level.items[ii]._depth;
+                    }
+                    if (links[l].fromID === level.items[ii].id) {
+                        links[l]._fromPosInLevel = level.items[ii]._posInLevel;
+                        links[l]._fromDepth = level.items[ii]._depth;
+                    }
+                }
+            }
+        }
+    };
+    ;
+    /**
+     * Find all children of a node d that are part of the currently selected
+     * path through the hierarchy
+     *
+     * @return an array of children nodes
+     * @return empty array if there are no children (previously would return null due to a d3 dependency that no longer exists)
+     */
+    HierarchyLayoutService.prototype.findChildren = function (d, selectedPath) {
+        var children = [];
+        // Find the level that d is a part of
+        // Return empty array if that fails (which shouldn't happen at all)
+        var currentLevel = this.LevelService.getLevelName(d.id);
+        if (currentLevel === null) {
+            console.log('Likely a bug: failed to find a node\'s level', d);
+            return [];
+        }
+        // Find the child level
+        var childLevel = null;
+        for (var i = 0; i < selectedPath.length - 1; ++i) {
+            if (selectedPath[i + 1] === currentLevel) {
+                childLevel = selectedPath[i];
+                break;
+            }
+        }
+        if (childLevel === null) {
+            return [];
+        }
+        // Iterate over links to find children
+        for (var li = 0; li < this.DataService.getData().links.length; ++li) {
+            if (this.DataService.getData().links[li].fromID === d.id) {
+                // Iterate over levels to find the object corresponding to d.id
+                for (var l = 0; l < this.DataService.getData().levels.length; ++l) {
+                    if (this.DataService.getData().levels[l].name !== childLevel) {
+                        continue;
+                    }
+                    for (var it = 0; it < this.DataService.getData().levels[l].items.length; ++it) {
+                        if (this.DataService.getData().levels[l].items[it].id === this.DataService.getData().links[li].toID) {
+                            children.push(this.DataService.getData().levels[l].items[it]);
+                        }
+                    }
+                }
+            }
+        }
+        return children;
+    };
+    ;
+    /**
+     * This function aims to find and store the parents of every
+     * node (along the selected path).
+     *
+     * First clears the _parents attribute from all item and then
+     * re-calculates them.
+     *
+     * All items on the currently selected path will then have a
+     * _parents property that is either an empty array (if it has
+     * no parents) or an array containing its parents.
+     */
+    HierarchyLayoutService.prototype.findParents = function (selectedPath) {
+        var i, ii, c, j;
+        //////
+        // Clear _parents from all items
+        var level;
+        for (i = 0; i < selectedPath.length; ++i) {
+            level = this.LevelService.getLevelDetails(selectedPath[i]);
+            for (ii = 0; ii < level.items.length; ++ii) {
+                level.items[ii]._parents = [];
+            }
+        }
+        /////
+        // Iterate through levels
+        for (i = 0; i < selectedPath.length; ++i) {
+            level = this.LevelService.getLevelDetails(selectedPath[i]);
+            // if segment level copy start and end time information
+            // to _ variables else
+            for (j = 0; j < level.items.length; ++j) {
+                if (level.type === 'SEGMENT') {
+                    level.items[j]._derivedSampleStart = level.items[j].sampleStart;
+                    level.items[j]._derivedSampleEnd = level.items[j].sampleStart + level.items[j].sampleDur; // should we add 1 to this?
+                }
+                else {
+                    level.items[j]._derivedSampleStart = Infinity;
+                    level.items[j]._derivedSampleEnd = -Infinity;
+                }
+            }
+            // Iterate through the current level's items
+            // And save them as _parents in their children
+            for (ii = 0; ii < level.items.length; ++ii) {
+                var children = this.findChildren(level.items[ii], selectedPath);
+                for (c = 0; c < children.length; ++c) {
+                    children[c]._parents.push(level.items[ii]);
+                    // update parent _derivedSample attributes
+                    if (children[c]._derivedSampleStart < level.items[ii]._derivedSampleStart) {
+                        level.items[ii]._derivedSampleStart = children[c]._derivedSampleStart;
+                    }
+                    if (children[c]._derivedSampleEnd > level.items[ii]._derivedSampleEnd) {
+                        level.items[ii]._derivedSampleEnd = children[c]._derivedSampleEnd;
+                    }
+                }
+            }
+        }
+    };
+    ;
+    /**
+     * Find out, which paths ought to be drawn because they are not
+     * collapsed.
+     *
+     * Will add a boolean attribute _visible to all items on the
+     * currently selected path.
+     */
+    HierarchyLayoutService.prototype.findVisibility = function (selectedPath) {
+        // Root nodes are all nodes that have no parents and
+        // thus form a sub-graph.
+        //
+        // Note that some descendants of a given root node
+        // might also be the descendant of another root node.
+        // thus "connecting" the different sub-graphs. If this
+        // were a real connection, the different sub-graphs
+        // would actually be one graph. But it is not a real
+        // connection since the whole graph is directed and the
+        // connections can never be along the direction of an
+        // edge.
+        if (selectedPath !== undefined && selectedPath.length > 0) {
+            var rootLevelItems = [];
+            var level;
+            for (var i = 0; i < selectedPath.length; ++i) {
+                level = this.LevelService.getLevelDetails(selectedPath[i]);
+                for (var ii = 0; ii < level.items.length; ++ii) {
+                    if (level.items[ii]._parents.length === 0) {
+                        rootLevelItems.push(level.items[ii]);
+                    }
+                }
+            }
+            // First, set all nodes invisible. Later we will search
+            // all paths and if we find one uncollasped path to a
+            // node, that node will be set visible.
+            var currentItem;
+            var items = [];
+            items = items.concat(rootLevelItems);
+            while (items.length > 0) {
+                currentItem = items.pop();
+                items = items.concat(this.findChildren(currentItem, selectedPath));
+                currentItem._visible = false;
+            }
+            // Now all nodes on the selectedPath have been set
+            // invisible. Try and find those that must be visible,
+            // i.e. either they are a root node or there is an
+            // uncollapsed path to them from a root node.
+            items = [];
+            items = items.concat(rootLevelItems);
+            while (items.length > 0) {
+                currentItem = items.pop();
+                if (!this.ViewStateService.hierarchyState.getCollapsed(currentItem.id)) {
+                    items = items.concat(this.findChildren(currentItem, selectedPath));
+                }
+                currentItem._visible = true;
+            }
+        }
+    };
+    ;
+    /**
+     * Toggle the state of a single item with its subtree
+     */
+    HierarchyLayoutService.prototype.toggleCollapse = function (d, selectedPath) {
+        // Find out whether we're collapsing or decollapsing
+        var isCollapsing = !this.ViewStateService.hierarchyState.getCollapsed(d.id);
+        this.ViewStateService.hierarchyState.setCollapsed(d.id, isCollapsing);
+        // Traverse sub-tree and change each item's number of collapsed parents
+        //
+        // Set each item's collapsePosition as well
+        // collapsePosition is the coordinate where they fade out to or fade in from
+        var currentDescendant;
+        var descendants = this.findChildren(d, selectedPath);
+        while (descendants.length > 0) {
+            currentDescendant = descendants.pop();
+            descendants = descendants.concat(this.findChildren(currentDescendant, selectedPath));
+            var num = this.ViewStateService.hierarchyState.getNumCollapsedParents(currentDescendant.id);
+            if (isCollapsing) {
+                this.ViewStateService.hierarchyState.setNumCollapsedParents(currentDescendant.id, num + 1);
+            }
+            else {
+                this.ViewStateService.hierarchyState.setNumCollapsedParents(currentDescendant.id, num - 1);
+            }
+            this.ViewStateService.hierarchyState.setCollapsePosition(currentDescendant.id, [d._x, d._y]);
+        }
+    };
+    ;
     return HierarchyLayoutService;
 }());
 
@@ -88936,31 +88946,6 @@ var history_service = __webpack_require__(38);
 
 var io_handler_service_IoHandlerService = /** @class */ (function () {
     function IoHandlerService($rootScope, $http, $location, $q, $window, HistoryService, ViewStateService, SoundHandlerService, SsffParserService, WavParserService, TextGridParserService, ConfigProviderService, EspsParserService, SsffDataService, WebSocketHandlerService, DragnDropDataService, LoadedMetaDataService) {
-        /**
-        *
-        */
-        this.getDBconfigFile = function (nameOfDB) {
-            var getProm;
-            if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
-                // console.error('CORS version of getDBconfigFile not implemented');
-            }
-            else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
-                getProm = this.WebSocketHandlerService.getDBconfigFile();
-            }
-            else if (this.ConfigProviderService.vals.main.comMode === 'DEMO') {
-                getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_DBconfig.json');
-            }
-            else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
-                var searchObject = this.$location.search();
-                getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + searchObject.emuDBname + '_DBconfig.json/raw?ref=master', {
-                    method: 'GET',
-                    headers: {
-                        'PRIVATE-TOKEN': searchObject.privateToken
-                    }
-                }).then(function (resp) { return (resp.json()); });
-            }
-            return getProm;
-        };
         this.$rootScope = $rootScope;
         this.$http = $http;
         this.$location = $location;
@@ -89080,6 +89065,32 @@ var io_handler_service_IoHandlerService = /** @class */ (function () {
         }
         else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
             getProm = this.WebSocketHandlerService.logOnUser(name, pwd);
+        }
+        return getProm;
+    };
+    ;
+    /**
+    *
+    */
+    IoHandlerService.prototype.getDBconfigFile = function (nameOfDB) {
+        var getProm;
+        if (this.ConfigProviderService.vals.main.comMode === 'CORS') {
+            // console.error('CORS version of getDBconfigFile not implemented');
+        }
+        else if (this.ConfigProviderService.vals.main.comMode === 'WS') {
+            getProm = this.WebSocketHandlerService.getDBconfigFile();
+        }
+        else if (this.ConfigProviderService.vals.main.comMode === 'DEMO') {
+            getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_DBconfig.json');
+        }
+        else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
+            var searchObject = this.$location.search();
+            getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + searchObject.emuDBname + '_DBconfig.json/raw?ref=master', {
+                method: 'GET',
+                headers: {
+                    'PRIVATE-TOKEN': searchObject.privateToken
+                }
+            }).then(function (resp) { return (resp.json()); });
         }
         return getProm;
     };
@@ -89278,18 +89289,6 @@ var level_service = __webpack_require__(39);
 
 var LinkService = /** @class */ (function () {
     function LinkService(DataService, ConfigProviderService) {
-        /**
-        * change a Link (form=={'fromID':fromID, 'toID':toID})
-        * to (to=={'fromID':fromID, 'toID':toNewID})
-        */
-        this.changeLinkFrom = function (fromID, toID, fromNewID) {
-            var _this = this;
-            this.DataService.getLinkData().forEach(function (link, linkOrder) {
-                if (link.fromID === fromID && link.toID === toID) {
-                    _this.DataService.changeLinkDataAt(linkOrder, fromNewID, toID);
-                }
-            });
-        };
         this.DataService = DataService;
         this.ConfigProviderService = ConfigProviderService;
     }
@@ -89476,6 +89475,19 @@ var LinkService = /** @class */ (function () {
         this.DataService.getLinkData().forEach(function (link, linkOrder) {
             if (link.fromID === fromID && link.toID === toID) {
                 _this.DataService.changeLinkDataAt(linkOrder, fromID, toNewID);
+            }
+        });
+    };
+    ;
+    /**
+    * change a Link (form=={'fromID':fromID, 'toID':toID})
+    * to (to=={'fromID':fromID, 'toID':toNewID})
+    */
+    LinkService.prototype.changeLinkFrom = function (fromID, toID, fromNewID) {
+        var _this = this;
+        this.DataService.getLinkData().forEach(function (link, linkOrder) {
+            if (link.fromID === fromID && link.toID === toID) {
+                _this.DataService.changeLinkDataAt(linkOrder, fromNewID, toID);
             }
         });
     };
@@ -89884,15 +89896,6 @@ angular["module"]('emuwebApp')
 
 var modal_service_ModalService = /** @class */ (function () {
     function ModalService($q, ArrayHelperService, ViewStateService) {
-        /**
-        *
-        */
-        this.error = function (msg) {
-            this.initialize();
-            this.dataIn = msg;
-            this.templateUrl = 'views/error.html';
-            this.ViewStateService.setState('modalShowing');
-        };
         this.$q = $q;
         this.ArrayHelperService = ArrayHelperService;
         this.ViewStateService = ViewStateService;
@@ -89931,6 +89934,16 @@ var modal_service_ModalService = /** @class */ (function () {
         this.ViewStateService.setState('modalShowing');
         this.isOpen = true;
         return this.defer.promise;
+    };
+    ;
+    /**
+    *
+    */
+    ModalService.prototype.error = function (msg) {
+        this.initialize();
+        this.dataIn = msg;
+        this.templateUrl = 'views/error.html';
+        this.ViewStateService.setState('modalShowing');
     };
     ;
     /**
@@ -90032,6 +90045,7 @@ var sound_handler_service_SoundHandlerService = /** @class */ (function () {
     * @param buffer arraybuffer containing audio file (as returned by XHR for example)
     * */
     SoundHandlerService.prototype.decodeAndPlay = function (sampleStart, endSample) {
+        var _this = this;
         if (typeof (this.audioContext) === 'undefined') {
             this.initAudioContext();
         }
@@ -90044,7 +90058,7 @@ var sound_handler_service_SoundHandlerService = /** @class */ (function () {
         this.curSource.connect(this.audioContext.destination);
         this.curSource.start(0, startTime, durTime);
         this.curSource.onended = function () {
-            this.isPlaying = false;
+            _this.isPlaying = false;
         };
         //}, function (e) {
         //	alert(e);

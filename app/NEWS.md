@@ -1,5 +1,11 @@
 # What's New
 
+## Version 1.2.7
+
+### bug fixes
+
+- fixed missing arrow function in various services
+
 ## Version 1.2.6
 
 ### bug fixes
