@@ -139,13 +139,15 @@ class DataService{
 	*/
 	public setData(data) {
 		angular.copy(data, this.data);
-		this.data.levels.forEach((level) => {
-			level.items.forEach((item) => {
-				if (item.id > this.maxItemID) {
-					this.maxItemID = item.id;
-				}
+		if(typeof this.data.levels !== "undefined"){
+			this.data.levels.forEach((level) => {
+				level.items.forEach((item) => {
+					if (item.id > this.maxItemID) {
+						this.maxItemID = item.id;
+					}
+				});
 			});
-		});
+		}
 	};
 	
 	/**
