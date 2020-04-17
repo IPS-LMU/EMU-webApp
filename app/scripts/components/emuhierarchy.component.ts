@@ -1082,10 +1082,11 @@ let EmuHierarchyComponent = {
 				return d;
 			});
 			
+			var oldLevelCaptions = levelCaptionSet.exit(); // remove unneeded captions
 			var newLevelCaptions = levelCaptionSet.enter();
-			var oldLevelCaptions = levelCaptionSet.exit();
 			
-			newLevelCaptions = newLevelCaptions.append('g')
+			newLevelCaptions = newLevelCaptions
+			.append('g')
 			.attr('class', 'emuhierarchy-levelcaption')
 			;
 			
@@ -1126,6 +1127,9 @@ let EmuHierarchyComponent = {
 			.style('fill', this.ConfigProviderService.design.color.transparent.grey)
 			;
 			
+			// merge new ones
+			levelCaptionSet = levelCaptionSet.merge(newLevelCaptions);
+
 			levelCaptionSet
 			.attr('transform', this.getOrientatedLevelCaptionTransform.bind(this))
 			;
@@ -1141,6 +1145,7 @@ let EmuHierarchyComponent = {
 			.style('height', this.getOrientatedTimeLevelBackgroundHeight.bind(this))
 			;
 			
+
 			if (this.transition.rotation) {
 				oldLevelCaptions = oldLevelCaptions.transition()
 				.duration(this.transition.duration)
@@ -1266,9 +1271,9 @@ let EmuHierarchyComponent = {
 			.data(nodes, (d) => {
 				return d.id;
 			});
-			
-			var newNodes = dataSet.enter();
+
 			var oldNodes = dataSet.exit();
+			var newNodes = dataSet.enter();
 			
 			//
 			// Add nodes that were previously not part of the svg.
@@ -1282,7 +1287,7 @@ let EmuHierarchyComponent = {
 			
 			newNodes = newNodes.append('g')		// append() will return a set of all appended elements
 			.attr('class', 'emuhierarchy-node')
-			
+			.merge(newNodes)
 			// event handlers
 			//.call(dragListener)
 			.attr('pointer-events', 'mouseover')
@@ -1324,7 +1329,10 @@ let EmuHierarchyComponent = {
 					return 'translate(' + x + ',' + y + ')' + this.getOrientatedNodeTransform();
 				}
 			});
-			
+
+			// merge new ones
+			dataSet = dataSet.merge(newNodes);
+
 			//
 			// Remove nodes that shall no longer be part of the svg
 			
@@ -1557,9 +1565,9 @@ let EmuHierarchyComponent = {
 				return 's' + d.fromID + 't' + d.toID;
 			});
 			
-			var newLinks = linkSet.enter();
 			var oldLinks = linkSet.exit();
-			
+			var newLinks = linkSet.enter();
+
 			// The new link's paths are inserted within the svg element
 			// that linkSet was generated from.
 			// They must be inserted at the beginning (before the nodes,
@@ -1595,6 +1603,8 @@ let EmuHierarchyComponent = {
 				;
 			}
 			
+			// merge new ones
+			linkSet = linkSet.merge(newLinks);
 			
 			// Remove old links
 			if (this.transition.links) {
