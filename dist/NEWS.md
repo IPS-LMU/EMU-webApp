@@ -10,6 +10,7 @@
 
 - updated to d3.js version >= 5
 - starting to use material icons
+- removed unused gifs for size reduction
 
 ## Version 1.2.7
 
