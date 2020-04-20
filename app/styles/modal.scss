@@ -24,22 +24,19 @@
         margin-top: 3%;
         background: #fff;
     }
-    .emuwebapp-close {
-        background: $color-white;
+    .emuwebapp-close-button {
+        background: transparent;
+        border: none;
+        color: $color-black;
         position: absolute;
-        right: -12px;
+        right: 0px;
         text-align: center;
-        top: -10px;
+        top: 3px;
         width: 30px;
         height: 30px;
-        text-decoration: none;
-        font-weight: bold;
-        @include vendor-prefix(box-shadow, "1px 1px 3px "+$color-transparent-grey);
-        @include vendor-prefix(border-radius, "15px");
         z-index: 99999;
         &:hover {
-            background: $color-blue;
-            text-decoration: none;
+            filter: invert(100%);
         }
     }
     
@@ -199,6 +196,19 @@
 		margin-top: 15px;
         vertical-align: top;
 	}
+}
+
+.emuwebapp-inline-modal-footer {
+    position:sticky;
+    bottom: 0px;
+    padding-bottom: 10px;
+    button {
+        color: $color-white;
+        background-color: $color-black;
+        &:hover{
+            filter: invert(100%);
+        }
+    }
 }
 
 .emuwebapp-exportdata {

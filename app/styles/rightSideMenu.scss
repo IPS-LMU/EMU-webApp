@@ -32,14 +32,15 @@
     > button {
         position: absolute;
         top: 125px;
-        left: -15px;
-        height: 22px;
-        width: 15px;
-        background: $color-white;
+        left: -24px;
+        height: 24px;
+        width: 24px;
+        color: $color-white;
+        background: transparent;
         @include vendor-prefix(box-shadow, "-2px 1px 5px "+$color-transparent-black);
         border-style: solid;
         border-width: 1px 0 1px 1px;
-        border-color: $color-black;
+        border-color: $color-white;
         z-index: 2001;
         img{
             width: 10px;
@@ -55,6 +56,10 @@
         }
         &:focus {
             outline: none;
+        }
+        &:hover {
+            background-color: $color-black;
+            filter: invert(100%);
         }
     }
     .emuwebapp-curSelPerspLi{

@@ -168,16 +168,11 @@
     position: absolute;
     background-color:transparent;
     border-style:none;
+    color: $color-white;
     top: 2px;
     right: 2px;
-    img {
-        height: 25px;
-        width:  25px;
-        border-radius: 12.5px;
-        background-color:white;
-        vertical-align: middle;
-        &:hover{
-            background-color: $color-blue;
-        }
+    &:hover {
+        color: $color-black;
+        background-color: $color-white;
     }
 }

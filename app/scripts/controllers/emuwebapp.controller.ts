@@ -739,7 +739,7 @@ angular.module('emuwebApp')
 		 */
 		$scope.spectSettingsBtnClick = function () {
 			if (ViewStateService.getPermission('spectSettingsChange')) {
-				ModalService.open('views/spectSettings.html');
+				ModalService.open('views/settingsModal.html');
 			}
 		};
 

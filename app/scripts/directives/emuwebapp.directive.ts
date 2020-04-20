@@ -22,29 +22,71 @@ angular.module('emuwebApp')
 
 					<!-- start: top menu bar -->
 					<div class="emuwebapp-top-menu">
-						<button ng-show="cps.vals.activeButtons.openMenu" id="bundleListSideBarOpen" ng-click="vs.toggleBundleListSideBar(cps.design.animation.period);" class="emuwebapp-button-icon" style="float:left"><img src="img/menu.svg" class="_20px" /></button>
-						<button ng-show="cps.vals.activeButtons.addLevelSeg" ng-disabled="!vs.getPermission('addLevelSegBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelSegBtnClick();">add level (SEG.)</button>
-						<button ng-show="cps.vals.activeButtons.addLevelEvent" ng-disabled="!vs.getPermission('addLevelPointBtnClick')" class="emuwebapp-mini-btn left" ng-click="addLevelPointBtnClick();">add level (EVENT)</button>
-						<button ng-show="cps.vals.activeButtons.renameSelLevel" ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" class="emuwebapp-mini-btn left" ng-click="renameSelLevelBtnClick();">rename sel. level</button>
-						<button id="downloadTextgrid" ng-show="cps.vals.activeButtons.downloadTextGrid" ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" class="emuwebapp-mini-btn left" ng-click="downloadTextGridBtnClick();">download TextGrid</button>
-						<button id="downloadAnnotation" ng-show="cps.vals.activeButtons.downloadAnnotation" ng-disabled="!vs.getPermission('downloadAnnotationBtnClick')" class="emuwebapp-mini-btn left" ng-click="downloadAnnotationBtnClick();">download annotJSON</button>
-						<button id="spectSettingsBtn" ng-show="cps.vals.activeButtons.specSettings" ng-disabled="!vs.getPermission('spectSettingsChange')" class="emuwebapp-mini-btn left" ng-click="spectSettingsBtnClick();">OSCI/SPEC settings</button>
+						<button class="emuwebapp-button-icon" 
+						id="bundleListSideBarOpen" 
+						ng-show="cps.vals.activeButtons.openMenu" 
+						ng-click="vs.toggleBundleListSideBar(cps.design.animation.period);" 
+						style="float:left"><i class="material-icons">menu</i></button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						ng-show="cps.vals.activeButtons.addLevelSeg" 
+						ng-disabled="!vs.getPermission('addLevelSegBtnClick')" 
+						ng-click="addLevelSegBtnClick();">add level (SEG.)</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						ng-show="cps.vals.activeButtons.addLevelEvent" 
+						ng-disabled="!vs.getPermission('addLevelPointBtnClick')" 
+						ng-click="addLevelPointBtnClick();">add level (EVENT)</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						ng-show="cps.vals.activeButtons.renameSelLevel" 
+						ng-disabled="!vs.getPermission('renameSelLevelBtnClick')" 
+						ng-click="renameSelLevelBtnClick();">rename sel. level</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						id="downloadTextgrid" 
+						ng-show="cps.vals.activeButtons.downloadTextGrid" 
+						ng-disabled="!vs.getPermission('downloadTextGridBtnClick')" 
+						ng-click="downloadTextGridBtnClick();"><i class="material-icons">save</i>download TextGrid</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						id="downloadAnnotation" 
+						ng-show="cps.vals.activeButtons.downloadAnnotation" 
+						ng-disabled="!vs.getPermission('downloadAnnotationBtnClick')" 
+						ng-click="downloadAnnotationBtnClick();"><i class="material-icons">save</i>download annotJSON</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						id="spectSettingsBtn" 
+						ng-show="cps.vals.activeButtons.specSettings" 
+						ng-disabled="!vs.getPermission('spectSettingsChange')" 
+						ng-click="spectSettingsBtnClick();"><i class="material-icons">settings</i> settings</button>
+						
 						<div class="emuwebapp-nav-wrap" ng-show="cps.vals.activeButtons.openDemoDB">
 							<ul class="emuwebapp-dropdown-container">
 								<li class="left">
-									<button id="demoDB" type="button" ng-mouseover="dropdown = true" ng-mouseleave="dropdown = false" ng-click="dropdown = !dropdown" class="emuwebapp-mini-btn full" ng-disabled="!vs.getPermission('openDemoBtnDBclick')">open demo <span id="emuwebapp-dropdown-arrow"></span></button>
-									<ul class="emuwebapp-dropdown-menu" ng-mouseover="dropdown = true" ng-mouseleave="dropdown = false" ng-init="dropdown = false" ng-show="dropdown">
+									<button type="button" 
+									class="emuwebapp-mini-btn full" 
+									id="demoDB" 
+									ng-mouseover="dropdown = true" 
+									ng-mouseleave="dropdown = false" 
+									ng-click="dropdown = !dropdown" 
+									ng-disabled="!vs.getPermission('openDemoBtnDBclick')">open demo <span id="emuwebapp-dropdown-arrow"></span></button>
+									<ul class="emuwebapp-dropdown-menu" 
+									ng-mouseover="dropdown = true" 
+									ng-mouseleave="dropdown = false" 
+									ng-init="dropdown = false" 
+									ng-show="dropdown">
 										<li class="divider"></li>
 										<li ng-repeat="curDB in cps.vals.demoDBs" ng-click="openDemoDBbtnClick(curDB);" id="demo{{$index}}">{{curDB}}</li>
 									</ul>
 								</li>
 							</ul>
 						</div>
-						<button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn left" ng-click="connectBtnClick();">{{connectBtnLabel}}</button>
-						<button id="showHierarchy" class="emuwebapp-mini-btn left" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy">show hierarchy</button>
+						<button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn left" ng-click="connectBtnClick();"><i class="material-icons">input</i>{{connectBtnLabel}}</button>
+						<button id="showHierarchy" class="emuwebapp-mini-btn left" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy"><i class="material-icons" style="transform: rotate(180deg)">details</i>hierarchy</button>
 						<button id="showeditDB" class="emuwebapp-mini-btn left" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editEMUwebAppConfig">edit config</button>
-						<button ng-show="cps.vals.activeButtons.search" ng-disabled="!vs.getPermission('searchBtnClick')" class="emuwebapp-mini-btn left" ng-click="searchBtnClick();">search</button>
-						<button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn left" ng-click="clearBtnClick();">clear</button>
+						<button ng-show="cps.vals.activeButtons.search" ng-disabled="!vs.getPermission('searchBtnClick')" class="emuwebapp-mini-btn left" ng-click="searchBtnClick();"><i class="material-icons">search</i>search</button>
+						<button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn left" ng-click="clearBtnClick();"><i class="material-icons">clear_all</i>clear</button>
 						<button id="aboutBtn" class="emuwebapp-button-icon" style="float: right;" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" class="_35px" /></button>
 					</div>
 					<!-- top menu bar end -->

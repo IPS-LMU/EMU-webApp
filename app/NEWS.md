@@ -4,10 +4,12 @@
 
 ### bug fixes
 
+- fixed color change missing in bundle list side bar
 
 ### new features / performance tweaks / improvements
 
 - updated to d3.js version >= 5
+- starting to use material icons
 
 ## Version 1.2.7
 

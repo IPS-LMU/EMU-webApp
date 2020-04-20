@@ -34,7 +34,7 @@ let BundleListSideBarComponent = {
 					<div ng-repeat="bundle in value | startFrom:$ctrl.ViewStateService.currentPage*$ctrl.ViewStateService.pageSize | limitTo:$ctrl.ViewStateService.pageSize | regex:$ctrl.filterText track by $index">
 						<div class="emuwebapp-bundle-item" id="uttListItem" ng-style="$ctrl.getBndlColor(bundle);" ng-click="$ctrl.DbObjLoadSaveService.loadBundle(bundle);" dragout draggable="true" name="{{bundle.name}}">
 							<b>{{bundle.name}}</b>
-							<button ng-if="$ctrl.ConfigProviderService.vals.activeButtons.saveBundle && $ctrl.isCurBndl(bundle)" class="emuwebapp-saveBundleButton" ng-click="$ctrl.DbObjLoadSaveService.saveBundle();"><img class="emuwebapp-saveBundleButton-img" src="img/save.svg" /></button>
+							<button ng-if="$ctrl.ConfigProviderService.vals.activeButtons.saveBundle && $ctrl.isCurBndl(bundle)" class="emuwebapp-saveBundleButton" ng-click="$ctrl.DbObjLoadSaveService.saveBundle();"><i class="material-icons">save</i></button>
 							<!---->
 							<!--regulate finished editing display-->
 							<!--display checkbox if current-->
@@ -178,7 +178,7 @@ controller: class BundleListSideBarController{
 	 * requesting color
 	 * @returns color as jso object used by ng-style
 	 */
-	private $ctrlgetBndlColor(bndl) {
+	private getBndlColor(bndl) {
 		var curColor;
 		if (this.HistoryService.movesAwayFromLastSave !== 0) {
 			curColor = {
