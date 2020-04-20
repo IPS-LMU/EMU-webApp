@@ -1,8 +1,8 @@
 <div id="modalDialog" class="emuwebapp-modal">
 	<div ng-if="modal.isOpen">
-		<a href title="Close" id="modal-close" class="emuwebapp-close-button" ng-click="modal.close()" ng-hide="force">
+		<button title="Close" id="modal-close" class="emuwebapp-close-button" ng-click="modal.close()" ng-hide="force">
 			<i class="material-icons">cancel</i>
-		</a>
+		</button>
 		<p class="emuwebapp-modal-inner" ng-include="templateUrl"></p>
 	</div>
 </div>
