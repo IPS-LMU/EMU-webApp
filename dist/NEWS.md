@@ -1,5 +1,16 @@
 # What's New
 
+## Version 1.2.9
+
+### bug fixes
+
+- fixed repaint issue on perspective change for hierarchy path canvas
+- fixed hard coded "fms" ext for GitLab save
+
+### new features / performance tweaks / improvements
+
+
+
 ## Version 1.2.8
 
 ### bug fixes
