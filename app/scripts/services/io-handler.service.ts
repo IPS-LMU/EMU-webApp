@@ -284,7 +284,7 @@ class IoHandlerService{
 		if(bundleData.ssffFiles.length > 0){
 			actions.push({ 
 				action: "update", // SSFF file (only FORMANTS 4 now)
-				file_path: bndlPath + bundleData.annotation.name + "." + "fms",
+				file_path: bndlPath + bundleData.annotation.name + "." + bundleData.ssffFiles[0].fileExtension,
 				content: bundleData.ssffFiles[0].data,
 				encoding: "base64"
 			});

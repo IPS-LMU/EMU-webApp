@@ -115,6 +115,8 @@ let HierarchyPathCanvasComponent = {
                 this.ViewStateService.setcurMouseItem(undefined, undefined, undefined);
                 this.drawLevelMarkup();
             });
+
+            this.redrawAll()
         };
         
         $onChanges = function (changes) {

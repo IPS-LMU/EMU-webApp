@@ -4,7 +4,10 @@ angular.module('emuwebApp')
 	.directive('emuwebapp', function (ViewStateService, ConfigProviderService) {
 		return {
 			template: `
-			<div ng-controller="EmuWebAppController" class="emuwebapp-main" id="MainCtrl" handleglobalkeystrokes>
+			<div ng-controller="EmuWebAppController" 
+			class="emuwebapp-main" 
+			id="MainCtrl" 
+			handleglobalkeystrokes>
 				<!-- start: modal -->
 				<modal></modal>
 				<!-- end: modal -->
@@ -82,12 +85,39 @@ angular.module('emuwebApp')
 								</li>
 							</ul>
 						</div>
-						<button ng-show="cps.vals.activeButtons.connect" ng-disabled="!vs.getPermission('connectBtnClick')" class="emuwebapp-mini-btn left" ng-click="connectBtnClick();"><i class="material-icons">input</i>{{connectBtnLabel}}</button>
-						<button id="showHierarchy" class="emuwebapp-mini-btn left" ng-click="showHierarchyBtnClick();" ng-disabled="!vs.getPermission('showHierarchyBtnClick')" ng-show="cps.vals.activeButtons.showHierarchy"><i class="material-icons" style="transform: rotate(180deg)">details</i>hierarchy</button>
-						<button id="showeditDB" class="emuwebapp-mini-btn left" ng-click="showEditDBconfigBtnClick();" ng-disabled="!vs.getPermission('editDBconfigBtnClick')" ng-show="cps.vals.activeButtons.editEMUwebAppConfig">edit config</button>
-						<button ng-show="cps.vals.activeButtons.search" ng-disabled="!vs.getPermission('searchBtnClick')" class="emuwebapp-mini-btn left" ng-click="searchBtnClick();"><i class="material-icons">search</i>search</button>
-						<button ng-show="cps.vals.activeButtons.clear" id="clear" ng-disabled="!vs.getPermission('clearBtnClick')" class="emuwebapp-mini-btn left" ng-click="clearBtnClick();"><i class="material-icons">clear_all</i>clear</button>
-						<button id="aboutBtn" class="emuwebapp-button-icon" style="float: right;" ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" class="_35px" /></button>
+
+						<button class="emuwebapp-mini-btn left" 
+						ng-show="cps.vals.activeButtons.connect" 
+						ng-disabled="!vs.getPermission('connectBtnClick')" 
+						ng-click="connectBtnClick();"><i class="material-icons">input</i>{{connectBtnLabel}}</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						id="showHierarchy" 
+						ng-click="showHierarchyBtnClick();" 
+						ng-disabled="!vs.getPermission('showHierarchyBtnClick')" 
+						ng-show="cps.vals.activeButtons.showHierarchy"><i class="material-icons" style="transform: rotate(180deg)">details</i>hierarchy</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						id="showeditDB" 
+						ng-click="showEditDBconfigBtnClick();" 
+						ng-disabled="!vs.getPermission('editDBconfigBtnClick')" 
+						ng-show="cps.vals.activeButtons.editEMUwebAppConfig">edit config</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						ng-show="cps.vals.activeButtons.search" 
+						ng-disabled="!vs.getPermission('searchBtnClick')" 
+						ng-click="searchBtnClick();"><i class="material-icons">search</i>search</button>
+						
+						<button class="emuwebapp-mini-btn left" 
+						id="clear" 
+						ng-show="cps.vals.activeButtons.clear" 
+						ng-disabled="!vs.getPermission('clearBtnClick')" 
+						ng-click="clearBtnClick();"><i class="material-icons">clear_all</i>clear</button>
+						
+						<button class="emuwebapp-button-icon" 
+						id="aboutBtn" 
+						style="float: right;" 
+						ng-click="aboutBtnClick();"><img src="assets/EMU-webAppEmu.svg" class="_35px" /></button>
 					</div>
 					<!-- top menu bar end -->
 
@@ -180,17 +210,58 @@ angular.module('emuwebApp')
 					<!-- start: bottom menu bar -->
 					<div class="emuwebapp-bottom-menu">
 						<div>
-							<preview id="preview" class="preview" current-bundle-name="{{getCurBndlName()}}"></preview>
+							<preview class="preview" 
+							id="preview" 
+							current-bundle-name="{{getCurBndlName()}}"></preview>
 						</div>
-						<button id="zoomAllBtn" ng-click="cmdZoomAll();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn left">all</button>
-						<button id="zoomInBtn" ng-click="cmdZoomIn();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn left">in</button>
-						<button id="zoomOutBtn" ng-click="cmdZoomOut();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn left">out</button>
-						<button id="zoomLeftBtn" ng-click="cmdZoomLeft();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn left">left</button>
-						<button id="zoomRightBtn" ng-click="cmdZoomRight();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn left">right</button>
-						<button id="zoomSelBtn" ng-click="cmdZoomSel();" ng-disabled="!vs.getPermission('zoom')" class="emuwebapp-mini-btn left">selection</button>
-						<button id="playViewBtn" ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayView();" ng-disabled="!vs.getPermission('playaudio')" class="emuwebapp-mini-btn left">play in view</button>
-						<button id="playSelBtn" ng-show="cps.vals.restrictions.playback" ng-click="cmdPlaySel();" ng-disabled="!vs.getPermission('playaudio')" class="emuwebapp-mini-btn left">play selected</button>
-						<button id="playAllBtn" ng-show="cps.vals.restrictions.playback" ng-click="cmdPlayAll();" ng-disabled="!vs.getPermission('playaudio')" class="emuwebapp-mini-btn left">play entire file</button>
+
+						<button class="emuwebapp-mini-btn left"
+						id="zoomInBtn" 
+						ng-click="cmdZoomIn();" 
+						ng-disabled="!vs.getPermission('zoom')"><i class="material-icons">expand_less</i>in</button>
+						
+						<button class="emuwebapp-mini-btn left"
+						id="zoomOutBtn" 
+						ng-click="cmdZoomOut();" 
+						ng-disabled="!vs.getPermission('zoom')"><i class="material-icons">expand_more</i>out</button>
+						
+						<button class="emuwebapp-mini-btn left"
+						id="zoomLeftBtn" 
+						ng-click="cmdZoomLeft();" 
+						ng-disabled="!vs.getPermission('zoom')"><i class="material-icons">chevron_left</i>left</button>
+						
+						<button class="emuwebapp-mini-btn left"
+						id="zoomRightBtn" 
+						ng-click="cmdZoomRight();" 
+						ng-disabled="!vs.getPermission('zoom')"><i class="material-icons">chevron_right</i>right</button>
+						
+						<button class="emuwebapp-mini-btn left"
+						id="zoomAllBtn" 
+						ng-click="cmdZoomAll();" 
+						ng-disabled="!vs.getPermission('zoom')"><i class="material-icons" style="transform: rotate(90deg)">unfold_less</i>all</button>
+
+						<button class="emuwebapp-mini-btn left"
+						id="zoomSelBtn" 
+						ng-click="cmdZoomSel();" 
+						ng-disabled="!vs.getPermission('zoom')"><i class="material-icons" style="transform: rotate(90deg)">unfold_more</i>selection</button>
+						
+						<button class="emuwebapp-mini-btn left"
+						id="playViewBtn" 
+						ng-show="cps.vals.restrictions.playback" 
+						ng-click="cmdPlayView();" 
+						ng-disabled="!vs.getPermission('playaudio')" ><i class="material-icons">play_arrow</i>in view</button>
+						
+						<button class="emuwebapp-mini-btn left"
+						id="playSelBtn" 
+						ng-show="cps.vals.restrictions.playback" 
+						ng-click="cmdPlaySel();" 
+						ng-disabled="!vs.getPermission('playaudio')"><i class="material-icons">play_circle_outline</i>selected</button>
+						
+						<button class="emuwebapp-mini-btn left"
+						id="playAllBtn" 
+						ng-show="cps.vals.restrictions.playback" 
+						ng-click="cmdPlayAll();" 
+						ng-disabled="!vs.getPermission('playaudio')"><i class="material-icons">play_circle_filled</i>entire file</button>
 					</div>
 					<!-- end: bottom menu bar -->
 

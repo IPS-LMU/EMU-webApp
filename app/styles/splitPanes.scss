@@ -106,11 +106,11 @@
             bottom: 0.21em;
             width: 20px;
             background: linear-gradient(180deg,
-                $color-black, $color-black 20%,
-                $color-white 20%, $color-white 40%,
-                $color-black 40%, $color-black 60%,
-                $color-white 60%, $color-white 80%,
-                $color-black 80%, $color-black 100%
+                transparent, transparent 20%,
+                $color-white 20%, $color-white 35%,
+                transparent 35%, transparent 65%,
+                $color-white 65%, $color-white 80%,
+                transparent 80%, transparent 100%
             );
         }
     }
