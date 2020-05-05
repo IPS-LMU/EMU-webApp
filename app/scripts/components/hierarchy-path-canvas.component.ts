@@ -115,87 +115,68 @@ let HierarchyPathCanvasComponent = {
                 this.ViewStateService.setcurMouseItem(undefined, undefined, undefined);
                 this.drawLevelMarkup();
             });
-
+            
             this.redrawAll()
         };
         
         $onChanges = function (changes) {
-            if(changes.viewPortSampleStart){
-                if(changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue){
-                    if(this._inited){
+            if(this._inited){
+                if(changes.viewPortSampleStart){
+                    if(changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue){
                         this.redrawAll()
                     }
                 }
-            }
-            if(changes.viewPortSampleEnd){
-                if(changes.viewPortSampleEnd.currentValue !== changes.viewPortSampleEnd.previousValue){
-                    if(this._inited){
+                if(changes.viewPortSampleEnd){
+                    if(changes.viewPortSampleEnd.currentValue !== changes.viewPortSampleEnd.previousValue){
                         this.redrawAll()
                     }
                 }
-            }
-            if(changes.viewPortSelectStart){
-                if(changes.viewPortSelectStart.currentValue !== changes.viewPortSelectStart.previousValue){
-                    if(this._inited){
+                if(changes.viewPortSelectStart){
+                    if(changes.viewPortSelectStart.currentValue !== changes.viewPortSelectStart.previousValue){
                         this.drawLevelMarkup();
                     }
                 }
-            }
-            if(changes.viewPortSelectEnd){
-                if(changes.viewPortSelectEnd.currentValue !== changes.viewPortSelectEnd.previousValue){
-                    if(this._inited){
+                if(changes.viewPortSelectEnd){
+                    if(changes.viewPortSelectEnd.currentValue !== changes.viewPortSelectEnd.previousValue){
                         this.drawLevelMarkup();
                     }
                 }
-            }
-            if(changes.curMouseX){
-                if(changes.curMouseX.currentValue !== changes.curMouseX.previousValue){
-                    if(this._inited){
+                if(changes.curMouseX){
+                    if(changes.curMouseX.currentValue !== changes.curMouseX.previousValue){
                         this.drawLevelMarkup();
                     }
                 }
-            }
-            if(changes.curClickLevelName){
-                if(changes.curClickLevelName.currentValue !== changes.curClickLevelName.previousValue){
-                    if(this._inited){
+                if(changes.curClickLevelName){
+                    if(changes.curClickLevelName.currentValue !== changes.curClickLevelName.previousValue){
                         this.drawLevelMarkup();
                     }
                 }
-            }
-            if(changes.movingBoundarySample){
-                if(changes.movingBoundarySample.currentValue !== changes.movingBoundarySample.previousValue){
-                    if(this._inited){
+                if(changes.movingBoundarySample){
+                    if(changes.movingBoundarySample.currentValue !== changes.movingBoundarySample.previousValue){
                         this.drawLevelMarkup();
                         // if (levelDetails.name === this.ViewStateService.curMouseLevelName) {
                         //     this.drawLevelDetails(this.canvas);
                         // }
+                        
                     }
                 }
-            }
-            if(changes.movingBoundary){
-                if(changes.movingBoundary.currentValue !== changes.movingBoundary.previousValue){
-                    if(this._inited){
+                if(changes.movingBoundary){
+                    if(changes.movingBoundary.currentValue !== changes.movingBoundary.previousValue){
                         this.drawLevelMarkup();
                     }
                 }
-            }
-            if(changes.movesAwayFromLastSave){
-                if(changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue){
-                    if(this._inited){
+                if(changes.movesAwayFromLastSave){
+                    if(changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue){
                         this.redrawAll()
                     }
                 }
-            }
-            if(changes.curPerspectiveIdx){
-                if(changes.curPerspectiveIdx.currentValue !== changes.curPerspectiveIdx.previousValue){
-                    if(this._inited){
+                if(changes.curPerspectiveIdx){
+                    if(changes.curPerspectiveIdx.currentValue !== changes.curPerspectiveIdx.previousValue){
                         this.redrawAll()
                     }
                 }
-            }
-            if(changes.curBndl){
-                if(changes.curBndl.currentValue !== changes.curBndl.previousValue){
-                    if(this._inited){
+                if(changes.curBndl){
+                    if(changes.curBndl.currentValue !== changes.curBndl.previousValue){
                         this.redrawAll()
                     }
                 }
@@ -209,20 +190,20 @@ let HierarchyPathCanvasComponent = {
         
         private async redrawAll(){
             if(this.annotation.levels.length > 0){
-
+                
                 var ctx = this.canvas[0].getContext('2d');
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
+                
                 let hierarchyWorker = await new HierarchyWorker();
                 let reducedAnnotation = await hierarchyWorker.reduceAnnotationToViewableTimeAndPath(this.annotation, this.path, this.viewPortSampleStart, this.viewPortSampleEnd);
                 
                 let nrOfPxlsPerLevel = 256 / this.path.length;
-
+                
                 let topLimitPxl = 0;
                 let bottomLimitPxl = nrOfPxlsPerLevel;
-
+                
                 let pathClone = JSON.parse(JSON.stringify(this.path));
-
+                
                 await pathClone.reverse().forEach(async (levelName) => {
                     let levelDetails = await hierarchyWorker.getLevelDetails(levelName, reducedAnnotation);
                     this.drawLevelDetails(this.canvas, levelDetails, topLimitPxl, bottomLimitPxl);

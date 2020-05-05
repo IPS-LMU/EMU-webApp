@@ -129,8 +129,21 @@ angular.module('emuwebApp')
 									<li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge($index)}" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
 										<osci 
 										ng-switch-when="OSCI" 
-										order="{{$index}}" 
-										track-name="{{curTrack}}"
+										order="$index" 
+										track-name="curTrack"
+										cur-channel="vs.osciSettings.curChannel"
+										last-update="vs.lastUpdate"
+										timeline-size="vs.timelineSize"
+										cur-perspective-idx="vs.curPerspectiveIdx"
+										play-head-current-sample="vs.playHeadAnimationInfos.curS"
+										moving-boundary-sample="vs.movingBoundarySample"
+										cur-mouse-x="vs.curMouseX"
+										moving-boundary="vs.movingBoundary"
+										view-port-sample-start="vs.curViewPort.sS"
+										view-port-sample-end="vs.curViewPort.eS"
+										view-port-select-start="vs.curViewPort.selectS"
+										view-port-select-end="vs.curViewPort.selectE"
+										cur-bndl="lmds.getCurBndl()"
 										></osci>
 										
 										<spectro 

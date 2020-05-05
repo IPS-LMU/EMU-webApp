@@ -3,3 +3,4 @@ import "./level.component";
 import "./bundlelist-sidebar.component";
 import "./emuhierarchy.component";
 import "./settings.component";
+import "./osci.component";

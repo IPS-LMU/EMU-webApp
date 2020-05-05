@@ -7,8 +7,8 @@ module.exports = merge(common, {
   devServer: {
     contentBase: './app',
     port: 9000
-  },
-  optimization: {
-    minimize: false // can't minimize 4 now see: https://scotch.io/tutorials/declaring-angularjs-modules-for-minification
   }
+  // optimization: {
+  //   minimize: false // can't minimize 4 now see: https://scotch.io/tutorials/declaring-angularjs-modules-for-minification
+  // }
 });
