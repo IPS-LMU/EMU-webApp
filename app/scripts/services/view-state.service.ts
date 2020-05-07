@@ -538,6 +538,9 @@ class ViewStateService{
 		this.osciSettings.curChannel = curCh;
 	};
 	
+	public setHierarchySettings(curPath) {
+		this.hierarchyState.path = curPath;
+	}
 	
 	/**
 	* returns current selection as array

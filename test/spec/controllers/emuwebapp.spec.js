@@ -286,7 +286,7 @@ describe('Controller: MainController', function () {
   it('should open spectro Settings', function () {
     spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
-    scope.spectSettingsBtnClick();
+    scope.settingsBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('spectSettingsChange');
     expect(scope.modal.open).toHaveBeenCalledWith('views/spectSettings.html');
   });
@@ -294,7 +294,7 @@ describe('Controller: MainController', function () {
   it('should not open spectro Settings (not allowed)', function () {
     spyOn(scope.modal, 'open');
     spyOn(scope.vs, 'getPermission').and.returnValue(false);
-    scope.spectSettingsBtnClick();
+    scope.settingsBtnClick();
     expect(scope.vs.getPermission).toHaveBeenCalledWith('spectSettingsChange');
     expect(scope.modal.open).not.toHaveBeenCalledWith();
   });

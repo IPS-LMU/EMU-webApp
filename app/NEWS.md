@@ -1,11 +1,14 @@
 # What's New
 
-## Version 1.2.9.9000
+## Version 1.2.9.9001
 
 ### bug fixes
 
 
 ### new features / performance tweaks / improvements
+
+- osci is now a component
+- hierarchy settings now available in settings modal as well
 
 ## Version 1.2.9
 

@@ -22,7 +22,7 @@ let HierarchyPathCanvasComponent = {
     style="background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);"
     id="levelMarkupCanvas" 
     width="2048" 
-    height="246" 
+    height="256" 
     level-name="$ctrl.level.name"
     level-type="$ctrl.level.type"></canvas>
     </div>

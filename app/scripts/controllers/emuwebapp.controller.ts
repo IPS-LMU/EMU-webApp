@@ -5,7 +5,7 @@ angular.module('emuwebApp')
 	                                        SoundHandlerService, ConfigProviderService, FontScaleService, SsffDataService,
 	                                        LevelService, TextGridParserService, WavParserService, DrawHelperService,
 	                                        ValidationService, AppcacheHandlerService, LoadedMetaDataService, DbObjLoadSaveService,
-	                                        AppStateService, DataService, ModalService, BrowserDetectorService) {
+	                                        AppStateService, DataService, ModalService, BrowserDetectorService, HierarchyLayoutService) {
 		// hook up services to use abbreviated forms
 		$scope.cps = ConfigProviderService;
 		$scope.hists = HistoryService;
@@ -20,6 +20,7 @@ angular.module('emuwebApp')
 		$scope.io = IoHandlerService;
 		$scope.ach = AppcacheHandlerService;
 		$scope.lmds = LoadedMetaDataService;
+		$scope.HierarchyLayoutService = HierarchyLayoutService;
 
 		// init vars
 		$scope.connectBtnLabel = 'connect';
@@ -511,6 +512,9 @@ angular.module('emuwebApp')
 							ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor,
 							ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors,
 							ConfigProviderService.vals.spectrogramSettings.invert);
+						// set first path as default
+						ViewStateService.setHierarchySettings($scope.HierarchyLayoutService.findAllNonPartialPaths().possible[0]);
+						
 						validRes = ValidationService.validateJSO('DBconfigFileSchema', data);
 						if (validRes === true) {
 							// then get the DBconfigFile
@@ -531,7 +535,7 @@ angular.module('emuwebApp')
 										// DbObjLoadSaveService.saveBundle(); // for testing save function
 										// $scope.menuBundleSaveBtnClick(); // for testing save button
 										// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
-										// $scope.spectSettingsBtnClick(); // for testing spect settings dial
+										// $scope.settingsBtnClick(); // for testing spect settings dial
 										// $scope.searchBtnClick();
 										// ViewStateService.curViewPort.sS = 27455;
 										// ViewStateService.curViewPort.eS = 30180;
@@ -737,7 +741,7 @@ angular.module('emuwebApp')
 		/**
 		 *
 		 */
-		$scope.spectSettingsBtnClick = function () {
+		$scope.settingsBtnClick = function () {
 			if (ViewStateService.getPermission('spectSettingsChange')) {
 				ModalService.open('views/settingsModal.html');
 			}
@@ -1078,6 +1082,10 @@ angular.module('emuwebApp')
 		};
 		$scope.getTmp = function(){
 			return angular.copy($scope.xTmp)
-		}
+		};
+
+		$scope.showHierarchyPathCanvas = function(){
+			return(localStorage.getItem('showHierarchyPathCanvas') == 'true')
+		};
 
 	});

@@ -4,6 +4,29 @@ let SettingsComponent = {
     selector: "settings",
 	template: `
 	<div class="emuwebapp-text">
+	<h1>Hierarchy Settings</h1>
+
+	<span>Show hierarchy path canvas: <input type="checkbox" ng-model="$ctrl.hierarchySettings.showHierarchyPathCanvas"></span>
+
+	<h2>Visable Path</h2>
+	<select 
+	id="emuwebapp-selection" 
+	name="emuwebapp-selection" 
+	ng-model="$ctrl.hierarchySettings.paths.selected" 
+	ng-options="value for value in $ctrl.hierarchySettings.paths.possibleAsStr"
+	ng-change="$ctrl.getCurVisAttributes()"></select>
+	
+	<h2>Visable Attribute Definitions</h2>
+	<div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in $ctrl.StandardFuncsService.reverseCopy($ctrl.hierarchySettings.paths.possible[$ctrl.getSelHierarchyPathIdx()])">
+	{{levelName}}: 
+		<select 
+		id="emuwebapp-selection" 
+		name="emuwebapp-selection"
+		ng-options="attrDef as attrDef for attrDef in $ctrl.ConfigProviderService.getAttrDefsNames(levelName)"
+		ng-model="$ctrl.hierarchySettings.paths.curVisAttributeDefs[levelName]"
+		>
+		</select>
+	</div>
     <h1>OSCI Settings</h1>
     <div>
         <h2>Current channel</h2>
@@ -158,7 +181,10 @@ controller: class SettingsController{
     private DataService;
     private MathHelperService;
     private SoundHandlerService;
-    
+	private StandardFuncsService;
+	private HierarchyLayoutService;
+	private ConfigProviderService;
+
     private windowOptions;
     private selWindowInfo;
     private errorID;
@@ -169,12 +195,19 @@ controller: class SettingsController{
 
     private modalVals;
 
-    constructor(ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService){
+	private hierarchySettings;
+
+	// private attributeDefinitionClickCounter;
+
+    constructor(ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService, StandardFuncsService, HierarchyLayoutService, ConfigProviderService){
         this.ModalService = ModalService;
         this.ViewStateService = ViewStateService;
         this.DataService = DataService;
         this.MathHelperService = MathHelperService;
-        this.SoundHandlerService = SoundHandlerService;
+		this.SoundHandlerService = SoundHandlerService;
+		this.StandardFuncsService = StandardFuncsService;
+		this.HierarchyLayoutService = HierarchyLayoutService;
+		this.ConfigProviderService = ConfigProviderService;
 
         this.windowOptions = Object.keys(this.ViewStateService.getWindowFunctions());
 		this.selWindowInfo = {};
@@ -201,7 +234,44 @@ controller: class SettingsController{
 			'_windowSizeInSamples': this.SoundHandlerService.audioBuffer.sampleRate * this.ViewStateService.spectroSettings.windowSizeInSecs,
 			'invert': this.ViewStateService.spectroSettings.invert
 		};
-    }
+
+		this.hierarchySettings = {
+			paths: {
+				possible: [],
+				possibleAsStr: [],
+				selected: '',
+				curVisAttributeDefs: {}
+			},
+			showHierarchyPathCanvas: localStorage.getItem('showHierarchyPathCanvas') == 'true'
+		}
+
+		var pathInfo = this.HierarchyLayoutService.findAllNonPartialPaths();
+		this.hierarchySettings.paths.possible = pathInfo.possible;
+		this.hierarchySettings.paths.possibleAsStr = pathInfo.possibleAsStr;
+
+		// select first possible path on load
+		this.hierarchySettings.paths.selected = this.hierarchySettings.paths.possibleAsStr[ViewStateService.hierarchyState.curPathIdx];
+		this.getCurVisAttributes();
+
+		this.ViewStateService.hierarchyState.curNrOfPaths = this.hierarchySettings.paths.possibleAsStr.length;
+
+		// counter to get update for EmuHierarchyComponent
+		// this.attributeDefinitionClickCounter = 0;
+
+	}
+	
+	private getCurVisAttributes() {
+		this.hierarchySettings.paths.curVisAttributeDefs = {};
+		let curLevelNames = this.StandardFuncsService.reverseCopy(this.hierarchySettings.paths.possible[this.getSelHierarchyPathIdx()]);
+		curLevelNames.forEach(ln => {
+			this.hierarchySettings.paths.curVisAttributeDefs[ln] = this.ViewStateService.getCurAttrDef(ln);
+		});
+	}
+
+	private getSelHierarchyPathIdx () {
+		var selIdx = this.hierarchySettings.paths.possibleAsStr.indexOf(this.hierarchySettings.paths.selected);
+		return (selIdx);
+	};
 
         /**
 		 *
@@ -318,6 +388,24 @@ controller: class SettingsController{
 					this.modalVals.heatMapColorAnchors,
 					this.modalVals.invert);
 				this.ViewStateService.setOsciSettings(this.osciChannel);
+				// save hierarchy settings to viewstate
+				
+				this.ViewStateService.hierarchyState.path = this.hierarchySettings.paths.possible[this.getSelHierarchyPathIdx()];
+				this.ViewStateService.hierarchyState.curPathIdx = this.getSelHierarchyPathIdx();
+
+				Object.keys(this.hierarchySettings.paths.curVisAttributeDefs).forEach(levelName => {
+					this.ViewStateService.setCurAttrDef(
+						levelName, 
+						this.hierarchySettings.paths.curVisAttributeDefs[levelName],
+						this.ConfigProviderService.getAttrDefsNames(levelName).indexOf(this.hierarchySettings.paths.curVisAttributeDefs[levelName]));
+				});
+
+				if(this.hierarchySettings.showHierarchyPathCanvas){
+					localStorage.setItem('showHierarchyPathCanvas', 'true');
+				} else {
+					localStorage.setItem('showHierarchyPathCanvas', 'false');
+				}
+
 				this.reset();
 			}
 		};

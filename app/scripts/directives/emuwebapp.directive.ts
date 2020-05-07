@@ -62,7 +62,7 @@ angular.module('emuwebApp')
 						id="spectSettingsBtn" 
 						ng-show="cps.vals.activeButtons.specSettings" 
 						ng-disabled="!vs.getPermission('spectSettingsChange')" 
-						ng-click="spectSettingsBtnClick();"><i class="material-icons">settings</i> settings</button>
+						ng-click="settingsBtnClick();"><i class="material-icons">settings</i> settings</button>
 						
 						<div class="emuwebapp-nav-wrap" ng-show="cps.vals.activeButtons.openDemoDB">
 							<ul class="emuwebapp-dropdown-container">
@@ -163,25 +163,22 @@ angular.module('emuwebApp')
 							<bg-pane type="bottomPane" min-size="80">
 								<!-- ghost level div containing ul of ghost levels-->
 								<div ng-if="cps.vals.perspectives[vs.curPerspectiveIdx].hierarchyPathCanvases" style="margin-top: 25px;">
-									<ul>
-										<li ng-repeat="canvasDef in cps.vals.perspectives[vs.curPerspectiveIdx].hierarchyPathCanvases.order">
-											<hierarchy-path-canvas 
-											annotation="dataServ.getData()" 
-											path="canvasDef.path"
-											view-port-sample-start="vs.curViewPort.sS"
-											view-port-sample-end="vs.curViewPort.eS"
-											view-port-select-start="vs.curViewPort.selectS"
-											view-port-select-end="vs.curViewPort.selectE"
-											cur-mouse-x="vs.curMouseX"
-											cur-click-level-name="vs.curClickLevelName"
-											moving-boundary-sample="vs.movingBoundarySample"
-											moving-boundary="vs.movingBoundary",
-											moves-away-from-last-save="hists.movesAwayFromLastSave"
-											cur-perspective-idx="vs.curPerspectiveIdx"
-											cur-bndl="lmds.getCurBndl()"
-											></hierarchy-path-canvas>
-										</li>
-									</ul>
+									<hierarchy-path-canvas 
+									ng-show="showHierarchyPathCanvas()"
+									annotation="dataServ.getData()"
+									path="vs.hierarchyState.path"
+									view-port-sample-start="vs.curViewPort.sS"
+									view-port-sample-end="vs.curViewPort.eS"
+									view-port-select-start="vs.curViewPort.selectS"
+									view-port-select-end="vs.curViewPort.selectE"
+									cur-mouse-x="vs.curMouseX"
+									cur-click-level-name="vs.curClickLevelName"
+									moving-boundary-sample="vs.movingBoundarySample"
+									moving-boundary="vs.movingBoundary"
+									moves-away-from-last-save="hists.movesAwayFromLastSave"
+									cur-perspective-idx="vs.curPerspectiveIdx"
+									cur-bndl="lmds.getCurBndl()"
+									></hierarchy-path-canvas>
 								</div>
 								<!-- level div containing ul of levels -->
 								<div ng-if="true" style="margin-top: 25px;">
