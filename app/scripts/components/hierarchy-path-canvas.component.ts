@@ -27,6 +27,26 @@ let HierarchyPathCanvasComponent = {
     level-type="$ctrl.level.type"></canvas>
     </div>
     </div>
+
+    <div 
+ng-if="true" 
+class="emuwebapp-selectAttrDef"
+>
+<div>
+    <ul>
+    <li>
+        <button 
+        ng-click="$ctrl.changeCurAttrDef(attrDef.name, $index);" 
+        ng-style="$ctrl.getAttrDefBtnColor(attrDef.name)"
+        ></button>
+        <button 
+        ng-click="$ctrl.changeCurAttrDef(attrDef.name, $index);" 
+        ng-style="$ctrl.getAttrDefBtnColor(attrDef.name)"
+        ></button>
+    </li>
+    </ul>
+</div>
+</div>
     `,
     bindings: {
         annotation: '<',
