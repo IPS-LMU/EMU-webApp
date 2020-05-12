@@ -3,11 +3,11 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        emuwebapp: "./app/scripts/main.ts"
+        emuwebapp: "./src/app/main.ts"
     },
     output: {
         filename: "./dist/[name].bundle.js",
-        path: path.resolve(__dirname, 'app')
+        path: path.resolve(__dirname, 'src')
     },
     plugins: [
         new webpack.ProvidePlugin({

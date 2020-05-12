@@ -24,7 +24,7 @@ if (process.argv.length === 2) {
   var host = 'localhost';
   // var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/gersC/';
   // var configName = 'gersC_DBconfig.json';
-  var pathToDbRoot = '../app/testData/newFormat/ae/';
+  var pathToDbRoot = '../src/testData/newFormat/ae/';
   var configName = 'ae_DBconfig.json';
   console.log(' usage: node nodeEmuProtocolServer.js [port] [path] [config]');
   console.log(' where:');
@@ -38,7 +38,7 @@ if (process.argv.length === 2) {
 } else if (process.argv.length === 3) {
 
   var portNr = process.argv[2];
-  var pathToDbRoot = '../app/testData/newFormat/ae/';
+  var pathToDbRoot = '../src/testData/newFormat/ae/';
   var configName = 'ae_DBconfig.json';
 
 } else if (process.argv.length === 5) {
