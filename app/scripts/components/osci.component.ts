@@ -19,7 +19,6 @@ let OsciComponent = {
     `
     ,
     bindings: {
-        order: '<',
         trackName: '<',
         curChannel: '<',
         lastUpdate: '<',

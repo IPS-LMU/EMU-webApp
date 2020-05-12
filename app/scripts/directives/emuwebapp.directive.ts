@@ -129,7 +129,6 @@ angular.module('emuwebApp')
 									<li class="emuwebapp-timeline-flexitem" ng-style="{'height': getEnlarge($index)}" ng-repeat="curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index" ng-switch on="curTrack">
 										<osci 
 										ng-switch-when="OSCI" 
-										order="$index" 
 										track-name="curTrack"
 										cur-channel="vs.osciSettings.curChannel"
 										last-update="vs.lastUpdate"
@@ -148,8 +147,17 @@ angular.module('emuwebApp')
 										
 										<spectro 
 										ng-switch-when="SPEC" 
-										order="{{$index}}" 
-										track-name="{{curTrack}}"
+										track-name="curTrack"
+										spectro-settings="vs.spectroSettings"
+										osci-settings="vs.osciSettings"
+										last-update="vs.lastUpdate"
+										moving-boundary-sample="vs.movingBoundarySample"
+										cur-mouse-x="vs.curMouseX"
+										view-port-sample-start="vs.curViewPort.sS"
+										view-port-sample-end="vs.curViewPort.eS"
+										view-port-select-start="vs.curViewPort.selectS"
+										view-port-select-end="vs.curViewPort.selectE"
+										cur-bndl="lmds.getCurBndl()"
 										></spectro>
 										
 										<ssff-track 

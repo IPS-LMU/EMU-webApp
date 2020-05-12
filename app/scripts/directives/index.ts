@@ -1,4 +1,3 @@
-import "./delete.directive";
 import "./dots.directive";
 import "./dragout.directive";
 import "./drawssff.directive";
@@ -20,7 +19,6 @@ import "./preview-track.directive";
 import "./progress-thing.directive";
 import "./resize.directive";
 import "./save.directive";
-import "./spectro.directive";
 import "./split-pane-view.directive";
 import "./ssff-track.directive";
 import "./toggle-right-side-bar.directive";

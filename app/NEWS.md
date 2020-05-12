@@ -7,7 +7,7 @@
 
 ### new features / performance tweaks / improvements
 
-- osci is now a component
+- osci and spec are now components
 - hierarchy settings now available in settings modal as well
 
 ## Version 1.2.9
