@@ -13,7 +13,6 @@ import "./modal.directive";
 import "./mouse-track-and-correction-tool.directive";
 import "./my-drop-zone.directive";
 import "./my-drop-zone-input.directive";
-import "./perspectives.directive";
 import "./preview.directive";
 import "./preview-track.directive";
 import "./progress-thing.directive";

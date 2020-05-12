@@ -92,7 +92,7 @@ let SpectrogramComponent = {
 
         $onChanges = function (changes) {
             if(this._inited){
-                console.log(changes);
+                
                 ///////////////
 				// watches
 
