@@ -46,11 +46,11 @@ class DrawHelperService{
 
 		// calculate 3 peak levels (inspired by http://www.reaper.fm/sdk/reapeaks.txt files)
 		//   1. At approximately 400 peaks/sec (divfactor 110 at 44khz)
-		var winSize0 = sampleRate / 400;
+		var winSize0 = Math.round(sampleRate / 400);
 		//   2. At approximately 10 peaks/sec (divfactor 4410 at 44khz)
-		var winSize1 = sampleRate / 10;
+		var winSize1 = Math.round(sampleRate / 10);
 		//   3. At approximately 1 peaks/sec (divfactor 44100 at 44khz)
-		var winSize2 = sampleRate / 1;
+		var winSize2 = Math.round(sampleRate / 1);
 
 		// set initial result values
 		this.osciPeaks = {
@@ -130,7 +130,7 @@ class DrawHelperService{
 				// add to peaks array
 
 				// winSize0
-				if(curWindowIdxCounterWinSize0 === Math.round(winSize0)){
+				if(curWindowIdxCounterWinSize0 === winSize0){
 					curChannelMaxPeaksWinSize0[curPeakIdxWinSize0] = winMaxPeakWinSize0;
 					curChannelMinPeaksWinSize0[curPeakIdxWinSize0] = winMinPeakWinSize0;
 					curPeakIdxWinSize0 += 1;
@@ -141,7 +141,7 @@ class DrawHelperService{
 				}
 
 				// winSize1
-				if(curWindowIdxCounterWinSize1 === Math.round(winSize1)){
+				if(curWindowIdxCounterWinSize1 === winSize1){
 					curChannelMaxPeaksWinSize1[curPeakIdxWinSize1] = winMaxPeakWinSize1;
 					curChannelMinPeaksWinSize1[curPeakIdxWinSize1] = winMinPeakWinSize1;
 					curPeakIdxWinSize1 += 1;
@@ -152,7 +152,7 @@ class DrawHelperService{
 				}
 
 				// winSize2
-				if(curWindowIdxCounterWinSize2 === Math.round(winSize2)){
+				if(curWindowIdxCounterWinSize2 === winSize2){
 					curChannelMaxPeaksWinSize2[curPeakIdxWinSize2] = winMaxPeakWinSize2;
 					curChannelMinPeaksWinSize2[curPeakIdxWinSize2] = winMinPeakWinSize2;
 					curPeakIdxWinSize2 += 1;

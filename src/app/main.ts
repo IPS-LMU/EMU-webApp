@@ -36,7 +36,7 @@ import "../styles/bundleListSideBar.scss";
 import "../styles/rightSideMenu.scss";
 import "../styles/twoDimCanvas.scss";
 import "../styles/print.scss";
-import "../styles/progressThing.scss";
+import "../styles/progressBar.scss";
 import "../styles/aboutHint.scss";
 import "../styles/drop.scss";
 import "../styles/timeline.scss";

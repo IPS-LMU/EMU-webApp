@@ -5,3 +5,7 @@ import "./emuhierarchy.component";
 import "./settings.component";
 import "./osci.component";
 import "./spectrogram.component";
+import "./emu-webapp.component";
+import "./history-action-popup.component";
+import "./progress-bar.component";
+import "./ssff-track.component";

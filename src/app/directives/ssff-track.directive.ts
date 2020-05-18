@@ -1,9 +1,11 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('ssffTrack', function ($timeout, ViewStateService, ConfigProviderService, LoadedMetaDataService, DrawHelperService) {
+	.directive('ssffTrack_old', function ($timeout, ViewStateService, ConfigProviderService, LoadedMetaDataService, DrawHelperService) {
 		return {
-			templateUrl: 'views/ssffTrack.html',
+			template: `
+
+			`,
 			restrict: 'E',
 			link: function postLink(scope, element, attrs) {
 				// select the needed DOM elements from the template

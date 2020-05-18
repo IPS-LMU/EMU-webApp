@@ -24,7 +24,7 @@
     border-bottom: 1px solid $color-white;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
-    @include vendor-prefix(transition, "all "+$animation-period+"ms ease-in");
+    // @include vendor-prefix(transition, "all "+$animation-period+"ms ease-in");
     div {
         max-height: 100%;
         max-width: 100%;
@@ -34,5 +34,5 @@
 .emuwebapp-history-fade {
     z-index: 999999;
     opacity: 1;
-    @include vendor-prefix(transition, "all "+$animation-period+"ms ease-out");
+    // @include vendor-prefix(transition, "all "+$animation-period+"ms ease-out");
 }
