@@ -32,7 +32,7 @@ let HierarchyPathCanvasComponent = {
 ng-if="true" 
 class="emuwebapp-selectAttrDef"
 >
-<div>
+<!--<div>
     <ul>
     <li>
         <button 
@@ -45,7 +45,7 @@ class="emuwebapp-selectAttrDef"
         ></button>
     </li>
     </ul>
-</div>
+</div>-->
 </div>
     `,
     bindings: {

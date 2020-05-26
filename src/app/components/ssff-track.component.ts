@@ -61,6 +61,7 @@ let SsffTrackComponent = {
                 //
                 if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.viewPortSelectStart || changes.viewPortSelectEnd){
                     if(this.SsffDataService.data.length !== 0){
+                        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
                         var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
                         var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
                         this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
@@ -68,7 +69,8 @@ let SsffTrackComponent = {
                     }
                 }
                 if(changes.curMouseX){
-                    console.log("sadf");
+                    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                    this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
                 }
                 
             }
