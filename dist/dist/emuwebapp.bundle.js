@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 119);
+/******/ 	return __webpack_require__(__webpack_require__.s = 120);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -12470,7 +12470,7 @@ return tv4; // used by _header.js to globalise.
 /* 10 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.2.10\"}");
+module.exports = JSON.parse("{\"a\":\"1.2.11\"}");
 
 /***/ }),
 /* 11 */,
@@ -67546,7 +67546,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
     .directive('preview', function (ViewStateService, SoundHandlerService, DrawHelperService, ConfigProviderService) {
     return {
-        templateUrl: 'views/preview.html',
+        template: "\n\t\t\t<div class=\"emuwebapp-preview\">\n\t\t\t<canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas\" ng-style=\"backgroundCanvas\" id=\"PreviewCanvas\"></canvas>\n\t\t\t<canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas-markup\" id=\"PreviewCanvas\" previewtrack></canvas>\n\t\t\t</div>\n\t\t\t",
         restrict: 'E',
         scope: {
             currentBundleName: '@'
@@ -70405,7 +70405,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var HierarchyPathCanvasComponent = {
     selector: "hierarchyPathCanvas",
     // inline HTML
-    template: "\n    <div \n    class=\"emuwebapp-level\" \n    style=\"height: 256px\">\n    <div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"256\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n    \n    <canvas \n    class=\"emuwebapp-level-markup\"\n    style=\"background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);\"\n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"256\" \n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n    </div>\n    </div>\n\n    <div \nng-if=\"true\" \nclass=\"emuwebapp-selectAttrDef\"\n>\n<!--<div>\n    <ul>\n    <li>\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n    </li>\n    </ul>\n</div>-->\n</div>\n    ",
+    template: "\n    <div \n    class=\"emuwebapp-level\" \n    style=\"height: 256px\">\n    <div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"4096\" \n    height=\"256\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n    \n    <canvas \n    class=\"emuwebapp-level-markup\"\n    style=\"background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);\"\n    id=\"levelMarkupCanvas\" \n    width=\"4096\" \n    height=\"256\" \n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n    </div>\n    </div>\n\n    <div \nng-if=\"true\" \nclass=\"emuwebapp-selectAttrDef\"\n>\n<!--<div>\n    <ul>\n    <li>\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n    </li>\n    </ul>\n</div>-->\n</div>\n    ",
     bindings: {
         annotation: '<',
         path: '<',
@@ -71106,7 +71106,7 @@ module.exports = function() {
 var LevelComponent = {
     selector: "level",
     // inline HTML
-    template: /*html*/ "\n<div class=\"emuwebapp-level\">\n<div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"64\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n\n    <canvas \n    class=\"emuwebapp-level-markup\" \n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"64\" \n    track-mouse-in-level=\"{{idx}}\"\n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n</div>\n</div>\n\n<div \nng-if=\"$ctrl.levelDef.attributeDefinitions.length > 1\" \nclass=\"emuwebapp-selectAttrDef\"\n>\n<div>\n    <ul>\n    <li ng-repeat=\"attrDef in $ctrl.levelDef.attributeDefinitions\">\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n    </li>\n    </ul>\n</div>\n</div>  \n    ",
+    template: /*html*/ "\n<div class=\"emuwebapp-level\">\n<div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"4096\" \n    height=\"64\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n\n    <canvas \n    class=\"emuwebapp-level-markup\" \n    id=\"levelMarkupCanvas\" \n    width=\"4096\" \n    height=\"64\" \n    track-mouse-in-level=\"{{idx}}\"\n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n</div>\n</div>\n\n<div \nng-if=\"$ctrl.levelDef.attributeDefinitions.length > 1\" \nclass=\"emuwebapp-selectAttrDef\"\n>\n<div>\n    <ul>\n    <li ng-repeat=\"attrDef in $ctrl.levelDef.attributeDefinitions\">\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n    </li>\n    </ul>\n</div>\n</div>  \n    ",
     bindings: {
         level: '<',
         idx: '<',
@@ -71550,7 +71550,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 
 var OsciComponent = {
     selector: "osci",
-    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n    <canvas class=\"emuwebapp-timelineCanvasMain\" \n    width=\"2048\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasSSFF\" \n    width=\"2048\" \n    drawssff \n    ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasMarkup\" \n    width=\"2048\" \n    mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    </div>\n    </div>\n    ",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n    <canvas class=\"emuwebapp-timelineCanvasMain\" \n    width=\"4096\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasSSFF\" \n    width=\"4096\" \n    drawssff \n    ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasMarkup\" \n    width=\"4096\" \n    mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    </div>\n    </div>\n    ",
     bindings: {
         trackName: '<',
         curChannel: '<',
@@ -71683,7 +71683,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 
 var SpectrogramComponent = {
     selector: "spectro",
-    template: "\n    <div class=\"emuwebapp-timeline\">\n    <!-- width is now up to 4k -->\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"2048\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"2048\" \n        drawssff \n        ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"2048\" \n        mouse-track-and-correction-tool \n        ssff-trackname=\"{{$ctrl.trackName}}\" \n        bundle-name=\"{{$ctrl.curBndl.name}}\"></canvas>\n    </div>\n    <!-- <div class=\"emuwebapp-timelineCanvasButtons\">\n        <div ng-show=\"cps.vals.activeButtons.resizePerspectives\" class=\"emuwebapp-level-button\" enlarge=\"{{order}}\">\n            <img style=\"cursor: pointer;\" src=\"img/resize.svg\" />\n        </div>\n    </div> -->\n    </div>",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <!-- width is now up to 4k -->\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"4096\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"4096\" \n        drawssff \n        ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"4096\" \n        mouse-track-and-correction-tool \n        ssff-trackname=\"{{$ctrl.trackName}}\" \n        bundle-name=\"{{$ctrl.curBndl.name}}\"></canvas>\n    </div>\n    <!-- <div class=\"emuwebapp-timelineCanvasButtons\">\n        <div ng-show=\"cps.vals.activeButtons.resizePerspectives\" class=\"emuwebapp-level-button\" enlarge=\"{{order}}\">\n            <img style=\"cursor: pointer;\" src=\"img/resize.svg\" />\n        </div>\n    </div> -->\n    </div>",
     bindings: {
         trackName: '<',
         spectroSettings: '<',
@@ -71894,10 +71894,26 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 
 /***/ }),
 /* 64 */
+/***/ (function(module, exports) {
+
+var OsciOverviewComponent = {
+    selector: "osciOverview",
+    template: "\n    <div class=\"emuwebapp-preview\">\n    <canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas\" ng-style=\"backgroundCanvas\" id=\"PreviewCanvas\"></canvas>\n    <canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas-markup\" id=\"PreviewCanvas\" previewtrack></canvas>\n    </div>\n    ",
+    bindings: {},
+    controller: /** @class */ (function () {
+        function OsciOverviewComponent() {
+        }
+        return OsciOverviewComponent;
+    }())
+};
+
+
+/***/ }),
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(65);
+            var content = __webpack_require__(66);
 
             content = content.__esModule ? content.default : content;
 
@@ -71919,7 +71935,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -71932,11 +71948,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(67);
+            var content = __webpack_require__(68);
 
             content = content.__esModule ? content.default : content;
 
@@ -71958,7 +71974,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -71971,11 +71987,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(69);
+            var content = __webpack_require__(70);
 
             content = content.__esModule ? content.default : content;
 
@@ -71997,7 +72013,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72010,11 +72026,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(71);
+            var content = __webpack_require__(72);
 
             content = content.__esModule ? content.default : content;
 
@@ -72036,7 +72052,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72049,11 +72065,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(73);
+            var content = __webpack_require__(74);
 
             content = content.__esModule ? content.default : content;
 
@@ -72075,16 +72091,16 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(2);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(74);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(75);
-var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(76);
-var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(77);
-var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(78);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(75);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(76);
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(77);
+var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(78);
+var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(79);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
@@ -72097,7 +72113,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72137,7 +72153,7 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72145,7 +72161,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.eot");
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72153,7 +72169,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.woff2");
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72161,7 +72177,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.woff");
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72169,11 +72185,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.ttf");
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(80);
+            var content = __webpack_require__(81);
 
             content = content.__esModule ? content.default : content;
 
@@ -72195,7 +72211,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72208,11 +72224,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(82);
+            var content = __webpack_require__(83);
 
             content = content.__esModule ? content.default : content;
 
@@ -72234,7 +72250,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72247,11 +72263,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(84);
+            var content = __webpack_require__(85);
 
             content = content.__esModule ? content.default : content;
 
@@ -72273,7 +72289,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72286,11 +72302,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(86);
+            var content = __webpack_require__(87);
 
             content = content.__esModule ? content.default : content;
 
@@ -72312,7 +72328,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72325,11 +72341,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(88);
+            var content = __webpack_require__(89);
 
             content = content.__esModule ? content.default : content;
 
@@ -72351,7 +72367,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72364,11 +72380,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(90);
+            var content = __webpack_require__(91);
 
             content = content.__esModule ? content.default : content;
 
@@ -72390,7 +72406,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72403,11 +72419,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(92);
+            var content = __webpack_require__(93);
 
             content = content.__esModule ? content.default : content;
 
@@ -72429,7 +72445,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72442,11 +72458,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(94);
+            var content = __webpack_require__(95);
 
             content = content.__esModule ? content.default : content;
 
@@ -72468,7 +72484,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72481,11 +72497,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(96);
+            var content = __webpack_require__(97);
 
             content = content.__esModule ? content.default : content;
 
@@ -72507,7 +72523,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72520,11 +72536,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(98);
+            var content = __webpack_require__(99);
 
             content = content.__esModule ? content.default : content;
 
@@ -72546,7 +72562,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72559,11 +72575,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(100);
+            var content = __webpack_require__(101);
 
             content = content.__esModule ? content.default : content;
 
@@ -72585,7 +72601,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72598,11 +72614,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(102);
+            var content = __webpack_require__(103);
 
             content = content.__esModule ? content.default : content;
 
@@ -72624,7 +72640,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72637,11 +72653,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(104);
+            var content = __webpack_require__(105);
 
             content = content.__esModule ? content.default : content;
 
@@ -72663,7 +72679,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72676,11 +72692,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(106);
+            var content = __webpack_require__(107);
 
             content = content.__esModule ? content.default : content;
 
@@ -72702,7 +72718,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72715,11 +72731,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(108);
+            var content = __webpack_require__(109);
 
             content = content.__esModule ? content.default : content;
 
@@ -72741,7 +72757,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72754,11 +72770,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(110);
+            var content = __webpack_require__(111);
 
             content = content.__esModule ? content.default : content;
 
@@ -72780,7 +72796,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72793,11 +72809,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(112);
+            var content = __webpack_require__(113);
 
             content = content.__esModule ? content.default : content;
 
@@ -72819,7 +72835,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72832,11 +72848,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(114);
+            var content = __webpack_require__(115);
 
             content = content.__esModule ? content.default : content;
 
@@ -72858,7 +72874,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72871,11 +72887,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(116);
+            var content = __webpack_require__(117);
 
             content = content.__esModule ? content.default : content;
 
@@ -72897,7 +72913,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72910,11 +72926,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(118);
+            var content = __webpack_require__(119);
 
             content = content.__esModule ? content.default : content;
 
@@ -72936,7 +72952,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72949,7 +72965,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -98236,7 +98252,7 @@ angular["module"]('emuwebApp')
 
 var SsffTrackComponent = {
     selector: "ssffTrack",
-    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"2048\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"2048\" \n        drawssff ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"2048\" \n        mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n    </div>\n    </div>\n    ",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"4096\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"4096\" \n        drawssff ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"4096\" \n        mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n    </div>\n    </div>\n    ",
     bindings: {
         trackName: '<',
         curMouseX: '<',
@@ -98284,6 +98300,9 @@ var SsffTrackComponent = {
 angular["module"]('emuwebApp')
     .component(SsffTrackComponent.selector, SsffTrackComponent);
 
+// EXTERNAL MODULE: ./src/app/components/osci-overview.component.ts
+var osci_overview_component = __webpack_require__(64);
+
 // CONCATENATED MODULE: ./src/app/components/index.ts
 
 
@@ -98297,80 +98316,81 @@ angular["module"]('emuwebApp')
 
 
 
+
 // EXTERNAL MODULE: ./src/styles/font.scss
-var font = __webpack_require__(64);
+var font = __webpack_require__(65);
 
 // EXTERNAL MODULE: ./src/styles/text.scss
-var styles_text = __webpack_require__(66);
+var styles_text = __webpack_require__(67);
 
 // EXTERNAL MODULE: ./src/styles/button.scss
-var styles_button = __webpack_require__(68);
+var styles_button = __webpack_require__(69);
 
 // EXTERNAL MODULE: ./src/styles/media-query.scss
-var media_query = __webpack_require__(70);
+var media_query = __webpack_require__(71);
 
 // EXTERNAL MODULE: ./src/styles/emuwebapp.scss
-var emuwebapp = __webpack_require__(72);
+var emuwebapp = __webpack_require__(73);
 
 // EXTERNAL MODULE: ./src/styles/preview.scss
-var preview = __webpack_require__(79);
+var preview = __webpack_require__(80);
 
 // EXTERNAL MODULE: ./src/styles/modal.scss
-var modal = __webpack_require__(81);
+var modal = __webpack_require__(82);
 
 // EXTERNAL MODULE: ./src/styles/bundleListSideBar.scss
-var bundleListSideBar = __webpack_require__(83);
+var bundleListSideBar = __webpack_require__(84);
 
 // EXTERNAL MODULE: ./src/styles/rightSideMenu.scss
-var rightSideMenu = __webpack_require__(85);
+var rightSideMenu = __webpack_require__(86);
 
 // EXTERNAL MODULE: ./src/styles/twoDimCanvas.scss
-var twoDimCanvas = __webpack_require__(87);
+var twoDimCanvas = __webpack_require__(88);
 
 // EXTERNAL MODULE: ./src/styles/print.scss
-var print = __webpack_require__(89);
+var print = __webpack_require__(90);
 
 // EXTERNAL MODULE: ./src/styles/progressBar.scss
-var progressBar = __webpack_require__(91);
+var progressBar = __webpack_require__(92);
 
 // EXTERNAL MODULE: ./src/styles/aboutHint.scss
-var aboutHint = __webpack_require__(93);
+var aboutHint = __webpack_require__(94);
 
 // EXTERNAL MODULE: ./src/styles/drop.scss
-var drop = __webpack_require__(95);
+var drop = __webpack_require__(96);
 
 // EXTERNAL MODULE: ./src/styles/timeline.scss
-var timeline = __webpack_require__(97);
+var timeline = __webpack_require__(98);
 
 // EXTERNAL MODULE: ./src/styles/flexBoxGrid.scss
-var flexBoxGrid = __webpack_require__(99);
+var flexBoxGrid = __webpack_require__(100);
 
 // EXTERNAL MODULE: ./src/styles/levels.scss
-var levels = __webpack_require__(101);
+var levels = __webpack_require__(102);
 
 // EXTERNAL MODULE: ./src/styles/historyActionPopup.scss
-var historyActionPopup = __webpack_require__(103);
+var historyActionPopup = __webpack_require__(104);
 
 // EXTERNAL MODULE: ./src/styles/hierarchy.scss
-var hierarchy = __webpack_require__(105);
+var hierarchy = __webpack_require__(106);
 
 // EXTERNAL MODULE: ./src/styles/splitPanes.scss
-var splitPanes = __webpack_require__(107);
+var splitPanes = __webpack_require__(108);
 
 // EXTERNAL MODULE: ./src/styles/tabbed.scss
-var tabbed = __webpack_require__(109);
+var tabbed = __webpack_require__(110);
 
 // EXTERNAL MODULE: ./src/styles/animation.scss
-var animation = __webpack_require__(111);
+var animation = __webpack_require__(112);
 
 // EXTERNAL MODULE: ./src/styles/customAngularuiModal.scss
-var customAngularuiModal = __webpack_require__(113);
+var customAngularuiModal = __webpack_require__(114);
 
 // EXTERNAL MODULE: ./src/styles/largeTextInputField.scss
-var largeTextInputField = __webpack_require__(115);
+var largeTextInputField = __webpack_require__(116);
 
 // EXTERNAL MODULE: ./src/styles/levelCanvasesGrid.scss
-var levelCanvasesGrid = __webpack_require__(117);
+var levelCanvasesGrid = __webpack_require__(118);
 
 // CONCATENATED MODULE: ./src/app/main.ts
 // Vendor
