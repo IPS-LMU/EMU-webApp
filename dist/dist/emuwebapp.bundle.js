@@ -12470,7 +12470,7 @@ return tv4; // used by _header.js to globalise.
 /* 10 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.2.9\"}");
+module.exports = JSON.parse("{\"a\":\"1.2.10\"}");
 
 /***/ }),
 /* 11 */,
@@ -18475,7 +18475,7 @@ SpectroDrawingWorker.prototype = {
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(61).wrap(__webpack_require__(62)());module.exports.__esModule = true;
+module.exports = __webpack_require__(59).wrap(__webpack_require__(60)());module.exports.__esModule = true;
 
 /***/ }),
 /* 21 */,
@@ -67544,155 +67544,6 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
 
 angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('osci', function ($timeout, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, LoadedMetaDataService) {
-    return {
-        templateUrl: 'views/osci.html',
-        replace: true,
-        restrict: 'E',
-        scope: {},
-        controller: function ($scope) {
-            $scope.changeAttrDef = function () {
-                //alert('sadf');
-            };
-        },
-        link: function postLink(scope, element, attrs) {
-            // select the needed DOM elements from the template
-            var canvasLength = element.find('canvas').length;
-            var canvas = element.find('canvas')[0];
-            var markupCanvas = element.find('canvas')[canvasLength - 1];
-            // assign attributes to scope
-            scope.order = attrs.order;
-            scope.trackName = attrs.trackName;
-            scope.cps = ConfigProviderService;
-            scope.ViewStateService = ViewStateService;
-            scope.lmds = LoadedMetaDataService;
-            ///////////////
-            // watches
-            //
-            scope.$watch('ViewStateService.osciSettings', function () {
-                if (!$.isEmptyObject(SoundHandlerService)) {
-                    if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                        DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS, false);
-                        scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('ViewStateService.lastUpdate', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-                }
-            });
-            //
-            scope.$watch('ViewStateService.timelineSize', function () {
-                $timeout(scope.redraw, ConfigProviderService.design.animation.duration);
-            });
-            //
-            scope.$watch('ViewStateService.curPerspectiveIdx', function () {
-                scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-            }, true);
-            //
-            scope.$watch('ViewStateService.playHeadAnimationInfos', function () {
-                if (!$.isEmptyObject(SoundHandlerService)) {
-                    if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                        scope.drawPlayHead(scope, ConfigProviderService);
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('ViewStateService.movingBoundarySample', function () {
-                if (!$.isEmptyObject(SoundHandlerService)) {
-                    if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                        scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('ViewStateService.curMouseX', function () {
-                if (!$.isEmptyObject(SoundHandlerService)) {
-                    if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                        // only draw corsshair x line if mouse currently not over canvas
-                        if (ViewStateService.curMouseTrackName !== scope.trackName) {
-                            scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-                        }
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('ViewStateService.movingBoundary', function () {
-                if (!$.isEmptyObject(SoundHandlerService)) {
-                    if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                        scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('ViewStateService.curViewPort', function (newValue, oldValue) {
-                if (!$.isEmptyObject(SoundHandlerService)) {
-                    if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                        // check for changed zoom
-                        if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-                            DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS, false);
-                        }
-                        scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
-                if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-                    DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS, true);
-                }
-            }, true);
-            //
-            /////////////////////////
-            scope.redraw = function () {
-                scope.drawVpOsciMarkup(scope, ConfigProviderService, true);
-            };
-            /**
-             *
-             */
-            scope.drawPlayHead = function (scope, config) {
-                var ctx = markupCanvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                var posS = ViewStateService.getPos(markupCanvas.width, ViewStateService.playHeadAnimationInfos.sS);
-                var posCur = ViewStateService.getPos(markupCanvas.width, ViewStateService.playHeadAnimationInfos.curS);
-                ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;
-                ctx.fillRect(posS, 0, posCur - posS, canvas.height);
-                scope.drawVpOsciMarkup(scope, config, false);
-            };
-            /**
-             * draws markup of osci according to
-             * the information that is specified in
-             * the viewport
-             */
-            scope.drawVpOsciMarkup = function (scope, config, reset) {
-                var ctx = markupCanvas.getContext('2d');
-                if (reset) {
-                    ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
-                }
-                // draw moving boundary line if moving
-                DrawHelperService.drawMovingBoundaryLine(ctx);
-                DrawHelperService.drawViewPortTimes(ctx, true);
-                // draw current viewport selected
-                DrawHelperService.drawCurViewPortSelected(ctx, true);
-                DrawHelperService.drawCrossHairX(ctx, ViewStateService.curMouseX);
-            };
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 52 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
     .directive('preview', function (ViewStateService, SoundHandlerService, DrawHelperService, ConfigProviderService) {
     return {
         templateUrl: 'views/preview.html',
@@ -67794,7 +67645,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67871,254 +67722,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
-
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('spectro', function ($timeout, ViewStateService, ConfigProviderService, DrawHelperService, FontScaleService, SoundHandlerService, MathHelperService) {
-    return {
-        templateUrl: 'views/spectro.html',
-        restrict: 'E',
-        replace: true,
-        scope: {},
-        link: function postLink(scope, element, attrs) {
-            scope.shs = SoundHandlerService;
-            scope.order = attrs.order;
-            scope.vs = ViewStateService;
-            scope.cps = ConfigProviderService;
-            scope.dhs = DrawHelperService;
-            scope.trackName = attrs.trackName;
-            // select the needed DOM elements from the template
-            scope.canvas0 = element.find('canvas')[0];
-            scope.canvas1 = element.find('canvas')[element.find('canvas').length - 1];
-            scope.context = scope.canvas0.getContext('2d');
-            scope.markupCtx = scope.canvas1.getContext('2d');
-            // FFT default vars
-            // default alpha for Window Function
-            scope.alpha = 0.16;
-            scope.devicePixelRatio = window.devicePixelRatio || 1;
-            // Spectro Worker
-            scope.primeWorker = new _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__[/* SpectroDrawingWorker */ "a"]();
-            ///////////////
-            // watches
-            //
-            scope.$watch('vs.timelineSize', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        $timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
-                    }
-                }
-            });
-            //
-            scope.$watch('ViewStateService.lastUpdate', function (newValue, oldValue) {
-                if (newValue !== oldValue && !$.isEmptyObject(scope.shs) && !$.isEmptyObject(scope.shs.audioBuffer)) {
-                    scope.clearAndDrawSpectMarkup();
-                }
-            });
-            scope.$watch('vs.bundleListSideBarOpen', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        $timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
-                    }
-                }
-            });
-            scope.$watch('vs.curViewPort', function (newValue, oldValue) {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        // check for changed zoom
-                        if (oldValue.sS !== newValue.sS || oldValue.eS !== newValue.eS) {
-                            scope.redraw();
-                        }
-                        scope.clearAndDrawSpectMarkup();
-                    }
-                }
-            }, true);
-            scope.$watch('vs.movingBoundarySample', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        scope.clearAndDrawSpectMarkup();
-                    }
-                }
-            }, true);
-            scope.$watch('vs.movingBoundary', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        // scope.redraw();
-                        scope.clearAndDrawSpectMarkup();
-                    }
-                }
-            }, true);
-            scope.$watch('vs.curMouseX', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        // scope.redraw();
-                        // only draw corsshair x line if mouse currently not over canvas
-                        if (scope.vs.curMouseTrackName !== scope.trackName) {
-                            scope.clearAndDrawSpectMarkup();
-                        }
-                    }
-                }
-            }, true);
-            scope.$watch('vs.spectroSettings', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        scope.setupEvent();
-                        scope.redraw();
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('vs.osciSettings', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        scope.setupEvent();
-                        scope.redraw();
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-                            scope.redraw();
-                        }
-                    }
-                }
-            }, true);
-            ///////////////
-            // bindings
-            scope.redraw = function () {
-                scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
-                scope.drawSpectro(scope.shs.audioBuffer.getChannelData(scope.vs.osciSettings.curChannel));
-            };
-            scope.drawSpectro = function (buffer) {
-                scope.killSpectroRenderingThread();
-                scope.startSpectroRenderingThread(buffer);
-            };
-            scope.calcSamplesPerPxl = function () {
-                return (scope.vs.curViewPort.eS + 1 - scope.vs.curViewPort.sS) / scope.canvas0.width;
-            };
-            scope.clearAndDrawSpectMarkup = function () {
-                scope.markupCtx.clearRect(0, 0, scope.canvas1.width, scope.canvas1.height);
-                scope.drawSpectMarkup();
-            };
-            scope.drawSpectMarkup = function () {
-                // draw moving boundary line if moving
-                scope.dhs.drawMovingBoundaryLine(scope.markupCtx);
-                // draw current viewport selected
-                scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
-                // draw min max vals and name of track
-                scope.dhs.drawMinMaxAndName(scope.markupCtx, '', scope.vs.spectroSettings.rangeFrom, scope.vs.spectroSettings.rangeTo, 2);
-                // only draw corsshair x line if mouse currently not over canvas
-                DrawHelperService.drawCrossHairX(scope.markupCtx, scope.vs.curMouseX);
-            };
-            scope.killSpectroRenderingThread = function () {
-                scope.context.fillStyle = ConfigProviderService.design.color.black;
-                scope.context.fillRect(0, 0, scope.canvas0.width, scope.canvas0.height);
-                // draw current viewport selected
-                scope.dhs.drawCurViewPortSelected(scope.markupCtx, false);
-                FontScaleService.drawUndistortedText(scope.context, 'rendering...', ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, ConfigProviderService.design.font.small.family, 10, 50, ConfigProviderService.design.color.black, true);
-                if (scope.primeWorker !== null) {
-                    scope.primeWorker.kill();
-                    scope.primeWorker = null;
-                }
-            };
-            scope.setupEvent = function () {
-                var imageData = scope.context.createImageData(scope.canvas0.width, scope.canvas0.height);
-                scope.primeWorker.says(function (event) {
-                    if (event.status === undefined) {
-                        if (scope.calcSamplesPerPxl() === event.samplesPerPxl) {
-                            var tmp = new Uint8ClampedArray(event.img);
-                            imageData.data.set(tmp);
-                            scope.context.putImageData(imageData, 0, 0);
-                            scope.drawSpectMarkup();
-                        }
-                    }
-                    else {
-                        console.error('Error rendering spectrogram:', event.status.message);
-                    }
-                });
-            };
-            scope.startSpectroRenderingThread = function (buffer) {
-                if (buffer.length > 0) {
-                    scope.primeWorker = new _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__[/* SpectroDrawingWorker */ "a"]();
-                    var parseData = [];
-                    var fftN = MathHelperService.calcClosestPowerOf2Gt(scope.shs.audioBuffer.sampleRate * scope.vs.spectroSettings.windowSizeInSecs);
-                    // fftN must be greater than 512 (leads to better resolution of spectrogram)
-                    if (fftN < 512) {
-                        fftN = 512;
-                    }
-                    // extract relavant data
-                    parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS);
-                    var leftPadding = [];
-                    var rightPadding = [];
-                    // check if any zero padding at LEFT edge is necessary
-                    var windowSizeInSamples = scope.shs.audioBuffer.sampleRate * scope.vs.spectroSettings.windowSizeInSecs;
-                    if (scope.vs.curViewPort.sS < windowSizeInSamples / 2) {
-                        //should do something here... currently always padding with zeros!
-                    }
-                    else {
-                        leftPadding = buffer.subarray(scope.vs.curViewPort.sS - windowSizeInSamples / 2, scope.vs.curViewPort.sS);
-                    }
-                    // check if zero padding at RIGHT edge is necessary
-                    if (scope.vs.curViewPort.eS + fftN / 2 - 1 >= scope.shs.audioBuffer.length) {
-                        //should do something here... currently always padding with zeros!
-                    }
-                    else {
-                        rightPadding = buffer.subarray(scope.vs.curViewPort.eS, scope.vs.curViewPort.eS + fftN / 2 - 1);
-                    }
-                    // add padding
-                    var paddedSamples = new Float32Array(leftPadding.length + parseData.length + rightPadding.length);
-                    paddedSamples.set(leftPadding);
-                    paddedSamples.set(parseData, leftPadding.length);
-                    paddedSamples.set(rightPadding, leftPadding.length + parseData.length);
-                    if (scope.vs.curViewPort.sS >= fftN / 2) {
-                        // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
-                        parseData = buffer.subarray(scope.vs.curViewPort.sS - fftN / 2, scope.vs.curViewPort.eS + fftN);
-                    }
-                    else {
-                        // tolerate window/2 alignment issue if at beginning of file
-                        parseData = buffer.subarray(scope.vs.curViewPort.sS, scope.vs.curViewPort.eS + fftN);
-                    }
-                    scope.setupEvent();
-                    scope.primeWorker.tell({
-                        'windowSizeInSecs': scope.vs.spectroSettings.windowSizeInSecs,
-                        'fftN': fftN,
-                        'alpha': scope.alpha,
-                        'upperFreq': scope.vs.spectroSettings.rangeTo,
-                        'lowerFreq': scope.vs.spectroSettings.rangeFrom,
-                        'samplesPerPxl': scope.calcSamplesPerPxl(),
-                        'window': scope.vs.spectroSettings.window,
-                        'imgWidth': scope.canvas0.width,
-                        'imgHeight': scope.canvas0.height,
-                        'dynRangeInDB': scope.vs.spectroSettings.dynamicRange,
-                        'pixelRatio': scope.devicePixelRatio,
-                        'sampleRate': scope.shs.audioBuffer.sampleRate,
-                        'transparency': scope.cps.vals.spectrogramSettings.transparency,
-                        'audioBuffer': paddedSamples,
-                        'audioBufferChannels': scope.shs.audioBuffer.numberOfChannels,
-                        'drawHeatMapColors': scope.vs.spectroSettings.drawHeatMapColors,
-                        'preEmphasisFilterFactor': scope.vs.spectroSettings.preEmphasisFilterFactor,
-                        'heatMapColorAnchors': scope.vs.spectroSettings.heatMapColorAnchors,
-                        'invert': scope.vs.spectroSettings.invert
-                    }, [paddedSamples.buffer]);
-                }
-            };
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68126,9 +67730,9 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
 
 angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('ssffTrack', function ($timeout, ViewStateService, ConfigProviderService, LoadedMetaDataService, DrawHelperService) {
+    .directive('ssffTrack_old', function ($timeout, ViewStateService, ConfigProviderService, LoadedMetaDataService, DrawHelperService) {
     return {
-        templateUrl: 'views/ssffTrack.html',
+        template: "\n\n\t\t\t",
         restrict: 'E',
         link: function postLink(scope, element, attrs) {
             // select the needed DOM elements from the template
@@ -68243,7 +67847,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, exports) {
 
 ArrayBuffer.prototype.subarray = function (offset, length) {
@@ -68258,7 +67862,7 @@ ArrayBuffer.prototype.subarray = function (offset, length) {
 
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68603,7 +68207,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -69037,7 +68641,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 59 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70752,7 +70356,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 60 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70801,7 +70405,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 var HierarchyPathCanvasComponent = {
     selector: "hierarchyPathCanvas",
     // inline HTML
-    template: "\n    <div \n    class=\"emuwebapp-level\" \n    style=\"height: 256px\">\n    <div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"256\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n    \n    <canvas \n    class=\"emuwebapp-level-markup\"\n    style=\"background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);\"\n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"246\" \n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n    </div>\n    </div>\n    ",
+    template: "\n    <div \n    class=\"emuwebapp-level\" \n    style=\"height: 256px\">\n    <div class=\"emuwebapp-level-container\">\n    <canvas \n    class=\"emuwebapp-level-canvas\" \n    id=\"levelCanvas\" \n    width=\"2048\" \n    height=\"256\" \n    ng-style=\"$ctrl.backgroundCanvas\"\n    ></canvas>\n    \n    <canvas \n    class=\"emuwebapp-level-markup\"\n    style=\"background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);\"\n    id=\"levelMarkupCanvas\" \n    width=\"2048\" \n    height=\"256\" \n    level-name=\"$ctrl.level.name\"\n    level-type=\"$ctrl.level.type\"></canvas>\n    </div>\n    </div>\n\n    <div \nng-if=\"true\" \nclass=\"emuwebapp-selectAttrDef\"\n>\n<!--<div>\n    <ul>\n    <li>\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n        <button \n        ng-click=\"$ctrl.changeCurAttrDef(attrDef.name, $index);\" \n        ng-style=\"$ctrl.getAttrDefBtnColor(attrDef.name)\"\n        ></button>\n    </li>\n    </ul>\n</div>-->\n</div>\n    ",
     bindings: {
         annotation: '<',
         path: '<',
@@ -70839,82 +70443,62 @@ var HierarchyPathCanvasComponent = {
                 this.redrawAll();
             };
             this.$onChanges = function (changes) {
-                if (changes.viewPortSampleStart) {
-                    if (changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue) {
-                        if (this._inited) {
+                if (this._inited) {
+                    if (changes.viewPortSampleStart) {
+                        if (changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue) {
                             this.redrawAll();
                         }
                     }
-                }
-                if (changes.viewPortSampleEnd) {
-                    if (changes.viewPortSampleEnd.currentValue !== changes.viewPortSampleEnd.previousValue) {
-                        if (this._inited) {
+                    if (changes.viewPortSampleEnd) {
+                        if (changes.viewPortSampleEnd.currentValue !== changes.viewPortSampleEnd.previousValue) {
                             this.redrawAll();
                         }
                     }
-                }
-                if (changes.viewPortSelectStart) {
-                    if (changes.viewPortSelectStart.currentValue !== changes.viewPortSelectStart.previousValue) {
-                        if (this._inited) {
+                    if (changes.viewPortSelectStart) {
+                        if (changes.viewPortSelectStart.currentValue !== changes.viewPortSelectStart.previousValue) {
                             this.drawLevelMarkup();
                         }
                     }
-                }
-                if (changes.viewPortSelectEnd) {
-                    if (changes.viewPortSelectEnd.currentValue !== changes.viewPortSelectEnd.previousValue) {
-                        if (this._inited) {
+                    if (changes.viewPortSelectEnd) {
+                        if (changes.viewPortSelectEnd.currentValue !== changes.viewPortSelectEnd.previousValue) {
                             this.drawLevelMarkup();
                         }
                     }
-                }
-                if (changes.curMouseX) {
-                    if (changes.curMouseX.currentValue !== changes.curMouseX.previousValue) {
-                        if (this._inited) {
+                    if (changes.curMouseX) {
+                        if (changes.curMouseX.currentValue !== changes.curMouseX.previousValue) {
                             this.drawLevelMarkup();
                         }
                     }
-                }
-                if (changes.curClickLevelName) {
-                    if (changes.curClickLevelName.currentValue !== changes.curClickLevelName.previousValue) {
-                        if (this._inited) {
+                    if (changes.curClickLevelName) {
+                        if (changes.curClickLevelName.currentValue !== changes.curClickLevelName.previousValue) {
                             this.drawLevelMarkup();
                         }
                     }
-                }
-                if (changes.movingBoundarySample) {
-                    if (changes.movingBoundarySample.currentValue !== changes.movingBoundarySample.previousValue) {
-                        if (this._inited) {
+                    if (changes.movingBoundarySample) {
+                        if (changes.movingBoundarySample.currentValue !== changes.movingBoundarySample.previousValue) {
                             this.drawLevelMarkup();
                             // if (levelDetails.name === this.ViewStateService.curMouseLevelName) {
                             //     this.drawLevelDetails(this.canvas);
                             // }
                         }
                     }
-                }
-                if (changes.movingBoundary) {
-                    if (changes.movingBoundary.currentValue !== changes.movingBoundary.previousValue) {
-                        if (this._inited) {
+                    if (changes.movingBoundary) {
+                        if (changes.movingBoundary.currentValue !== changes.movingBoundary.previousValue) {
                             this.drawLevelMarkup();
                         }
                     }
-                }
-                if (changes.movesAwayFromLastSave) {
-                    if (changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue) {
-                        if (this._inited) {
+                    if (changes.movesAwayFromLastSave) {
+                        if (changes.movesAwayFromLastSave.currentValue !== changes.movesAwayFromLastSave.previousValue) {
                             this.redrawAll();
                         }
                     }
-                }
-                if (changes.curPerspectiveIdx) {
-                    if (changes.curPerspectiveIdx.currentValue !== changes.curPerspectiveIdx.previousValue) {
-                        if (this._inited) {
+                    if (changes.curPerspectiveIdx) {
+                        if (changes.curPerspectiveIdx.currentValue !== changes.curPerspectiveIdx.previousValue) {
                             this.redrawAll();
                         }
                     }
-                }
-                if (changes.curBndl) {
-                    if (changes.curBndl.currentValue !== changes.curBndl.previousValue) {
-                        if (this._inited) {
+                    if (changes.curBndl) {
+                        if (changes.curBndl.currentValue !== changes.curBndl.previousValue) {
                             this.redrawAll();
                         }
                     }
@@ -71197,7 +70781,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 61 */
+/* 59 */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71504,15 +71088,15 @@ function generateUUID() {
 
 
 /***/ }),
-/* 62 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
-  return new Worker(__webpack_require__.p + "7b9cbb19026c3d30eb8a.worker.js");
+  return new Worker(__webpack_require__.p + "e44cfb8b792d18dab86f.worker.js");
 };
 
 /***/ }),
-/* 63 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71957,6 +71541,358 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
+/* 62 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
+
+var OsciComponent = {
+    selector: "osci",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n    <canvas class=\"emuwebapp-timelineCanvasMain\" \n    width=\"2048\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasSSFF\" \n    width=\"2048\" \n    drawssff \n    ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasMarkup\" \n    width=\"2048\" \n    mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    </div>\n    </div>\n    ",
+    bindings: {
+        trackName: '<',
+        curChannel: '<',
+        lastUpdate: '<',
+        timelineSize: '<',
+        curPerspectiveIdx: '<',
+        playHeadCurrentSample: '<',
+        movingBoundarySample: '<',
+        curMouseX: '<',
+        movingBoundary: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<',
+        curBndl: '<'
+    },
+    controller: /** @class */ (function () {
+        function OsciController($scope, $element, $timeout, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, LoadedMetaDataService) {
+            this.$postLink = function () {
+                this.canvasLength = this.$element.find('canvas').length;
+                this.canvas = this.$element.find('canvas')[0];
+                this.markupCanvas = this.$element.find('canvas')[this.canvasLength - 1];
+            };
+            this.$onChanges = function (changes) {
+                //
+                if (this._inited) {
+                    //
+                    if (changes.timelineSize) {
+                        this.$timeout(this.redraw, this.ConfigProviderService.design.animation.duration);
+                    }
+                    // 
+                    if (changes.playHeadCurrentSample) {
+                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                            this.drawPlayHead();
+                        }
+                    }
+                    //
+                    if (changes.curMouseX) {
+                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                            // only draw corsshair x line if mouse currently not over canvas
+                            if (this.ViewStateService.curMouseTrackName !== this.trackName) {
+                                this.drawVpOsciMarkup(true);
+                            }
+                        }
+                    }
+                    //
+                    if (changes.movingBoundary || changes.movingBoundarySample || changes.curPerspectiveIdx || changes.lastUpdate) {
+                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                            this.drawVpOsciMarkup(true);
+                        }
+                    }
+                    //
+                    if (changes.curChannel || changes.viewPortSampleStart || changes.viewPortSampleEnd) {
+                        this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, false);
+                        this.drawVpOsciMarkup(true);
+                    }
+                    //
+                    if (changes.viewPortSelectStart || changes.viewPortSelectEnd) {
+                        this.drawVpOsciMarkup(true);
+                    }
+                    //
+                    if (changes.curBndl) {
+                        this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, true);
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.redraw = function () {
+                this.$scope.drawVpOsciMarkup(this.$scope, this.ConfigProviderService, true);
+            };
+            /**
+            *
+            */
+            this.drawPlayHead = function () {
+                var ctx = this.markupCanvas.getContext('2d');
+                ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                var posS = this.ViewStateService.getPos(this.markupCanvas.width, this.ViewStateService.playHeadAnimationInfos.sS);
+                var posCur = this.ViewStateService.getPos(this.markupCanvas.width, this.ViewStateService.playHeadAnimationInfos.curS);
+                ctx.fillStyle = this.ConfigProviderService.design.color.transparent.lightGrey;
+                ctx.fillRect(posS, 0, posCur - posS, this.canvas.height);
+                this.drawVpOsciMarkup(false);
+            };
+            /**
+            * draws markup of osci according to
+            * the information that is specified in
+            * the viewport
+            */
+            this.drawVpOsciMarkup = function (reset) {
+                var ctx = this.markupCanvas.getContext('2d');
+                if (reset) {
+                    ctx.clearRect(0, 0, this.markupCanvas.width, this.markupCanvas.height);
+                }
+                // draw moving boundary line if moving
+                this.DrawHelperService.drawMovingBoundaryLine(ctx);
+                this.DrawHelperService.drawViewPortTimes(ctx, true);
+                // draw current viewport selected
+                this.DrawHelperService.drawCurViewPortSelected(ctx, true);
+                this.DrawHelperService.drawCrossHairX(ctx, this.ViewStateService.curMouseX);
+            };
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$timeout = $timeout;
+            this.ViewStateService = ViewStateService;
+            this.SoundHandlerService = SoundHandlerService;
+            this.ConfigProviderService = ConfigProviderService;
+            this.DrawHelperService = DrawHelperService;
+            this.LoadedMetaDataService = LoadedMetaDataService;
+            this._inited = false;
+        }
+        ;
+        return OsciController;
+    }())
+};
+angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
+    .component(OsciComponent.selector, OsciComponent);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
+
+/***/ }),
+/* 63 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
+
+
+var SpectrogramComponent = {
+    selector: "spectro",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <!-- width is now up to 4k -->\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"2048\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"2048\" \n        drawssff \n        ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"2048\" \n        mouse-track-and-correction-tool \n        ssff-trackname=\"{{$ctrl.trackName}}\" \n        bundle-name=\"{{$ctrl.curBndl.name}}\"></canvas>\n    </div>\n    <!-- <div class=\"emuwebapp-timelineCanvasButtons\">\n        <div ng-show=\"cps.vals.activeButtons.resizePerspectives\" class=\"emuwebapp-level-button\" enlarge=\"{{order}}\">\n            <img style=\"cursor: pointer;\" src=\"img/resize.svg\" />\n        </div>\n    </div> -->\n    </div>",
+    bindings: {
+        trackName: '<',
+        spectroSettings: '<',
+        osciSettings: '<',
+        lastUpdate: '<',
+        movingBoundarySample: '<',
+        curMouseX: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<',
+        curBndl: '<'
+    },
+    controller: /** @class */ (function () {
+        function SpectrogramController($element, $timeout, ViewStateService, ConfigProviderService, DrawHelperService, FontScaleService, SoundHandlerService, MathHelperService) {
+            this.$postLink = function () {
+                // select the needed DOM elements from the template
+                this.canvas0 = this.$element.find('canvas')[0];
+                this.canvas1 = this.$element.find('canvas')[this.$element.find('canvas').length - 1];
+                this.context = this.canvas0.getContext('2d');
+                this.markupCtx = this.canvas1.getContext('2d');
+            };
+            this.$onChanges = function (changes) {
+                if (this._inited) {
+                    ///////////////
+                    // watches
+                    // scope.$watch('vs.bundleListSideBarOpen', function () {
+                    // 	if (!$.isEmptyObject(this.SoundHandlerService)) {
+                    // 		if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                    // 			$timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
+                    // 		}
+                    // 	}
+                    // });
+                    //
+                    if (changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.osciSettings || changes.spectroSettings) {
+                        if (!$.isEmptyObject(this.SoundHandlerService)) {
+                            if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                                if (changes.spectroSettings) {
+                                    this.setupEvent();
+                                }
+                                this.redraw();
+                                this.clearAndDrawSpectMarkup();
+                            }
+                        }
+                    }
+                    //
+                    if (changes.viewPortSelectStart || changes.viewPortSelectEnd || changes.movingBoundarySample || changes.curMouseX || changes.lastUpdate) {
+                        if (!$.isEmptyObject(this.SoundHandlerService)) {
+                            if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                                this.clearAndDrawSpectMarkup();
+                            }
+                        }
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.$element = $element;
+            this.$timeout = $timeout;
+            this.ViewStateService = ViewStateService;
+            this.ConfigProviderService = ConfigProviderService;
+            this.DrawHelperService = DrawHelperService;
+            this.FontScaleService = FontScaleService;
+            this.SoundHandlerService = SoundHandlerService;
+            this.MathHelperService = MathHelperService;
+            this._inited = false;
+            // Spectro Worker
+            this.primeWorker = new _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__[/* SpectroDrawingWorker */ "a"]();
+            // default alpha for Window Function
+            this.alpha = 0.16;
+            this.devicePixelRatio = window.devicePixelRatio || 1;
+        }
+        ///////////////
+        // bindings
+        SpectrogramController.prototype.redraw = function () {
+            this.markupCtx.clearRect(0, 0, this.canvas1.width, this.canvas1.height);
+            this.drawSpectro(this.SoundHandlerService.audioBuffer.getChannelData(this.ViewStateService.osciSettings.curChannel));
+        };
+        ;
+        SpectrogramController.prototype.drawSpectro = function (buffer) {
+            this.killSpectroRenderingThread();
+            this.startSpectroRenderingThread(buffer);
+        };
+        ;
+        SpectrogramController.prototype.calcSamplesPerPxl = function () {
+            return (this.ViewStateService.curViewPort.eS + 1 - this.ViewStateService.curViewPort.sS) / this.canvas0.width;
+        };
+        ;
+        SpectrogramController.prototype.clearAndDrawSpectMarkup = function () {
+            this.markupCtx.clearRect(0, 0, this.canvas1.width, this.canvas1.height);
+            this.drawSpectMarkup();
+        };
+        ;
+        SpectrogramController.prototype.drawSpectMarkup = function () {
+            // draw moving boundary line if moving
+            this.DrawHelperService.drawMovingBoundaryLine(this.markupCtx);
+            // draw current viewport selected
+            this.DrawHelperService.drawCurViewPortSelected(this.markupCtx, false);
+            // draw min max vals and name of track
+            this.DrawHelperService.drawMinMaxAndName(this.markupCtx, '', this.ViewStateService.spectroSettings.rangeFrom, this.ViewStateService.spectroSettings.rangeTo, 2);
+            // only draw corsshair x line if mouse currently not over canvas
+            this.DrawHelperService.drawCrossHairX(this.markupCtx, this.ViewStateService.curMouseX);
+        };
+        ;
+        SpectrogramController.prototype.killSpectroRenderingThread = function () {
+            this.context.fillStyle = this.ConfigProviderService.design.color.black;
+            this.context.fillRect(0, 0, this.canvas0.width, this.canvas0.height);
+            // draw current viewport selected
+            this.DrawHelperService.drawCurViewPortSelected(this.markupCtx, false);
+            this.FontScaleService.drawUndistortedText(this.context, 'rendering...', this.ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, this.ConfigProviderService.design.font.small.family, 10, 50, this.ConfigProviderService.design.color.black, true);
+            if (this.primeWorker !== null) {
+                this.primeWorker.kill();
+                this.primeWorker = null;
+            }
+        };
+        ;
+        SpectrogramController.prototype.setupEvent = function () {
+            var _this = this;
+            var imageData = this.context.createImageData(this.canvas0.width, this.canvas0.height);
+            this.primeWorker.says(function (event) {
+                if (event.status === undefined) {
+                    if (_this.calcSamplesPerPxl() === event.samplesPerPxl) {
+                        var tmp = new Uint8ClampedArray(event.img);
+                        imageData.data.set(tmp);
+                        _this.context.putImageData(imageData, 0, 0);
+                        _this.drawSpectMarkup();
+                    }
+                }
+                else {
+                    console.error('Error rendering spectrogram:', event.status.message);
+                }
+            });
+        };
+        ;
+        SpectrogramController.prototype.startSpectroRenderingThread = function (buffer) {
+            if (buffer.length > 0) {
+                this.primeWorker = new _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__[/* SpectroDrawingWorker */ "a"]();
+                var parseData = [];
+                var fftN = this.MathHelperService.calcClosestPowerOf2Gt(this.SoundHandlerService.audioBuffer.sampleRate * this.ViewStateService.spectroSettings.windowSizeInSecs);
+                // fftN must be greater than 512 (leads to better resolution of spectrogram)
+                if (fftN < 512) {
+                    fftN = 512;
+                }
+                // extract relavant data
+                parseData = buffer.subarray(this.ViewStateService.curViewPort.sS, this.ViewStateService.curViewPort.eS);
+                var leftPadding = [];
+                var rightPadding = [];
+                // check if any zero padding at LEFT edge is necessary
+                var windowSizeInSamples = this.SoundHandlerService.audioBuffer.sampleRate * this.ViewStateService.spectroSettings.windowSizeInSecs;
+                if (this.ViewStateService.curViewPort.sS < windowSizeInSamples / 2) {
+                    //should do something here... currently always padding with zeros!
+                }
+                else {
+                    leftPadding = buffer.subarray(this.ViewStateService.curViewPort.sS - windowSizeInSamples / 2, this.ViewStateService.curViewPort.sS);
+                }
+                // check if zero padding at RIGHT edge is necessary
+                if (this.ViewStateService.curViewPort.eS + fftN / 2 - 1 >= this.SoundHandlerService.audioBuffer.length) {
+                    //should do something here... currently always padding with zeros!
+                }
+                else {
+                    rightPadding = buffer.subarray(this.ViewStateService.curViewPort.eS, this.ViewStateService.curViewPort.eS + fftN / 2 - 1);
+                }
+                // add padding
+                var paddedSamples = new Float32Array(leftPadding.length + parseData.length + rightPadding.length);
+                paddedSamples.set(leftPadding);
+                paddedSamples.set(parseData, leftPadding.length);
+                paddedSamples.set(rightPadding, leftPadding.length + parseData.length);
+                if (this.ViewStateService.curViewPort.sS >= fftN / 2) {
+                    // pass in half a window extra at the front and a full window extra at the back so everything can be drawn/calculated this also fixes alignment issue
+                    parseData = buffer.subarray(this.ViewStateService.curViewPort.sS - fftN / 2, this.ViewStateService.curViewPort.eS + fftN);
+                }
+                else {
+                    // tolerate window/2 alignment issue if at beginning of file
+                    parseData = buffer.subarray(this.ViewStateService.curViewPort.sS, this.ViewStateService.curViewPort.eS + fftN);
+                }
+                this.setupEvent();
+                this.primeWorker.tell({
+                    'windowSizeInSecs': this.ViewStateService.spectroSettings.windowSizeInSecs,
+                    'fftN': fftN,
+                    'alpha': this.alpha,
+                    'upperFreq': this.ViewStateService.spectroSettings.rangeTo,
+                    'lowerFreq': this.ViewStateService.spectroSettings.rangeFrom,
+                    'samplesPerPxl': this.calcSamplesPerPxl(),
+                    'window': this.ViewStateService.spectroSettings.window,
+                    'imgWidth': this.canvas0.width,
+                    'imgHeight': this.canvas0.height,
+                    'dynRangeInDB': this.ViewStateService.spectroSettings.dynamicRange,
+                    'pixelRatio': this.devicePixelRatio,
+                    'sampleRate': this.SoundHandlerService.audioBuffer.sampleRate,
+                    'transparency': this.ConfigProviderService.vals.spectrogramSettings.transparency,
+                    'audioBuffer': paddedSamples,
+                    'audioBufferChannels': this.SoundHandlerService.audioBuffer.numberOfChannels,
+                    'drawHeatMapColors': this.ViewStateService.spectroSettings.drawHeatMapColors,
+                    'preEmphasisFilterFactor': this.ViewStateService.spectroSettings.preEmphasisFilterFactor,
+                    'heatMapColorAnchors': this.ViewStateService.spectroSettings.heatMapColorAnchors,
+                    'invert': this.ViewStateService.spectroSettings.invert
+                }, [paddedSamples.buffer]);
+            }
+        };
+        return SpectrogramController;
+    }())
+};
+angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
+    .component(SpectrogramComponent.selector, SpectrogramComponent);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
+
+/***/ }),
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -72383,7 +72319,7 @@ module.exports = exported;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(2);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".emuwebapp-font-small,.emuwebapp-right-menu{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input{font-family:HelveticaNeue;font-size:14px;font-weight:400}.emuwebapp-right-menu{position:absolute;top:40px;right:-200px;height:-moz-calc(100% - 133px);height:-webkit-calc(100% - 133px);height:calc(100% - 133px);width:200px;background-color:#424242;color:#fff;border-left:thin solid #000;z-index:1000}.emuwebapp-right-menu h3{font-size:1.5em;padding-top:15px;padding-bottom:15px;border-bottom:thin solid #000;overflow:hidden}.emuwebapp-right-menu ul{margin:10px;text-align:left;overflow:hidden}.emuwebapp-right-menu>button{position:absolute;top:125px;left:-24px;height:24px;width:24px;color:#fff;background:transparent;-webkit-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);-ms-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);-moz-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);-o-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);box-shadow:-2px 1px 5px rgba(0,0,0,0.7);border-style:solid;border-width:1px 0 1px 1px;border-color:#fff;z-index:2001}.emuwebapp-right-menu>button img{width:10px;height:20px;padding-bottom:0;border-style:none;border:0;border-radius:0;filter:invert(100%)}.emuwebapp-right-menu>button:active{background:#fff}.emuwebapp-right-menu>button:focus{outline:none}.emuwebapp-right-menu>button:hover{background-color:#000;filter:invert(100%)}.emuwebapp-right-menu .emuwebapp-curSelPerspLi{border-bottom:thin solid rgba(22,22,22,0.1);padding:10px !important;margin:4px !important;font-size:1.2em;background-color:#424242}.emuwebapp-right-menu .emuwebapp-perspLi{border-bottom:thin solid rgba(22,22,22,0.1);padding:10px !important;margin:4px !important;font-size:1.2em;overflow:hidden}.emuwebapp-right-menu .emuwebapp-perspLi:hover{background-color:rgba(152,152,152,0.18)}\n", ""]);
+exports.push([module.i, ".emuwebapp-font-small,.emuwebapp-right-menu{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input{font-family:HelveticaNeue;font-size:14px;font-weight:400}.emuwebapp-right-menu{position:absolute;top:40px;right:-200px;height:-moz-calc(100% - 133px);height:-webkit-calc(100% - 133px);height:calc(100% - 133px);width:200px;background-color:#424242;color:#fff;border-left:thin solid #000;z-index:1000}.emuwebapp-right-menu h3{font-size:1.5em;padding-top:15px;padding-bottom:15px;border-bottom:thin solid #000;overflow:hidden}.emuwebapp-right-menu ul{margin:10px;text-align:left;overflow:hidden}.emuwebapp-right-menu>button{position:absolute;top:125px;left:-24px;height:24px;width:24px;color:#fff;background:transparent;-webkit-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);-ms-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);-moz-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);-o-box-shadow:-2px 1px 5px rgba(0,0,0,0.7);box-shadow:-2px 1px 5px rgba(0,0,0,0.7);border-style:solid;border-width:1px 0 1px 1px;border-color:#fff;z-index:2001}.emuwebapp-right-menu>button img{width:10px;height:20px;padding-bottom:0;border-style:none;border:0;border-radius:0;filter:invert(100%)}.emuwebapp-right-menu>button:active{background:#fff}.emuwebapp-right-menu>button:focus{outline:none}.emuwebapp-right-menu>button:hover{background-color:#000;filter:invert(100%)}.emuwebapp-right-menu .emuwebapp-curSelPerspLi{border-bottom:thin solid rgba(22,22,22,0.1);padding:10px !important;margin:4px !important;font-size:1.2em;background-color:#999;color:#000}.emuwebapp-right-menu .emuwebapp-perspLi{border-bottom:thin solid rgba(22,22,22,0.1);padding:10px !important;margin:4px !important;font-size:1.2em;overflow:hidden}.emuwebapp-right-menu .emuwebapp-perspLi:hover{background-color:rgba(152,152,152,0.18)}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -72461,7 +72397,7 @@ module.exports = exported;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(2);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".emuwebapp-font-small{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input{font-family:HelveticaNeue;font-size:14px;font-weight:400}div.printTitle{display:none}@media print{div.printTitle{display:block;position:running(printTitle)}@page{size:auto;margin:0.5cm;margin-left:1cm;text-align:center}html,body{width:100%;height:100%;text-align:center}html,body,ul,ol,li,form,fieldset,legend{margin:0;padding:0}.emuwebapp-bundleListSideBarOuter,.emuwebapp-progressThing,.emuwebapp-menuBarTop,.emuwebapp-menuBarBottom,.emuwebapp-split-handler,.emuwebapp-filter,.emuwebapp-bundle-outer,.emuwebapp-top-menu,.emuwebapp-right-menu,.emuwebapp-bottom-menu,.emuwebapp-timelineCanvasButtons,.emuwebapp-rightSideMenuOpenBtn,.emuwebapp-levelButtonsContainer,.emuwebapp-selectAttrDef,.emuwebapp-levelResizeBtn,.emuwebapp-levelButtonsContainer{display:none !important;height:0 !important;width:0 !important}.emuwebapp-timeline-flexitem{margin-bottom:3px}.emuwebapp-bottomPane{margin-top:0}}\n", ""]);
+exports.push([module.i, ".emuwebapp-font-small{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input{font-family:HelveticaNeue;font-size:14px;font-weight:400}div.printTitle{display:none}@media print{div.printTitle{display:block;position:running(printTitle)}@page{size:auto;margin:0.5cm;margin-left:1cm;text-align:center}html,body{width:100%;height:100%;text-align:center}html,body,ul,ol,li,form,fieldset,legend{margin:0;padding:0}.emuwebapp-bundleListSideBarOuter,.emuwebapp-progressBar,.emuwebapp-menuBarTop,.emuwebapp-menuBarBottom,.emuwebapp-split-handler,.emuwebapp-filter,.emuwebapp-bundle-outer,.emuwebapp-top-menu,.emuwebapp-right-menu,.emuwebapp-bottom-menu,.emuwebapp-timelineCanvasButtons,.emuwebapp-rightSideMenuOpenBtn,.emuwebapp-levelButtonsContainer,.emuwebapp-selectAttrDef,.emuwebapp-levelResizeBtn,.emuwebapp-levelButtonsContainer{display:none !important;height:0 !important;width:0 !important}.emuwebapp-timeline-flexitem{margin-bottom:3px}.emuwebapp-bottomPane{margin-top:0}}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -72500,7 +72436,7 @@ module.exports = exported;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(2);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".emuwebapp-font-small{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input,.emuwebapp-progressThing{font-family:HelveticaNeue;font-size:14px;font-weight:400}.emuwebapp-progressThing{background-color:#424242;color:#fff;width:100%;height:20px;font-weight:900;background-image:-webkit-linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);background-image:-moz-linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);background-image:-ms-linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);background-image:linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);-webkit-background-size:50px 50px;-ms-background-size:50px 50px;-moz-background-size:50px 50px;-o-background-size:50px 50px;background-size:50px 50px;-webkit-animation:emuwebapp-move 2s linear infinite;-ms-animation:emuwebapp-move 2s linear infinite;-moz-animation:emuwebapp-move 2s linear infinite;-o-animation:emuwebapp-move 2s linear infinite;animation:emuwebapp-move 2s linear infinite;-webkit-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);-ms-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);-moz-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);-o-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);overflow:hidden}@-webkit-keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}@-moz-keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}@-ms-keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}@keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}.emuwebapp-animationRunning{-webkit-animation-play-state:running;-ms-animation-play-state:running;-moz-animation-play-state:running;-o-animation-play-state:running;animation-play-state:running}.emuwebapp-animationStopped{-webkit-animation-play-state:paused;-ms-animation-play-state:paused;-moz-animation-play-state:paused;-o-animation-play-state:paused;animation-play-state:paused}\n", ""]);
+exports.push([module.i, ".emuwebapp-font-small{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input,.emuwebapp-progressBar{font-family:HelveticaNeue;font-size:14px;font-weight:400}.emuwebapp-progressBar{background-color:#424242;color:#fff;width:100%;height:20px;font-weight:900;background-image:-webkit-linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);background-image:-moz-linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);background-image:-ms-linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);background-image:linear-gradient(-45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent);-webkit-background-size:50px 50px;-ms-background-size:50px 50px;-moz-background-size:50px 50px;-o-background-size:50px 50px;background-size:50px 50px;-webkit-animation:emuwebapp-move 2s linear infinite;-ms-animation:emuwebapp-move 2s linear infinite;-moz-animation:emuwebapp-move 2s linear infinite;-o-animation:emuwebapp-move 2s linear infinite;animation:emuwebapp-move 2s linear infinite;-webkit-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);-ms-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);-moz-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);-o-box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);box-shadow:inset 0 6px 6px rgba(152,152,152,0.18);overflow:hidden}@-webkit-keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}@-moz-keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}@-ms-keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}@keyframes emuwebapp-move{0%{background-position:0 0}100%{background-position:50px 50px}}.emuwebapp-animationRunning{-webkit-animation-play-state:running;-ms-animation-play-state:running;-moz-animation-play-state:running;-o-animation-play-state:running;animation-play-state:running}.emuwebapp-animationStopped{-webkit-animation-play-state:paused;-ms-animation-play-state:paused;-moz-animation-play-state:paused;-o-animation-play-state:paused;animation-play-state:paused}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -72734,7 +72670,7 @@ module.exports = exported;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(2);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".emuwebapp-font-small{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input{font-family:HelveticaNeue;font-size:14px;font-weight:400}.emuwebapp-history{position:absolute;display:flex;font-size:150% !important;align-items:center;justify-content:center;left:35%;top:0;width:30%;height:30px;background:#303030;color:#fff;z-index:-10;opacity:0;font-weight:900 !important;border:0;border-left:1px solid #fff;border-right:1px solid #fff;border-bottom:1px solid #fff;border-bottom-left-radius:12px;border-bottom-right-radius:12px;-webkit-transition:all 400ms ease-in;-ms-transition:all 400ms ease-in;-moz-transition:all 400ms ease-in;-o-transition:all 400ms ease-in;transition:all 400ms ease-in}.emuwebapp-history div{max-height:100%;max-width:100%;background-color:transparent}.emuwebapp-history-fade{z-index:999999;opacity:1;-webkit-transition:all 400ms ease-out;-ms-transition:all 400ms ease-out;-moz-transition:all 400ms ease-out;-o-transition:all 400ms ease-out;transition:all 400ms ease-out}\n", ""]);
+exports.push([module.i, ".emuwebapp-font-small{font-family:HelveticaNeue;font-size:12px;font-weight:400}.emuwebapp-font-large{font-family:HelveticaNeue;font-size:16px;font-weight:400}.emuwebapp-font-code{font-family:Consolas,\"Liberation Mono\",Menlo,Courier,monospace;font-size:14px;font-weight:600}.emuwebapp-font-input{font-family:HelveticaNeue;font-size:14px;font-weight:400}.emuwebapp-history{position:absolute;display:flex;font-size:150% !important;align-items:center;justify-content:center;left:35%;top:0;width:30%;height:30px;background:#303030;color:#fff;z-index:-10;opacity:0;font-weight:900 !important;border:0;border-left:1px solid #fff;border-right:1px solid #fff;border-bottom:1px solid #fff;border-bottom-left-radius:12px;border-bottom-right-radius:12px}.emuwebapp-history div{max-height:100%;max-width:100%;background-color:transparent}.emuwebapp-history-fade{z-index:999999;opacity:1}\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -84559,14 +84495,14 @@ var angular_filter = __webpack_require__(43);
 // EXTERNAL MODULE: ./node_modules/showdown/dist/showdown.js
 var showdown = __webpack_require__(15);
 
-// CONCATENATED MODULE: ./app/scripts/app.ts
+// CONCATENATED MODULE: ./src/app/app.ts
 
 angular["module"]('emuwebApp', ['ngAnimate', 'angular.filter', 'ngRoute'])
     .config(function ($locationProvider) {
     $locationProvider.html5Mode(true);
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/export.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/export.controller.ts
 
 angular["module"]('emuwebApp')
     .controller('ExportCtrl', function ($scope, $window, ModalService, BrowserDetectorService, ViewStateService, HistoryService) {
@@ -84646,7 +84582,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/login.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/login.controller.ts
 
 angular["module"]('emuwebApp')
     .controller('LoginCtrl', function ($scope, $rootScope, $http, ConfigProviderService, IoHandlerService, ViewStateService, ModalService) {
@@ -84692,10 +84628,10 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/emuwebapp.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/emuwebapp.controller.ts
 
 angular["module"]('emuwebApp')
-    .controller('EmuWebAppController', function ($scope, $window, $document, $location, ViewStateService, HistoryService, IoHandlerService, SoundHandlerService, ConfigProviderService, FontScaleService, SsffDataService, LevelService, TextGridParserService, WavParserService, DrawHelperService, ValidationService, AppcacheHandlerService, LoadedMetaDataService, DbObjLoadSaveService, AppStateService, DataService, ModalService, BrowserDetectorService) {
+    .controller('EmuWebAppController', function ($scope, $window, $document, $location, ViewStateService, HistoryService, IoHandlerService, SoundHandlerService, ConfigProviderService, FontScaleService, SsffDataService, LevelService, TextGridParserService, WavParserService, DrawHelperService, ValidationService, AppcacheHandlerService, LoadedMetaDataService, DbObjLoadSaveService, AppStateService, DataService, ModalService, BrowserDetectorService, HierarchyLayoutService) {
     // hook up services to use abbreviated forms
     $scope.cps = ConfigProviderService;
     $scope.hists = HistoryService;
@@ -84710,6 +84646,7 @@ angular["module"]('emuwebApp')
     $scope.io = IoHandlerService;
     $scope.ach = AppcacheHandlerService;
     $scope.lmds = LoadedMetaDataService;
+    $scope.HierarchyLayoutService = HierarchyLayoutService;
     // init vars
     $scope.connectBtnLabel = 'connect';
     $scope.tmp = {};
@@ -85132,6 +85069,8 @@ angular["module"]('emuwebApp')
                     ViewStateService.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
                     // setspectroSettings
                     ViewStateService.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, ConfigProviderService.vals.spectrogramSettings.rangeFrom, ConfigProviderService.vals.spectrogramSettings.rangeTo, ConfigProviderService.vals.spectrogramSettings.dynamicRange, ConfigProviderService.vals.spectrogramSettings.window, ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors, ConfigProviderService.vals.spectrogramSettings.invert);
+                    // set first path as default
+                    ViewStateService.setHierarchySettings($scope.HierarchyLayoutService.findAllNonPartialPaths().possible[0]);
                     validRes = ValidationService.validateJSO('DBconfigFileSchema', data);
                     if (validRes === true) {
                         // then get the DBconfigFile
@@ -85151,7 +85090,7 @@ angular["module"]('emuwebApp')
                                     // DbObjLoadSaveService.saveBundle(); // for testing save function
                                     // $scope.menuBundleSaveBtnClick(); // for testing save button
                                     // $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
-                                    // $scope.spectSettingsBtnClick(); // for testing spect settings dial
+                                    // $scope.settingsBtnClick(); // for testing spect settings dial
                                     // $scope.searchBtnClick();
                                     // ViewStateService.curViewPort.sS = 27455;
                                     // ViewStateService.curViewPort.eS = 30180;
@@ -85347,7 +85286,7 @@ angular["module"]('emuwebApp')
     /**
      *
      */
-    $scope.spectSettingsBtnClick = function () {
+    $scope.settingsBtnClick = function () {
         if (ViewStateService.getPermission('spectSettingsChange')) {
             ModalService.open('views/settingsModal.html');
         }
@@ -85670,9 +85609,12 @@ angular["module"]('emuwebApp')
     $scope.getTmp = function () {
         return angular["copy"]($scope.xTmp);
     };
+    $scope.showHierarchyPathCanvas = function () {
+        return (localStorage.getItem('showHierarchyPathCanvas') == 'true');
+    };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/manual.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/manual.controller.ts
 
 /**
  * @ngdoc function
@@ -85715,7 +85657,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/modal.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/modal.controller.ts
 
 angular["module"]('emuwebApp')
     .controller('ModalCtrl', function ($scope, ArrayHelperService, BrowserDetectorService, ModalService, ViewStateService, LevelService, HistoryService, ConfigProviderService) {
@@ -85821,7 +85763,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/search-annot.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/search-annot.controller.ts
 
 angular["module"]('emuwebApp')
     .controller('searchAnnotCtrl', function ($scope, ModalService, ViewStateService, HierarchyLayoutService, LevelService, LoadedMetaDataService, ConfigProviderService, StandardFuncsService, DataService) {
@@ -85911,7 +85853,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/show-hierarchy.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/show-hierarchy.controller.ts
 
 angular["module"]('emuwebApp')
     .controller('ShowhierarchyCtrl', function ($scope, ViewStateService, HistoryService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
@@ -86001,7 +85943,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/tabbed.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/tabbed.controller.ts
 
 angular["module"]('emuwebApp')
     .controller('TabbedCtrl', function ($scope, $timeout, ConfigProviderService, ValidationService, ViewStateService, ModalService) {
@@ -86184,7 +86126,7 @@ angular["module"]('emuwebApp')
 // EXTERNAL MODULE: ./package.json
 var package_0 = __webpack_require__(10);
 
-// CONCATENATED MODULE: ./app/scripts/controllers/tabbed-help.controller.ts
+// CONCATENATED MODULE: ./src/app/controllers/tabbed-help.controller.ts
 
 
 
@@ -86225,7 +86167,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/controllers/index.ts
+// CONCATENATED MODULE: ./src/app/controllers/index.ts
 
 
 
@@ -86236,26 +86178,10 @@ angular["module"]('emuwebApp')
 
 
 
-// CONCATENATED MODULE: ./app/scripts/directives/delete.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('delete', function (ModalService) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attr) {
-            element.bind('click', function () {
-                scope.vs.setcurClickLevelName(scope.level.name, attr.delete);
-                scope.vs.setcurClickLevel(scope.level.name, scope.level.type, scope.order);
-                ModalService.open('views/deleteLevel.html', scope.level.name);
-            });
-        }
-    };
-});
-
-// EXTERNAL MODULE: ./app/scripts/directives/dots.directive.ts
+// EXTERNAL MODULE: ./src/app/directives/dots.directive.ts
 var dots_directive = __webpack_require__(45);
 
-// CONCATENATED MODULE: ./app/scripts/directives/dragout.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/dragout.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('dragout', function ($window, DataService, LoadedMetaDataService, BrowserDetectorService, ConfigProviderService) {
@@ -86337,61 +86263,19 @@ angular["module"]('emuwebApp')
     };
 });
 
-// EXTERNAL MODULE: ./app/scripts/directives/drawssff.directive.ts
+// EXTERNAL MODULE: ./src/app/directives/drawssff.directive.ts
 var drawssff_directive = __webpack_require__(46);
 
-// CONCATENATED MODULE: ./app/scripts/directives/emuwebapp.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('emuwebapp', function (ViewStateService, ConfigProviderService) {
-    return {
-        template: "\n\t\t\t<div ng-controller=\"EmuWebAppController\" \n\t\t\tclass=\"emuwebapp-main\" \n\t\t\tid=\"MainCtrl\" \n\t\t\thandleglobalkeystrokes>\n\t\t\t\t<!-- start: modal -->\n\t\t\t\t<modal></modal>\n\t\t\t\t<!-- end: modal -->\n\t\t\t\t<!-- start: hint -->\n\t\t\t\t<hint ng-if=\"internalVars.showAboutHint\"></hint>\n\t\t\t\t<!-- end: hint -->\n\t\t\t\t<!-- start: left side menu bar -->\n\t\t\t\t<bundle-list-side-bar ng-show=\"vs.bundleListSideBarOpen\"></bundle-list-side-bar>\n\t\t\t\t<!-- end: left side menu bar -->\n\n\t\t\t\t<!-- start: main window -->\n\t\t\t\t<div class=\"emuwebapp-window\" id=\"mainWindow\">\n\t\t\t\t\t<progress-thing show-thing=\"{{vs.somethingInProgress}}\"></progress-thing>\n\t\t\t\t\t<div class=\"printTitle\">EMU-webApp : {{lmds.getCurBndlName()}}</div>\n\n\t\t\t\t\t<!-- start: top menu bar -->\n\t\t\t\t\t<div class=\"emuwebapp-top-menu\">\n\t\t\t\t\t\t<button class=\"emuwebapp-button-icon\" \n\t\t\t\t\t\tid=\"bundleListSideBarOpen\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.openMenu\" \n\t\t\t\t\t\tng-click=\"vs.toggleBundleListSideBar(cps.design.animation.period);\" \n\t\t\t\t\t\tstyle=\"float:left\"><i class=\"material-icons\">menu</i></button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.addLevelSeg\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('addLevelSegBtnClick')\" \n\t\t\t\t\t\tng-click=\"addLevelSegBtnClick();\">add level (SEG.)</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.addLevelEvent\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('addLevelPointBtnClick')\" \n\t\t\t\t\t\tng-click=\"addLevelPointBtnClick();\">add level (EVENT)</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.renameSelLevel\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('renameSelLevelBtnClick')\" \n\t\t\t\t\t\tng-click=\"renameSelLevelBtnClick();\">rename sel. level</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tid=\"downloadTextgrid\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.downloadTextGrid\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('downloadTextGridBtnClick')\" \n\t\t\t\t\t\tng-click=\"downloadTextGridBtnClick();\"><i class=\"material-icons\">save</i>download TextGrid</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tid=\"downloadAnnotation\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.downloadAnnotation\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('downloadAnnotationBtnClick')\" \n\t\t\t\t\t\tng-click=\"downloadAnnotationBtnClick();\"><i class=\"material-icons\">save</i>download annotJSON</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tid=\"spectSettingsBtn\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.specSettings\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('spectSettingsChange')\" \n\t\t\t\t\t\tng-click=\"spectSettingsBtnClick();\"><i class=\"material-icons\">settings</i> settings</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<div class=\"emuwebapp-nav-wrap\" ng-show=\"cps.vals.activeButtons.openDemoDB\">\n\t\t\t\t\t\t\t<ul class=\"emuwebapp-dropdown-container\">\n\t\t\t\t\t\t\t\t<li class=\"left\">\n\t\t\t\t\t\t\t\t\t<button type=\"button\" \n\t\t\t\t\t\t\t\t\tclass=\"emuwebapp-mini-btn full\" \n\t\t\t\t\t\t\t\t\tid=\"demoDB\" \n\t\t\t\t\t\t\t\t\tng-mouseover=\"dropdown = true\" \n\t\t\t\t\t\t\t\t\tng-mouseleave=\"dropdown = false\" \n\t\t\t\t\t\t\t\t\tng-click=\"dropdown = !dropdown\" \n\t\t\t\t\t\t\t\t\tng-disabled=\"!vs.getPermission('openDemoBtnDBclick')\">open demo <span id=\"emuwebapp-dropdown-arrow\"></span></button>\n\t\t\t\t\t\t\t\t\t<ul class=\"emuwebapp-dropdown-menu\" \n\t\t\t\t\t\t\t\t\tng-mouseover=\"dropdown = true\" \n\t\t\t\t\t\t\t\t\tng-mouseleave=\"dropdown = false\" \n\t\t\t\t\t\t\t\t\tng-init=\"dropdown = false\" \n\t\t\t\t\t\t\t\t\tng-show=\"dropdown\">\n\t\t\t\t\t\t\t\t\t\t<li class=\"divider\"></li>\n\t\t\t\t\t\t\t\t\t\t<li ng-repeat=\"curDB in cps.vals.demoDBs\" ng-click=\"openDemoDBbtnClick(curDB);\" id=\"demo{{$index}}\">{{curDB}}</li>\n\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.connect\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('connectBtnClick')\" \n\t\t\t\t\t\tng-click=\"connectBtnClick();\"><i class=\"material-icons\">input</i>{{connectBtnLabel}}</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tid=\"showHierarchy\" \n\t\t\t\t\t\tng-click=\"showHierarchyBtnClick();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('showHierarchyBtnClick')\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.showHierarchy\"><i class=\"material-icons\" style=\"transform: rotate(180deg)\">details</i>hierarchy</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tid=\"showeditDB\" \n\t\t\t\t\t\tng-click=\"showEditDBconfigBtnClick();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('editDBconfigBtnClick')\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.editEMUwebAppConfig\">edit config</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.search\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('searchBtnClick')\" \n\t\t\t\t\t\tng-click=\"searchBtnClick();\"><i class=\"material-icons\">search</i>search</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\" \n\t\t\t\t\t\tid=\"clear\" \n\t\t\t\t\t\tng-show=\"cps.vals.activeButtons.clear\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('clearBtnClick')\" \n\t\t\t\t\t\tng-click=\"clearBtnClick();\"><i class=\"material-icons\">clear_all</i>clear</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-button-icon\" \n\t\t\t\t\t\tid=\"aboutBtn\" \n\t\t\t\t\t\tstyle=\"float: right;\" \n\t\t\t\t\t\tng-click=\"aboutBtnClick();\"><img src=\"assets/EMU-webAppEmu.svg\" class=\"_35px\" /></button>\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- top menu bar end -->\n\n\t\t\t\t\t<!-- vertical split layout that contains top and bottom pane -->\n\t\t\t\t\t<div class=\"emuwebapp-canvas\">\n\t\t\t\t\t\t<bg-splitter show-two-dim-cans=\"{{cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order.length > 0}}\">\n\t\t\t\t\t\t\t<bg-pane type=\"topPane\" min-size=\"80\" max-size=\"500\">\n\t\t\t\t\t\t\t\t<ul class=\"emuwebapp-timeline-flexcontainer\">\n\t\t\t\t\t\t\t\t\t<li class=\"emuwebapp-timeline-flexitem\" ng-style=\"{'height': getEnlarge($index)}\" ng-repeat=\"curTrack in cps.vals.perspectives[vs.curPerspectiveIdx].signalCanvases.order track by $index\" ng-switch on=\"curTrack\">\n\t\t\t\t\t\t\t\t\t\t<osci \n\t\t\t\t\t\t\t\t\t\tng-switch-when=\"OSCI\" \n\t\t\t\t\t\t\t\t\t\torder=\"{{$index}}\" \n\t\t\t\t\t\t\t\t\t\ttrack-name=\"{{curTrack}}\"\n\t\t\t\t\t\t\t\t\t\t></osci>\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t<spectro \n\t\t\t\t\t\t\t\t\t\tng-switch-when=\"SPEC\" \n\t\t\t\t\t\t\t\t\t\torder=\"{{$index}}\" \n\t\t\t\t\t\t\t\t\t\ttrack-name=\"{{curTrack}}\"\n\t\t\t\t\t\t\t\t\t\t></spectro>\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t<ssff-track \n\t\t\t\t\t\t\t\t\t\tng-switch-default \n\t\t\t\t\t\t\t\t\t\torder=\"{{$index}}\" \n\t\t\t\t\t\t\t\t\t\ttrack-name=\"{{curTrack}}\"\n\t\t\t\t\t\t\t\t\t\t></ssff-track>\n\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t</bg-pane>\n\t\t\t\t\t\t\t<bg-pane type=\"bottomPane\" min-size=\"80\">\n\t\t\t\t\t\t\t\t<!-- ghost level div containing ul of ghost levels-->\n\t\t\t\t\t\t\t\t<div ng-if=\"cps.vals.perspectives[vs.curPerspectiveIdx].hierarchyPathCanvases\" style=\"margin-top: 25px;\">\n\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t<li ng-repeat=\"canvasDef in cps.vals.perspectives[vs.curPerspectiveIdx].hierarchyPathCanvases.order\">\n\t\t\t\t\t\t\t\t\t\t\t<hierarchy-path-canvas \n\t\t\t\t\t\t\t\t\t\t\tannotation=\"dataServ.getData()\" \n\t\t\t\t\t\t\t\t\t\t\tpath=\"canvasDef.path\"\n\t\t\t\t\t\t\t\t\t\t\tview-port-sample-start=\"vs.curViewPort.sS\"\n\t\t\t\t\t\t\t\t\t\t\tview-port-sample-end=\"vs.curViewPort.eS\"\n\t\t\t\t\t\t\t\t\t\t\tview-port-select-start=\"vs.curViewPort.selectS\"\n\t\t\t\t\t\t\t\t\t\t\tview-port-select-end=\"vs.curViewPort.selectE\"\n\t\t\t\t\t\t\t\t\t\t\tcur-mouse-x=\"vs.curMouseX\"\n\t\t\t\t\t\t\t\t\t\t\tcur-click-level-name=\"vs.curClickLevelName\"\n\t\t\t\t\t\t\t\t\t\t\tmoving-boundary-sample=\"vs.movingBoundarySample\"\n\t\t\t\t\t\t\t\t\t\t\tmoving-boundary=\"vs.movingBoundary\",\n\t\t\t\t\t\t\t\t\t\t\tmoves-away-from-last-save=\"hists.movesAwayFromLastSave\"\n\t\t\t\t\t\t\t\t\t\t\tcur-perspective-idx=\"vs.curPerspectiveIdx\"\n\t\t\t\t\t\t\t\t\t\t\tcur-bndl=\"lmds.getCurBndl()\"\n\t\t\t\t\t\t\t\t\t\t\t></hierarchy-path-canvas>\n\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<!-- level div containing ul of levels -->\n\t\t\t\t\t\t\t\t<div ng-if=\"true\" style=\"margin-top: 25px;\">\n\t\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t\t<li ng-repeat=\"levelName in cps.vals.perspectives[vs.curPerspectiveIdx].levelCanvases.order\">\n\t\t\t\t\t\t\t\t\t\t\t<level \n\t\t\t\t\t\t\t\t\t\t\tng-if=\"levServ.getLevelDetails(levelName)\"\n\t\t\t\t\t\t\t\t\t\t\tlevel=\"levServ.getLevelDetails(levelName)\" \n\t\t\t\t\t\t\t\t\t\t\tidx=\"$index\" \n\t\t\t\t\t\t\t\t\t\t\tview-port-sample-start=\"vs.curViewPort.sS\"\n\t\t\t\t\t\t\t\t\t\t\tview-port-sample-end=\"vs.curViewPort.eS\"\n\t\t\t\t\t\t\t\t\t\t\tview-port-select-start=\"vs.curViewPort.selectS\"\n\t\t\t\t\t\t\t\t\t\t\tview-port-select-end=\"vs.curViewPort.selectE\"\n\t\t\t\t\t\t\t\t\t\t\tcur-mouse-x=\"vs.curMouseX\"\n\t\t\t\t\t\t\t\t\t\t\tcur-click-level-name=\"vs.curClickLevelName\"\n\t\t\t\t\t\t\t\t\t\t\tmoving-boundary-sample=\"vs.movingBoundarySample\"\n\t\t\t\t\t\t\t\t\t\t\tmoving-boundary=\"vs.movingBoundary\",\n\t\t\t\t\t\t\t\t\t\t\tmoves-away-from-last-save=\"hists.movesAwayFromLastSave\"\n\t\t\t\t\t\t\t\t\t\t\tcur-perspective-idx=\"vs.curPerspectiveIdx\"\n\t\t\t\t\t\t\t\t\t\t\tcur-bndl=\"lmds.getCurBndl()\"\n\t\t\t\t\t\t\t\t\t\t\t></level>\n\t\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</bg-pane>\n\t\t\t\t\t\t\t<bg-pane type=\"emuwebapp-2d-map\">\n\t\t\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t\t\t<li ng-repeat=\"cur2dTrack in cps.vals.perspectives[vs.curPerspectiveIdx].twoDimCanvases.order\" ng-switch on=\"cur2dTrack\">\n\t\t\t\t\t\t\t\t\t\t<epg ng-switch-when=\"EPG\"></epg>\n\t\t\t\t\t\t\t\t\t\t<dots ng-switch-when=\"DOTS\"></dots>\n\t\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t</bg-pane>\n\t\t\t\t\t\t</bg-splitter>\n\t\t\t\t\t\t<history-action-popup></history-action-popup>\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- end: vertical split layout -->\n\n\t\t\t\t\t<!-- start: bottom menu bar -->\n\t\t\t\t\t<div class=\"emuwebapp-bottom-menu\">\n\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t<preview class=\"preview\" \n\t\t\t\t\t\t\tid=\"preview\" \n\t\t\t\t\t\t\tcurrent-bundle-name=\"{{getCurBndlName()}}\"></preview>\n\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"zoomInBtn\" \n\t\t\t\t\t\tng-click=\"cmdZoomIn();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('zoom')\"><i class=\"material-icons\">expand_less</i>in</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"zoomOutBtn\" \n\t\t\t\t\t\tng-click=\"cmdZoomOut();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('zoom')\"><i class=\"material-icons\">expand_more</i>out</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"zoomLeftBtn\" \n\t\t\t\t\t\tng-click=\"cmdZoomLeft();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('zoom')\"><i class=\"material-icons\">chevron_left</i>left</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"zoomRightBtn\" \n\t\t\t\t\t\tng-click=\"cmdZoomRight();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('zoom')\"><i class=\"material-icons\">chevron_right</i>right</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"zoomAllBtn\" \n\t\t\t\t\t\tng-click=\"cmdZoomAll();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_less</i>all</button>\n\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"zoomSelBtn\" \n\t\t\t\t\t\tng-click=\"cmdZoomSel();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_more</i>selection</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"playViewBtn\" \n\t\t\t\t\t\tng-show=\"cps.vals.restrictions.playback\" \n\t\t\t\t\t\tng-click=\"cmdPlayView();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('playaudio')\" ><i class=\"material-icons\">play_arrow</i>in view</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"playSelBtn\" \n\t\t\t\t\t\tng-show=\"cps.vals.restrictions.playback\" \n\t\t\t\t\t\tng-click=\"cmdPlaySel();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_outline</i>selected</button>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<button class=\"emuwebapp-mini-btn left\"\n\t\t\t\t\t\tid=\"playAllBtn\" \n\t\t\t\t\t\tng-show=\"cps.vals.restrictions.playback\" \n\t\t\t\t\t\tng-click=\"cmdPlayAll();\" \n\t\t\t\t\t\tng-disabled=\"!vs.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_filled</i>entire file</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- end: bottom menu bar -->\n\n\t\t\t\t\t<!-- start: large text input field -->\n\t\t\t\t\t<!--<large-text-field-input></large-text-field-input>-->\n\n\t\t\t\t\t<!-- start: perspectives menu bar (right) -->\n\t\t\t\t\t<perspectives></perspectives>\n\t\t\t\t\t<!-- end: perspectives menu bar (right) -->\n\t\t\t\t</div>\n\t\t\t\t<!-- end: main window -->\n\t\t\t</div>\n\t\t\t<!-- end: container EMU-webApp -->\n\t\t\t",
-        restrict: 'E',
-        scope: {
-            audioGetUrl: '@',
-            labelGetUrl: '@',
-            labelType: '@'
-        },
-        link: function postLink(scope, element, attrs) {
-            ////////////////////////
-            // Bindings
-            element.bind('mouseenter', function () {
-                ViewStateService.mouseInEmuWebApp = true;
-            });
-            element.bind('mouseleave', function () {
-                ViewStateService.mouseInEmuWebApp = false;
-            });
-            ///////////////////////
-            // observe attrs
-            attrs.$observe('audioGetUrl', function (val) {
-                if (val !== undefined && val !== '') {
-                    ConfigProviderService.embeddedVals.audioGetUrl = val;
-                }
-            });
-            attrs.$observe('labelGetUrl', function (val) {
-                if (val !== undefined && val !== '') {
-                    ConfigProviderService.embeddedVals.labelGetUrl = val;
-                }
-            });
-            attrs.$observe('labelType', function (val) {
-                if (val !== undefined && val !== '') {
-                    ConfigProviderService.embeddedVals.labelType = val;
-                }
-            });
-        }
-    };
-});
-
-// EXTERNAL MODULE: ./app/scripts/directives/enlarge.directive.ts
+// EXTERNAL MODULE: ./src/app/directives/enlarge.directive.ts
 var enlarge_directive = __webpack_require__(47);
 
-// EXTERNAL MODULE: ./app/scripts/directives/epg.directive.ts
+// EXTERNAL MODULE: ./src/app/directives/epg.directive.ts
 var epg_directive = __webpack_require__(48);
 
-// EXTERNAL MODULE: ./app/scripts/directives/handle-key-strokes.directive.ts
+// EXTERNAL MODULE: ./src/app/directives/handle-key-strokes.directive.ts
 var handle_key_strokes_directive = __webpack_require__(49);
 
-// CONCATENATED MODULE: ./app/scripts/directives/hint.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/hint.directive.ts
 
 
 angular["module"]('emuwebApp')
@@ -86413,36 +86297,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/directives/history-action-popup.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('historyActionPopup', function ($animate, $timeout, ConfigProviderService) {
-    return {
-        template: '<div class="emuwebapp-history"><div ng-bind-html="vs.historyActionTxt"></div></div>',
-        restrict: 'E',
-        replace: true,
-        link: function postLink(scope, element) {
-            ////////////////
-            //watches
-            scope.cps = ConfigProviderService;
-            scope.$watch('vs.historyActionTxt', function () {
-                if (scope.vs.historyActionTxt !== '') {
-                    $animate.addClass(element, 'emuwebapp-history-fade').then(function () {
-                        $timeout(function () {
-                            $animate.removeClass(element, 'emuwebapp-history-fade').then(function () {
-                                $timeout(function () {
-                                    scope.vs.historyActionTxt = '';
-                                }, scope.cps.design.animation.period);
-                            });
-                        }, scope.cps.design.animation.period);
-                    });
-                }
-            }, true);
-        }
-    };
-});
-
-// CONCATENATED MODULE: ./app/scripts/directives/large-text-field-input.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/large-text-field-input.directive.ts
 
 /**
  * @ngdoc directive
@@ -86459,7 +86314,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/directives/line-chart.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/line-chart.directive.ts
 
 
 /**
@@ -86596,7 +86451,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/directives/modal.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/modal.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('modal', function ($animate, ModalService) {
@@ -86635,10 +86490,10 @@ angular["module"]('emuwebApp')
     };
 });
 
-// EXTERNAL MODULE: ./app/scripts/directives/mouse-track-and-correction-tool.directive.ts
+// EXTERNAL MODULE: ./src/app/directives/mouse-track-and-correction-tool.directive.ts
 var mouse_track_and_correction_tool_directive = __webpack_require__(50);
 
-// CONCATENATED MODULE: ./app/scripts/directives/my-drop-zone.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/my-drop-zone.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('myDropZone', function ($animate, $compile, DragnDropService, BrowserDetectorService, AppStateService, ModalService) {
@@ -86867,7 +86722,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/directives/my-drop-zone-input.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/my-drop-zone-input.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('myDropZoneInput', function () {
@@ -86898,57 +86753,13 @@ angular["module"]('emuwebApp')
     };
 });
 
-// EXTERNAL MODULE: ./app/scripts/directives/osci.directive.ts
-var osci_directive = __webpack_require__(51);
+// EXTERNAL MODULE: ./src/app/directives/preview.directive.ts
+var preview_directive = __webpack_require__(51);
 
-// CONCATENATED MODULE: ./app/scripts/directives/perspectives.directive.ts
+// EXTERNAL MODULE: ./src/app/directives/preview-track.directive.ts
+var preview_track_directive = __webpack_require__(52);
 
-angular["module"]('emuwebApp')
-    .directive('perspectives', function () {
-    return {
-        templateUrl: 'views/perspectives.html',
-        replace: true,
-        restrict: 'E'
-    };
-});
-
-// EXTERNAL MODULE: ./app/scripts/directives/preview.directive.ts
-var preview_directive = __webpack_require__(52);
-
-// EXTERNAL MODULE: ./app/scripts/directives/preview-track.directive.ts
-var preview_track_directive = __webpack_require__(53);
-
-// CONCATENATED MODULE: ./app/scripts/directives/progress-thing.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('progressThing', function ($animate) {
-    return {
-        template: '<div class="emuwebapp-progressThing">{{vs.somethingInProgressTxt}}</div>',
-        restrict: 'E',
-        replace: true,
-        link: function postLink(scope, element, attrs) {
-            // element.text('this is the progressThing directive');
-            attrs.$observe('showThing', function (newVal) {
-                if (newVal === 'true') {
-                    // $animate.removeClass(element, 'hideProgressThing');
-                    $animate.removeClass(element, 'emuwebapp-shrinkHeightTo0px');
-                    $animate.removeClass(element, 'emuwebapp-animationStopped');
-                    $animate.addClass(element, 'emuwebapp-expandHeightTo20px');
-                    $animate.addClass(element, 'emuwebapp-animationRunning');
-                }
-                else {
-                    // $animate.addClass(element, 'hideProgressThing');
-                    $animate.removeClass(element, 'emuwebapp-expandHeightTo20px');
-                    $animate.removeClass(element, 'emuwebapp-animationRunning');
-                    $animate.addClass(element, 'emuwebapp-shrinkHeightTo0px');
-                    $animate.addClass(element, 'emuwebapp-animationStopped');
-                }
-            });
-        }
-    };
-});
-
-// CONCATENATED MODULE: ./app/scripts/directives/resize.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/resize.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('resize', function (LevelService, ViewStateService) {
@@ -86989,7 +86800,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/directives/save.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/save.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('save', function (ModalService, EspsParserService) {
@@ -87006,10 +86817,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// EXTERNAL MODULE: ./app/scripts/directives/spectro.directive.ts
-var spectro_directive = __webpack_require__(54);
-
-// CONCATENATED MODULE: ./app/scripts/directives/split-pane-view.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/split-pane-view.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('bgSplitter', function ($rootScope, ViewStateService) {
@@ -87215,10 +87023,10 @@ angular["module"]('emuwebApp')
     };
 });
 
-// EXTERNAL MODULE: ./app/scripts/directives/ssff-track.directive.ts
-var ssff_track_directive = __webpack_require__(55);
+// EXTERNAL MODULE: ./src/app/directives/ssff-track.directive.ts
+var ssff_track_directive = __webpack_require__(53);
 
-// CONCATENATED MODULE: ./app/scripts/directives/toggle-right-side-bar.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/toggle-right-side-bar.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('showMenu', function ($animate) {
@@ -87239,7 +87047,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/directives/track-mouse-in-level.directive.ts
+// CONCATENATED MODULE: ./src/app/directives/track-mouse-in-level.directive.ts
 
 angular["module"]('emuwebApp')
     .directive('trackMouseInLevel', function ($document, ViewStateService, LevelService, ConfigProviderService, HistoryService, SoundHandlerService) {
@@ -87556,7 +87364,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/directives/index.ts
+// CONCATENATED MODULE: ./src/app/directives/index.ts
 
 
 
@@ -87579,14 +87387,7 @@ angular["module"]('emuwebApp')
 
 
 
-
-
-
-
-
-
-
-// CONCATENATED MODULE: ./app/scripts/filters/levels.filter.ts
+// CONCATENATED MODULE: ./src/app/filters/levels.filter.ts
 
 angular["module"]('emuwebApp')
     .filter('levelsFilter', function (ConfigProviderService, ViewStateService) {
@@ -87610,7 +87411,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/filters/regex.filter.ts
+// CONCATENATED MODULE: ./src/app/filters/regex.filter.ts
 
 angular["module"]('emuwebApp')
     .filter('regex', function () {
@@ -87626,7 +87427,7 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/filters/start-from.filter.ts
+// CONCATENATED MODULE: ./src/app/filters/start-from.filter.ts
 
 /**
  * @ngdoc filter
@@ -87644,15 +87445,15 @@ angular["module"]('emuwebApp')
     };
 });
 
-// CONCATENATED MODULE: ./app/scripts/filters/index.ts
+// CONCATENATED MODULE: ./src/app/filters/index.ts
 
 
 
 
-// EXTERNAL MODULE: ./app/scripts/prototypeexpansions.ts
-var prototypeexpansions = __webpack_require__(56);
+// EXTERNAL MODULE: ./src/app/prototypeexpansions.ts
+var prototypeexpansions = __webpack_require__(54);
 
-// CONCATENATED MODULE: ./app/scripts/services/anagest.service.ts
+// CONCATENATED MODULE: ./src/app/services/anagest.service.ts
 
 var AnagestService = /** @class */ (function () {
     function AnagestService($q, $log, ViewStateService, LevelService, LinkService, ConfigProviderService, SsffDataService, ArrayHelperService, ModalService, HistoryService, DataService) {
@@ -87966,7 +87767,7 @@ var AnagestService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('AnagestService', AnagestService);
 
-// CONCATENATED MODULE: ./app/scripts/services/app-cache-handler.service.ts
+// CONCATENATED MODULE: ./src/app/services/app-cache-handler.service.ts
 
 var app_cache_handler_service_AppcacheHandlerService = /** @class */ (function () {
     function AppcacheHandlerService($http, ModalService) {
@@ -88031,7 +87832,7 @@ var app_cache_handler_service_AppcacheHandlerService = /** @class */ (function (
 angular["module"]('emuwebApp')
     .service('AppcacheHandlerService', app_cache_handler_service_AppcacheHandlerService);
 
-// CONCATENATED MODULE: ./app/scripts/services/app-state.service.ts
+// CONCATENATED MODULE: ./src/app/services/app-state.service.ts
 
 /**
  * @ngdoc service
@@ -88109,7 +87910,7 @@ var app_state_service_AppStateService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('AppStateService', app_state_service_AppStateService);
 
-// CONCATENATED MODULE: ./app/scripts/services/array-helper.service.ts
+// CONCATENATED MODULE: ./src/app/services/array-helper.service.ts
 
 var ArrayHelperService = /** @class */ (function () {
     function ArrayHelperService() {
@@ -88207,7 +88008,7 @@ var ArrayHelperService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('ArrayHelperService', ArrayHelperService);
 
-// CONCATENATED MODULE: ./app/scripts/services/binary-data-manip-helper.service.ts
+// CONCATENATED MODULE: ./src/app/services/binary-data-manip-helper.service.ts
 
 var BinaryDataManipHelperService = /** @class */ (function () {
     function BinaryDataManipHelperService() {
@@ -88244,7 +88045,7 @@ var BinaryDataManipHelperService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('BinaryDataManipHelperService', BinaryDataManipHelperService);
 
-// CONCATENATED MODULE: ./app/scripts/services/browser-detector.service.ts
+// CONCATENATED MODULE: ./src/app/services/browser-detector.service.ts
 
 var browser_detector_service_BrowserDetectorService = /** @class */ (function () {
     function BrowserDetectorService() {
@@ -88340,10 +88141,10 @@ var browser_detector_service_BrowserDetectorService = /** @class */ (function ()
 angular["module"]('emuwebApp')
     .service('BrowserDetectorService', browser_detector_service_BrowserDetectorService);
 
-// EXTERNAL MODULE: ./app/scripts/services/config-provider.service.ts
-var config_provider_service = __webpack_require__(57);
+// EXTERNAL MODULE: ./src/app/services/config-provider.service.ts
+var config_provider_service = __webpack_require__(55);
 
-// CONCATENATED MODULE: ./app/scripts/services/data.service.ts
+// CONCATENATED MODULE: ./src/app/services/data.service.ts
 
 var data_service_DataService = /** @class */ (function () {
     function DataService() {
@@ -88515,7 +88316,7 @@ var data_service_DataService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('DataService', data_service_DataService);
 
-// CONCATENATED MODULE: ./app/scripts/services/db-obj-load-save.service.ts
+// CONCATENATED MODULE: ./src/app/services/db-obj-load-save.service.ts
 
 /**
 * @ngdoc service
@@ -88822,7 +88623,7 @@ var db_obj_load_save_service_DbObjLoadSaveService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('DbObjLoadSaveService', db_obj_load_save_service_DbObjLoadSaveService);
 
-// CONCATENATED MODULE: ./app/scripts/services/drag-n-drop-data.service.ts
+// CONCATENATED MODULE: ./src/app/services/drag-n-drop-data.service.ts
 
 var drag_n_drop_data_service_DragnDropDataService = /** @class */ (function () {
     function DragnDropDataService($q) {
@@ -88865,7 +88666,7 @@ var drag_n_drop_data_service_DragnDropDataService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('DragnDropDataService', drag_n_drop_data_service_DragnDropDataService);
 
-// CONCATENATED MODULE: ./app/scripts/services/drag-n-drop.service.ts
+// CONCATENATED MODULE: ./src/app/services/drag-n-drop.service.ts
 
 var drag_n_drop_service_DragnDropService = /** @class */ (function () {
     function DragnDropService($q, $rootScope, $window, ModalService, DataService, ValidationService, ConfigProviderService, DragnDropDataService, IoHandlerService, ViewStateService, SoundHandlerService, BinaryDataManipHelperService, BrowserDetectorService, WavParserService, TextGridParserService, LoadedMetaDataService, LevelService) {
@@ -89169,7 +88970,7 @@ var drag_n_drop_service_DragnDropService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('DragnDropService', drag_n_drop_service_DragnDropService);
 
-// CONCATENATED MODULE: ./app/scripts/services/draw-helper.service.ts
+// CONCATENATED MODULE: ./src/app/services/draw-helper.service.ts
 
 var draw_helper_service_DrawHelperService = /** @class */ (function () {
     function DrawHelperService(ViewStateService, ConfigProviderService, SoundHandlerService, FontScaleService, SsffDataService, MathHelperService) {
@@ -89201,11 +89002,11 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
         // TODO mix all channels
         // calculate 3 peak levels (inspired by http://www.reaper.fm/sdk/reapeaks.txt files)
         //   1. At approximately 400 peaks/sec (divfactor 110 at 44khz)
-        var winSize0 = sampleRate / 400;
+        var winSize0 = Math.round(sampleRate / 400);
         //   2. At approximately 10 peaks/sec (divfactor 4410 at 44khz)
-        var winSize1 = sampleRate / 10;
+        var winSize1 = Math.round(sampleRate / 10);
         //   3. At approximately 1 peaks/sec (divfactor 44100 at 44khz)
-        var winSize2 = sampleRate / 1;
+        var winSize2 = Math.round(sampleRate / 1);
         // set initial result values
         this.osciPeaks = {
             'numberOfChannels': numberOfChannels,
@@ -89263,7 +89064,7 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
                 ////////////////////////////
                 // add to peaks array
                 // winSize0
-                if (curWindowIdxCounterWinSize0 === Math.round(winSize0)) {
+                if (curWindowIdxCounterWinSize0 === winSize0) {
                     curChannelMaxPeaksWinSize0[curPeakIdxWinSize0] = winMaxPeakWinSize0;
                     curChannelMinPeaksWinSize0[curPeakIdxWinSize0] = winMinPeakWinSize0;
                     curPeakIdxWinSize0 += 1;
@@ -89273,7 +89074,7 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
                     winMaxPeakWinSize0 = -Infinity;
                 }
                 // winSize1
-                if (curWindowIdxCounterWinSize1 === Math.round(winSize1)) {
+                if (curWindowIdxCounterWinSize1 === winSize1) {
                     curChannelMaxPeaksWinSize1[curPeakIdxWinSize1] = winMaxPeakWinSize1;
                     curChannelMinPeaksWinSize1[curPeakIdxWinSize1] = winMinPeakWinSize1;
                     curPeakIdxWinSize1 += 1;
@@ -89283,7 +89084,7 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
                     winMaxPeakWinSize1 = -Infinity;
                 }
                 // winSize2
-                if (curWindowIdxCounterWinSize2 === Math.round(winSize2)) {
+                if (curWindowIdxCounterWinSize2 === winSize2) {
                     curChannelMaxPeaksWinSize2[curPeakIdxWinSize2] = winMaxPeakWinSize2;
                     curChannelMinPeaksWinSize2[curPeakIdxWinSize2] = winMinPeakWinSize2;
                     curPeakIdxWinSize2 += 1;
@@ -89836,7 +89637,7 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('DrawHelperService', draw_helper_service_DrawHelperService);
 
-// CONCATENATED MODULE: ./app/scripts/workers/esps-parser.worker.js
+// CONCATENATED MODULE: ./src/app/workers/esps-parser.worker.js
 /**
  * A simple class that creates another thread
  * which does the espsParserWorker work
@@ -90066,7 +89867,7 @@ EspsParserWorker.prototype = {
 		}
 	},
 };
-// CONCATENATED MODULE: ./app/scripts/services/esps-parser.service.ts
+// CONCATENATED MODULE: ./src/app/services/esps-parser.service.ts
 
 
 var esps_parser_service_EspsParserService = /** @class */ (function () {
@@ -90126,7 +89927,7 @@ var esps_parser_service_EspsParserService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('EspsParserService', esps_parser_service_EspsParserService);
 
-// CONCATENATED MODULE: ./app/scripts/services/font-scale.service.ts
+// CONCATENATED MODULE: ./src/app/services/font-scale.service.ts
 
 var font_scale_service_FontScaleService = /** @class */ (function () {
     function FontScaleService() {
@@ -90192,7 +89993,7 @@ var font_scale_service_FontScaleService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('FontScaleService', font_scale_service_FontScaleService);
 
-// CONCATENATED MODULE: ./app/scripts/services/hierarchy-layout.service.ts
+// CONCATENATED MODULE: ./src/app/services/hierarchy-layout.service.ts
 
 /**
  * This service aims to provide functions for laying out the hierarchy of a
@@ -90574,7 +90375,7 @@ var hierarchy_layout_service_HierarchyLayoutService = /** @class */ (function ()
 angular["module"]('emuwebApp')
     .service('HierarchyLayoutService', hierarchy_layout_service_HierarchyLayoutService);
 
-// CONCATENATED MODULE: ./app/scripts/services/hierarchy-manipulation.service.ts
+// CONCATENATED MODULE: ./src/app/services/hierarchy-manipulation.service.ts
 
 var hierarchy_manipulation_service_HierarchyManipulationService = /** @class */ (function () {
     function HierarchyManipulationService($q, HierarchyLayoutService, DataService, LevelService, ConfigProviderService) {
@@ -90793,10 +90594,10 @@ var hierarchy_manipulation_service_HierarchyManipulationService = /** @class */ 
 angular["module"]('emuwebApp')
     .service('HierarchyManipulationService', hierarchy_manipulation_service_HierarchyManipulationService);
 
-// EXTERNAL MODULE: ./app/scripts/services/history.service.ts
-var history_service = __webpack_require__(58);
+// EXTERNAL MODULE: ./src/app/services/history.service.ts
+var history_service = __webpack_require__(56);
 
-// CONCATENATED MODULE: ./app/scripts/services/io-handler.service.ts
+// CONCATENATED MODULE: ./src/app/services/io-handler.service.ts
 
 var io_handler_service_IoHandlerService = /** @class */ (function () {
     function IoHandlerService($rootScope, $http, $location, $q, $window, HistoryService, ViewStateService, SoundHandlerService, SsffParserService, WavParserService, TextGridParserService, ConfigProviderService, EspsParserService, SsffDataService, WebSocketHandlerService, DragnDropDataService, LoadedMetaDataService) {
@@ -91136,10 +90937,10 @@ var io_handler_service_IoHandlerService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('IoHandlerService', io_handler_service_IoHandlerService);
 
-// EXTERNAL MODULE: ./app/scripts/services/level.service.ts
-var level_service = __webpack_require__(59);
+// EXTERNAL MODULE: ./src/app/services/level.service.ts
+var level_service = __webpack_require__(57);
 
-// CONCATENATED MODULE: ./app/scripts/services/link.service.ts
+// CONCATENATED MODULE: ./src/app/services/link.service.ts
 
 var LinkService = /** @class */ (function () {
     function LinkService(DataService, ConfigProviderService) {
@@ -91474,7 +91275,7 @@ var LinkService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('LinkService', LinkService);
 
-// CONCATENATED MODULE: ./app/scripts/services/loaded-meta-data.service.ts
+// CONCATENATED MODULE: ./src/app/services/loaded-meta-data.service.ts
 
 var loaded_meta_data_service_LoadedMetaDataService = /** @class */ (function () {
     function LoadedMetaDataService(ValidationService) {
@@ -91694,7 +91495,7 @@ var loaded_meta_data_service_LoadedMetaDataService = /** @class */ (function () 
 angular["module"]('emuwebApp')
     .service('LoadedMetaDataService', loaded_meta_data_service_LoadedMetaDataService);
 
-// CONCATENATED MODULE: ./app/scripts/services/math-helper.service.ts
+// CONCATENATED MODULE: ./src/app/services/math-helper.service.ts
 
 var MathHelperService = /** @class */ (function () {
     function MathHelperService() {
@@ -91746,7 +91547,7 @@ var MathHelperService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('MathHelperService', MathHelperService);
 
-// CONCATENATED MODULE: ./app/scripts/services/modal.service.ts
+// CONCATENATED MODULE: ./src/app/services/modal.service.ts
 
 var modal_service_ModalService = /** @class */ (function () {
     function ModalService($q, ArrayHelperService, ViewStateService) {
@@ -91869,7 +91670,7 @@ var modal_service_ModalService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('ModalService', modal_service_ModalService);
 
-// CONCATENATED MODULE: ./app/scripts/services/sound-handler.service.ts
+// CONCATENATED MODULE: ./src/app/services/sound-handler.service.ts
 
 var sound_handler_service_SoundHandlerService = /** @class */ (function () {
     function SoundHandlerService($window) {
@@ -91979,7 +91780,7 @@ var sound_handler_service_SoundHandlerService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('SoundHandlerService', sound_handler_service_SoundHandlerService);
 
-// CONCATENATED MODULE: ./app/scripts/services/ssff-data.service.ts
+// CONCATENATED MODULE: ./src/app/services/ssff-data.service.ts
 
 var ssff_data_service_SsffDataService = /** @class */ (function () {
     function SsffDataService(SoundHandlerService, ConfigProviderService) {
@@ -92055,7 +91856,7 @@ var ssff_data_service_SsffDataService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('SsffDataService', ssff_data_service_SsffDataService);
 
-// CONCATENATED MODULE: ./app/scripts/workers/ssff-parser.worker.js
+// CONCATENATED MODULE: ./src/app/workers/ssff-parser.worker.js
 /**
  * A simple class that creates another thread
  * which does the ssffParserWorker work
@@ -92678,7 +92479,7 @@ SsffParserWorker.prototype = {
 		}
 	},
 };
-// CONCATENATED MODULE: ./app/scripts/services/ssff-parser.service.ts
+// CONCATENATED MODULE: ./src/app/services/ssff-parser.service.ts
 
 
 var ssff_parser_service_SsffParserService = /** @class */ (function () {
@@ -92729,7 +92530,7 @@ var ssff_parser_service_SsffParserService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('SsffParserService', ssff_parser_service_SsffParserService);
 
-// CONCATENATED MODULE: ./app/scripts/services/standard-funcs.service.ts
+// CONCATENATED MODULE: ./src/app/services/standard-funcs.service.ts
 
 var standard_funcs_service_StandardFuncsService = /** @class */ (function () {
     function StandardFuncsService() {
@@ -92771,7 +92572,7 @@ var standard_funcs_service_StandardFuncsService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('StandardFuncsService', standard_funcs_service_StandardFuncsService);
 
-// CONCATENATED MODULE: ./app/scripts/workers/textgrid-parser.worker.js
+// CONCATENATED MODULE: ./src/app/workers/textgrid-parser.worker.js
 /**
  * A simple class that creates another thread
  * which does the TextGridParserWorker work
@@ -93137,7 +92938,7 @@ TextGridParserWorker.prototype = {
 		}
 	},
 };
-// CONCATENATED MODULE: ./app/scripts/services/textgrid-parser.service.ts
+// CONCATENATED MODULE: ./src/app/services/textgrid-parser.service.ts
 
 
 var textgrid_parser_service_TextGridParserService = /** @class */ (function () {
@@ -93196,7 +92997,7 @@ var textgrid_parser_service_TextGridParserService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('TextGridParserService', textgrid_parser_service_TextGridParserService);
 
-// CONCATENATED MODULE: ./app/scripts/services/uuid.service.ts
+// CONCATENATED MODULE: ./src/app/services/uuid.service.ts
 
 var UuidService = /** @class */ (function () {
     function UuidService() {
@@ -93224,7 +93025,7 @@ var UuidService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('UuidService', UuidService);
 
-// CONCATENATED MODULE: ./app/scripts/services/validation.service.ts
+// CONCATENATED MODULE: ./src/app/services/validation.service.ts
 
 
 var validation_service_ValidationService = /** @class */ (function () {
@@ -93541,7 +93342,7 @@ var validation_service_ValidationService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('ValidationService', validation_service_ValidationService);
 
-// CONCATENATED MODULE: ./app/scripts/services/view-state.service.ts
+// CONCATENATED MODULE: ./src/app/services/view-state.service.ts
 
 var view_state_service_ViewStateService = /** @class */ (function () {
     function ViewStateService($rootScope, $timeout, $window, SoundHandlerService, DataService, StandardFuncsService) {
@@ -93953,6 +93754,9 @@ var view_state_service_ViewStateService = /** @class */ (function () {
         this.osciSettings.curChannel = curCh;
     };
     ;
+    ViewStateService.prototype.setHierarchySettings = function (curPath) {
+        this.hierarchyState.path = curPath;
+    };
     /**
     * returns current selection as array
     */
@@ -94888,7 +94692,7 @@ var view_state_service_ViewStateService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('ViewStateService', view_state_service_ViewStateService);
 
-// CONCATENATED MODULE: ./app/scripts/services/wav-parser.service.ts
+// CONCATENATED MODULE: ./src/app/services/wav-parser.service.ts
 
 var wav_parser_service_WavParserService = /** @class */ (function () {
     function WavParserService($q, $window) {
@@ -95088,7 +94892,7 @@ var wav_parser_service_WavParserService = /** @class */ (function () {
 angular["module"]('emuwebApp')
     .service('WavParserService', wav_parser_service_WavParserService);
 
-// CONCATENATED MODULE: ./app/scripts/services/websocket-handler.service.ts
+// CONCATENATED MODULE: ./src/app/services/websocket-handler.service.ts
 
 var websocket_handler_service_WebSocketHandlerService = /** @class */ (function () {
     function WebSocketHandlerService($q, $rootScope, $location, $timeout, HistoryService, SsffParserService, ConfigProviderService, ViewStateService, WavParserService, SoundHandlerService, EspsParserService, UuidService, BinaryDataManipHelperService, SsffDataService, ModalService) {
@@ -95379,7 +95183,7 @@ var websocket_handler_service_WebSocketHandlerService = /** @class */ (function 
 angular["module"]('emuwebApp')
     .service('WebSocketHandlerService', websocket_handler_service_WebSocketHandlerService);
 
-// CONCATENATED MODULE: ./app/scripts/services/index.ts
+// CONCATENATED MODULE: ./src/app/services/index.ts
 
 
 
@@ -95414,13 +95218,13 @@ angular["module"]('emuwebApp')
 
 
 
-// EXTERNAL MODULE: ./app/scripts/components/hierarchy-path-canvas.component.ts
-var hierarchy_path_canvas_component = __webpack_require__(60);
+// EXTERNAL MODULE: ./src/app/components/hierarchy-path-canvas.component.ts
+var hierarchy_path_canvas_component = __webpack_require__(58);
 
-// EXTERNAL MODULE: ./app/scripts/components/level.component.ts
-var level_component = __webpack_require__(63);
+// EXTERNAL MODULE: ./src/app/components/level.component.ts
+var level_component = __webpack_require__(61);
 
-// CONCATENATED MODULE: ./app/scripts/components/bundlelist-sidebar.component.ts
+// CONCATENATED MODULE: ./src/app/components/bundlelist-sidebar.component.ts
 
 var BundleListSideBarComponent = {
     selector: "bundleListSideBar",
@@ -95569,7 +95373,7 @@ var BundleListSideBarComponent = {
 angular["module"]('emuwebApp')
     .component(BundleListSideBarComponent.selector, BundleListSideBarComponent);
 
-// CONCATENATED MODULE: ./app/scripts/components/emuhierarchy.component.ts
+// CONCATENATED MODULE: ./src/app/components/emuhierarchy.component.ts
 
 
 var EmuHierarchyComponent = {
@@ -97006,19 +96810,23 @@ var EmuHierarchyComponent = {
 angular["module"]('emuwebApp')
     .component(EmuHierarchyComponent.selector, EmuHierarchyComponent);
 
-// CONCATENATED MODULE: ./app/scripts/components/settings.component.ts
+// CONCATENATED MODULE: ./src/app/components/settings.component.ts
 
 var SettingsComponent = {
     selector: "settings",
-    template: "\n\t<div class=\"emuwebapp-text\">\n    <h1>OSCI Settings</h1>\n    <div>\n        <h2>Current channel</h2>\n        <select ng-model=\"$ctrl.osciChannel\" ng-options=\"channel for channel in $ctrl.osciAvailableChannels\"></select>\n    </div>\t\n    <h1>SPEC Settings</h1>\n    <div>\n        <h2>View Range (Hz)</h2>\n\t\tFrom: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(2,4)\" \n\t\tng-model=\"$ctrl.modalVals.rangeFrom\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/>\n\t\tTo: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(1,3)\" \n\t\tng-model=\"$ctrl.modalVals.rangeTo\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/><br />\n        <div ng-show=\"$ctrl.htmlError(1)\"><b style=\"color: #f00;\">Error:</b> Upper Range is bigger then {{upperBoundary}}</div>\n        <div ng-show=\"$ctrl.htmlError(2)\"><b style=\"color: #f00;\">Error:</b> Only positive Integers are allowed.</div>\n        <div ng-show=\"$ctrl.htmlError(3)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'To'.</div>\n        <div ng-show=\"$ctrl.htmlError(4)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'From'.</div>\n    </div>\n    <div>\n        <h2>Window Size (seconds)</h2>\n        <span>resulting number of samples <em>{{$ctrl.modalVals._windowSizeInSamples}}</em> zero-padded to <em>{{$ctrl.modalVals._fftN}} (min. = 512)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(6)\" \n\t\tng-model=\"$ctrl.modalVals.windowSizeInSecs\" \n\t\tng-change=\"$ctrl.calcWindowSizeVals()\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(6)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Dynamic Range for Maximum (dB)</h2>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(5)\" \n\t\tng-model=\"$ctrl.modalVals.dynamicRange\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(5)\"><b style=\"color: #f00;\">Error:</b> Only Integers are allowed.</div>\n    </div>\n    <div>\n        <h2>Pre-emphasis filter factor</h2> \n        <span>resulting high pass filter function: <em>\u015D(k) = s(k)-{{$ctrl.modalVals.preEmphasisFilterFactor}}*s(k-1)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(7)\" \n\t\tng-model=\"$ctrl.modalVals.preEmphasisFilterFactor\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(7)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Window Function</h2>\n\t\t<select id=\"selWindowInfo\" \n\t\tng-model=\"$ctrl.selWindowInfo.name\" \n\t\tng-options=\"opt for opt in $ctrl.windowOptions\"></select>\n    </div>\n    <div>\n        <h2>Invert</h2>\n        <span>Invert colors of spectrogram: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.invert\"></span>\n    </div>\n    <div>\n        <h2>Color Options</h2>\n        <span>Draw spectrogram in heat map colors: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.drawHeatMapColors\"></span>\n        <table class='emuwebapp-modalTable' ng-style=\"$ctrl.cssError(8)\">\n            <tr>\n                <th></th>\n                <th>red</th>\n                <th>green</th>\n                <th>blue</th>\n                <th>resulting color</th>\n            </tr>\n\n            <tr>\n                <td>First spectrogram color anchor:</td>\n\t\t\t\t<td>r: <input type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\"  \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 0);\"></div></td>\n            </tr>\n            <tr>\n                <td>Second spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 1);\"></div></td>\n            </tr>\n            <tr>\n                <td>Third spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 2);\"></div></td>\n            </tr>\n        </table>\n        <div ng-show=\"$ctrl.htmlError(8)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed.</div>\n    </div>\n</div>\n<div class=\"emuwebapp-inline-modal-footer\">\n\t<button class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.reset()\"><i class=\"material-icons\">cancel</i>Cancel</button>\n\t<button id=\"emuwebapp-modal-save\" class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.saveSettings()\"><i class=\"material-icons\">save</i>Save</button>\n</div>\n",
+    template: "\n\t<div class=\"emuwebapp-text\">\n\t<h1>Hierarchy Settings</h1>\n\n\t<span>Show hierarchy path canvas: <input type=\"checkbox\" ng-model=\"$ctrl.hierarchySettings.showHierarchyPathCanvas\"></span>\n\n\t<h2>Visable Path</h2>\n\t<select \n\tid=\"emuwebapp-selection\" \n\tname=\"emuwebapp-selection\" \n\tng-model=\"$ctrl.hierarchySettings.paths.selected\" \n\tng-options=\"value for value in $ctrl.hierarchySettings.paths.possibleAsStr\"\n\tng-change=\"$ctrl.getCurVisAttributes()\"></select>\n\t\n\t<h2>Visable Attribute Definitions</h2>\n\t<div class=\"emuwebapp-nav-wrap\" ng-repeat=\"(key, levelName) in $ctrl.StandardFuncsService.reverseCopy($ctrl.hierarchySettings.paths.possible[$ctrl.getSelHierarchyPathIdx()])\">\n\t{{levelName}}: \n\t\t<select \n\t\tid=\"emuwebapp-selection\" \n\t\tname=\"emuwebapp-selection\"\n\t\tng-options=\"attrDef as attrDef for attrDef in $ctrl.ConfigProviderService.getAttrDefsNames(levelName)\"\n\t\tng-model=\"$ctrl.hierarchySettings.paths.curVisAttributeDefs[levelName]\"\n\t\t>\n\t\t</select>\n\t</div>\n    <h1>OSCI Settings</h1>\n    <div>\n        <h2>Current channel</h2>\n        <select ng-model=\"$ctrl.osciChannel\" ng-options=\"channel for channel in $ctrl.osciAvailableChannels\"></select>\n    </div>\t\n    <h1>SPEC Settings</h1>\n    <div>\n        <h2>View Range (Hz)</h2>\n\t\tFrom: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(2,4)\" \n\t\tng-model=\"$ctrl.modalVals.rangeFrom\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/>\n\t\tTo: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(1,3)\" \n\t\tng-model=\"$ctrl.modalVals.rangeTo\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/><br />\n        <div ng-show=\"$ctrl.htmlError(1)\"><b style=\"color: #f00;\">Error:</b> Upper Range is bigger then {{upperBoundary}}</div>\n        <div ng-show=\"$ctrl.htmlError(2)\"><b style=\"color: #f00;\">Error:</b> Only positive Integers are allowed.</div>\n        <div ng-show=\"$ctrl.htmlError(3)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'To'.</div>\n        <div ng-show=\"$ctrl.htmlError(4)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'From'.</div>\n    </div>\n    <div>\n        <h2>Window Size (seconds)</h2>\n        <span>resulting number of samples <em>{{$ctrl.modalVals._windowSizeInSamples}}</em> zero-padded to <em>{{$ctrl.modalVals._fftN}} (min. = 512)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(6)\" \n\t\tng-model=\"$ctrl.modalVals.windowSizeInSecs\" \n\t\tng-change=\"$ctrl.calcWindowSizeVals()\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(6)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Dynamic Range for Maximum (dB)</h2>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(5)\" \n\t\tng-model=\"$ctrl.modalVals.dynamicRange\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(5)\"><b style=\"color: #f00;\">Error:</b> Only Integers are allowed.</div>\n    </div>\n    <div>\n        <h2>Pre-emphasis filter factor</h2> \n        <span>resulting high pass filter function: <em>\u015D(k) = s(k)-{{$ctrl.modalVals.preEmphasisFilterFactor}}*s(k-1)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(7)\" \n\t\tng-model=\"$ctrl.modalVals.preEmphasisFilterFactor\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(7)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Window Function</h2>\n\t\t<select id=\"selWindowInfo\" \n\t\tng-model=\"$ctrl.selWindowInfo.name\" \n\t\tng-options=\"opt for opt in $ctrl.windowOptions\"></select>\n    </div>\n    <div>\n        <h2>Invert</h2>\n        <span>Invert colors of spectrogram: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.invert\"></span>\n    </div>\n    <div>\n        <h2>Color Options</h2>\n        <span>Draw spectrogram in heat map colors: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.drawHeatMapColors\"></span>\n        <table class='emuwebapp-modalTable' ng-style=\"$ctrl.cssError(8)\">\n            <tr>\n                <th></th>\n                <th>red</th>\n                <th>green</th>\n                <th>blue</th>\n                <th>resulting color</th>\n            </tr>\n\n            <tr>\n                <td>First spectrogram color anchor:</td>\n\t\t\t\t<td>r: <input type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\"  \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 0);\"></div></td>\n            </tr>\n            <tr>\n                <td>Second spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 1);\"></div></td>\n            </tr>\n            <tr>\n                <td>Third spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 2);\"></div></td>\n            </tr>\n        </table>\n        <div ng-show=\"$ctrl.htmlError(8)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed.</div>\n    </div>\n</div>\n<div class=\"emuwebapp-inline-modal-footer\">\n\t<button class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.reset()\"><i class=\"material-icons\">cancel</i>Cancel</button>\n\t<button id=\"emuwebapp-modal-save\" class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.saveSettings()\"><i class=\"material-icons\">save</i>Save</button>\n</div>\n",
     bindings: {},
     controller: /** @class */ (function () {
-        function SettingsController(ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService) {
+        // private attributeDefinitionClickCounter;
+        function SettingsController(ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService, StandardFuncsService, HierarchyLayoutService, ConfigProviderService) {
             this.ModalService = ModalService;
             this.ViewStateService = ViewStateService;
             this.DataService = DataService;
             this.MathHelperService = MathHelperService;
             this.SoundHandlerService = SoundHandlerService;
+            this.StandardFuncsService = StandardFuncsService;
+            this.HierarchyLayoutService = HierarchyLayoutService;
+            this.ConfigProviderService = ConfigProviderService;
             this.windowOptions = Object.keys(this.ViewStateService.getWindowFunctions());
             this.selWindowInfo = {};
             this.selWindowInfo.name = Object.keys(this.ViewStateService.getWindowFunctions())[this.ViewStateService.spectroSettings.window - 1];
@@ -97041,7 +96849,38 @@ var SettingsComponent = {
                 '_windowSizeInSamples': this.SoundHandlerService.audioBuffer.sampleRate * this.ViewStateService.spectroSettings.windowSizeInSecs,
                 'invert': this.ViewStateService.spectroSettings.invert
             };
+            this.hierarchySettings = {
+                paths: {
+                    possible: [],
+                    possibleAsStr: [],
+                    selected: '',
+                    curVisAttributeDefs: {}
+                },
+                showHierarchyPathCanvas: localStorage.getItem('showHierarchyPathCanvas') == 'true'
+            };
+            var pathInfo = this.HierarchyLayoutService.findAllNonPartialPaths();
+            this.hierarchySettings.paths.possible = pathInfo.possible;
+            this.hierarchySettings.paths.possibleAsStr = pathInfo.possibleAsStr;
+            // select first possible path on load
+            this.hierarchySettings.paths.selected = this.hierarchySettings.paths.possibleAsStr[ViewStateService.hierarchyState.curPathIdx];
+            this.getCurVisAttributes();
+            this.ViewStateService.hierarchyState.curNrOfPaths = this.hierarchySettings.paths.possibleAsStr.length;
+            // counter to get update for EmuHierarchyComponent
+            // this.attributeDefinitionClickCounter = 0;
         }
+        SettingsController.prototype.getCurVisAttributes = function () {
+            var _this = this;
+            this.hierarchySettings.paths.curVisAttributeDefs = {};
+            var curLevelNames = this.StandardFuncsService.reverseCopy(this.hierarchySettings.paths.possible[this.getSelHierarchyPathIdx()]);
+            curLevelNames.forEach(function (ln) {
+                _this.hierarchySettings.paths.curVisAttributeDefs[ln] = _this.ViewStateService.getCurAttrDef(ln);
+            });
+        };
+        SettingsController.prototype.getSelHierarchyPathIdx = function () {
+            var selIdx = this.hierarchySettings.paths.possibleAsStr.indexOf(this.hierarchySettings.paths.selected);
+            return (selIdx);
+        };
+        ;
         /**
          *
          */
@@ -97135,6 +96974,7 @@ var SettingsComponent = {
          *
          */
         SettingsController.prototype.saveSettings = function () {
+            var _this = this;
             var error = false;
             this.errorID.forEach(function (entry) {
                 if (entry === true) {
@@ -97144,6 +96984,18 @@ var SettingsComponent = {
             if (!error) {
                 this.ViewStateService.setspectroSettings(this.modalVals.windowSizeInSecs, this.modalVals.rangeFrom, this.modalVals.rangeTo, this.modalVals.dynamicRange, this.selWindowInfo.name, this.modalVals.drawHeatMapColors, this.modalVals.preEmphasisFilterFactor, this.modalVals.heatMapColorAnchors, this.modalVals.invert);
                 this.ViewStateService.setOsciSettings(this.osciChannel);
+                // save hierarchy settings to viewstate
+                this.ViewStateService.hierarchyState.path = this.hierarchySettings.paths.possible[this.getSelHierarchyPathIdx()];
+                this.ViewStateService.hierarchyState.curPathIdx = this.getSelHierarchyPathIdx();
+                Object.keys(this.hierarchySettings.paths.curVisAttributeDefs).forEach(function (levelName) {
+                    _this.ViewStateService.setCurAttrDef(levelName, _this.hierarchySettings.paths.curVisAttributeDefs[levelName], _this.ConfigProviderService.getAttrDefsNames(levelName).indexOf(_this.hierarchySettings.paths.curVisAttributeDefs[levelName]));
+                });
+                if (this.hierarchySettings.showHierarchyPathCanvas) {
+                    localStorage.setItem('showHierarchyPathCanvas', 'true');
+                }
+                else {
+                    localStorage.setItem('showHierarchyPathCanvas', 'false');
+                }
                 this.reset();
             }
         };
@@ -97217,89 +97069,1310 @@ var SettingsComponent = {
 angular["module"]('emuwebApp')
     .component(SettingsComponent.selector, SettingsComponent);
 
-// CONCATENATED MODULE: ./app/scripts/components/index.ts
+// EXTERNAL MODULE: ./src/app/components/osci.component.ts
+var osci_component = __webpack_require__(62);
+
+// EXTERNAL MODULE: ./src/app/components/spectrogram.component.ts
+var spectrogram_component = __webpack_require__(63);
+
+// CONCATENATED MODULE: ./src/app/components/emu-webapp.component.ts
+
+var EmuWebAppComponent = {
+    selector: "emuwebapp",
+    template: "\n    <div\n    class=\"emuwebapp-main\" \n    id=\"MainCtrl\" \n    handleglobalkeystrokes>\n        <!-- start: modal -->\n        <modal></modal>\n        <!-- end: modal -->\n        <!-- start: hint -->\n        <hint ng-if=\"$ctrl.internalVars.showAboutHint\"></hint>\n        <!-- end: hint -->\n        <!-- start: left side menu bar -->\n        <bundle-list-side-bar ng-show=\"$ctrl.ViewStateService.bundleListSideBarOpen\"></bundle-list-side-bar>\n        <!-- end: left side menu bar -->\n\n        <!-- start: main window -->\n        <div class=\"emuwebapp-window\" id=\"mainWindow\">\n\t\t\t<progress-bar \n\t\t\tclass=\"emuwebapp-progressBar\"\n\t\t\tng-if=\"$ctrl.ViewStateService.somethingInProgress\"\n\t\t\ttxt=\"$ctrl.ViewStateService.somethingInProgressTxt\"\n\t\t\t>\n\t\t\t</progress-bar>\n            <div class=\"printTitle\">EMU-webApp : {{$ctrl.LoadedMetaDataService.getCurBndlName()}}</div>\n\n            <!-- start: top menu bar -->\n            <div class=\"emuwebapp-top-menu\">\n                <button class=\"emuwebapp-button-icon\" \n                id=\"bundleListSideBarOpen\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.openMenu\" \n                ng-click=\"$ctrl.ViewStateService.toggleBundleListSideBar($ctrl.ConfigProviderService.design.animation.period);\" \n                style=\"float:left\"><i class=\"material-icons\">menu</i></button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.addLevelSeg\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('addLevelSegBtnClick')\" \n                ng-click=\"addLevelSegBtnClick();\">add level (SEG.)</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.addLevelEvent\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('addLevelPointBtnClick')\" \n                ng-click=\"$ctrl.addLevelPointBtnClick();\">add level (EVENT)</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.renameSelLevel\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('renameSelLevelBtnClick')\" \n                ng-click=\"$ctrl.renameSelLevelBtnClick();\">rename sel. level</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"downloadTextgrid\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.downloadTextGrid\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('downloadTextGridBtnClick')\" \n                ng-click=\"$ctrl.downloadTextGridBtnClick();\"><i class=\"material-icons\">save</i>download TextGrid</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"downloadAnnotation\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.downloadAnnotation\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('downloadAnnotationBtnClick')\" \n                ng-click=\"$ctrl.downloadAnnotationBtnClick();\"><i class=\"material-icons\">save</i>download annotJSON</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"spectSettingsBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.specSettings\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('spectSettingsChange')\" \n                ng-click=\"$ctrl.settingsBtnClick();\"><i class=\"material-icons\">settings</i> settings</button>\n                \n                <div class=\"emuwebapp-nav-wrap\" ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.openDemoDB\">\n                    <ul class=\"emuwebapp-dropdown-container\">\n                        <li class=\"left\">\n                            <button type=\"button\" \n                            class=\"emuwebapp-mini-btn full\" \n                            id=\"demoDB\" \n                            ng-mouseover=\"$ctrl.dropdown = true\" \n                            ng-mouseleave=\"$ctrl.dropdown = false\" \n                            ng-click=\"$ctrl.dropdown = !$ctrl.dropdown\" \n                            ng-disabled=\"!$ctrl.ViewStateService.getPermission('openDemoBtnDBclick')\">open demo <span id=\"emuwebapp-dropdown-arrow\"></span></button>\n                            <ul class=\"emuwebapp-dropdown-menu\" \n                            ng-mouseover=\"$ctrl.dropdown = true\" \n                            ng-mouseleave=\"$ctrl.dropdown = false\" \n                            ng-init=\"$ctrl.dropdown = false\" \n                            ng-show=\"$ctrl.dropdown\">\n                                <li class=\"divider\"></li>\n                                <li \n                                ng-repeat=\"curDB in $ctrl.ConfigProviderService.vals.demoDBs\" \n                                ng-click=\"$ctrl.openDemoDBbtnClick(curDB);\" id=\"demo{{$index}}\">{{curDB}}</li>\n                            </ul>\n                        </li>\n                    </ul>\n                </div>\n\n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.connect\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('connectBtnClick')\" \n                ng-click=\"$ctrl.connectBtnClick();\"><i class=\"material-icons\">input</i>{{connectBtnLabel}}</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"showHierarchy\" \n                ng-click=\"$ctrl.showHierarchyBtnClick();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('showHierarchyBtnClick')\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.showHierarchy\"><i class=\"material-icons\" style=\"transform: rotate(180deg)\">details</i>hierarchy</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"showeditDB\" \n                ng-click=\"$ctrl.showEditDBconfigBtnClick();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('editDBconfigBtnClick')\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.editEMUwebAppConfig\">edit config</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.search\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('searchBtnClick')\" \n                ng-click=\"$ctrl.searchBtnClick();\"><i class=\"material-icons\">search</i>search</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"clear\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.clear\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('clearBtnClick')\" \n                ng-click=\"$ctrl.clearBtnClick();\"><i class=\"material-icons\">clear_all</i>clear</button>\n                \n                <button class=\"emuwebapp-button-icon\" \n                id=\"aboutBtn\" \n                style=\"float: right;\" \n                ng-click=\"$ctrl.aboutBtnClick();\"><img src=\"assets/EMU-webAppEmu.svg\" class=\"_35px\" /></button>\n            </div>\n            <!-- top menu bar end -->\n\n            <!-- vertical split layout that contains top and bottom pane -->\n            <div class=\"emuwebapp-canvas\">\n\t\t\t\t<history-action-popup\n\t\t\t\tclass=\"emuwebapp-history\"\n\t\t\t\thistory-action-txt=\"$ctrl.ViewStateService.historyActionTxt\">\n\t\t\t\t</history-action-popup>\n                <bg-splitter show-two-dim-cans=\"{{$ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order.length > 0}}\">\n                    <bg-pane type=\"topPane\" min-size=\"80\" max-size=\"500\">\n                        <ul class=\"emuwebapp-timeline-flexcontainer\">\n                            <li class=\"emuwebapp-timeline-flexitem\" ng-style=\"{'height': getEnlarge($index)}\" ng-repeat=\"curTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].signalCanvases.order track by $index\" ng-switch on=\"curTrack\">\n                                <osci \n                                ng-switch-when=\"OSCI\" \n                                track-name=\"curTrack\"\n                                cur-channel=\"$ctrl.ViewStateService.osciSettings.curChannel\"\n                                last-update=\"$ctrl.ViewStateService.lastUpdate\"\n                                timeline-size=\"$ctrl.ViewStateService.timelineSize\"\n                                cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                                play-head-current-sample=\"$ctrl.ViewStateService.playHeadAnimationInfos.curS\"\n                                moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                moving-boundary=\"$ctrl.ViewStateService.movingBoundary\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                ></osci>\n                                \n                                <spectro \n                                ng-switch-when=\"SPEC\" \n                                track-name=\"curTrack\"\n                                spectro-settings=\"$ctrl.ViewStateService.spectroSettings\"\n                                osci-settings=\"$ctrl.ViewStateService.osciSettings\"\n                                last-update=\"$ctrl.ViewStateService.lastUpdate\"\n                                moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                ></spectro>\n                                \n                                <ssff-track \n                                ng-switch-default \n                                order=\"{{$index}}\" \n\t\t\t\t\t\t\t\ttrack-name=\"curTrack\"\n\t\t\t\t\t\t\t\tcur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                ></ssff-track>\n                            </li>\n                        </ul>\n                    </bg-pane>\n                    <bg-pane type=\"bottomPane\" min-size=\"80\">\n                        <!-- ghost level div containing ul of ghost levels-->\n                        <div ng-if=\"$ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].hierarchyPathCanvases\" style=\"margin-top: 25px;\">\n                            <hierarchy-path-canvas \n                            ng-show=\"$ctrl.showHierarchyPathCanvas()\"\n                            annotation=\"$ctrl.DataService.getData()\"\n                            path=\"$ctrl.ViewStateService.hierarchyState.path\"\n                            view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                            view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                            view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                            view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                            cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                            cur-click-level-name=\"$ctrl.ViewStateService.curClickLevelName\"\n                            moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                            moving-boundary=\"$ctrl.ViewStateService.movingBoundary\"\n                            moves-away-from-last-save=\"$ctrl.HistoryService.movesAwayFromLastSave\"\n                            cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                            cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                            ></hierarchy-path-canvas>\n                        </div>\n                        <!-- level div containing ul of levels -->\n                        <div ng-if=\"true\" style=\"margin-top: 25px;\">\n                            <ul>\n                                <li ng-repeat=\"levelName in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].levelCanvases.order\">\n                                    <level \n                                    ng-if=\"$ctrl.LevelService.getLevelDetails(levelName)\"\n                                    level=\"$ctrl.LevelService.getLevelDetails(levelName)\" \n                                    idx=\"$index\" \n                                    view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                    view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                    view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                    view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                    cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                    cur-click-level-name=\"$ctrl.ViewStateService.curClickLevelName\"\n                                    moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                    moving-boundary=\"$ctrl.ViewStateService.movingBoundary\",\n                                    moves-away-from-last-save=\"$ctrl.HistoryService.movesAwayFromLastSave\"\n                                    cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                                    cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                    ></level>\n                                </li>\n                            </ul>\n                        </div>\n                    </bg-pane>\n                    <bg-pane type=\"emuwebapp-2d-map\">\n                        <ul>\n                            <li ng-repeat=\"cur2dTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order\" ng-switch on=\"cur2dTrack\">\n                                <epg ng-switch-when=\"EPG\"></epg>\n                                <dots ng-switch-when=\"DOTS\"></dots>\n                            </li>\n                        </ul>\n                    </bg-pane>\n                </bg-splitter>\n            </div>\n            <!-- end: vertical split layout -->\n\n            <!-- start: bottom menu bar -->\n            <div class=\"emuwebapp-bottom-menu\">\n                <div>\n                    <preview class=\"preview\" \n                    id=\"preview\" \n                    current-bundle-name=\"{{$ctrl.getCurBndlName()}}\"></preview>\n                </div>\n\n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomInBtn\" \n                ng-click=\"$ctrl.cmdZoomIn();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">expand_less</i>in</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomOutBtn\" \n                ng-click=\"$ctrl.cmdZoomOut();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">expand_more</i>out</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomLeftBtn\" \n                ng-click=\"$ctrl.cmdZoomLeft();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">chevron_left</i>left</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomRightBtn\" \n                ng-click=\"$ctrl.cmdZoomRight();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">chevron_right</i>right</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomAllBtn\" \n                ng-click=\"$ctrl.cmdZoomAll();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_less</i>all</button>\n\n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomSelBtn\" \n                ng-click=\"$ctrl.cmdZoomSel();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_more</i>selection</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playViewBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlayView();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\" ><i class=\"material-icons\">play_arrow</i>in view</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playSelBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlaySel();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_outline</i>selected</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playAllBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlayAll();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_filled</i>entire file</button>\n            </div>\n            <!-- end: bottom menu bar -->\n\n            <!-- start: large text input field -->\n            <!--<large-text-field-input></large-text-field-input>-->\n\n            <!-- start: perspectives menu bar (right) -->\n            <nav class=\"emuwebapp-right-menu\" ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.showPerspectivesSidebar\" show-menu=\"$ctrl.ViewStateService.getPerspectivesSideBarOpen()\">\n            <button ng-click=\"$ctrl.ViewStateService.setPerspectivesSideBarOpen(!$ctrl.ViewStateService.getPerspectivesSideBarOpen());\">\n                <i class=\"material-icons\">menu</i>\n              <!-- <img src=\"img/menu.svg\" =\"_20px _inverted\" /> -->\n            </button>\n            <h3>Perspectives</h3>\n            <ul>\n                <li ng-repeat=\"persp in $ctrl.ConfigProviderService.vals.perspectives\" ng-click=\"$ctrl.changePerspective(persp);\" ng-class=\"$ctrl.getPerspectiveColor(persp);\">\n                    {{persp.name}}\n                </li>\n            </ul>\n            </nav>\n            <!-- end: perspectives menu bar (right) -->\n        </div>\n        <!-- end: main window -->\n    </div>\n    <!-- end: container EMU-webApp -->\n    ",
+    bindings: {
+        audioGetUrl: '<',
+        labelGetUrl: '<',
+        labelType: '<'
+    },
+    controller: /** @class */ (function () {
+        function EmuWebAppController($scope, $element, $window, $document, $location, ViewStateService, HistoryService, IoHandlerService, SoundHandlerService, ConfigProviderService, FontScaleService, SsffDataService, LevelService, TextGridParserService, WavParserService, DrawHelperService, ValidationService, AppcacheHandlerService, LoadedMetaDataService, DbObjLoadSaveService, AppStateService, DataService, ModalService, BrowserDetectorService, HierarchyLayoutService) {
+            this.$postLink = function () {
+                var _this = this;
+                ////////////////////////
+                // Bindings
+                this.$element.bind('mouseenter', function () {
+                    _this.ViewStateService.mouseInEmuWebApp = true;
+                });
+                this.$element.bind('mouseleave', function () {
+                    _this.ViewStateService.mouseInEmuWebApp = false;
+                });
+                // bind window resize event
+                angular["element"](this.$window).bind('resize', function () {
+                    _this.LevelService.deleteEditArea();
+                    _this.ViewStateService.setWindowWidth(_this.$window.outerWidth);
+                    if (_this.ViewStateService.hierarchyState.isShown()) {
+                        ++_this.ViewStateService.hierarchyState.resize;
+                    }
+                    _this.$scope.$digest();
+                });
+                // bind shift/alt keyups for history
+                angular["element"](this.$window).bind('keyup', function (e) {
+                    if (e.keyCode === _this.ConfigProviderService.vals.keyMappings.shift || e.keyCode === _this.ConfigProviderService.vals.keyMappings.alt) {
+                        _this.HistoryService.addCurChangeObjToUndoStack();
+                        _this.$scope.$digest();
+                    }
+                });
+                // bind focus check for mouse on window and document ( mouse inside )
+                angular["element"](this.$window).bind('blur', function () {
+                    _this.ViewStateService.focusOnEmuWebApp = false;
+                });
+                // bind focus check for mouse on window and document ( mouse inside )
+                angular["element"](this.$document).bind('blur', function () {
+                    _this.ViewStateService.focusOnEmuWebApp = false;
+                });
+                // bind blur check for mouse on window and document ( mouse outside )
+                angular["element"](this.$window).bind('focus', function () {
+                    _this.ViewStateService.focusOnEmuWebApp = true;
+                });
+                // bind blur check for mouse on window and document ( mouse outside )
+                angular["element"](this.$document).bind('focus', function () {
+                    _this.ViewStateService.focusOnEmuWebApp = true;
+                });
+                // Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
+                window.onbeforeunload = function () {
+                    if (_this.ConfigProviderService.embeddedVals.audioGetUrl === '' &&
+                        _this.LoadedMetaDataService.getBundleList().length > 0 &&
+                        !_this.ConfigProviderService.vals.main.autoConnect &&
+                        _this.HistoryService.movesAwayFromLastSave > 0) {
+                        return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
+                    }
+                };
+                /////////////
+                // listens
+                // listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
+                this.$scope.$on('connectionDisrupted', function () {
+                    _this.AppStateService.resetToInitState();
+                });
+                // listen for resetToInitState
+                this.$scope.$on('resetToInitState', function () {
+                    _this.$scope.loadDefaultConfig();
+                });
+                this.$scope.$on('reloadToInitState', function (event, data) {
+                    _this.$scope.loadDefaultConfig();
+                    _this.ViewStateService.url = data.url;
+                    _this.ViewStateService.somethingInProgressTxt = 'Connecting to server...';
+                    _this.ViewStateService.somethingInProgress = true;
+                    _this.IoHandlerService.WebSocketHandlerService.initConnect(data.url).then(function (message) {
+                        if (message.type === 'error') {
+                            _this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + data.url).then(function () {
+                                _this.AppStateService.resetToInitState();
+                            });
+                        }
+                        else {
+                            _this.$scope.handleConnectedToWSserver(data);
+                        }
+                    }, function (errMess) {
+                        var _this = this;
+                        this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+                            _this.AppStateService.resetToInitState();
+                        });
+                    });
+                });
+            };
+            this.$onChanges = function (changes) {
+                if (this._inited) {
+                    //
+                    if (changes.audioGetUrl) {
+                        this.ConfigProviderService.embeddedVals.audioGetUrl = changes.audioGetUrl.currentValue;
+                    }
+                    //
+                    if (changes.labelGetUrl) {
+                        this.ConfigProviderService.embeddedVals.labelGetUrl = changes.labelGetUrl.currentValue;
+                    }
+                    //
+                    if (changes.labelType) {
+                        this.ConfigProviderService.embeddedVals.labelType = changes.labelGetUrl.currentValue;
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            /**
+             * function used by right side menu to get color of current perspecitve in ul
+             * @param persp json object of current perspective containing name attribute
+             */
+            this.getPerspectiveColor = function (persp) {
+                var cl;
+                if (this.ViewStateService.curPerspectiveIdx === -1 || persp.name === this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].name) {
+                    cl = 'emuwebapp-curSelPerspLi';
+                }
+                else {
+                    cl = 'emuwebapp-perspLi';
+                }
+                return cl;
+            };
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$window = $window;
+            this.$document = $document;
+            this.$location = $location;
+            this.ViewStateService = ViewStateService;
+            this.HistoryService = HistoryService;
+            this.IoHandlerService = IoHandlerService;
+            this.SoundHandlerService = SoundHandlerService;
+            this.ConfigProviderService = ConfigProviderService;
+            this.FontScaleService = FontScaleService;
+            this.SsffDataService = SsffDataService;
+            this.LevelService = LevelService;
+            this.TextGridParserService = TextGridParserService;
+            this.WavParserService = WavParserService;
+            this.DrawHelperService = DrawHelperService;
+            this.ValidationService = ValidationService;
+            this.AppcacheHandlerService = AppcacheHandlerService;
+            this.LoadedMetaDataService = LoadedMetaDataService;
+            this.DbObjLoadSaveService = DbObjLoadSaveService;
+            this.AppStateService = AppStateService;
+            this.DataService = DataService;
+            this.ModalService = ModalService;
+            this.BrowserDetectorService = BrowserDetectorService;
+            this.HierarchyLayoutService = HierarchyLayoutService;
+            // init vars
+            this.connectBtnLabel = 'connect';
+            // this.tmp = {};
+            this.dbLoaded = false;
+            this.is2dCancasesHidden = true;
+            this.windowWidth = $window.outerWidth;
+            this.internalVars = {};
+            this.internalVars.showAboutHint = false; // this should probably be moved to ViewStateService
+            // this.xTmp = 123;
+            // this.yTmp = 321;
+            // check for new version
+            this.AppcacheHandlerService.checkForNewVersion();
+            // check if URL parameters are set -> if so set embedded flags! SIC this should probably be moved to loadFilesForEmbeddedApp
+            var searchObject = this.$location.search();
+            if (searchObject.audioGetUrl && searchObject.labelGetUrl && searchObject.labelType) {
+                ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
+                ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
+                ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
+                ConfigProviderService.embeddedVals.fromUrlParams = true;
+            }
+            // call function on init
+            this.loadDefaultConfig();
+        }
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.loadFilesForEmbeddedApp = function () {
+            var _this = this;
+            var searchObject = this.$location.search();
+            if (searchObject.audioGetUrl || searchObject.bndlJsonGetUrl) {
+                if (searchObject.audioGetUrl) {
+                    this.ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
+                    this.ConfigProviderService.vals.activeButtons.openDemoDB = false;
+                    var promise = this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer');
+                }
+                else {
+                    var promise = this.IoHandlerService.httpGetPath(searchObject.bndlJsonGetUrl, "application/json");
+                }
+                promise.then(function (data) {
+                    _this.ViewStateService.showDropZone = false;
+                    // set bundle name
+                    var tmp = _this.ConfigProviderService.embeddedVals.audioGetUrl;
+                    _this.LoadedMetaDataService.setCurBndlName(tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length));
+                    //hide menu
+                    if (_this.ViewStateService.getBundleListSideBarOpen()) {
+                        if (searchObject.saveToWindowParent !== "true") {
+                            _this.ViewStateService.toggleBundleListSideBar(_this.ConfigProviderService.design.animation.period);
+                        }
+                    }
+                    _this.ViewStateService.somethingInProgressTxt = 'Loading DB config...';
+                    // test if DBconfigGetUrl is set if so use it
+                    var DBconfigGetUrl;
+                    if (searchObject.DBconfigGetUrl) {
+                        DBconfigGetUrl = searchObject.DBconfigGetUrl;
+                    }
+                    else {
+                        DBconfigGetUrl = 'configFiles/embedded_emuwebappConfig.json';
+                    }
+                    // then get the DBconfigFile
+                    _this.IoHandlerService.httpGetPath(DBconfigGetUrl).then(function (resp) {
+                        // first element of perspectives is default perspective
+                        _this.ViewStateService.curPerspectiveIdx = 0;
+                        _this.ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
+                        // validate emuwebappConfigSchema
+                        var validRes = _this.ValidationService.validateJSO('emuwebappConfigSchema', _this.ConfigProviderService.vals);
+                        if (validRes === true) {
+                            // turn of keybinding only on mouseover
+                            if (_this.ConfigProviderService.embeddedVals.fromUrlParams) {
+                                _this.ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
+                            }
+                            _this.ConfigProviderService.curDbConfig = resp.data;
+                            // validate DBconfigFileSchema!
+                            validRes = _this.ValidationService.validateJSO('DBconfigFileSchema', _this.ConfigProviderService.curDbConfig);
+                            if (validRes === true) {
+                                if (searchObject.saveToWindowParent === "true") {
+                                    _this.ConfigProviderService.vals.activeButtons.saveBundle = true;
+                                }
+                                var bndlList = [{ 'session': 'File(s)', 'name': 'from URL parameters' }];
+                                _this.LoadedMetaDataService.setBundleList(bndlList);
+                                _this.LoadedMetaDataService.setCurBndl(bndlList[0]);
+                                // set wav file
+                                _this.ViewStateService.somethingInProgress = true;
+                                _this.ViewStateService.somethingInProgressTxt = 'Parsing WAV file...';
+                                if (searchObject.audioGetUrl) {
+                                    _this.WavParserService.parseWavAudioBuf(data.data).then(function (messWavParser) {
+                                        var audioBuffer = messWavParser;
+                                        _this.ViewStateService.curViewPort.sS = 0;
+                                        _this.ViewStateService.curViewPort.eS = audioBuffer.length;
+                                        _this.ViewStateService.resetSelect();
+                                        _this.SoundHandlerService.audioBuffer = audioBuffer;
+                                        var respType;
+                                        if (_this.ConfigProviderService.embeddedVals.labelType === 'TEXTGRID') {
+                                            respType = 'text';
+                                        }
+                                        else {
+                                            // setting everything to text because the BAS webservices somehow respond with a
+                                            // 200 (== successful response) but the data field is empty
+                                            respType = 'text';
+                                        }
+                                        // get + parse file
+                                        if (searchObject.labelGetUrl) {
+                                            _this.IoHandlerService.httpGetPath(_this.ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
+                                                _this.ViewStateService.somethingInProgressTxt = 'Parsing ' + _this.ConfigProviderService.embeddedVals.labelType + ' file...';
+                                                _this.IoHandlerService.parseLabelFile(data2.data, _this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', _this.ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
+                                                    var annot = parseMess;
+                                                    _this.DataService.setData(annot);
+                                                    // if no DBconfigGetUrl is given generate levelDefs and co. from annotation
+                                                    if (!searchObject.DBconfigGetUrl) {
+                                                        var lNames = [];
+                                                        var levelDefs = [];
+                                                        for (var i = 0, len = annot.levels.length; i < len; i++) {
+                                                            var l = annot.levels[i];
+                                                            lNames.push(l.name);
+                                                            var attrDefs = [];
+                                                            for (var j = 0, len2 = l.items[0].labels.length; j < len2; j++) {
+                                                                attrDefs.push({
+                                                                    'name': l.items[0].labels[j].name,
+                                                                    'type': 'string'
+                                                                });
+                                                            }
+                                                            levelDefs.push({
+                                                                'name': l.name,
+                                                                'type': l.type,
+                                                                'attributeDefinitions': attrDefs
+                                                            });
+                                                        }
+                                                        _this.ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+                                                        _this.ConfigProviderService.vals.perspectives[_this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNames;
+                                                    }
+                                                    _this.ViewStateService.setCurLevelAttrDefs(_this.ConfigProviderService.curDbConfig.levelDefinitions);
+                                                    _this.ViewStateService.somethingInProgressTxt = 'Done!';
+                                                    _this.ViewStateService.somethingInProgress = false;
+                                                    _this.ViewStateService.setState('labeling');
+                                                }, function (errMess) {
+                                                    this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+                                                });
+                                            }, function (errMess) {
+                                                this.ModalService.open('views/error.html', 'Could not get label file: ' + this.ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
+                                            });
+                                        }
+                                        else {
+                                            // hide download + search buttons
+                                            _this.ConfigProviderService.vals.activeButtons.downloadAnnotation = false;
+                                            _this.ConfigProviderService.vals.activeButtons.downloadTextGrid = false;
+                                            _this.ConfigProviderService.vals.activeButtons.search = false;
+                                            _this.ViewStateService.somethingInProgressTxt = 'Done!';
+                                            _this.ViewStateService.somethingInProgress = false;
+                                            _this.ViewStateService.setState('labeling');
+                                        }
+                                    }, function (errMess) {
+                                        this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+                                    });
+                                }
+                                else {
+                                    _this.DbObjLoadSaveService.loadBundle({ name: 'fromURLparams' }, searchObject.bndlJsonGetUrl);
+                                }
+                            }
+                            else {
+                                _this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4));
+                            }
+                        }
+                        else {
+                            _this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+                        }
+                    }, function (errMess) {
+                        this.ModalService.open('views/error.html', 'Could not get embedded_config.json: ' + errMess);
+                    });
+                }, function (errMess) {
+                    this.ModalService.open('views/error.html', 'Could not get audio file:' + this.ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
+                });
+            }
+        };
+        ;
+        /**
+         * init load of config files
+         */
+        EmuWebAppController.prototype.loadDefaultConfig = function () {
+            var _this = this;
+            this.ViewStateService.somethingInProgress = true;
+            this.ViewStateService.somethingInProgressTxt = 'Loading schema files';
+            // load schemas first
+            this.ValidationService.loadSchemas().then(function (replies) {
+                _this.ValidationService.setSchemas(replies);
+                _this.IoHandlerService.httpGetDefaultDesign().then(function (response) {
+                    _this.ConfigProviderService.setDesign(response.data);
+                    _this.IoHandlerService.httpGetDefaultConfig().then(function (response) {
+                        _this.ViewStateService.somethingInProgressTxt = 'Validating emuwebappConfig';
+                        var validRes = _this.ValidationService.validateJSO('emuwebappConfigSchema', response.data);
+                        if (validRes === true) {
+                            _this.ConfigProviderService.setVals(response.data);
+                            angular["copy"](_this.ConfigProviderService.vals, _this.ConfigProviderService.initDbConfig);
+                            _this.handleDefaultConfigLoaded();
+                            // loadFilesForEmbeddedApp if these are set
+                            _this.loadFilesForEmbeddedApp();
+                            _this.checkIfToShowWelcomeModal();
+                            // FOR DEVELOPMENT
+                            // $scope.aboutBtnClick();
+                            _this.ViewStateService.somethingInProgress = false;
+                        }
+                        else {
+                            _this.ModalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
+                                _this.AppStateService.resetToInitState();
+                            });
+                        }
+                    }, function (response) {
+                        _this.ModalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
+                            _this.AppStateService.resetToInitState();
+                        });
+                    });
+                }, function (response) {
+                    _this.ModalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
+                        _this.AppStateService.resetToInitState();
+                    });
+                });
+            }, function (errMess) {
+                _this.ModalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
+                    _this.AppStateService.resetToInitState();
+                });
+            });
+        };
+        ;
+        EmuWebAppController.prototype.checkIfToShowWelcomeModal = function () {
+            var curVal = localStorage.getItem('haveShownWelcomeModal');
+            var searchObject = this.$location.search();
+            if (!this.BrowserDetectorService.isBrowser.PhantomJS() && curVal === null && typeof searchObject.viewer_pane !== 'undefined') {
+                localStorage.setItem('haveShownWelcomeModal', 'true');
+                this.internalVars.showAboutHint = true;
+            }
+            // FOR DEVELOPMENT
+            // $scope.internalVars.showAboutHint = true;
+        };
+        ;
+        EmuWebAppController.prototype.getCurBndlName = function () {
+            return this.LoadedMetaDataService.getCurBndlName();
+        };
+        ;
+        /**
+         * function called after default config was loaded
+         */
+        EmuWebAppController.prototype.handleDefaultConfigLoaded = function () {
+            var _this = this;
+            if (!this.ViewStateService.getBundleListSideBarOpen()) {
+                this.ViewStateService.toggleBundleListSideBar(this.ConfigProviderService.design.animation.period);
+            }
+            // check if either autoConnect is set in DBconfig or as get parameter
+            var searchObject = this.$location.search();
+            if (this.ConfigProviderService.vals.main.autoConnect || searchObject.autoConnect === 'true') {
+                if (typeof searchObject.serverUrl !== 'undefined') { // overwrite serverUrl if set as GET parameter
+                    this.ConfigProviderService.vals.main.serverUrl = searchObject.serverUrl;
+                }
+                if (searchObject.comMode !== "GITLAB") {
+                    // sic IoHandlerService.WebSocketHandlerService is private!
+                    this.IoHandlerService.WebSocketHandlerService.initConnect(this.ConfigProviderService.vals.main.serverUrl).then(function (message) {
+                        if (message.type === 'error') {
+                            _this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + _this.ConfigProviderService.vals.main.serverUrl).then(function () {
+                                _this.AppStateService.resetToInitState();
+                            });
+                        }
+                        else {
+                            _this.handleConnectedToWSserver({ session: null, reload: null });
+                        }
+                    }, function (errMess) {
+                        var _this = this;
+                        this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+                            _this.AppStateService.resetToInitState();
+                        });
+                    });
+                }
+                else {
+                    // set comMode and pretend we are connected to server
+                    // the IoHandlerService will take care of the rest
+                    this.ConfigProviderService.vals.main.comMode = "GITLAB";
+                    this.handleConnectedToWSserver({ session: null, reload: null });
+                }
+            }
+            // setspectroSettings
+            this.ViewStateService.setspectroSettings(this.ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, this.ConfigProviderService.vals.spectrogramSettings.rangeFrom, this.ConfigProviderService.vals.spectrogramSettings.rangeTo, this.ConfigProviderService.vals.spectrogramSettings.dynamicRange, this.ConfigProviderService.vals.spectrogramSettings.window, this.ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, this.ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, this.ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors, this.ConfigProviderService.vals.spectrogramSettings.invert);
+            // setting transition values
+            this.ViewStateService.setTransitionTime(this.ConfigProviderService.design.animation.period);
+        };
+        ;
+        /**
+         * function is called after websocket connection
+         * has been established. It executes the protocol
+         * and loads the first bundle in the bundle list (= default behavior).
+         */
+        EmuWebAppController.prototype.handleConnectedToWSserver = function (data) {
+            var _this = this;
+            // hide drop zone
+            var session = data.session;
+            var reload = data.reload;
+            this.ViewStateService.showDropZone = false;
+            var searchObject = this.$location.search();
+            if (searchObject.comMode !== "GITLAB") {
+                this.ConfigProviderService.vals.main.comMode = 'WS';
+            }
+            this.ConfigProviderService.vals.activeButtons.openDemoDB = false;
+            this.ViewStateService.somethingInProgress = true;
+            this.ViewStateService.somethingInProgressTxt = 'Checking protocol...';
+            // Check if server speaks the same protocol
+            this.IoHandlerService.getProtocol().then(function (res) {
+                if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.2') {
+                    _this.ViewStateService.somethingInProgressTxt = 'Checking user management...';
+                    // then ask if server does user management
+                    _this.IoHandlerService.getDoUserManagement().then(function (doUsrData) {
+                        if (doUsrData === 'NO') {
+                            _this.innerHandleConnectedToWSserver({ session: session, reload: reload });
+                        }
+                        else {
+                            // show user management error
+                            _this.ModalService.open('views/loginModal.html').then(function (res) {
+                                if (res) {
+                                    _this.innerHandleConnectedToWSserver({ session: session, reload: reload });
+                                }
+                                else {
+                                    _this.AppStateService.resetToInitState();
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    // show protocol error and disconnect from server
+                    _this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + _this.ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
+                        _this.AppStateService.resetToInitState();
+                    });
+                }
+            });
+        };
+        ;
+        /**
+         * to avoid redundant code...
+         */
+        EmuWebAppController.prototype.innerHandleConnectedToWSserver = function (data) {
+            var _this = this;
+            var session = data.session;
+            var reload = data.reload;
+            this.ViewStateService.somethingInProgressTxt = 'Loading DB config...';
+            // then get the DBconfigFile
+            this.IoHandlerService.httpGetDefaultDesign().then(function (response) {
+                _this.ConfigProviderService.setDesign(response.data);
+                _this.IoHandlerService.getDBconfigFile().then(function (data) {
+                    // first element of perspectives is default perspective
+                    _this.ViewStateService.curPerspectiveIdx = 0;
+                    _this.ConfigProviderService.setVals(data.EMUwebAppConfig);
+                    // FOR DEVELOPMENT
+                    //$scope.showEditDBconfigBtnClick();
+                    var validRes = _this.ValidationService.validateJSO('emuwebappConfigSchema', _this.ConfigProviderService.vals);
+                    if (validRes === true) {
+                        _this.ConfigProviderService.curDbConfig = data;
+                        _this.ViewStateService.setCurLevelAttrDefs(_this.ConfigProviderService.curDbConfig.levelDefinitions);
+                        // setspectroSettings
+                        _this.ViewStateService.setspectroSettings(_this.ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, _this.ConfigProviderService.vals.spectrogramSettings.rangeFrom, _this.ConfigProviderService.vals.spectrogramSettings.rangeTo, _this.ConfigProviderService.vals.spectrogramSettings.dynamicRange, _this.ConfigProviderService.vals.spectrogramSettings.window, _this.ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, _this.ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, _this.ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors, _this.ConfigProviderService.vals.spectrogramSettings.invert);
+                        // set first path as default
+                        _this.ViewStateService.setHierarchySettings(_this.HierarchyLayoutService.findAllNonPartialPaths().possible[0]);
+                        validRes = _this.ValidationService.validateJSO('DBconfigFileSchema', data);
+                        if (validRes === true) {
+                            // then get the DBconfigFile
+                            _this.ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
+                            _this.IoHandlerService.getBundleList().then(function (bdata) {
+                                validRes = _this.LoadedMetaDataService.setBundleList(bdata);
+                                // show standard buttons
+                                _this.ConfigProviderService.vals.activeButtons.clear = true;
+                                _this.ConfigProviderService.vals.activeButtons.specSettings = true;
+                                if (validRes === true) {
+                                    // then load first bundle in list
+                                    if (session === null) {
+                                        session = _this.LoadedMetaDataService.getBundleList()[0];
+                                    }
+                                    _this.DbObjLoadSaveService.loadBundle(session).then(function () {
+                                        // FOR DEVELOPMENT:
+                                        // DbObjLoadSaveService.saveBundle(); // for testing save function
+                                        // $scope.menuBundleSaveBtnClick(); // for testing save button
+                                        // $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
+                                        // $scope.settingsBtnClick(); // for testing spect settings dial
+                                        // $scope.searchBtnClick();
+                                        // ViewStateService.curViewPort.sS = 27455;
+                                        // ViewStateService.curViewPort.eS = 30180;
+                                    });
+                                    //ViewStateService.currentPage = (ViewStateService.numberOfPages(LoadedMetaDataService.getBundleList().length)) - 1;
+                                    if (reload) {
+                                        _this.LoadedMetaDataService.openCollapseSession(session.session);
+                                    }
+                                }
+                                else {
+                                    _this.ModalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
+                                        _this.AppStateService.resetToInitState();
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            _this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+                                _this.AppStateService.resetToInitState();
+                            });
+                        }
+                    }
+                    else {
+                        _this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+                            _this.AppStateService.resetToInitState();
+                        });
+                    }
+                });
+            });
+        };
+        ;
+        /**
+         *
+         */
+        // private toggleCollapseSession(ses) {
+        // 	this.uniqSessionList[ses].collapsed = !this.uniqSessionList[ses].collapsed;
+        // };
+        /**
+         *
+         */
+        EmuWebAppController.prototype.getEnlarge = function (index) {
+            var len = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.order.length;
+            var large = 50;
+            if (this.ViewStateService.getenlarge() === -1) {
+                return 'auto';
+            }
+            else {
+                if (len === 1) {
+                    return 'auto';
+                }
+                if (len === 2) {
+                    if (this.ViewStateService.getenlarge() === index) {
+                        return '70%';
+                    }
+                    else {
+                        return '27%';
+                    }
+                }
+                else {
+                    if (this.ViewStateService.getenlarge() === index) {
+                        return large + '%';
+                    }
+                    else {
+                        return (95 - large) / (len - 1) + '%';
+                    }
+                }
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cursorInTextField = function () {
+            this.ViewStateService.setcursorInTextField(true);
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cursorOutOfTextField = function () {
+            this.ViewStateService.setcursorInTextField(false);
+        };
+        ;
+        /////////////////////////////////////////
+        // handle button clicks
+        // top menu:
+        /**
+         *
+         */
+        EmuWebAppController.prototype.addLevelSegBtnClick = function () {
+            if (this.ViewStateService.getPermission('addLevelSegBtnClick')) {
+                var length = 0;
+                if (this.DataService.data.levels !== undefined) {
+                    length = this.DataService.data.levels.length;
+                }
+                var newName = 'levelNr' + length;
+                var level = {
+                    items: [],
+                    name: newName,
+                    type: 'SEGMENT'
+                };
+                if (this.ViewStateService.getCurAttrDef(newName) === undefined) {
+                    var leveldef = {
+                        'name': newName,
+                        'type': 'EVENT',
+                        'attributeDefinitions': {
+                            'name': newName,
+                            'type': 'string'
+                        }
+                    };
+                    this.ViewStateService.setCurLevelAttrDefs(leveldef);
+                }
+                this.LevelService.insertLevel(level, length, this.ViewStateService.curPerspectiveIdx);
+                //  Add to history
+                this.HistoryService.addObjToUndoStack({
+                    'type': 'ANNOT',
+                    'action': 'INSERTLEVEL',
+                    'level': level,
+                    'id': length,
+                    'curPerspectiveIdx': this.ViewStateService.curPerspectiveIdx
+                });
+                this.ViewStateService.selectLevel(false, this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order, this.LevelService); // pass in LevelService to prevent circular deps
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.addLevelPointBtnClick = function () {
+            if (this.ViewStateService.getPermission('addLevelPointBtnClick')) {
+                var length = 0;
+                if (this.DataService.data.levels !== undefined) {
+                    length = this.DataService.data.levels.length;
+                }
+                var newName = 'levelNr' + length;
+                var level = {
+                    items: [],
+                    name: newName,
+                    type: 'EVENT'
+                };
+                if (this.ViewStateService.getCurAttrDef(newName) === undefined) {
+                    var leveldef = {
+                        name: newName,
+                        type: 'EVENT',
+                        attributeDefinitions: {
+                            name: newName,
+                            type: 'string'
+                        }
+                    };
+                    this.ViewStateService.setCurLevelAttrDefs(leveldef);
+                }
+                this.LevelService.insertLevel(level, length, this.ViewStateService.curPerspectiveIdx);
+                //  Add to history
+                this.HistoryService.addObjToUndoStack({
+                    'type': 'ANNOT',
+                    'action': 'INSERTLEVEL',
+                    'level': level,
+                    'id': length,
+                    'curPerspectiveIdx': this.ViewStateService.curPerspectiveIdx
+                });
+                this.ViewStateService.selectLevel(false, this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order, this.LevelService); // pass in LevelService to prevent circular deps
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.renameSelLevelBtnClick = function () {
+            if (this.ViewStateService.getPermission('renameSelLevelBtnClick')) {
+                if (this.ViewStateService.getcurClickLevelName() !== undefined) {
+                    this.ModalService.open('views/renameLevel.html', this.ViewStateService.getcurClickLevelName());
+                }
+                else {
+                    this.ModalService.open('views/error.html', 'Rename Error : Please choose a Level first !');
+                }
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.downloadTextGridBtnClick = function () {
+            var _this = this;
+            if (this.ViewStateService.getPermission('downloadTextGridBtnClick')) {
+                this.TextGridParserService.asyncToTextGrid().then(function (parseMess) {
+                    parseMess = parseMess.replace(/\t/g, '    '); // replace all tabs with 4 spaces
+                    _this.ModalService.open('views/export.html', _this.LoadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
+                });
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.downloadAnnotationBtnClick = function () {
+            if (this.ViewStateService.getPermission('downloadAnnotationBtnClick')) {
+                if (this.ValidationService.validateJSO('emuwebappConfigSchema', this.DataService.getData())) {
+                    this.ModalService.open('views/export.html', this.LoadedMetaDataService.getCurBndl().name + '_annot.json', angular["toJson"](this.DataService.getData(), true));
+                }
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.settingsBtnClick = function () {
+            if (this.ViewStateService.getPermission('spectSettingsChange')) {
+                this.ModalService.open('views/settingsModal.html');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.connectBtnClick = function () {
+            var _this = this;
+            if (this.ViewStateService.getPermission('connectBtnClick')) {
+                this.ModalService.open('views/connectModal.html').then(function (url) {
+                    if (url) {
+                        _this.ViewStateService.somethingInProgressTxt = 'Connecting to server...';
+                        _this.ViewStateService.somethingInProgress = true;
+                        _this.ViewStateService.url = url;
+                        // SIC IoHandlerService.WebSocketHandlerService is private
+                        _this.IoHandlerService.WebSocketHandlerService.initConnect(url).then(function (message) {
+                            if (message.type === 'error') {
+                                _this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(function () {
+                                    _this.AppStateService.resetToInitState();
+                                });
+                            }
+                            else {
+                                _this.handleConnectedToWSserver({ session: null, reload: null });
+                            }
+                        }, function (errMess) {
+                            var _this = this;
+                            this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
+                                _this.AppStateService.resetToInitState();
+                            });
+                        });
+                    }
+                });
+            }
+            else {
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.openDemoDBbtnClick = function (nameOfDB) {
+            var _this = this;
+            if (this.ViewStateService.getPermission('openDemoBtnDBclick')) {
+                this.dropdown = false;
+                this.ConfigProviderService.vals.activeButtons.openDemoDB = false;
+                this.LoadedMetaDataService.setDemoDbName(nameOfDB);
+                // hide drop zone
+                this.ViewStateService.showDropZone = false;
+                this.ViewStateService.somethingInProgress = true;
+                // alert(nameOfDB);
+                this.ViewStateService.setState('loadingSaving');
+                this.ConfigProviderService.vals.main.comMode = 'DEMO';
+                this.ViewStateService.somethingInProgressTxt = 'Loading DB config...';
+                this.IoHandlerService.httpGetDefaultDesign().then(function (response) {
+                    _this.ConfigProviderService.setDesign(response.data);
+                    _this.IoHandlerService.getDBconfigFile(nameOfDB).then(function (res) {
+                        var data = res.data;
+                        // first element of perspectives is default perspective
+                        _this.ViewStateService.curPerspectiveIdx = 0;
+                        _this.ConfigProviderService.setVals(data.EMUwebAppConfig);
+                        var validRes = _this.ValidationService.validateJSO('emuwebappConfigSchema', _this.ConfigProviderService.vals);
+                        if (validRes === true) {
+                            _this.ConfigProviderService.curDbConfig = data;
+                            _this.ViewStateService.setCurLevelAttrDefs(_this.ConfigProviderService.curDbConfig.levelDefinitions);
+                            validRes = _this.ValidationService.validateJSO('DBconfigFileSchema', _this.ConfigProviderService.curDbConfig);
+                            if (validRes === true) {
+                                // then get the DBconfigFile
+                                _this.ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
+                                _this.IoHandlerService.getBundleList(nameOfDB).then(function (res) {
+                                    var bdata = res.data;
+                                    // validRes = ValidationService.validateJSO('bundleListSchema', bdata);
+                                    // if (validRes === true) {
+                                    _this.LoadedMetaDataService.setBundleList(bdata);
+                                    // show standard buttons
+                                    _this.ConfigProviderService.vals.activeButtons.clear = true;
+                                    _this.ConfigProviderService.vals.activeButtons.specSettings = true;
+                                    // then load first bundle in list
+                                    _this.DbObjLoadSaveService.loadBundle(_this.LoadedMetaDataService.getBundleList()[0]);
+                                }, function (err) {
+                                    var _this = this;
+                                    this.ModalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+                                        _this.AppStateService.resetToInitState();
+                                    });
+                                });
+                            }
+                            else {
+                                _this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
+                                    _this.AppStateService.resetToInitState();
+                                });
+                            }
+                        }
+                        else {
+                            _this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
+                                _this.AppStateService.resetToInitState();
+                            });
+                        }
+                    }, function (err) {
+                        var _this = this;
+                        this.ModalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
+                            _this.AppStateService.resetToInitState();
+                        });
+                    });
+                });
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.aboutBtnClick = function () {
+            if (this.ViewStateService.getPermission('aboutBtnClick')) {
+                this.ModalService.open('views/help.html');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.showHierarchyBtnClick = function () {
+            if (!this.ViewStateService.hierarchyState.isShown()) {
+                this.ViewStateService.hierarchyState.toggleHierarchy();
+                this.ModalService.open('views/showHierarchyModal.html');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.showEditDBconfigBtnClick = function () {
+            var _this = this;
+            this.ModalService.open('views/tabbed.html').then(function (res) {
+                if (res === false) {
+                    // do nothing when user clicks on cancle
+                }
+                else {
+                    if (_this.ValidationService.validateJSO('emuwebappConfigSchema', res)) {
+                        _this.ConfigProviderService.getDelta(res).then(function (delta) {
+                            _this.IoHandlerService.saveConfiguration(angular["toJson"](delta, true)).then(function () {
+                                if ((_this.HistoryService.movesAwayFromLastSave !== 0 && _this.ConfigProviderService.vals.main.comMode !== 'DEMO')) {
+                                    _this.ModalService.open('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.').then(function (res) {
+                                        if (res) {
+                                            _this.AppStateService.reloadToInitState();
+                                        }
+                                    });
+                                }
+                                else {
+                                    _this.AppStateService.reloadToInitState(_this.LoadedMetaDataService.getCurBndl());
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        _this.ModalService.open('views/error.html', 'Sorry, there were errors in your configuration.');
+                    }
+                }
+            });
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.searchBtnClick = function () {
+            if (this.ViewStateService.getPermission('searchBtnClick')) {
+                this.ModalService.open('views/searchAnnot.html');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.clearBtnClick = function () {
+            var _this = this;
+            // ViewStateService.setdragBarActive(false);
+            var modalText;
+            if ((this.HistoryService.movesAwayFromLastSave !== 0 && this.ConfigProviderService.vals.main.comMode !== 'DEMO')) {
+                modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.';
+            }
+            else {
+                modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.';
+            }
+            this.ModalService.open('views/confirmModal.html', modalText).then(function (res) {
+                if (res) {
+                    _this.AppStateService.resetToInitState();
+                }
+            });
+        };
+        ;
+        // bottom menu:
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdZoomAll = function () {
+            if (this.ViewStateService.getPermission('zoom')) {
+                this.LevelService.deleteEditArea();
+                this.ViewStateService.setViewPort(0, this.SoundHandlerService.audioBuffer.length);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdZoomIn = function () {
+            if (this.ViewStateService.getPermission('zoom')) {
+                this.LevelService.deleteEditArea();
+                this.ViewStateService.zoomViewPort(true);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdZoomOut = function () {
+            if (this.ViewStateService.getPermission('zoom')) {
+                this.LevelService.deleteEditArea();
+                this.ViewStateService.zoomViewPort(false);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdZoomLeft = function () {
+            if (this.ViewStateService.getPermission('zoom')) {
+                this.LevelService.deleteEditArea();
+                this.ViewStateService.shiftViewPort(false);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdZoomRight = function () {
+            if (this.ViewStateService.getPermission('zoom')) {
+                this.LevelService.deleteEditArea();
+                this.ViewStateService.shiftViewPort(true);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdZoomSel = function () {
+            if (this.ViewStateService.getPermission('zoom')) {
+                this.LevelService.deleteEditArea();
+                this.ViewStateService.setViewPort(this.ViewStateService.curViewPort.selectS, this.ViewStateService.curViewPort.selectE);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdPlayView = function () {
+            if (this.ViewStateService.getPermission('playaudio')) {
+                this.SoundHandlerService.playFromTo(this.ViewStateService.curViewPort.sS, this.ViewStateService.curViewPort.eS);
+                this.ViewStateService.animatePlayHead(this.ViewStateService.curViewPort.sS, this.ViewStateService.curViewPort.eS);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdPlaySel = function () {
+            if (this.ViewStateService.getPermission('playaudio')) {
+                this.SoundHandlerService.playFromTo(this.ViewStateService.curViewPort.selectS, this.ViewStateService.curViewPort.selectE);
+                this.ViewStateService.animatePlayHead(this.ViewStateService.curViewPort.selectS, this.ViewStateService.curViewPort.selectE);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        /**
+         *
+         */
+        EmuWebAppController.prototype.cmdPlayAll = function () {
+            if (this.ViewStateService.getPermission('playaudio')) {
+                this.SoundHandlerService.playFromTo(0, this.SoundHandlerService.audioBuffer.length);
+                this.ViewStateService.animatePlayHead(0, this.SoundHandlerService.audioBuffer.length);
+            }
+            else {
+                //console.log('action currently not allowed');
+            }
+        };
+        ;
+        ///////////////////////////
+        // other
+        /**
+         * function used to change perspective
+         * @param persp json object of current perspective containing name attribute
+         */
+        EmuWebAppController.prototype.changePerspective = function (persp) {
+            var newIdx;
+            for (var i = 0; i < this.ConfigProviderService.vals.perspectives.length; i++) {
+                if (persp.name === this.ConfigProviderService.vals.perspectives[i].name) {
+                    newIdx = i;
+                }
+            }
+            this.ViewStateService.switchPerspective(newIdx, this.ConfigProviderService.vals.perspectives);
+            // close perspectivesSideBar
+            this.ViewStateService.setPerspectivesSideBarOpen(!this.ViewStateService.getPerspectivesSideBarOpen());
+        };
+        ;
+        // private tmp () {
+        // 	console.log("tmp btn click");
+        // 	this.xTmp = this.xTmp + 1;
+        // 	this.yTmp = this.yTmp + 1;
+        // };
+        // private getTmp(){
+        // 	return angular.copy(this.xTmp)
+        // };
+        EmuWebAppController.prototype.showHierarchyPathCanvas = function () {
+            return (localStorage.getItem('showHierarchyPathCanvas') == 'true');
+        };
+        ;
+        return EmuWebAppController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(EmuWebAppComponent.selector, EmuWebAppComponent);
+
+// CONCATENATED MODULE: ./src/app/components/history-action-popup.component.ts
+
+var HistoryActionPopupComponent = {
+    selector: "historyActionPopup",
+    template: "\n    <div ng-bind-html=\"$ctrl.historyActionTxt\">\n    test12\n    </div>\n    ",
+    bindings: {
+        historyActionTxt: '<'
+    },
+    controller: /** @class */ (function () {
+        function HistoryActionPopupController($element, ViewStateService, $animate, $timeout, ConfigProviderService) {
+            this.$postLink = function () {
+            };
+            this.$onChanges = function (changes) {
+                var _this = this;
+                //
+                if (this._inited) {
+                    //
+                    if (changes.historyActionTxt) {
+                        if (this.historyActionTxt !== '') {
+                            this.$animate.addClass(this.$element, 'emuwebapp-history-fade').then(function () {
+                                _this.$timeout(function () {
+                                    _this.$animate.removeClass(_this.$element, 'emuwebapp-history-fade').then(function () {
+                                        _this.$timeout(function () {
+                                            _this.ViewStateService.historyActionTxt = '';
+                                        }, _this.ConfigProviderService.design.animation.period);
+                                    });
+                                }, _this.ConfigProviderService.design.animation.period);
+                            });
+                        }
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.$element = $element;
+            this.ViewStateService = ViewStateService;
+            this.$animate = $animate;
+            this.$timeout = $timeout;
+            this.ConfigProviderService = ConfigProviderService;
+        }
+        return HistoryActionPopupController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(HistoryActionPopupComponent.selector, HistoryActionPopupComponent);
+
+// CONCATENATED MODULE: ./src/app/components/progress-bar.component.ts
+
+var ProgressBarComponent = {
+    selector: "progressBar",
+    template: "\n    <div>{{$ctrl.txt}}</div>\n    ",
+    bindings: {
+        txt: '<'
+    },
+    controller: /** @class */ (function () {
+        function ProgressBarController($element, $animate) {
+            this.$onInit = function () {
+                this.$animate.removeClass(this.$element, 'emuwebapp-shrinkHeightTo0px');
+                this.$animate.removeClass(this.$element, 'emuwebapp-animationStopped');
+                this.$animate.addClass(this.$element, 'emuwebapp-expandHeightTo20px');
+                this.$animate.addClass(this.$element, 'emuwebapp-animationRunning');
+            };
+            this.$onDestroy = function () {
+                this.$animate.removeClass(this.$element, 'emuwebapp-expandHeightTo20px');
+                this.$animate.removeClass(this.$element, 'emuwebapp-animationRunning');
+                this.$animate.addClass(this.$element, 'emuwebapp-shrinkHeightTo0px');
+                this.$animate.addClass(this.$element, 'emuwebapp-animationStopped');
+            };
+            this.$element = $element;
+            this.$animate = $animate;
+        }
+        ;
+        return ProgressBarController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(ProgressBarComponent.selector, ProgressBarComponent);
+
+// CONCATENATED MODULE: ./src/app/components/ssff-track.component.ts
+
+var SsffTrackComponent = {
+    selector: "ssffTrack",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"2048\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"2048\" \n        drawssff ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"2048\" \n        mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n    </div>\n    </div>\n    ",
+    bindings: {
+        trackName: '<',
+        curMouseX: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<'
+    },
+    controller: /** @class */ (function () {
+        function OsciController($element, ConfigProviderService, SsffDataService, DrawHelperService) {
+            this.$postLink = function () {
+                this.ctx = this.$element.find('canvas')[2].getContext("2d");
+            };
+            this.$onChanges = function (changes) {
+                //
+                if (this._inited) {
+                    //
+                    if (changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.viewPortSelectStart || changes.viewPortSelectEnd) {
+                        if (this.SsffDataService.data.length !== 0) {
+                            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                            var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
+                            var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+                            this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                            this.DrawHelperService.drawMinMaxAndName(this.ctx, this.trackName, col._minVal, col._maxVal, 2);
+                        }
+                    }
+                    if (changes.curMouseX) {
+                        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                        this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.$element = $element;
+            this.ConfigProviderService = ConfigProviderService;
+            this.SsffDataService = SsffDataService;
+            this.DrawHelperService = DrawHelperService;
+        }
+        ;
+        return OsciController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(SsffTrackComponent.selector, SsffTrackComponent);
+
+// CONCATENATED MODULE: ./src/app/components/index.ts
 
 
 
 
 
 
-// EXTERNAL MODULE: ./app/styles/font.scss
+
+
+
+
+
+
+// EXTERNAL MODULE: ./src/styles/font.scss
 var font = __webpack_require__(64);
 
-// EXTERNAL MODULE: ./app/styles/text.scss
+// EXTERNAL MODULE: ./src/styles/text.scss
 var styles_text = __webpack_require__(66);
 
-// EXTERNAL MODULE: ./app/styles/button.scss
+// EXTERNAL MODULE: ./src/styles/button.scss
 var styles_button = __webpack_require__(68);
 
-// EXTERNAL MODULE: ./app/styles/media-query.scss
+// EXTERNAL MODULE: ./src/styles/media-query.scss
 var media_query = __webpack_require__(70);
 
-// EXTERNAL MODULE: ./app/styles/emuwebapp.scss
+// EXTERNAL MODULE: ./src/styles/emuwebapp.scss
 var emuwebapp = __webpack_require__(72);
 
-// EXTERNAL MODULE: ./app/styles/preview.scss
+// EXTERNAL MODULE: ./src/styles/preview.scss
 var preview = __webpack_require__(79);
 
-// EXTERNAL MODULE: ./app/styles/modal.scss
+// EXTERNAL MODULE: ./src/styles/modal.scss
 var modal = __webpack_require__(81);
 
-// EXTERNAL MODULE: ./app/styles/bundleListSideBar.scss
+// EXTERNAL MODULE: ./src/styles/bundleListSideBar.scss
 var bundleListSideBar = __webpack_require__(83);
 
-// EXTERNAL MODULE: ./app/styles/rightSideMenu.scss
+// EXTERNAL MODULE: ./src/styles/rightSideMenu.scss
 var rightSideMenu = __webpack_require__(85);
 
-// EXTERNAL MODULE: ./app/styles/twoDimCanvas.scss
+// EXTERNAL MODULE: ./src/styles/twoDimCanvas.scss
 var twoDimCanvas = __webpack_require__(87);
 
-// EXTERNAL MODULE: ./app/styles/print.scss
+// EXTERNAL MODULE: ./src/styles/print.scss
 var print = __webpack_require__(89);
 
-// EXTERNAL MODULE: ./app/styles/progressThing.scss
-var progressThing = __webpack_require__(91);
+// EXTERNAL MODULE: ./src/styles/progressBar.scss
+var progressBar = __webpack_require__(91);
 
-// EXTERNAL MODULE: ./app/styles/aboutHint.scss
+// EXTERNAL MODULE: ./src/styles/aboutHint.scss
 var aboutHint = __webpack_require__(93);
 
-// EXTERNAL MODULE: ./app/styles/drop.scss
+// EXTERNAL MODULE: ./src/styles/drop.scss
 var drop = __webpack_require__(95);
 
-// EXTERNAL MODULE: ./app/styles/timeline.scss
+// EXTERNAL MODULE: ./src/styles/timeline.scss
 var timeline = __webpack_require__(97);
 
-// EXTERNAL MODULE: ./app/styles/flexBoxGrid.scss
+// EXTERNAL MODULE: ./src/styles/flexBoxGrid.scss
 var flexBoxGrid = __webpack_require__(99);
 
-// EXTERNAL MODULE: ./app/styles/levels.scss
+// EXTERNAL MODULE: ./src/styles/levels.scss
 var levels = __webpack_require__(101);
 
-// EXTERNAL MODULE: ./app/styles/historyActionPopup.scss
+// EXTERNAL MODULE: ./src/styles/historyActionPopup.scss
 var historyActionPopup = __webpack_require__(103);
 
-// EXTERNAL MODULE: ./app/styles/hierarchy.scss
+// EXTERNAL MODULE: ./src/styles/hierarchy.scss
 var hierarchy = __webpack_require__(105);
 
-// EXTERNAL MODULE: ./app/styles/splitPanes.scss
+// EXTERNAL MODULE: ./src/styles/splitPanes.scss
 var splitPanes = __webpack_require__(107);
 
-// EXTERNAL MODULE: ./app/styles/tabbed.scss
+// EXTERNAL MODULE: ./src/styles/tabbed.scss
 var tabbed = __webpack_require__(109);
 
-// EXTERNAL MODULE: ./app/styles/animation.scss
+// EXTERNAL MODULE: ./src/styles/animation.scss
 var animation = __webpack_require__(111);
 
-// EXTERNAL MODULE: ./app/styles/customAngularuiModal.scss
+// EXTERNAL MODULE: ./src/styles/customAngularuiModal.scss
 var customAngularuiModal = __webpack_require__(113);
 
-// EXTERNAL MODULE: ./app/styles/largeTextInputField.scss
+// EXTERNAL MODULE: ./src/styles/largeTextInputField.scss
 var largeTextInputField = __webpack_require__(115);
 
-// EXTERNAL MODULE: ./app/styles/levelCanvasesGrid.scss
+// EXTERNAL MODULE: ./src/styles/levelCanvasesGrid.scss
 var levelCanvasesGrid = __webpack_require__(117);
 
-// CONCATENATED MODULE: ./app/scripts/main.ts
+// CONCATENATED MODULE: ./src/app/main.ts
 // Vendor
 
 

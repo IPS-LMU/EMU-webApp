@@ -1,9 +1,10 @@
 # What's New
 
-## Version 1.2.9.9001
+## Version 1.2.10
 
 ### bug fixes
 
+- fixed alignment issues in long files due to rounding issues
 
 ### new features / performance tweaks / improvements
 

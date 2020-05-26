@@ -1,5 +1,16 @@
 # What's New
 
+## Version 1.2.10
+
+### bug fixes
+
+- fixed alignment issues in long files due to rounding issues
+
+### new features / performance tweaks / improvements
+
+- osci and spec are now components
+- hierarchy settings now available in settings modal as well
+
 ## Version 1.2.9
 
 ### bug fixes

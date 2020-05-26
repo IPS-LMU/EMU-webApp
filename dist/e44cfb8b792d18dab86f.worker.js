@@ -383,7 +383,7 @@ function generateUUID() {
 
 //# sourceMappingURL=comlink.mjs.map
 
-// CONCATENATED MODULE: ./node_modules/comlink-loader/dist/comlink-worker-loader.js!./node_modules/ts-loader!./app/scripts/workers/hierarchy.worker.ts
+// CONCATENATED MODULE: ./node_modules/comlink-loader/dist/comlink-worker-loader.js!./node_modules/ts-loader!./src/app/workers/hierarchy.worker.ts
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HierarchyWorker", function() { return HierarchyWorker; });
 
   var HierarchyWorker = /** @class */ (function () {
