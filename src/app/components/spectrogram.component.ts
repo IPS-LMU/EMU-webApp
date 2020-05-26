@@ -9,17 +9,17 @@ let SpectrogramComponent = {
     <div class="emuwebapp-timelineCanvasContainer">
         <canvas 
         class="emuwebapp-timelineCanvasMain" 
-        width="2048"></canvas>
+        width="4096"></canvas>
         
         <canvas 
         class="emuwebapp-timelineCanvasSSFF" 
-        width="2048" 
+        width="4096" 
         drawssff 
         ssff-trackname="{{$ctrl.trackName}}"></canvas>
         
         <canvas 
         class="emuwebapp-timelineCanvasMarkup" 
-        width="2048" 
+        width="4096" 
         mouse-track-and-correction-tool 
         ssff-trackname="{{$ctrl.trackName}}" 
         bundle-name="{{$ctrl.curBndl.name}}"></canvas>

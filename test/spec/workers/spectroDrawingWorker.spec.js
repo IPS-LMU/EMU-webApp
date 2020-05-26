@@ -30,7 +30,7 @@ describe('Worker: spectroDrawingWorker', function () {
 		'lowerFreq': 0,
 		'samplesPerPxl': 1,
 		'window': 5,
-		'imgWidth': 2048,
+		'imgWidth': 4096,
 		'imgHeight': 150,
 		'dynRangeInDB': 70,
 		'pixelRatio': 1,

@@ -10,6 +10,7 @@
 
 - osci and spec are now components
 - hierarchy settings now available in settings modal as well
+- all canvases now 4k
 
 ## Version 1.2.9
 

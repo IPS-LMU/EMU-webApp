@@ -12,7 +12,7 @@ let HierarchyPathCanvasComponent = {
     <canvas 
     class="emuwebapp-level-canvas" 
     id="levelCanvas" 
-    width="2048" 
+    width="4096" 
     height="256" 
     ng-style="$ctrl.backgroundCanvas"
     ></canvas>
@@ -21,7 +21,7 @@ let HierarchyPathCanvasComponent = {
     class="emuwebapp-level-markup"
     style="background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);"
     id="levelMarkupCanvas" 
-    width="2048" 
+    width="4096" 
     height="256" 
     level-name="$ctrl.level.name"
     level-type="$ctrl.level.type"></canvas>

@@ -9,7 +9,7 @@ let LevelComponent = {
     <canvas 
     class="emuwebapp-level-canvas" 
     id="levelCanvas" 
-    width="2048" 
+    width="4096" 
     height="64" 
     ng-style="$ctrl.backgroundCanvas"
     ></canvas>
@@ -17,7 +17,7 @@ let LevelComponent = {
     <canvas 
     class="emuwebapp-level-markup" 
     id="levelMarkupCanvas" 
-    width="2048" 
+    width="4096" 
     height="64" 
     track-mouse-in-level="{{idx}}"
     level-name="$ctrl.level.name"
