@@ -270,13 +270,20 @@ class="emuwebapp-selectAttrDef"
             }else{
                 labelFontFamily = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily;
             }
+            // TODO: probably better as input via binding
+            var levelCanvasesFontScalingFactor = Number(localStorage.getItem('levelCanvasesFontScalingFactor'));
+            if(levelCanvasesFontScalingFactor === 0){
+                levelCanvasesFontScalingFactor = 100;
+            }
+            
+            levelCanvasesFontScalingFactor = levelCanvasesFontScalingFactor / 100;
 
             var labelFontSize; // font family used for labels only
             var fontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
             if(typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
-                labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
+                labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * levelCanvasesFontScalingFactor;
             }else{
-                labelFontSize = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontPxSize;
+                labelFontSize = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontPxSize * levelCanvasesFontScalingFactor;
             }
 
 

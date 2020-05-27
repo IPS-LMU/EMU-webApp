@@ -267,7 +267,11 @@ controller: class SettingsController{
 
 		// counter to get update for EmuHierarchyComponent
 		// this.attributeDefinitionClickCounter = 0;
-		this.levelCanvasesFontScalingFactor = 100;
+		if(Number(localStorage.getItem('levelCanvasesFontScalingFactor')) === 0){
+			this.levelCanvasesFontScalingFactor = 100;
+		} else {
+			this.levelCanvasesFontScalingFactor = Number(localStorage.getItem('levelCanvasesFontScalingFactor'));
+		}
 
 	}
 	
