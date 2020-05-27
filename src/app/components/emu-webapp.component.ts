@@ -242,9 +242,13 @@ let EmuWebAppComponent = {
             <!-- start: bottom menu bar -->
             <div class="emuwebapp-bottom-menu">
                 <div>
-                    <preview class="preview" 
-                    id="preview" 
-                    current-bundle-name="{{$ctrl.getCurBndlName()}}"></preview>
+                    <osci-overview class="preview" 
+					id="preview"
+					cur-channel="$ctrl.ViewStateService.osciSettings.curChannel"
+					view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
+					view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
+					cur-bndl="$ctrl.LoadedMetaDataService.getCurBndl()"
+					></osci-overview>
                 </div>
 
                 <button class="emuwebapp-mini-btn left"

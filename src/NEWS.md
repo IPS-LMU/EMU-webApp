@@ -1,5 +1,15 @@
 # What's New
 
+## Version 1.2.11.9000
+
+### bug fixes
+
+
+### new features / performance tweaks / improvements
+
+- osci-overview now component
+
+
 ## Version 1.2.11
 
 ### bug fixes

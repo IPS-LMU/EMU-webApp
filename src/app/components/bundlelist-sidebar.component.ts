@@ -69,11 +69,11 @@ let BundleListSideBarComponent = {
 							<!---->
 							<!--timeAnchors controlls-->
 							<div class="emuwebapp-bundleListSessionPager" ng-if="bundle.timeAnchors.length > 0 && $ctrl.isCurBndl(bundle)">
-								<button ng-disabled="$ctrl.ViewStateService.curTimeAnchorIdx == 0" ng-click="nextPrevAnchor(false);">
+								<button ng-disabled="$ctrl.ViewStateService.curTimeAnchorIdx == 0" ng-click="$ctrl.nextPrevAnchor(false);">
 									←
 								</button>
 								time anchor idx: {{$ctrl.ViewStateService.curTimeAnchorIdx}}
-								<button ng-disabled="$ctrl.ViewStateService.curTimeAnchorIdx == getTimeAnchorIdxMax()" ng-click="$ctrl.nextPrevAnchor(true);">
+								<button ng-disabled="$ctrl.ViewStateService.curTimeAnchorIdx == $ctrl.getTimeAnchorIdxMax()" ng-click="$ctrl.nextPrevAnchor(true);">
 									→
 								</button>
 							</div>
