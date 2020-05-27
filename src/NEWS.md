@@ -8,7 +8,7 @@
 ### new features / performance tweaks / improvements
 
 - osci-overview now component
-
+- passing in elements of spect settings to spect component
 
 ## Version 1.2.11
 

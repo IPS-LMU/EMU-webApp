@@ -27,6 +27,12 @@ let SettingsComponent = {
 		>
 		</select>
 	</div>
+
+	<h1>Level Canvas Settings</h1>
+
+	<span>Font scaling factor: <input type="range" ng-model="$ctrl.levelCanvasesFontScalingFactor" min="1" max="200"> {{$ctrl.levelCanvasesFontScalingFactor}}%</span>
+
+
     <h1>OSCI Settings</h1>
     <div>
         <h2>Current channel</h2>
@@ -176,6 +182,7 @@ let SettingsComponent = {
 bindings: {},
 controller: class SettingsController{
 
+	private $scope;
     private ModalService;
     private ViewStateService;
     private DataService;
@@ -197,10 +204,13 @@ controller: class SettingsController{
 
 	private hierarchySettings;
 
+	private levelCanvasesFontScalingFactor;
+
 	// private attributeDefinitionClickCounter;
 
-    constructor(ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService, StandardFuncsService, HierarchyLayoutService, ConfigProviderService){
-        this.ModalService = ModalService;
+    constructor($scope, ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService, StandardFuncsService, HierarchyLayoutService, ConfigProviderService){
+		this.$scope = $scope;
+		this.ModalService = ModalService;
         this.ViewStateService = ViewStateService;
         this.DataService = DataService;
         this.MathHelperService = MathHelperService;
@@ -257,6 +267,7 @@ controller: class SettingsController{
 
 		// counter to get update for EmuHierarchyComponent
 		// this.attributeDefinitionClickCounter = 0;
+		this.levelCanvasesFontScalingFactor = 100;
 
 	}
 	
@@ -406,6 +417,9 @@ controller: class SettingsController{
 					localStorage.setItem('showHierarchyPathCanvas', 'false');
 				}
 
+				localStorage.setItem('levelCanvasesFontScalingFactor', this.levelCanvasesFontScalingFactor);
+
+				
 				this.reset();
 			}
 		};

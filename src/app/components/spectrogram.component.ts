@@ -32,7 +32,15 @@ let SpectrogramComponent = {
     </div>`,
     bindings: {
         trackName: '<',
-        spectroSettings: '<',
+        windowSizeInSecs: '<',
+        rangeFrom: '<',
+		rangeTo: '<',
+		dynamicRange: '<',
+		window: '<',
+		drawHeatMapColors: '<',
+		preEmphasisFilterFactor: '<',
+		heatMapColorAnchors: '<',
+		invert: '<',
         osciSettings: '<',
         lastUpdate: '<',
         movingBoundarySample: '<',
@@ -106,7 +114,8 @@ let SpectrogramComponent = {
 
                 
                 //
-                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.osciSettings || changes.spectroSettings){
+                 
+                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.osciSettings || changes.windowSizeInSecs || changes.rangeFrom || changes.rangeTo || changes.dynamicRange || changes.window || changes.drawHeatMapColors || changes.preEmphasisFilterFactor || changes.heatMapColorAnchors || changes.invert){
                     if (!$.isEmptyObject(this.SoundHandlerService)) {
                         if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
                             if(changes.spectroSettings){
