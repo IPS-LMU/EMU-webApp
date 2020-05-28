@@ -1,7 +1,6 @@
 import "./dots.directive";
 import "./dragout.directive";
 import "./drawssff.directive";
-import "./enlarge.directive";
 import "./epg.directive";
 import "./handle-key-strokes.directive";
 import "./hint.directive";
@@ -12,6 +11,4 @@ import "./mouse-track-and-correction-tool.directive";
 import "./my-drop-zone.directive";
 import "./my-drop-zone-input.directive";
 import "./split-pane-view.directive";
-import "./ssff-track.directive";
-import "./toggle-right-side-bar.directive";
 import "./track-mouse-in-level.directive";

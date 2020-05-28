@@ -24,11 +24,6 @@ let SpectrogramComponent = {
         ssff-trackname="{{$ctrl.trackName}}" 
         bundle-name="{{$ctrl.curBndl.name}}"></canvas>
     </div>
-    <!-- <div class="emuwebapp-timelineCanvasButtons">
-        <div ng-show="cps.vals.activeButtons.resizePerspectives" class="emuwebapp-level-button" enlarge="{{order}}">
-            <img style="cursor: pointer;" src="img/resize.svg" />
-        </div>
-    </div> -->
     </div>`,
     bindings: {
         trackName: '<',

@@ -10,3 +10,4 @@ import "./history-action-popup.component";
 import "./progress-bar.component";
 import "./ssff-track.component";
 import "./osci-overview.component";
+import "./perspectives-side-bar.component";

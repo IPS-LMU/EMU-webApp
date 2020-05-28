@@ -780,21 +780,6 @@ class ViewStateService{
 	/**
 	* get the height of the osci
 	*/
-	public setenlarge(s) {
-		this.timelineSize = s;
-	};
-	
-	
-	/**
-	* get the height of the osci
-	*/
-	public getenlarge() {
-		return this.timelineSize;
-	};
-	
-	/**
-	* get the height of the osci
-	*/
 	public getTransitionTime() {
 		return this.TransitionTime;
 	};

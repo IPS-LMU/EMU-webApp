@@ -313,18 +313,7 @@ let EmuWebAppComponent = {
             <!--<large-text-field-input></large-text-field-input>-->
 
             <!-- start: perspectives menu bar (right) -->
-            <nav class="emuwebapp-right-menu" ng-show="$ctrl.ConfigProviderService.vals.restrictions.showPerspectivesSidebar" show-menu="$ctrl.ViewStateService.getPerspectivesSideBarOpen()">
-            <button ng-click="$ctrl.ViewStateService.setPerspectivesSideBarOpen(!$ctrl.ViewStateService.getPerspectivesSideBarOpen());">
-                <i class="material-icons">menu</i>
-              <!-- <img src="img/menu.svg" ="_20px _inverted" /> -->
-            </button>
-            <h3>Perspectives</h3>
-            <ul>
-                <li ng-repeat="persp in $ctrl.ConfigProviderService.vals.perspectives" ng-click="$ctrl.changePerspective(persp);" ng-class="$ctrl.getPerspectiveColor(persp);">
-                    {{persp.name}}
-                </li>
-            </ul>
-            </nav>
+			<perspectives-side-bar></perspectives-side-bar>
             <!-- end: perspectives menu bar (right) -->
         </div>
         <!-- end: main window -->
@@ -1467,37 +1456,6 @@ let EmuWebAppComponent = {
 
 		///////////////////////////
 		// other
-
-		/**
-		 * function used to change perspective
-		 * @param persp json object of current perspective containing name attribute
-		 */
-		private changePerspective (persp) {
-
-			var newIdx;
-			for (var i = 0; i < this.ConfigProviderService.vals.perspectives.length; i++) {
-				if (persp.name === this.ConfigProviderService.vals.perspectives[i].name) {
-					newIdx = i;
-				}
-			}
-			this.ViewStateService.switchPerspective(newIdx, this.ConfigProviderService.vals.perspectives);
-			// close perspectivesSideBar
-			this.ViewStateService.setPerspectivesSideBarOpen(!this.ViewStateService.getPerspectivesSideBarOpen());
-		};
-
-		/**
-		 * function used by right side menu to get color of current perspecitve in ul
-		 * @param persp json object of current perspective containing name attribute
-		 */
-		private getPerspectiveColor = function (persp) {
-			var cl;
-			if (this.ViewStateService.curPerspectiveIdx === -1 || persp.name === this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].name) {
-				cl = 'emuwebapp-curSelPerspLi';
-			} else {
-				cl = 'emuwebapp-perspLi';
-			}
-			return cl;
-		};
 
 		// private tmp () {
 		// 	console.log("tmp btn click");
