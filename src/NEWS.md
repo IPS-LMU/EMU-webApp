@@ -1,14 +1,17 @@
 # What's New
 
-## Version 1.2.11.9000
+## Version 1.3.0
 
 ### bug fixes
 
+- fixed repaint glitch in SPEC and ssff track 
 
 ### new features / performance tweaks / improvements
 
-- osci-overview now component
+- osci-overview now component 
+- markup-canvases now component that handle their own mouse events
 - passing in elements of spect settings to spect component
+- implemented font scaling setting
 
 ## Version 1.2.11
 

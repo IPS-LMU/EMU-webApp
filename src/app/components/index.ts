@@ -11,3 +11,5 @@ import "./progress-bar.component";
 import "./ssff-track.component";
 import "./osci-overview.component";
 import "./perspectives-side-bar.component";
+import "./new-version-hint.component";
+import "./signal-canvas-markup-canvas.component";

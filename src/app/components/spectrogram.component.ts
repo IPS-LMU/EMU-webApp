@@ -17,12 +17,19 @@ let SpectrogramComponent = {
         drawssff 
         ssff-trackname="{{$ctrl.trackName}}"></canvas>
         
-        <canvas 
-        class="emuwebapp-timelineCanvasMarkup" 
-        width="4096" 
-        mouse-track-and-correction-tool 
-        ssff-trackname="{{$ctrl.trackName}}" 
-        bundle-name="{{$ctrl.curBndl.name}}"></canvas>
+        <signal-canvas-markup-canvas
+        track-name="$ctrl.trackName"
+        play-head-current-sample="$ctrl.playHeadCurrentSample"
+        moving-boundary-sample="$ctrl.movingBoundarySample"
+        cur-mouse-x="$ctrl.curMouseX"
+        cur-mouse-y="$ctrl.curMouseY"
+        moving-boundary="$ctrl.movingBoundary"
+        view-port-sample-start="$ctrl.viewPortSampleStart"
+        view-port-sample-end="$ctrl.viewPortSampleEnd"
+        view-port-select-start="$ctrl.viewPortSelectStart"
+        view-port-select-end="$ctrl.viewPortSelectEnd"
+        cur-bndl="$ctrl.curBundl"
+        ></signal-canvas-markup-canvas>
     </div>
     </div>`,
     bindings: {
@@ -40,6 +47,7 @@ let SpectrogramComponent = {
         lastUpdate: '<',
         movingBoundarySample: '<',
         curMouseX: '<',
+        curMouseY: '<',
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<',
         viewPortSelectStart: '<',
@@ -88,9 +96,7 @@ let SpectrogramComponent = {
         $postLink = function(){
             // select the needed DOM elements from the template
             this.canvas0 = this.$element.find('canvas')[0];
-            this.canvas1 = this.$element.find('canvas')[this.$element.find('canvas').length - 1];
             this.context = this.canvas0.getContext('2d');
-            this.markupCtx = this.canvas1.getContext('2d');
         }
 
         $onChanges = function (changes) {
@@ -117,16 +123,7 @@ let SpectrogramComponent = {
                                 this.setupEvent();
                             }
                             this.redraw();
-                            this.clearAndDrawSpectMarkup();
-                        }
-                    }
-                }
-
-                //
-                if(changes.viewPortSelectStart || changes.viewPortSelectEnd || changes.movingBoundarySample || changes.curMouseX || changes.lastUpdate){
-                    if (!$.isEmptyObject(this.SoundHandlerService)) {
-                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                            this.clearAndDrawSpectMarkup();
+                            // this.clearAndDrawSpectMarkup();
                         }
                     }
                 }
@@ -142,7 +139,6 @@ let SpectrogramComponent = {
         // bindings
 
         private redraw() {
-            this.markupCtx.clearRect(0, 0, this.canvas1.width, this.canvas1.height);
             this.drawSpectro(this.SoundHandlerService.audioBuffer.getChannelData(this.ViewStateService.osciSettings.curChannel));
         };
 
@@ -155,28 +151,10 @@ let SpectrogramComponent = {
             return (this.ViewStateService.curViewPort.eS + 1 - this.ViewStateService.curViewPort.sS) / this.canvas0.width;
         };
 
-        private clearAndDrawSpectMarkup() {
-            this.markupCtx.clearRect(0, 0, this.canvas1.width, this.canvas1.height);
-            this.drawSpectMarkup();
-        };
-
-        private drawSpectMarkup() {
-            // draw moving boundary line if moving
-            this.DrawHelperService.drawMovingBoundaryLine(this.markupCtx);
-            // draw current viewport selected
-            this.DrawHelperService.drawCurViewPortSelected(this.markupCtx, false);
-            // draw min max vals and name of track
-            this.DrawHelperService.drawMinMaxAndName(this.markupCtx, '', this.ViewStateService.spectroSettings.rangeFrom, this.ViewStateService.spectroSettings.rangeTo, 2);
-            // only draw corsshair x line if mouse currently not over canvas
-            this.DrawHelperService.drawCrossHairX(this.markupCtx, this.ViewStateService.curMouseX);
-
-        };
-
         private killSpectroRenderingThread() {
             this.context.fillStyle = this.ConfigProviderService.design.color.black;
             this.context.fillRect(0, 0, this.canvas0.width, this.canvas0.height);
             // draw current viewport selected
-            this.DrawHelperService.drawCurViewPortSelected(this.markupCtx, false);
             this.FontScaleService.drawUndistortedText(
                 this.context, 
                 'rendering...', 
@@ -199,7 +177,7 @@ let SpectrogramComponent = {
                         var tmp = new Uint8ClampedArray(event.img);
                         imageData.data.set(tmp);
                         this.context.putImageData(imageData, 0, 0);
-                        this.drawSpectMarkup();
+                        // this.drawSpectMarkup();
                     }
                 } else {
                     console.error('Error rendering spectrogram:', event.status.message);

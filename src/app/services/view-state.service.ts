@@ -38,6 +38,7 @@ class ViewStateService{
 	private curClickItems
 	private curMousePosSample;
 	private curMouseX;
+	private curMouseY;
 	private curMouseTrackName;
 	private curMouseLevelName;
 	private curMouseLevelType;

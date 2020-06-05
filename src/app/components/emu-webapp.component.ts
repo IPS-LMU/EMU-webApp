@@ -11,7 +11,10 @@ let EmuWebAppComponent = {
         <modal></modal>
         <!-- end: modal -->
         <!-- start: hint -->
-        <hint ng-if="$ctrl.internalVars.showAboutHint"></hint>
+		<new-version-hint 
+		ng-if="$ctrl.internalVars.showAboutHint"
+		about-btn-overlay-click="$ctrl.aboutBtnClick()"
+		></new-version-hint>
         <!-- end: hint -->
         <!-- start: left side menu bar -->
         <bundle-list-side-bar ng-show="$ctrl.ViewStateService.bundleListSideBarOpen"></bundle-list-side-bar>
@@ -170,7 +173,8 @@ let EmuWebAppComponent = {
                                 osci-settings="$ctrl.ViewStateService.osciSettings"
                                 last-update="$ctrl.ViewStateService.lastUpdate"
                                 moving-boundary-sample="$ctrl.ViewStateService.movingBoundarySample"
-                                cur-mouse-x="$ctrl.ViewStateService.curMouseX"
+								cur-mouse-x="$ctrl.ViewStateService.curMouseX"
+								cur-mouse-y="$ctrl.ViewStateService.curMouseY"
                                 view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
                                 view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
                                 view-port-select-start="$ctrl.ViewStateService.curViewPort.selectS"
@@ -183,6 +187,7 @@ let EmuWebAppComponent = {
                                 order="{{$index}}" 
 								track-name="curTrack"
 								cur-mouse-x="$ctrl.ViewStateService.curMouseX"
+								cur-mouse-y="$ctrl.ViewStateService.curMouseY"
                                 view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
                                 view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
                                 view-port-select-start="$ctrl.ViewStateService.curViewPort.selectS"
@@ -330,7 +335,8 @@ let EmuWebAppComponent = {
         private $element;
         private $window;
         private $document;
-        private $location;
+		private $location;
+		private $timeout;
         private ViewStateService;
         private HistoryService;
         private IoHandlerService;
@@ -370,7 +376,8 @@ let EmuWebAppComponent = {
             $element,
             $window,
             $document,
-            $location,
+			$location,
+			$timeout,
             ViewStateService,
             HistoryService,
             IoHandlerService,
@@ -396,7 +403,8 @@ let EmuWebAppComponent = {
                 this.$element = $element;
                 this.$window = $window;
                 this.$document = $document;
-                this.$location = $location;
+				this.$location = $location;
+				this.$timeout = $timeout;
                 this.ViewStateService = ViewStateService;
                 this.HistoryService = HistoryService;
                 this.IoHandlerService = IoHandlerService;
@@ -787,7 +795,14 @@ let EmuWebAppComponent = {
 			}
 
 			// FOR DEVELOPMENT
-			// $scope.internalVars.showAboutHint = true;
+			// this.internalVars.showAboutHint = true;
+			// set timerout
+			if(this.internalVars.showAboutHint){
+				this.$timeout(() => {
+					this.internalVars.showAboutHint = false;
+				}, 3000)
+			}
+
 		};
 
 		private getCurBndlName() {

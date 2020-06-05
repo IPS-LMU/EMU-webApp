@@ -10,7 +10,7 @@ let PerspectivesSideBarComponent = {
     </button>
     <h3>Perspectives</h3>
     <ul>
-        <li ng-repeat="persp in $ctrl.ConfigProviderService.vals.perspectives" ng-click="$ctrl.changePerspective(persp);" ng-class="$ctrl.getPerspectiveColor(persp);">
+        <li ng-repeat="persp in $ctrl.ConfigProviderService.vals.perspectives" ng-click="$ctrl.changePerspective(persp); $ctrl.toggleShow();" ng-class="$ctrl.getPerspectiveColor(persp);">
             {{persp.name}}
         </li>
     </ul>

@@ -16,18 +16,29 @@ let SsffTrackComponent = {
         drawssff ssff-trackname="{{$ctrl.trackName}}">
         </canvas>
         
-        <canvas 
-        class="emuwebapp-timelineCanvasMarkup" 
-        width="4096" 
-        mouse-track-and-correction-tool ssff-trackname="{{$ctrl.trackName}}">
-        </canvas>
+        <signal-canvas-markup-canvas
+        track-name="$ctrl.trackName"
+        play-head-current-sample="$ctrl.playHeadCurrentSample"
+        moving-boundary-sample="$ctrl.movingBoundarySample"
+        cur-mouse-x="$ctrl.curMouseX"
+        cur-mouse-y="$ctrl.curMouseY"
+        moving-boundary="$ctrl.movingBoundary"
+        view-port-sample-start="$ctrl.viewPortSampleStart"
+        view-port-sample-end="$ctrl.viewPortSampleEnd"
+        view-port-select-start="$ctrl.viewPortSelectStart"
+        view-port-select-end="$ctrl.viewPortSelectEnd"
+        cur-bndl="$ctrl.curBundl"
+        ></signal-canvas-markup-canvas>
     </div>
     </div>
     `
     ,
     bindings: {
         trackName: '<',
+        playHeadCurrentSample: '<',
+        movingBoundarySample: '<',
         curMouseX: '<',
+        curMouseY: '<',
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<',
         viewPortSelectStart: '<',
@@ -59,19 +70,19 @@ let SsffTrackComponent = {
             //
             if(this._inited){                
                 //
-                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.viewPortSelectStart || changes.viewPortSelectEnd){
-                    if(this.SsffDataService.data.length !== 0){
-                        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                        var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
-                        var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-                        this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
-                        this.DrawHelperService.drawMinMaxAndName(this.ctx, this.trackName, col._minVal, col._maxVal, 2);
-                    }
-                }
-                if(changes.curMouseX){
-                    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                    this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
-                }
+                // if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.viewPortSelectStart || changes.viewPortSelectEnd){
+                //     if(this.SsffDataService.data.length !== 0){
+                //         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                //         var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
+                //         var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+                //         this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                //         this.DrawHelperService.drawMinMaxAndName(this.ctx, this.trackName, col._minVal, col._maxVal, 2);
+                //     }
+                // }
+                // if(changes.curMouseX){
+                //     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                //     this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                // }
                 
             }
             

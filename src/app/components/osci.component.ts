@@ -5,17 +5,29 @@ let OsciComponent = {
     template: `
     <div class="emuwebapp-timeline">
     <div class="emuwebapp-timelineCanvasContainer">
-    <canvas class="emuwebapp-timelineCanvasMain" 
+    
+    <canvas 
+    class="emuwebapp-timelineCanvasMain" 
     width="4096"></canvas>
-    <canvas class="emuwebapp-timelineCanvasSSFF" 
+    
+    <canvas 
+    class="emuwebapp-timelineCanvasSSFF" 
     width="4096" 
     drawssff 
     ssff-trackname="{{$ctrl.trackName}}"></canvas>
-    <canvas class="emuwebapp-timelineCanvasMarkup" 
-    width="4096" 
-    mouse-track-and-correction-tool ssff-trackname="{{$ctrl.trackName}}"></canvas>
-    </div>
-    </div>
+
+    <signal-canvas-markup-canvas
+    track-name="$ctrl.trackName"
+    play-head-current-sample="$ctrl.playHeadCurrentSample"
+    moving-boundary-sample="$ctrl.movingBoundarySample"
+    cur-mouse-x="$ctrl.curMouseX" 
+    moving-boundary="$ctrl.movingBoundary"
+    view-port-sample-start="$ctrl.viewPortSampleStart"
+    view-port-sample-end="$ctrl.viewPortSampleEnd"
+    view-port-select-start="$ctrl.viewPortSelectStart"
+    view-port-select-end="$ctrl.viewPortSelectEnd"
+    cur-bndl="$ctrl.curBundl"
+    ></signal-canvas-markup-canvas>
     `
     ,
     bindings: {
@@ -46,7 +58,7 @@ let OsciComponent = {
         
         private canvasLength;
         private canvas;
-        private markupCanvas;
+        // private markupCanvas;
         private _inited;
         
         constructor($scope, $element, $timeout, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, LoadedMetaDataService){
@@ -65,7 +77,7 @@ let OsciComponent = {
         $postLink = function(){
             this.canvasLength = this.$element.find('canvas').length;
             this.canvas = this.$element.find('canvas')[0];
-            this.markupCanvas = this.$element.find('canvas')[this.canvasLength - 1];
+            // this.markupCanvas = this.$element.find('canvas')[this.canvasLength - 1];
             
         };
         
@@ -75,39 +87,6 @@ let OsciComponent = {
                 //
                 if(changes.timelineSize){
                     this.$timeout(this.redraw, this.ConfigProviderService.design.animation.duration);
-                }
-                // 
-                if(changes.playHeadCurrentSample){
-                    if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                        this.drawPlayHead();
-                    }
-                }
-
-                //
-                if(changes.curMouseX){
-                    if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                        // only draw corsshair x line if mouse currently not over canvas
-                        if(this.ViewStateService.curMouseTrackName !== this.trackName) {
-                            this.drawVpOsciMarkup(true);
-                        }
-                    }
-                }
-                //
-                if(changes.movingBoundary || changes.movingBoundarySample || changes.curPerspectiveIdx || changes.lastUpdate){
-                    if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                        this.drawVpOsciMarkup(true);
-                    }
-                }
-                //
-                if(changes.curChannel || changes.viewPortSampleStart || changes.viewPortSampleEnd){
-                    this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, false);
-                    this.drawVpOsciMarkup(true);
-                    
-                }
-                
-                //
-                if(changes.viewPortSelectStart || changes.viewPortSelectEnd){
-                    this.drawVpOsciMarkup(true);
                 }
                 
                 //
@@ -122,41 +101,7 @@ let OsciComponent = {
             this._inited = true;
         };
         
-        private redraw = function () {
-            this.$scope.drawVpOsciMarkup(this.$scope, this.ConfigProviderService, true);
-        };
-        
-        /**
-        *
-        */
-        private drawPlayHead = function () {
-            var ctx = this.markupCanvas.getContext('2d');
-            ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            var posS = this.ViewStateService.getPos(this.markupCanvas.width, this.ViewStateService.playHeadAnimationInfos.sS);
-            var posCur = this.ViewStateService.getPos(this.markupCanvas.width, this.ViewStateService.playHeadAnimationInfos.curS);
-            ctx.fillStyle = this.ConfigProviderService.design.color.transparent.lightGrey;
-            ctx.fillRect(posS, 0, posCur - posS, this.canvas.height);
-            this.drawVpOsciMarkup(false);
-        };
-        
-        /**
-        * draws markup of osci according to
-        * the information that is specified in
-        * the viewport
-        */
-        private drawVpOsciMarkup = function (reset) {
-            var ctx = this.markupCanvas.getContext('2d');
-            if (reset) {
-                ctx.clearRect(0, 0, this.markupCanvas.width, this.markupCanvas.height);
-            }
-            // draw moving boundary line if moving
-            this.DrawHelperService.drawMovingBoundaryLine(ctx);
-            this.DrawHelperService.drawViewPortTimes(ctx, true);
-            // draw current viewport selected
-            this.DrawHelperService.drawCurViewPortSelected(ctx, true);
-            
-            this.DrawHelperService.drawCrossHairX(ctx, this.ViewStateService.curMouseX);
-        };
+
         
         
     }

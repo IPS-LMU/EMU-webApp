@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 120);
+/******/ 	return __webpack_require__(__webpack_require__.s = 115);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -12467,17 +12467,11 @@ return tv4; // used by _header.js to globalise.
 /* 7 */,
 /* 8 */,
 /* 9 */,
-/* 10 */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"a\":\"1.2.11\"}");
-
-/***/ }),
+/* 10 */,
 /* 11 */,
 /* 12 */,
 /* 13 */,
-/* 14 */,
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;;/*! showdown v 1.9.1 - 02-11-2019 */
@@ -17621,7 +17615,7 @@ if (true) {
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18469,13 +18463,19 @@ SpectroDrawingWorker.prototype = {
 };
 
 /***/ }),
+/* 16 */,
 /* 17 */,
 /* 18 */,
-/* 19 */,
+/* 19 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"a\":\"1.3.0\"}");
+
+/***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(59).wrap(__webpack_require__(60)());module.exports.__esModule = true;
+module.exports = __webpack_require__(54).wrap(__webpack_require__(55)());module.exports.__esModule = true;
 
 /***/ }),
 /* 21 */,
@@ -65976,49 +65976,6 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
 
 angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('enlarge', function ($rootScope, ViewStateService, ConfigProviderService) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            scope.$watch('ViewStateService.curPerspectiveIdx', function () {
-                if (!$.isEmptyObject(ConfigProviderService.vals.perspectives)) {
-                    if (!$.isEmptyObject(ViewStateService.curPerspectiveIdx)) {
-                        if (ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.length === 1) {
-                            element.hide();
-                        }
-                        else {
-                            element.show();
-                        }
-                    }
-                }
-            }, true);
-            var open = false;
-            element.bind('click', function () {
-                if (open) {
-                    open = false;
-                    ViewStateService.setenlarge(-1);
-                }
-                else {
-                    open = true;
-                    ViewStateService.setenlarge(parseInt(attrs.enlarge));
-                }
-                $rootScope.$apply();
-            });
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 48 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
     .directive('epg', function () {
     return {
         template: '<div class="emuwebapp-twoDimCanvasContainer"><canvas width="512" height="512"></canvas></div>',
@@ -66098,7 +66055,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67310,544 +67267,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 50 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('mouseTrackAndCorrectionTool', function (ViewStateService, ConfigProviderService, SsffDataService, DrawHelperService, HistoryService, SoundHandlerService) {
-    return {
-        restrict: 'A',
-        scope: {},
-        link: function (scope, element, atts) {
-            var curMouseSample;
-            var canvas = element[0];
-            var ctx = canvas.getContext('2d');
-            var tr, col, sRaSt;
-            var trackName;
-            var bundleName;
-            /////////////////////////////
-            // observe attribute
-            atts.$observe('ssffTrackname', function (val) {
-                if (val) {
-                    trackName = val;
-                }
-            });
-            // bundleName needed to reset tr, col, sRaSt on bundle change
-            atts.$observe('bundleName', function (val) {
-                if (val) {
-                    bundleName = val;
-                    if (!$.isEmptyObject(SsffDataService.data)) {
-                        if (SsffDataService.data.length !== 0) {
-                            tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
-                            if (tr !== undefined) {
-                                col = SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-                                sRaSt = SsffDataService.getSampleRateAndStartTimeOfTrack(tr.name);
-                            }
-                        }
-                    }
-                }
-            });
-            /////////////////////////////
-            // Bindings
-            element.bind('mousedown', function (event) {
-                if (!event.shiftKey) {
-                    ViewStateService.curViewPort.movingS = Math.round(ViewStateService.getX(event) * ViewStateService.getSamplesPerPixelVal(event) + ViewStateService.curViewPort.sS);
-                    ViewStateService.curViewPort.movingE = ViewStateService.curViewPort.movingS;
-                    ViewStateService.select(ViewStateService.curViewPort.movingS, ViewStateService.curViewPort.movingE);
-                    scope.switchMarkupContext(event);
-                    scope.$apply();
-                }
-            });
-            element.bind('mouseup', function (event) {
-                if (event.shiftKey) {
-                    var curSample = Math.round(ViewStateService.getX(event) * ViewStateService.getSamplesPerPixelVal(event) + ViewStateService.curViewPort.sS);
-                    var selectDist = ViewStateService.curViewPort.selectE - ViewStateService.curViewPort.selectS;
-                    if (curSample <= ViewStateService.curViewPort.selectS + selectDist / 2) {
-                        ViewStateService.curViewPort.selectS = curSample;
-                    }
-                    // expand right
-                    if (curSample >= ViewStateService.curViewPort.selectE - selectDist / 2) {
-                        ViewStateService.curViewPort.selectE = curSample;
-                    }
-                    scope.switchMarkupContext(event);
-                    scope.$apply();
-                }
-            });
-            element.bind('mousemove', function (event) {
-                var mbutton = 0;
-                if (event.buttons === undefined) {
-                    mbutton = event.which;
-                }
-                else {
-                    mbutton = event.buttons;
-                }
-                // perform mouse tracking
-                var mouseX = ViewStateService.getX(event);
-                ViewStateService.curMouseX = mouseX;
-                ViewStateService.curMouseTrackName = trackName;
-                ViewStateService.curMousePosSample = Math.round(ViewStateService.curViewPort.sS + mouseX / element[0].width * (ViewStateService.curViewPort.eS - ViewStateService.curViewPort.sS));
-                switch (mbutton) {
-                    case 0:
-                        if (ViewStateService.getPermission('labelAction')) {
-                            scope.switchMarkupContext(event);
-                            if (!$.isEmptyObject(SsffDataService.data)) {
-                                if (SsffDataService.data.length !== 0) {
-                                    if (!ViewStateService.getdragBarActive()) {
-                                        if (ViewStateService.curCorrectionToolNr !== undefined && !ViewStateService.getdragBarActive() && !$.isEmptyObject(ConfigProviderService.getAssignment(trackName))) {
-                                            // var col = SsffDataService.data[0].Columns[0];
-                                            if (tr === undefined) {
-                                                tr = ConfigProviderService.getSsffTrackConfig('FORMANTS');
-                                            }
-                                            col = SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-                                            sRaSt = SsffDataService.getSampleRateAndStartTimeOfTrack(tr.name);
-                                            var startTimeVP = ViewStateService.getViewPortStartTime();
-                                            var endTimeVP = ViewStateService.getViewPortEndTime();
-                                            var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-                                            var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-                                            var nrOfSamples = colEndSampleNr - colStartSampleNr;
-                                            var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
-                                            var curMouseTime = startTimeVP + (ViewStateService.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
-                                            var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
-                                            var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
-                                            if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
-                                                //console.log('early return');
-                                                return;
-                                            }
-                                            ViewStateService.curPreselColumnSample = curMouseSample - colStartSampleNr;
-                                            var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                                            var y = canvas.height - curSampleArrs[ViewStateService.curPreselColumnSample][ViewStateService.curCorrectionToolNr - 1] / (ViewStateService.spectroSettings.rangeTo - ViewStateService.spectroSettings.rangeFrom) * canvas.height;
-                                            // draw sample
-                                            ctx.strokeStyle = 'black';
-                                            ctx.fillStyle = 'black';
-                                            ctx.beginPath();
-                                            ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                                            ctx.closePath();
-                                            ctx.stroke();
-                                            ctx.fill();
-                                            if (event.shiftKey) {
-                                                var oldValue = angular__WEBPACK_IMPORTED_MODULE_0__["copy"](curSampleArrs[ViewStateService.curPreselColumnSample][ViewStateService.curCorrectionToolNr - 1]);
-                                                var newValue = ViewStateService.spectroSettings.rangeTo - ViewStateService.getY(event) / event.originalEvent.target.height * ViewStateService.spectroSettings.rangeTo; // SIC only using rangeTo
-                                                curSampleArrs[ViewStateService.curPreselColumnSample][ViewStateService.curCorrectionToolNr - 1] = ViewStateService.spectroSettings.rangeTo - ViewStateService.getY(event) / event.originalEvent.target.height * ViewStateService.spectroSettings.rangeTo;
-                                                var updateObj = HistoryService.updateCurChangeObj({
-                                                    'type': 'SSFF',
-                                                    'trackName': tr.name,
-                                                    'sampleBlockIdx': colStartSampleNr + ViewStateService.curPreselColumnSample,
-                                                    'sampleIdx': ViewStateService.curCorrectionToolNr - 1,
-                                                    'oldValue': oldValue,
-                                                    'newValue': newValue
-                                                });
-                                                //draw updateObj as overlay
-                                                for (var key in updateObj) {
-                                                    curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
-                                                    x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * canvas.width;
-                                                    y = canvas.height - updateObj[key].newValue / (ViewStateService.spectroSettings.rangeTo - ViewStateService.spectroSettings.rangeFrom) * canvas.height;
-                                                    // draw sample
-                                                    ctx.strokeStyle = 'red';
-                                                    ctx.fillStyle = 'red';
-                                                    // ctx.lineWidth = 4;
-                                                    ctx.beginPath();
-                                                    ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                                                    ctx.closePath();
-                                                    ctx.stroke();
-                                                    ctx.fill();
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 1:
-                        if (!ViewStateService.getdragBarActive()) {
-                            scope.setSelectDrag(event);
-                        }
-                        break;
-                }
-                scope.$apply();
-            });
-            /*
-             element.bind('mouseup', function (event) {
-             if (!ViewStateService.getdragBarActive()) {
-             scope.setSelectDrag(event);
-             scope.switchMarkupContext(event, false);
-             }
-             });
-             */
-            // on mouse leave clear markup canvas
-            element.bind('mouseleave', function (event) {
-                if (!$.isEmptyObject(SoundHandlerService)) {
-                    if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                        if (!ViewStateService.getdragBarActive()) {
-                            if (ViewStateService.getPermission('labelAction')) {
-                                scope.switchMarkupContext(event, false);
-                                ViewStateService.curMouseTrackName = undefined;
-                            }
-                        }
-                    }
-                }
-            });
-            //
-            ////////////////////
-            // Functions
-            scope.switchMarkupContext = function (event, leave) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // draw current viewport selected
-                if (atts.ssffTrackname === 'OSCI') {
-                    DrawHelperService.drawViewPortTimes(ctx, true);
-                    DrawHelperService.drawCurViewPortSelected(ctx, true);
-                }
-                else if (atts.ssffTrackname === 'SPEC') {
-                    DrawHelperService.drawCurViewPortSelected(ctx, false);
-                    DrawHelperService.drawMinMaxAndName(ctx, '', ViewStateService.spectroSettings.rangeFrom, ViewStateService.spectroSettings.rangeTo, 2);
-                }
-                else {
-                    var tr = ConfigProviderService.getSsffTrackConfig(atts.ssffTrackname);
-                    var col = SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-                    DrawHelperService.drawCurViewPortSelected(ctx, false);
-                    DrawHelperService.drawMinMaxAndName(ctx, atts.ssffTrackname, col._minVal, col._maxVal, 2);
-                }
-                // draw crossHairs
-                if (leave !== false && ConfigProviderService.vals.restrictions.drawCrossHairs) {
-                    DrawHelperService.drawCrossHairs(ctx, event, ViewStateService.spectroSettings.rangeFrom, ViewStateService.spectroSettings.rangeTo, 'Hz', atts.ssffTrackname);
-                }
-                // draw moving boundary line if moving
-                DrawHelperService.drawMovingBoundaryLine(ctx);
-            };
-            scope.setSelectDrag = function (event) {
-                curMouseSample = Math.round(ViewStateService.getX(event) * ViewStateService.getSamplesPerPixelVal(event) + ViewStateService.curViewPort.sS);
-                if (curMouseSample > ViewStateService.curViewPort.movingS) {
-                    ViewStateService.curViewPort.movingE = curMouseSample;
-                }
-                else {
-                    ViewStateService.curViewPort.movingS = curMouseSample;
-                }
-                ViewStateService.select(ViewStateService.curViewPort.movingS, ViewStateService.curViewPort.movingE);
-                scope.$apply();
-            };
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 51 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('preview', function (ViewStateService, SoundHandlerService, DrawHelperService, ConfigProviderService) {
-    return {
-        template: "\n\t\t\t<div class=\"emuwebapp-preview\">\n\t\t\t<canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas\" ng-style=\"backgroundCanvas\" id=\"PreviewCanvas\"></canvas>\n\t\t\t<canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas-markup\" id=\"PreviewCanvas\" previewtrack></canvas>\n\t\t\t</div>\n\t\t\t",
-        restrict: 'E',
-        scope: {
-            currentBundleName: '@'
-        },
-        link: function postLink(scope, element) {
-            // select the needed DOM elements from the template and init vals
-            var canvas = element.find('canvas')[0];
-            var markupCanvas = element.find('canvas')[1];
-            var initialized = false;
-            // hook up scope vars for watches
-            scope.vs = ViewStateService;
-            scope.shs = SoundHandlerService;
-            scope.backgroundCanvas = {
-                'background': '#000',
-                'border': '1px solid gray',
-                'width': '100%',
-                'height': '100%'
-            };
-            /////////////////////
-            // watches
-            //
-            scope.$watch('vs.curViewPort', function (newVal, oldVal) {
-                if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                    if (oldVal.sS !== newVal.sS || oldVal.eS !== newVal.eS) {
-                        scope.drawPreview();
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('vs.osciSettings', function () {
-                if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                    initialized = false; // reset to uninitialized when channels change
-                    scope.drawPreview();
-                }
-            }, true);
-            //
-            scope.$watch('currentBundleName', function () {
-                if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                    initialized = false;
-                    scope.backgroundCanvas = {
-                        'background': ConfigProviderService.design.color.black,
-                        'border': '1px solid gray',
-                        'width': '100%',
-                        'height': '100%'
-                    };
-                    scope.drawPreview();
-                }
-                //clear on empty bundle name
-                if (scope.currentBundleName === '') {
-                    var ctx = canvas.getContext('2d');
-                    var ctxMarkup = markupCanvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctxMarkup.clearRect(0, 0, canvas.width, canvas.height);
-                }
-            }, true);
-            //
-            /////////////////////
-            /**
-             *
-             */
-            scope.drawPreview = function () {
-                if (!initialized) {
-                    DrawHelperService.freshRedrawDrawOsciOnCanvas(canvas, 0, scope.shs.audioBuffer.length, false);
-                    initialized = true;
-                    scope.drawVpOsciMarkup(ViewStateService);
-                }
-                else {
-                    scope.drawVpOsciMarkup(ViewStateService);
-                }
-            };
-            /**
-             * draws markup of osci according to
-             * the information that is specified in
-             * the viewport
-             */
-            scope.drawVpOsciMarkup = function (vs) {
-                var ctx = markupCanvas.getContext('2d');
-                var posS = (markupCanvas.width / SoundHandlerService.audioBuffer.length) * vs.curViewPort.sS;
-                var posE = (markupCanvas.width / SoundHandlerService.audioBuffer.length) * vs.curViewPort.eS;
-                ctx.clearRect(0, 0, markupCanvas.width, markupCanvas.height);
-                ctx.fillStyle = ConfigProviderService.design.color.transparent.lightGrey;
-                ctx.fillRect(posS, 0, posE - posS, markupCanvas.height);
-                ctx.strokeStyle = ConfigProviderService.design.color.white;
-                ctx.beginPath();
-                ctx.moveTo(posS, 0);
-                ctx.lineTo(posS, markupCanvas.height);
-                ctx.moveTo(posE, 0);
-                ctx.lineTo(posE, markupCanvas.height);
-                ctx.closePath();
-                ctx.stroke();
-            };
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 52 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('previewtrack', function (ViewStateService, SoundHandlerService) {
-    return {
-        restrict: 'A',
-        scope: {},
-        link: function (scope, element) {
-            var startPCM = -1;
-            ///////////////
-            // bindings
-            element.bind('click', function (x) {
-                if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                    var width = ViewStateService.curViewPort.eS - ViewStateService.curViewPort.sS;
-                    startPCM = ViewStateService.getX(x) * (SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
-                    if (startPCM - (width / 2) < 0) {
-                        startPCM = Math.ceil(width / 2);
-                    }
-                    else if (startPCM + (width / 2) > SoundHandlerService.audioBuffer.length) {
-                        startPCM = Math.floor(SoundHandlerService.audioBuffer.length - (width / 2));
-                    }
-                    if (!ViewStateService.isEditing()) {
-                        scope.$apply(function () {
-                            ViewStateService.setViewPort(startPCM - (width / 2), startPCM + (width / 2));
-                        });
-                    }
-                }
-            });
-            //
-            element.bind('mousedown', function (x) {
-                if (!$.isEmptyObject(SoundHandlerService.audioBuffer)) {
-                    startPCM = ViewStateService.getX(x) * (SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
-                }
-            });
-            //
-            element.bind('mousemove', function (x) {
-                var mbutton = 0;
-                if (x.buttons === undefined) {
-                    mbutton = x.which;
-                }
-                else {
-                    mbutton = x.buttons;
-                }
-                switch (mbutton) {
-                    case 1:
-                        if (startPCM !== -1) {
-                            var width = ViewStateService.curViewPort.eS - ViewStateService.curViewPort.sS;
-                            startPCM = ViewStateService.getX(x) * (SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
-                            if (!ViewStateService.isEditing()) {
-                                scope.$apply(function () {
-                                    ViewStateService.setViewPort((startPCM - (width / 2)), (startPCM + (width / 2)));
-                                });
-                            }
-                        }
-                        break;
-                }
-            });
-            //
-            element.bind('mouseup', function () {
-                startPCM = -1;
-            });
-            //
-            element.bind('mouseout', function () {
-                startPCM = -1;
-            });
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 53 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .directive('ssffTrack_old', function ($timeout, ViewStateService, ConfigProviderService, LoadedMetaDataService, DrawHelperService) {
-    return {
-        template: "\n\n\t\t\t",
-        restrict: 'E',
-        link: function postLink(scope, element, attrs) {
-            // select the needed DOM elements from the template
-            var canvasLength = element.find('canvas').length;
-            var markupCanvas = element.find('canvas')[canvasLength - 1];
-            // var context = canvas0.getContext('2d');
-            var markupCtx = markupCanvas.getContext('2d');
-            var trackName;
-            scope.lmds = LoadedMetaDataService;
-            attrs.$observe('trackName', function (val) {
-                if (val) {
-                    trackName = val;
-                }
-            });
-            scope.order = attrs.order;
-            /////////////////////
-            // watches
-            //
-            //
-            scope.$watch('vs.lastUpdate', function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    scope.drawSsffTrackMarkup();
-                }
-            });
-            //
-            scope.$watch('vs.timelineSize', function () {
-                $timeout(scope.drawSsffTrackMarkup, ConfigProviderService.design.animation.duration);
-            });
-            scope.$watch('vs.curViewPort', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        scope.drawSsffTrackMarkup();
-                    }
-                }
-            }, true);
-            scope.$watch('ssffds.data.length', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        scope.drawSsffTrackMarkup();
-                    }
-                }
-            }, true);
-            scope.$watch('vs.movingBoundary', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        scope.drawSsffTrackMarkup();
-                    }
-                }
-            }, true);
-            scope.$watch('vs.movingBoundarySample', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        scope.drawSsffTrackMarkup();
-                    }
-                }
-            }, true);
-            scope.$watch('vs.curMouseX', function () {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        // only draw corsshair x line if mouse currently not over canvas
-                        if (ViewStateService.curMouseTrackName !== trackName) {
-                            scope.drawSsffTrackMarkup();
-                        }
-                    }
-                }
-            }, true);
-            //
-            scope.$watch('lmds.getCurBndl()', function (newValue, oldValue) {
-                if (!$.isEmptyObject(scope.shs)) {
-                    if (!$.isEmptyObject(scope.shs.audioBuffer)) {
-                        if (newValue.name !== oldValue.name || newValue.session !== oldValue.session) {
-                            scope.drawSsffTrackMarkup();
-                        }
-                    }
-                }
-            }, true);
-            //
-            /////////////////////
-            /**
-             *
-             */
-            scope.drawSsffTrackMarkup = function () {
-                if (!$.isEmptyObject(scope.ssffds.data)) {
-                    if (scope.ssffds.data.length !== 0) {
-                        markupCtx.clearRect(0, 0, markupCtx.canvas.width, markupCtx.canvas.height);
-                        // draw moving boundary line if moving
-                        scope.dhs.drawMovingBoundaryLine(markupCtx);
-                        // draw current viewport selected
-                        scope.dhs.drawCurViewPortSelected(markupCtx, false);
-                        // draw min max an name of track
-                        var tr = scope.cps.getSsffTrackConfig(trackName);
-                        var col = scope.ssffds.getColumnOfTrack(tr.name, tr.columnName);
-                        var minMaxValLims = scope.cps.getValueLimsOfTrack(tr.name);
-                        var minVal, maxVal;
-                        if (!angular__WEBPACK_IMPORTED_MODULE_0__["equals"](minMaxValLims, {})) {
-                            minVal = minMaxValLims.minVal;
-                            maxVal = minMaxValLims.maxVal;
-                        }
-                        else {
-                            minVal = col._minVal;
-                            maxVal = col._maxVal;
-                        }
-                        scope.dhs.drawMinMaxAndName(markupCtx, trackName, minVal, maxVal, 2);
-                        DrawHelperService.drawCrossHairX(markupCtx, ViewStateService.curMouseX);
-                    }
-                }
-            };
-        }
-    };
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 54 */
+/* 49 */
 /***/ (function(module, exports) {
 
 ArrayBuffer.prototype.subarray = function (offset, length) {
@@ -67862,7 +67282,7 @@ ArrayBuffer.prototype.subarray = function (offset, length) {
 
 
 /***/ }),
-/* 55 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68207,7 +67627,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 56 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68641,7 +68061,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 57 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70356,7 +69776,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 58 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70781,7 +70201,7 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 59 */
+/* 54 */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71088,7 +70508,7 @@ function generateUUID() {
 
 
 /***/ }),
-/* 60 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
@@ -71096,7 +70516,7 @@ module.exports = function() {
 };
 
 /***/ }),
-/* 61 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71287,13 +70707,19 @@ var LevelComponent = {
                 else {
                     labelFontFamily = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily;
                 }
+                // TODO: probably better as input via binding
+                var levelCanvasesFontScalingFactor = Number(localStorage.getItem('levelCanvasesFontScalingFactor'));
+                if (levelCanvasesFontScalingFactor === 0) {
+                    levelCanvasesFontScalingFactor = 100;
+                }
+                levelCanvasesFontScalingFactor = levelCanvasesFontScalingFactor / 100;
                 var labelFontSize; // font family used for labels only
                 var fontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
                 if (typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
-                    labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
+                    labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * levelCanvasesFontScalingFactor;
                 }
                 else {
-                    labelFontSize = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontPxSize;
+                    labelFontSize = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontPxSize * levelCanvasesFontScalingFactor;
                 }
                 var curAttrDef = this.ViewStateService.getCurAttrDef(this.level.name);
                 var isOpen = this.$element.parent().css('height') !== '25px'; // ? false : true;
@@ -71541,156 +70967,34 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 62 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 /* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-
-var OsciComponent = {
-    selector: "osci",
-    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n    <canvas class=\"emuwebapp-timelineCanvasMain\" \n    width=\"4096\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasSSFF\" \n    width=\"4096\" \n    drawssff \n    ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    <canvas class=\"emuwebapp-timelineCanvasMarkup\" \n    width=\"4096\" \n    mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n    </div>\n    </div>\n    ",
-    bindings: {
-        trackName: '<',
-        curChannel: '<',
-        lastUpdate: '<',
-        timelineSize: '<',
-        curPerspectiveIdx: '<',
-        playHeadCurrentSample: '<',
-        movingBoundarySample: '<',
-        curMouseX: '<',
-        movingBoundary: '<',
-        viewPortSampleStart: '<',
-        viewPortSampleEnd: '<',
-        viewPortSelectStart: '<',
-        viewPortSelectEnd: '<',
-        curBndl: '<'
-    },
-    controller: /** @class */ (function () {
-        function OsciController($scope, $element, $timeout, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, LoadedMetaDataService) {
-            this.$postLink = function () {
-                this.canvasLength = this.$element.find('canvas').length;
-                this.canvas = this.$element.find('canvas')[0];
-                this.markupCanvas = this.$element.find('canvas')[this.canvasLength - 1];
-            };
-            this.$onChanges = function (changes) {
-                //
-                if (this._inited) {
-                    //
-                    if (changes.timelineSize) {
-                        this.$timeout(this.redraw, this.ConfigProviderService.design.animation.duration);
-                    }
-                    // 
-                    if (changes.playHeadCurrentSample) {
-                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                            this.drawPlayHead();
-                        }
-                    }
-                    //
-                    if (changes.curMouseX) {
-                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                            // only draw corsshair x line if mouse currently not over canvas
-                            if (this.ViewStateService.curMouseTrackName !== this.trackName) {
-                                this.drawVpOsciMarkup(true);
-                            }
-                        }
-                    }
-                    //
-                    if (changes.movingBoundary || changes.movingBoundarySample || changes.curPerspectiveIdx || changes.lastUpdate) {
-                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                            this.drawVpOsciMarkup(true);
-                        }
-                    }
-                    //
-                    if (changes.curChannel || changes.viewPortSampleStart || changes.viewPortSampleEnd) {
-                        this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, false);
-                        this.drawVpOsciMarkup(true);
-                    }
-                    //
-                    if (changes.viewPortSelectStart || changes.viewPortSelectEnd) {
-                        this.drawVpOsciMarkup(true);
-                    }
-                    //
-                    if (changes.curBndl) {
-                        this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, true);
-                    }
-                }
-            };
-            this.$onInit = function () {
-                this._inited = true;
-            };
-            this.redraw = function () {
-                this.$scope.drawVpOsciMarkup(this.$scope, this.ConfigProviderService, true);
-            };
-            /**
-            *
-            */
-            this.drawPlayHead = function () {
-                var ctx = this.markupCanvas.getContext('2d');
-                ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                var posS = this.ViewStateService.getPos(this.markupCanvas.width, this.ViewStateService.playHeadAnimationInfos.sS);
-                var posCur = this.ViewStateService.getPos(this.markupCanvas.width, this.ViewStateService.playHeadAnimationInfos.curS);
-                ctx.fillStyle = this.ConfigProviderService.design.color.transparent.lightGrey;
-                ctx.fillRect(posS, 0, posCur - posS, this.canvas.height);
-                this.drawVpOsciMarkup(false);
-            };
-            /**
-            * draws markup of osci according to
-            * the information that is specified in
-            * the viewport
-            */
-            this.drawVpOsciMarkup = function (reset) {
-                var ctx = this.markupCanvas.getContext('2d');
-                if (reset) {
-                    ctx.clearRect(0, 0, this.markupCanvas.width, this.markupCanvas.height);
-                }
-                // draw moving boundary line if moving
-                this.DrawHelperService.drawMovingBoundaryLine(ctx);
-                this.DrawHelperService.drawViewPortTimes(ctx, true);
-                // draw current viewport selected
-                this.DrawHelperService.drawCurViewPortSelected(ctx, true);
-                this.DrawHelperService.drawCrossHairX(ctx, this.ViewStateService.curMouseX);
-            };
-            this.$scope = $scope;
-            this.$element = $element;
-            this.$timeout = $timeout;
-            this.ViewStateService = ViewStateService;
-            this.SoundHandlerService = SoundHandlerService;
-            this.ConfigProviderService = ConfigProviderService;
-            this.DrawHelperService = DrawHelperService;
-            this.LoadedMetaDataService = LoadedMetaDataService;
-            this._inited = false;
-        }
-        ;
-        return OsciController;
-    }())
-};
-angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
-    .component(OsciComponent.selector, OsciComponent);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16);
+/* harmony import */ var _workers_spectro_drawing_worker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
 
 
 var SpectrogramComponent = {
     selector: "spectro",
-    template: "\n    <div class=\"emuwebapp-timeline\">\n    <!-- width is now up to 4k -->\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"4096\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"4096\" \n        drawssff \n        ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"4096\" \n        mouse-track-and-correction-tool \n        ssff-trackname=\"{{$ctrl.trackName}}\" \n        bundle-name=\"{{$ctrl.curBndl.name}}\"></canvas>\n    </div>\n    <!-- <div class=\"emuwebapp-timelineCanvasButtons\">\n        <div ng-show=\"cps.vals.activeButtons.resizePerspectives\" class=\"emuwebapp-level-button\" enlarge=\"{{order}}\">\n            <img style=\"cursor: pointer;\" src=\"img/resize.svg\" />\n        </div>\n    </div> -->\n    </div>",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <!-- width is now up to 4k -->\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"4096\"></canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"4096\" \n        drawssff \n        ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n        \n        <signal-canvas-markup-canvas\n        track-name=\"$ctrl.trackName\"\n        play-head-current-sample=\"$ctrl.playHeadCurrentSample\"\n        moving-boundary-sample=\"$ctrl.movingBoundarySample\"\n        cur-mouse-x=\"$ctrl.curMouseX\"\n        cur-mouse-y=\"$ctrl.curMouseY\"\n        moving-boundary=\"$ctrl.movingBoundary\"\n        view-port-sample-start=\"$ctrl.viewPortSampleStart\"\n        view-port-sample-end=\"$ctrl.viewPortSampleEnd\"\n        view-port-select-start=\"$ctrl.viewPortSelectStart\"\n        view-port-select-end=\"$ctrl.viewPortSelectEnd\"\n        cur-bndl=\"$ctrl.curBundl\"\n        ></signal-canvas-markup-canvas>\n    </div>\n    </div>",
     bindings: {
         trackName: '<',
-        spectroSettings: '<',
+        windowSizeInSecs: '<',
+        rangeFrom: '<',
+        rangeTo: '<',
+        dynamicRange: '<',
+        window: '<',
+        drawHeatMapColors: '<',
+        preEmphasisFilterFactor: '<',
+        heatMapColorAnchors: '<',
+        invert: '<',
         osciSettings: '<',
         lastUpdate: '<',
         movingBoundarySample: '<',
         curMouseX: '<',
+        curMouseY: '<',
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<',
         viewPortSelectStart: '<',
@@ -71702,9 +71006,7 @@ var SpectrogramComponent = {
             this.$postLink = function () {
                 // select the needed DOM elements from the template
                 this.canvas0 = this.$element.find('canvas')[0];
-                this.canvas1 = this.$element.find('canvas')[this.$element.find('canvas').length - 1];
                 this.context = this.canvas0.getContext('2d');
-                this.markupCtx = this.canvas1.getContext('2d');
             };
             this.$onChanges = function (changes) {
                 if (this._inited) {
@@ -71718,22 +71020,14 @@ var SpectrogramComponent = {
                     // 	}
                     // });
                     //
-                    if (changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.osciSettings || changes.spectroSettings) {
+                    if (changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.osciSettings || changes.windowSizeInSecs || changes.rangeFrom || changes.rangeTo || changes.dynamicRange || changes.window || changes.drawHeatMapColors || changes.preEmphasisFilterFactor || changes.heatMapColorAnchors || changes.invert) {
                         if (!$.isEmptyObject(this.SoundHandlerService)) {
                             if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
                                 if (changes.spectroSettings) {
                                     this.setupEvent();
                                 }
                                 this.redraw();
-                                this.clearAndDrawSpectMarkup();
-                            }
-                        }
-                    }
-                    //
-                    if (changes.viewPortSelectStart || changes.viewPortSelectEnd || changes.movingBoundarySample || changes.curMouseX || changes.lastUpdate) {
-                        if (!$.isEmptyObject(this.SoundHandlerService)) {
-                            if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-                                this.clearAndDrawSpectMarkup();
+                                // this.clearAndDrawSpectMarkup();
                             }
                         }
                     }
@@ -71760,7 +71054,6 @@ var SpectrogramComponent = {
         ///////////////
         // bindings
         SpectrogramController.prototype.redraw = function () {
-            this.markupCtx.clearRect(0, 0, this.canvas1.width, this.canvas1.height);
             this.drawSpectro(this.SoundHandlerService.audioBuffer.getChannelData(this.ViewStateService.osciSettings.curChannel));
         };
         ;
@@ -71773,27 +71066,10 @@ var SpectrogramComponent = {
             return (this.ViewStateService.curViewPort.eS + 1 - this.ViewStateService.curViewPort.sS) / this.canvas0.width;
         };
         ;
-        SpectrogramController.prototype.clearAndDrawSpectMarkup = function () {
-            this.markupCtx.clearRect(0, 0, this.canvas1.width, this.canvas1.height);
-            this.drawSpectMarkup();
-        };
-        ;
-        SpectrogramController.prototype.drawSpectMarkup = function () {
-            // draw moving boundary line if moving
-            this.DrawHelperService.drawMovingBoundaryLine(this.markupCtx);
-            // draw current viewport selected
-            this.DrawHelperService.drawCurViewPortSelected(this.markupCtx, false);
-            // draw min max vals and name of track
-            this.DrawHelperService.drawMinMaxAndName(this.markupCtx, '', this.ViewStateService.spectroSettings.rangeFrom, this.ViewStateService.spectroSettings.rangeTo, 2);
-            // only draw corsshair x line if mouse currently not over canvas
-            this.DrawHelperService.drawCrossHairX(this.markupCtx, this.ViewStateService.curMouseX);
-        };
-        ;
         SpectrogramController.prototype.killSpectroRenderingThread = function () {
             this.context.fillStyle = this.ConfigProviderService.design.color.black;
             this.context.fillRect(0, 0, this.canvas0.width, this.canvas0.height);
             // draw current viewport selected
-            this.DrawHelperService.drawCurViewPortSelected(this.markupCtx, false);
             this.FontScaleService.drawUndistortedText(this.context, 'rendering...', this.ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, this.ConfigProviderService.design.font.small.family, 10, 50, this.ConfigProviderService.design.color.black, true);
             if (this.primeWorker !== null) {
                 this.primeWorker.kill();
@@ -71810,7 +71086,7 @@ var SpectrogramComponent = {
                         var tmp = new Uint8ClampedArray(event.img);
                         imageData.data.set(tmp);
                         _this.context.putImageData(imageData, 0, 0);
-                        _this.drawSpectMarkup();
+                        // this.drawSpectMarkup();
                     }
                 }
                 else {
@@ -71893,27 +71169,460 @@ angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 64 */
-/***/ (function(module, exports) {
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
 
 var OsciOverviewComponent = {
     selector: "osciOverview",
-    template: "\n    <div class=\"emuwebapp-preview\">\n    <canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas\" ng-style=\"backgroundCanvas\" id=\"PreviewCanvas\"></canvas>\n    <canvas width=\"4096\" height=\"128\" class=\"emuwebapp-preview-canvas-markup\" id=\"PreviewCanvas\" previewtrack></canvas>\n    </div>\n    ",
-    bindings: {},
+    template: "\n    <div class=\"emuwebapp-preview\">\n    <canvas \n    width=\"4096\" \n    height=\"128\" \n    class=\"emuwebapp-preview-canvas\" \n    ng-style=\"$ctrl.backgroundCanvas\" \n    id=\"PreviewCanvas\"></canvas>\n    <canvas \n    width=\"4096\" \n    height=\"128\" \n    class=\"emuwebapp-preview-canvas-markup\" \n    id=\"PreviewCanvas\" \n    previewtrack></canvas>\n    </div>\n    ",
+    bindings: {
+        curChannel: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        curBndl: '<'
+    },
     controller: /** @class */ (function () {
-        function OsciOverviewComponent() {
+        function OsciOverviewComponent($scope, $element, ViewStateService, SoundHandlerService, DrawHelperService, ConfigProviderService) {
+            this.$postLink = function () {
+                var _this = this;
+                this.canvas = this.$element.find('canvas')[0];
+                this.markupCanvas = this.$element.find('canvas')[1];
+                ///////////////
+                // bindings
+                this.$element.bind('click', function (x) {
+                    if (!$.isEmptyObject(_this.SoundHandlerService.audioBuffer)) {
+                        var width = _this.ViewStateService.curViewPort.eS - _this.ViewStateService.curViewPort.sS;
+                        _this.startSample = _this.ViewStateService.getX(x) * (_this.SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
+                        if (_this.startSample - (width / 2) < 0) {
+                            _this.startSample = Math.ceil(width / 2);
+                        }
+                        else if (_this.startSample + (width / 2) > _this.SoundHandlerService.audioBuffer.length) {
+                            _this.startSample = Math.floor(_this.SoundHandlerService.audioBuffer.length - (width / 2));
+                        }
+                        if (!_this.ViewStateService.isEditing()) {
+                            _this.$scope.$apply(function () {
+                                _this.ViewStateService.setViewPort(_this.startSample - (width / 2), _this.startSample + (width / 2));
+                            });
+                        }
+                    }
+                });
+                //
+                this.$element.bind('mousedown', function (x) {
+                    if (!$.isEmptyObject(_this.SoundHandlerService.audioBuffer)) {
+                        _this.startSample = _this.ViewStateService.getX(x) * (_this.SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
+                    }
+                });
+                //
+                this.$element.bind('mousemove', function (x) {
+                    var mbutton = 0;
+                    if (x.buttons === undefined) {
+                        mbutton = x.which;
+                    }
+                    else {
+                        mbutton = x.buttons;
+                    }
+                    switch (mbutton) {
+                        case 1:
+                            if (_this.startSample !== -1) {
+                                var width = _this.ViewStateService.curViewPort.eS - _this.ViewStateService.curViewPort.sS;
+                                _this.startSample = _this.ViewStateService.getX(x) * (_this.SoundHandlerService.audioBuffer.length / x.originalEvent.target.width);
+                                if (!_this.ViewStateService.isEditing()) {
+                                    _this.$scope.$apply(function () {
+                                        _this.ViewStateService.setViewPort((_this.startSample - (width / 2)), (_this.startSample + (width / 2)));
+                                    });
+                                }
+                            }
+                            break;
+                    }
+                });
+                //
+                this.$element.bind('mouseup', function () {
+                    _this.startSample = -1;
+                });
+                //
+                this.$element.bind('mouseout', function () {
+                    _this.startSample = -1;
+                });
+            };
+            this.$onChanges = function (changes) {
+                //
+                if (this._inited) {
+                    //
+                    if (changes.curChannel || changes.viewPortSampleStart || changes.viewPortSampleEnd) {
+                        this.drawPreview();
+                    }
+                    //
+                    if (changes.curBndl) {
+                        this.envelopeHasBeenDrawn = false;
+                        this.backgroundCanvas = {
+                            'background': this.ConfigProviderService.design.color.black,
+                            'border': '1px solid gray',
+                            'width': '100%',
+                            'height': '100%'
+                        };
+                        this.drawPreview();
+                        //clear on empty bundle name
+                        if (Object.keys(this.curBndl).length === 0 && this.curBndl.constructor === Object) {
+                            var ctx = this.canvas.getContext('2d');
+                            var ctxMarkup = this.markupCanvas.getContext('2d');
+                            ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                            ctxMarkup.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                        }
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.$scope = $scope;
+            this.$element = $element;
+            this.ViewStateService = ViewStateService;
+            this.SoundHandlerService = SoundHandlerService;
+            this.DrawHelperService = DrawHelperService;
+            this.ConfigProviderService = ConfigProviderService;
+            this.backgroundCanvas = {
+                'background': '#000',
+                'border': '1px solid gray',
+                'width': '100%',
+                'height': '100%'
+            };
+            this.startSample = -1;
+            this.envelopeHasBeenDrawn = false;
+            this._inited = false;
         }
+        /**
+         *
+         */
+        OsciOverviewComponent.prototype.drawPreview = function () {
+            if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                if (!this.envelopeHasBeenDrawn) {
+                    this.envelopeHasBeenDrawn = true;
+                    this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, 0, this.SoundHandlerService.audioBuffer.length, false);
+                    this.drawVpOsciMarkup();
+                }
+                else {
+                    this.drawVpOsciMarkup();
+                }
+            }
+        };
+        ;
+        /**
+         * draws markup of osci according to
+         * the information that is specified in
+         * the viewport
+         */
+        OsciOverviewComponent.prototype.drawVpOsciMarkup = function () {
+            var ctx = this.markupCanvas.getContext('2d');
+            var posS = (this.markupCanvas.width / this.SoundHandlerService.audioBuffer.length) * this.ViewStateService.curViewPort.sS;
+            var posE = (this.markupCanvas.width / this.SoundHandlerService.audioBuffer.length) * this.ViewStateService.curViewPort.eS;
+            ctx.clearRect(0, 0, this.markupCanvas.width, this.markupCanvas.height);
+            ctx.fillStyle = this.ConfigProviderService.design.color.transparent.lightGrey;
+            ctx.fillRect(posS, 0, posE - posS, this.markupCanvas.height);
+            ctx.strokeStyle = this.ConfigProviderService.design.color.white;
+            ctx.beginPath();
+            ctx.moveTo(posS, 0);
+            ctx.lineTo(posS, this.markupCanvas.height);
+            ctx.moveTo(posE, 0);
+            ctx.lineTo(posE, this.markupCanvas.height);
+            ctx.closePath();
+            ctx.stroke();
+        };
+        ;
         return OsciOverviewComponent;
     }())
 };
+angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
+    .component(OsciOverviewComponent.selector, OsciOverviewComponent);
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 65 */
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var angular__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(angular__WEBPACK_IMPORTED_MODULE_0__);
+
+var SignalCanvasMarkupCanvasComponent = {
+    selector: "signalCanvasMarkupCanvas",
+    template: "\n    <canvas class=\"emuwebapp-timelineCanvasMarkup\" \n    width=\"4096\" \n    ></canvas>\n    ",
+    bindings: {
+        trackName: '<',
+        playHeadCurrentSample: '<',
+        movingBoundarySample: '<',
+        curMouseX: '<',
+        curMouseY: '<',
+        movingBoundary: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<',
+        curBndl: '<'
+    },
+    controller: /** @class */ (function () {
+        function SignalCanvasMarkusCanvasController($scope, $element, ViewStateService, ConfigProviderService, SsffDataService, DrawHelperService, HistoryService, SoundHandlerService) {
+            this._inited = false;
+            this.$postLink = function () {
+                var _this = this;
+                this.canvas = this.$element.find('canvas')[0];
+                this.ctx = this.canvas.getContext('2d');
+                /////////////////////////////
+                // Bindings
+                this.$element.bind('mousedown', function (event) {
+                    if (!event.shiftKey) {
+                        _this.ViewStateService.curViewPort.movingS = Math.round(_this.ViewStateService.getX(event) * _this.ViewStateService.getSamplesPerPixelVal(event) + _this.ViewStateService.curViewPort.sS);
+                        _this.ViewStateService.curViewPort.movingE = _this.ViewStateService.curViewPort.movingS;
+                        _this.ViewStateService.select(_this.ViewStateService.curViewPort.movingS, _this.ViewStateService.curViewPort.movingE);
+                        _this.drawMarkup(event);
+                        _this.$scope.$apply();
+                    }
+                });
+                this.$element.bind('mouseup', function (event) {
+                    if (event.shiftKey) {
+                        var curSample = Math.round(_this.ViewStateService.getX(event) * _this.ViewStateService.getSamplesPerPixelVal(event) + _this.ViewStateService.curViewPort.sS);
+                        var selectDist = _this.ViewStateService.curViewPort.selectE - _this.ViewStateService.curViewPort.selectS;
+                        if (curSample <= _this.ViewStateService.curViewPort.selectS + selectDist / 2) {
+                            _this.ViewStateService.curViewPort.selectS = curSample;
+                        }
+                        // expand right
+                        if (curSample >= _this.ViewStateService.curViewPort.selectE - selectDist / 2) {
+                            _this.ViewStateService.curViewPort.selectE = curSample;
+                        }
+                        _this.drawMarkup(event);
+                        _this.$scope.$apply();
+                    }
+                });
+                this.$element.bind('mousemove', function (event) {
+                    var mbutton = 0;
+                    _this.drawCrossHairs = true;
+                    if (event.buttons === undefined) {
+                        mbutton = event.which;
+                    }
+                    else {
+                        mbutton = event.buttons;
+                    }
+                    // perform mouse tracking
+                    var mouseX = _this.ViewStateService.getX(event);
+                    _this.ViewStateService.curMouseX = mouseX;
+                    _this.curMouseY = _this.ViewStateService.getY(event);
+                    _this.ViewStateService.curMouseY = _this.curMouseY;
+                    _this.ViewStateService.curMouseTrackName = _this.trackName;
+                    _this.ViewStateService.curMousePosSample = Math.round(_this.ViewStateService.curViewPort.sS + mouseX / _this.canvas.width * (_this.ViewStateService.curViewPort.eS - _this.ViewStateService.curViewPort.sS));
+                    switch (mbutton) {
+                        case 0:
+                            if (_this.ViewStateService.getPermission('labelAction')) {
+                                // draw crossHairs
+                                // if (leave !== false && this.ConfigProviderService.vals.restrictions.drawCrossHairs) {
+                                // }
+                                if (!$.isEmptyObject(_this.SsffDataService.data)) {
+                                    if (_this.SsffDataService.data.length !== 0) {
+                                        if (!_this.ViewStateService.getdragBarActive()) {
+                                            if (_this.ViewStateService.curCorrectionToolNr !== undefined && !_this.ViewStateService.getdragBarActive() && !$.isEmptyObject(_this.ConfigProviderService.getAssignment(_this.trackName))) {
+                                                // var col = SsffDataService.data[0].Columns[0];
+                                                if (_this.tr === undefined) {
+                                                    _this.tr = _this.ConfigProviderService.getSsffTrackConfig('FORMANTS');
+                                                }
+                                                _this.col = _this.SsffDataService.getColumnOfTrack(_this.tr.name, _this.tr.columnName);
+                                                _this.sRaSt = _this.SsffDataService.getSampleRateAndStartTimeOfTrack(_this.tr.name);
+                                                var startTimeVP = _this.ViewStateService.getViewPortStartTime();
+                                                var endTimeVP = _this.ViewStateService.getViewPortEndTime();
+                                                var colStartSampleNr = Math.round(startTimeVP * _this.sRaSt.sampleRate + _this.sRaSt.startTime);
+                                                var colEndSampleNr = Math.round(endTimeVP * _this.sRaSt.sampleRate + _this.sRaSt.startTime);
+                                                var nrOfSamples = colEndSampleNr - colStartSampleNr;
+                                                var curSampleArrs = _this.col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
+                                                var curMouseTime = startTimeVP + (_this.ViewStateService.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
+                                                var curMouseSample = Math.round((curMouseTime + _this.sRaSt.startTime) * _this.sRaSt.sampleRate) - 1; //-1 for in view correction
+                                                var curMouseSampleTime = (1 / _this.sRaSt.sampleRate * curMouseSample) + _this.sRaSt.startTime;
+                                                if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
+                                                    //console.log('early return');
+                                                    return;
+                                                }
+                                                _this.ViewStateService.curPreselColumnSample = curMouseSample - colStartSampleNr;
+                                                var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * _this.canvas.width;
+                                                var y = _this.canvas.height - curSampleArrs[_this.ViewStateService.curPreselColumnSample][_this.ViewStateService.curCorrectionToolNr - 1] / (_this.ViewStateService.spectroSettings.rangeTo - _this.ViewStateService.spectroSettings.rangeFrom) * _this.canvas.height;
+                                                // draw sample
+                                                _this.ctx.strokeStyle = 'black';
+                                                _this.ctx.fillStyle = 'black';
+                                                _this.ctx.beginPath();
+                                                _this.ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+                                                _this.ctx.closePath();
+                                                _this.ctx.stroke();
+                                                _this.ctx.fill();
+                                                if (event.shiftKey) {
+                                                    var oldValue = angular__WEBPACK_IMPORTED_MODULE_0__["copy"](curSampleArrs[_this.ViewStateService.curPreselColumnSample][_this.ViewStateService.curCorrectionToolNr - 1]);
+                                                    var newValue = _this.ViewStateService.spectroSettings.rangeTo - _this.ViewStateService.getY(event) / event.originalEvent.target.height * _this.ViewStateService.spectroSettings.rangeTo; // SIC only using rangeTo
+                                                    curSampleArrs[_this.ViewStateService.curPreselColumnSample][_this.ViewStateService.curCorrectionToolNr - 1] = _this.ViewStateService.spectroSettings.rangeTo - _this.ViewStateService.getY(event) / event.originalEvent.target.height * _this.ViewStateService.spectroSettings.rangeTo;
+                                                    var updateObj = _this.HistoryService.updateCurChangeObj({
+                                                        'type': 'SSFF',
+                                                        'trackName': _this.tr.name,
+                                                        'sampleBlockIdx': colStartSampleNr + _this.ViewStateService.curPreselColumnSample,
+                                                        'sampleIdx': _this.ViewStateService.curCorrectionToolNr - 1,
+                                                        'oldValue': oldValue,
+                                                        'newValue': newValue
+                                                    });
+                                                    //draw updateObj as overlay
+                                                    for (var key in updateObj) {
+                                                        curMouseSampleTime = (1 / _this.sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + _this.sRaSt.startTime;
+                                                        x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * _this.canvas.width;
+                                                        y = _this.canvas.height - updateObj[key].newValue / (_this.ViewStateService.spectroSettings.rangeTo - _this.ViewStateService.spectroSettings.rangeFrom) * _this.canvas.height;
+                                                        // draw sample
+                                                        _this.ctx.strokeStyle = 'red';
+                                                        _this.ctx.fillStyle = 'red';
+                                                        // this.ctx.lineWidth = 4;
+                                                        _this.ctx.beginPath();
+                                                        _this.ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
+                                                        _this.ctx.closePath();
+                                                        _this.ctx.stroke();
+                                                        _this.ctx.fill();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case 1:
+                            if (!_this.ViewStateService.getdragBarActive()) {
+                                _this.setSelectDrag(event);
+                            }
+                            break;
+                    }
+                    _this.$scope.$apply();
+                });
+                /*
+                    element.bind('mouseup', function (event) {
+                    if (!ViewStateService.getdragBarActive()) {
+                    scope.setSelectDrag(event);
+                    scope.drawMarkup(event, false);
+                    }
+                    });
+                    */
+                // on mouse leave clear markup canvas
+                this.$element.bind('mouseleave', function (event) {
+                    _this.drawCrossHairs = false;
+                    if (!$.isEmptyObject(_this.SoundHandlerService)) {
+                        if (!$.isEmptyObject(_this.SoundHandlerService.audioBuffer)) {
+                            if (!_this.ViewStateService.getdragBarActive()) {
+                                if (_this.ViewStateService.getPermission('labelAction')) {
+                                    _this.drawMarkup(event, false);
+                                    _this.ViewStateService.curMouseTrackName = undefined;
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+            this.$onChanges = function (changes) {
+                if (this._inited) {
+                    //
+                    if (changes.curBndl) {
+                        if (!$.isEmptyObject(this.SsffDataService.data)) {
+                            if (this.SsffDataService.data.length !== 0) {
+                                this.tr = this.ConfigProviderService.getSsffTrackConfig('FORMANTS');
+                                if (this.tr !== undefined) {
+                                    this.col = this.SsffDataService.getColumnOfTrack(this.tr.name, this.tr.columnName);
+                                    this.sRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(this.tr.name);
+                                }
+                            }
+                        }
+                    }
+                    // 
+                    if (changes.playHeadCurrentSample) {
+                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                            this.drawPlayHead();
+                        }
+                    }
+                    //
+                    if (changes.movingBoundarySample || changes.curMouseX || changes.curMouseY || changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.viewPortSelectStart || changes.viewPortSelectEnd) {
+                        if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
+                            this.drawMarkup();
+                        }
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.setSelectDrag = function (event) {
+                var curMouseSample = Math.round(this.ViewStateService.getX(event) * this.ViewStateService.getSamplesPerPixelVal(event) + this.ViewStateService.curViewPort.sS);
+                if (curMouseSample > this.ViewStateService.curViewPort.movingS) {
+                    this.ViewStateService.curViewPort.movingE = curMouseSample;
+                }
+                else {
+                    this.ViewStateService.curViewPort.movingS = curMouseSample;
+                }
+                this.ViewStateService.select(this.ViewStateService.curViewPort.movingS, this.ViewStateService.curViewPort.movingE);
+                this.$scope.$apply();
+            };
+            /**
+              *
+              */
+            this.drawPlayHead = function () {
+                this.drawMarkup();
+                var posS = this.ViewStateService.getPos(this.canvas.width, this.ViewStateService.playHeadAnimationInfos.sS);
+                var posCur = this.ViewStateService.getPos(this.canvas.width, this.ViewStateService.playHeadAnimationInfos.curS);
+                this.ctx.fillStyle = this.ConfigProviderService.design.color.transparent.lightGrey;
+                this.ctx.fillRect(posS, 0, posCur - posS, this.canvas.height);
+            };
+            this.$element = $element;
+            this.$scope = $scope;
+            this.ViewStateService = ViewStateService;
+            this.ConfigProviderService = ConfigProviderService;
+            this.SsffDataService = SsffDataService;
+            this.DrawHelperService = DrawHelperService;
+            this.HistoryService = HistoryService;
+            this.SoundHandlerService = SoundHandlerService;
+            this.drawCrossHairs = false;
+        }
+        SignalCanvasMarkusCanvasController.prototype.drawMarkup = function (event, leave) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            // draw current viewport selected
+            if (this.trackName === 'OSCI') {
+                this.DrawHelperService.drawViewPortTimes(this.ctx, true);
+                this.DrawHelperService.drawCurViewPortSelected(this.ctx, true);
+            }
+            else if (this.trackName === 'SPEC') {
+                this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                this.DrawHelperService.drawMinMaxAndName(this.ctx, '', this.ViewStateService.spectroSettings.rangeFrom, this.ViewStateService.spectroSettings.rangeTo, 2);
+            }
+            else {
+                var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
+                var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+                this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                if (typeof col !== "undefined") {
+                    this.DrawHelperService.drawMinMaxAndName(this.ctx, this.trackName, col._minVal, col._maxVal, 2);
+                }
+            }
+            if (this.drawCrossHairs) {
+                this.DrawHelperService.drawCrossHairs(this.ctx, this.curMouseX, this.curMouseY, this.ViewStateService.spectroSettings.rangeFrom, this.ViewStateService.spectroSettings.rangeTo, 'Hz', this.trackName);
+            }
+            else {
+                this.DrawHelperService.drawCrossHairX(this.ctx, this.curMouseX);
+            }
+            // draw moving boundary line if moving
+            this.DrawHelperService.drawMovingBoundaryLine(this.ctx);
+        };
+        ;
+        return SignalCanvasMarkusCanvasController;
+    }())
+};
+angular__WEBPACK_IMPORTED_MODULE_0__["module"]('emuwebApp')
+    .component(SignalCanvasMarkupCanvasComponent.selector, SignalCanvasMarkupCanvasComponent);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(66);
+            var content = __webpack_require__(61);
 
             content = content.__esModule ? content.default : content;
 
@@ -71935,7 +71644,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 66 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -71948,11 +71657,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 67 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(68);
+            var content = __webpack_require__(63);
 
             content = content.__esModule ? content.default : content;
 
@@ -71974,7 +71683,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 68 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -71987,11 +71696,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 69 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(70);
+            var content = __webpack_require__(65);
 
             content = content.__esModule ? content.default : content;
 
@@ -72013,7 +71722,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 70 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72026,11 +71735,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 71 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(72);
+            var content = __webpack_require__(67);
 
             content = content.__esModule ? content.default : content;
 
@@ -72052,7 +71761,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 72 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72065,11 +71774,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 73 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(74);
+            var content = __webpack_require__(69);
 
             content = content.__esModule ? content.default : content;
 
@@ -72091,16 +71800,16 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 74 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(2);
-var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(75);
-var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(76);
-var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(77);
-var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(78);
-var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(79);
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(70);
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(71);
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(72);
+var ___CSS_LOADER_URL_IMPORT_2___ = __webpack_require__(73);
+var ___CSS_LOADER_URL_IMPORT_3___ = __webpack_require__(74);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
@@ -72113,7 +71822,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 75 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72153,7 +71862,7 @@ module.exports = function (url, options) {
 };
 
 /***/ }),
-/* 76 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72161,7 +71870,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.eot");
 
 /***/ }),
-/* 77 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72169,7 +71878,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.woff2");
 
 /***/ }),
-/* 78 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72177,7 +71886,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.woff");
 
 /***/ }),
-/* 79 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72185,11 +71894,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "fonts/MaterialIcons-Regular.ttf");
 
 /***/ }),
-/* 80 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(81);
+            var content = __webpack_require__(76);
 
             content = content.__esModule ? content.default : content;
 
@@ -72211,7 +71920,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 81 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72224,11 +71933,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 82 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(83);
+            var content = __webpack_require__(78);
 
             content = content.__esModule ? content.default : content;
 
@@ -72250,7 +71959,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 83 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72263,11 +71972,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 84 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(85);
+            var content = __webpack_require__(80);
 
             content = content.__esModule ? content.default : content;
 
@@ -72289,7 +71998,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 85 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72302,11 +72011,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 86 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(87);
+            var content = __webpack_require__(82);
 
             content = content.__esModule ? content.default : content;
 
@@ -72328,7 +72037,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 87 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72341,11 +72050,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 88 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(89);
+            var content = __webpack_require__(84);
 
             content = content.__esModule ? content.default : content;
 
@@ -72367,7 +72076,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 89 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72380,11 +72089,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 90 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(91);
+            var content = __webpack_require__(86);
 
             content = content.__esModule ? content.default : content;
 
@@ -72406,7 +72115,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 91 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72419,11 +72128,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 92 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(93);
+            var content = __webpack_require__(88);
 
             content = content.__esModule ? content.default : content;
 
@@ -72445,7 +72154,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 93 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72458,11 +72167,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 94 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(95);
+            var content = __webpack_require__(90);
 
             content = content.__esModule ? content.default : content;
 
@@ -72484,7 +72193,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 95 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72497,11 +72206,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 96 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(97);
+            var content = __webpack_require__(92);
 
             content = content.__esModule ? content.default : content;
 
@@ -72523,7 +72232,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 97 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72536,11 +72245,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 98 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(99);
+            var content = __webpack_require__(94);
 
             content = content.__esModule ? content.default : content;
 
@@ -72562,7 +72271,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 99 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72575,11 +72284,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 100 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(101);
+            var content = __webpack_require__(96);
 
             content = content.__esModule ? content.default : content;
 
@@ -72601,7 +72310,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 101 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72614,11 +72323,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 102 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(103);
+            var content = __webpack_require__(98);
 
             content = content.__esModule ? content.default : content;
 
@@ -72640,7 +72349,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 103 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72653,11 +72362,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 104 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(105);
+            var content = __webpack_require__(100);
 
             content = content.__esModule ? content.default : content;
 
@@ -72679,7 +72388,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 105 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72692,11 +72401,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 106 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(107);
+            var content = __webpack_require__(102);
 
             content = content.__esModule ? content.default : content;
 
@@ -72718,7 +72427,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 107 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72731,11 +72440,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 108 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(109);
+            var content = __webpack_require__(104);
 
             content = content.__esModule ? content.default : content;
 
@@ -72757,7 +72466,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 109 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72770,11 +72479,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 110 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(111);
+            var content = __webpack_require__(106);
 
             content = content.__esModule ? content.default : content;
 
@@ -72796,7 +72505,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 111 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72809,11 +72518,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 112 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(113);
+            var content = __webpack_require__(108);
 
             content = content.__esModule ? content.default : content;
 
@@ -72835,7 +72544,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 113 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72848,11 +72557,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 114 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(115);
+            var content = __webpack_require__(110);
 
             content = content.__esModule ? content.default : content;
 
@@ -72874,7 +72583,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 115 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72887,11 +72596,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 116 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(117);
+            var content = __webpack_require__(112);
 
             content = content.__esModule ? content.default : content;
 
@@ -72913,7 +72622,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 117 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72926,11 +72635,11 @@ module.exports = exports;
 
 
 /***/ }),
-/* 118 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(1);
-            var content = __webpack_require__(119);
+            var content = __webpack_require__(114);
 
             content = content.__esModule ? content.default : content;
 
@@ -72952,7 +72661,7 @@ var exported = content.locals ? content.locals : {};
 module.exports = exported;
 
 /***/ }),
-/* 119 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -72965,7 +72674,7 @@ module.exports = exports;
 
 
 /***/ }),
-/* 120 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84509,7 +84218,7 @@ function defaultConstrain(transform, extent, translateExtent) {
 var angular_filter = __webpack_require__(43);
 
 // EXTERNAL MODULE: ./node_modules/showdown/dist/showdown.js
-var showdown = __webpack_require__(15);
+var showdown = __webpack_require__(14);
 
 // CONCATENATED MODULE: ./src/app/app.ts
 
@@ -84641,992 +84350,6 @@ angular["module"]('emuwebApp')
      */
     $scope.cancel = function () {
         ModalService.close();
-    };
-});
-
-// CONCATENATED MODULE: ./src/app/controllers/emuwebapp.controller.ts
-
-angular["module"]('emuwebApp')
-    .controller('EmuWebAppController', function ($scope, $window, $document, $location, ViewStateService, HistoryService, IoHandlerService, SoundHandlerService, ConfigProviderService, FontScaleService, SsffDataService, LevelService, TextGridParserService, WavParserService, DrawHelperService, ValidationService, AppcacheHandlerService, LoadedMetaDataService, DbObjLoadSaveService, AppStateService, DataService, ModalService, BrowserDetectorService, HierarchyLayoutService) {
-    // hook up services to use abbreviated forms
-    $scope.cps = ConfigProviderService;
-    $scope.hists = HistoryService;
-    $scope.fontImage = FontScaleService;
-    $scope.levServ = LevelService;
-    $scope.dataServ = DataService;
-    $scope.vs = ViewStateService;
-    $scope.ssffds = SsffDataService;
-    $scope.shs = SoundHandlerService;
-    $scope.dhs = DrawHelperService;
-    $scope.wps = WavParserService;
-    $scope.io = IoHandlerService;
-    $scope.ach = AppcacheHandlerService;
-    $scope.lmds = LoadedMetaDataService;
-    $scope.HierarchyLayoutService = HierarchyLayoutService;
-    // init vars
-    $scope.connectBtnLabel = 'connect';
-    $scope.tmp = {};
-    $scope.dbLoaded = false;
-    $scope.is2dCancasesHidden = true;
-    $scope.windowWidth = $window.outerWidth;
-    $scope.internalVars = {};
-    $scope.internalVars.showAboutHint = false; // this should probably be moved to ViewStateService
-    $scope.xTmp = 123;
-    $scope.yTmp = 321;
-    // check for new version
-    $scope.ach.checkForNewVersion();
-    //////////////
-    // bindings
-    // bind window resize event
-    angular["element"]($window).bind('resize', function () {
-        LevelService.deleteEditArea();
-        ViewStateService.setWindowWidth($window.outerWidth);
-        if (ViewStateService.hierarchyState.isShown()) {
-            ++ViewStateService.hierarchyState.resize;
-        }
-        $scope.$digest();
-    });
-    // bind shift/alt keyups for history
-    angular["element"]($window).bind('keyup', function (e) {
-        if (e.keyCode === ConfigProviderService.vals.keyMappings.shift || e.keyCode === ConfigProviderService.vals.keyMappings.alt) {
-            HistoryService.addCurChangeObjToUndoStack();
-            $scope.$digest();
-        }
-    });
-    // bind focus check for mouse on window and document ( mouse inside )
-    angular["element"]($window).bind('blur', function () {
-        ViewStateService.focusOnEmuWebApp = false;
-    });
-    // bind focus check for mouse on window and document ( mouse inside )
-    angular["element"]($document).bind('blur', function () {
-        ViewStateService.focusOnEmuWebApp = false;
-    });
-    // bind blur check for mouse on window and document ( mouse outside )
-    angular["element"]($window).bind('focus', function () {
-        ViewStateService.focusOnEmuWebApp = true;
-    });
-    // bind blur check for mouse on window and document ( mouse outside )
-    angular["element"]($document).bind('focus', function () {
-        ViewStateService.focusOnEmuWebApp = true;
-    });
-    // Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
-    window.onbeforeunload = function () {
-        if (ConfigProviderService.embeddedVals.audioGetUrl === '' && LoadedMetaDataService.getBundleList().length > 0 && !ConfigProviderService.vals.main.autoConnect && HistoryService.movesAwayFromLastSave > 0) {
-            return 'Do you really wish to leave/reload the EMU-webApp? All unsaved changes will be lost...';
-        }
-    };
-    //////////////
-    // watches
-    // watch if embedded override (if attributes are set on emuwebapp tag)
-    // $scope.$watch('cps.embeddedVals.audioGetUrl', function (val) {
-    // 	if (val !== undefined && val !== '') {
-    // 		// check if both are set
-    // 		$scope.loadFilesForEmbeddedApp();
-    // 	}
-    // }, true);
-    //
-    //////////////
-    /////////////
-    // listens
-    // listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
-    $scope.$on('connectionDisrupted', function () {
-        AppStateService.resetToInitState();
-    });
-    // listen for resetToInitState
-    $scope.$on('resetToInitState', function () {
-        $scope.loadDefaultConfig();
-    });
-    $scope.$on('reloadToInitState', function (event, data) {
-        $scope.loadDefaultConfig();
-        ViewStateService.url = data.url;
-        ViewStateService.somethingInProgressTxt = 'Connecting to server...';
-        ViewStateService.somethingInProgress = true;
-        IoHandlerService.WebSocketHandlerService.initConnect(data.url).then(function (message) {
-            if (message.type === 'error') {
-                ModalService.open('views/error.html', 'Could not connect to websocket server: ' + data.url).then(function () {
-                    AppStateService.resetToInitState();
-                });
-            }
-            else {
-                $scope.handleConnectedToWSserver(data);
-            }
-        }, function (errMess) {
-            ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
-                AppStateService.resetToInitState();
-            });
-        });
-    });
-    //
-    ////////////
-    // check if URL parameters are set -> if so set embedded flags! SIC this should probably be moved to loadFilesForEmbeddedApp
-    var searchObject = $location.search();
-    if (searchObject.audioGetUrl && searchObject.labelGetUrl && searchObject.labelType) {
-        ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
-        ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
-        ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
-        ConfigProviderService.embeddedVals.fromUrlParams = true;
-    }
-    /**
-     *
-     */
-    $scope.loadFilesForEmbeddedApp = function () {
-        var searchObject = $location.search();
-        if (searchObject.audioGetUrl || searchObject.bndlJsonGetUrl) {
-            if (searchObject.audioGetUrl) {
-                ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
-                ConfigProviderService.vals.activeButtons.openDemoDB = false;
-                var promise = IoHandlerService.httpGetPath(ConfigProviderService.embeddedVals.audioGetUrl, 'arraybuffer');
-            }
-            else {
-                var promise = IoHandlerService.httpGetPath(searchObject.bndlJsonGetUrl, "application/json");
-            }
-            promise.then(function (data) {
-                ViewStateService.showDropZone = false;
-                // set bundle name
-                var tmp = ConfigProviderService.embeddedVals.audioGetUrl;
-                LoadedMetaDataService.setCurBndlName(tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length));
-                //hide menu
-                if (ViewStateService.getBundleListSideBarOpen()) {
-                    if (searchObject.saveToWindowParent !== "true") {
-                        ViewStateService.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
-                    }
-                }
-                ViewStateService.somethingInProgressTxt = 'Loading DB config...';
-                // test if DBconfigGetUrl is set if so use it
-                var DBconfigGetUrl;
-                if (searchObject.DBconfigGetUrl) {
-                    DBconfigGetUrl = searchObject.DBconfigGetUrl;
-                }
-                else {
-                    DBconfigGetUrl = 'configFiles/embedded_emuwebappConfig.json';
-                }
-                // then get the DBconfigFile
-                IoHandlerService.httpGetPath(DBconfigGetUrl).then(function (resp) {
-                    // first element of perspectives is default perspective
-                    ViewStateService.curPerspectiveIdx = 0;
-                    ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
-                    // validate emuwebappConfigSchema
-                    var validRes = ValidationService.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
-                    if (validRes === true) {
-                        // turn of keybinding only on mouseover
-                        if (ConfigProviderService.embeddedVals.fromUrlParams) {
-                            ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
-                        }
-                        ConfigProviderService.curDbConfig = resp.data;
-                        // validate DBconfigFileSchema!
-                        validRes = ValidationService.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
-                        if (validRes === true) {
-                            if (searchObject.saveToWindowParent === "true") {
-                                ConfigProviderService.vals.activeButtons.saveBundle = true;
-                            }
-                            var bndlList = [{ 'session': 'File(s)', 'name': 'from URL parameters' }];
-                            LoadedMetaDataService.setBundleList(bndlList);
-                            LoadedMetaDataService.setCurBndl(bndlList[0]);
-                            // set wav file
-                            ViewStateService.somethingInProgress = true;
-                            ViewStateService.somethingInProgressTxt = 'Parsing WAV file...';
-                            if (searchObject.audioGetUrl) {
-                                WavParserService.parseWavAudioBuf(data.data).then(function (messWavParser) {
-                                    var audioBuffer = messWavParser;
-                                    ViewStateService.curViewPort.sS = 0;
-                                    ViewStateService.curViewPort.eS = audioBuffer.length;
-                                    ViewStateService.resetSelect();
-                                    SoundHandlerService.audioBuffer = audioBuffer;
-                                    var respType;
-                                    if (ConfigProviderService.embeddedVals.labelType === 'TEXTGRID') {
-                                        respType = 'text';
-                                    }
-                                    else {
-                                        // setting everything to text because the BAS webservices somehow respond with a
-                                        // 200 (== successful response) but the data field is empty
-                                        respType = 'text';
-                                    }
-                                    // get + parse file
-                                    if (searchObject.labelGetUrl) {
-                                        IoHandlerService.httpGetPath(ConfigProviderService.embeddedVals.labelGetUrl, respType).then(function (data2) {
-                                            ViewStateService.somethingInProgressTxt = 'Parsing ' + ConfigProviderService.embeddedVals.labelType + ' file...';
-                                            IoHandlerService.parseLabelFile(data2.data, ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', ConfigProviderService.embeddedVals.labelType).then(function (parseMess) {
-                                                var annot = parseMess;
-                                                DataService.setData(annot);
-                                                // if no DBconfigGetUrl is given generate levelDefs and co. from annotation
-                                                if (!searchObject.DBconfigGetUrl) {
-                                                    var lNames = [];
-                                                    var levelDefs = [];
-                                                    for (var i = 0, len = annot.levels.length; i < len; i++) {
-                                                        var l = annot.levels[i];
-                                                        lNames.push(l.name);
-                                                        var attrDefs = [];
-                                                        for (var j = 0, len2 = l.items[0].labels.length; j < len2; j++) {
-                                                            attrDefs.push({
-                                                                'name': l.items[0].labels[j].name,
-                                                                'type': 'string'
-                                                            });
-                                                        }
-                                                        levelDefs.push({
-                                                            'name': l.name,
-                                                            'type': l.type,
-                                                            'attributeDefinitions': attrDefs
-                                                        });
-                                                    }
-                                                    ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
-                                                    ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].levelCanvases.order = lNames;
-                                                }
-                                                ViewStateService.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-                                                ViewStateService.somethingInProgressTxt = 'Done!';
-                                                ViewStateService.somethingInProgress = false;
-                                                ViewStateService.setState('labeling');
-                                            }, function (errMess) {
-                                                ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
-                                            });
-                                        }, function (errMess) {
-                                            ModalService.open('views/error.html', 'Could not get label file: ' + ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
-                                        });
-                                    }
-                                    else {
-                                        // hide download + search buttons
-                                        ConfigProviderService.vals.activeButtons.downloadAnnotation = false;
-                                        ConfigProviderService.vals.activeButtons.downloadTextGrid = false;
-                                        ConfigProviderService.vals.activeButtons.search = false;
-                                        ViewStateService.somethingInProgressTxt = 'Done!';
-                                        ViewStateService.somethingInProgress = false;
-                                        ViewStateService.setState('labeling');
-                                    }
-                                }, function (errMess) {
-                                    ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
-                                });
-                            }
-                            else {
-                                DbObjLoadSaveService.loadBundle({ name: 'fromURLparams' }, searchObject.bndlJsonGetUrl);
-                            }
-                        }
-                        else {
-                            ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4));
-                        }
-                    }
-                    else {
-                        ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
-                    }
-                }, function (errMess) {
-                    ModalService.open('views/error.html', 'Could not get embedded_config.json: ' + errMess);
-                });
-            }, function (errMess) {
-                ModalService.open('views/error.html', 'Could not get audio file:' + ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
-            });
-        }
-    };
-    /**
-     * init load of config files
-     */
-    $scope.loadDefaultConfig = function () {
-        ViewStateService.somethingInProgress = true;
-        ViewStateService.somethingInProgressTxt = 'Loading schema files';
-        // load schemas first
-        ValidationService.loadSchemas().then(function (replies) {
-            ValidationService.setSchemas(replies);
-            IoHandlerService.httpGetDefaultDesign().then(function (response) {
-                ConfigProviderService.setDesign(response.data);
-                IoHandlerService.httpGetDefaultConfig().then(function (response) {
-                    ViewStateService.somethingInProgressTxt = 'Validating emuwebappConfig';
-                    var validRes = ValidationService.validateJSO('emuwebappConfigSchema', response.data);
-                    if (validRes === true) {
-                        ConfigProviderService.setVals(response.data);
-                        angular["copy"]($scope.cps.vals, $scope.cps.initDbConfig);
-                        $scope.handleDefaultConfigLoaded();
-                        // loadFilesForEmbeddedApp if these are set
-                        $scope.loadFilesForEmbeddedApp();
-                        $scope.checkIfToShowWelcomeModal();
-                        // FOR DEVELOPMENT
-                        // $scope.aboutBtnClick();
-                        ViewStateService.somethingInProgress = false;
-                    }
-                    else {
-                        ModalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(function () {
-                            AppStateService.resetToInitState();
-                        });
-                    }
-                }, function (response) {
-                    ModalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
-                        AppStateService.resetToInitState();
-                    });
-                });
-            }, function (response) {
-                ModalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(function () {
-                    AppStateService.resetToInitState();
-                });
-            });
-        }, function (errMess) {
-            ModalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(function () {
-                AppStateService.resetToInitState();
-            });
-        });
-    };
-    // call function on init
-    $scope.loadDefaultConfig();
-    $scope.checkIfToShowWelcomeModal = function () {
-        var curVal = localStorage.getItem('haveShownWelcomeModal');
-        var searchObject = $location.search();
-        if (!BrowserDetectorService.isBrowser.PhantomJS() && curVal === null && typeof searchObject.viewer_pane !== 'undefined') {
-            localStorage.setItem('haveShownWelcomeModal', 'true');
-            $scope.internalVars.showAboutHint = true;
-        }
-        // FOR DEVELOPMENT
-        // $scope.internalVars.showAboutHint = true;
-    };
-    $scope.getCurBndlName = function () {
-        return LoadedMetaDataService.getCurBndlName();
-    };
-    /**
-     * function called after default config was loaded
-     */
-    $scope.handleDefaultConfigLoaded = function () {
-        if (!ViewStateService.getBundleListSideBarOpen()) {
-            ViewStateService.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
-        }
-        // check if either autoConnect is set in DBconfig or as get parameter
-        var searchObject = $location.search();
-        if (ConfigProviderService.vals.main.autoConnect || searchObject.autoConnect === 'true') {
-            if (typeof searchObject.serverUrl !== 'undefined') { // overwrite serverUrl if set as GET parameter
-                ConfigProviderService.vals.main.serverUrl = searchObject.serverUrl;
-            }
-            if (searchObject.comMode !== "GITLAB") {
-                // sic IoHandlerService.WebSocketHandlerService is private!
-                IoHandlerService.WebSocketHandlerService.initConnect(ConfigProviderService.vals.main.serverUrl).then(function (message) {
-                    if (message.type === 'error') {
-                        ModalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl).then(function () {
-                            AppStateService.resetToInitState();
-                        });
-                    }
-                    else {
-                        $scope.handleConnectedToWSserver({ session: null, reload: null });
-                    }
-                }, function (errMess) {
-                    ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
-                        AppStateService.resetToInitState();
-                    });
-                });
-            }
-            else {
-                // set comMode and pretend we are connected to server
-                // the IoHandlerService will take care of the rest
-                ConfigProviderService.vals.main.comMode = "GITLAB";
-                $scope.handleConnectedToWSserver({ session: null, reload: null });
-            }
-        }
-        // setspectroSettings
-        ViewStateService.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, ConfigProviderService.vals.spectrogramSettings.rangeFrom, ConfigProviderService.vals.spectrogramSettings.rangeTo, ConfigProviderService.vals.spectrogramSettings.dynamicRange, ConfigProviderService.vals.spectrogramSettings.window, ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors, ConfigProviderService.vals.spectrogramSettings.invert);
-        // setting transition values
-        ViewStateService.setTransitionTime(ConfigProviderService.design.animation.period);
-    };
-    /**
-     * function is called after websocket connection
-     * has been established. It executes the protocol
-     * and loads the first bundle in the bundle list (= default behavior).
-     */
-    $scope.handleConnectedToWSserver = function (data) {
-        // hide drop zone
-        var session = data.session;
-        var reload = data.reload;
-        ViewStateService.showDropZone = false;
-        if (searchObject.comMode !== "GITLAB") {
-            ConfigProviderService.vals.main.comMode = 'WS';
-        }
-        ConfigProviderService.vals.activeButtons.openDemoDB = false;
-        ViewStateService.somethingInProgress = true;
-        ViewStateService.somethingInProgressTxt = 'Checking protocol...';
-        // Check if server speaks the same protocol
-        IoHandlerService.getProtocol().then(function (res) {
-            if (res.protocol === 'EMU-webApp-websocket-protocol' && res.version === '0.0.2') {
-                ViewStateService.somethingInProgressTxt = 'Checking user management...';
-                // then ask if server does user management
-                IoHandlerService.getDoUserManagement().then(function (doUsrData) {
-                    if (doUsrData === 'NO') {
-                        $scope.innerHandleConnectedToWSserver({ session: session, reload: reload });
-                    }
-                    else {
-                        // show user management error
-                        ModalService.open('views/loginModal.html').then(function (res) {
-                            if (res) {
-                                $scope.innerHandleConnectedToWSserver({ session: session, reload: reload });
-                            }
-                            else {
-                                AppStateService.resetToInitState();
-                            }
-                        });
-                    }
-                });
-            }
-            else {
-                // show protocol error and disconnect from server
-                ModalService.open('views/error.html', 'Could not connect to websocket server: ' + ConfigProviderService.vals.main.serverUrl + '. It does not speak the same protocol as this client. Its protocol answer was: "' + res.protocol + '" with the version: "' + res.version + '"').then(function () {
-                    AppStateService.resetToInitState();
-                });
-            }
-        });
-    };
-    /**
-     * to avoid redundant code...
-     */
-    $scope.innerHandleConnectedToWSserver = function (data) {
-        var session = data.session;
-        var reload = data.reload;
-        ViewStateService.somethingInProgressTxt = 'Loading DB config...';
-        // then get the DBconfigFile
-        IoHandlerService.httpGetDefaultDesign().then(function (response) {
-            ConfigProviderService.setDesign(response.data);
-            IoHandlerService.getDBconfigFile().then(function (data) {
-                // first element of perspectives is default perspective
-                ViewStateService.curPerspectiveIdx = 0;
-                ConfigProviderService.setVals(data.EMUwebAppConfig);
-                // FOR DEVELOPMENT
-                //$scope.showEditDBconfigBtnClick();
-                var validRes = ValidationService.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
-                if (validRes === true) {
-                    ConfigProviderService.curDbConfig = data;
-                    ViewStateService.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-                    // setspectroSettings
-                    ViewStateService.setspectroSettings(ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs, ConfigProviderService.vals.spectrogramSettings.rangeFrom, ConfigProviderService.vals.spectrogramSettings.rangeTo, ConfigProviderService.vals.spectrogramSettings.dynamicRange, ConfigProviderService.vals.spectrogramSettings.window, ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors, ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor, ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors, ConfigProviderService.vals.spectrogramSettings.invert);
-                    // set first path as default
-                    ViewStateService.setHierarchySettings($scope.HierarchyLayoutService.findAllNonPartialPaths().possible[0]);
-                    validRes = ValidationService.validateJSO('DBconfigFileSchema', data);
-                    if (validRes === true) {
-                        // then get the DBconfigFile
-                        ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
-                        IoHandlerService.getBundleList().then(function (bdata) {
-                            validRes = LoadedMetaDataService.setBundleList(bdata);
-                            // show standard buttons
-                            ConfigProviderService.vals.activeButtons.clear = true;
-                            ConfigProviderService.vals.activeButtons.specSettings = true;
-                            if (validRes === true) {
-                                // then load first bundle in list
-                                if (session === null) {
-                                    session = LoadedMetaDataService.getBundleList()[0];
-                                }
-                                DbObjLoadSaveService.loadBundle(session).then(function () {
-                                    // FOR DEVELOPMENT:
-                                    // DbObjLoadSaveService.saveBundle(); // for testing save function
-                                    // $scope.menuBundleSaveBtnClick(); // for testing save button
-                                    // $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
-                                    // $scope.settingsBtnClick(); // for testing spect settings dial
-                                    // $scope.searchBtnClick();
-                                    // ViewStateService.curViewPort.sS = 27455;
-                                    // ViewStateService.curViewPort.eS = 30180;
-                                });
-                                //ViewStateService.currentPage = (ViewStateService.numberOfPages(LoadedMetaDataService.getBundleList().length)) - 1;
-                                if (reload) {
-                                    LoadedMetaDataService.openCollapseSession(session.session);
-                                }
-                            }
-                            else {
-                                ModalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(function () {
-                                    AppStateService.resetToInitState();
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-                            AppStateService.resetToInitState();
-                        });
-                    }
-                }
-                else {
-                    ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-                        AppStateService.resetToInitState();
-                    });
-                }
-            });
-        });
-    };
-    /**
-     *
-     */
-    $scope.toggleCollapseSession = function (ses) {
-        $scope.uniqSessionList[ses].collapsed = !$scope.uniqSessionList[ses].collapsed;
-    };
-    /**
-     *
-     */
-    $scope.getEnlarge = function (index) {
-        var len = ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.order.length;
-        var large = 50;
-        if (ViewStateService.getenlarge() === -1) {
-            return 'auto';
-        }
-        else {
-            if (len === 1) {
-                return 'auto';
-            }
-            if (len === 2) {
-                if (ViewStateService.getenlarge() === index) {
-                    return '70%';
-                }
-                else {
-                    return '27%';
-                }
-            }
-            else {
-                if (ViewStateService.getenlarge() === index) {
-                    return large + '%';
-                }
-                else {
-                    return (95 - large) / (len - 1) + '%';
-                }
-            }
-        }
-    };
-    /**
-     *
-     */
-    $scope.cursorInTextField = function () {
-        ViewStateService.setcursorInTextField(true);
-    };
-    /**
-     *
-     */
-    $scope.cursorOutOfTextField = function () {
-        ViewStateService.setcursorInTextField(false);
-    };
-    /////////////////////////////////////////
-    // handle button clicks
-    // top menu:
-    /**
-     *
-     */
-    $scope.addLevelSegBtnClick = function () {
-        if (ViewStateService.getPermission('addLevelSegBtnClick')) {
-            var length = 0;
-            if (DataService.data.levels !== undefined) {
-                length = DataService.data.levels.length;
-            }
-            var newName = 'levelNr' + length;
-            var level = {
-                items: [],
-                name: newName,
-                type: 'SEGMENT'
-            };
-            if (ViewStateService.getCurAttrDef(newName) === undefined) {
-                var leveldef = {
-                    'name': newName,
-                    'type': 'EVENT',
-                    'attributeDefinitions': {
-                        'name': newName,
-                        'type': 'string'
-                    }
-                };
-                ViewStateService.setCurLevelAttrDefs(leveldef);
-            }
-            LevelService.insertLevel(level, length, ViewStateService.curPerspectiveIdx);
-            //  Add to history
-            HistoryService.addObjToUndoStack({
-                'type': 'ANNOT',
-                'action': 'INSERTLEVEL',
-                'level': level,
-                'id': length,
-                'curPerspectiveIdx': ViewStateService.curPerspectiveIdx
-            });
-            ViewStateService.selectLevel(false, ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].levelCanvases.order, LevelService); // pass in LevelService to prevent circular deps
-        }
-    };
-    /**
-     *
-     */
-    $scope.addLevelPointBtnClick = function () {
-        if (ViewStateService.getPermission('addLevelPointBtnClick')) {
-            var length = 0;
-            if (DataService.data.levels !== undefined) {
-                length = DataService.data.levels.length;
-            }
-            var newName = 'levelNr' + length;
-            var level = {
-                items: [],
-                name: newName,
-                type: 'EVENT'
-            };
-            if (ViewStateService.getCurAttrDef(newName) === undefined) {
-                var leveldef = {
-                    name: newName,
-                    type: 'EVENT',
-                    attributeDefinitions: {
-                        name: newName,
-                        type: 'string'
-                    }
-                };
-                ViewStateService.setCurLevelAttrDefs(leveldef);
-            }
-            LevelService.insertLevel(level, length, ViewStateService.curPerspectiveIdx);
-            //  Add to history
-            HistoryService.addObjToUndoStack({
-                'type': 'ANNOT',
-                'action': 'INSERTLEVEL',
-                'level': level,
-                'id': length,
-                'curPerspectiveIdx': ViewStateService.curPerspectiveIdx
-            });
-            ViewStateService.selectLevel(false, ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].levelCanvases.order, LevelService); // pass in LevelService to prevent circular deps
-        }
-    };
-    /**
-     *
-     */
-    $scope.renameSelLevelBtnClick = function () {
-        if (ViewStateService.getPermission('renameSelLevelBtnClick')) {
-            if (ViewStateService.getcurClickLevelName() !== undefined) {
-                ModalService.open('views/renameLevel.html', ViewStateService.getcurClickLevelName());
-            }
-            else {
-                ModalService.open('views/error.html', 'Rename Error : Please choose a Level first !');
-            }
-        }
-    };
-    /**
-     *
-     */
-    $scope.downloadTextGridBtnClick = function () {
-        if (ViewStateService.getPermission('downloadTextGridBtnClick')) {
-            TextGridParserService.asyncToTextGrid().then(function (parseMess) {
-                parseMess = parseMess.replace(/\t/g, '    '); // replace all tabs with 4 spaces
-                ModalService.open('views/export.html', LoadedMetaDataService.getCurBndl().name + '.TextGrid', parseMess);
-            });
-        }
-    };
-    /**
-     *
-     */
-    $scope.downloadAnnotationBtnClick = function () {
-        if (ViewStateService.getPermission('downloadAnnotationBtnClick')) {
-            if (ValidationService.validateJSO('emuwebappConfigSchema', DataService.getData())) {
-                ModalService.open('views/export.html', LoadedMetaDataService.getCurBndl().name + '_annot.json', angular["toJson"](DataService.getData(), true));
-            }
-        }
-    };
-    /**
-     *
-     */
-    $scope.settingsBtnClick = function () {
-        if (ViewStateService.getPermission('spectSettingsChange')) {
-            ModalService.open('views/settingsModal.html');
-        }
-    };
-    /**
-     *
-     */
-    $scope.connectBtnClick = function () {
-        if (ViewStateService.getPermission('connectBtnClick')) {
-            ModalService.open('views/connectModal.html').then(function (url) {
-                if (url) {
-                    ViewStateService.somethingInProgressTxt = 'Connecting to server...';
-                    ViewStateService.somethingInProgress = true;
-                    ViewStateService.url = url;
-                    // SIC IoHandlerService.WebSocketHandlerService is private
-                    IoHandlerService.WebSocketHandlerService.initConnect(url).then(function (message) {
-                        if (message.type === 'error') {
-                            ModalService.open('views/error.html', 'Could not connect to websocket server: ' + url).then(function () {
-                                AppStateService.resetToInitState();
-                            });
-                        }
-                        else {
-                            $scope.handleConnectedToWSserver({ session: null, reload: null });
-                        }
-                    }, function (errMess) {
-                        ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(function () {
-                            AppStateService.resetToInitState();
-                        });
-                    });
-                }
-            });
-        }
-        else {
-        }
-    };
-    /**
-     *
-     */
-    $scope.openDemoDBbtnClick = function (nameOfDB) {
-        if (ViewStateService.getPermission('openDemoBtnDBclick')) {
-            $scope.dropdown = false;
-            ConfigProviderService.vals.activeButtons.openDemoDB = false;
-            LoadedMetaDataService.setDemoDbName(nameOfDB);
-            // hide drop zone
-            ViewStateService.showDropZone = false;
-            ViewStateService.somethingInProgress = true;
-            // alert(nameOfDB);
-            ViewStateService.setState('loadingSaving');
-            ConfigProviderService.vals.main.comMode = 'DEMO';
-            ViewStateService.somethingInProgressTxt = 'Loading DB config...';
-            IoHandlerService.httpGetDefaultDesign().then(function (response) {
-                ConfigProviderService.setDesign(response.data);
-                IoHandlerService.getDBconfigFile(nameOfDB).then(function (res) {
-                    var data = res.data;
-                    // first element of perspectives is default perspective
-                    ViewStateService.curPerspectiveIdx = 0;
-                    ConfigProviderService.setVals(data.EMUwebAppConfig);
-                    var validRes = ValidationService.validateJSO('emuwebappConfigSchema', ConfigProviderService.vals);
-                    if (validRes === true) {
-                        ConfigProviderService.curDbConfig = data;
-                        ViewStateService.setCurLevelAttrDefs(ConfigProviderService.curDbConfig.levelDefinitions);
-                        validRes = ValidationService.validateJSO('DBconfigFileSchema', ConfigProviderService.curDbConfig);
-                        if (validRes === true) {
-                            // then get the DBconfigFile
-                            ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
-                            IoHandlerService.getBundleList(nameOfDB).then(function (res) {
-                                var bdata = res.data;
-                                // validRes = ValidationService.validateJSO('bundleListSchema', bdata);
-                                // if (validRes === true) {
-                                LoadedMetaDataService.setBundleList(bdata);
-                                // show standard buttons
-                                ConfigProviderService.vals.activeButtons.clear = true;
-                                ConfigProviderService.vals.activeButtons.specSettings = true;
-                                // then load first bundle in list
-                                DbObjLoadSaveService.loadBundle(LoadedMetaDataService.getBundleList()[0]);
-                            }, function (err) {
-                                ModalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
-                                    AppStateService.resetToInitState();
-                                });
-                            });
-                        }
-                        else {
-                            ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(function () {
-                                AppStateService.resetToInitState();
-                            });
-                        }
-                    }
-                    else {
-                        ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(function () {
-                            AppStateService.resetToInitState();
-                        });
-                    }
-                }, function (err) {
-                    ModalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(function () {
-                        AppStateService.resetToInitState();
-                    });
-                });
-            });
-        }
-    };
-    /**
-     *
-     */
-    $scope.aboutBtnClick = function () {
-        if (ViewStateService.getPermission('aboutBtnClick')) {
-            ModalService.open('views/help.html');
-        }
-    };
-    /**
-     *
-     */
-    $scope.showHierarchyBtnClick = function () {
-        if (!ViewStateService.hierarchyState.isShown()) {
-            ViewStateService.hierarchyState.toggleHierarchy();
-            ModalService.open('views/showHierarchyModal.html');
-        }
-    };
-    /**
-     *
-     */
-    $scope.showEditDBconfigBtnClick = function () {
-        ModalService.open('views/tabbed.html').then(function (res) {
-            if (res === false) {
-                // do nothing when user clicks on cancle
-            }
-            else {
-                if (ValidationService.validateJSO('emuwebappConfigSchema', res)) {
-                    $scope.cps.getDelta(res).then(function (delta) {
-                        IoHandlerService.saveConfiguration(angular["toJson"](delta, true)).then(function () {
-                            if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-                                ModalService.open('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.').then(function (res) {
-                                    if (res) {
-                                        AppStateService.reloadToInitState();
-                                    }
-                                });
-                            }
-                            else {
-                                AppStateService.reloadToInitState($scope.lmds.getCurBndl());
-                            }
-                        });
-                    });
-                }
-                else {
-                    ModalService.open('views/error.html', 'Sorry, there were errors in your configuration.');
-                }
-            }
-        });
-    };
-    /**
-     *
-     */
-    $scope.searchBtnClick = function () {
-        if (ViewStateService.getPermission('searchBtnClick')) {
-            ModalService.open('views/searchAnnot.html');
-        }
-    };
-    /**
-     *
-     */
-    $scope.clearBtnClick = function () {
-        // ViewStateService.setdragBarActive(false);
-        var modalText;
-        if ((HistoryService.movesAwayFromLastSave !== 0 && ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-            modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.';
-        }
-        else {
-            modalText = 'Do you wish to clear all loaded data and if connected disconnect from the server? You have NO unsaved changes so no changes will be lost.';
-        }
-        ModalService.open('views/confirmModal.html', modalText).then(function (res) {
-            if (res) {
-                AppStateService.resetToInitState();
-            }
-        });
-    };
-    // bottom menu:
-    /**
-     *
-     */
-    $scope.cmdZoomAll = function () {
-        if (ViewStateService.getPermission('zoom')) {
-            LevelService.deleteEditArea();
-            ViewStateService.setViewPort(0, SoundHandlerService.audioBuffer.length);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdZoomIn = function () {
-        if (ViewStateService.getPermission('zoom')) {
-            LevelService.deleteEditArea();
-            ViewStateService.zoomViewPort(true);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdZoomOut = function () {
-        if (ViewStateService.getPermission('zoom')) {
-            LevelService.deleteEditArea();
-            ViewStateService.zoomViewPort(false);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdZoomLeft = function () {
-        if (ViewStateService.getPermission('zoom')) {
-            LevelService.deleteEditArea();
-            ViewStateService.shiftViewPort(false);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdZoomRight = function () {
-        if (ViewStateService.getPermission('zoom')) {
-            LevelService.deleteEditArea();
-            ViewStateService.shiftViewPort(true);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdZoomSel = function () {
-        if (ViewStateService.getPermission('zoom')) {
-            LevelService.deleteEditArea();
-            ViewStateService.setViewPort(ViewStateService.curViewPort.selectS, ViewStateService.curViewPort.selectE);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdPlayView = function () {
-        if (ViewStateService.getPermission('playaudio')) {
-            SoundHandlerService.playFromTo(ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS);
-            ViewStateService.animatePlayHead(ViewStateService.curViewPort.sS, ViewStateService.curViewPort.eS);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdPlaySel = function () {
-        if (ViewStateService.getPermission('playaudio')) {
-            SoundHandlerService.playFromTo(ViewStateService.curViewPort.selectS, ViewStateService.curViewPort.selectE);
-            ViewStateService.animatePlayHead(ViewStateService.curViewPort.selectS, ViewStateService.curViewPort.selectE);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    /**
-     *
-     */
-    $scope.cmdPlayAll = function () {
-        if (ViewStateService.getPermission('playaudio')) {
-            SoundHandlerService.playFromTo(0, SoundHandlerService.audioBuffer.length);
-            ViewStateService.animatePlayHead(0, SoundHandlerService.audioBuffer.length);
-        }
-        else {
-            //console.log('action currently not allowed');
-        }
-    };
-    ///////////////////////////
-    // other
-    /**
-     * function used to change perspective
-     * @param persp json object of current perspective containing name attribute
-     */
-    $scope.changePerspective = function (persp) {
-        var newIdx;
-        for (var i = 0; i < ConfigProviderService.vals.perspectives.length; i++) {
-            if (persp.name === ConfigProviderService.vals.perspectives[i].name) {
-                newIdx = i;
-            }
-        }
-        ViewStateService.switchPerspective(newIdx, ConfigProviderService.vals.perspectives);
-        // close perspectivesSideBar
-        ViewStateService.setPerspectivesSideBarOpen(!ViewStateService.getPerspectivesSideBarOpen());
-    };
-    /**
-     * function used by right side menu to get color of current perspecitve in ul
-     * @param persp json object of current perspective containing name attribute
-     */
-    $scope.getPerspectiveColor = function (persp) {
-        var cl;
-        if (ViewStateService.curPerspectiveIdx === -1 || persp.name === ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].name) {
-            cl = 'emuwebapp-curSelPerspLi';
-        }
-        else {
-            cl = 'emuwebapp-perspLi';
-        }
-        return cl;
-    };
-    $scope.tmp = function () {
-        console.log("tmp btn click");
-        $scope.xTmp = $scope.xTmp + 1;
-        $scope.yTmp = $scope.yTmp + 1;
-    };
-    $scope.getTmp = function () {
-        return angular["copy"]($scope.xTmp);
-    };
-    $scope.showHierarchyPathCanvas = function () {
-        return (localStorage.getItem('showHierarchyPathCanvas') == 'true');
     };
 });
 
@@ -86140,7 +84863,7 @@ angular["module"]('emuwebApp')
 });
 
 // EXTERNAL MODULE: ./package.json
-var package_0 = __webpack_require__(10);
+var package_0 = __webpack_require__(19);
 
 // CONCATENATED MODULE: ./src/app/controllers/tabbed-help.controller.ts
 
@@ -86184,7 +84907,6 @@ angular["module"]('emuwebApp')
 });
 
 // CONCATENATED MODULE: ./src/app/controllers/index.ts
-
 
 
 
@@ -86282,36 +85004,11 @@ angular["module"]('emuwebApp')
 // EXTERNAL MODULE: ./src/app/directives/drawssff.directive.ts
 var drawssff_directive = __webpack_require__(46);
 
-// EXTERNAL MODULE: ./src/app/directives/enlarge.directive.ts
-var enlarge_directive = __webpack_require__(47);
-
 // EXTERNAL MODULE: ./src/app/directives/epg.directive.ts
-var epg_directive = __webpack_require__(48);
+var epg_directive = __webpack_require__(47);
 
 // EXTERNAL MODULE: ./src/app/directives/handle-key-strokes.directive.ts
-var handle_key_strokes_directive = __webpack_require__(49);
-
-// CONCATENATED MODULE: ./src/app/directives/hint.directive.ts
-
-
-angular["module"]('emuwebApp')
-    .directive('hint', function ($timeout) {
-    return {
-        templateUrl: 'views/hint.html',
-        replace: true,
-        restrict: 'E',
-        link: function postLink(scope) {
-            scope.version = package_0["a" /* version */];
-            $timeout(function () {
-                scope.internalVars.showAboutHint = !scope.internalVars.showAboutHint;
-            }, 3000);
-            scope.hideMe = function () {
-                scope.internalVars.showAboutHint = !scope.internalVars.showAboutHint;
-                scope.aboutBtnClick();
-            };
-        }
-    };
-});
+var handle_key_strokes_directive = __webpack_require__(48);
 
 // CONCATENATED MODULE: ./src/app/directives/large-text-field-input.directive.ts
 
@@ -86505,9 +85202,6 @@ angular["module"]('emuwebApp')
         }
     };
 });
-
-// EXTERNAL MODULE: ./src/app/directives/mouse-track-and-correction-tool.directive.ts
-var mouse_track_and_correction_tool_directive = __webpack_require__(50);
 
 // CONCATENATED MODULE: ./src/app/directives/my-drop-zone.directive.ts
 
@@ -86769,70 +85463,6 @@ angular["module"]('emuwebApp')
     };
 });
 
-// EXTERNAL MODULE: ./src/app/directives/preview.directive.ts
-var preview_directive = __webpack_require__(51);
-
-// EXTERNAL MODULE: ./src/app/directives/preview-track.directive.ts
-var preview_track_directive = __webpack_require__(52);
-
-// CONCATENATED MODULE: ./src/app/directives/resize.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('resize', function (LevelService, ViewStateService) {
-    return {
-        restrict: 'A',
-        link: function (scope, element) {
-            var elem = element.parent().parent();
-            var elemHeight = 0;
-            var deleteButton = elem.find(element.parent().children()[0]);
-            var saveButton = elem.find(element.parent().children()[2]);
-            element.bind('click', function () {
-                LevelService.deleteEditArea();
-                ViewStateService.setEditing(false);
-                if (scope.open) {
-                    scope.open = false;
-                    elemHeight = elem.css('height');
-                    elem.css({ 'height': '25px' });
-                    if (scope.cps.vals.activeButtons.deleteSingleLevel) {
-                        deleteButton.hide();
-                    }
-                    if (scope.cps.vals.activeButtons.saveSingleLevel) {
-                        saveButton.hide();
-                    }
-                }
-                else {
-                    scope.open = true;
-                    elem.css({ 'height': elemHeight });
-                    if (scope.cps.vals.activeButtons.deleteSingleLevel) {
-                        deleteButton.show();
-                    }
-                    if (scope.cps.vals.activeButtons.saveSingleLevel) {
-                        saveButton.show();
-                    }
-                }
-                scope.updateView();
-            });
-        }
-    };
-});
-
-// CONCATENATED MODULE: ./src/app/directives/save.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('save', function (ModalService, EspsParserService) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attr) {
-            element.bind('click', function () {
-                scope.vs.setcurClickLevelName(scope.level.name, attr.save);
-                EspsParserService.asyncParseJSO(scope.level.name).then(function (result) {
-                    ModalService.open('views/export.html', name + '_esps.txt', result);
-                });
-            });
-        }
-    };
-});
-
 // CONCATENATED MODULE: ./src/app/directives/split-pane-view.directive.ts
 
 angular["module"]('emuwebApp')
@@ -87035,30 +85665,6 @@ angular["module"]('emuwebApp')
                 scope.typeclass = 'emuwebapp-2d-map';
                 bgSplitterCtrl.setBottomRightResizePane(scope);
             }
-        }
-    };
-});
-
-// EXTERNAL MODULE: ./src/app/directives/ssff-track.directive.ts
-var ssff_track_directive = __webpack_require__(53);
-
-// CONCATENATED MODULE: ./src/app/directives/toggle-right-side-bar.directive.ts
-
-angular["module"]('emuwebApp')
-    .directive('showMenu', function ($animate) {
-    return {
-        restrict: 'A',
-        link: function postLink(scope, element, attrs) {
-            scope.$watch(attrs.showMenu, function (newVal) {
-                if (newVal) {
-                    $animate.addClass(element, 'emuwebapp-expandWidthTo200px');
-                    $animate.removeClass(element, 'emuwebapp-shrinkWidthTo0px');
-                }
-                else {
-                    $animate.removeClass(element, 'emuwebapp-expandWidthTo200px');
-                    $animate.addClass(element, 'emuwebapp-shrinkWidthTo0px');
-                }
-            });
         }
     };
 });
@@ -87394,15 +86000,6 @@ angular["module"]('emuwebApp')
 
 
 
-
-
-
-
-
-
-
-
-
 // CONCATENATED MODULE: ./src/app/filters/levels.filter.ts
 
 angular["module"]('emuwebApp')
@@ -87467,7 +86064,7 @@ angular["module"]('emuwebApp')
 
 
 // EXTERNAL MODULE: ./src/app/prototypeexpansions.ts
-var prototypeexpansions = __webpack_require__(54);
+var prototypeexpansions = __webpack_require__(49);
 
 // CONCATENATED MODULE: ./src/app/services/anagest.service.ts
 
@@ -88158,7 +86755,7 @@ angular["module"]('emuwebApp')
     .service('BrowserDetectorService', browser_detector_service_BrowserDetectorService);
 
 // EXTERNAL MODULE: ./src/app/services/config-provider.service.ts
-var config_provider_service = __webpack_require__(55);
+var config_provider_service = __webpack_require__(50);
 
 // CONCATENATED MODULE: ./src/app/services/data.service.ts
 
@@ -89502,7 +88099,7 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
     /**
      * drawing method to drawCrossHairs
      */
-    DrawHelperService.prototype.drawCrossHairs = function (ctx, mouseEvt, min, max, unit, trackname) {
+    DrawHelperService.prototype.drawCrossHairs = function (ctx, mouseX, mouseY, min, max, unit, trackname) {
         // console.log(MathHelperService.roundToNdigitsAfterDecPoint(min, round))
         if (this.ConfigProviderService.vals.restrictions.drawCrossHairs) {
             var fontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1;
@@ -89513,9 +88110,6 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
             //if (navigator.vendor === 'Google Inc.') {
             //	ctx.setLineDash([2]);
             //}
-            // draw lines
-            var mouseX = this.ViewStateService.getX(mouseEvt);
-            var mouseY = this.ViewStateService.getY(mouseEvt);
             //if (navigator.vendor === 'Google Inc.') {
             //	ctx.setLineDash([0]);
             //}
@@ -89527,11 +88121,11 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
             var s1 = Math.round(this.ViewStateService.curViewPort.sS + mouseX / ctx.canvas.width * (this.ViewStateService.curViewPort.eS - this.ViewStateService.curViewPort.sS));
             var s2 = this.MathHelperService.roundToNdigitsAfterDecPoint(this.ViewStateService.getViewPortStartTime() + mouseX / ctx.canvas.width * (this.ViewStateService.getViewPortEndTime() - this.ViewStateService.getViewPortStartTime()), 6);
             var y;
-            if (mouseY + tH < ctx.canvas.height) {
-                y = mouseY + 5;
+            if (mouseY - (tH + 1) < 0) {
+                y = mouseY + 1; // add one pixle for a bit of space
             }
             else {
-                y = mouseY - tH - 5;
+                y = mouseY - (tH + 1);
             }
             if (max !== undefined || min !== undefined) {
                 if (trackname === 'OSCI') {
@@ -89560,19 +88154,21 @@ var draw_helper_service_DrawHelperService = /** @class */ (function () {
                     // draw min max an name of track
                     var tr = this.ConfigProviderService.getSsffTrackConfig(trackname);
                     var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-                    mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
-                    mouseFreq = this.MathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
-                    this.FontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, this.ConfigProviderService.design.font.small.family, 5, y, this.ConfigProviderService.design.color.transparent.red, true);
-                    this.FontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, this.ConfigProviderService.design.font.small.family, ctx.canvas.width - 5 - tW, y, this.ConfigProviderService.design.color.transparent.red, true);
-                    ctx.beginPath();
-                    ctx.moveTo(0, mouseY);
-                    ctx.lineTo(5, mouseY + 5);
-                    ctx.moveTo(0, mouseY);
-                    ctx.lineTo(ctx.canvas.width, mouseY);
-                    ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-                    ctx.moveTo(mouseX, 0);
-                    ctx.lineTo(mouseX, ctx.canvas.height);
-                    ctx.stroke();
+                    if (typeof col !== "undefined") {
+                        mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
+                        mouseFreq = this.MathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
+                        this.FontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, this.ConfigProviderService.design.font.small.family, 5, y, this.ConfigProviderService.design.color.transparent.red, true);
+                        this.FontScaleService.drawUndistortedText(ctx, mouseFreq, fontSize, this.ConfigProviderService.design.font.small.family, ctx.canvas.width - 5 - tW, y, this.ConfigProviderService.design.color.transparent.red, true);
+                        ctx.beginPath();
+                        ctx.moveTo(0, mouseY);
+                        ctx.lineTo(5, mouseY + 5);
+                        ctx.moveTo(0, mouseY);
+                        ctx.lineTo(ctx.canvas.width, mouseY);
+                        ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+                        ctx.moveTo(mouseX, 0);
+                        ctx.lineTo(mouseX, ctx.canvas.height);
+                        ctx.stroke();
+                    }
                 }
             }
             this.FontScaleService.drawUndistortedTextTwoLines(ctx, s1, s2, fontSize, this.ConfigProviderService.design.font.small.family, mouseX + 5, 0, this.ConfigProviderService.design.color.transparent.red, true);
@@ -90611,7 +89207,7 @@ angular["module"]('emuwebApp')
     .service('HierarchyManipulationService', hierarchy_manipulation_service_HierarchyManipulationService);
 
 // EXTERNAL MODULE: ./src/app/services/history.service.ts
-var history_service = __webpack_require__(56);
+var history_service = __webpack_require__(51);
 
 // CONCATENATED MODULE: ./src/app/services/io-handler.service.ts
 
@@ -90954,7 +89550,7 @@ angular["module"]('emuwebApp')
     .service('IoHandlerService', io_handler_service_IoHandlerService);
 
 // EXTERNAL MODULE: ./src/app/services/level.service.ts
-var level_service = __webpack_require__(57);
+var level_service = __webpack_require__(52);
 
 // CONCATENATED MODULE: ./src/app/services/link.service.ts
 
@@ -94007,20 +92603,6 @@ var view_state_service_ViewStateService = /** @class */ (function () {
     /**
     * get the height of the osci
     */
-    ViewStateService.prototype.setenlarge = function (s) {
-        this.timelineSize = s;
-    };
-    ;
-    /**
-    * get the height of the osci
-    */
-    ViewStateService.prototype.getenlarge = function () {
-        return this.timelineSize;
-    };
-    ;
-    /**
-    * get the height of the osci
-    */
     ViewStateService.prototype.getTransitionTime = function () {
         return this.TransitionTime;
     };
@@ -95235,16 +93817,16 @@ angular["module"]('emuwebApp')
 
 
 // EXTERNAL MODULE: ./src/app/components/hierarchy-path-canvas.component.ts
-var hierarchy_path_canvas_component = __webpack_require__(58);
+var hierarchy_path_canvas_component = __webpack_require__(53);
 
 // EXTERNAL MODULE: ./src/app/components/level.component.ts
-var level_component = __webpack_require__(61);
+var level_component = __webpack_require__(56);
 
 // CONCATENATED MODULE: ./src/app/components/bundlelist-sidebar.component.ts
 
 var BundleListSideBarComponent = {
     selector: "bundleListSideBar",
-    template: "\n\t<div class=\"emuwebapp-bundle-outer\">\n\t<div>\n\t\t<h3>\n\t\t\t<div>\n\t\t\t\t<input type=\"text\" ng-model=\"$ctrl.filterText\" placeholder=\"&#x1f50d; Bundle Filter\" ng-focus=\"$ctrl.ViewStateService.setcursorInTextField(true)\" ng-blur=\"$ctrl.ViewStateService.setcursorInTextField(false)\" class=\"emuwebapp-filter\"/>\n\t\t\t</div>\n\t\t</h3>\n\t\t<my-drop-zone ng-if=\"$ctrl.ViewStateService.showDropZone\"></my-drop-zone>\n\t\t<div id=\"emuwebapp-bundleListContainer\" class=\"emuwebapp-bundle-container\" ng-if=\"!$ctrl.ViewStateService.showDropZone\">\n\t\t\t<ul ng-repeat=\"(key, value) in $ctrl.LoadedMetaDataService.getRendOptBndlList()\" ng-class=\"{'emuwebapp-bundle-last':$last}\">\n\t\t\t\t<div class=\"emuwebapp-bundle-session\" ng-if=\"$ctrl.isSessionDefined(key)\" ng-click=\"$ctrl.LoadedMetaDataService.toggleCollapseSession(key)\">\n\t\t\t\t\t<div ng-if=\"$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\u25B7{{key}}\n\t\t\t\t\t</div>\n\t\t\t\t\t<div ng-if=\"!$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\u25BD{{key}}\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"emuwebapp-bundleListSessionBndlsContainer\" ng-if=\"!$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > $ctrl.ViewStateService.pageSize\">\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage == 0\" ng-click=\"$ctrl.turn(false);\">\n\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t{{$ctrl.ViewStateService.currentPage+1}}/{{$ctrl.ViewStateService.numberOfPages(value.length)}}\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage >= value.length/$ctrl.ViewStateService.pageSize - 1\" ng-click=\"$ctrl.turn(true);\">\n\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div ng-repeat=\"bundle in value | startFrom:$ctrl.ViewStateService.currentPage*$ctrl.ViewStateService.pageSize | limitTo:$ctrl.ViewStateService.pageSize | regex:$ctrl.filterText track by $index\">\n\t\t\t\t\t\t<div class=\"emuwebapp-bundle-item\" id=\"uttListItem\" ng-style=\"$ctrl.getBndlColor(bundle);\" ng-click=\"$ctrl.DbObjLoadSaveService.loadBundle(bundle);\" dragout draggable=\"true\" name=\"{{bundle.name}}\">\n\t\t\t\t\t\t\t<b>{{bundle.name}}</b>\n\t\t\t\t\t\t\t<button ng-if=\"$ctrl.ConfigProviderService.vals.activeButtons.saveBundle && $ctrl.isCurBndl(bundle)\" class=\"emuwebapp-saveBundleButton\" ng-click=\"$ctrl.DbObjLoadSaveService.saveBundle();\"><i class=\"material-icons\">save</i></button>\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--regulate finished editing display-->\n\t\t\t\t\t\t\t<!--display checkbox if current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleFinishedEditing && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t<input type=\"checkbox\" ng-model=\"bundle.finishedEditing\" ng-change=\"$ctrl.finishedEditing(bundle.finishedEditing, key, $index)\"/>\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<!--display text \"true\" or \"false\" depending on model if not current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleFinishedEditing && !$ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t<strong ng-if=\"bundle.finishedEditing\" style=\"color:green;\">true</strong>\n\t\t\t\t\t\t\t\t<strong ng-if=\"!bundle.finishedEditing\" style=\"color:red;\">false</strong>\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--regulate comment editing display-->\n\t\t\t\t\t\t\t<!--display text input if current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleComments && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tcomment:\n\t\t\t\t\t\t\t\t<input type=\"text\" ng-focus=\"$ctrl.ViewStateService.setcursorInTextField(true); $ctrl.startHistory(bundle);\" ng-blur=\"$ctrl.ViewStateService.setcursorInTextField(false); $ctrl.updateHistory(bundle, key, $index); $ctrl.endHistory(bundle);\" ng-model=\"bundle.comment\"/>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleComments && !$ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tcomment: <strong style=\"font-style: italic;max-height: 20px; overflow-y: auto\">{{bundle.comment}}</strong>\n\t\t\t\t\t\t\t</div>\n\n\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--timeAnchors controlls-->\n\t\t\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"bundle.timeAnchors.length > 0 && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.curTimeAnchorIdx == 0\" ng-click=\"nextPrevAnchor(false);\">\n\t\t\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t\ttime anchor idx: {{$ctrl.ViewStateService.curTimeAnchorIdx}}\n\t\t\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.curTimeAnchorIdx == getTimeAnchorIdxMax()\" ng-click=\"$ctrl.nextPrevAnchor(true);\">\n\t\t\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > $ctrl.ViewStateService.pageSize\">\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage == 0\" ng-click=\"$ctrl.turn(false);\">\n\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t{{$ctrl.ViewStateService.currentPage+1}}/{{$ctrl.ViewStateService.numberOfPages(value.length)}}\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage >= value.length/$ctrl.ViewStateService.pageSize - 1\" ng-click=\"ctrl.turn(true);\">\n\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</ul>\n\t\t</div>\n\t</div>\n</div>\n",
+    template: "\n\t<div class=\"emuwebapp-bundle-outer\">\n\t<div>\n\t\t<h3>\n\t\t\t<div>\n\t\t\t\t<input type=\"text\" ng-model=\"$ctrl.filterText\" placeholder=\"&#x1f50d; Bundle Filter\" ng-focus=\"$ctrl.ViewStateService.setcursorInTextField(true)\" ng-blur=\"$ctrl.ViewStateService.setcursorInTextField(false)\" class=\"emuwebapp-filter\"/>\n\t\t\t</div>\n\t\t</h3>\n\t\t<my-drop-zone ng-if=\"$ctrl.ViewStateService.showDropZone\"></my-drop-zone>\n\t\t<div id=\"emuwebapp-bundleListContainer\" class=\"emuwebapp-bundle-container\" ng-if=\"!$ctrl.ViewStateService.showDropZone\">\n\t\t\t<ul ng-repeat=\"(key, value) in $ctrl.LoadedMetaDataService.getRendOptBndlList()\" ng-class=\"{'emuwebapp-bundle-last':$last}\">\n\t\t\t\t<div class=\"emuwebapp-bundle-session\" ng-if=\"$ctrl.isSessionDefined(key)\" ng-click=\"$ctrl.LoadedMetaDataService.toggleCollapseSession(key)\">\n\t\t\t\t\t<div ng-if=\"$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\u25B7{{key}}\n\t\t\t\t\t</div>\n\t\t\t\t\t<div ng-if=\"!$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t\t\u25BD{{key}}\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"emuwebapp-bundleListSessionBndlsContainer\" ng-if=\"!$ctrl.LoadedMetaDataService.getSessionCollapseState(key)\">\n\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > $ctrl.ViewStateService.pageSize\">\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage == 0\" ng-click=\"$ctrl.turn(false);\">\n\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t{{$ctrl.ViewStateService.currentPage+1}}/{{$ctrl.ViewStateService.numberOfPages(value.length)}}\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage >= value.length/$ctrl.ViewStateService.pageSize - 1\" ng-click=\"$ctrl.turn(true);\">\n\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div ng-repeat=\"bundle in value | startFrom:$ctrl.ViewStateService.currentPage*$ctrl.ViewStateService.pageSize | limitTo:$ctrl.ViewStateService.pageSize | regex:$ctrl.filterText track by $index\">\n\t\t\t\t\t\t<div class=\"emuwebapp-bundle-item\" id=\"uttListItem\" ng-style=\"$ctrl.getBndlColor(bundle);\" ng-click=\"$ctrl.DbObjLoadSaveService.loadBundle(bundle);\" dragout draggable=\"true\" name=\"{{bundle.name}}\">\n\t\t\t\t\t\t\t<b>{{bundle.name}}</b>\n\t\t\t\t\t\t\t<button ng-if=\"$ctrl.ConfigProviderService.vals.activeButtons.saveBundle && $ctrl.isCurBndl(bundle)\" class=\"emuwebapp-saveBundleButton\" ng-click=\"$ctrl.DbObjLoadSaveService.saveBundle();\"><i class=\"material-icons\">save</i></button>\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--regulate finished editing display-->\n\t\t\t\t\t\t\t<!--display checkbox if current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleFinishedEditing && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t<input type=\"checkbox\" ng-model=\"bundle.finishedEditing\" ng-change=\"$ctrl.finishedEditing(bundle.finishedEditing, key, $index)\"/>\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<!--display text \"true\" or \"false\" depending on model if not current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleFinishedEditing && !$ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tfinished editing:\n\t\t\t\t\t\t\t\t<strong ng-if=\"bundle.finishedEditing\" style=\"color:green;\">true</strong>\n\t\t\t\t\t\t\t\t<strong ng-if=\"!bundle.finishedEditing\" style=\"color:red;\">false</strong>\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--regulate comment editing display-->\n\t\t\t\t\t\t\t<!--display text input if current-->\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleComments && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tcomment:\n\t\t\t\t\t\t\t\t<input type=\"text\" ng-focus=\"$ctrl.ViewStateService.setcursorInTextField(true); $ctrl.startHistory(bundle);\" ng-blur=\"$ctrl.ViewStateService.setcursorInTextField(false); $ctrl.updateHistory(bundle, key, $index); $ctrl.endHistory(bundle);\" ng-model=\"bundle.comment\"/>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div ng-if=\"$ctrl.ConfigProviderService.vals.restrictions.bundleComments && !$ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\tcomment: <strong style=\"font-style: italic;max-height: 20px; overflow-y: auto\">{{bundle.comment}}</strong>\n\t\t\t\t\t\t\t</div>\n\n\n\t\t\t\t\t\t\t<!---->\n\t\t\t\t\t\t\t<!--timeAnchors controlls-->\n\t\t\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"bundle.timeAnchors.length > 0 && $ctrl.isCurBndl(bundle)\">\n\t\t\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.curTimeAnchorIdx == 0\" ng-click=\"$ctrl.nextPrevAnchor(false);\">\n\t\t\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t\ttime anchor idx: {{$ctrl.ViewStateService.curTimeAnchorIdx}}\n\t\t\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.curTimeAnchorIdx == $ctrl.getTimeAnchorIdxMax()\" ng-click=\"$ctrl.nextPrevAnchor(true);\">\n\t\t\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"emuwebapp-bundleListSessionPager\" ng-if=\"value.length > $ctrl.ViewStateService.pageSize\">\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage == 0\" ng-click=\"$ctrl.turn(false);\">\n\t\t\t\t\t\t\t\u2190\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t{{$ctrl.ViewStateService.currentPage+1}}/{{$ctrl.ViewStateService.numberOfPages(value.length)}}\n\t\t\t\t\t\t<button ng-disabled=\"$ctrl.ViewStateService.currentPage >= value.length/$ctrl.ViewStateService.pageSize - 1\" ng-click=\"ctrl.turn(true);\">\n\t\t\t\t\t\t\t\u2192\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</ul>\n\t\t</div>\n\t</div>\n</div>\n",
     bindings: {},
     controller: /** @class */ (function () {
         function BundleListSideBarController(ViewStateService, HistoryService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, LevelService) {
@@ -96830,11 +95412,12 @@ angular["module"]('emuwebApp')
 
 var SettingsComponent = {
     selector: "settings",
-    template: "\n\t<div class=\"emuwebapp-text\">\n\t<h1>Hierarchy Settings</h1>\n\n\t<span>Show hierarchy path canvas: <input type=\"checkbox\" ng-model=\"$ctrl.hierarchySettings.showHierarchyPathCanvas\"></span>\n\n\t<h2>Visable Path</h2>\n\t<select \n\tid=\"emuwebapp-selection\" \n\tname=\"emuwebapp-selection\" \n\tng-model=\"$ctrl.hierarchySettings.paths.selected\" \n\tng-options=\"value for value in $ctrl.hierarchySettings.paths.possibleAsStr\"\n\tng-change=\"$ctrl.getCurVisAttributes()\"></select>\n\t\n\t<h2>Visable Attribute Definitions</h2>\n\t<div class=\"emuwebapp-nav-wrap\" ng-repeat=\"(key, levelName) in $ctrl.StandardFuncsService.reverseCopy($ctrl.hierarchySettings.paths.possible[$ctrl.getSelHierarchyPathIdx()])\">\n\t{{levelName}}: \n\t\t<select \n\t\tid=\"emuwebapp-selection\" \n\t\tname=\"emuwebapp-selection\"\n\t\tng-options=\"attrDef as attrDef for attrDef in $ctrl.ConfigProviderService.getAttrDefsNames(levelName)\"\n\t\tng-model=\"$ctrl.hierarchySettings.paths.curVisAttributeDefs[levelName]\"\n\t\t>\n\t\t</select>\n\t</div>\n    <h1>OSCI Settings</h1>\n    <div>\n        <h2>Current channel</h2>\n        <select ng-model=\"$ctrl.osciChannel\" ng-options=\"channel for channel in $ctrl.osciAvailableChannels\"></select>\n    </div>\t\n    <h1>SPEC Settings</h1>\n    <div>\n        <h2>View Range (Hz)</h2>\n\t\tFrom: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(2,4)\" \n\t\tng-model=\"$ctrl.modalVals.rangeFrom\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/>\n\t\tTo: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(1,3)\" \n\t\tng-model=\"$ctrl.modalVals.rangeTo\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/><br />\n        <div ng-show=\"$ctrl.htmlError(1)\"><b style=\"color: #f00;\">Error:</b> Upper Range is bigger then {{upperBoundary}}</div>\n        <div ng-show=\"$ctrl.htmlError(2)\"><b style=\"color: #f00;\">Error:</b> Only positive Integers are allowed.</div>\n        <div ng-show=\"$ctrl.htmlError(3)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'To'.</div>\n        <div ng-show=\"$ctrl.htmlError(4)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'From'.</div>\n    </div>\n    <div>\n        <h2>Window Size (seconds)</h2>\n        <span>resulting number of samples <em>{{$ctrl.modalVals._windowSizeInSamples}}</em> zero-padded to <em>{{$ctrl.modalVals._fftN}} (min. = 512)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(6)\" \n\t\tng-model=\"$ctrl.modalVals.windowSizeInSecs\" \n\t\tng-change=\"$ctrl.calcWindowSizeVals()\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(6)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Dynamic Range for Maximum (dB)</h2>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(5)\" \n\t\tng-model=\"$ctrl.modalVals.dynamicRange\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(5)\"><b style=\"color: #f00;\">Error:</b> Only Integers are allowed.</div>\n    </div>\n    <div>\n        <h2>Pre-emphasis filter factor</h2> \n        <span>resulting high pass filter function: <em>\u015D(k) = s(k)-{{$ctrl.modalVals.preEmphasisFilterFactor}}*s(k-1)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(7)\" \n\t\tng-model=\"$ctrl.modalVals.preEmphasisFilterFactor\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(7)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Window Function</h2>\n\t\t<select id=\"selWindowInfo\" \n\t\tng-model=\"$ctrl.selWindowInfo.name\" \n\t\tng-options=\"opt for opt in $ctrl.windowOptions\"></select>\n    </div>\n    <div>\n        <h2>Invert</h2>\n        <span>Invert colors of spectrogram: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.invert\"></span>\n    </div>\n    <div>\n        <h2>Color Options</h2>\n        <span>Draw spectrogram in heat map colors: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.drawHeatMapColors\"></span>\n        <table class='emuwebapp-modalTable' ng-style=\"$ctrl.cssError(8)\">\n            <tr>\n                <th></th>\n                <th>red</th>\n                <th>green</th>\n                <th>blue</th>\n                <th>resulting color</th>\n            </tr>\n\n            <tr>\n                <td>First spectrogram color anchor:</td>\n\t\t\t\t<td>r: <input type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\"  \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 0);\"></div></td>\n            </tr>\n            <tr>\n                <td>Second spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 1);\"></div></td>\n            </tr>\n            <tr>\n                <td>Third spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 2);\"></div></td>\n            </tr>\n        </table>\n        <div ng-show=\"$ctrl.htmlError(8)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed.</div>\n    </div>\n</div>\n<div class=\"emuwebapp-inline-modal-footer\">\n\t<button class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.reset()\"><i class=\"material-icons\">cancel</i>Cancel</button>\n\t<button id=\"emuwebapp-modal-save\" class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.saveSettings()\"><i class=\"material-icons\">save</i>Save</button>\n</div>\n",
+    template: "\n\t<div class=\"emuwebapp-text\">\n\t<h1>Hierarchy Settings</h1>\n\n\t<span>Show hierarchy path canvas: <input type=\"checkbox\" ng-model=\"$ctrl.hierarchySettings.showHierarchyPathCanvas\"></span>\n\n\t<h2>Visable Path</h2>\n\t<select \n\tid=\"emuwebapp-selection\" \n\tname=\"emuwebapp-selection\" \n\tng-model=\"$ctrl.hierarchySettings.paths.selected\" \n\tng-options=\"value for value in $ctrl.hierarchySettings.paths.possibleAsStr\"\n\tng-change=\"$ctrl.getCurVisAttributes()\"></select>\n\t\n\t<h2>Visable Attribute Definitions</h2>\n\t<div class=\"emuwebapp-nav-wrap\" ng-repeat=\"(key, levelName) in $ctrl.StandardFuncsService.reverseCopy($ctrl.hierarchySettings.paths.possible[$ctrl.getSelHierarchyPathIdx()])\">\n\t{{levelName}}: \n\t\t<select \n\t\tid=\"emuwebapp-selection\" \n\t\tname=\"emuwebapp-selection\"\n\t\tng-options=\"attrDef as attrDef for attrDef in $ctrl.ConfigProviderService.getAttrDefsNames(levelName)\"\n\t\tng-model=\"$ctrl.hierarchySettings.paths.curVisAttributeDefs[levelName]\"\n\t\t>\n\t\t</select>\n\t</div>\n\n\t<h1>Level Canvas Settings</h1>\n\n\t<span>Font scaling factor: <input type=\"range\" ng-model=\"$ctrl.levelCanvasesFontScalingFactor\" min=\"1\" max=\"200\"> {{$ctrl.levelCanvasesFontScalingFactor}}%</span>\n\n\n    <h1>OSCI Settings</h1>\n    <div>\n        <h2>Current channel</h2>\n        <select ng-model=\"$ctrl.osciChannel\" ng-options=\"channel for channel in $ctrl.osciAvailableChannels\"></select>\n    </div>\t\n    <h1>SPEC Settings</h1>\n    <div>\n        <h2>View Range (Hz)</h2>\n\t\tFrom: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(2,4)\" \n\t\tng-model=\"$ctrl.modalVals.rangeFrom\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/>\n\t\tTo: <input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(1,3)\" \n\t\tng-model=\"$ctrl.modalVals.rangeTo\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/><br />\n        <div ng-show=\"$ctrl.htmlError(1)\"><b style=\"color: #f00;\">Error:</b> Upper Range is bigger then {{upperBoundary}}</div>\n        <div ng-show=\"$ctrl.htmlError(2)\"><b style=\"color: #f00;\">Error:</b> Only positive Integers are allowed.</div>\n        <div ng-show=\"$ctrl.htmlError(3)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'To'.</div>\n        <div ng-show=\"$ctrl.htmlError(4)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed inside 'From'.</div>\n    </div>\n    <div>\n        <h2>Window Size (seconds)</h2>\n        <span>resulting number of samples <em>{{$ctrl.modalVals._windowSizeInSamples}}</em> zero-padded to <em>{{$ctrl.modalVals._fftN}} (min. = 512)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(6)\" \n\t\tng-model=\"$ctrl.modalVals.windowSizeInSecs\" \n\t\tng-change=\"$ctrl.calcWindowSizeVals()\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(6)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Dynamic Range for Maximum (dB)</h2>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(5)\" \n\t\tng-model=\"$ctrl.modalVals.dynamicRange\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(5)\"><b style=\"color: #f00;\">Error:</b> Only Integers are allowed.</div>\n    </div>\n    <div>\n        <h2>Pre-emphasis filter factor</h2> \n        <span>resulting high pass filter function: <em>\u015D(k) = s(k)-{{$ctrl.modalVals.preEmphasisFilterFactor}}*s(k-1)</em></span>\n\t\t<input type=\"text\" \n\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\tng-style=\"$ctrl.cssError(7)\" \n\t\tng-model=\"$ctrl.modalVals.preEmphasisFilterFactor\" \n\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/> <br />\n        <div ng-show=\"$ctrl.htmlError(7)\"><b style=\"color: #f00;\">Error:</b> Only Floats are allowed.</div>\n    </div>\n    <div>\n        <h2>Window Function</h2>\n\t\t<select id=\"selWindowInfo\" \n\t\tng-model=\"$ctrl.selWindowInfo.name\" \n\t\tng-options=\"opt for opt in $ctrl.windowOptions\"></select>\n    </div>\n    <div>\n        <h2>Invert</h2>\n        <span>Invert colors of spectrogram: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.invert\"></span>\n    </div>\n    <div>\n        <h2>Color Options</h2>\n        <span>Draw spectrogram in heat map colors: <input type=\"checkbox\" ng-model=\"$ctrl.modalVals.drawHeatMapColors\"></span>\n        <table class='emuwebapp-modalTable' ng-style=\"$ctrl.cssError(8)\">\n            <tr>\n                <th></th>\n                <th>red</th>\n                <th>green</th>\n                <th>blue</th>\n                <th>resulting color</th>\n            </tr>\n\n            <tr>\n                <td>First spectrogram color anchor:</td>\n\t\t\t\t<td>r: <input type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\"  \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input type=\"text\" class=\"emuwebapp-rgbTextInput\"\n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[0][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 0);\"></div></td>\n            </tr>\n            <tr>\n                <td>Second spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[1][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 1);\"></div></td>\n            </tr>\n            <tr>\n                <td>Third spectrogram color anchor: </td>\n\t\t\t\t<td>r: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][0]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>g: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][1]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n\t\t\t\t<td>b: <input  type=\"text\" class=\"emuwebapp-rgbTextInput\" \n\t\t\t\tng-keyup=\"$ctrl.checkSpectroSettings()\" \n\t\t\t\tng-model=\"$ctrl.modalVals.heatMapColorAnchors[2][2]\" \n\t\t\t\tng-focus=\"$ctrl.cursorInTextField();\" \n\t\t\t\tng-blur=\"$ctrl.cursorOutOfTextField();\"/></td>\n                <td><div ng-style=\"$ctrl.ViewStateService.getColorOfAnchor($ctrl.modalVals.heatMapColorAnchors, 2);\"></div></td>\n            </tr>\n        </table>\n        <div ng-show=\"$ctrl.htmlError(8)\"><b style=\"color: #f00;\">Error:</b> Only Integers allowed.</div>\n    </div>\n</div>\n<div class=\"emuwebapp-inline-modal-footer\">\n\t<button class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.reset()\"><i class=\"material-icons\">cancel</i>Cancel</button>\n\t<button id=\"emuwebapp-modal-save\" class=\"emuwebapp-mini-btn\" ng-click=\"$ctrl.saveSettings()\"><i class=\"material-icons\">save</i>Save</button>\n</div>\n",
     bindings: {},
     controller: /** @class */ (function () {
         // private attributeDefinitionClickCounter;
-        function SettingsController(ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService, StandardFuncsService, HierarchyLayoutService, ConfigProviderService) {
+        function SettingsController($scope, ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService, StandardFuncsService, HierarchyLayoutService, ConfigProviderService) {
+            this.$scope = $scope;
             this.ModalService = ModalService;
             this.ViewStateService = ViewStateService;
             this.DataService = DataService;
@@ -96883,6 +95466,12 @@ var SettingsComponent = {
             this.ViewStateService.hierarchyState.curNrOfPaths = this.hierarchySettings.paths.possibleAsStr.length;
             // counter to get update for EmuHierarchyComponent
             // this.attributeDefinitionClickCounter = 0;
+            if (Number(localStorage.getItem('levelCanvasesFontScalingFactor')) === 0) {
+                this.levelCanvasesFontScalingFactor = 100;
+            }
+            else {
+                this.levelCanvasesFontScalingFactor = Number(localStorage.getItem('levelCanvasesFontScalingFactor'));
+            }
         }
         SettingsController.prototype.getCurVisAttributes = function () {
             var _this = this;
@@ -97012,6 +95601,7 @@ var SettingsComponent = {
                 else {
                     localStorage.setItem('showHierarchyPathCanvas', 'false');
                 }
+                localStorage.setItem('levelCanvasesFontScalingFactor', this.levelCanvasesFontScalingFactor);
                 this.reset();
             }
         };
@@ -97085,24 +95675,82 @@ var SettingsComponent = {
 angular["module"]('emuwebApp')
     .component(SettingsComponent.selector, SettingsComponent);
 
-// EXTERNAL MODULE: ./src/app/components/osci.component.ts
-var osci_component = __webpack_require__(62);
+// CONCATENATED MODULE: ./src/app/components/osci.component.ts
+
+var OsciComponent = {
+    selector: "osci",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n    \n    <canvas \n    class=\"emuwebapp-timelineCanvasMain\" \n    width=\"4096\"></canvas>\n    \n    <canvas \n    class=\"emuwebapp-timelineCanvasSSFF\" \n    width=\"4096\" \n    drawssff \n    ssff-trackname=\"{{$ctrl.trackName}}\"></canvas>\n\n    <signal-canvas-markup-canvas\n    track-name=\"$ctrl.trackName\"\n    play-head-current-sample=\"$ctrl.playHeadCurrentSample\"\n    moving-boundary-sample=\"$ctrl.movingBoundarySample\"\n    cur-mouse-x=\"$ctrl.curMouseX\" \n    moving-boundary=\"$ctrl.movingBoundary\"\n    view-port-sample-start=\"$ctrl.viewPortSampleStart\"\n    view-port-sample-end=\"$ctrl.viewPortSampleEnd\"\n    view-port-select-start=\"$ctrl.viewPortSelectStart\"\n    view-port-select-end=\"$ctrl.viewPortSelectEnd\"\n    cur-bndl=\"$ctrl.curBundl\"\n    ></signal-canvas-markup-canvas>\n    ",
+    bindings: {
+        trackName: '<',
+        curChannel: '<',
+        lastUpdate: '<',
+        timelineSize: '<',
+        curPerspectiveIdx: '<',
+        playHeadCurrentSample: '<',
+        movingBoundarySample: '<',
+        curMouseX: '<',
+        movingBoundary: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<',
+        curBndl: '<'
+    },
+    controller: /** @class */ (function () {
+        function OsciController($scope, $element, $timeout, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, LoadedMetaDataService) {
+            this.$postLink = function () {
+                this.canvasLength = this.$element.find('canvas').length;
+                this.canvas = this.$element.find('canvas')[0];
+                // this.markupCanvas = this.$element.find('canvas')[this.canvasLength - 1];
+            };
+            this.$onChanges = function (changes) {
+                //
+                if (this._inited) {
+                    //
+                    if (changes.timelineSize) {
+                        this.$timeout(this.redraw, this.ConfigProviderService.design.animation.duration);
+                    }
+                    //
+                    if (changes.curBndl) {
+                        this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, true);
+                    }
+                }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$timeout = $timeout;
+            this.ViewStateService = ViewStateService;
+            this.SoundHandlerService = SoundHandlerService;
+            this.ConfigProviderService = ConfigProviderService;
+            this.DrawHelperService = DrawHelperService;
+            this.LoadedMetaDataService = LoadedMetaDataService;
+            this._inited = false;
+        }
+        ;
+        return OsciController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(OsciComponent.selector, OsciComponent);
 
 // EXTERNAL MODULE: ./src/app/components/spectrogram.component.ts
-var spectrogram_component = __webpack_require__(63);
+var spectrogram_component = __webpack_require__(57);
 
 // CONCATENATED MODULE: ./src/app/components/emu-webapp.component.ts
 
 var EmuWebAppComponent = {
     selector: "emuwebapp",
-    template: "\n    <div\n    class=\"emuwebapp-main\" \n    id=\"MainCtrl\" \n    handleglobalkeystrokes>\n        <!-- start: modal -->\n        <modal></modal>\n        <!-- end: modal -->\n        <!-- start: hint -->\n        <hint ng-if=\"$ctrl.internalVars.showAboutHint\"></hint>\n        <!-- end: hint -->\n        <!-- start: left side menu bar -->\n        <bundle-list-side-bar ng-show=\"$ctrl.ViewStateService.bundleListSideBarOpen\"></bundle-list-side-bar>\n        <!-- end: left side menu bar -->\n\n        <!-- start: main window -->\n        <div class=\"emuwebapp-window\" id=\"mainWindow\">\n\t\t\t<progress-bar \n\t\t\tclass=\"emuwebapp-progressBar\"\n\t\t\tng-if=\"$ctrl.ViewStateService.somethingInProgress\"\n\t\t\ttxt=\"$ctrl.ViewStateService.somethingInProgressTxt\"\n\t\t\t>\n\t\t\t</progress-bar>\n            <div class=\"printTitle\">EMU-webApp : {{$ctrl.LoadedMetaDataService.getCurBndlName()}}</div>\n\n            <!-- start: top menu bar -->\n            <div class=\"emuwebapp-top-menu\">\n                <button class=\"emuwebapp-button-icon\" \n                id=\"bundleListSideBarOpen\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.openMenu\" \n                ng-click=\"$ctrl.ViewStateService.toggleBundleListSideBar($ctrl.ConfigProviderService.design.animation.period);\" \n                style=\"float:left\"><i class=\"material-icons\">menu</i></button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.addLevelSeg\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('addLevelSegBtnClick')\" \n                ng-click=\"addLevelSegBtnClick();\">add level (SEG.)</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.addLevelEvent\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('addLevelPointBtnClick')\" \n                ng-click=\"$ctrl.addLevelPointBtnClick();\">add level (EVENT)</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.renameSelLevel\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('renameSelLevelBtnClick')\" \n                ng-click=\"$ctrl.renameSelLevelBtnClick();\">rename sel. level</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"downloadTextgrid\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.downloadTextGrid\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('downloadTextGridBtnClick')\" \n                ng-click=\"$ctrl.downloadTextGridBtnClick();\"><i class=\"material-icons\">save</i>download TextGrid</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"downloadAnnotation\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.downloadAnnotation\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('downloadAnnotationBtnClick')\" \n                ng-click=\"$ctrl.downloadAnnotationBtnClick();\"><i class=\"material-icons\">save</i>download annotJSON</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"spectSettingsBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.specSettings\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('spectSettingsChange')\" \n                ng-click=\"$ctrl.settingsBtnClick();\"><i class=\"material-icons\">settings</i> settings</button>\n                \n                <div class=\"emuwebapp-nav-wrap\" ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.openDemoDB\">\n                    <ul class=\"emuwebapp-dropdown-container\">\n                        <li class=\"left\">\n                            <button type=\"button\" \n                            class=\"emuwebapp-mini-btn full\" \n                            id=\"demoDB\" \n                            ng-mouseover=\"$ctrl.dropdown = true\" \n                            ng-mouseleave=\"$ctrl.dropdown = false\" \n                            ng-click=\"$ctrl.dropdown = !$ctrl.dropdown\" \n                            ng-disabled=\"!$ctrl.ViewStateService.getPermission('openDemoBtnDBclick')\">open demo <span id=\"emuwebapp-dropdown-arrow\"></span></button>\n                            <ul class=\"emuwebapp-dropdown-menu\" \n                            ng-mouseover=\"$ctrl.dropdown = true\" \n                            ng-mouseleave=\"$ctrl.dropdown = false\" \n                            ng-init=\"$ctrl.dropdown = false\" \n                            ng-show=\"$ctrl.dropdown\">\n                                <li class=\"divider\"></li>\n                                <li \n                                ng-repeat=\"curDB in $ctrl.ConfigProviderService.vals.demoDBs\" \n                                ng-click=\"$ctrl.openDemoDBbtnClick(curDB);\" id=\"demo{{$index}}\">{{curDB}}</li>\n                            </ul>\n                        </li>\n                    </ul>\n                </div>\n\n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.connect\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('connectBtnClick')\" \n                ng-click=\"$ctrl.connectBtnClick();\"><i class=\"material-icons\">input</i>{{connectBtnLabel}}</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"showHierarchy\" \n                ng-click=\"$ctrl.showHierarchyBtnClick();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('showHierarchyBtnClick')\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.showHierarchy\"><i class=\"material-icons\" style=\"transform: rotate(180deg)\">details</i>hierarchy</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"showeditDB\" \n                ng-click=\"$ctrl.showEditDBconfigBtnClick();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('editDBconfigBtnClick')\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.editEMUwebAppConfig\">edit config</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.search\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('searchBtnClick')\" \n                ng-click=\"$ctrl.searchBtnClick();\"><i class=\"material-icons\">search</i>search</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"clear\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.clear\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('clearBtnClick')\" \n                ng-click=\"$ctrl.clearBtnClick();\"><i class=\"material-icons\">clear_all</i>clear</button>\n                \n                <button class=\"emuwebapp-button-icon\" \n                id=\"aboutBtn\" \n                style=\"float: right;\" \n                ng-click=\"$ctrl.aboutBtnClick();\"><img src=\"assets/EMU-webAppEmu.svg\" class=\"_35px\" /></button>\n            </div>\n            <!-- top menu bar end -->\n\n            <!-- vertical split layout that contains top and bottom pane -->\n            <div class=\"emuwebapp-canvas\">\n\t\t\t\t<history-action-popup\n\t\t\t\tclass=\"emuwebapp-history\"\n\t\t\t\thistory-action-txt=\"$ctrl.ViewStateService.historyActionTxt\">\n\t\t\t\t</history-action-popup>\n                <bg-splitter show-two-dim-cans=\"{{$ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order.length > 0}}\">\n                    <bg-pane type=\"topPane\" min-size=\"80\" max-size=\"500\">\n                        <ul class=\"emuwebapp-timeline-flexcontainer\">\n                            <li class=\"emuwebapp-timeline-flexitem\" ng-style=\"{'height': getEnlarge($index)}\" ng-repeat=\"curTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].signalCanvases.order track by $index\" ng-switch on=\"curTrack\">\n                                <osci \n                                ng-switch-when=\"OSCI\" \n                                track-name=\"curTrack\"\n                                cur-channel=\"$ctrl.ViewStateService.osciSettings.curChannel\"\n                                last-update=\"$ctrl.ViewStateService.lastUpdate\"\n                                timeline-size=\"$ctrl.ViewStateService.timelineSize\"\n                                cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                                play-head-current-sample=\"$ctrl.ViewStateService.playHeadAnimationInfos.curS\"\n                                moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                moving-boundary=\"$ctrl.ViewStateService.movingBoundary\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                ></osci>\n                                \n                                <spectro \n                                ng-switch-when=\"SPEC\" \n                                track-name=\"curTrack\"\n                                spectro-settings=\"$ctrl.ViewStateService.spectroSettings\"\n                                osci-settings=\"$ctrl.ViewStateService.osciSettings\"\n                                last-update=\"$ctrl.ViewStateService.lastUpdate\"\n                                moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                ></spectro>\n                                \n                                <ssff-track \n                                ng-switch-default \n                                order=\"{{$index}}\" \n\t\t\t\t\t\t\t\ttrack-name=\"curTrack\"\n\t\t\t\t\t\t\t\tcur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                ></ssff-track>\n                            </li>\n                        </ul>\n                    </bg-pane>\n                    <bg-pane type=\"bottomPane\" min-size=\"80\">\n                        <!-- ghost level div containing ul of ghost levels-->\n                        <div ng-if=\"$ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].hierarchyPathCanvases\" style=\"margin-top: 25px;\">\n                            <hierarchy-path-canvas \n                            ng-show=\"$ctrl.showHierarchyPathCanvas()\"\n                            annotation=\"$ctrl.DataService.getData()\"\n                            path=\"$ctrl.ViewStateService.hierarchyState.path\"\n                            view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                            view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                            view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                            view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                            cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                            cur-click-level-name=\"$ctrl.ViewStateService.curClickLevelName\"\n                            moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                            moving-boundary=\"$ctrl.ViewStateService.movingBoundary\"\n                            moves-away-from-last-save=\"$ctrl.HistoryService.movesAwayFromLastSave\"\n                            cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                            cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                            ></hierarchy-path-canvas>\n                        </div>\n                        <!-- level div containing ul of levels -->\n                        <div ng-if=\"true\" style=\"margin-top: 25px;\">\n                            <ul>\n                                <li ng-repeat=\"levelName in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].levelCanvases.order\">\n                                    <level \n                                    ng-if=\"$ctrl.LevelService.getLevelDetails(levelName)\"\n                                    level=\"$ctrl.LevelService.getLevelDetails(levelName)\" \n                                    idx=\"$index\" \n                                    view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                    view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                    view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                    view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                    cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                    cur-click-level-name=\"$ctrl.ViewStateService.curClickLevelName\"\n                                    moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                    moving-boundary=\"$ctrl.ViewStateService.movingBoundary\",\n                                    moves-away-from-last-save=\"$ctrl.HistoryService.movesAwayFromLastSave\"\n                                    cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                                    cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                    ></level>\n                                </li>\n                            </ul>\n                        </div>\n                    </bg-pane>\n                    <bg-pane type=\"emuwebapp-2d-map\">\n                        <ul>\n                            <li ng-repeat=\"cur2dTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order\" ng-switch on=\"cur2dTrack\">\n                                <epg ng-switch-when=\"EPG\"></epg>\n                                <dots ng-switch-when=\"DOTS\"></dots>\n                            </li>\n                        </ul>\n                    </bg-pane>\n                </bg-splitter>\n            </div>\n            <!-- end: vertical split layout -->\n\n            <!-- start: bottom menu bar -->\n            <div class=\"emuwebapp-bottom-menu\">\n                <div>\n                    <preview class=\"preview\" \n                    id=\"preview\" \n                    current-bundle-name=\"{{$ctrl.getCurBndlName()}}\"></preview>\n                </div>\n\n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomInBtn\" \n                ng-click=\"$ctrl.cmdZoomIn();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">expand_less</i>in</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomOutBtn\" \n                ng-click=\"$ctrl.cmdZoomOut();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">expand_more</i>out</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomLeftBtn\" \n                ng-click=\"$ctrl.cmdZoomLeft();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">chevron_left</i>left</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomRightBtn\" \n                ng-click=\"$ctrl.cmdZoomRight();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">chevron_right</i>right</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomAllBtn\" \n                ng-click=\"$ctrl.cmdZoomAll();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_less</i>all</button>\n\n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomSelBtn\" \n                ng-click=\"$ctrl.cmdZoomSel();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_more</i>selection</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playViewBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlayView();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\" ><i class=\"material-icons\">play_arrow</i>in view</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playSelBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlaySel();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_outline</i>selected</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playAllBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlayAll();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_filled</i>entire file</button>\n            </div>\n            <!-- end: bottom menu bar -->\n\n            <!-- start: large text input field -->\n            <!--<large-text-field-input></large-text-field-input>-->\n\n            <!-- start: perspectives menu bar (right) -->\n            <nav class=\"emuwebapp-right-menu\" ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.showPerspectivesSidebar\" show-menu=\"$ctrl.ViewStateService.getPerspectivesSideBarOpen()\">\n            <button ng-click=\"$ctrl.ViewStateService.setPerspectivesSideBarOpen(!$ctrl.ViewStateService.getPerspectivesSideBarOpen());\">\n                <i class=\"material-icons\">menu</i>\n              <!-- <img src=\"img/menu.svg\" =\"_20px _inverted\" /> -->\n            </button>\n            <h3>Perspectives</h3>\n            <ul>\n                <li ng-repeat=\"persp in $ctrl.ConfigProviderService.vals.perspectives\" ng-click=\"$ctrl.changePerspective(persp);\" ng-class=\"$ctrl.getPerspectiveColor(persp);\">\n                    {{persp.name}}\n                </li>\n            </ul>\n            </nav>\n            <!-- end: perspectives menu bar (right) -->\n        </div>\n        <!-- end: main window -->\n    </div>\n    <!-- end: container EMU-webApp -->\n    ",
+    template: "\n    <div\n    class=\"emuwebapp-main\" \n    id=\"MainCtrl\" \n    handleglobalkeystrokes>\n        <!-- start: modal -->\n        <modal></modal>\n        <!-- end: modal -->\n        <!-- start: hint -->\n\t\t<new-version-hint \n\t\tng-if=\"$ctrl.internalVars.showAboutHint\"\n\t\tabout-btn-overlay-click=\"$ctrl.aboutBtnClick()\"\n\t\t></new-version-hint>\n        <!-- end: hint -->\n        <!-- start: left side menu bar -->\n        <bundle-list-side-bar ng-show=\"$ctrl.ViewStateService.bundleListSideBarOpen\"></bundle-list-side-bar>\n        <!-- end: left side menu bar -->\n\n        <!-- start: main window -->\n        <div class=\"emuwebapp-window\" id=\"mainWindow\">\n\t\t\t<progress-bar \n\t\t\tclass=\"emuwebapp-progressBar\"\n\t\t\tng-if=\"$ctrl.ViewStateService.somethingInProgress\"\n\t\t\ttxt=\"$ctrl.ViewStateService.somethingInProgressTxt\"\n\t\t\t>\n\t\t\t</progress-bar>\n            <div class=\"printTitle\">EMU-webApp : {{$ctrl.LoadedMetaDataService.getCurBndlName()}}</div>\n\n            <!-- start: top menu bar -->\n            <div class=\"emuwebapp-top-menu\">\n                <button class=\"emuwebapp-button-icon\" \n                id=\"bundleListSideBarOpen\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.openMenu\" \n                ng-click=\"$ctrl.ViewStateService.toggleBundleListSideBar($ctrl.ConfigProviderService.design.animation.period);\" \n                style=\"float:left\"><i class=\"material-icons\">menu</i></button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.addLevelSeg\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('addLevelSegBtnClick')\" \n                ng-click=\"addLevelSegBtnClick();\">add level (SEG.)</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.addLevelEvent\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('addLevelPointBtnClick')\" \n                ng-click=\"$ctrl.addLevelPointBtnClick();\">add level (EVENT)</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.renameSelLevel\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('renameSelLevelBtnClick')\" \n                ng-click=\"$ctrl.renameSelLevelBtnClick();\">rename sel. level</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"downloadTextgrid\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.downloadTextGrid\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('downloadTextGridBtnClick')\" \n                ng-click=\"$ctrl.downloadTextGridBtnClick();\"><i class=\"material-icons\">save</i>download TextGrid</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"downloadAnnotation\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.downloadAnnotation\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('downloadAnnotationBtnClick')\" \n                ng-click=\"$ctrl.downloadAnnotationBtnClick();\"><i class=\"material-icons\">save</i>download annotJSON</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"spectSettingsBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.specSettings\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('spectSettingsChange')\" \n                ng-click=\"$ctrl.settingsBtnClick();\"><i class=\"material-icons\">settings</i> settings</button>\n                \n                <div class=\"emuwebapp-nav-wrap\" ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.openDemoDB\">\n                    <ul class=\"emuwebapp-dropdown-container\">\n                        <li class=\"left\">\n                            <button type=\"button\" \n                            class=\"emuwebapp-mini-btn full\" \n                            id=\"demoDB\" \n                            ng-mouseover=\"$ctrl.dropdown = true\" \n                            ng-mouseleave=\"$ctrl.dropdown = false\" \n                            ng-click=\"$ctrl.dropdown = !$ctrl.dropdown\" \n                            ng-disabled=\"!$ctrl.ViewStateService.getPermission('openDemoBtnDBclick')\">open demo <span id=\"emuwebapp-dropdown-arrow\"></span></button>\n                            <ul class=\"emuwebapp-dropdown-menu\" \n                            ng-mouseover=\"$ctrl.dropdown = true\" \n                            ng-mouseleave=\"$ctrl.dropdown = false\" \n                            ng-init=\"$ctrl.dropdown = false\" \n                            ng-show=\"$ctrl.dropdown\">\n                                <li class=\"divider\"></li>\n                                <li \n                                ng-repeat=\"curDB in $ctrl.ConfigProviderService.vals.demoDBs\" \n                                ng-click=\"$ctrl.openDemoDBbtnClick(curDB);\" id=\"demo{{$index}}\">{{curDB}}</li>\n                            </ul>\n                        </li>\n                    </ul>\n                </div>\n\n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.connect\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('connectBtnClick')\" \n                ng-click=\"$ctrl.connectBtnClick();\"><i class=\"material-icons\">input</i>{{connectBtnLabel}}</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"showHierarchy\" \n                ng-click=\"$ctrl.showHierarchyBtnClick();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('showHierarchyBtnClick')\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.showHierarchy\"><i class=\"material-icons\" style=\"transform: rotate(180deg)\">details</i>hierarchy</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"showeditDB\" \n                ng-click=\"$ctrl.showEditDBconfigBtnClick();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('editDBconfigBtnClick')\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.editEMUwebAppConfig\">edit config</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.search\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('searchBtnClick')\" \n                ng-click=\"$ctrl.searchBtnClick();\"><i class=\"material-icons\">search</i>search</button>\n                \n                <button class=\"emuwebapp-mini-btn left\" \n                id=\"clear\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.activeButtons.clear\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('clearBtnClick')\" \n                ng-click=\"$ctrl.clearBtnClick();\"><i class=\"material-icons\">clear_all</i>clear</button>\n                \n                <button class=\"emuwebapp-button-icon\" \n                id=\"aboutBtn\" \n                style=\"float: right;\" \n                ng-click=\"$ctrl.aboutBtnClick();\"><img src=\"assets/EMU-webAppEmu.svg\" class=\"_35px\" /></button>\n            </div>\n            <!-- top menu bar end -->\n\n            <!-- vertical split layout that contains top and bottom pane -->\n            <div class=\"emuwebapp-canvas\">\n\t\t\t\t<history-action-popup\n\t\t\t\tclass=\"emuwebapp-history\"\n\t\t\t\thistory-action-txt=\"$ctrl.ViewStateService.historyActionTxt\">\n\t\t\t\t</history-action-popup>\n                <bg-splitter show-two-dim-cans=\"{{$ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order.length > 0}}\">\n                    <bg-pane type=\"topPane\" min-size=\"80\" max-size=\"500\">\n                        <ul class=\"emuwebapp-timeline-flexcontainer\">\n                            <li class=\"emuwebapp-timeline-flexitem\" ng-style=\"{'height': getEnlarge($index)}\" ng-repeat=\"curTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].signalCanvases.order track by $index\" ng-switch on=\"curTrack\">\n                                <osci \n                                ng-switch-when=\"OSCI\" \n                                track-name=\"curTrack\"\n                                cur-channel=\"$ctrl.ViewStateService.osciSettings.curChannel\"\n                                last-update=\"$ctrl.ViewStateService.lastUpdate\"\n                                timeline-size=\"$ctrl.ViewStateService.timelineSize\"\n                                cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                                play-head-current-sample=\"$ctrl.ViewStateService.playHeadAnimationInfos.curS\"\n                                moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                moving-boundary=\"$ctrl.ViewStateService.movingBoundary\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                ></osci>\n                                \n                                <spectro \n                                ng-switch-when=\"SPEC\" \n                                track-name=\"curTrack\"\n\t\t\t\t\t\t\t\twindow-size-in-secs=\"$ctrl.ViewStateService.spectroSettings.windowSizeInSecs\"\n\t\t\t\t\t\t\t\trange-from=\"$ctrl.ViewStateService.spectroSettings.rangeFrom\"\n\t\t\t\t\t\t\t\trange-to=\"$ctrl.ViewStateService.spectroSettings.rangeTo\"\n\t\t\t\t\t\t\t\tdynamic-range=\"$ctrl.ViewStateService.spectroSettings.dynamicRange\"\n\t\t\t\t\t\t\t\twindow=\"$ctrl.ViewStateService.spectroSettings.window\"\n\t\t\t\t\t\t\t\tdraw-heat-map-colors=\"$ctrl.ViewStateService.spectroSettings.drawHeatMapColors\"\n\t\t\t\t\t\t\t\tpre-emphasis-filter-factor=\"$ctrl.ViewStateService.spectroSettings.preEmphasisFilterFactor\"\n\t\t\t\t\t\t\t\theat-map-color-anchors=\"$ctrl.ViewStateService.spectroSettings.heatMapColorAnchors\"\n\t\t\t\t\t\t\t\tinvert=\"$ctrl.ViewStateService.spectroSettings.invert\"\n                                osci-settings=\"$ctrl.ViewStateService.osciSettings\"\n                                last-update=\"$ctrl.ViewStateService.lastUpdate\"\n                                moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n\t\t\t\t\t\t\t\tcur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n\t\t\t\t\t\t\t\tcur-mouse-y=\"$ctrl.ViewStateService.curMouseY\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                ></spectro>\n                                \n                                <ssff-track \n                                ng-switch-default \n                                order=\"{{$index}}\" \n\t\t\t\t\t\t\t\ttrack-name=\"curTrack\"\n\t\t\t\t\t\t\t\tcur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n\t\t\t\t\t\t\t\tcur-mouse-y=\"$ctrl.ViewStateService.curMouseY\"\n                                view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                ></ssff-track>\n                            </li>\n                        </ul>\n                    </bg-pane>\n                    <bg-pane type=\"bottomPane\" min-size=\"80\">\n                        <!-- ghost level div containing ul of ghost levels-->\n                        <div ng-if=\"$ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].hierarchyPathCanvases\" style=\"margin-top: 25px;\">\n                            <hierarchy-path-canvas \n                            ng-show=\"$ctrl.showHierarchyPathCanvas()\"\n                            annotation=\"$ctrl.DataService.getData()\"\n                            path=\"$ctrl.ViewStateService.hierarchyState.path\"\n                            view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                            view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                            view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                            view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                            cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                            cur-click-level-name=\"$ctrl.ViewStateService.curClickLevelName\"\n                            moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                            moving-boundary=\"$ctrl.ViewStateService.movingBoundary\"\n                            moves-away-from-last-save=\"$ctrl.HistoryService.movesAwayFromLastSave\"\n                            cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                            cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                            ></hierarchy-path-canvas>\n                        </div>\n                        <!-- level div containing ul of levels -->\n                        <div ng-if=\"true\" style=\"margin-top: 25px;\">\n                            <ul>\n                                <li ng-repeat=\"levelName in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].levelCanvases.order\">\n                                    <level \n                                    ng-if=\"$ctrl.LevelService.getLevelDetails(levelName)\"\n                                    level=\"$ctrl.LevelService.getLevelDetails(levelName)\" \n                                    idx=\"$index\" \n                                    view-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n                                    view-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n                                    view-port-select-start=\"$ctrl.ViewStateService.curViewPort.selectS\"\n                                    view-port-select-end=\"$ctrl.ViewStateService.curViewPort.selectE\"\n                                    cur-mouse-x=\"$ctrl.ViewStateService.curMouseX\"\n                                    cur-click-level-name=\"$ctrl.ViewStateService.curClickLevelName\"\n                                    moving-boundary-sample=\"$ctrl.ViewStateService.movingBoundarySample\"\n                                    moving-boundary=\"$ctrl.ViewStateService.movingBoundary\",\n                                    moves-away-from-last-save=\"$ctrl.HistoryService.movesAwayFromLastSave\"\n                                    cur-perspective-idx=\"$ctrl.ViewStateService.curPerspectiveIdx\"\n                                    cur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n                                    ></level>\n                                </li>\n                            </ul>\n                        </div>\n                    </bg-pane>\n                    <bg-pane type=\"emuwebapp-2d-map\">\n                        <ul>\n                            <li ng-repeat=\"cur2dTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order\" ng-switch on=\"cur2dTrack\">\n                                <epg ng-switch-when=\"EPG\"></epg>\n                                <dots ng-switch-when=\"DOTS\"></dots>\n                            </li>\n                        </ul>\n                    </bg-pane>\n                </bg-splitter>\n            </div>\n            <!-- end: vertical split layout -->\n\n            <!-- start: bottom menu bar -->\n            <div class=\"emuwebapp-bottom-menu\">\n                <div>\n                    <osci-overview class=\"preview\" \n\t\t\t\t\tid=\"preview\"\n\t\t\t\t\tcur-channel=\"$ctrl.ViewStateService.osciSettings.curChannel\"\n\t\t\t\t\tview-port-sample-start=\"$ctrl.ViewStateService.curViewPort.sS\"\n\t\t\t\t\tview-port-sample-end=\"$ctrl.ViewStateService.curViewPort.eS\"\n\t\t\t\t\tcur-bndl=\"$ctrl.LoadedMetaDataService.getCurBndl()\"\n\t\t\t\t\t></osci-overview>\n                </div>\n\n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomInBtn\" \n                ng-click=\"$ctrl.cmdZoomIn();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">expand_less</i>in</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomOutBtn\" \n                ng-click=\"$ctrl.cmdZoomOut();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">expand_more</i>out</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomLeftBtn\" \n                ng-click=\"$ctrl.cmdZoomLeft();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">chevron_left</i>left</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomRightBtn\" \n                ng-click=\"$ctrl.cmdZoomRight();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\">chevron_right</i>right</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomAllBtn\" \n                ng-click=\"$ctrl.cmdZoomAll();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_less</i>all</button>\n\n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"zoomSelBtn\" \n                ng-click=\"$ctrl.cmdZoomSel();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('zoom')\"><i class=\"material-icons\" style=\"transform: rotate(90deg)\">unfold_more</i>selection</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playViewBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlayView();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\" ><i class=\"material-icons\">play_arrow</i>in view</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playSelBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlaySel();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_outline</i>selected</button>\n                \n                <button class=\"emuwebapp-mini-btn left\"\n                id=\"playAllBtn\" \n                ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.playback\" \n                ng-click=\"$ctrl.cmdPlayAll();\" \n                ng-disabled=\"!$ctrl.ViewStateService.getPermission('playaudio')\"><i class=\"material-icons\">play_circle_filled</i>entire file</button>\n            </div>\n            <!-- end: bottom menu bar -->\n\n            <!-- start: large text input field -->\n            <!--<large-text-field-input></large-text-field-input>-->\n\n            <!-- start: perspectives menu bar (right) -->\n\t\t\t<perspectives-side-bar></perspectives-side-bar>\n            <!-- end: perspectives menu bar (right) -->\n        </div>\n        <!-- end: main window -->\n    </div>\n    <!-- end: container EMU-webApp -->\n    ",
     bindings: {
         audioGetUrl: '<',
         labelGetUrl: '<',
         labelType: '<'
     },
     controller: /** @class */ (function () {
-        function EmuWebAppController($scope, $element, $window, $document, $location, ViewStateService, HistoryService, IoHandlerService, SoundHandlerService, ConfigProviderService, FontScaleService, SsffDataService, LevelService, TextGridParserService, WavParserService, DrawHelperService, ValidationService, AppcacheHandlerService, LoadedMetaDataService, DbObjLoadSaveService, AppStateService, DataService, ModalService, BrowserDetectorService, HierarchyLayoutService) {
+        function EmuWebAppController($scope, $element, $window, $document, $location, $timeout, ViewStateService, HistoryService, IoHandlerService, SoundHandlerService, ConfigProviderService, FontScaleService, SsffDataService, LevelService, TextGridParserService, WavParserService, DrawHelperService, ValidationService, AppcacheHandlerService, LoadedMetaDataService, DbObjLoadSaveService, AppStateService, DataService, ModalService, BrowserDetectorService, HierarchyLayoutService) {
             this.$postLink = function () {
                 var _this = this;
                 ////////////////////////
@@ -97205,25 +95853,12 @@ var EmuWebAppComponent = {
             this.$onInit = function () {
                 this._inited = true;
             };
-            /**
-             * function used by right side menu to get color of current perspecitve in ul
-             * @param persp json object of current perspective containing name attribute
-             */
-            this.getPerspectiveColor = function (persp) {
-                var cl;
-                if (this.ViewStateService.curPerspectiveIdx === -1 || persp.name === this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].name) {
-                    cl = 'emuwebapp-curSelPerspLi';
-                }
-                else {
-                    cl = 'emuwebapp-perspLi';
-                }
-                return cl;
-            };
             this.$scope = $scope;
             this.$element = $element;
             this.$window = $window;
             this.$document = $document;
             this.$location = $location;
+            this.$timeout = $timeout;
             this.ViewStateService = ViewStateService;
             this.HistoryService = HistoryService;
             this.IoHandlerService = IoHandlerService;
@@ -97467,6 +96102,7 @@ var EmuWebAppComponent = {
         };
         ;
         EmuWebAppController.prototype.checkIfToShowWelcomeModal = function () {
+            var _this = this;
             var curVal = localStorage.getItem('haveShownWelcomeModal');
             var searchObject = this.$location.search();
             if (!this.BrowserDetectorService.isBrowser.PhantomJS() && curVal === null && typeof searchObject.viewer_pane !== 'undefined') {
@@ -97474,7 +96110,13 @@ var EmuWebAppComponent = {
                 this.internalVars.showAboutHint = true;
             }
             // FOR DEVELOPMENT
-            // $scope.internalVars.showAboutHint = true;
+            // this.internalVars.showAboutHint = true;
+            // set timerout
+            if (this.internalVars.showAboutHint) {
+                this.$timeout(function () {
+                    _this.internalVars.showAboutHint = false;
+                }, 3000);
+            }
         };
         ;
         EmuWebAppController.prototype.getCurBndlName = function () {
@@ -98135,22 +96777,6 @@ var EmuWebAppComponent = {
         ;
         ///////////////////////////
         // other
-        /**
-         * function used to change perspective
-         * @param persp json object of current perspective containing name attribute
-         */
-        EmuWebAppController.prototype.changePerspective = function (persp) {
-            var newIdx;
-            for (var i = 0; i < this.ConfigProviderService.vals.perspectives.length; i++) {
-                if (persp.name === this.ConfigProviderService.vals.perspectives[i].name) {
-                    newIdx = i;
-                }
-            }
-            this.ViewStateService.switchPerspective(newIdx, this.ConfigProviderService.vals.perspectives);
-            // close perspectivesSideBar
-            this.ViewStateService.setPerspectivesSideBarOpen(!this.ViewStateService.getPerspectivesSideBarOpen());
-        };
-        ;
         // private tmp () {
         // 	console.log("tmp btn click");
         // 	this.xTmp = this.xTmp + 1;
@@ -98252,10 +96878,13 @@ angular["module"]('emuwebApp')
 
 var SsffTrackComponent = {
     selector: "ssffTrack",
-    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"4096\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"4096\" \n        drawssff ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasMarkup\" \n        width=\"4096\" \n        mouse-track-and-correction-tool ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n    </div>\n    </div>\n    ",
+    template: "\n    <div class=\"emuwebapp-timeline\">\n    <div class=\"emuwebapp-timelineCanvasContainer\">\n        <canvas \n        class=\"emuwebapp-timelineCanvasMain\" \n        width=\"4096\">\n        </canvas>\n        \n        <canvas \n        class=\"emuwebapp-timelineCanvasSSFF\" \n        width=\"4096\" \n        drawssff ssff-trackname=\"{{$ctrl.trackName}}\">\n        </canvas>\n        \n        <signal-canvas-markup-canvas\n        track-name=\"$ctrl.trackName\"\n        play-head-current-sample=\"$ctrl.playHeadCurrentSample\"\n        moving-boundary-sample=\"$ctrl.movingBoundarySample\"\n        cur-mouse-x=\"$ctrl.curMouseX\"\n        cur-mouse-y=\"$ctrl.curMouseY\"\n        moving-boundary=\"$ctrl.movingBoundary\"\n        view-port-sample-start=\"$ctrl.viewPortSampleStart\"\n        view-port-sample-end=\"$ctrl.viewPortSampleEnd\"\n        view-port-select-start=\"$ctrl.viewPortSelectStart\"\n        view-port-select-end=\"$ctrl.viewPortSelectEnd\"\n        cur-bndl=\"$ctrl.curBundl\"\n        ></signal-canvas-markup-canvas>\n    </div>\n    </div>\n    ",
     bindings: {
         trackName: '<',
+        playHeadCurrentSample: '<',
+        movingBoundarySample: '<',
         curMouseX: '<',
+        curMouseY: '<',
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<',
         viewPortSelectStart: '<',
@@ -98270,19 +96899,19 @@ var SsffTrackComponent = {
                 //
                 if (this._inited) {
                     //
-                    if (changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.viewPortSelectStart || changes.viewPortSelectEnd) {
-                        if (this.SsffDataService.data.length !== 0) {
-                            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                            var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
-                            var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-                            this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
-                            this.DrawHelperService.drawMinMaxAndName(this.ctx, this.trackName, col._minVal, col._maxVal, 2);
-                        }
-                    }
-                    if (changes.curMouseX) {
-                        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-                        this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
-                    }
+                    // if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.viewPortSelectStart || changes.viewPortSelectEnd){
+                    //     if(this.SsffDataService.data.length !== 0){
+                    //         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                    //         var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
+                    //         var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+                    //         this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                    //         this.DrawHelperService.drawMinMaxAndName(this.ctx, this.trackName, col._minVal, col._maxVal, 2);
+                    //     }
+                    // }
+                    // if(changes.curMouseX){
+                    //     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                    //     this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
+                    // }
                 }
             };
             this.$onInit = function () {
@@ -98301,7 +96930,100 @@ angular["module"]('emuwebApp')
     .component(SsffTrackComponent.selector, SsffTrackComponent);
 
 // EXTERNAL MODULE: ./src/app/components/osci-overview.component.ts
-var osci_overview_component = __webpack_require__(64);
+var osci_overview_component = __webpack_require__(58);
+
+// CONCATENATED MODULE: ./src/app/components/perspectives-side-bar.component.ts
+
+var PerspectivesSideBarComponent = {
+    selector: "perspectivesSideBar",
+    template: "\n    <nav class=\"emuwebapp-right-menu\" ng-show=\"$ctrl.ConfigProviderService.vals.restrictions.showPerspectivesSidebar\">\n    <button ng-click=\"$ctrl.ViewStateService.setPerspectivesSideBarOpen(!$ctrl.ViewStateService.getPerspectivesSideBarOpen()); $ctrl.toggleShow();\">\n        <i class=\"material-icons\">menu</i>\n      <!-- <img src=\"img/menu.svg\" =\"_20px _inverted\" /> -->\n    </button>\n    <h3>Perspectives</h3>\n    <ul>\n        <li ng-repeat=\"persp in $ctrl.ConfigProviderService.vals.perspectives\" ng-click=\"$ctrl.changePerspective(persp); $ctrl.toggleShow();\" ng-class=\"$ctrl.getPerspectiveColor(persp);\">\n            {{persp.name}}\n        </li>\n    </ul>\n    </nav>\n    ",
+    bindings: {},
+    controller: /** @class */ (function () {
+        function PerspectivesSideBarController($element, $animate, ConfigProviderService, ViewStateService) {
+            this.$postLink = function () {
+            };
+            this.$onChanges = function (changes) {
+                //
+                if (this._inited) { }
+            };
+            this.$onInit = function () {
+                this._inited = true;
+            };
+            this.$element = $element;
+            this.$animate = $animate;
+            this.ConfigProviderService = ConfigProviderService;
+            this.ViewStateService = ViewStateService;
+            this._inited = false;
+        }
+        /**
+         * function used to change perspective
+         * @param persp json object of current perspective containing name attribute
+         */
+        PerspectivesSideBarController.prototype.changePerspective = function (persp) {
+            var newIdx;
+            for (var i = 0; i < this.ConfigProviderService.vals.perspectives.length; i++) {
+                if (persp.name === this.ConfigProviderService.vals.perspectives[i].name) {
+                    newIdx = i;
+                }
+            }
+            this.ViewStateService.switchPerspective(newIdx, this.ConfigProviderService.vals.perspectives);
+            // close perspectivesSideBar
+            this.ViewStateService.setPerspectivesSideBarOpen(!this.ViewStateService.getPerspectivesSideBarOpen());
+        };
+        ;
+        /**
+         * function to get color of current perspecitve in ul
+         * @param persp json object of current perspective containing name attribute
+         */
+        PerspectivesSideBarController.prototype.getPerspectiveColor = function (persp) {
+            var cl;
+            if (this.ViewStateService.curPerspectiveIdx === -1 || persp.name === this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].name) {
+                cl = 'emuwebapp-curSelPerspLi';
+            }
+            else {
+                cl = 'emuwebapp-perspLi';
+            }
+            return cl;
+        };
+        ;
+        PerspectivesSideBarController.prototype.toggleShow = function () {
+            console.log("toggleshow");
+            if (this.ViewStateService.getPerspectivesSideBarOpen()) {
+                this.$animate.addClass(this.$element.find('nav')[0], 'emuwebapp-expandWidthTo200px');
+                this.$animate.removeClass(this.$element.find('nav')[0], 'emuwebapp-shrinkWidthTo0px');
+            }
+            else {
+                this.$animate.removeClass(this.$element.find('nav')[0], 'emuwebapp-expandWidthTo200px');
+                this.$animate.addClass(this.$element.find('nav')[0], 'emuwebapp-shrinkWidthTo0px');
+            }
+        };
+        return PerspectivesSideBarController;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(PerspectivesSideBarComponent.selector, PerspectivesSideBarComponent);
+
+// CONCATENATED MODULE: ./src/app/components/new-version-hint.component.ts
+
+var NewVersionHintComponent = {
+    selector: "newVersionHint",
+    template: "\n    <div class=\"emuwebapp-aboutHint\">\n    <button class=\"emuwebapp-aboutHint-hidden\" ng-click=\"$ctrl.aboutBtnOverlayClick()\"></button>\n    Welcome to the EMU-webApp Version {{version}}\n    <div class=\"emuwebapp-aboutHint-arrow\">click here for more information \u21E7</div>\n    </div>\n    ",
+    bindings: {
+        aboutBtnOverlayClick: '&'
+    },
+    controller: /** @class */ (function () {
+        function NewVersionHintComponent() {
+            this.$postLink = function () {
+            };
+        }
+        return NewVersionHintComponent;
+    }())
+};
+angular["module"]('emuwebApp')
+    .component(NewVersionHintComponent.selector, NewVersionHintComponent);
+
+// EXTERNAL MODULE: ./src/app/components/signal-canvas-markup-canvas.component.ts
+var signal_canvas_markup_canvas_component = __webpack_require__(59);
 
 // CONCATENATED MODULE: ./src/app/components/index.ts
 
@@ -98317,80 +97039,83 @@ var osci_overview_component = __webpack_require__(64);
 
 
 
+
+
+
 // EXTERNAL MODULE: ./src/styles/font.scss
-var font = __webpack_require__(65);
+var font = __webpack_require__(60);
 
 // EXTERNAL MODULE: ./src/styles/text.scss
-var styles_text = __webpack_require__(67);
+var styles_text = __webpack_require__(62);
 
 // EXTERNAL MODULE: ./src/styles/button.scss
-var styles_button = __webpack_require__(69);
+var styles_button = __webpack_require__(64);
 
 // EXTERNAL MODULE: ./src/styles/media-query.scss
-var media_query = __webpack_require__(71);
+var media_query = __webpack_require__(66);
 
 // EXTERNAL MODULE: ./src/styles/emuwebapp.scss
-var emuwebapp = __webpack_require__(73);
+var emuwebapp = __webpack_require__(68);
 
 // EXTERNAL MODULE: ./src/styles/preview.scss
-var preview = __webpack_require__(80);
+var preview = __webpack_require__(75);
 
 // EXTERNAL MODULE: ./src/styles/modal.scss
-var modal = __webpack_require__(82);
+var modal = __webpack_require__(77);
 
 // EXTERNAL MODULE: ./src/styles/bundleListSideBar.scss
-var bundleListSideBar = __webpack_require__(84);
+var bundleListSideBar = __webpack_require__(79);
 
 // EXTERNAL MODULE: ./src/styles/rightSideMenu.scss
-var rightSideMenu = __webpack_require__(86);
+var rightSideMenu = __webpack_require__(81);
 
 // EXTERNAL MODULE: ./src/styles/twoDimCanvas.scss
-var twoDimCanvas = __webpack_require__(88);
+var twoDimCanvas = __webpack_require__(83);
 
 // EXTERNAL MODULE: ./src/styles/print.scss
-var print = __webpack_require__(90);
+var print = __webpack_require__(85);
 
 // EXTERNAL MODULE: ./src/styles/progressBar.scss
-var progressBar = __webpack_require__(92);
+var progressBar = __webpack_require__(87);
 
 // EXTERNAL MODULE: ./src/styles/aboutHint.scss
-var aboutHint = __webpack_require__(94);
+var aboutHint = __webpack_require__(89);
 
 // EXTERNAL MODULE: ./src/styles/drop.scss
-var drop = __webpack_require__(96);
+var drop = __webpack_require__(91);
 
 // EXTERNAL MODULE: ./src/styles/timeline.scss
-var timeline = __webpack_require__(98);
+var timeline = __webpack_require__(93);
 
 // EXTERNAL MODULE: ./src/styles/flexBoxGrid.scss
-var flexBoxGrid = __webpack_require__(100);
+var flexBoxGrid = __webpack_require__(95);
 
 // EXTERNAL MODULE: ./src/styles/levels.scss
-var levels = __webpack_require__(102);
+var levels = __webpack_require__(97);
 
 // EXTERNAL MODULE: ./src/styles/historyActionPopup.scss
-var historyActionPopup = __webpack_require__(104);
+var historyActionPopup = __webpack_require__(99);
 
 // EXTERNAL MODULE: ./src/styles/hierarchy.scss
-var hierarchy = __webpack_require__(106);
+var hierarchy = __webpack_require__(101);
 
 // EXTERNAL MODULE: ./src/styles/splitPanes.scss
-var splitPanes = __webpack_require__(108);
+var splitPanes = __webpack_require__(103);
 
 // EXTERNAL MODULE: ./src/styles/tabbed.scss
-var tabbed = __webpack_require__(110);
+var tabbed = __webpack_require__(105);
 
 // EXTERNAL MODULE: ./src/styles/animation.scss
-var animation = __webpack_require__(112);
+var animation = __webpack_require__(107);
 
 // EXTERNAL MODULE: ./src/styles/customAngularuiModal.scss
-var customAngularuiModal = __webpack_require__(114);
+var customAngularuiModal = __webpack_require__(109);
 
 // EXTERNAL MODULE: ./src/styles/largeTextInputField.scss
-var largeTextInputField = __webpack_require__(116);
+var largeTextInputField = __webpack_require__(111);
 
 // EXTERNAL MODULE: ./src/styles/levelCanvasesGrid.scss
-var levelCanvasesGrid = __webpack_require__(118);
+var levelCanvasesGrid = __webpack_require__(113);
 
 // CONCATENATED MODULE: ./src/app/main.ts
 // Vendor
