@@ -1,5 +1,11 @@
 # What's New
 
+## Version 1.3.1
+
+### bug fixes
+
+- fixed not redrawing OSCI on viewPort updates
+
 ## Version 1.3.0
 
 ### bug fixes

@@ -93,6 +93,10 @@ let OsciComponent = {
                 if(changes.curBndl){
                     this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, true);
                 }
+                //
+                if(changes.curChannel || changes.viewPortSampleStart || changes.viewPortSampleEnd){
+                    this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, false);
+                }
             }
             
         };
