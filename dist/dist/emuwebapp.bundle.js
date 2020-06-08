@@ -18469,7 +18469,7 @@ SpectroDrawingWorker.prototype = {
 /* 19 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"a\":\"1.3.0\"}");
+module.exports = JSON.parse("{\"a\":\"1.3.1\"}");
 
 /***/ }),
 /* 20 */
@@ -95713,6 +95713,10 @@ var OsciComponent = {
                     //
                     if (changes.curBndl) {
                         this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, true);
+                    }
+                    //
+                    if (changes.curChannel || changes.viewPortSampleStart || changes.viewPortSampleEnd) {
+                        this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, false);
                     }
                 }
             };
