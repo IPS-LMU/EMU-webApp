@@ -13,7 +13,7 @@
   "dependencies": {
     "@types/jquery": "^3.3.33",
     "@types/node": "^13.7.6",
-    "angular": "^1.7.9",
+    "angular": "^1.8.0",
     "angular-animate": "^1.7.9",
     "angular-cookies": "^1.7.9",
     "angular-filter": "~0.5.17",
