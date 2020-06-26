@@ -14,7 +14,14 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery',
             "window.jQuery": 'jquery'
-        })
+        }),
+        new webpack.ContextReplacementPlugin(
+            // if you have anymore problems tweet me at @gdi2290
+            // The (\\|\/) piece accounts for path separators for Windows and MacOS
+            /(.+)?angular(\\|\/)core(.+)?/,
+            path.join(__dirname, 'src'), // location of your src
+            {} // a map of your routes
+        )
     ],
     resolve: {
         // Add '.ts' and '.tsx' as a resolvable extension.

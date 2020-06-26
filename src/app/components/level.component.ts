@@ -14,14 +14,21 @@ let LevelComponent = {
     ng-style="$ctrl.backgroundCanvas"
     ></canvas>
 
-    <canvas 
-    class="emuwebapp-level-markup" 
-    id="levelMarkupCanvas" 
-    width="4096" 
-    height="64" 
-    track-mouse-in-level="{{idx}}"
+    <level-canvas-markup-canvas
+    track-name="$ctrl.trackName"
+    play-head-current-sample="$ctrl.playHeadCurrentSample"
+    moving-boundary-sample="$ctrl.movingBoundarySample"
+    cur-mouse-x="$ctrl.curMouseX" 
+    moving-boundary="$ctrl.movingBoundary"
+    view-port-sample-start="$ctrl.viewPortSampleStart"
+    view-port-sample-end="$ctrl.viewPortSampleEnd"
+    view-port-select-start="$ctrl.viewPortSelectStart"
+    view-port-select-end="$ctrl.viewPortSelectEnd"
+    cur-bndl="$ctrl.curBundl"
+    ></level-canvas-markup-canvas>
+    <!-- track-mouse-in-level="{{idx}}"
     level-name="$ctrl.level.name"
-    level-type="$ctrl.level.type"></canvas>
+    level-type="$ctrl.level.type" -->
 </div>
 </div>
 
@@ -56,12 +63,13 @@ class="emuwebapp-selectAttrDef"
         curPerspectiveIdx: '<',
         curBndl: '<'
     },
-    controller: class GhostLevelController{
+    controller: class LevelController{
         private $scope;
         private $element;
         private $animate;
 
         private ViewStateService;
+        private SoundHandlerService;
         private ConfigProviderService;
         private DrawHelperService;
         private HistoryService;
@@ -71,6 +79,21 @@ class="emuwebapp-selectAttrDef"
         private LoadedMetaDataService;
         private HierarchyLayoutService;
         private DataService;
+
+        // bindings
+        private level;
+        private idx;
+        private viewPortSampleStart;
+        private viewPortSampleEnd;
+        private viewPortSelectStart;
+        private viewPortSelectEnd;
+        private curMouseX;
+        private curClickLevelName;
+        private movingBoundarySample;
+        private movingBoundary;
+        private movesAwayFromLastSave;
+        private curPerspectiveIdx;
+        private curBndl;
         
         private open;
         private levelDef;
@@ -79,11 +102,12 @@ class="emuwebapp-selectAttrDef"
         private _inited;
         private backgroundCanvas;
 
-        constructor($scope, $element, $animate, ViewStateService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService){
+        constructor($scope, $element, $animate, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService){
             this.$scope = $scope;
             this.$element = $element;
             this.$animate = $animate;
             this.ViewStateService = ViewStateService;
+            this.SoundHandlerService = SoundHandlerService;
             this.ConfigProviderService = ConfigProviderService;
             this.DrawHelperService = DrawHelperService;
             this.HistoryService = HistoryService;
@@ -104,16 +128,17 @@ class="emuwebapp-selectAttrDef"
         $postLink = function(){
             this.levelDef = this.ConfigProviderService.getLevelDefinition(this.level.name);
 
-            this.canvas = this.$element.find('canvas');
+            this.canvases = this.$element.find('canvas');
             this.levelCanvasContainer = this.$element.find('div');
             if(this._inited){
                 this.drawLevelDetails();
                 this.drawLevelMarkup();
             }
+
             ///////////////
             // bindings
 
-            // on mouse leave reset ViewStateService.
+            // on mouse leave reset ViewStateService
             this.$element.bind('mouseleave', () => {
                 this.ViewStateService.setcurMouseItem(undefined, undefined, undefined);
                 this.drawLevelMarkup();
@@ -302,7 +327,7 @@ class="emuwebapp-selectAttrDef"
                 return;
             }
 
-            var ctx = this.canvas[0].getContext('2d');
+            var ctx = this.canvases[0].getContext('2d');
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             //predef vars
@@ -521,7 +546,7 @@ class="emuwebapp-selectAttrDef"
          *
          */
         private drawLevelMarkup = function () {
-            var ctx = this.canvas[1].getContext('2d');
+            var ctx = this.canvases[1].getContext('2d');
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             if (this.level.name === this.ViewStateService.getcurClickLevelName()) {
                 ctx.fillStyle = this.ConfigProviderService.design.color.transparent.grey;

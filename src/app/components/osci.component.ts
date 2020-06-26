@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 let OsciComponent = {
     selector: "osci",
-    template: `
+    template: /*html*/`
     <div class="emuwebapp-timeline">
     <div class="emuwebapp-timelineCanvasContainer">
     

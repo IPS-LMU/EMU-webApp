@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 let EmuWebAppComponent = {
     selector: "emuwebapp",
-    template: `
+    template: /*html*/`
     <div
     class="emuwebapp-main" 
     id="MainCtrl" 
