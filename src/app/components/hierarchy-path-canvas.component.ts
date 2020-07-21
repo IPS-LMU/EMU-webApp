@@ -1,10 +1,11 @@
 import * as angular from 'angular';
 import { HierarchyWorker } from '../workers/hierarchy.worker';
+import styles from '../../styles/EMUwebAppDesign.scss';
 
 let HierarchyPathCanvasComponent = {
     selector: "hierarchyPathCanvas",
     // inline HTML
-    template: `
+    template: /*html*/`
     <div 
     class="emuwebapp-level" 
     style="height: 256px">
@@ -111,7 +112,7 @@ class="emuwebapp-selectAttrDef"
             this.open = true;
             this._inited = false;
             this.backgroundCanvas = {
-                'background': ConfigProviderService.design.color.black
+                'background': styles.colorBlack//ConfigProviderService.design.color.black
                 // 'background-image': 'linear-gradient(to top, #e2ebf0 0%, #cfd9df 100%)'
             };
             this.hierPaths = this.HierarchyLayoutService.findAllNonPartialPaths();

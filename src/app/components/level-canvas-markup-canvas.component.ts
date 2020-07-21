@@ -11,15 +11,44 @@ let LevelCanvasMarkupCanvasComponent = {
     ></canvas>
     `,
     bindings: {
-
+        level: '<',
+        idx: '<',
+        viewPortSampleStart: '<',
+        viewPortSampleEnd: '<',
+        viewPortSelectStart: '<',
+        viewPortSelectEnd: '<',
+        curMouseX: '<',
+        curClickLevelName: '<',
+        movingBoundarySample: '<',
+        movingBoundary: '<',
+        movesAwayFromLastSave: '<',
+        curPerspectiveIdx: '<',
+        curBndl: '<'
     },
-    controller: class SignalCanvasMarkusCanvasController{
+    controller: class LevelCanvasMarkupCanvasController{
         private $scope;
         private $element;
 
         private ViewStateService;
         private SoundHandlerService;
         private ConfigProviderService;
+        private LevelService;
+        private HistoryService;
+
+        // bindings
+        private level;
+        private idx;
+        private viewPortSampleStart;
+        private viewPortSampleEnd;
+        private viewPortSelectStart;
+        private viewPortSelectEnd;
+        private curMouseX;
+        private curClickLevelName;
+        private movingBoundarySample;
+        private movingBoundary;
+        private movesAwayFromLastSave;
+        private curPerspectiveIdx;
+        private curBndl;
 
         private lastEventClick;
         private lastEventMove;
@@ -27,13 +56,15 @@ let LevelCanvasMarkupCanvasComponent = {
         private lastPCM;
         private curMouseSampleNrInView;
 
-        constructor($scope, $element, ViewStateService, SoundHandlerService, ConfigProviderService){
+        constructor($scope, $element, ViewStateService, SoundHandlerService, ConfigProviderService, LevelService, HistoryService){
             this.$scope = $scope;
             this.$element = $element;
             
             this.ViewStateService = ViewStateService; 
             this.SoundHandlerService = SoundHandlerService;
             this.ConfigProviderService = ConfigProviderService;
+            this.LevelService = LevelService;
+            this.HistoryService = HistoryService;
 
             this.lastEventClick = undefined;
             this.lastEventMove = undefined;
@@ -81,19 +112,19 @@ let LevelCanvasMarkupCanvasComponent = {
                         this.curMouseSampleNrInView = this.ViewStateService.getX(event) * samplesPerPixel;
                         moveBy = (this.curMouseSampleNrInView - this.lastPCM);
                         if (samplesPerPixel <= 1) {
-                            var zoomEventMove = this.LevelService.getClosestItem(this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS, this.levelName, this.SoundHandlerService.audioBuffer.length);
+                            var zoomEventMove = this.LevelService.getClosestItem(this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS, this.level.name, this.SoundHandlerService.audioBuffer.length);
                             // absolute movement in pcm below 1 pcm per pixel
-                            if (this.levelType === 'SEGMENT') {
+                            if (this.level.type === 'SEGMENT') {
                                 if (zoomEventMove.isFirst === true && zoomEventMove.isLast === false) { // before first elem
-                                    moveBy = Math.ceil((this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS) - this.LevelService.getItemDetails(this.levelName, 0).sampleStart);
+                                    moveBy = Math.ceil((this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS) - this.LevelService.getItemDetails(this.level.name, 0).sampleStart);
                                 } else if (zoomEventMove.isFirst === false && zoomEventMove.isLast === true) { // after last elem
-                                    var lastItem = this.LevelService.getLastItem(this.levelName);
+                                    var lastItem = this.LevelService.getLastItem(this.level.name);
                                     moveBy = Math.ceil((this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS) - lastItem.sampleStart - lastItem.sampleDur);
                                 } else {
-                                    moveBy = Math.ceil((this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS) - this.LevelService.getItemFromLevelById(this.levelName, zoomEventMove.nearest.id).sampleStart);
+                                    moveBy = Math.ceil((this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS) - this.LevelService.getItemFromLevelById(this.level.name, zoomEventMove.nearest.id).sampleStart);
                                 }
                             } else {
-                                moveBy = Math.ceil((this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS) - this.LevelService.getItemFromLevelById(this.levelName, zoomEventMove.nearest.id).samplePoint - 0.5); // 0.5 to break between samples not on
+                                moveBy = Math.ceil((this.curMouseSampleNrInView + this.ViewStateService.curViewPort.sS) - this.LevelService.getItemFromLevelById(this.level.name, zoomEventMove.nearest.id).samplePoint - 0.5); // 0.5 to break between samples not on
                             }
                         } else {
                             // relative movement in pcm above 1 pcm per pixel
@@ -125,21 +156,21 @@ let LevelCanvasMarkupCanvasComponent = {
                                     this.LevelService.deleteEditArea();
                                     if (curMouseItem !== undefined) {
                                         this.ViewStateService.movingBoundary = true;
-                                        if (this.levelType === 'SEGMENT') {
+                                        if (this.level.type === 'SEGMENT') {
                                             if (this.ViewStateService.getcurMouseisFirst() || this.ViewStateService.getcurMouseisLast()) {
                                                 // before first segment
                                                 if (this.ViewStateService.getcurMouseisFirst()) {
-                                                    seg = this.LevelService.getItemDetails(this.levelName, 0);
+                                                    seg = this.LevelService.getItemDetails(this.level.name, 0);
                                                     this.ViewStateService.movingBoundarySample = seg.sampleStart + moveBy;
                                                 } else if (this.ViewStateService.getcurMouseisLast()) {
-                                                    seg = this.LevelService.getLastItem(this.levelName);
+                                                    seg = this.LevelService.getLastItem(this.level.name);
                                                     this.ViewStateService.movingBoundarySample = seg.sampleStart + seg.sampleDur + moveBy;
                                                 }
                                             } else {
                                                 this.ViewStateService.movingBoundarySample = curMouseItem.sampleStart + moveBy;
                                                 seg = curMouseItem;
                                             }
-                                            this.LevelService.moveBoundary(this.levelName, seg.id, moveBy, this.ViewStateService.getcurMouseisFirst(), this.ViewStateService.getcurMouseisLast());
+                                            this.LevelService.moveBoundary(this.level.name, seg.id, moveBy, this.ViewStateService.getcurMouseisFirst(), this.ViewStateService.getcurMouseisLast());
                                             this.HistoryService.updateCurChangeObj({
                                                 'type': 'ANNOT',
                                                 'action': 'MOVEBOUNDARY',
@@ -169,14 +200,14 @@ let LevelCanvasMarkupCanvasComponent = {
                                     }
                                 } else if (this.ConfigProviderService.vals.restrictions.editItemSize && event.altKey) {
                                     this.LevelService.deleteEditArea();
-                                    if (this.levelType === 'SEGMENT') {
+                                    if (this.level.type === 'SEGMENT') {
                                         seg = this.ViewStateService.getcurClickItems();
                                         if (seg[0] !== undefined) {
-                                            this.LevelService.moveSegment(this.levelName, seg[0].id, seg.length, moveBy);
+                                            this.LevelService.moveSegment(this.level.name, seg[0].id, seg.length, moveBy);
                                             this.HistoryService.updateCurChangeObj({
                                                 'type': 'ANNOT',
                                                 'action': 'MOVESEGMENT',
-                                                'name': this.levelName,
+                                                'name': this.level.name,
                                                 'id': seg[0].id,
                                                 'length': seg.length,
                                                 'movedBy': moveBy
@@ -186,15 +217,15 @@ let LevelCanvasMarkupCanvasComponent = {
                                         this.ViewStateService.setLastPcm(this.lastPCM);
                                         this.ViewStateService.selectBoundary();
                                     }
-                                    else if (this.levelType === 'EVENT') {
+                                    else if (this.level.type === 'EVENT') {
                                         seg = this.ViewStateService.getcurClickItems();
                                         if (seg[0] !== undefined) {
                                             seg.forEach((s) => {
-                                                this.LevelService.moveEvent(this.levelName, s.id, moveBy);
+                                                this.LevelService.moveEvent(this.level.name, s.id, moveBy);
                                                 this.HistoryService.updateCurChangeObj({
                                                     'type': 'ANNOT',
                                                     'action': 'MOVEEVENT',
-                                                    'name': this.levelName,
+                                                    'name': this.level.name,
                                                     'id': s.id,
                                                     'movedBy': moveBy
                                                 });

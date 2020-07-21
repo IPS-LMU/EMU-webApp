@@ -2,32 +2,33 @@ import * as angular from 'angular';
 
 let SettingsComponent = {
     selector: "settings",
-	template: `
+	template: /*html*/`
 	<div class="emuwebapp-text">
-	<h1>Hierarchy Settings</h1>
+		<div ng-if="$ctrl.ConfigProviderService.curDbConfig.linkDefinitions.length > 0">
+		<h1>Hierarchy Settings</h1>
 
-	<span>Show hierarchy path canvas: <input type="checkbox" ng-model="$ctrl.hierarchySettings.showHierarchyPathCanvas"></span>
+		<span>Show hierarchy path canvas: <input type="checkbox" ng-model="$ctrl.hierarchySettings.showHierarchyPathCanvas"></span>
 
-	<h2>Visable Path</h2>
-	<select 
-	id="emuwebapp-selection" 
-	name="emuwebapp-selection" 
-	ng-model="$ctrl.hierarchySettings.paths.selected" 
-	ng-options="value for value in $ctrl.hierarchySettings.paths.possibleAsStr"
-	ng-change="$ctrl.getCurVisAttributes()"></select>
-	
-	<h2>Visable Attribute Definitions</h2>
-	<div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in $ctrl.StandardFuncsService.reverseCopy($ctrl.hierarchySettings.paths.possible[$ctrl.getSelHierarchyPathIdx()])">
-	{{levelName}}: 
+		<h2>Visable Path</h2>
 		<select 
 		id="emuwebapp-selection" 
-		name="emuwebapp-selection"
-		ng-options="attrDef as attrDef for attrDef in $ctrl.ConfigProviderService.getAttrDefsNames(levelName)"
-		ng-model="$ctrl.hierarchySettings.paths.curVisAttributeDefs[levelName]"
-		>
-		</select>
-	</div>
-
+		name="emuwebapp-selection" 
+		ng-model="$ctrl.hierarchySettings.paths.selected" 
+		ng-options="value for value in $ctrl.hierarchySettings.paths.possibleAsStr"
+		ng-change="$ctrl.getCurVisAttributes()"></select>
+		
+		<h2>Visable Attribute Definitions</h2>
+		<div class="emuwebapp-nav-wrap" ng-repeat="(key, levelName) in $ctrl.StandardFuncsService.reverseCopy($ctrl.hierarchySettings.paths.possible[$ctrl.getSelHierarchyPathIdx()])">
+		{{levelName}}: 
+			<select 
+			id="emuwebapp-selection" 
+			name="emuwebapp-selection"
+			ng-options="attrDef as attrDef for attrDef in $ctrl.ConfigProviderService.getAttrDefsNames(levelName)"
+			ng-model="$ctrl.hierarchySettings.paths.curVisAttributeDefs[levelName]"
+			>
+			</select>
+		</div>
+		</div>
 	<h1>Level Canvas Settings</h1>
 
 	<span>Font scaling factor: <input type="range" ng-model="$ctrl.levelCanvasesFontScalingFactor" min="1" max="200"> {{$ctrl.levelCanvasesFontScalingFactor}}%</span>

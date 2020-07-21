@@ -1,5 +1,19 @@
 # What's New
 
+## Version 1.3.2.9000
+
+### new features / performance tweaks / improvements
+
+- if no hierarchy path is available no hierarchy path canvas is shown and settings stay hidden
+- LevelCanvasMarkupCanvasComponent now a component
+
+### bug fixes
+
+- fixed show hierarchy path canvas setting being dependent on legacy DBconfig entry
+- moved emuwebappDesign from sass to scss and made it importable with .d.ts file (idea is to completely remove design json in the long term)
+- fixed building of DBconfig if none is passed in via URL parameters to only show SEGMENT and EVENT levels
+
+
 ## Version 1.3.1
 
 ### bug fixes

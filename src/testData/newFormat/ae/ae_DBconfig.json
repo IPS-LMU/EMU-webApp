@@ -161,13 +161,6 @@
                     "yValues": [50, 150]
                 }]
 			},
-			"hierarchyPathCanvases": {
-				"order": [
-					{
-						"path": ["Phonetic", "Phoneme", "Syllable", "Word"]
-					}
-				]
-			},
 			"levelCanvases": {
 				"order": ["Phonetic", "Tone"],
 				"labelFontFamily": "Courier New",

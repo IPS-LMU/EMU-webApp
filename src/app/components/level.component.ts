@@ -15,7 +15,8 @@ let LevelComponent = {
     ></canvas>
 
     <level-canvas-markup-canvas
-    track-name="$ctrl.trackName"
+    level="$ctrl.level"
+    idx="$ctrl.idx"
     play-head-current-sample="$ctrl.playHeadCurrentSample"
     moving-boundary-sample="$ctrl.movingBoundarySample"
     cur-mouse-x="$ctrl.curMouseX" 

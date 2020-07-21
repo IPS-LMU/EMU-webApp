@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 let SignalCanvasMarkupCanvasComponent = {
     selector: "signalCanvasMarkupCanvas",
-    template: `
+    template:  /*html*/`
     <canvas class="emuwebapp-timelineCanvasMarkup" 
     width="4096" 
     ></canvas>

@@ -198,9 +198,9 @@ let EmuWebAppComponent = {
                     </bg-pane>
                     <bg-pane type="bottomPane" min-size="80">
                         <!-- ghost level div containing ul of ghost levels-->
-                        <div ng-if="$ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].hierarchyPathCanvases" style="margin-top: 25px;">
+                        <div style="margin-top: 25px;">
                             <hierarchy-path-canvas 
-                            ng-show="$ctrl.showHierarchyPathCanvas()"
+                            ng-if="$ctrl.ViewStateService.getPermission('zoom') && $ctrl.ConfigProviderService.curDbConfig.linkDefinitions.length > 0 && $ctrl.showHierarchyPathCanvas()"
                             annotation="$ctrl.DataService.getData()"
                             path="$ctrl.ViewStateService.hierarchyState.path"
                             view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
@@ -687,8 +687,15 @@ let EmuWebAppComponent = {
 														}
 
 														this.ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+														// extract levels containing time to display as levelCanvases
+														let lNamesWithTime = [];
 
-														this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNames;
+														levelDefs.forEach((ld) => {
+															if(ld.type !== 'ITEM'){
+																lNamesWithTime.push(ld.name)
+															}
+														})
+														this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNamesWithTime;
 													}
 
 													this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
