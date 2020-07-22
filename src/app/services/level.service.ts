@@ -50,11 +50,14 @@ class LevelService{
 	*/
 	public getLevelDetails(name) {
 		var ret = null;
-		this.DataService.getLevelData().forEach((level) => {
-			if (level.name === name) {
-				ret = level;
-			}
-		});
+		let ld = this.DataService.getLevelData();
+		if(typeof ld !== 'undefined'){
+			ld.forEach((level) => {
+				if (level.name === name) {
+					ret = level;
+				}
+			});
+		}
 		return ret;
 	};
 	

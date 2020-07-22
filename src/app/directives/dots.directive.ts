@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 angular.module('emuwebApp')
 	.directive('dots', function (ViewStateService, ConfigProviderService, SsffDataService, FontScaleService, SoundHandlerService, MathHelperService) {
 		return {
@@ -108,49 +110,51 @@ angular.module('emuwebApp')
 					}
 
 					// also check staticDots
-					dD.staticDots.forEach((sD) => {
-						sD.xCoordinates.forEach((xVal, xIdx) => {
-							// check x
-							if (xVal < globalMinX) {
-								globalMinX = xVal;
-							}
-							if (xVal > globalMaxX) {
-								globalMaxX = xVal;
-							}
-							// check y
-							if (sD.yCoordinates[xIdx] < globalMinY) {
-								globalMinY = sD.yCoordinates[xIdx];
-							}
-							if (sD.yCoordinates[xIdx] > globalMaxY) {
-								globalMaxY = sD.yCoordinates[xIdx];
-							}
+					if(typeof dD.staticDots !== 'undefined'){
+						dD.staticDots.forEach((sD) => {
+							sD.xCoordinates.forEach((xVal, xIdx) => {
+								// check x
+								if (xVal < globalMinX) {
+									globalMinX = xVal;
+								}
+								if (xVal > globalMaxX) {
+									globalMaxX = xVal;
+								}
+								// check y
+								if (sD.yCoordinates[xIdx] < globalMinY) {
+									globalMinY = sD.yCoordinates[xIdx];
+								}
+								if (sD.yCoordinates[xIdx] > globalMaxY) {
+									globalMaxY = sD.yCoordinates[xIdx];
+								}
+							});
 						});
-					});
+					}
 
 					// and staticContours
-					dD.staticContours.forEach((sC) => {
-						// get xCol
-						var trConf = scope.cps.getSsffTrackConfig(sC.xSsffTrack);
-						var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
-						if (xCol._minVal < globalMinX) {
-							globalMinX = xCol._minVal;
-						}
-						if (xCol._maxVal > globalMaxX) {
-							globalMaxX = xCol._maxVal;
-						}
+					if(typeof dD.staticContours !== 'undefined'){
+						dD.staticContours.forEach((sC) => {
+							// get xCol
+							var trConf = scope.cps.getSsffTrackConfig(sC.xSsffTrack);
+							var xCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+							if (xCol._minVal < globalMinX) {
+								globalMinX = xCol._minVal;
+							}
+							if (xCol._maxVal > globalMaxX) {
+								globalMaxX = xCol._maxVal;
+							}
 
-						// get yCol
-						trConf = scope.cps.getSsffTrackConfig(sC.ySsffTrack);
-						var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
-						if (yCol._minVal < globalMinY) {
-							globalMinY = yCol._minVal;
-						}
-						if (yCol._maxVal > globalMaxY) {
-							globalMaxY = yCol._maxVal;
-						}
-
-					});
-
+							// get yCol
+							trConf = scope.cps.getSsffTrackConfig(sC.ySsffTrack);
+							var yCol = scope.ssffds.getColumnOfTrack(trConf.name, trConf.columnName);
+							if (yCol._minVal < globalMinY) {
+								globalMinY = yCol._minVal;
+							}
+							if (yCol._maxVal > globalMaxY) {
+								globalMaxY = yCol._maxVal;
+							}
+						});
+					}
 				};
 
 				/**
@@ -241,14 +245,14 @@ angular.module('emuwebApp')
 					ctx.stroke();
 					ctx.closePath();
 
-					var smallFontSize = scope.cps.design.font.input.size.slice(0, -2) * 3 / 4;
+					var smallFontSize = parseInt(styles.fontInputSize.slice(0, -2)) * 3 / 4;
 					// ymax
-					scope.fontImage.drawUndistortedText(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, scope.cps.design.font.input.family, 5, 5, scope.cps.design.color.white, true);
+					scope.fontImage.drawUndistortedText(ctx, 'yMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxY, 2), smallFontSize, styles.fontInputFamily, 5, 5, styles.colorWhite, true);
 					// xmin + y min
-					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, scope.cps.design.font.input.family, 5, canvas.height - smallFontSize * scaleY * 2 - 5, scope.cps.design.color.white, true);
+					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'yMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinY, 2), 'xMin: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMinX, 2), smallFontSize, styles.fontInputFamily, 5, canvas.height - smallFontSize * scaleY * 2 - 5, styles.colorWhite, true);
 					// xmax
 					var tw = ctx.measureText('xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 5)).width * scaleX; // SIC why 5???
-					scope.fontImage.drawUndistortedText(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, scope.cps.design.font.input.family, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, scope.cps.design.color.white, true);
+					scope.fontImage.drawUndistortedText(ctx, 'xMax: ' + scope.mhs.roundToNdigitsAfterDecPoint(globalMaxX, 2), smallFontSize, styles.fontInputFamily, canvas.width - tw - 5, canvas.height - smallFontSize * scaleY - 5, styles.colorWhite, true);
 
 					var dD = scope.cps.vals.perspectives[scope.vs.curPerspectiveIdx].twoDimCanvases.twoDimDrawingDefinitions[0]; // SIC SIC SIC hardcoded
 
@@ -277,7 +281,7 @@ angular.module('emuwebApp')
 					var degrees = 90;
 					ctx.save();
 					ctx.rotate(degrees * Math.PI / 180);
-					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, canvas.width / 2 - tw / 2, -canvas.height, scope.cps.design.color.white, true);
+					scope.fontImage.drawUndistortedText(ctx, 'frame: ' + curFrame, parseInt(styles.fontInputSize.slice(0, -2)) - 4, styles.fontInputFamily, canvas.width / 2 - tw / 2, -canvas.height, styles.colorWhite, true);
 					ctx.restore();
 
 					//////////////////////////////
@@ -329,7 +333,7 @@ angular.module('emuwebApp')
 						ctx.closePath();
 
 						// draw labels
-						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, scope.cps.design.font.input.size.slice(0, -2) - 4, scope.cps.design.font.input.family, x, y - 5, scope.cps.design.color.white, true);
+						scope.fontImage.drawUndistortedText(ctx, dD.dots[i].name, parseInt(styles.fontInputSize.slice(0, -2)) - 4, styles.fontInputFamily, x, y - 5, styles.colorWhite, true);
 
 						// append to all dots
 						allDots.push({

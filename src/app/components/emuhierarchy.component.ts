@@ -1,6 +1,9 @@
 import * as angular from 'angular';
 import * as d3 from 'd3';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
+
 let EmuHierarchyComponent = {
 	selector: "emuhierarchy",
 	template: `<div class="emuwebapp-hierarchy-container" ng-mousemove="$ctrl.checkLink($event)"></div>`,
@@ -166,12 +169,8 @@ let EmuHierarchyComponent = {
 			this.element = this.$element;
 			this.width = 0;
 			this.height = 0;
-			// lazy loading
-			this.background = '';
-			// set background according to config only if config is loaded
-			if (this.ConfigProviderService.design.color !== undefined) {
-				this.background = this.ConfigProviderService.design.color.darkGrey;
-			}
+			
+			this.background = styles.colorDarkGrey;
 			
 			// scaleExtent limits the amount of zooming possible
 			this.zoomListener = d3.zoom()
@@ -207,7 +206,7 @@ let EmuHierarchyComponent = {
 			
 			this.timeArrow = this.svg.append('g')
 			.append('text')
-			.style('fill', this.ConfigProviderService.design.color.white)
+			.style('fill', styles.colorWhite)
 			.text('time →');
 			
 			this.scaleFactorDisplay = this.svg.append('g');
@@ -969,10 +968,10 @@ let EmuHierarchyComponent = {
 			// Change the circle fill of all nodes depending on whether they are selected
 			this.svg.selectAll('circle.emuhierarchy-nodeCircle')
 			.style('fill', (d) => {
-				var color = this.ConfigProviderService.design.color.white;
+				var color = styles.colorWhite;
 				
 				if (typeof this.selectedItem !== 'undefined' && d.id === this.selectedItem.id) {
-					color = this.ConfigProviderService.design.color.blue;
+					color = styles.colorBlue;
 				}
 				
 				return color;
@@ -982,9 +981,9 @@ let EmuHierarchyComponent = {
 			this.svg.selectAll('path.emuhierarchy-link')
 			.style('stroke', (d) => {
 				if (this.selectedLink === d) {
-					return this.ConfigProviderService.design.color.yellow;
+					return styles.colorYellow;
 				} else {
-					return this.ConfigProviderService.design.color.grey;
+					return styles.colorGrey;
 				}
 			})
 			;
@@ -1054,7 +1053,7 @@ let EmuHierarchyComponent = {
 				this.scaleFactorDisplay
 				.select('text')
 				.attr('text-anchor', 'end')
-				.style('fill', this.ConfigProviderService.design.color.white)
+				.style('fill', styles.colorWhite)
 				.text('Zoom: ' + Math.round(t.k * 100) + ' %');
 			} else {
 				this.scaleFactorDisplay
@@ -1064,7 +1063,7 @@ let EmuHierarchyComponent = {
 				this.scaleFactorDisplay
 				.select('text')
 				.attr('text-anchor', 'start')
-				.style('fill', this.ConfigProviderService.design.color.white)
+				.style('fill', styles.colorWhite)
 				.text('Zoom: ' + Math.round(t.k * 100) + ' %')
 				;
 			}
@@ -1107,13 +1106,13 @@ let EmuHierarchyComponent = {
 			
 			addItemButtons
 			.append('circle')
-			.style('fill', this.ConfigProviderService.design.color.blue)
+			.style('fill', styles.colorBlue)
 			.attr('r', 8)
 			;
 			
 			addItemButtons
 			.append('path')
-			.style('stroke', this.ConfigProviderService.design.color.white)
+			.style('stroke', styles.colorWhite)
 			.attr('d', 'M0,-6 V6 M-6,0 H6')
 			;
 			
@@ -1124,7 +1123,7 @@ let EmuHierarchyComponent = {
 			})
 			.append('rect')
 			.attr('class', 'emuhierarchy-timelevelbackground')
-			.style('fill', this.ConfigProviderService.design.color.transparent.grey)
+			.style('fill', styles.colorTransparentGrey)
 			;
 			
 			// merge new ones
@@ -1298,7 +1297,7 @@ let EmuHierarchyComponent = {
 			
 			var circle = newNodes.append('circle')
 			.attr('class', 'emuhierarchy-nodeCircle')
-			.style('stroke', this.ConfigProviderService.design.color.grey)
+			.style('stroke', styles.colorGrey)
 			;
 			
 			if (this.transition.nodes) {
@@ -1389,10 +1388,10 @@ let EmuHierarchyComponent = {
 			dataSet.select('circle.emuhierarchy-nodeCircle')
 			// Highlight selected item
 			.style('fill', (d) => {
-				var color = this.ConfigProviderService.design.color.white;
+				var color = styles.colorWhite;
 				
 				if (typeof this.selectedItem !== 'undefined' && d.id === this.selectedItem.id) {
-					color = this.ConfigProviderService.design.color.blue;
+					color = styles.colorBlue;
 				}
 				
 				return color;
@@ -1400,9 +1399,9 @@ let EmuHierarchyComponent = {
 			// Highlight collapsed items
 			.style('stroke', (d) => {
 				if (this.ViewStateService.hierarchyState.getCollapsed(d.id)) {
-					return this.ConfigProviderService.design.color.red;
+					return styles.colorRed;
 				} else {
-					return this.ConfigProviderService.design.color.grey;
+					return styles.colorGrey;
 				}
 			})
 			;
@@ -1623,9 +1622,9 @@ let EmuHierarchyComponent = {
 			.selectAll('.emuhierarchy-link')
 			.style('stroke', (d) => {
 				if (this.selectedLink === d) {
-					return this.ConfigProviderService.design.color.yellow;
+					return styles.colorYellow;
 				} else {
-					return this.ConfigProviderService.design.color.grey;
+					return styles.colorGrey;
 				}
 			})
 			;

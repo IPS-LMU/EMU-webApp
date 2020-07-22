@@ -2,7 +2,7 @@ export interface I_globalScss {
   colorBlack: string;
   colorWhite: string;
   colorBlue: string;
-  coloRed: string;
+  colorRed: string;
   colorYellow: string;
   colorGreen: string;
   colorGrey: string;

@@ -1,6 +1,9 @@
 import * as angular from 'angular';
 import { SpectroDrawingWorker } from '../workers/spectro-drawing.worker';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
+
 let SpectrogramComponent = {
     selector: "spectro",
     template: `
@@ -108,7 +111,7 @@ let SpectrogramComponent = {
 				// scope.$watch('vs.bundleListSideBarOpen', function () {
 				// 	if (!$.isEmptyObject(this.SoundHandlerService)) {
 				// 		if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
-				// 			$timeout(scope.clearAndDrawSpectMarkup, ConfigProviderService.design.animation.duration);
+				// 			$timeout(scope.clearAndDrawSpectMarkup, styles.animationPeriod);
 				// 		}
 				// 	}
 				// });
@@ -152,17 +155,17 @@ let SpectrogramComponent = {
         };
 
         private killSpectroRenderingThread() {
-            this.context.fillStyle = this.ConfigProviderService.design.color.black;
+            this.context.fillStyle = styles.colorBlack;
             this.context.fillRect(0, 0, this.canvas0.width, this.canvas0.height);
             // draw current viewport selected
             this.FontScaleService.drawUndistortedText(
                 this.context, 
                 'rendering...', 
-                this.ConfigProviderService.design.font.small.size.slice(0, -2) * 0.75, 
-                this.ConfigProviderService.design.font.small.family, 
+                parseInt(styles.fontSmallSize.slice(0, -2)) * 0.75, 
+                styles.fontSmallFamily, 
                 10, 
                 50, 
-                this.ConfigProviderService.design.color.black, true);
+                styles.colorBlack, true);
             if (this.primeWorker !== null) {
                 this.primeWorker.kill();
                 this.primeWorker = null;

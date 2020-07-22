@@ -1,5 +1,8 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
+
 /**
  * @ngdoc function
  * @name emuwebApp.controller:ManualctrlCtrl
@@ -31,14 +34,14 @@ angular.module('emuwebApp')
 			// console.log($scope.curMdFile.url);
 			if (tabUrl === $scope.curMdFile.url) {
 				return {
-					'background-color': ConfigProviderService.design.color.white,
-					'color': ConfigProviderService.design.color.black,
+					'background-color': styles.colorWhite,
+					'color': styles.colorBlack,
 					'font-weight': '500'
 				};
 			}
 			return {
-				'background-color': ConfigProviderService.design.color.blue,
-				'color': ConfigProviderService.design.color.white,
+				'background-color': styles.colorBlue,
+				'color': styles.colorWhite,
 				'font-weight': '400'
 			};
 		};

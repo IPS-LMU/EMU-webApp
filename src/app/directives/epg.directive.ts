@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 angular.module('emuwebApp')
 	.directive('epg', function () {
 		return {
@@ -15,7 +17,7 @@ angular.module('emuwebApp')
 				////////////////////
 				// watches
 
-				scope.$watch('vs.curViewPort', function (newValue, oldValue) {
+				scope.$watch('vs.curViewPort', (newValue, oldValue) => {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
@@ -27,7 +29,7 @@ angular.module('emuwebApp')
 					}
 				}, true);
 
-				scope.$watch('vs.curMousePosSample', function () {
+				scope.$watch('vs.curMousePosSample', () => {
 					if (!$.isEmptyObject(scope.cps.vals)) {
 						if (!$.isEmptyObject(scope.ssffds.data)) {
 							if (scope.ssffds.data.length !== 0) {
@@ -51,8 +53,8 @@ angular.module('emuwebApp')
 					sRaSt = scope.ssffds.getSampleRateAndStartTimeOfTrack(tr.name);
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
 					ctx.fillStyle = 'green';
-					ctx.strokeStyle = scope.cps.design.color.black;
-					ctx.font = (scope.cps.design.font.input.size.slice(0, -2) + 'px' + ' ' + scope.cps.design.font.input.family);
+					ctx.strokeStyle = styles.colorBlack;
+					ctx.font = (styles.fontInputSize.slice(0, -2) + 'px' + ' ' + styles.fontInputFamily);
 
 					var gridWidth = canvas.width / 8;
 					var gridHeight = canvas.height / 8;
@@ -81,7 +83,7 @@ angular.module('emuwebApp')
 					});
 
 					// draw labels
-					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'EPG', 'Frame:' + curFrame, scope.cps.design.font.input.size.slice(0, -2) * 3 / 4, scope.cps.design.font.input.family, 5, 0, scope.cps.design.color.black, true);
+					scope.fontImage.drawUndistortedTextTwoLines(ctx, 'EPG', 'Frame:' + curFrame, parseInt(styles.fontInputSize.slice(0, -2)) * 3 / 4, styles.fontInputFamily, 5, 0, styles.colorBlack, true);
 				};
 			}
 		};
