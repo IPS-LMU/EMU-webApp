@@ -46,8 +46,8 @@ These are the steps necessary to create and deploy a new release on [https://ips
 
 + [github](http://github.com/raphywink)
 
-**Georg Raess**
-
+            **Georg Raess**
+        
 + [github](http://github.com/georgraess)
 
 **Markus Jochim**

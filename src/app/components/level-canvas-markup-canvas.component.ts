@@ -12,18 +12,7 @@ let LevelCanvasMarkupCanvasComponent = {
     `,
     bindings: {
         level: '<',
-        idx: '<',
-        viewPortSampleStart: '<',
-        viewPortSampleEnd: '<',
-        viewPortSelectStart: '<',
-        viewPortSelectEnd: '<',
-        curMouseX: '<',
-        curClickLevelName: '<',
-        movingBoundarySample: '<',
-        movingBoundary: '<',
-        movesAwayFromLastSave: '<',
-        curPerspectiveIdx: '<',
-        curBndl: '<'
+        idx: '<'
     },
     controller: class LevelCanvasMarkupCanvasController{
         private $scope;
@@ -38,17 +27,6 @@ let LevelCanvasMarkupCanvasComponent = {
         // bindings
         private level;
         private idx;
-        private viewPortSampleStart;
-        private viewPortSampleEnd;
-        private viewPortSelectStart;
-        private viewPortSelectEnd;
-        private curMouseX;
-        private curClickLevelName;
-        private movingBoundarySample;
-        private movingBoundary;
-        private movesAwayFromLastSave;
-        private curPerspectiveIdx;
-        private curBndl;
 
         private lastEventClick;
         private lastEventMove;

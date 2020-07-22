@@ -25,7 +25,6 @@ let LevelComponent = {
     view-port-sample-end="$ctrl.viewPortSampleEnd"
     view-port-select-start="$ctrl.viewPortSelectStart"
     view-port-select-end="$ctrl.viewPortSelectEnd"
-    cur-bndl="$ctrl.curBundl"
     ></level-canvas-markup-canvas>
     <!-- track-mouse-in-level="{{idx}}"
     level-name="$ctrl.level.name"
