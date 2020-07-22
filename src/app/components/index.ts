@@ -14,3 +14,4 @@ import "./perspectives-side-bar.component";
 import "./new-version-hint.component";
 import "./signal-canvas-markup-canvas.component";
 import "./level-canvas-markup-canvas.component";
+import "./epg-grid-canvas.component";

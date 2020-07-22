@@ -1,6 +1,6 @@
 # What's New
 
-## Version 1.3.2.9000
+## Version 1.3.2
 
 ### new features / performance tweaks / improvements
 
@@ -9,6 +9,7 @@
 - font scaling factor now also applied to hierarchy path canvas
 - moved emuwebappDesign from sass to scss and made it importable with .d.ts file
 - removed default_emuwebappDesign.json file to have single source of truth in scss file
+- epg canvas now a component
 
 ### bug fixes
 

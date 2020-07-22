@@ -245,7 +245,12 @@ let EmuWebAppComponent = {
                     <bg-pane type="emuwebapp-2d-map">
                         <ul>
                             <li ng-repeat="cur2dTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order" ng-switch on="cur2dTrack">
-                                <epg ng-switch-when="EPG"></epg>
+								<epg-grid-canvas 
+								ng-switch-when="EPG"
+								cur-mouse-pos-sample="$ctrl.ViewStateService.curMousePosSample"
+								view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
+								view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
+								></epg-grid-canvas>
                                 <dots ng-switch-when="DOTS"></dots>
                             </li>
                         </ul>

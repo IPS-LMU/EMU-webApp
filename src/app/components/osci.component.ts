@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+
 import styles from '../../styles/EMUwebAppDesign.scss';
 
 let OsciComponent = {
