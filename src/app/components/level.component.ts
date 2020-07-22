@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 let LevelComponent = {
     selector: "level",
     // inline HTML
@@ -121,7 +123,7 @@ class="emuwebapp-selectAttrDef"
             this.open = true;
             this._inited = false;
             this.backgroundCanvas = {
-                'background': ConfigProviderService.design.color.black
+                'background': styles.colorBlack
             };
         };
         
@@ -276,11 +278,11 @@ class="emuwebapp-selectAttrDef"
             if (attrDefName === curAttrDef) {
                 curColor = {
                     'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)',
-                    'border-color': 'yellow'
+                    'border-color': styles.colorYellow
                 };
             } else {
                 curColor = {
-                    'background-color': 'white'
+                    'background-color': styles.colorWhite
                 };
             }
             return curColor;
@@ -289,9 +291,9 @@ class="emuwebapp-selectAttrDef"
 
         private drawLevelDetails = function () {
             var labelFontFamily; // font family used for labels only
-            var fontFamily = this.ConfigProviderService.design.font.small.family; // font family used for everything else
+            var fontFamily = styles.fontSmallFamily; // font family used for everything else
             if(typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined'){
-                labelFontFamily = this.ConfigProviderService.design.font.small.family;
+                labelFontFamily = styles.fontSmallFamily;
             }else{
                 labelFontFamily = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily;
             }
@@ -304,9 +306,9 @@ class="emuwebapp-selectAttrDef"
             levelCanvasesFontScalingFactor = levelCanvasesFontScalingFactor / 100;
 
             var labelFontSize; // font family used for labels only
-            var fontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * 1; // font size used for everything else
+            var fontSize = parseInt(styles.fontSmallSize.slice(0, -2)); // font size used for everything else
             if(typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.fontPxSize === 'undefined') {
-                labelFontSize = this.ConfigProviderService.design.font.small.size.slice(0, -2) * levelCanvasesFontScalingFactor;
+                labelFontSize = parseInt(styles.fontSmallSize.slice(0, -2)) * levelCanvasesFontScalingFactor;
             }else{
                 labelFontSize = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontPxSize * levelCanvasesFontScalingFactor;
             }
@@ -348,7 +350,7 @@ class="emuwebapp-selectAttrDef"
                         fontFamily, 
                         4, 
                         ctx.canvas.height / 2 - fontSize * scaleY, 
-                        this.ConfigProviderService.design.color.white, 
+                        styles.colorWhite,
                         true);
                 }
                 else {
@@ -360,7 +362,7 @@ class="emuwebapp-selectAttrDef"
                         fontFamily, 
                         4, 
                         ctx.canvas.height / 2 - (fontSize * scaleY / 2), 
-                        this.ConfigProviderService.design.color.white, true);
+                        styles.colorWhite, true);
                 }
             } else {
                 this.FontScaleService.drawUndistortedTextTwoLines(
@@ -371,7 +373,7 @@ class="emuwebapp-selectAttrDef"
                     fontFamily, 
                     4, 
                     ctx.canvas.height / 2 - fontSize * scaleY, 
-                    this.ConfigProviderService.design.color.white, 
+                    styles.colorWhite, 
                     true);
             }
 
@@ -383,7 +385,7 @@ class="emuwebapp-selectAttrDef"
             // calculate generic max with of single digit (0 digit used)
             var zeroTxtImgWidth = ctx.measureText('0').width * this.FontScaleService.scaleX;
             if (this.level.type === 'SEGMENT') {
-                ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                ctx.fillStyle = styles.colorWhite;
                 // draw segments
                 this.level.items.forEach((item) => {
                     ++curID;
@@ -407,11 +409,11 @@ class="emuwebapp-selectAttrDef"
                         posS = this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart);
                         posE = this.ViewStateService.getPos(ctx.canvas.width, item.sampleStart + item.sampleDur + 1);
 
-                        ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                        ctx.fillStyle = styles.colorWhite;
                         ctx.fillRect(posS, 0, 2, ctx.canvas.height / 2);
 
                         //draw segment end
-                        ctx.fillStyle = this.ConfigProviderService.design.color.grey;
+                        ctx.fillStyle = styles.colorGrey;
                         ctx.fillRect(posE, ctx.canvas.height / 2, 2, ctx.canvas.height);
 
                         ctx.font = (fontSize - 2 + 'px' + ' ' + labelFontFamily);
@@ -426,7 +428,7 @@ class="emuwebapp-selectAttrDef"
                                     labelFontFamily, 
                                     posS + (posE - posS) / 2, 
                                     (ctx.canvas.height / 2) - (fontSize - 2) + 2, 
-                                    this.ConfigProviderService.design.color.white, 
+                                    styles.colorWhite, 
                                     false);
                             } else {
                                 this.FontScaleService.drawUndistortedText(
@@ -436,7 +438,7 @@ class="emuwebapp-selectAttrDef"
                                     labelFontFamily, 
                                     posS + (posE - posS) / 2, 
                                     (ctx.canvas.height / 2) - fontSize + 2, 
-                                    this.ConfigProviderService.design.color.white, 
+                                    styles.colorWhite, 
                                     false);
                             }
                         }
@@ -447,7 +449,7 @@ class="emuwebapp-selectAttrDef"
 
                             var hlY = ctx.canvas.height / 4;
                             // start helper line
-                            ctx.strokeStyle = this.ConfigProviderService.design.color.white;
+                            ctx.strokeStyle = styles.colorWhite;
                             ctx.beginPath();
                             ctx.moveTo(posS, hlY);
                             ctx.lineTo(labelCenter, hlY);
@@ -456,7 +458,7 @@ class="emuwebapp-selectAttrDef"
 
                             hlY = ctx.canvas.height / 4 * 3;
                             // end helper line
-                            ctx.strokeStyle = this.ConfigProviderService.design.color.grey;
+                            ctx.strokeStyle = styles.colorGrey;
                             ctx.beginPath();
                             ctx.moveTo(posE, hlY);
                             ctx.lineTo(labelCenter, hlY);
@@ -475,7 +477,7 @@ class="emuwebapp-selectAttrDef"
                                     fontFamily, 
                                     posS + 3, 
                                     0, 
-                                    this.ConfigProviderService.design.color.blue, 
+                                    styles.colorBlue, 
                                     true);
                             }
 
@@ -490,14 +492,14 @@ class="emuwebapp-selectAttrDef"
                                     fontFamily, 
                                     posE - (ctx.measureText(durtext).width * this.FontScaleService.scaleX), 
                                     ctx.canvas.height / 4 * 3, 
-                                    this.ConfigProviderService.design.color.blue, 
+                                    styles.colorBlue, 
                                     true);
                             }
                         }
                     }
                 });
             } else if (this.level.type === 'EVENT') {
-                ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                ctx.fillStyle = styles.colorWhite;
                 // predef. vars
                 var perc;
 
@@ -512,7 +514,7 @@ class="emuwebapp-selectAttrDef"
                             }
                         });
 
-                        ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                        ctx.fillStyle = styles.colorWhite;
                         ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
                         ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
 
@@ -523,7 +525,7 @@ class="emuwebapp-selectAttrDef"
                             labelFontFamily, 
                             perc, 
                             (ctx.canvas.height / 2) - (fontSize - 2) + 2, 
-                            this.ConfigProviderService.design.color.white, 
+                            styles.colorWhite, 
                             false);
                         if (isOpen) {
                             this.FontScaleService.drawUndistortedText(
@@ -533,7 +535,7 @@ class="emuwebapp-selectAttrDef"
                                 labelFontFamily, 
                                 perc + 5, 
                                 0, 
-                                this.ConfigProviderService.design.color.blue, 
+                                styles.colorBlue, 
                                 true);
                         }
                     }
@@ -549,7 +551,7 @@ class="emuwebapp-selectAttrDef"
             var ctx = this.canvases[1].getContext('2d');
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             if (this.level.name === this.ViewStateService.getcurClickLevelName()) {
-                ctx.fillStyle = this.ConfigProviderService.design.color.transparent.grey;
+                ctx.fillStyle = styles.colorTransparentGrey;
                 ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             }
 
@@ -585,9 +587,9 @@ class="emuwebapp-selectAttrDef"
                                 posS = posS - 5;
                                 posE = posS + 10;
                             }
-                            ctx.fillStyle = this.ConfigProviderService.design.color.transparent.yellow;
+                            ctx.fillStyle = styles.colorTransparentYellow;
                             ctx.fillRect(posS, 0, posE - posS, ctx.canvas.height);
-                            ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                            ctx.fillStyle = styles.colorWhite;
                         }
                     });
                 }
@@ -597,7 +599,7 @@ class="emuwebapp-selectAttrDef"
             // draw preselected boundary
             item = this.ViewStateService.getcurMouseItem();
             if (this.level.items.length > 0 && item !== undefined && segMId !== undefined && this.level.name === this.ViewStateService.getcurMouseLevelName()) {
-                ctx.fillStyle = this.ConfigProviderService.design.color.blue;
+                ctx.fillStyle = styles.colorBlue;
                 if (isFirst === true) { // before first segment
                     if (this.ViewStateService.getcurMouseLevelType() === 'SEGMENT') {
                         item = this.level.items[0];
@@ -621,7 +623,7 @@ class="emuwebapp-selectAttrDef"
 
                     }
                 }
-                ctx.fillStyle = this.ConfigProviderService.design.color.white;
+                ctx.fillStyle = styles.colorWhite;
 
             }
 
