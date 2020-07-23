@@ -1,4 +1,3 @@
-import "./dots.directive";
 import "./dragout.directive";
 import "./drawssff.directive";
 import "./handle-key-strokes.directive";

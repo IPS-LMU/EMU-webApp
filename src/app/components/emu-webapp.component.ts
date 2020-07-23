@@ -251,7 +251,15 @@ let EmuWebAppComponent = {
 								view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
 								view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
 								></epg-grid-canvas>
-                                <dots ng-switch-when="DOTS"></dots>
+								<dots-canvas 
+								ng-switch-when="DOTS"
+								cur-bndl="$ctrl.LoadedMetaDataService.getCurBndl()"
+								cur-perspective-idx="$ctrl.ViewStateService.curPerspectiveIdx"
+								cur-perspective-idx="$ctrl.ViewStateService.curPerspectiveIdx"
+								cur-mouse-pos-sample="$ctrl.ViewStateService.curMousePosSample"
+								view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
+								view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
+								></dots-canvas>
                             </li>
                         </ul>
                     </bg-pane>
@@ -777,6 +785,7 @@ let EmuWebAppComponent = {
 						this.checkIfToShowWelcomeModal();
 						// FOR DEVELOPMENT
 						// $scope.aboutBtnClick();
+						// this.openDemoDBbtnClick("ema");
 						this.ViewStateService.somethingInProgress = false;
 					} else {
 						this.ModalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(() => {
