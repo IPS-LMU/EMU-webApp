@@ -1,5 +1,6 @@
 import * as angular from 'angular';
 
+import { HierarchyWorker } from '../workers/hierarchy.worker';
 import styles from '../../styles/EMUwebAppDesign.scss';
 
 let EmuWebAppComponent = {
@@ -371,7 +372,7 @@ let EmuWebAppComponent = {
         private DataService;
         private ModalService;
         private BrowserDetectorService;
-        private HierarchyLayoutService;
+		private HierarchyLayoutService;
 
         // init vars
 		private connectBtnLabel;
@@ -412,7 +413,7 @@ let EmuWebAppComponent = {
             DataService,
             ModalService,
             BrowserDetectorService,
-            HierarchyLayoutService){
+			HierarchyLayoutService){
             
                 this.$scope = $scope;
                 this.$element = $element;
@@ -629,7 +630,7 @@ let EmuWebAppComponent = {
 					}
 					
 					// then get the DBconfigFile
-					this.IoHandlerService.httpGetPath(DBconfigGetUrl).then((resp) => {
+					this.IoHandlerService.httpGetPath(DBconfigGetUrl).then(async (resp) => {
 						// first element of perspectives is default perspective
 						this.ViewStateService.curPerspectiveIdx = 0;
 						this.ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
@@ -678,7 +679,7 @@ let EmuWebAppComponent = {
 										if(searchObject.labelGetUrl){
 											this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.labelGetUrl, respType).then((data2) => {
 												this.ViewStateService.somethingInProgressTxt = 'Parsing ' + this.ConfigProviderService.embeddedVals.labelType + ' file...';
-												this.IoHandlerService.parseLabelFile(data2.data, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', this.ConfigProviderService.embeddedVals.labelType).then((parseMess) => {
+												this.IoHandlerService.parseLabelFile(data2.data, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', this.ConfigProviderService.embeddedVals.labelType).then(async (parseMess) => {
 
 													var annot = parseMess;
 													this.DataService.setData(annot);
@@ -706,7 +707,7 @@ let EmuWebAppComponent = {
 														}
 
 														this.ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
-														// extract levels containing time to display as levelCanvases
+														// extract levels containing time to display as levelCanvases 
 														let lNamesWithTime = [];
 
 														levelDefs.forEach((ld) => {
@@ -715,6 +716,10 @@ let EmuWebAppComponent = {
 															}
 														})
 														this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNamesWithTime;
+														
+														let hierarchyWorker = await new HierarchyWorker();
+														let reducedAnnotation = await hierarchyWorker.guessLinkDefinitions(annot);
+
 													}
 
 													this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
