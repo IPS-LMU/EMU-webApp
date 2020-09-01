@@ -24,11 +24,11 @@ let EmuWebAppComponent = {
         <div class="emuwebapp-window" id="mainWindow">
 			<progress-bar 
 			class="emuwebapp-progressBar"
-			ng-if="$ctrl.ViewStateService.somethingInProgress"
+			ng-show="$ctrl.ViewStateService.somethingInProgress"
 			txt="$ctrl.ViewStateService.somethingInProgressTxt"
-			>
-			</progress-bar>
-            <div class="printTitle">EMU-webApp : {{$ctrl.LoadedMetaDataService.getCurBndlName()}}</div>
+			></progress-bar>
+			
+			<div class="printTitle">EMU-webApp : {{$ctrl.LoadedMetaDataService.getCurBndlName()}}</div>
 
             <!-- start: top menu bar -->
             <div class="emuwebapp-top-menu">
