@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import styles from '../../styles/EMUwebAppDesign.scss';
 
 let HistoryActionPopupComponent = {
     selector: "historyActionPopup",
@@ -43,9 +44,9 @@ let HistoryActionPopupComponent = {
                                 this.$animate.removeClass(this.$element, 'emuwebapp-history-fade').then(() => {
                                     this.$timeout(() => {
                                         this.ViewStateService.historyActionTxt = '';
-                                    }, this.ConfigProviderService.design.animation.period);
+                                    }, styles.animationPeriod);
                                 });
-                            }, this.ConfigProviderService.design.animation.period);
+                            }, styles.animationPeriod);
                         });
                     }
                 }

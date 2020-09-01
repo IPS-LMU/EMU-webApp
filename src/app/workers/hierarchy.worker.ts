@@ -15,7 +15,7 @@ export class HierarchyWorker {
         
         this.idHashMap = undefined; // reset 4       
         this.linkHashMap = undefined; 
-        this.createIdHashMap(path, annotation);
+        this.createIdHashMapForPath(path, annotation);
         this.createLinkHashMap(annotation); // from child to parents
         
         let childLevel = this.reduceToItemsWithTimeInView(annotation, path, viewPortStartSample, viewPortEndSample);
@@ -58,6 +58,21 @@ export class HierarchyWorker {
         });
         return ret;
     };
+
+    /**
+     * 
+     * @param annotation annotation to guess LinkDefinitions from
+     */
+    public guessLinkDefinitions (annotation){
+        console.log(annotation)
+        this.idHashMap = undefined; // reset 4       
+        this.linkHashMap = undefined; 
+        this.createIdHashMapForEveryLevel(annotation);
+        this.createLinkHashMap(annotation); // from child to parents
+        console.log(this.idHashMap);
+        console.log(this.linkHashMap);
+        
+    }
     
     ///////////////////////////
     // private api
@@ -141,7 +156,7 @@ export class HierarchyWorker {
             });
         }
         
-        private createIdHashMap(path, annotation){
+        private createIdHashMapForPath(path, annotation){
             this.idHashMap = new Map();
             path.forEach(levelName => {
                 let level = this.getLevelDetails(levelName, annotation);
@@ -151,6 +166,15 @@ export class HierarchyWorker {
             });
         }
         
+        private createIdHashMapForEveryLevel(annotation){
+            this.idHashMap = new Map();
+            annotation.levels.forEach(level => {
+                level.items.forEach(item => {
+                    this.idHashMap.set(item.id, item);
+                });
+            });
+        }
+
         
         private createLinkHashMap(annotation){
             this.linkHashMap = new Map();

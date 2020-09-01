@@ -49,13 +49,6 @@ class IoHandlerService{
 		return prom;
 	};
 	
-	/**
-	* default design is always loaded from same origin
-	*/
-	public httpGetDefaultDesign() {
-		var prom = this.$http.get('configFiles/default_emuwebappDesign.json');
-		return prom;
-	};
 	
 	/**
 	* default config is always loaded from same origin

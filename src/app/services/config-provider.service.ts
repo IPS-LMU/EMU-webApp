@@ -6,7 +6,6 @@ class ConfigProviderService {
 	private ViewStateService;
 
 	private vals;
-	private design;
 	private curDbConfig;
 	private initDbConfig;
 	private embeddedVals;
@@ -17,7 +16,6 @@ class ConfigProviderService {
 		this.ViewStateService = ViewStateService;
 
 		this.vals = {};
-		this.design = {};
 		this.curDbConfig = {};
 		this.initDbConfig = {};
 
@@ -38,10 +36,6 @@ class ConfigProviderService {
 
 	/////////////////////
 	// public 
-
-	public setDesign(data) {
-		angular.copy(data, this.design);
-	}
 
 	/**
 	 * depth of 2 = max

@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 let OsciComponent = {
     selector: "osci",
     template: /*html*/`
@@ -86,7 +88,7 @@ let OsciComponent = {
             if(this._inited){
                 //
                 if(changes.timelineSize){
-                    this.$timeout(this.redraw, this.ConfigProviderService.design.animation.duration);
+                    this.$timeout(this.redraw, styles.animationPeriod);
                 }
                 
                 //

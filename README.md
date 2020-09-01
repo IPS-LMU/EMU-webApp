@@ -35,7 +35,7 @@ These are the steps necessary to create and deploy a new release on [https://ips
 * `npm run build-start` also runs `npm run build`s tasks so explicitly calling `npm run build` is unnecessary
 * this will have created a new release in the `dist` folder in the root directory of this repo
 * change `<base href="/">` entry in `dist/index.html` to `<base href="/EMU-webApp/">` 
-* commit and push changes made to repo by build process to GitHub: `git commit` (make sure all files are added) followed by `git push origin master`
+* add, commit and push changes made to repo by build process to GitHub: `git commit` (make sure all files are added) followed by `git push origin master`
 * deploy the `dist` directory by running the subtree push command: `git subtree push --prefix dist origin gh-pages` from the root directory of this repo (see [http://yeoman.io/learning/deployment.html](http://yeoman.io/learning/deployment.html) for further details)
 * create new release on GitHub
 
@@ -47,7 +47,7 @@ These are the steps necessary to create and deploy a new release on [https://ips
 + [github](http://github.com/raphywink)
 
 **Georg Raess**
-
+        
 + [github](http://github.com/georgraess)
 
 **Markus Jochim**

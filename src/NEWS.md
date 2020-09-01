@@ -1,18 +1,21 @@
 # What's New
 
-## Version 1.3.2.9000
+## Version 1.3.2
 
 ### new features / performance tweaks / improvements
 
 - if no hierarchy path is available no hierarchy path canvas is shown and settings stay hidden
 - LevelCanvasMarkupCanvasComponent now a component
+- font scaling factor now also applied to hierarchy path canvas
+- moved emuwebappDesign from sass to scss and made it importable with .d.ts file
+- removed default_emuwebappDesign.json file to have single source of truth in scss file
+- epg and dot canvas now components
 
 ### bug fixes
 
 - fixed show hierarchy path canvas setting being dependent on legacy DBconfig entry
-- moved emuwebappDesign from sass to scss and made it importable with .d.ts file (idea is to completely remove design json in the long term)
 - fixed building of DBconfig if none is passed in via URL parameters to only show SEGMENT and EVENT levels
-
+- fixed drawing errors caused by uninited data on load 
 
 ## Version 1.3.1
 

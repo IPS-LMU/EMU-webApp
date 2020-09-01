@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 angular.module('emuwebApp')
 	.directive('handleglobalkeystrokes', function ($timeout, ViewStateService, ModalService, HierarchyManipulationService, SoundHandlerService, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService, DbObjLoadSaveService) {
 		return {
@@ -774,7 +776,7 @@ angular.module('emuwebApp')
 								if (ViewStateService.getPermission('toggleSideBars')) {
 									// check if menu button in showing -> if not -> no submenu open
 									if (ConfigProviderService.vals.activeButtons.openMenu) {
-										ViewStateService.toggleBundleListSideBar(ConfigProviderService.design.animation.period);
+										ViewStateService.toggleBundleListSideBar(styles.animationPeriod);
 									}
 								}
 							}

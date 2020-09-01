@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 let SignalCanvasMarkupCanvasComponent = {
     selector: "signalCanvasMarkupCanvas",
     template:  /*html*/`
@@ -320,7 +322,7 @@ let SignalCanvasMarkupCanvasComponent = {
         this.drawMarkup();
         var posS = this.ViewStateService.getPos(this.canvas.width, this.ViewStateService.playHeadAnimationInfos.sS);
         var posCur = this.ViewStateService.getPos(this.canvas.width, this.ViewStateService.playHeadAnimationInfos.curS);
-        this.ctx.fillStyle = this.ConfigProviderService.design.color.transparent.lightGrey;
+        this.ctx.fillStyle = styles.colorTransparentLightGrey;
         this.ctx.fillRect(posS, 0, posCur - posS, this.canvas.height);
     };
     }

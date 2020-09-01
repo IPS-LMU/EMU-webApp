@@ -8,7 +8,6 @@ describe('Directive: preview', function () {
     beforeEach(inject(function ($rootScope, $compile, ConfigProviderService) {
         scope = $rootScope.$new();
         ConfigProviderService.setVals(defaultEmuwebappConfig);
-        ConfigProviderService.design = defaultEmuwebappDesign;
     }));
 
     function compileDirective(val) {

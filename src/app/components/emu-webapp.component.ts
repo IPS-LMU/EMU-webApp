@@ -1,5 +1,8 @@
 import * as angular from 'angular';
 
+import { HierarchyWorker } from '../workers/hierarchy.worker';
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 let EmuWebAppComponent = {
     selector: "emuwebapp",
     template: /*html*/`
@@ -35,7 +38,7 @@ let EmuWebAppComponent = {
                 <button class="emuwebapp-button-icon" 
                 id="bundleListSideBarOpen" 
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.openMenu" 
-                ng-click="$ctrl.ViewStateService.toggleBundleListSideBar($ctrl.ConfigProviderService.design.animation.period);" 
+                ng-click="$ctrl.ViewStateService.toggleBundleListSideBar(styles.animation.period);" 
                 style="float:left"><i class="material-icons">menu</i></button>
                 
                 <button class="emuwebapp-mini-btn left" 
@@ -243,8 +246,21 @@ let EmuWebAppComponent = {
                     <bg-pane type="emuwebapp-2d-map">
                         <ul>
                             <li ng-repeat="cur2dTrack in $ctrl.ConfigProviderService.vals.perspectives[$ctrl.ViewStateService.curPerspectiveIdx].twoDimCanvases.order" ng-switch on="cur2dTrack">
-                                <epg ng-switch-when="EPG"></epg>
-                                <dots ng-switch-when="DOTS"></dots>
+								<epg-grid-canvas 
+								ng-switch-when="EPG"
+								cur-mouse-pos-sample="$ctrl.ViewStateService.curMousePosSample"
+								view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
+								view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
+								></epg-grid-canvas>
+								<dots-canvas 
+								ng-switch-when="DOTS"
+								cur-bndl="$ctrl.LoadedMetaDataService.getCurBndl()"
+								cur-perspective-idx="$ctrl.ViewStateService.curPerspectiveIdx"
+								cur-perspective-idx="$ctrl.ViewStateService.curPerspectiveIdx"
+								cur-mouse-pos-sample="$ctrl.ViewStateService.curMousePosSample"
+								view-port-sample-start="$ctrl.ViewStateService.curViewPort.sS"
+								view-port-sample-end="$ctrl.ViewStateService.curViewPort.eS"
+								></dots-canvas>
                             </li>
                         </ul>
                     </bg-pane>
@@ -356,7 +372,7 @@ let EmuWebAppComponent = {
         private DataService;
         private ModalService;
         private BrowserDetectorService;
-        private HierarchyLayoutService;
+		private HierarchyLayoutService;
 
         // init vars
 		private connectBtnLabel;
@@ -397,7 +413,7 @@ let EmuWebAppComponent = {
             DataService,
             ModalService,
             BrowserDetectorService,
-            HierarchyLayoutService){
+			HierarchyLayoutService){
             
                 this.$scope = $scope;
                 this.$element = $element;
@@ -478,10 +494,12 @@ let EmuWebAppComponent = {
 
             // bind shift/alt keyups for history
             angular.element(this.$window).bind('keyup', (e) => {
-                if (e.keyCode === this.ConfigProviderService.vals.keyMappings.shift || e.keyCode === this.ConfigProviderService.vals.keyMappings.alt) {
-                    this.HistoryService.addCurChangeObjToUndoStack();
-                    this.$scope.$digest();
-                }
+				if(typeof this.ConfigProviderService.vals.keyMappings !== 'undefined'){ // check if loaded
+					if (e.keyCode === this.ConfigProviderService.vals.keyMappings.shift || e.keyCode === this.ConfigProviderService.vals.keyMappings.alt) {
+						this.HistoryService.addCurChangeObjToUndoStack();
+						this.$scope.$digest();
+					}
+				}
             });
 
             // bind focus check for mouse on window and document ( mouse inside )
@@ -517,32 +535,34 @@ let EmuWebAppComponent = {
             /////////////
             // listens
 
-            // listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
+			// listen for connectionDisrupted event -> I don't like listens but in this case it might me the way to go...
+			let _this = this;
+
             this.$scope.$on('connectionDisrupted', () => {
-                this.AppStateService.resetToInitState();
+                _this.AppStateService.resetToInitState();
             });
 
             // listen for resetToInitState
             this.$scope.$on('resetToInitState', () => {
-                this.$scope.loadDefaultConfig();
+                _this.loadDefaultConfig();
             });
             
             this.$scope.$on('reloadToInitState', (event, data) => {
-                this.$scope.loadDefaultConfig();
-                this.ViewStateService.url = data.url;
-                this.ViewStateService.somethingInProgressTxt = 'Connecting to server...';
-                this.ViewStateService.somethingInProgress = true;
-                this.IoHandlerService.WebSocketHandlerService.initConnect(data.url).then((message) => {
+                _this.loadDefaultConfig();
+                _this.ViewStateService.url = data.url;
+                _this.ViewStateService.somethingInProgressTxt = 'Connecting to server...';
+                _this.ViewStateService.somethingInProgress = true;
+                _this.IoHandlerService.WebSocketHandlerService.initConnect(data.url).then((message) => {
                     if (message.type === 'error') {
-                        this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + data.url).then(() => {
-                            this.AppStateService.resetToInitState();
+                        _this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + data.url).then(() => {
+                            _this.AppStateService.resetToInitState();
                         });
                     } else {
-                        this.$scope.handleConnectedToWSserver(data);
+                        _this.handleConnectedToWSserver(data);
                     }
-                }, function (errMess) {
-                    this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(() => {
-                        this.AppStateService.resetToInitState();
+                }, (errMess) => {
+                    _this.ModalService.open('views/error.html', 'Could not connect to websocket server: ' + JSON.stringify(errMess, null, 4)).then(() => {
+                        _this.AppStateService.resetToInitState();
                     });
                 });
             });
@@ -595,7 +615,7 @@ let EmuWebAppComponent = {
 					//hide menu
 					if (this.ViewStateService.getBundleListSideBarOpen()) {
 						if(searchObject.saveToWindowParent !== "true"){
-							this.ViewStateService.toggleBundleListSideBar(this.ConfigProviderService.design.animation.period);
+							this.ViewStateService.toggleBundleListSideBar(styles.animationPeriod);
 						}
 					}
 
@@ -610,7 +630,7 @@ let EmuWebAppComponent = {
 					}
 					
 					// then get the DBconfigFile
-					this.IoHandlerService.httpGetPath(DBconfigGetUrl).then((resp) => {
+					this.IoHandlerService.httpGetPath(DBconfigGetUrl).then(async (resp) => {
 						// first element of perspectives is default perspective
 						this.ViewStateService.curPerspectiveIdx = 0;
 						this.ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
@@ -659,7 +679,7 @@ let EmuWebAppComponent = {
 										if(searchObject.labelGetUrl){
 											this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.labelGetUrl, respType).then((data2) => {
 												this.ViewStateService.somethingInProgressTxt = 'Parsing ' + this.ConfigProviderService.embeddedVals.labelType + ' file...';
-												this.IoHandlerService.parseLabelFile(data2.data, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', this.ConfigProviderService.embeddedVals.labelType).then((parseMess) => {
+												this.IoHandlerService.parseLabelFile(data2.data, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', this.ConfigProviderService.embeddedVals.labelType).then(async (parseMess) => {
 
 													var annot = parseMess;
 													this.DataService.setData(annot);
@@ -687,7 +707,7 @@ let EmuWebAppComponent = {
 														}
 
 														this.ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
-														// extract levels containing time to display as levelCanvases
+														// extract levels containing time to display as levelCanvases 
 														let lNamesWithTime = [];
 
 														levelDefs.forEach((ld) => {
@@ -696,6 +716,10 @@ let EmuWebAppComponent = {
 															}
 														})
 														this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNamesWithTime;
+														
+														let hierarchyWorker = await new HierarchyWorker();
+														let reducedAnnotation = await hierarchyWorker.guessLinkDefinitions(annot);
+
 													}
 
 													this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
@@ -754,37 +778,32 @@ let EmuWebAppComponent = {
 			// load schemas first
 			this.ValidationService.loadSchemas().then((replies) => {
 				this.ValidationService.setSchemas(replies);
-				this.IoHandlerService.httpGetDefaultDesign().then((response) => {
-					this.ConfigProviderService.setDesign(response.data);
-					this.IoHandlerService.httpGetDefaultConfig().then((response) => {
-						this.ViewStateService.somethingInProgressTxt = 'Validating emuwebappConfig';
-						var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', response.data);
-						if (validRes === true) {
-							this.ConfigProviderService.setVals(response.data);
-							angular.copy(this.ConfigProviderService.vals, this.ConfigProviderService.initDbConfig);
-							this.handleDefaultConfigLoaded();
-							// loadFilesForEmbeddedApp if these are set
-							this.loadFilesForEmbeddedApp();
-							this.checkIfToShowWelcomeModal();
-							// FOR DEVELOPMENT
-							// $scope.aboutBtnClick();
-							this.ViewStateService.somethingInProgress = false;
-						} else {
-							this.ModalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(() => {
-								this.AppStateService.resetToInitState();
-							});
-						}
-
-					}, (response) => { // onError
-						this.ModalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(() => {
+				this.IoHandlerService.httpGetDefaultConfig().then((response) => {
+					this.ViewStateService.somethingInProgressTxt = 'Validating emuwebappConfig';
+					var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', response.data);
+					if (validRes === true) {
+						this.ConfigProviderService.setVals(response.data);
+						angular.copy(this.ConfigProviderService.vals, this.ConfigProviderService.initDbConfig);
+						this.handleDefaultConfigLoaded();
+						// loadFilesForEmbeddedApp if these are set
+						this.loadFilesForEmbeddedApp();
+						this.checkIfToShowWelcomeModal();
+						// FOR DEVELOPMENT
+						// $scope.aboutBtnClick();
+						// this.openDemoDBbtnClick("ema");
+						this.ViewStateService.somethingInProgress = false;
+					} else {
+						this.ModalService.open('views/error.html', 'Error validating / checking emuwebappConfigSchema: ' + JSON.stringify(validRes, null, 4)).then(() => {
 							this.AppStateService.resetToInitState();
 						});
-					});
-				}, (response) => {
+					}
+
+				}, (response) => { // onError
 					this.ModalService.open('views/error.html', 'Could not get defaultConfig for EMU-webApp: ' + ' status: ' + response.status + ' headers: ' + response.headers + ' config ' + response.config).then(() => {
 						this.AppStateService.resetToInitState();
 					});
 				});
+
 			}, (errMess) => {
 				this.ModalService.open('views/error.html', 'Error loading schema file: ' + JSON.stringify(errMess, null, 4)).then(() => {
 					this.AppStateService.resetToInitState();
@@ -822,7 +841,7 @@ let EmuWebAppComponent = {
 		private handleDefaultConfigLoaded() {
 
 			if (!this.ViewStateService.getBundleListSideBarOpen()) {
-				this.ViewStateService.toggleBundleListSideBar(this.ConfigProviderService.design.animation.period);
+				this.ViewStateService.toggleBundleListSideBar(styles.animationPeriod);
 			}
 			// check if either autoConnect is set in DBconfig or as get parameter
 			var searchObject = this.$location.search();
@@ -866,7 +885,7 @@ let EmuWebAppComponent = {
 				this.ConfigProviderService.vals.spectrogramSettings.invert);
 
 			// setting transition values
-			this.ViewStateService.setTransitionTime(this.ConfigProviderService.design.animation.period);
+			this.ViewStateService.setTransitionTime(styles.animationPeriod);
 		};
 
 		/**
@@ -923,83 +942,80 @@ let EmuWebAppComponent = {
 			var reload = data.reload;
 			this.ViewStateService.somethingInProgressTxt = 'Loading DB config...';
 			// then get the DBconfigFile
-			this.IoHandlerService.httpGetDefaultDesign().then((response) => {
-				this.ConfigProviderService.setDesign(response.data);
-				this.IoHandlerService.getDBconfigFile().then((data) => {
-					// first element of perspectives is default perspective
-					this.ViewStateService.curPerspectiveIdx = 0;
-					this.ConfigProviderService.setVals(data.EMUwebAppConfig);
-					// FOR DEVELOPMENT
-					//$scope.showEditDBconfigBtnClick();
+			this.IoHandlerService.getDBconfigFile().then((data) => {
+				// first element of perspectives is default perspective
+				this.ViewStateService.curPerspectiveIdx = 0;
+				this.ConfigProviderService.setVals(data.EMUwebAppConfig);
+				// FOR DEVELOPMENT
+				//$scope.showEditDBconfigBtnClick();
+				
+				
+				var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', this.ConfigProviderService.vals);
+				if (validRes === true) {
+					this.ConfigProviderService.curDbConfig = data;
+					this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
+					// setspectroSettings
+					this.ViewStateService.setspectroSettings(this.ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs,
+						this.ConfigProviderService.vals.spectrogramSettings.rangeFrom,
+						this.ConfigProviderService.vals.spectrogramSettings.rangeTo,
+						this.ConfigProviderService.vals.spectrogramSettings.dynamicRange,
+						this.ConfigProviderService.vals.spectrogramSettings.window,
+						this.ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors,
+						this.ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor,
+						this.ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors,
+						this.ConfigProviderService.vals.spectrogramSettings.invert);
+					// set first path as default
+					this.ViewStateService.setHierarchySettings(this.HierarchyLayoutService.findAllNonPartialPaths().possible[0]);
 					
-					
-					var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', this.ConfigProviderService.vals);
+					validRes = this.ValidationService.validateJSO('DBconfigFileSchema', data);
 					if (validRes === true) {
-						this.ConfigProviderService.curDbConfig = data;
-						this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
-						// setspectroSettings
-						this.ViewStateService.setspectroSettings(this.ConfigProviderService.vals.spectrogramSettings.windowSizeInSecs,
-							this.ConfigProviderService.vals.spectrogramSettings.rangeFrom,
-							this.ConfigProviderService.vals.spectrogramSettings.rangeTo,
-							this.ConfigProviderService.vals.spectrogramSettings.dynamicRange,
-							this.ConfigProviderService.vals.spectrogramSettings.window,
-							this.ConfigProviderService.vals.spectrogramSettings.drawHeatMapColors,
-							this.ConfigProviderService.vals.spectrogramSettings.preEmphasisFilterFactor,
-							this.ConfigProviderService.vals.spectrogramSettings.heatMapColorAnchors,
-							this.ConfigProviderService.vals.spectrogramSettings.invert);
-						// set first path as default
-						this.ViewStateService.setHierarchySettings(this.HierarchyLayoutService.findAllNonPartialPaths().possible[0]);
-						
-						validRes = this.ValidationService.validateJSO('DBconfigFileSchema', data);
-						if (validRes === true) {
-							// then get the DBconfigFile
-							this.ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
-							this.IoHandlerService.getBundleList().then((bdata) => {
-								validRes = this.LoadedMetaDataService.setBundleList(bdata);
-								// show standard buttons
-								this.ConfigProviderService.vals.activeButtons.clear = true;
-								this.ConfigProviderService.vals.activeButtons.specSettings = true;
-								
-								if (validRes === true) {
-									// then load first bundle in list
-									if(session === null) {
-										session = this.LoadedMetaDataService.getBundleList()[0];
-									}
-									this.DbObjLoadSaveService.loadBundle(session).then(() => {
-										// FOR DEVELOPMENT:
-										// DbObjLoadSaveService.saveBundle(); // for testing save function
-										// $scope.menuBundleSaveBtnClick(); // for testing save button
-										// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
-										// $scope.settingsBtnClick(); // for testing spect settings dial
-										// $scope.searchBtnClick();
-										// ViewStateService.curViewPort.sS = 27455;
-										// ViewStateService.curViewPort.eS = 30180;
-
-									});
-
-									//ViewStateService.currentPage = (ViewStateService.numberOfPages(LoadedMetaDataService.getBundleList().length)) - 1;
-									if(reload) {
-										this.LoadedMetaDataService.openCollapseSession(session.session);
-									}
-								} else {
-									this.ModalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(() => {
-										this.AppStateService.resetToInitState();
-									});
+						// then get the DBconfigFile
+						this.ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
+						this.IoHandlerService.getBundleList().then((bdata) => {
+							validRes = this.LoadedMetaDataService.setBundleList(bdata);
+							// show standard buttons
+							this.ConfigProviderService.vals.activeButtons.clear = true;
+							this.ConfigProviderService.vals.activeButtons.specSettings = true;
+							
+							if (validRes === true) {
+								// then load first bundle in list
+								if(session === null) {
+									session = this.LoadedMetaDataService.getBundleList()[0];
 								}
-							});
+								this.DbObjLoadSaveService.loadBundle(session).then(() => {
+									// FOR DEVELOPMENT:
+									// DbObjLoadSaveService.saveBundle(); // for testing save function
+									// $scope.menuBundleSaveBtnClick(); // for testing save button
+									// $scope.showHierarchyBtnClick(); // for devel of showHierarchy modal
+									// $scope.settingsBtnClick(); // for testing spect settings dial
+									// $scope.searchBtnClick();
+									// ViewStateService.curViewPort.sS = 27455;
+									// ViewStateService.curViewPort.eS = 30180;
 
-						} else {
-							this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(() => {
-								this.AppStateService.resetToInitState();
-							});
-						}
+								});
+
+								//ViewStateService.currentPage = (ViewStateService.numberOfPages(LoadedMetaDataService.getBundleList().length)) - 1;
+								if(reload) {
+									this.LoadedMetaDataService.openCollapseSession(session.session);
+								}
+							} else {
+								this.ModalService.open('views/error.html', 'Error validating bundleList: ' + JSON.stringify(validRes, null, 4)).then(() => {
+									this.AppStateService.resetToInitState();
+								});
+							}
+						});
 
 					} else {
-						this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(() => {
+						this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(() => {
 							this.AppStateService.resetToInitState();
 						});
 					}
-				});
+
+				} else {
+					this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(() => {
+						this.AppStateService.resetToInitState();
+					});
+				}
 			});
 		};
 
@@ -1229,58 +1245,56 @@ let EmuWebAppComponent = {
 				this.ViewStateService.setState('loadingSaving');
 				this.ConfigProviderService.vals.main.comMode = 'DEMO';
 				this.ViewStateService.somethingInProgressTxt = 'Loading DB config...';
-				this.IoHandlerService.httpGetDefaultDesign().then((response) => {
-					this.ConfigProviderService.setDesign(response.data);
-					this.IoHandlerService.getDBconfigFile(nameOfDB).then((res) => {
-						var data = res.data;
-						// first element of perspectives is default perspective
-						this.ViewStateService.curPerspectiveIdx = 0;
-						this.ConfigProviderService.setVals(data.EMUwebAppConfig);
 
-						var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', this.ConfigProviderService.vals);
+				this.IoHandlerService.getDBconfigFile(nameOfDB).then((res) => {
+					var data = res.data;
+					// first element of perspectives is default perspective
+					this.ViewStateService.curPerspectiveIdx = 0;
+					this.ConfigProviderService.setVals(data.EMUwebAppConfig);
+
+					var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', this.ConfigProviderService.vals);
+					if (validRes === true) {
+						this.ConfigProviderService.curDbConfig = data;
+						this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
+						validRes = this.ValidationService.validateJSO('DBconfigFileSchema', this.ConfigProviderService.curDbConfig);
+
 						if (validRes === true) {
-							this.ConfigProviderService.curDbConfig = data;
-							this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
-							validRes = this.ValidationService.validateJSO('DBconfigFileSchema', this.ConfigProviderService.curDbConfig);
+							// then get the DBconfigFile
+							this.ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
 
-							if (validRes === true) {
-								// then get the DBconfigFile
-								this.ViewStateService.somethingInProgressTxt = 'Loading bundle list...';
+							this.IoHandlerService.getBundleList(nameOfDB).then((res) => {
+								var bdata = res.data;
+								// validRes = ValidationService.validateJSO('bundleListSchema', bdata);
+								// if (validRes === true) {
+								this.LoadedMetaDataService.setBundleList(bdata);
+								// show standard buttons
+								this.ConfigProviderService.vals.activeButtons.clear = true;
+								this.ConfigProviderService.vals.activeButtons.specSettings = true;
 
-								this.IoHandlerService.getBundleList(nameOfDB).then((res) => {
-									var bdata = res.data;
-									// validRes = ValidationService.validateJSO('bundleListSchema', bdata);
-									// if (validRes === true) {
-									this.LoadedMetaDataService.setBundleList(bdata);
-									// show standard buttons
-									this.ConfigProviderService.vals.activeButtons.clear = true;
-									this.ConfigProviderService.vals.activeButtons.specSettings = true;
+								// then load first bundle in list
+								this.DbObjLoadSaveService.loadBundle(this.LoadedMetaDataService.getBundleList()[0]);
 
-									// then load first bundle in list
-									this.DbObjLoadSaveService.loadBundle(this.LoadedMetaDataService.getBundleList()[0]);
-
-								}, function (err) {
-									this.ModalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(() => {
-										this.AppStateService.resetToInitState();
-									});
-								});
-							} else {
-								this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(() => {
+							}, function (err) {
+								this.ModalService.open('views/error.html', 'Error loading bundle list of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(() => {
 									this.AppStateService.resetToInitState();
 								});
-							}
-
-
+							});
 						} else {
-							this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(() => {
+							this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4)).then(() => {
 								this.AppStateService.resetToInitState();
 							});
 						}
 
-					}, function (err) {
-						this.ModalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(() => {
+
+					} else {
+						this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4)).then(() => {
 							this.AppStateService.resetToInitState();
 						});
+					}
+
+				}, function (err) {
+					this.ModalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(() => {
+						this.AppStateService.resetToInitState();
 					});
 				});
 			}

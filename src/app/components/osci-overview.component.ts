@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import styles from '../../styles/EMUwebAppDesign.scss';
+
 let OsciOverviewComponent = {
     selector: "osciOverview",
     template: `
@@ -139,7 +141,7 @@ let OsciOverviewComponent = {
                 if(changes.curBndl){
                     this.envelopeHasBeenDrawn = false;
                     this.backgroundCanvas = {
-                        'background': this.ConfigProviderService.design.color.black,
+                        'background': styles.colorBlack,
                         'border': '1px solid gray',
                         'width': '100%',
                         'height': '100%'
@@ -184,9 +186,9 @@ let OsciOverviewComponent = {
             var posE = (this.markupCanvas.width / this.SoundHandlerService.audioBuffer.length) * this.ViewStateService.curViewPort.eS;
 
             ctx.clearRect(0, 0, this.markupCanvas.width, this.markupCanvas.height);
-            ctx.fillStyle = this.ConfigProviderService.design.color.transparent.lightGrey;
+            ctx.fillStyle = styles.colorTransparentLightGrey;
             ctx.fillRect(posS, 0, posE - posS, this.markupCanvas.height);
-            ctx.strokeStyle = this.ConfigProviderService.design.color.white;
+            ctx.strokeStyle = styles.colorWhite;
             ctx.beginPath();
             ctx.moveTo(posS, 0);
             ctx.lineTo(posS, this.markupCanvas.height);
