@@ -6,7 +6,7 @@
 
 - hierarchy guesser completed for when no DBconfig is available
 - higher y resolution on level canvases
-- swiched to arial font
+- switched to arial font
 
 ### bug fixes
 

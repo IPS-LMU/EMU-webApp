@@ -10,7 +10,7 @@ let BundleListSideBarComponent = {
 				<input type="text" ng-model="$ctrl.filterText" placeholder="&#x1f50d; Bundle Filter" ng-focus="$ctrl.ViewStateService.setcursorInTextField(true)" ng-blur="$ctrl.ViewStateService.setcursorInTextField(false)" class="emuwebapp-filter"/>
 			</div>
 		</h3>
-		<my-drop-zone ng-if="$ctrl.ViewStateService.showDropZone"></my-drop-zone>
+		<my-drop-zone ng-if="$ctrl.ViewStateService.showDropZone && $ctrl.open"></my-drop-zone>
 		<div id="emuwebapp-bundleListContainer" class="emuwebapp-bundle-container" ng-if="!$ctrl.ViewStateService.showDropZone">
 			<ul ng-repeat="(key, value) in $ctrl.LoadedMetaDataService.getRendOptBndlList()" ng-class="{'emuwebapp-bundle-last':$last}">
 				<div class="emuwebapp-bundle-session" ng-if="$ctrl.isSessionDefined(key)" ng-click="$ctrl.LoadedMetaDataService.toggleCollapseSession(key)">
