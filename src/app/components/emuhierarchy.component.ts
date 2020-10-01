@@ -565,8 +565,8 @@ let EmuHierarchyComponent = {
 			var level = this.ViewStateService.getCurAttrDef(this.LevelService.getLevelName(d.id));
 			for (var i = 0; i < d.labels.length; ++i) {
 				if (d.labels[i].name === level) {
-					return String(d.id); // SIC -> just 4 testing
-					// return d.labels[i].value;
+					// return String(d.id); // SIC -> just 4 testing
+					return d.labels[i].value;
 				}
 			}
 			console.debug ('Likely a bug: Did not find the label selected for display', 'Selected level:', level, 'Node: ', d);

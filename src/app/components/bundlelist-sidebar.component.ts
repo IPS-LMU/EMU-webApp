@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 let BundleListSideBarComponent = {
 	selector: "bundleListSideBar",
-	template: `
+	template: /*html*/`
 	<div class="emuwebapp-bundle-outer">
 	<div>
 		<h3>
@@ -95,9 +95,13 @@ let BundleListSideBarComponent = {
 	</div>
 </div>
 `,
-bindings: {},
+bindings: {
+	open: '<'
+},
 controller: class BundleListSideBarController{
 
+	private $element;
+	private $animate;
 	private ViewStateService;
 	private HistoryService;
 	private LoadedMetaDataService;
@@ -109,9 +113,13 @@ controller: class BundleListSideBarController{
 
 	private filterText;
 
+	private _inited;
 
-	constructor(ViewStateService, HistoryService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, LevelService){
-		
+
+	constructor($element, $animate, ViewStateService, HistoryService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, LevelService){
+		this.$element = $element;
+		this.$animate = $animate;
+
 		this.ViewStateService = ViewStateService;
 		this.HistoryService = HistoryService;
 		this.LoadedMetaDataService = LoadedMetaDataService;
@@ -126,9 +134,29 @@ controller: class BundleListSideBarController{
 		this.ViewStateService.pageSize = 500;
 		this.ViewStateService.currentPage = 0;
 
+		this._inited = false;
+
 	}
 	$postLink = function(){
 
+	}
+	$onChanges = function (changes) {
+		if(this._inited){
+			if(changes.open){
+				// console.log(changes.open.currentValue);
+				if(changes.open.currentValue){
+					this.$animate.removeClass(this.$element.find('div')[0], 'emuwebapp-shrinkBundleListSidebarWidthTo0px');
+					this.$animate.addClass(this.$element.find('div')[0], 'emuwebapp-expandBundleListSidebarWidthTo200px');
+				} else {
+					this.$animate.removeClass(this.$element.find('div')[0], 'emuwebapp-expandBundleListSidebarWidthTo200px');
+					this.$animate.addClass(this.$element.find('div')[0], 'emuwebapp-shrinkBundleListSidebarWidthTo0px');
+				}
+			}
+		}
+	}
+
+	$onInit = function() {
+		this._inited = true;
 	}
 	// functions from directive 
 	private finishedEditing(finished, key, index) {

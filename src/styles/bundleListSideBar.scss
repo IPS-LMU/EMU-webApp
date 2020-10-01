@@ -93,19 +93,6 @@
     } 
 }
 
-.emuwebapp-bundleListSessionBndlsContainer {
-    height: 100%;
-    &.ng-hide-add.ng-hide-add-active {
-        @include vendor-prefix(transition, "all "+$animation-period+"ms ease-out");
-    }
-    &.ng-hide-remove.ng-hide-remove-active {
-        @include vendor-prefix(transition, "all "+$animation-period+"ms ease-in");
-    }
-    &.ng-hide {
-        max-height: 0;
-    }
-}
-
 .emuwebapp-bundleListSessionPager{
     margin: 0;
     padding: 5px 0 5px 0;
@@ -175,4 +162,14 @@
         color: $color-black;
         background-color: $color-white;
     }
+}
+
+.emuwebapp-shrinkBundleListSidebarWidthTo0px {
+    width: 0;
+    @include vendor-prefix(transition, "width "+$animation-period+"ms");
+}
+
+.emuwebapp-expandBundleListSidebarWidthTo200px {
+    width: 240;
+    @include vendor-prefix(transition, "width "+$animation-period+"ms");
 }

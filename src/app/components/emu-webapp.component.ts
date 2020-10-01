@@ -20,7 +20,10 @@ let EmuWebAppComponent = {
 		></new-version-hint>
         <!-- end: hint -->
         <!-- start: left side menu bar -->
-        <bundle-list-side-bar ng-show="$ctrl.ViewStateService.bundleListSideBarOpen"></bundle-list-side-bar>
+		<!-- ng-if="$ctrl.ViewStateService.bundleListSideBarOpen" -->
+		<bundle-list-side-bar 
+		open="$ctrl.ViewStateService.bundleListSideBarOpen">
+		</bundle-list-side-bar>
         <!-- end: left side menu bar -->
 
         <!-- start: main window -->
@@ -38,7 +41,7 @@ let EmuWebAppComponent = {
                 <button class="emuwebapp-button-icon" 
                 id="bundleListSideBarOpen" 
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.openMenu" 
-                ng-click="$ctrl.ViewStateService.toggleBundleListSideBar(styles.animation.period);" 
+                ng-click="$ctrl.ViewStateService.toggleBundleListSideBar($ctrl.styles.animation.period);" 
                 style="float:left"><i class="material-icons">menu</i></button>
                 
                 <button class="emuwebapp-mini-btn left" 

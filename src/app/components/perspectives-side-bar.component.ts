@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 let PerspectivesSideBarComponent = {
     selector: "perspectivesSideBar",
-    template: `
+    template: /*html*/`
     <nav class="emuwebapp-right-menu" ng-show="$ctrl.ConfigProviderService.vals.restrictions.showPerspectivesSidebar">
     <button ng-click="$ctrl.ViewStateService.setPerspectivesSideBarOpen(!$ctrl.ViewStateService.getPerspectivesSideBarOpen()); $ctrl.toggleShow();">
         <i class="material-icons">menu</i>
@@ -79,7 +79,7 @@ let PerspectivesSideBarComponent = {
         };
 
         private toggleShow(){
-            console.log("toggleshow")
+            // console.log("toggleshow")
             if(this.ViewStateService.getPerspectivesSideBarOpen()){
                 this.$animate.addClass(this.$element.find('nav')[0], 'emuwebapp-expandWidthTo200px');
                 this.$animate.removeClass(this.$element.find('nav')[0], 'emuwebapp-shrinkWidthTo0px');
