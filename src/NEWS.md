@@ -4,6 +4,9 @@
 
 ### new features / performance tweaks / improvements
 
+- hierarchy guesser completed for when no DBconfig is available
+- higher y resolution on level canvases
+- swiched to arial font
 
 ### bug fixes
 

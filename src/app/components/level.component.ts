@@ -492,7 +492,7 @@ class="emuwebapp-selectAttrDef"
                                     fontSize - 2, 
                                     fontFamily, 
                                     posS + 3, 
-                                    (fontSize * scaleY)/2, 
+                                    (fontSize * scaleY) / 2, 
                                     styles.colorBlue, 
                                     true);
                             }
@@ -507,7 +507,7 @@ class="emuwebapp-selectAttrDef"
                                     fontSize - 2, 
                                     fontFamily, 
                                     posE - (ctx.measureText(durtext).width * this.FontScaleService.scaleX), 
-                                    ctx.canvas.height / 4 * 3 + (fontSize * scaleY)/2, 
+                                    ctx.canvas.height / 4 * 3 + (fontSize * scaleY) / 2, 
                                     styles.colorBlue, 
                                     true);
                             }

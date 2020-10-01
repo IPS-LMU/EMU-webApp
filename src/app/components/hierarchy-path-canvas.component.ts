@@ -17,7 +17,7 @@ let HierarchyPathCanvasComponent = {
     class="emuwebapp-level-canvas" 
     id="levelCanvas" 
     width="4096" 
-    height="256" 
+    height="1024" 
     ng-style="$ctrl.backgroundCanvas"
     ></canvas>
     
@@ -26,7 +26,7 @@ let HierarchyPathCanvasComponent = {
     style="background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);"
     id="levelMarkupCanvas" 
     width="4096" 
-    height="256" 
+    height="1024" 
     level-name="$ctrl.level.name"
     level-type="$ctrl.level.type"></canvas>
     </div>
@@ -237,7 +237,7 @@ class="emuwebapp-selectAttrDef"
                 let hierarchyWorker = await new HierarchyWorker();
                 let reducedAnnotation = await hierarchyWorker.reduceAnnotationToViewableTimeAndPath(this.annotation, this.path, this.viewPortSampleStart, this.viewPortSampleEnd);
                 
-                let nrOfPxlsPerLevel = 256 / this.path.length;
+                let nrOfPxlsPerLevel = 1024 / this.path.length;
                 
                 let topLimitPxl = 0;
                 let bottomLimitPxl = nrOfPxlsPerLevel;
@@ -258,7 +258,7 @@ class="emuwebapp-selectAttrDef"
         
         
         // TODO: move to draw helper service or new service and use from here and level.component
-        private drawLevelDetails = async function (canvas, levelDetails, topLimitPxl: number = 0, bottomLimitPxl: number = 256) {
+        private drawLevelDetails = async function (canvas, levelDetails, topLimitPxl: number = 0, bottomLimitPxl: number = 1024) {
             
             var labelFontFamily; // font family used for labels only
             var fontFamily = styles.fontSmallFamily; // font family used for everything else
@@ -313,29 +313,18 @@ class="emuwebapp-selectAttrDef"
             var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
             
             if (levelDetails.name === curAttrDef) {
-                if (isOpen) {
-                    this.FontScaleService.drawUndistortedTextTwoLines(
-                        ctx, 
-                        levelDetails.name, 
-                        '(' + levelDetails.type + ')', 
-                        fontSize, 
-                        fontFamily, 
-                        4, 
-                        (topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2) - fontSize * scaleY, 
-                        styles.colorWhite, 
-                        true);
-                    } else {
-                        fontSize -= 2;
-                        this.FontScaleService.drawUndistortedText(
-                            ctx, 
-                            levelDetails.name, 
-                            fontSize, 
-                            fontFamily, 
-                            4, 
-                            topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2 - (fontSize * scaleY / 2), 
-                            styles.colorWhite, 
-                            true);
-                        }
+
+                fontSize -= 2;
+                this.FontScaleService.drawUndistortedText(
+                    ctx, 
+                    levelDetails.name, 
+                    fontSize, 
+                    fontFamily, 
+                    4, 
+                    topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2, 
+                    styles.colorWhite, 
+                    true);
+
                     } else {
                         this.FontScaleService.drawUndistortedTextTwoLines(
                             ctx, 
@@ -344,7 +333,7 @@ class="emuwebapp-selectAttrDef"
                             fontSize, 
                             fontFamily, 
                             4, 
-                            topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2 - fontSize * scaleY, 
+                            topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2, 
                             styles.colorWhite, 
                             true);
                         }
@@ -436,10 +425,10 @@ class="emuwebapp-selectAttrDef"
                                                 this.FontScaleService.drawUndistortedText(
                                                     ctx, 
                                                     item.sampleStart, 
-                                                    fontSize - 2, 
+                                                    fontSize - 4, 
                                                     fontFamily, 
                                                     posS + 3, 
-                                                    topLimitPxl, 
+                                                    topLimitPxl + (fontSize * scaleY) / 2, 
                                                     styles.colorBlue, 
                                                     true);
                                                 }
@@ -451,10 +440,10 @@ class="emuwebapp-selectAttrDef"
                                                     this.FontScaleService.drawUndistortedText(
                                                         ctx, 
                                                         durtext, 
-                                                        fontSize - 2, 
+                                                        fontSize - 4, 
                                                         fontFamily, 
                                                         posE - (zeroTxtImgWidth * (durtext.length - 3)), 
-                                                        topLimitPxl + (bottomLimitPxl - topLimitPxl) / 4 * 3, 
+                                                        topLimitPxl + (bottomLimitPxl - topLimitPxl) / 4 * 3 + (fontSize * scaleY) / 2, 
                                                         styles.colorBlue, 
                                                         true);
                                                     }
