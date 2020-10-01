@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.3.3
+
+### new features / performance tweaks / improvements
+
+
+### bug fixes
+
+- double showing of progress-bar component
+
 ## Version 1.3.2
 
 ### new features / performance tweaks / improvements

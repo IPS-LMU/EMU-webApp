@@ -1,4 +1,6 @@
 import * as angular from 'angular';
+import { fromEvent, Observable, Subscription } from "rxjs";
+import { debounceTime, map } from 'rxjs/operators';
 
 import { HierarchyWorker } from '../workers/hierarchy.worker';
 import styles from '../../styles/EMUwebAppDesign.scss';
@@ -94,6 +96,10 @@ class="emuwebapp-selectAttrDef"
         private _inited;
         private backgroundCanvas;
         private hierPaths;
+
+        // resizer
+        private resizeObservable$: Observable<Event>
+        private resizeSubscription$: Subscription
         
         constructor($scope, $element, $animate, ViewStateService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService){
             this.$scope = $scope;
@@ -207,6 +213,11 @@ class="emuwebapp-selectAttrDef"
         
         $onInit = function() {
             this._inited = true;
+            this.resizeObservable$ = fromEvent(window, 'resize')
+            this.resizeObservable$.pipe(debounceTime(1000)).subscribe( evt => {       
+                // console.log('event: ', evt)
+                this.redrawAll()
+            })
         }
         
         

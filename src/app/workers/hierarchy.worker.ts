@@ -3,7 +3,8 @@ import { ILevel } from '../interfaces/annot-json.interface';
 
 export class HierarchyWorker {
     private idHashMap: any;
-    private linkHashMap: any;
+    private linkSubToSuperHashMap: any;
+    private linkSuperToSubHashMap: any;
     ///////////////////////////
     // public api
     constructor() {
@@ -14,9 +15,9 @@ export class HierarchyWorker {
     public reduceAnnotationToViewableTimeAndPath(annotation, path, viewPortStartSample, viewPortEndSample) {
         
         this.idHashMap = undefined; // reset 4       
-        this.linkHashMap = undefined; 
+        this.linkSubToSuperHashMap = undefined; 
         this.createIdHashMapForPath(path, annotation);
-        this.createLinkHashMap(annotation); // from child to parents
+        this.createLinkSubToSuperHashMap(annotation); // from child to parents
         
         let childLevel = this.reduceToItemsWithTimeInView(annotation, path, viewPortStartSample, viewPortEndSample);
         
@@ -64,13 +65,32 @@ export class HierarchyWorker {
      * @param annotation annotation to guess LinkDefinitions from
      */
     public guessLinkDefinitions (annotation){
-        console.log(annotation)
+        // console.log(annotation)
         this.idHashMap = undefined; // reset 4       
-        this.linkHashMap = undefined; 
+        this.linkSubToSuperHashMap = undefined; 
         this.createIdHashMapForEveryLevel(annotation);
-        this.createLinkHashMap(annotation); // from child to parents
-        console.log(this.idHashMap);
-        console.log(this.linkHashMap);
+        this.createLinkSubToSuperHashMap(annotation); // from child to parents
+        this.createLinkSuperToSubHashMap(annotation); // from parent to children
+        // console.log(this.idHashMap);
+        // console.log(this.linkSubToSuperHashMap);
+        // console.log(this.linkSuperToSubHashMap);
+        let linkDefsSuperToSub = this.findAllLinkDefs(this.linkSuperToSubHashMap, false);
+        let linkDefsSubToSuper = this.findAllLinkDefs(this.linkSubToSuperHashMap, true);
+        
+        // console.log(linkDefsSuperToSub);
+        // console.log(linkDefsSubToSuper);
+        linkDefsSuperToSub.forEach((linkDefSuperToSub) => {
+            linkDefsSubToSuper.forEach((linkDefSubToSuper) => {
+                if(linkDefSuperToSub.superlevelName === linkDefSubToSuper.superlevelName && linkDefSuperToSub.sublevelName === linkDefSubToSuper.sublevelName){
+                    if(linkDefSuperToSub.type === "ONE_TO_ONE"){
+                        linkDefSuperToSub.type = linkDefSubToSuper.type;
+                    } else if(linkDefSuperToSub.type === "ONE_TO_MANY" && linkDefSubToSuper.type === "MANY_TO_MANY"){
+                        linkDefSuperToSub.type = linkDefSubToSuper.type;
+                    }
+                }
+            })
+        });
+        return(linkDefsSuperToSub);
         
     }
     
@@ -94,7 +114,7 @@ export class HierarchyWorker {
     private giveTimeToParentsAndAppendItemsAndLinks(annotation, parentLevel, childLevel){
         
         childLevel.items.forEach(item => {
-            let parentIds = this.linkHashMap.get(item.id);
+            let parentIds = this.linkSubToSuperHashMap.get(item.id);
             if(typeof parentIds !== 'undefined'){
                 parentIds.forEach(parentId => {
                     let parentItem = this.idHashMap.get(parentId);
@@ -138,7 +158,7 @@ export class HierarchyWorker {
                 level = this.getLevelDetails(levelName, annotation);
             }
             level.items.forEach(item => {
-                let parentId = this.linkHashMap.get(item.id);
+                let parentId = this.linkSubToSuperHashMap.get(item.id);
                 let parents = this.idHashMap.get(parentId);
                 
                 if(parents){
@@ -176,17 +196,128 @@ export class HierarchyWorker {
         }
 
         
-        private createLinkHashMap(annotation){
-            this.linkHashMap = new Map();
+        private createLinkSubToSuperHashMap(annotation){
+            this.linkSubToSuperHashMap = new Map();
             annotation.links.forEach(link => {
-                if(!this.linkHashMap.has(link.toID)){
-                    this.linkHashMap.set(link.toID, [link.fromID])
+                if(!this.linkSubToSuperHashMap.has(link.toID)){
+                    this.linkSubToSuperHashMap.set(link.toID, [link.fromID])
                 } else {
-                    let prevParents = this.linkHashMap.get(link.toID);
+                    let prevParents = this.linkSubToSuperHashMap.get(link.toID);
                     prevParents.push(link.fromID);
-                    this.linkHashMap.set(link.toID, prevParents);
+                    this.linkSubToSuperHashMap.set(link.toID, prevParents);
                 }
             });
+        }
+
+        private createLinkSuperToSubHashMap(annotation){
+            this.linkSuperToSubHashMap = new Map();
+            annotation.links.forEach(link => {
+                if(!this.linkSuperToSubHashMap.has(link.fromID)){
+                    this.linkSuperToSubHashMap.set(link.fromID, [link.toID])
+                } else {
+                    let prevChildren = this.linkSuperToSubHashMap.get(link.fromID);
+                    prevChildren.push(link.toID);
+                    this.linkSuperToSubHashMap.set(link.fromID, prevChildren);
+                }
+            });
+        }
+
+        // private walkAndAppendToLinkDefinitions(key, path, foundPaths, linkHashMap){
+        //     // add to path only if we havn't visited it yet
+        //     let item = this.idHashMap.get(key);
+        //     let curLevelName = item.labels[0].name;
+        //     if(!path.includes(curLevelName)){
+        //         path.push(curLevelName);
+        //     }
+        //     // get values
+        //     let values = linkHashMap.get(key);
+
+        //     if(typeof values !== "undefined"){
+        //         values.forEach((connectedItemId) => {
+        //             // let item = this.idHashMap.get(connectedItemId);
+        //             // path.push(item.labels[0].name);
+        //             this.walkAndAppendToLinkDefinitions(connectedItemId, path, foundPaths, linkHashMap);
+        //         })
+        //     } else {
+        //         // reached end of path 
+        //         // -> append to foundPaths + reset path
+        //         // foundPaths.push(path.join(' → '));
+        //         // path = [];
+        //     }
+        // }
+
+        // probably should move this to service
+        // private onlyUnique(value, index, self) { 
+        //     return self.indexOf(value) === index;
+        // }
+
+        private findAllLinkDefs(linkHashMap, reverse){
+            // console.log("in findAllLinkDefs");
+
+            let foundLinkDefs = [];
+            let foundLinkDefStrings = [];
+            // loop through map
+            linkHashMap.forEach((values, key, map) => {
+                let connectedLevels = [];
+                // if([173].indexOf(key) !== -1) { // only start at 8 for now
+
+                let startItem = this.idHashMap.get(key);
+                let startLevelName = startItem.labels[0].name;
+                // console.log("startLevelName:", startLevelName);
+                // console.log("key:", key);
+                // console.log("values:", values);
+                // console.log("map:", map);
+
+                values.forEach((connectedItemId) => {
+                    let connectedItem = this.idHashMap.get(connectedItemId);
+                    let connectedItemLevelName = connectedItem.labels[0].name;       
+                    let linkDefType;
+                    // console.log("connectedItemLevelName:", connectedItemLevelName);
+                    if(connectedLevels.indexOf(connectedItemLevelName) === -1){
+                        connectedLevels.push(connectedItemLevelName);
+                        linkDefType = "ONE_TO_ONE";
+                    } else {
+                        if(!reverse){
+                            linkDefType = "ONE_TO_MANY";
+                        } else {
+                            linkDefType = "MANY_TO_MANY";
+                        }
+                    }
+                    // this also depends on reverse
+                    let linkDefString = startLevelName + ' → ' + connectedItemLevelName;
+                    // console.log(linkDefString);
+                    if(foundLinkDefStrings.indexOf(linkDefString) === -1){
+                        foundLinkDefStrings.push(linkDefString);
+                        if(!reverse){
+                            foundLinkDefs.push({
+                                type: linkDefType,
+                                superlevelName: startLevelName,
+                                sublevelName: connectedItemLevelName
+                            });
+                        } else {
+                            foundLinkDefs.push({
+                                type: linkDefType,
+                                superlevelName: connectedItemLevelName,
+                                sublevelName: startLevelName
+                            });
+                        }
+                    } else {
+                        // update type (only in upgradable direction)
+                        if (foundLinkDefs[foundLinkDefStrings.indexOf(linkDefString)].type === "ONE_TO_ONE") {
+                            foundLinkDefs[foundLinkDefStrings.indexOf(linkDefString)].type = linkDefType;
+                        } else if (foundLinkDefs[foundLinkDefStrings.indexOf(linkDefString)].type === "ONE_TO_MANY" && linkDefType === "MANY_TO_MANY"){
+                            foundLinkDefs[foundLinkDefStrings.indexOf(linkDefString)].type = linkDefType;
+                        }
+                    }
+                })
+                // }
+            })
+
+            // console.log("------------");
+            // console.log(foundLinkDefStrings);
+            // console.log(foundLinkDefs); // foundLinkDefs.filter(this.onlyUnique)
+            return(foundLinkDefs);
+
         }
         
     }

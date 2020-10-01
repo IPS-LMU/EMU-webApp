@@ -488,7 +488,7 @@ let EmuWebAppComponent = {
                 this.ViewStateService.setWindowWidth(this.$window.outerWidth);
                 if (this.ViewStateService.hierarchyState.isShown()) {
                     ++this.ViewStateService.hierarchyState.resize;
-                }
+				}
                 this.$scope.$digest();
             });
 
@@ -707,6 +707,7 @@ let EmuWebAppComponent = {
 														}
 
 														this.ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+														this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
 														// extract levels containing time to display as levelCanvases 
 														let lNamesWithTime = [];
 
@@ -716,9 +717,10 @@ let EmuWebAppComponent = {
 															}
 														})
 														this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNamesWithTime;
-														
+
 														let hierarchyWorker = await new HierarchyWorker();
-														let reducedAnnotation = await hierarchyWorker.guessLinkDefinitions(annot);
+														let linkDefs = await hierarchyWorker.guessLinkDefinitions(annot);
+														this.ConfigProviderService.curDbConfig.linkDefinitions = linkDefs;
 
 													}
 

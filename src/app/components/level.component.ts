@@ -1,4 +1,6 @@
 import * as angular from 'angular';
+import { fromEvent, Observable, Subscription } from "rxjs";
+import { debounceTime, map } from 'rxjs/operators';
 
 import styles from '../../styles/EMUwebAppDesign.scss';
 
@@ -12,7 +14,7 @@ let LevelComponent = {
     class="emuwebapp-level-canvas" 
     id="levelCanvas" 
     width="4096" 
-    height="64" 
+    height="256" 
     ng-style="$ctrl.backgroundCanvas"
     ></canvas>
 
@@ -103,6 +105,10 @@ class="emuwebapp-selectAttrDef"
         private levelCanvasContainer;
         private _inited;
         private backgroundCanvas;
+
+        // resizer
+        private resizeObservable$: Observable<Event>
+        private resizeSubscription$: Subscription
 
         constructor($scope, $element, $animate, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService){
             this.$scope = $scope;
@@ -236,8 +242,16 @@ class="emuwebapp-selectAttrDef"
 
         };
 
+
         $onInit = function() {
             this._inited = true;
+            this.resizeObservable$ = fromEvent(window, 'resize')
+            this.resizeObservable$.pipe(debounceTime(500)).subscribe( evt => {       
+                // console.log('event: ', evt)
+                this.drawLevelDetails();
+                this.drawLevelMarkup();
+            })
+
         }
 
         // $doCheck = function(){
@@ -450,6 +464,7 @@ class="emuwebapp-selectAttrDef"
                             var hlY = ctx.canvas.height / 4;
                             // start helper line
                             ctx.strokeStyle = styles.colorWhite;
+                            ctx.lineWidth = 4;
                             ctx.beginPath();
                             ctx.moveTo(posS, hlY);
                             ctx.lineTo(labelCenter, hlY);
@@ -464,6 +479,7 @@ class="emuwebapp-selectAttrDef"
                             ctx.lineTo(labelCenter, hlY);
                             ctx.lineTo(labelCenter, hlY - 5);
                             ctx.stroke();
+                            ctx.lineWidth = 1;
                         }
 
                         if (this.open){
@@ -476,7 +492,7 @@ class="emuwebapp-selectAttrDef"
                                     fontSize - 2, 
                                     fontFamily, 
                                     posS + 3, 
-                                    0, 
+                                    (fontSize * scaleY)/2, 
                                     styles.colorBlue, 
                                     true);
                             }
@@ -491,7 +507,7 @@ class="emuwebapp-selectAttrDef"
                                     fontSize - 2, 
                                     fontFamily, 
                                     posE - (ctx.measureText(durtext).width * this.FontScaleService.scaleX), 
-                                    ctx.canvas.height / 4 * 3, 
+                                    ctx.canvas.height / 4 * 3 + (fontSize * scaleY)/2, 
                                     styles.colorBlue, 
                                     true);
                             }
@@ -515,8 +531,8 @@ class="emuwebapp-selectAttrDef"
                         });
 
                         ctx.fillStyle = styles.colorWhite;
-                        ctx.fillRect(perc, 0, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
-                        ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 1, ctx.canvas.height / 2 - ctx.canvas.height / 5);
+                        ctx.fillRect(perc, 0, 3, ctx.canvas.height / 2 - ctx.canvas.height / 5);
+                        ctx.fillRect(perc, ctx.canvas.height / 2 + ctx.canvas.height / 5, 3, ctx.canvas.height / 2 - ctx.canvas.height / 5);
 
                         this.FontScaleService.drawUndistortedText(
                             ctx, 
@@ -534,7 +550,7 @@ class="emuwebapp-selectAttrDef"
                                 fontSize - 2, 
                                 labelFontFamily, 
                                 perc + 5, 
-                                0, 
+                                (fontSize * scaleY)/2, 
                                 styles.colorBlue, 
                                 true);
                         }

@@ -7,7 +7,7 @@ let LevelCanvasMarkupCanvasComponent = {
     class="emuwebapp-level-markup" 
     id="levelMarkupCanvas" 
     width="4096" 
-    height="64" 
+    height="256" 
     ></canvas>
     `,
     bindings: {
