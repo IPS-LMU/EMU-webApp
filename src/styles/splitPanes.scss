@@ -126,6 +126,10 @@
         top: 50%;
         bottom: 0px;
         overflow-y: auto;
+        scrollbar-width: none;  /* Firefox */
+    }
+    &.vertical > .split-pane2::-webkit-scrollbar {
+        display: none;
     }
     &.vertical {
         z-index: 0 !important;
