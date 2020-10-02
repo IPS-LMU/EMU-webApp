@@ -18,7 +18,8 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 * navigate to the freshly cloned repo (the folder is usually named `EMU-webApp`) and install dependencies with the command `npm install`
 * run development server `http://localhost:9000`  with `npm run start`
 * a small websocket data provider server is provided and can be started like this: `cd exampleServers; node nodeEmuProtocolWsServer.js`.
-* navigate to `http://localhost:9000/?autoConnect=true` to have an autoconnecting auto-reloading develp
+* navigate to `http://localhost:9000/?autoConnect=true` to have an autoconnecting auto-reloading development version
+* alternatively navigate to `http://localhost:9000/?audioGetUrl=http:%2F%2Flocalhost:9000%2FdemoDBs%2Fae%2Fmsajc003.wav&labelGetUrl=http:%2F%2Flocalhost:9000%2FdemoDBs%2Fae%2Fmsajc003_annot.json&labelType=annotJSON` for a version that loads an audio and an annotation file use GET parameters
 
 ## Tests
 * unit tests: run `npm test` (currently not working)
