@@ -11,7 +11,7 @@
 ### bug fixes
 
 - double showing of progress-bar component
-- fixed scrollbar issues (now always hidden)
+- fixed scrollbar in level canvases pane issues (now always hidden)
 - fixed bundle list side bar animation
 
 ## Version 1.3.2

@@ -1,5 +1,19 @@
 # What's New
 
+## Version 1.3.3
+
+### new features / performance tweaks / improvements
+
+- hierarchy guesser completed for when no DBconfig is available
+- higher y resolution on level canvases
+- switched to arial font
+
+### bug fixes
+
+- double showing of progress-bar component
+- fixed scrollbar in level canvases pane issues (now always hidden)
+- fixed bundle list side bar animation
+
 ## Version 1.3.2
 
 ### new features / performance tweaks / improvements
