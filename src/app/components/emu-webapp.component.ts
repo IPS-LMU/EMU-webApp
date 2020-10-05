@@ -724,6 +724,7 @@ let EmuWebAppComponent = {
 														let hierarchyWorker = await new HierarchyWorker();
 														let linkDefs = await hierarchyWorker.guessLinkDefinitions(annot);
 														this.ConfigProviderService.curDbConfig.linkDefinitions = linkDefs;
+														this.ConfigProviderService.vals.activeButtons.showHierarchy = true;
 
 													}
 
