@@ -63,13 +63,13 @@ let EmuWebAppComponent = {
                 id="downloadTextgrid" 
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.downloadTextGrid" 
                 ng-disabled="!$ctrl.ViewStateService.getPermission('downloadTextGridBtnClick')" 
-                ng-click="$ctrl.downloadTextGridBtnClick();"><i class="material-icons">save</i>download TextGrid</button>
+                ng-click="$ctrl.downloadTextGridBtnClick();"><i class="material-icons">save</i>TextGrid</button>
                 
                 <button class="emuwebapp-mini-btn left" 
                 id="downloadAnnotation" 
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.downloadAnnotation" 
                 ng-disabled="!$ctrl.ViewStateService.getPermission('downloadAnnotationBtnClick')" 
-                ng-click="$ctrl.downloadAnnotationBtnClick();"><i class="material-icons">save</i>download annotJSON</button>
+                ng-click="$ctrl.downloadAnnotationBtnClick();"><i class="material-icons">save</i>annotJSON</button>
                 
                 <button class="emuwebapp-mini-btn left" 
                 id="spectSettingsBtn" 
@@ -111,13 +111,7 @@ let EmuWebAppComponent = {
                 ng-click="$ctrl.showHierarchyBtnClick();" 
                 ng-disabled="!$ctrl.ViewStateService.getPermission('showHierarchyBtnClick')" 
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.showHierarchy"><i class="material-icons" style="transform: rotate(180deg)">details</i>hierarchy</button>
-                
-                <button class="emuwebapp-mini-btn left" 
-                id="showeditDB" 
-                ng-click="$ctrl.showEditDBconfigBtnClick();" 
-                ng-disabled="!$ctrl.ViewStateService.getPermission('editDBconfigBtnClick')" 
-                ng-show="$ctrl.ConfigProviderService.vals.activeButtons.editEMUwebAppConfig">edit config</button>
-                
+          
                 <button class="emuwebapp-mini-btn left" 
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.search" 
                 ng-disabled="!$ctrl.ViewStateService.getPermission('searchBtnClick')" 
@@ -951,10 +945,7 @@ let EmuWebAppComponent = {
 			this.IoHandlerService.getDBconfigFile().then((data) => {
 				// first element of perspectives is default perspective
 				this.ViewStateService.curPerspectiveIdx = 0;
-				this.ConfigProviderService.setVals(data.EMUwebAppConfig);
-				// FOR DEVELOPMENT
-				//$scope.showEditDBconfigBtnClick();
-				
+				this.ConfigProviderService.setVals(data.EMUwebAppConfig);				
 				
 				var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', this.ConfigProviderService.vals);
 				if (validRes === true) {
@@ -1323,38 +1314,6 @@ let EmuWebAppComponent = {
 				this.ViewStateService.hierarchyState.toggleHierarchy();
 				this.ModalService.open('views/showHierarchyModal.html');
 			}
-		};
-
-		/**
-		 *
-		 */
-		private showEditDBconfigBtnClick () {
-			this.ModalService.open('views/tabbed.html').then((res) => {
-				if (res === false) {
-					// do nothing when user clicks on cancle
-				}
-				else {
-					if (this.ValidationService.validateJSO('emuwebappConfigSchema', res)) {
-						this.ConfigProviderService.getDelta(res).then((delta) => {
-							this.IoHandlerService.saveConfiguration(angular.toJson(delta, true)).then(() => {
-								if ((this.HistoryService.movesAwayFromLastSave !== 0 && this.ConfigProviderService.vals.main.comMode !== 'DEMO')) {
-									this.ModalService.open('views/confirmModal.html', 'Do you wish to clear all loaded data and if connected disconnect from the server? CAUTION: YOU HAVE UNSAVED CHANGES! These will be lost if you confirm.').then((res) => {
-										if (res) {
-											this.AppStateService.reloadToInitState();
-										}
-									});
-								}
-								else {
-									this.AppStateService.reloadToInitState(this.LoadedMetaDataService.getCurBndl());
-								}
-							});				
-						});
-					}
-					else {
-						this.ModalService.open('views/error.html', 'Sorry, there were errors in your configuration.');
-					}
-				}
-			});
 		};
 
 

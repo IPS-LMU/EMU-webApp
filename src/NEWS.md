@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.3.4
+
+### new features / performance tweaks / improvements
+
+- shorten download button text to `TextGrid` and `annotJSON`
+
+### bug fixes
+
+
 ## Version 1.3.3
 
 ### new features / performance tweaks / improvements

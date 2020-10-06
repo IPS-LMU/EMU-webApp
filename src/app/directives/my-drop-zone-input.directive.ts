@@ -3,7 +3,8 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.directive('myDropZoneInput', function () {
 		return {
-			templateUrl: 'views/myDropZoneInput.html',
+			template: /*html*/
+			`<input style="display:none;" id="fileDialog" ng-model="files" type="file" multiple accept="{{acceptFile}}" />`,
 			restrict: 'E',
 			scope: {},
 			link: function postLink(scope, element) {

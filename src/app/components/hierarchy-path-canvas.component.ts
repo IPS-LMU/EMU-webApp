@@ -421,32 +421,32 @@ class="emuwebapp-selectAttrDef"
                                             
                                             // draw sampleStart numbers
                                             //check for enough space to stroke text
-                                            if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
-                                                this.FontScaleService.drawUndistortedText(
-                                                    ctx, 
-                                                    item.sampleStart, 
-                                                    fontSize - 4, 
-                                                    fontFamily, 
-                                                    posS + 3, 
-                                                    topLimitPxl + (fontSize * scaleY) / 2, 
-                                                    styles.colorBlue, 
-                                                    true);
-                                                }
+                                            // if (posE - posS > zeroTxtImgWidth * item.sampleStart.toString().length && isOpen) {
+                                            //     this.FontScaleService.drawUndistortedText(
+                                            //         ctx, 
+                                            //         item.sampleStart, 
+                                            //         fontSize - 4, 
+                                            //         fontFamily, 
+                                            //         posS + 3, 
+                                            //         topLimitPxl + (fontSize * scaleY) / 2, 
+                                            //         styles.colorBlue, 
+                                            //         true);
+                                            //     }
                                                 
-                                                // draw sampleDur numbers.
-                                                var durtext = 'dur: ' + item.sampleDur + ' ';
-                                                //check for enough space to stroke text
-                                                if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
-                                                    this.FontScaleService.drawUndistortedText(
-                                                        ctx, 
-                                                        durtext, 
-                                                        fontSize - 4, 
-                                                        fontFamily, 
-                                                        posE - (zeroTxtImgWidth * (durtext.length - 3)), 
-                                                        topLimitPxl + (bottomLimitPxl - topLimitPxl) / 4 * 3 + (fontSize * scaleY) / 2, 
-                                                        styles.colorBlue, 
-                                                        true);
-                                                    }
+                                                // // draw sampleDur numbers.
+                                                // var durtext = 'dur: ' + item.sampleDur + ' ';
+                                                // //check for enough space to stroke text
+                                                // if (posE - posS > zeroTxtImgWidth * durtext.length && isOpen) {
+                                                //     this.FontScaleService.drawUndistortedText(
+                                                //         ctx, 
+                                                //         durtext, 
+                                                //         fontSize - 4, 
+                                                //         fontFamily, 
+                                                //         posE - (zeroTxtImgWidth * (durtext.length - 3)), 
+                                                //         topLimitPxl + (bottomLimitPxl - topLimitPxl) / 4 * 3 + (fontSize * scaleY) / 2, 
+                                                //         styles.colorBlue, 
+                                                //         true);
+                                                //     }
                                                 }
                                             });
                                         } else if (levelDetails.type === 'EVENT') {

@@ -3,7 +3,11 @@ import * as angular from 'angular';
 angular.module('emuwebApp')
 	.directive('myDropZone', function ($animate, $compile, DragnDropService, BrowserDetectorService, AppStateService, ModalService) {
 		return {
-			templateUrl: 'views/myDropZone.html',
+			template: /*html*/`
+			<div id="dropzone" class="emuwebapp-dropzone" ng-class="dropClass">
+				<span><br />{{dropText}}</span>
+				<my-drop-zone-input></my-drop-zone-input>
+		  	</div>`,
 			restrict: 'E',
 			replace: true,
 			scope: {},

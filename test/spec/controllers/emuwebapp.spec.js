@@ -529,15 +529,6 @@ describe('Controller: MainController', function () {
     expect(scope.vs.getPermission).toHaveBeenCalledWith('zoom');
   });
 
-  it('should showEditDBconfig on BtnClick', inject(function ($q) {
-    var editDef = $q.defer();
-    spyOn(scope.modal, 'open').and.returnValue(editDef.promise);
-    scope.showEditDBconfigBtnClick();
-    editDef.resolve(false);
-    scope.$apply();
-    expect(scope.modal.open).toHaveBeenCalledWith('views/tabbed.html');
-  }));
-
   it('should addLevelPoint on BtnClick', inject(function (ConfigProviderService, ViewStateService) {
   	ViewStateService.curPerspectiveIdx = 0;
     spyOn(scope.vs, 'getPermission').and.returnValue(true);
