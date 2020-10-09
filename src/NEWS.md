@@ -1,10 +1,11 @@
 # What's New
 
-## Version 1.3.4
+## Version 1.3.3.9000
 
 ### new features / performance tweaks / improvements
 
 - shorten download button text to `TextGrid` and `annotJSON`
+- removed sample values from hierarchy path canvas
 
 ### bug fixes
 

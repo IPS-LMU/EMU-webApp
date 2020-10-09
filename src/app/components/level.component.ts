@@ -355,29 +355,16 @@ class="emuwebapp-selectAttrDef"
             var scaleY = ctx.canvas.height / ctx.canvas.offsetHeight;
 
             if (this.level.name === curAttrDef) {
-                if (isOpen) {
-                    this.FontScaleService.drawUndistortedTextTwoLines(
-                        ctx, 
-                        this.level.name, 
-                        '(' + this.level.type + ')', 
-                        fontSize, 
-                        fontFamily, 
-                        4, 
-                        ctx.canvas.height / 2 - fontSize * scaleY, 
-                        styles.colorWhite,
-                        true);
-                }
-                else {
-                    fontSize -= 2;
-                    this.FontScaleService.drawUndistortedText(
-                        ctx, 
-                        this.level.name, 
-                        fontSize, 
-                        fontFamily, 
-                        4, 
-                        ctx.canvas.height / 2 - (fontSize * scaleY / 2), 
-                        styles.colorWhite, true);
-                }
+                this.FontScaleService.drawUndistortedText(
+                    ctx, 
+                    this.level.name,  
+                    fontSize, 
+                    fontFamily, 
+                    4, 
+                    ctx.canvas.height / 2, 
+                    styles.colorBlue,
+                    true);
+
             } else {
                 this.FontScaleService.drawUndistortedTextTwoLines(
                     ctx, 
@@ -564,6 +551,7 @@ class="emuwebapp-selectAttrDef"
          *
          */
         private drawLevelMarkup = function () {
+            
             var ctx = this.canvases[1].getContext('2d');
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             if (this.level.name === this.ViewStateService.getcurClickLevelName()) {

@@ -23,7 +23,7 @@ let HierarchyPathCanvasComponent = {
     
     <canvas 
     class="emuwebapp-level-markup"
-    style="background-color: rgba(200, 200, 200, 0.7); filter: blur(2px);"
+    style="background-color: rgba(200, 200, 200, 0.3); filter: blur(1px);"
     id="levelMarkupCanvas" 
     width="4096" 
     height="1024" 
@@ -322,7 +322,7 @@ class="emuwebapp-selectAttrDef"
                     fontFamily, 
                     4, 
                     topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2, 
-                    styles.colorWhite, 
+                    styles.colorBlue, 
                     true);
 
                     } else {
@@ -334,7 +334,7 @@ class="emuwebapp-selectAttrDef"
                             fontFamily, 
                             4, 
                             topLimitPxl + (bottomLimitPxl - topLimitPxl) / 2, 
-                            styles.colorWhite, 
+                            styles.colorYellow, 
                             true);
                         }
                         
