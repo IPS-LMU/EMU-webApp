@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import { WavRangeReq } from '../workers/wavrangereq.worker';
+
 /**
 * @ngdoc service
 * @name emuwebApp.dbObjLoadSaveService
@@ -173,7 +175,7 @@ class DbObjLoadSaveService{
 				}else{
 					var promise = this.$http.get(url);
 				}
-				promise.then((bundleData) => {
+				promise.then(async (bundleData) => {
 					// check if response from http request
 					if (bundleData.status === 200) {
 						bundleData = bundleData.data;
@@ -186,6 +188,13 @@ class DbObjLoadSaveService{
 						
 						var arrBuff;
 						// set wav file
+						const wavUrl = new URL("http://localhost:9001/please_call_stella.wav");
+						console.log(wavUrl);
+						// construct class
+  						const wavrangereq = await new WavRangeReq();
+  						// using setter for now
+  						await wavrangereq.setURL(wavUrl.href);
+
 						if(bundleData.mediaFile.encoding === 'BASE64'){
 							arrBuff = this.BinaryDataManipHelperService.base64ToArrayBuffer(bundleData.mediaFile.data);
 							this.innerLoadBundle(bndl, bundleData, arrBuff, defer);
