@@ -13,15 +13,18 @@
 
 
 // load deps
-var fs = require('fs');
-var os = require('os');
-var filewalker = require('filewalker');
+const WebSocket = require('ws');
+const fs = require('fs');
+const os = require('os');
+const http = require('http');
+const filewalker = require('filewalker');
+const url = require('url');
 
-// allow to set vars from command line
+// allow users to set vars from command line
+var host = 'localhost';
 if (process.argv.length === 2) {
 
   var portNr = 17890;
-  var host = 'localhost';
   // var pathToDbRoot = '/Users/raphaelwinkelmann/Desktop/gersC/';
   // var configName = 'gersC_DBconfig.json';
   var pathToDbRoot = '../src/testData/newFormat/ae/';
@@ -36,7 +39,6 @@ if (process.argv.length === 2) {
   console.log(' ');
 
 } else if (process.argv.length === 3) {
-
   var portNr = process.argv[2];
   var pathToDbRoot = '../src/testData/newFormat/ae/';
   var configName = 'ae_DBconfig.json';
@@ -59,12 +61,90 @@ var doUserManagement = 'NO';
 var userName = 'user1';
 var userPwd = '1234'; // high security plain text password! This is for demo purposes only! Please store your passwords properly...
 
+// create ws server
+const wss = new WebSocket.Server({
+  noServer: true
+});
 
-var WebSocketServer = require('ws').Server,
-  wss = new WebSocketServer({
-    host: host,
-    port: portNr
+// create http server to handle get requests
+const server = http.createServer(function (request, response) {
+  var q = url.parse(request.url, true).query;
+  var contentType = 'application/octet-stream';
+  if(q.fileExtension === 'wav'){
+    contentType = 'audio/wav'
+  }
+  if(request.method === 'OPTIONS'){
+    console.log("handle preflight request");
+    response.writeHead(200, 
+      {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+      'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Range'
+      }
+    );
+    response.end();
+
+  } else {
+    var filePath = pathToDbRoot + q.session + '_ses/' + q.bundle + '_bndl/' + q.bundle + '.' + q.fileExtension;
+    if(typeof request.headers.range === 'undefined'){
+      // console.log("no range request");
+      // replace with 206 partial content response type
+      response.writeHead(200, 
+        {
+        'Content-Type': contentType,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+        'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Range'
+        }
+      ); 
+      response.end(fs.readFileSync(filePath));
+    } else {
+      // console.log('range request');
+      var range = request.headers.range;
+      const stats = fs.statSync(filePath);
+      const fileSizeInBytes = stats.size;
+      console.log(fileSizeInBytes);
+      var parts = range.replace(/bytes=/, "").split("-");
+      var partialstart = parts[0];
+      var partialend = parts[1];
+      console.log(parts)
+  
+      var start = parseInt(partialstart, 10);
+      var end = partialend ? parseInt(partialend, 10) : fileSizeInBytes;
+      var chunksize = (end-start);
+      response.writeHead(206, {
+        'Content-Type': contentType,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+        'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Range',
+        'Content-Range': 'bytes ' + start + '-' + end + '/' + fileSizeInBytes,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': 'audio/wav'
+      });
+
+      const buf = Buffer.alloc(chunksize);
+      //response.end(fs.readSync(filePath));
+      response.end(fs.readFileSync(filePath));
+
+    }
+
+  }
+});
+
+server.on('upgrade', function upgrade(request, socket, head) {
+  console.log('in upgrade function');
+  wss.handleUpgrade(request, socket, head, function done(ws) {
+    console.log('deligated update to wss');
+    wss.emit('connection', ws, request);
   });
+})
+
+server.listen(portNr)
+
   
 console.log('########################################################');
 console.log('local server now running @: ws://' + host + ':' + portNr);
@@ -247,8 +327,11 @@ wss.on('connection', function (ws) {
           if (pattMedia.test(p)) {
             console.log(p);
             bundle.mediaFile = {};
-            bundle.mediaFile.encoding = 'BASE64';
-            bundle.mediaFile.filePath = p;
+            bundle.mediaFile.encoding = 'GETURL';
+            // bundle.mediaFile.filePath = p;
+            bundle.mediaFile.data = 'http://' + host + ':' + portNr + "?session=" + mJSO.session + "&bundle=" +  mJSO.name + "&fileExtension=" + dbConfig.mediafileExtension;
+            console.log(bundle.mediaFile);
+            console.log(mJSO);
           }
           // read annotation file
           if (pattAnnot.test(p)) {
@@ -280,8 +363,8 @@ wss.on('connection', function (ws) {
           }), undefined, 0);
         }).on('done', function () {
           console.log(mJSO)
-          bundle.mediaFile.data = fs.readFileSync(pathToDbRoot + bundle.mediaFile.filePath, 'base64');
-          delete bundle.mediaFile.filePath;
+          // bundle.mediaFile.data = fs.readFileSync(pathToDbRoot + bundle.mediaFile.filePath, 'base64');
+          // delete bundle.mediaFile.filePath;
 
           bundle.annotation = JSON.parse(fs.readFileSync(pathToDbRoot + bundle.annotation.filePath, 'utf8'));
           delete bundle.annotation.filePath;

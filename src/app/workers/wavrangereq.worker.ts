@@ -18,7 +18,7 @@ export class WavRangeReq {
     // get header and parse it 
     // (will the header always fit into 200 bytes?
     // Usually offsetToDataChunk is 44 but who knows)
-    let resp = await fetch(url, { method: 'GET', headers: { Range: `bytes=0-200` } })
+    let resp = await fetch(url, { method: 'GET', headers: { Range: `bytes=0-199` } })
     let buffer = await resp.arrayBuffer();
     // do something with buffer
     let headerInfos = this.parseWavHeader(buffer);
