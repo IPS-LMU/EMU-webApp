@@ -167,7 +167,7 @@ let OsciOverviewComponent = {
             if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
                 if (!this.envelopeHasBeenDrawn) {
                     this.envelopeHasBeenDrawn = true;
-                    this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, 0, this.SoundHandlerService.audioBuffer.length, false);
+                    this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, 0, this.SoundHandlerService.audioBuffer.length, true);
                     this.drawVpOsciMarkup();
                 } else {
                     this.drawVpOsciMarkup();
