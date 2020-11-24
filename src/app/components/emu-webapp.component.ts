@@ -30,7 +30,7 @@ let EmuWebAppComponent = {
         <div class="emuwebapp-window" id="mainWindow">
 			<progress-bar 
 			class="emuwebapp-progressBar"
-			ng-show="$ctrl.ViewStateService.somethingInProgress"
+			open="$ctrl.ViewStateService.somethingInProgress"
 			txt="$ctrl.ViewStateService.somethingInProgressTxt"
 			></progress-bar>
 			
