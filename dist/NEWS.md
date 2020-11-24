@@ -1,5 +1,17 @@
 # What's New
 
+## Version 1.3.4
+
+### new features / performance tweaks / improvements
+
+- shorten download button text to `TextGrid` and `annotJSON`
+- removed sample values from hierarchy path canvas
+- fixed laggy progressbar by listening to changes rather than ng-show to trigger animation
+
+### bug fixes
+
+- forcing osci peaks recalc on draw of OSCI overview canvas
+
 ## Version 1.3.3
 
 ### new features / performance tweaks / improvements
