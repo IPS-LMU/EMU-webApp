@@ -38,7 +38,7 @@ let LevelComponent = {
 
 <div 
 ng-if="$ctrl.levelDef.attributeDefinitions.length > 1" 
-class="emuwebapp-selectAttrDef"
+class="emuwebapp-canvasSelectors"
 >
 <div>
     <ul>

@@ -6,6 +6,7 @@
 
 - shorten download button text to `TextGrid` and `annotJSON`
 - removed sample values from hierarchy path canvas
+- fixed laggy progressbar by listening to changes rather than ng-show to trigger animation
 
 ### bug fixes
 

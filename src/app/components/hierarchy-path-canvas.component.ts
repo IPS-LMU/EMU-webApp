@@ -9,9 +9,11 @@ let HierarchyPathCanvasComponent = {
     selector: "hierarchyPathCanvas",
     // inline HTML
     template: /*html*/`
+    <!-- non editable hierarchy path which includes times -->
     <div 
     class="emuwebapp-level" 
-    style="height: 256px">
+    style="height: 256px"
+    ng-show="$ctrl.selectedCanvasIdx == 0">
     <div class="emuwebapp-level-container">
     <canvas 
     class="emuwebapp-level-canvas" 
@@ -31,26 +33,44 @@ let HierarchyPathCanvasComponent = {
     level-type="$ctrl.level.type"></canvas>
     </div>
     </div>
-
-    <div 
-ng-if="true" 
-class="emuwebapp-selectAttrDef"
->
-<!--<div>
-    <ul>
-    <li>
-        <button 
-        ng-click="$ctrl.changeCurAttrDef(attrDef.name, $index);" 
-        ng-style="$ctrl.getAttrDefBtnColor(attrDef.name)"
-        ></button>
-        <button 
-        ng-click="$ctrl.changeCurAttrDef(attrDef.name, $index);" 
-        ng-style="$ctrl.getAttrDefBtnColor(attrDef.name)"
-        ></button>
-    </li>
-    </ul>
-</div>-->
-</div>
+    <!-- hierachy tree editable -->
+    <!--
+    <div style="background-color: pink;">
+    <emuhierarchy 
+    ng-show="$ctrl.selectedCanvasIdx == 1;"
+    playing="getPlaying();" 
+    vertical="true"
+    cur-level-attr-defs="vs.curLevelAttrDefs"
+    hierarchy-path="vs.hierarchyState.path"
+    moves-away-from-last-save="HistoryService.movesAwayFromLastSave"
+    new-link-from-id="vs.hierarchyState.newLinkFromID"
+    is-shown="vs.hierarchyState.isShown()"
+    context-menu-id="vs.hierarchyState.contextMenuID"
+    hierarchy-resize="vs.hierarchyState.resize"
+    attribute-definition-click-counter="attributeDefinitionClickCounter"
+    ></emuhierarchy>
+    </div>
+    -->
+    <!-- selectors -->
+    <!-- <div 
+    ng-if="true" 
+    class="emuwebapp-canvasSelectors"
+    >
+    <div>
+        <ul>
+        <li>
+            <button 
+            ng-click="$ctrl.changeSelectedCanvas(0);" 
+            ng-style="$ctrl.getSelectedCanvasColor(0);"
+            ></button>
+            <button 
+            ng-click="$ctrl.changeSelectedCanvas(1);" 
+            ng-style="$ctrl.getSelectedCanvasColor(1);"
+            ></button>
+        </li>
+        </ul>
+    </div>
+    </div> -->
     `,
     bindings: {
         annotation: '<',
@@ -97,6 +117,8 @@ class="emuwebapp-selectAttrDef"
         private backgroundCanvas;
         private hierPaths;
 
+        private selectedCanvasIdx:number;
+
         // resizer
         private resizeObservable$: Observable<Event>
         private resizeSubscription$: Subscription
@@ -123,6 +145,8 @@ class="emuwebapp-selectAttrDef"
                 // 'background-image': 'linear-gradient(to top, #e2ebf0 0%, #cfd9df 100%)'
             };
             this.hierPaths = this.HierarchyLayoutService.findAllNonPartialPaths();
+
+            this.selectedCanvasIdx = 0;
             
         };
         
@@ -220,6 +244,24 @@ class="emuwebapp-selectAttrDef"
             })
         }
         
+        private changeSelectedCanvas = function(index:number){
+            this.selectedCanvasIdx = index;
+        }
+
+        private getSelectedCanvasColor = function(index:number){
+            let curColor;
+            if (index === this.selectedCanvasIdx) {
+                curColor = {
+                    'background': '-webkit-radial-gradient(50% 50%, closest-corner, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 60%)',
+                    'border-color': styles.colorYellow
+                };
+            } else {
+                curColor = {
+                    'background-color': styles.colorWhite
+                };
+            }
+            return curColor;
+        }
         
         private async redrawAll(){
             if(this.annotation.levels.length > 0){
@@ -255,7 +297,8 @@ class="emuwebapp-selectAttrDef"
             }
             
         }
-        
+
+
         
         // TODO: move to draw helper service or new service and use from here and level.component
         private drawLevelDetails = async function (canvas, levelDetails, topLimitPxl: number = 0, bottomLimitPxl: number = 1024) {
