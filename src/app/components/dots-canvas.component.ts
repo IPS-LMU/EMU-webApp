@@ -271,6 +271,10 @@ let DotsCanvasComponent = {
             // frame nr
             var xsRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(dD.dots[0].xSsffTrack); // use first track for sample numbers
             var ysRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(dD.dots[0].ySsffTrack);
+            
+            if(typeof(xsRaSt) === 'undefined' || typeof(ysRaSt) === 'undefined'){
+                return(1)
+            }
 
             //var sInterv = (1 / xsRaSt.sampleRate);
             var curMousePosTime = this.ViewStateService.curMousePosSample / this.SoundHandlerService.audioBuffer.sampleRate;

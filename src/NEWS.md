@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.3.5
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- fixed border causing negative mouse x pos values
+
 ## Version 1.3.4
 
 ### new features / performance tweaks / improvements
