@@ -9,7 +9,7 @@ angular.module('emuwebApp')
 			scope: {},
 			link: function postLink(scope, element, atts) {
 				scope.trackName = atts.ssffTrackname;
-				scope.assTrackName = '';
+				scope.assignmentTrackName = '';
 				scope.lastDraw = Date.now();
 
 				// add watch vars to scope
@@ -101,12 +101,12 @@ angular.module('emuwebApp')
 
 					if (!$.isEmptyObject(SsffDataService.data)) {
 						if (SsffDataService.data.length !== 0) {
-							scope.assTrackName = '';
+							scope.assignmentTrackName = '';
 							// check assignments (= overlays)
-							ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.assign.forEach((ass) => {
-								if (ass.signalCanvasName === scope.trackName) {
-									scope.assTrackName = ass.ssffTrackName;
-									var tr = ConfigProviderService.getSsffTrackConfig(ass.ssffTrackName);
+							ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.assign.forEach((assignment) => {
+								if (assignment.signalCanvasName === scope.trackName) {
+									scope.assignmentTrackName = assignment.ssffTrackName;
+									var tr = ConfigProviderService.getSsffTrackConfig(assignment.ssffTrackName);
 									var col = SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
 									var sRaSt = SsffDataService.getSampleRateAndStartTimeOfTrack(tr.name);
 									var minMaxCountourLims = ConfigProviderService.getContourLimsOfTrack(tr.name);
@@ -115,7 +115,7 @@ angular.module('emuwebApp')
 									scope.drawValues(ViewStateService, element[0], ConfigProviderService, col, sRaSt.sampleRate, sRaSt.startTime, minMaxCountourLims, minMaxValLims);
 								}
 							});
-							scope.assTrackName = '';
+							scope.assignmentTrackName = '';
 							// draw ssffTrack onto own canvas
 							if (scope.trackName !== 'OSCI' && scope.trackName !== 'SPEC') {
 
@@ -143,7 +143,7 @@ angular.module('emuwebApp')
 					var ctx = canvas.getContext('2d');
 					var minVal, maxVal;
 
-					if (scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
+					if (scope.trackName === 'SPEC' && scope.assignmentTrackName === 'FORMANTS') {
 						minVal = ViewStateService.spectroSettings.rangeFrom;
 						maxVal = ViewStateService.spectroSettings.rangeTo;
 					} else {
@@ -206,7 +206,11 @@ angular.module('emuwebApp')
 								}
 
 								// overwrite color settings if they are preconfigured
-								var contColors = ConfigProviderService.getContourColorsOfTrack(scope.assTrackName);
+								if(scope.assignmentTrackName !== ''){
+									var contColors = ConfigProviderService.getContourColorsOfTrack(scope.assignmentTrackName);
+								} else {
+									var contColors = ConfigProviderService.getContourColorsOfTrack(scope.trackName);
+								}
 								if (contColors !== undefined) {
 									if (contColors.colors[contourNr] !== undefined) {
 										ctx.strokeStyle = ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
@@ -216,7 +220,7 @@ angular.module('emuwebApp')
 
 								// mark selected
 								// console.log(ViewStateService.curCorrectionToolNr);
-								if (ViewStateService.curCorrectionToolNr - 1 === contourNr && scope.trackName === 'SPEC' && scope.assTrackName === 'FORMANTS') {
+								if (ViewStateService.curCorrectionToolNr - 1 === contourNr && scope.trackName === 'SPEC' && scope.assignmentTrackName === 'FORMANTS') {
 									ctx.strokeStyle = styles.colorGreen;
 									ctx.fillStyle = styles.colorGreen;
 								}
