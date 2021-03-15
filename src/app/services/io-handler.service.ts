@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import { encode } from 'punycode';
 
 class IoHandlerService{
 	
@@ -155,7 +156,8 @@ class IoHandlerService{
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_DBconfig.json');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB'){
 			var searchObject = this.$location.search();
-			getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + searchObject.emuDBname + '_DBconfig.json/raw?ref=master', {
+			let gitlabPath = this.getGitlabPathFromSearchObject(searchObject);
+			getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + gitlabPath + searchObject.emuDBname + '_DBconfig.json/raw?ref=master', {
 				method: 'GET',
 				headers: {
 					'PRIVATE-TOKEN': searchObject.privateToken
@@ -181,7 +183,8 @@ class IoHandlerService{
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
 			var searchObject = this.$location.search();
-			getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/bundleLists%2F' + searchObject.bundleListName + '_bundleList.json/raw?ref=master', {
+			let gitlabPath = this.getGitlabPathFromSearchObject(searchObject);
+			getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + gitlabPath + 'bundleLists%2F' + searchObject.bundleListName + '_bundleList.json/raw?ref=master', {
 				method: 'GET',
 				headers: {
 					'PRIVATE-TOKEN': searchObject.privateToken
@@ -191,6 +194,26 @@ class IoHandlerService{
 		
 		return getProm;
 	};
+
+	private getGitlabPathFromSearchObject(searchObject, UriEncode = true) {
+		let gitlabPath = "";
+		if(typeof searchObject.gitlabPath != "undefined") {
+			gitlabPath = searchObject.gitlabPath;
+			//Strip out any leading slashes
+			while(gitlabPath.indexOf("/") == 0) {
+				gitlabPath = gitlabPath.substr(1, gitlabPath.length);
+			}
+			//Make sure we have a trailing slash
+			if(gitlabPath.indexOf("/", gitlabPath.length-1) == -1) {
+				gitlabPath += "/";
+			}
+			if(UriEncode) {
+				gitlabPath = encodeURIComponent(gitlabPath);
+			}
+		}
+		
+		return gitlabPath;
+	}
 	
 	/**
 	*
@@ -209,7 +232,8 @@ class IoHandlerService{
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + name + '_bndl.json');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
 			var searchObject = this.$location.search();
-			var bndlURL = searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + session + '_ses%2F' + name + '_bndl%2F';
+			let gitlabPath = this.getGitlabPathFromSearchObject(searchObject);
+			var bndlURL = searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + gitlabPath + session + '_ses%2F' + name + '_bndl%2F';
 			var neededTracks = this.ConfigProviderService.findAllTracksInDBconfigNeededByEMUwebApp();
 			var ssffFiles = [];
 			
@@ -258,7 +282,8 @@ class IoHandlerService{
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
 			// console.log(bundleData);
 			var searchObject = this.$location.search();
-			var bndlPath = bundleData.session + '_ses/' + bundleData.annotation.name + '_bndl/';
+			let gitlabPath = this.getGitlabPathFromSearchObject(searchObject, false);
+			var bndlPath = gitlabPath + bundleData.session + '_ses/' + bundleData.annotation.name + '_bndl/';
 			// var bndlURL = searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + bndlPath;
 			var actions = [{ 
 				action: "update", // _annot.json
@@ -268,7 +293,7 @@ class IoHandlerService{
 			},
 			{ 
 				action: "update", // _bundleList.json
-				file_path: 'bundleLists/' + searchObject.bundleListName + "_bundleList.json",
+				file_path: gitlabPath + 'bundleLists/' + searchObject.bundleListName + "_bundleList.json",
 				content: JSON.stringify(this.LoadedMetaDataService.getBundleList(), null, 4),
 				encoding: "text"
 			}
