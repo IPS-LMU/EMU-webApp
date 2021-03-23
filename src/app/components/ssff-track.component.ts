@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 let SsffTrackComponent = {
     selector: "ssffTrack",
-    template: `
+    template: /*html*/`
     <div class="emuwebapp-timeline">
     <div class="emuwebapp-timelineCanvasContainer">
         <canvas 

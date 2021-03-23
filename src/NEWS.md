@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.3.5.9000
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- fixed bad handling of colorContour values in non-assigned tracks (fixes #287)
+
 ## Version 1.3.5
 
 ### new features / performance tweaks / improvements
