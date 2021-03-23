@@ -1,8 +1,10 @@
 # What's New
 
-## Version 1.3.5.9000
+## Version 1.3.6
 
 ### new features / performance tweaks / improvements
+
+- new `gitlabPath` added
 
 ### bug fixes
 
