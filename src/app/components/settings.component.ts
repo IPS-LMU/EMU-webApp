@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import { type } from 'jquery';
 
 let SettingsComponent = {
     selector: "settings",
@@ -278,10 +279,12 @@ controller: class SettingsController{
 	
 	private getCurVisAttributes() {
 		this.hierarchySettings.paths.curVisAttributeDefs = {};
-		let curLevelNames = this.StandardFuncsService.reverseCopy(this.hierarchySettings.paths.possible[this.getSelHierarchyPathIdx()]);
-		curLevelNames.forEach(ln => {
-			this.hierarchySettings.paths.curVisAttributeDefs[ln] = this.ViewStateService.getCurAttrDef(ln);
-		});
+		if(typeof this.hierarchySettings.paths.possible[this.getSelHierarchyPathIdx()] !== "undefined"){
+			let curLevelNames = this.StandardFuncsService.reverseCopy(this.hierarchySettings.paths.possible[this.getSelHierarchyPathIdx()]);
+			curLevelNames.forEach(ln => {
+				this.hierarchySettings.paths.curVisAttributeDefs[ln] = this.ViewStateService.getCurAttrDef(ln);
+			});
+		}
 	}
 
 	private getSelHierarchyPathIdx () {
