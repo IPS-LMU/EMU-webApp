@@ -182,7 +182,7 @@ class IoHandlerService{
 		} else if (this.ConfigProviderService.vals.main.comMode === 'DEMO') {
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + nameOfDB + '_bundleList.json');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
-			var searchObject = this.$location.search();
+			let searchObject = this.$location.search();
 			let gitlabPath = this.getGitlabPathFromSearchObject(searchObject);
 			getProm = fetch(searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + gitlabPath + 'bundleLists%2F' + searchObject.bundleListName + '_bundleList.json/raw?ref=master', {
 				method: 'GET',
@@ -232,6 +232,7 @@ class IoHandlerService{
 			getProm = this.$http.get('demoDBs/' + nameOfDB + '/' + name + '_bndl.json');
 		} else if (this.ConfigProviderService.vals.main.comMode === 'GITLAB') {
 			var searchObject = this.$location.search();
+
 			let gitlabPath = this.getGitlabPathFromSearchObject(searchObject);
 			var bndlURL = searchObject.gitlabURL + '/api/v4/projects/' + searchObject.projectID + '/repository/files/' + gitlabPath + session + '_ses%2F' + name + '_bndl%2F';
 			var neededTracks = this.ConfigProviderService.findAllTracksInDBconfigNeededByEMUwebApp();
@@ -244,24 +245,45 @@ class IoHandlerService{
 					fileExtension: tr.fileExtension // this is redundant when doing the GETUR hack but has to be set to satisfy the validator
 				});
 			});
-			getProm = Promise.all([
-				fetch(bndlURL + name + '_annot.json/raw?ref=master', {
-					method: 'GET',
-					headers: {
-						'PRIVATE-TOKEN': searchObject.privateToken
-					}
-				}).then((resp) => { return(resp.json()) })
-			]).then((allResponses) => {
-				return {
-					mediaFile: {
-						encoding: "GETURL",
-						data: bndlURL + name + '.wav/raw?ref=master'
-					},
-					annotation: allResponses[0],
-					ssffFiles: ssffFiles
-				};
-			})
-			
+			if(searchObject.useLFS !== "true"){
+				getProm = Promise.all([
+					fetch(bndlURL + name + '_annot.json/raw?ref=master', {
+						method: 'GET',
+						headers: {
+							'PRIVATE-TOKEN': searchObject.privateToken
+						}
+					}).then((resp) => { return(resp.json()) })
+				]).then((allResponses) => {
+					return {
+						mediaFile: {
+							encoding: "GETURL",
+							data: bndlURL + name + '.wav/raw?ref=master'
+						},
+						annotation: allResponses[0],
+						ssffFiles: ssffFiles
+					};
+				})
+				
+			} else {
+				console.log("using LFS");
+				getProm = Promise.all([
+					fetch(bndlURL + name + '_annot.json/raw?ref=master', {
+						method: 'GET',
+						headers: {
+							'PRIVATE-TOKEN': searchObject.privateToken
+						}
+					}).then((resp) => { return(resp.json()) })
+				]).then((allResponses) => {
+					return {
+						mediaFile: {
+							encoding: "GETURL",
+							data: bndlURL + name + '.wav/raw?ref=master'
+						},
+						annotation: allResponses[0],
+						ssffFiles: ssffFiles
+					};
+				})
+			}
 		}
 		
 		

@@ -6,7 +6,7 @@ import styles from '../../styles/EMUwebAppDesign.scss';
 
 let SpectrogramComponent = {
     selector: "spectro",
-    template: `
+    template: /*html*/`
     <div class="emuwebapp-timeline">
     <!-- width is now up to 4k -->
     <div class="emuwebapp-timelineCanvasContainer">
@@ -14,12 +14,21 @@ let SpectrogramComponent = {
         class="emuwebapp-timelineCanvasMain" 
         width="4096"></canvas>
         
-        <canvas 
+       <!-- <canvas 
         class="emuwebapp-timelineCanvasSSFF" 
         width="4096" 
         drawssff 
-        ssff-trackname="{{$ctrl.trackName}}"></canvas>
+        ssff-trackname="{{$ctrl.trackName}}"></canvas>-->
         
+        <ssff-canvas
+        track-name="$ctrl.trackName"
+        view-port-sample-start="$ctrl.viewPortSampleStart"
+        view-port-sample-end="$ctrl.viewPortSampleEnd"
+        cur-bndl="$ctrl.curBundl"
+        cur-mouse-x="$ctrl.curMouseX"
+        cur-mouse-y="$ctrl.curMouseY"
+        ></ssff-canvas>
+
         <signal-canvas-markup-canvas
         track-name="$ctrl.trackName"
         play-head-current-sample="$ctrl.playHeadCurrentSample"
