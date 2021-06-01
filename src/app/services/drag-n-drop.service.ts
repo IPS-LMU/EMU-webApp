@@ -328,4 +328,4 @@ class DragnDropService{
 }
 
 angular.module('emuwebApp')
-.service('DragnDropService', DragnDropService);
+.service('DragnDropService', ['$q', '$rootScope', '$window', 'ModalService', 'DataService', 'ValidationService', 'ConfigProviderService', 'DragnDropDataService', 'IoHandlerService', 'ViewStateService', 'SoundHandlerService', 'BinaryDataManipHelperService', 'BrowserDetectorService', 'WavParserService', 'TextGridParserService', 'LoadedMetaDataService', 'LevelService', DragnDropService]);

@@ -66,4 +66,4 @@ class EspsParserService{
 
 
 angular.module('emuwebApp')
-.service('EspsParserService', EspsParserService);
+.service('EspsParserService', ['$q', 'LevelService', 'SoundHandlerService', EspsParserService]);

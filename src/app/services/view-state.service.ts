@@ -1478,4 +1478,4 @@ class ViewStateService{
 }
 
 angular.module('emuwebApp')
-.service('ViewStateService', ViewStateService);
+.service('ViewStateService', ['$rootScope', '$timeout', '$window', 'SoundHandlerService', 'DataService', 'StandardFuncsService', ViewStateService]);

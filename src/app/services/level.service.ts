@@ -1707,4 +1707,4 @@ class LevelService{
 }
 
 angular.module('emuwebApp')
-.service('LevelService', LevelService)
+.service('LevelService', ['$q', 'DataService', 'LinkService', 'ConfigProviderService', 'SoundHandlerService', 'ViewStateService', LevelService])

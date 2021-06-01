@@ -374,4 +374,4 @@ class AnagestService{
 }
 
 angular.module('emuwebApp')
-	.service('AnagestService', AnagestService)
+	.service('AnagestService', ['$q', '$log', 'ViewStateService', 'LevelService', 'LinkService', 'ConfigProviderService', 'SsffDataService', 'ArrayHelperService', 'ModalService', 'HistoryService', 'DataService', AnagestService]);

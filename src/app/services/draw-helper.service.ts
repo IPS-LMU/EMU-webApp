@@ -853,4 +853,4 @@ class DrawHelperService{
 }
 
 angular.module('emuwebApp')
-	.service('DrawHelperService', DrawHelperService);
+	.service('DrawHelperService', ['ViewStateService', 'ConfigProviderService', 'SoundHandlerService', 'FontScaleService', 'SsffDataService', 'MathHelperService', DrawHelperService]);

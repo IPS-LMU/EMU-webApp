@@ -53,4 +53,4 @@ class SsffParserService{
 }
 
 angular.module('emuwebApp')
-.service('SsffParserService', SsffParserService);
+.service('SsffParserService', ['$q', SsffParserService]);

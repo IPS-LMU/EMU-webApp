@@ -246,4 +246,4 @@ class HierarchyManipulationService{
 	
 	
 	angular.module('emuwebApp')
-	.service('HierarchyManipulationService', HierarchyManipulationService);
+	.service('HierarchyManipulationService', ['$q', 'HierarchyLayoutService', 'DataService', 'LevelService', 'ConfigProviderService', HierarchyManipulationService]);

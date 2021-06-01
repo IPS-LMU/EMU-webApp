@@ -353,4 +353,4 @@ class ConfigProviderService {
 }
 
 angular.module('emuwebApp')
-	.service('ConfigProviderService', ConfigProviderService);
+	.service('ConfigProviderService', ['$q', 'ViewStateService', ConfigProviderService]);

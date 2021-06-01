@@ -344,4 +344,4 @@ class ValidationService{
 }
 
 angular.module('emuwebApp')
-.service('ValidationService', ValidationService);
+.service('ValidationService', ['$http', '$q', 'ConfigProviderService', ValidationService]);

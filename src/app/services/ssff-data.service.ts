@@ -84,4 +84,4 @@ class SsffDataService{
 }
 
 angular.module('emuwebApp')
-.service('SsffDataService', SsffDataService);
+.service('SsffDataService', ['SoundHandlerService', 'ConfigProviderService', SsffDataService]);

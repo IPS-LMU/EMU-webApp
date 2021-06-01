@@ -64,4 +64,4 @@ class TextGridParserService{
 }
 
 angular.module('emuwebApp')
-.service('TextGridParserService', TextGridParserService);
+.service('TextGridParserService', ['$q', 'DataService', 'ViewStateService', 'SoundHandlerService', TextGridParserService]);

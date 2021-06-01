@@ -237,4 +237,4 @@ class WavParserService{
         }
         
         angular.module('emuwebApp')
-        .service('WavParserService', WavParserService);
+        .service('WavParserService', ['$q', '$window', WavParserService]);

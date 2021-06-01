@@ -90,4 +90,4 @@ class AppStateService{
 
 
 angular.module('emuwebApp')
-	.service('AppStateService', AppStateService);
+	.service('AppStateService', ['$log', '$rootScope', '$location', 'DragnDropService', 'DragnDropDataService', 'ViewStateService', 'IoHandlerService', 'LoadedMetaDataService', 'SoundHandlerService', 'DataService', 'SsffDataService', 'HistoryService', AppStateService]);

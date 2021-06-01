@@ -424,4 +424,4 @@ export class HistoryService {
 }
 
 angular.module('emuwebApp')
-.service('HistoryService', HistoryService)
+.service('HistoryService', ['$log', '$compile', '$sce', 'SsffDataService', 'LevelService', 'LinkService', 'ConfigProviderService', 'ViewStateService', 'SoundHandlerService', 'LoadedMetaDataService', HistoryService])

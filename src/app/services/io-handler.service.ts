@@ -402,4 +402,4 @@ public parseLabelFile(string, annotates, name, fileType) {
 }
 
 angular.module('emuwebApp')
-.service('IoHandlerService', IoHandlerService);
+.service('IoHandlerService', ['$rootScope', '$http', '$location', '$q', '$window', 'HistoryService', 'ViewStateService', 'SoundHandlerService', 'SsffParserService', 'WavParserService', 'TextGridParserService', 'ConfigProviderService', 'EspsParserService', 'SsffDataService', 'WebSocketHandlerService', 'DragnDropDataService', 'LoadedMetaDataService', IoHandlerService]);

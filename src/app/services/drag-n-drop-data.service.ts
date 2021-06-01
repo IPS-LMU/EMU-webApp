@@ -45,4 +45,4 @@ class DragnDropDataService{
 }
 
 angular.module('emuwebApp')
-.service('DragnDropDataService', DragnDropDataService);
+.service('DragnDropDataService', ['$q', DragnDropDataService]);

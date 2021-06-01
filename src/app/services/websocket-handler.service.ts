@@ -337,4 +337,4 @@ class WebSocketHandlerService{
 }
 
 angular.module('emuwebApp')
-.service('WebSocketHandlerService', WebSocketHandlerService);
+.service('WebSocketHandlerService', ['$q', '$rootScope', '$location', '$timeout', 'HistoryService', 'SsffParserService', 'ConfigProviderService', 'ViewStateService', 'WavParserService', 'SoundHandlerService', 'EspsParserService', 'UuidService', 'BinaryDataManipHelperService', 'SsffDataService', 'ModalService', WebSocketHandlerService]);

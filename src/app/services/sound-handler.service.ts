@@ -127,4 +127,4 @@ class SoundHandlerService{
 }
 
 angular.module('emuwebApp')
-.service('SoundHandlerService', SoundHandlerService);
+.service('SoundHandlerService', ['$window', SoundHandlerService]);

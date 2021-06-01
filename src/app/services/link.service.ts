@@ -3,6 +3,7 @@ import * as angular from 'angular';
 class LinkService{
 	private DataService;
 	private ConfigProviderService;
+
 	constructor(DataService, ConfigProviderService){
 		this.DataService = DataService;
 		this.ConfigProviderService = ConfigProviderService;
@@ -328,4 +329,4 @@ class LinkService{
 }
 
 angular.module('emuwebApp')
-.service('LinkService', LinkService)
+.service('LinkService', ['DataService', 'ConfigProviderService', LinkService])

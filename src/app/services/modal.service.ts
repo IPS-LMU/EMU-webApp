@@ -141,4 +141,4 @@ class ModalService{
 * Service in the emuwebApp.
 */
 angular.module('emuwebApp')
-.service('ModalService', ModalService)
+.service('ModalService', ['$q', 'ArrayHelperService', 'ViewStateService', ModalService])

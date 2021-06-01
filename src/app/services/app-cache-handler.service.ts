@@ -75,4 +75,4 @@ class AppcacheHandlerService{
 }
 
 angular.module('emuwebApp')
-	.service('AppcacheHandlerService', AppcacheHandlerService);
+	.service('AppcacheHandlerService', ['$http', 'ModalService', AppcacheHandlerService]);
