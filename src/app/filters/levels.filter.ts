@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.filter('levelsFilter', function (ConfigProviderService, ViewStateService) {
+	.filter('levelsFilter', ['ConfigProviderService', 'ViewStateService',
+		function (ConfigProviderService, ViewStateService) {
 		return function (input) {
 			if (input) {
 				var patt1 = new RegExp('SEGMENT|EVENT');
@@ -20,4 +21,4 @@ angular.module('emuwebApp')
 				return out;
 			}
 		};
-	});
+	}]);
