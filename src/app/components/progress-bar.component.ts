@@ -9,22 +9,28 @@ let ProgressBarComponent = {
         open: '<',
         txt: '<'
     },
-    controller: class ProgressBarController{
+    controller: [
+        '$element', 
+        '$animate',
+        class ProgressBarController{
         private $element;
         private $animate;
 
         private _inited = false;
         
-        constructor($element, $animate){
+        constructor(
+            $element, 
+            $animate
+            ){
             this.$element = $element;
             this.$animate = $animate;
         };
         
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         };
         
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             if(this._inited){
                 if(changes.open){
                     // console.log(changes.open.currentValue);
@@ -43,7 +49,7 @@ let ProgressBarComponent = {
             }
         }
 
-    }
+    }]
 }
 angular.module('emuwebApp')
 .component(ProgressBarComponent.selector, ProgressBarComponent);

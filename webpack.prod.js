@@ -23,6 +23,6 @@ module.exports = merge(common, {
         ]),
     ],
     optimization: {
-        minimize: false // can't minimize 4 now see: https://scotch.io/tutorials/declaring-angularjs-modules-for-minification
+        minimize: true // can't minimize 4 now see: https://scotch.io/tutorials/declaring-angularjs-modules-for-minification
     }
 });

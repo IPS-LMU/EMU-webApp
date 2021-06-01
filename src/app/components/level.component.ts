@@ -67,7 +67,22 @@ class="emuwebapp-canvasSelectors"
         curPerspectiveIdx: '<',
         curBndl: '<'
     },
-    controller: class LevelController{
+    controller: [
+        '$scope', 
+        '$element', 
+        '$animate', 
+        'ViewStateService', 
+        'SoundHandlerService', 
+        'ConfigProviderService', 
+        'DrawHelperService', 
+        'HistoryService',
+        'FontScaleService',
+        'ModalService',
+        'LevelService',
+        'LoadedMetaDataService', 
+        'HierarchyLayoutService', 
+        'DataService',
+        class LevelController{
         private $scope;
         private $element;
         private $animate;
@@ -101,7 +116,7 @@ class="emuwebapp-canvasSelectors"
         
         private open;
         private levelDef;
-        private canvas;
+        private canvases;
         private levelCanvasContainer;
         private _inited;
         private backgroundCanvas;
@@ -110,7 +125,22 @@ class="emuwebapp-canvasSelectors"
         private resizeObservable$: Observable<Event>
         private resizeSubscription$: Subscription
 
-        constructor($scope, $element, $animate, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService){
+        constructor(
+            $scope, 
+            $element, 
+            $animate, 
+            ViewStateService, 
+            SoundHandlerService, 
+            ConfigProviderService, 
+            DrawHelperService, 
+            HistoryService,
+            FontScaleService,
+            ModalService,
+            LevelService,
+            LoadedMetaDataService, 
+            HierarchyLayoutService, 
+            DataService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             this.$animate = $animate;
@@ -131,9 +161,10 @@ class="emuwebapp-canvasSelectors"
             this.backgroundCanvas = {
                 'background': styles.colorBlack
             };
+
         };
         
-        $postLink = function(){
+        $postLink() {
             this.levelDef = this.ConfigProviderService.getLevelDefinition(this.level.name);
 
             this.canvases = this.$element.find('canvas');
@@ -153,7 +184,7 @@ class="emuwebapp-canvasSelectors"
             });
         };
 
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             if(changes.viewPortSampleStart){
                 if(changes.viewPortSampleStart.currentValue !== changes.viewPortSampleStart.previousValue){
                     if(this._inited){
@@ -243,7 +274,7 @@ class="emuwebapp-canvasSelectors"
         };
 
 
-        $onInit = function() {
+        $onInit() {
             this._inited = true;
             this.resizeObservable$ = fromEvent(window, 'resize')
             this.resizeObservable$.pipe(debounceTime(500)).subscribe( evt => {       
@@ -264,7 +295,7 @@ class="emuwebapp-canvasSelectors"
         /**
          *
          */
-        private changeCurAttrDef = function (attrDefName, index) {
+        private changeCurAttrDef(attrDefName, index) {
             var curAttrDef = this.ViewStateService.getCurAttrDef(this.level.name);
             if (curAttrDef !== attrDefName) {
                 // curAttrDef = attrDefName;
@@ -286,7 +317,7 @@ class="emuwebapp-canvasSelectors"
         /**
          *
          */
-        private getAttrDefBtnColor = function (attrDefName) {
+        private getAttrDefBtnColor(attrDefName) {
             var curColor;
             var curAttrDef = this.ViewStateService.getCurAttrDef(this.level.name);
             if (attrDefName === curAttrDef) {
@@ -303,7 +334,7 @@ class="emuwebapp-canvasSelectors"
         };
 
 
-        private drawLevelDetails = function () {
+        private drawLevelDetails() {
             var labelFontFamily; // font family used for labels only
             var fontFamily = styles.fontSmallFamily; // font family used for everything else
             if(typeof this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.labelFontFamily === 'undefined'){
@@ -550,7 +581,7 @@ class="emuwebapp-canvasSelectors"
         /**
          *
          */
-        private drawLevelMarkup = function () {
+        private drawLevelMarkup () {
             
             var ctx = this.canvases[1].getContext('2d');
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -634,7 +665,7 @@ class="emuwebapp-canvasSelectors"
             // draw cursor
             this.DrawHelperService.drawCrossHairX(ctx, this.ViewStateService.curMouseX);
         };
-    }
+    }]
 };
 
 angular.module('emuwebApp')

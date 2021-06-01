@@ -18,7 +18,16 @@ let SsffCanvasComponent = {
         curMouseX: '<',
         curMouseY: '<'
     },
-    controller: class SsffCanvasController{
+    controller: [
+        '$scope', 
+        '$element', 
+        'ViewStateService', 
+        'ConfigProviderService', 
+        'SsffDataService', 
+        'HistoryService',
+        'FontScaleService', 
+        'LoadedMetaDataService',
+        class SsffCanvasController{
         private $scope;
         private $element;
         private ViewStateService;
@@ -29,8 +38,21 @@ let SsffCanvasComponent = {
         private LoadedMetaDataService;
         
         private assignmentTrackName = '';
+        private canvas;
+        private ctx;
+        private trackName;
         private _inited = false;
-        constructor($scope, $element, ViewStateService, ConfigProviderService, SsffDataService, HistoryService, FontScaleService, LoadedMetaDataService){
+
+        constructor(
+            $scope, 
+            $element, 
+            ViewStateService, 
+            ConfigProviderService, 
+            SsffDataService, 
+            HistoryService,
+            FontScaleService, 
+            LoadedMetaDataService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             this.ViewStateService = ViewStateService;
@@ -41,11 +63,11 @@ let SsffCanvasComponent = {
             this.LoadedMetaDataService = LoadedMetaDataService;
     
         }
-        $postLink = function(){
+        $postLink (){
             this.canvas = this.$element.find('canvas')[0];
             this.ctx = this.canvas.getContext('2d');
         }
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             if(this._inited){
                 if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl){
                     console.log(changes);
@@ -56,13 +78,13 @@ let SsffCanvasComponent = {
                 }
             }
         }
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         };
         /**
         *
         */
-        private handleUpdate = function () {
+        private handleUpdate () {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             console.log(this.SsffDataService.data);
             if (!$.isEmptyObject(this.SsffDataService.data)) {
@@ -104,7 +126,7 @@ let SsffCanvasComponent = {
         /**
         * draw values onto canvas
         */
-        private drawValues = function (ViewStateService, config, col, sR, sT, minMaxContourLims, minMaxValLims) {
+        private drawValues (ViewStateService, config, col, sR, sT, minMaxContourLims, minMaxValLims) {
             
             var minVal, maxVal;
             
@@ -245,7 +267,7 @@ let SsffCanvasComponent = {
                 }
             }
         } //function
-    }
+    }]
 }
 
 angular.module('emuwebApp')

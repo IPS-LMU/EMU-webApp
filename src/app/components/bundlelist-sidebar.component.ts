@@ -98,7 +98,16 @@ let BundleListSideBarComponent = {
 bindings: {
 	open: '<'
 },
-controller: class BundleListSideBarController{
+controller: [
+	'$element', 
+	'$animate', 
+	'ViewStateService', 
+	'HistoryService', 
+	'LoadedMetaDataService', 
+	'DbObjLoadSaveService', 
+	'ConfigProviderService', 
+	'LevelService',
+	class BundleListSideBarController{
 
 	private $element;
 	private $animate;
@@ -116,7 +125,16 @@ controller: class BundleListSideBarController{
 	private _inited;
 
 
-	constructor($element, $animate, ViewStateService, HistoryService, LoadedMetaDataService, DbObjLoadSaveService, ConfigProviderService, LevelService){
+	constructor(
+		$element, 
+		$animate, 
+		ViewStateService, 
+		HistoryService, 
+		LoadedMetaDataService, 
+		DbObjLoadSaveService, 
+		ConfigProviderService, 
+		LevelService
+		){
 		this.$element = $element;
 		this.$animate = $animate;
 
@@ -137,10 +155,10 @@ controller: class BundleListSideBarController{
 		this._inited = false;
 
 	}
-	$postLink = function(){
+	$postLink () {
 
 	}
-	$onChanges = function (changes) {
+	$onChanges (changes) {
 		if(this._inited){
 			if(changes.open){
 				// console.log(changes.open.currentValue);
@@ -155,11 +173,11 @@ controller: class BundleListSideBarController{
 		}
 	}
 
-	$onInit = function() {
+	$onInit () {
 		this._inited = true;
 	}
 	// functions from directive 
-	private finishedEditing(finished, key, index) {
+	private finishedEditing (finished, key, index) {
 		this.HistoryService.addObjToUndoStack({
 			type: 'WEBAPP',
 			action: 'FINISHED',
@@ -168,7 +186,7 @@ controller: class BundleListSideBarController{
 			index: index
 		});
 	};
-	private updateHistory(bundle, key, index) {
+	private updateHistory (bundle, key, index) {
 		if(this.comment !== bundle.comment){
 			this.HistoryService.updateCurChangeObj({
 				type: 'WEBAPP',
@@ -180,17 +198,17 @@ controller: class BundleListSideBarController{
 			});
 		}
 	};
-	private endHistory(bundle) {
+	private endHistory (bundle) {
 		if(this.comment !== bundle.comment) {
 			this.HistoryService.addCurChangeObjToUndoStack();
 		}
 	};
-	private startHistory(bundle) {
+	private startHistory (bundle) {
 		this.comment = bundle.comment;
 	};
 
 	// functions from controller
-	private turn(direction) {
+	private turn (direction) {
 		if (direction) {
 			this.ViewStateService.currentPage++;
 		}
@@ -206,7 +224,7 @@ controller: class BundleListSideBarController{
 	 * requesting color
 	 * @returns color as jso object used by ng-style
 	 */
-	private getBndlColor(bndl) {
+	private getBndlColor (bndl) {
 		var curColor;
 		if (this.HistoryService.movesAwayFromLastSave !== 0) {
 			curColor = {
@@ -230,14 +248,14 @@ controller: class BundleListSideBarController{
 	 * checks if name is undefined
 	 * @return bool
 	 */
-	private isSessionDefined(ses) {
+	private isSessionDefined (ses) {
 		return ses !== 'undefined';
 	};
 
 	/**
 	 * zoom to next / previous time anchor
 	 */
-	private nextPrevAnchor(next) {
+	private nextPrevAnchor (next) {
 		var curBndl = this.LoadedMetaDataService.getCurBndl();
 		if(next){
 			if(this.ViewStateService.curTimeAnchorIdx < curBndl.timeAnchors.length - 1){
@@ -258,7 +276,7 @@ controller: class BundleListSideBarController{
 	/**
 	 * get max nr of time anchors
 	 */
-	private getTimeAnchorIdxMax() {
+	private getTimeAnchorIdxMax () {
 		var curBndl = this.LoadedMetaDataService.getCurBndl();
 		var res;
 		if(angular.equals({}, curBndl)){
@@ -270,12 +288,12 @@ controller: class BundleListSideBarController{
 	};
 
 
-	private isCurBndl(bndl) {
+	private isCurBndl (bndl) {
 		var curBndl = this.LoadedMetaDataService.getCurBndl();
 		return (bndl.name === curBndl.name && bndl.session === curBndl.session);
 	};
 
-}
+}]
 
 }
 

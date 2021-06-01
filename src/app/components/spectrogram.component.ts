@@ -66,7 +66,16 @@ let SpectrogramComponent = {
         viewPortSelectEnd: '<',
         curBndl: '<'
     },
-    controller: class SpectrogramController{
+    controller: [
+        '$element', 
+        '$timeout', 
+        'ViewStateService', 
+        'ConfigProviderService', 
+        'DrawHelperService', 
+        'FontScaleService', 
+        'SoundHandlerService', 
+        'MathHelperService',
+        class SpectrogramController{
         private $element;
         private $timeout;
         private ViewStateService;
@@ -87,7 +96,16 @@ let SpectrogramComponent = {
         private context;
         private markupCtx;
 
-        constructor($element, $timeout, ViewStateService, ConfigProviderService, DrawHelperService, FontScaleService, SoundHandlerService, MathHelperService){
+        constructor(
+            $element, 
+            $timeout, 
+            ViewStateService, 
+            ConfigProviderService, 
+            DrawHelperService, 
+            FontScaleService, 
+            SoundHandlerService, 
+            MathHelperService
+            ){
             this.$element = $element;
             this.$timeout = $timeout;
             this.ViewStateService = ViewStateService;
@@ -105,13 +123,13 @@ let SpectrogramComponent = {
 			this.alpha = 0.16;
 			this.devicePixelRatio = window.devicePixelRatio || 1;
         }
-        $postLink = function(){
+        $postLink (){
             // select the needed DOM elements from the template
             this.canvas0 = this.$element.find('canvas')[0];
             this.context = this.canvas0.getContext('2d');
         }
 
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             if(this._inited){
                 
                 ///////////////
@@ -143,27 +161,27 @@ let SpectrogramComponent = {
             }
         }
 
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         }
 
         ///////////////
         // bindings
 
-        private redraw() {
+        private redraw () {
             this.drawSpectro(this.SoundHandlerService.audioBuffer.getChannelData(this.ViewStateService.osciSettings.curChannel));
         };
 
-        private drawSpectro(buffer) {
+        private drawSpectro (buffer) {
             this.killSpectroRenderingThread();
             this.startSpectroRenderingThread(buffer);
         };
 
-        private calcSamplesPerPxl() {
+        private calcSamplesPerPxl () {
             return (this.ViewStateService.curViewPort.eS + 1 - this.ViewStateService.curViewPort.sS) / this.canvas0.width;
         };
 
-        private killSpectroRenderingThread() {
+        private killSpectroRenderingThread () {
             this.context.fillStyle = styles.colorBlack;
             this.context.fillRect(0, 0, this.canvas0.width, this.canvas0.height);
             // draw current viewport selected
@@ -181,7 +199,7 @@ let SpectrogramComponent = {
             }
         };
 
-        private setupEvent() {
+        private setupEvent () {
             var imageData = this.context.createImageData(this.canvas0.width, this.canvas0.height);
             this.primeWorker.says((event) => {
                 if (event.status === undefined) {
@@ -197,7 +215,7 @@ let SpectrogramComponent = {
             });
         };
 
-        private startSpectroRenderingThread(buffer) {
+        private startSpectroRenderingThread (buffer) {
             if (buffer.length > 0) {
                 this.primeWorker = new SpectroDrawingWorker();
                 var parseData = [];
@@ -266,7 +284,7 @@ let SpectrogramComponent = {
     }
 
 
-}
+}]
 }
 
 angular.module('emuwebApp')

@@ -19,7 +19,19 @@ let EmuHierarchyComponent = {
 		hierarchyResize: '<',
 		attributeDefinitionClickCounter: '<'
 	},
-	controller: class EmuHierarchyController{
+	controller: [
+		'$scope', 
+		'$element', 
+		'$timeout', 
+		'ViewStateService', 
+		'HistoryService', 
+		'DataService', 
+		'LevelService', 
+		'HierarchyManipulationService', 
+		'HierarchyLayoutService', 
+		'SoundHandlerService', 
+		'ConfigProviderService',
+		class EmuHierarchyController{
 		private $scope;
 		private $element;
 		private $timeout;
@@ -92,6 +104,7 @@ let EmuHierarchyComponent = {
 		private svg;
 		private zoomer;
 		private captionLayer;
+		private background;
 		
 		private newLinkSrc;
 		
@@ -100,7 +113,19 @@ let EmuHierarchyComponent = {
 		
 		private _inited;
 		
-		constructor($scope, $element, $timeout, ViewStateService, HistoryService, DataService, LevelService, HierarchyManipulationService, HierarchyLayoutService, SoundHandlerService, ConfigProviderService){
+		constructor(
+			$scope, 
+			$element, 
+			$timeout, 
+			ViewStateService, 
+			HistoryService, 
+			DataService, 
+			LevelService, 
+			HierarchyManipulationService, 
+			HierarchyLayoutService, 
+			SoundHandlerService, 
+			ConfigProviderService
+			){
 			this.$scope = $scope;
 			this.$element = $element;
 			this.$timeout = $timeout;
@@ -162,7 +187,7 @@ let EmuHierarchyComponent = {
 			this._inited = false;
 		}
 		
-		$postLink = function(){
+		$postLink (){
 			/////////////////////////////
 			// inital d3.js setup stuff
 			
@@ -224,7 +249,7 @@ let EmuHierarchyComponent = {
 			this.zoomer.call(this.zoomListener.transform, d3.zoomIdentity.translate(t.x, t.y).scale(t.k));
 		}
 		
-		$onChanges = function(changes){
+		$onChanges (changes){
 			// console.log(changes);
 			
 			if(changes.vertical){
@@ -256,7 +281,7 @@ let EmuHierarchyComponent = {
 			if(changes.hierarchyPath){
 				if(changes.hierarchyPath.currentValue !== changes.hierarchyPath.previousValue){
 					if(this._inited){
-						this.newLinkFromID = undefined;
+						this.newLinkFromId = undefined;
 						this.render();
 					}
 				}
@@ -316,24 +341,24 @@ let EmuHierarchyComponent = {
 			
 		}
 		
-		$onInit = function(){
+		$onInit (){
 			this._inited = true;
 		}
 		
 		//////////////////////
 		// helper functions
 		
-		public checkLink(event) {
+		public checkLink (event) {
 			if (event.shiftKey && !this.shiftMode) {
-				if (this.ViewStateService.hierarchyState.newLinkFromID === undefined) {
-					this.ViewStateService.hierarchyState.newLinkFromID = this.ViewStateService.hierarchyState.selectedItemID;
+				if (this.ViewStateService.hierarchyState.newLinkFromId === undefined) {
+					this.ViewStateService.hierarchyState.newLinkFromId = this.ViewStateService.hierarchyState.selectedItemID;
 					this.shiftMode = true;
 				}
 			}
 			if (!event.shiftKey && this.shiftMode) {
 				this.shiftMode = false;
-				var linkObj = this.HierarchyManipulationService.addLink(this.ViewStateService.hierarchyState.path, this.ViewStateService.hierarchyState.newLinkFromID, this.ViewStateService.hierarchyState.selectedItemID);
-				this.ViewStateService.hierarchyState.newLinkFromID = undefined;
+				var linkObj = this.HierarchyManipulationService.addLink(this.ViewStateService.hierarchyState.path, this.ViewStateService.hierarchyState.newLinkFromID, this.ViewStateService.hierarchyState.selectedItemId);
+				this.ViewStateService.hierarchyState.newLinkFromId = undefined;
 				if (linkObj !== null) {
 					this.HistoryService.addObjToUndoStack({
 						type: 'HIERARCHY',
@@ -346,12 +371,12 @@ let EmuHierarchyComponent = {
 		/**
 		*
 		*/
-		private selectItem(item) {
+		private selectItem (item) {
 			this.selectedItem = item;
 			this.ViewStateService.hierarchyState.selectedItemID = item.id;
 		};
 		
-		private selectLink(link) {
+		private selectLink (link) {
 			this.selectedLink = link;
 			this.ViewStateService.hierarchyState.selectedLinkFromID = link.fromID;
 			this.ViewStateService.hierarchyState.selectedLinkToID = link.toID;
@@ -374,7 +399,7 @@ let EmuHierarchyComponent = {
 		/**
 		* The zoom function is called by the zoom listener, which listens for d3 zoom events and must be appended to the svg element
 		*/
-		private zoom() {
+		private zoom () {
 			var t = d3.zoomTransform(this.zoomer.node());
 			// Make sure panning is within allowed regions
 			t = this.limitPanning(t);
@@ -407,7 +432,7 @@ let EmuHierarchyComponent = {
 		*
 		* If the factor is not within that limit, reset it.
 		*/
-		private limitPanning(t) {
+		private limitPanning (t) {
 			// Read user's panning value
 			var x = t.x;
 			var y = t.y;
@@ -457,7 +482,7 @@ let EmuHierarchyComponent = {
 			// this.zoomer.call(this.zoomListener.transform, d3.zoomIdentity.translate(t.x,t.y).scale(t.k));
 		};
 		
-		private rotate() {
+		private rotate () {
 			// When rotating, we should preserve (to some accuracy)
 			// the part of the graph we're looking at.
 			// We therefore calculate how much of the graph is
@@ -505,7 +530,7 @@ let EmuHierarchyComponent = {
 		* That <g> contains all the nodes and links but not the level captions
 		* and neither the time arrow
 		*/
-		private getOrientatedTransform(zoomInProgress) {
+		private getOrientatedTransform (zoomInProgress) {
 			var transform = '';
 			var t = d3.zoomTransform(this.zoomer.node());
 			t = this.limitPanning(t);
@@ -537,7 +562,7 @@ let EmuHierarchyComponent = {
 		* It reverses the zoom factor applied to the complete graphics so that
 		* the text doesn't consume more space than needed.
 		*/
-		private getOrientatedNodeTransform() {
+		private getOrientatedNodeTransform () {
 			// Parameter d is never used because this is independent from the node's position
 			
 			if (this.vertical) {
@@ -553,15 +578,15 @@ let EmuHierarchyComponent = {
 		// scale. It is named getORIENTATEDLinkStrokeWidth anyway because all
 		// functions are named like that, althoug they depend on both zoom
 		// scale and orientation.
-		private getOrientatedLinkStrokeWidth() {
+		private getOrientatedLinkStrokeWidth () {
 			return '2px';
 		};
 		
-		private getOrientatedGhostLinkStrokeWidth() {
+		private getOrientatedGhostLinkStrokeWidth () {
 			return '15px';
 		};
 		
-		private getNodeText(d) {
+		private getNodeText (d) {
 			var level = this.ViewStateService.getCurAttrDef(this.LevelService.getLevelName(d.id));
 			for (var i = 0; i < d.labels.length; ++i) {
 				if (d.labels[i].name === level) {
@@ -573,7 +598,7 @@ let EmuHierarchyComponent = {
 			return 'NO VALUE';
 		};
 		
-		private getLevelCaptionText(levelName) {
+		private getLevelCaptionText (levelName) {
 			var attributeDefinition = this.ViewStateService.getCurAttrDef(levelName);
 			if (levelName === attributeDefinition) {
 				return levelName;
@@ -582,7 +607,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedNodeCollapseText(d) {
+		private getOrientatedNodeCollapseText (d) {
 			if (this.vertical) {
 				if (this.ViewStateService.hierarchyState.getCollapsed(d.id)) {
 					return '↓';
@@ -601,10 +626,10 @@ let EmuHierarchyComponent = {
 		/**
 		* This transform is applied to all nodes' text labels
 		*/
-		private getOrientatedTextTransform() {
+		private getOrientatedTextTransform () {
 		};
 		
-		private getOrientatedTextAnchor() {
+		private getOrientatedTextAnchor () {
 			if (this.vertical) {
 				return 'middle';
 			} else {
@@ -612,7 +637,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedTextX() {
+		private getOrientatedTextX () {
 			if (this.vertical) {
 				return 0;
 			} else {
@@ -620,7 +645,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedTextY() {
+		private getOrientatedTextY () {
 			if (this.vertical) {
 				return '1.45em';
 			} else {
@@ -628,7 +653,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedLevelCaptionLayerTransform() {
+		private getOrientatedLevelCaptionLayerTransform () {
 			var t = d3.zoomTransform(this.zoomer.node());
 			t = this.limitPanning(t);
 			if (this.vertical) {
@@ -638,7 +663,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedLevelCaptionTransform(d) {
+		private getOrientatedLevelCaptionTransform (d) {
 			var revArr = angular.copy(this.ViewStateService.hierarchyState.path).reverse();
 			if (this.vertical) {
 				return 'translate(25, ' + this.depthToX(revArr.indexOf(d)) + ')';
@@ -647,7 +672,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedAddItemButtonTransform() {
+		private getOrientatedAddItemButtonTransform () {
 			if (this.vertical) {
 				return 'translate(-12, -5)';
 			} else {
@@ -655,7 +680,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedTimeLevelBackgroundTransform() {
+		private getOrientatedTimeLevelBackgroundTransform () {
 			if (this.vertical) {
 				return 'translate(' + (this.vertOffsetX - 25) + ',-8)';
 			} else {
@@ -663,7 +688,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedTimeLevelBackgroundWidth() {
+		private getOrientatedTimeLevelBackgroundWidth () {
 			if (this.vertical) {
 				return '100%';
 			} else {
@@ -671,7 +696,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedTimeLevelBackgroundHeight() {
+		private getOrientatedTimeLevelBackgroundHeight () {
 			if (this.vertical) {
 				return '15px';
 			} else {
@@ -679,7 +704,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getOrientatedMousePosition(mouse) {
+		private getOrientatedMousePosition (mouse) {
 			var t = d3.zoomTransform(this.zoomer.node());
 			t = this.limitPanning(t);
 			if (this.vertical) {
@@ -696,7 +721,7 @@ let EmuHierarchyComponent = {
 		};
 		
 		
-		private getPath(d) {
+		private getPath (d) {
 			return 'M' + d._fromX + ' ' + d._fromY + 'Q' + d._fromX + ' ' + d._toY + ' ' + d._toX + ' ' + d._toY;
 		};
 		
@@ -704,7 +729,7 @@ let EmuHierarchyComponent = {
 		* Calculate the path for the dashed preview link that is shown when
 		* trying to add a new link.
 		*/
-		private getPreviewPath() {
+		private getPreviewPath () {
 			var from = {x: this.newLinkSrc._x, y: this.newLinkSrc._y};
 			var to = {x: this.selectedItem._x, y: this.selectedItem._y};
 			
@@ -717,7 +742,7 @@ let EmuHierarchyComponent = {
 		*
 		* If the link is invalid, this function will try reversing the link.
 		*/
-		private getPreviewColor() {
+		private getPreviewColor () {
 			var validity = this.HierarchyManipulationService.checkLinkValidity(this.ViewStateService.hierarchyState.path, this.newLinkSrc.id, this.selectedItem.id);
 			
 			if (validity.valid) {
@@ -733,7 +758,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private getLabelLegalnessColor(d) {
+		private getLabelLegalnessColor (d) {
 			var dom = this.svg.select('.emuhierarchy-contextmenu input').node();
 			var levelName = this.LevelService.getLevelName(d.id);
 			var attrIndex = this.ViewStateService.getCurAttrIndex(levelName);
@@ -747,7 +772,7 @@ let EmuHierarchyComponent = {
 		};
 		
 		
-		private svgOnMouseMove() {
+		private svgOnMouseMove () {
 			if (this.newLinkSrc !== undefined) {
 				var mouse = this.getOrientatedMousePosition(d3.mouse(this.element.find('svg')[0]));
 				var x = mouse[0];
@@ -759,7 +784,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private svgOnClick() {
+		private svgOnClick () {
 			if (this.ViewStateService.hierarchyState.contextMenuID !== undefined) {
 				this.$scope.$apply(() => {
 					this.ViewStateService.hierarchyState.contextMenuID = undefined;
@@ -767,7 +792,7 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private nodeOnClick(d) {
+		private nodeOnClick (d) {
 			console.debug('Clicked node', d);
 			
 			if (this.ViewStateService.hierarchyState.contextMenuID === undefined) {
@@ -784,11 +809,11 @@ let EmuHierarchyComponent = {
 			}
 		};
 		
-		private nodeOnPlayClick(d) {
+		private nodeOnPlayClick (d) {
 			this.play(d);
 		};
 		
-		private nodeOnCollapseClick(d) {
+		private nodeOnCollapseClick (d) {
 			console.debug('collapsing', d);
 			// (De-)Collapse sub-tree
 			this.HierarchyLayoutService.toggleCollapse(d, this.ViewStateService.hierarchyState.path);
@@ -798,12 +823,12 @@ let EmuHierarchyComponent = {
 			});
 		};
 		
-		private nodeOnMouseOver(d) {
+		private nodeOnMouseOver (d) {
 			this.selectItem(d);
 			this.renderSelectionOnly();
 		};
 		
-		private nodeOnInput(d) {
+		private nodeOnInput (d) {
 			var dom = this.svg.select('.emuhierarchy-contextmenu input').node();
 			this.ViewStateService.hierarchyState.setEditValue(dom.value);
 			
@@ -811,20 +836,20 @@ let EmuHierarchyComponent = {
 			dom.style.backgroundColor = this.getLabelLegalnessColor(d);
 		};
 		
-		private nodeOnFocusIn() {
+		private nodeOnFocusIn () {
 			this.ViewStateService.hierarchyState.inputFocus = true;
 		};
 		
-		private nodeOnFocusOut() {
+		private nodeOnFocusOut () {
 			this.ViewStateService.hierarchyState.inputFocus = false;
 		};
 		
-		private linkOnMouseOver(d) {
+		private linkOnMouseOver (d) {
 			this.selectLink(d);
 			this.renderSelectionOnly();
 		};
 		
-		private addButtonOnClick(d) {
+		private addButtonOnClick (d) {
 			var id = this.LevelService.pushNewItem (d);
 			if (id !== -1) {
 				this.HistoryService.addObjToUndoStack({
@@ -840,7 +865,7 @@ let EmuHierarchyComponent = {
 		};
 		
 		
-		private play(d) {
+		private play (d) {
 			var timeInfoLevel = this.ViewStateService.hierarchyState.path[0];
 			if (typeof timeInfoLevel === 'undefined') {
 				console.debug('Likely a bug: There is no path selection. Not executing play():', d);
@@ -904,7 +929,7 @@ let EmuHierarchyComponent = {
 		*
 		* On the time-axis, the relative coordinate is a number within [0;1].
 		*/
-		private depthToX(depth) {
+		private depthToX (depth) {
 			var crossAxisSize, offset;
 			if (this.vertical) {
 				crossAxisSize = this.height;
@@ -924,7 +949,7 @@ let EmuHierarchyComponent = {
 			return result;
 		};
 		
-		private posInLevelToY(posInLevel) {
+		private posInLevelToY (posInLevel) {
 			var t = d3.zoomTransform(this.zoomer.node());
 			var t = this.limitPanning(t);
 			var offset, timeAxisSize;
@@ -965,7 +990,7 @@ let EmuHierarchyComponent = {
 		* @param nothing
 		* @returns nothing
 		*/
-		private renderSelectionOnly() {
+		private renderSelectionOnly () {
 			// Change the circle fill of all nodes depending on whether they are selected
 			this.svg.selectAll('circle.emuhierarchy-nodeCircle')
 			.style('fill', (d) => {
@@ -1011,7 +1036,7 @@ let EmuHierarchyComponent = {
 		* exit.
 		*
 		*/
-		private render() {
+		private render () {
 			// console.log(this.lastScaleFactor);
 			var i;
 			var t = d3.zoomTransform(this.zoomer.node());
@@ -1702,7 +1727,7 @@ let EmuHierarchyComponent = {
 			this.crossAxisStartPosition = this.svg.node().getBBox().x;
 			this.crossAxisEndPosition = this.crossAxisStartPosition + this.svg.node().getBBox().width;
 		};
-	}
+	}]
 }
 
 

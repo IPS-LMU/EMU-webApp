@@ -88,7 +88,21 @@ let HierarchyPathCanvasComponent = {
         curPerspectiveIdx: '<',
         curBndl: '<'
     },
-    controller: class HierarchyPathCanvasController{
+    controller: [
+        '$scope', 
+        '$element', 
+        '$animate', 
+        'ViewStateService', 
+        'ConfigProviderService', 
+        'DrawHelperService',
+        'HistoryService', 
+        'FontScaleService', 
+        'ModalService', 
+        'LevelService', 
+        'LoadedMetaDataService', 
+        'HierarchyLayoutService', 
+        'DataService',
+        class HierarchyPathCanvasController{
         private $scope;
         private $element;
         private $animate;
@@ -123,7 +137,21 @@ let HierarchyPathCanvasComponent = {
         private resizeObservable$: Observable<Event>
         private resizeSubscription$: Subscription
         
-        constructor($scope, $element, $animate, ViewStateService, ConfigProviderService, DrawHelperService, HistoryService, FontScaleService, ModalService, LevelService, LoadedMetaDataService, HierarchyLayoutService, DataService){
+        constructor(
+            $scope, 
+            $element, 
+            $animate, 
+            ViewStateService, 
+            ConfigProviderService, 
+            DrawHelperService,
+            HistoryService, 
+            FontScaleService, 
+            ModalService, 
+            LevelService, 
+            LoadedMetaDataService, 
+            HierarchyLayoutService, 
+            DataService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             this.$animate = $animate;
@@ -600,7 +628,7 @@ let HierarchyPathCanvasComponent = {
                                                 // draw cursor
                                                 this.DrawHelperService.drawCrossHairX(ctx, this.ViewStateService.curMouseX);
                                             };
-                                        }
+                                        }]
                                     };
                                     
                                     angular.module('emuwebApp')

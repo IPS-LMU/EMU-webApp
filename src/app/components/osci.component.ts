@@ -48,7 +48,16 @@ let OsciComponent = {
         viewPortSelectEnd: '<',
         curBndl: '<'
     },
-    controller: class OsciController{
+    controller: [
+        '$scope', 
+        '$element', 
+        '$timeout', 
+        'ViewStateService', 
+        'SoundHandlerService', 
+        'ConfigProviderService', 
+        'DrawHelperService', 
+        'LoadedMetaDataService',
+        class OsciController{
         private $scope;
         private $element;
         private $timeout;
@@ -63,7 +72,16 @@ let OsciComponent = {
         // private markupCanvas;
         private _inited;
         
-        constructor($scope, $element, $timeout, ViewStateService, SoundHandlerService, ConfigProviderService, DrawHelperService, LoadedMetaDataService){
+        constructor(
+            $scope, 
+            $element, 
+            $timeout, 
+            ViewStateService, 
+            SoundHandlerService, 
+            ConfigProviderService, 
+            DrawHelperService, 
+            LoadedMetaDataService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             this.$timeout = $timeout;
@@ -110,7 +128,7 @@ let OsciComponent = {
 
         
         
-    }
+    }]
 }
 
 angular.module('emuwebApp')

@@ -11,16 +11,29 @@ let HistoryActionPopupComponent = {
     bindings : {
         historyActionTxt: '<'
     },
-    controller: class HistoryActionPopupController{
+    controller: [
+        '$element', 
+        'ViewStateService', 
+        '$animate', 
+        '$timeout', 
+        'ConfigProviderService',
+        class HistoryActionPopupController{
         private $element;
         private ViewStateService;
         private $animate;
         private $timeout;
         private ConfigProviderService;
 
+        private historyActionTxt;
         private _inited;
 
-        constructor($element, ViewStateService, $animate, $timeout, ConfigProviderService){
+        constructor(
+            $element, 
+            ViewStateService, 
+            $animate, 
+            $timeout, 
+            ConfigProviderService
+            ){
             this.$element = $element;
             this.ViewStateService = ViewStateService;
             this.$animate = $animate;
@@ -29,11 +42,11 @@ let HistoryActionPopupComponent = {
 
         }
 
-        $postLink = function(){
+        $postLink (){
             
         };
         
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             //
             if(this._inited){
                 //
@@ -53,11 +66,11 @@ let HistoryActionPopupComponent = {
             }
         }
 
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         };
 
-    }
+    }]
 
 }
 

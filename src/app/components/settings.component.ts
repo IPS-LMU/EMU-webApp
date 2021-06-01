@@ -182,7 +182,17 @@ let SettingsComponent = {
 </div>
 `,
 bindings: {},
-controller: class SettingsController{
+controller: [
+	'$scope', 
+	'ModalService', 
+	'ViewStateService', 
+	'DataService', 
+	'MathHelperService', 
+	'SoundHandlerService', 
+	'StandardFuncsService', 
+	'HierarchyLayoutService', 
+	'ConfigProviderService',
+	class SettingsController{
 
 	private $scope;
     private ModalService;
@@ -210,7 +220,17 @@ controller: class SettingsController{
 
 	// private attributeDefinitionClickCounter;
 
-    constructor($scope, ModalService, ViewStateService, DataService, MathHelperService, SoundHandlerService, StandardFuncsService, HierarchyLayoutService, ConfigProviderService){
+    constructor(
+		$scope, 
+		ModalService, 
+		ViewStateService, 
+		DataService, 
+		MathHelperService, 
+		SoundHandlerService, 
+		StandardFuncsService, 
+		HierarchyLayoutService, 
+		ConfigProviderService
+		){
 		this.$scope = $scope;
 		this.ModalService = ModalService;
         this.ViewStateService = ViewStateService;
@@ -295,7 +315,7 @@ controller: class SettingsController{
         /**
 		 *
 		 */
-		private cursorInTextField() {
+		private cursorInTextField () {
 			this.ViewStateService.setEditing(true);
 			this.ViewStateService.setcursorInTextField(true);
 		};
@@ -303,7 +323,7 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private cursorOutOfTextField() {
+		private cursorOutOfTextField () {
 			this.ViewStateService.setEditing(false);
 			this.ViewStateService.setcursorInTextField(false);
 		};
@@ -314,14 +334,14 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private calcWindowSizeInSamples() {
+		private calcWindowSizeInSamples () {
 			this.modalVals._windowSizeInSamples = this.SoundHandlerService.audioBuffer.sampleRate * this.modalVals.windowSizeInSecs;
 		};
 
 		/**
 		 *
 		 */
-		private calcFftN() {
+		private calcFftN () {
 			var fftN = this.MathHelperService.calcClosestPowerOf2Gt(this.modalVals._windowSizeInSamples);
 			// fftN must be greater than 512 (leads to better resolution of spectrogram)
 			if (fftN < 512) {
@@ -333,7 +353,7 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private calcWindowSizeVals() {
+		private calcWindowSizeVals () {
 			this.calcWindowSizeInSamples();
 			this.calcFftN();
 		};
@@ -344,7 +364,7 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private reset() {
+		private reset () {
 			this.errorID = [];
 			this.modalVals = {
 				'rangeFrom': this.ViewStateService.spectroSettings.rangeFrom,
@@ -366,7 +386,7 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private cssError(id, id2) {
+		private cssError (id, id2) {
 			if (this.errorID[id]) {
 				return {'background': '#f00'};
 			}
@@ -380,7 +400,7 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private htmlError(id) {
+		private htmlError (id) {
 			return this.errorID[id];
 		};
 
@@ -388,7 +408,7 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private saveSettings() {
+		private saveSettings () {
 			var error = false;
 			this.errorID.forEach((entry) => {
 				if (entry === true) {
@@ -435,7 +455,7 @@ controller: class SettingsController{
 		/**
 		 *
 		 */
-		private checkSpectroSettings() {
+		private checkSpectroSettings () {
 			if (this.modalVals.heatMapColorAnchors[0][0] % 1 !== 0 ||
 				this.modalVals.heatMapColorAnchors[0][1] % 1 !== 0 ||
 				this.modalVals.heatMapColorAnchors[0][2] % 1 !== 0 ||
@@ -495,7 +515,7 @@ controller: class SettingsController{
 			}
 		};
 
-}
+}]
 
    
 }

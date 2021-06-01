@@ -16,7 +16,7 @@ let NewVersionHintComponent = {
     controller: class NewVersionHintComponent{
         constructor(){
         }
-        $postLink = function(){
+        $postLink (){
         };
     }
 

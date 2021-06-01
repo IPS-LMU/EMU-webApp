@@ -14,7 +14,15 @@ let LevelCanvasMarkupCanvasComponent = {
         level: '<',
         idx: '<'
     },
-    controller: class LevelCanvasMarkupCanvasController{
+    controller: [
+        '$scope', 
+        '$element', 
+        'ViewStateService', 
+        'SoundHandlerService', 
+        'ConfigProviderService', 
+        'LevelService', 
+        'HistoryService',
+        class LevelCanvasMarkupCanvasController{
         private $scope;
         private $element;
 
@@ -34,7 +42,15 @@ let LevelCanvasMarkupCanvasComponent = {
         private lastPCM;
         private curMouseSampleNrInView;
 
-        constructor($scope, $element, ViewStateService, SoundHandlerService, ConfigProviderService, LevelService, HistoryService){
+        constructor(
+            $scope, 
+            $element, 
+            ViewStateService, 
+            SoundHandlerService, 
+            ConfigProviderService, 
+            LevelService, 
+            HistoryService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             
@@ -51,7 +67,7 @@ let LevelCanvasMarkupCanvasComponent = {
             this.curMouseSampleNrInView = undefined;
         };
 
-        $postLink = function(){
+        $postLink(){
             
             ///////////////
             // bindings
@@ -348,7 +364,7 @@ let LevelCanvasMarkupCanvasComponent = {
             this.ViewStateService.setLastPcm(this.lastPCM);
             this.$scope.$apply();
         };
-    }
+    }]
 
 }
 angular.module('emuwebApp')

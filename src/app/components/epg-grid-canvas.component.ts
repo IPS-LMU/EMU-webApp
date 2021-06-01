@@ -14,7 +14,15 @@ let EpgGridCanvasComponent = {
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<'
     },
-    controller: class EpgGridCanvasController {
+    controller: [
+        '$scope', 
+        '$element', 
+        'ViewStateService', 
+        'ConfigProviderService', 
+        'SoundHandlerService',
+        'SsffDataService', 
+        'FontScaleService',
+        class EpgGridCanvasController {
         private $scope;
         private $element;
         private ViewStateService;
@@ -26,7 +34,15 @@ let EpgGridCanvasComponent = {
         private canvas;
         private _inited; 
 
-        constructor($scope, $element, ViewStateService, ConfigProviderService, SoundHandlerService, SsffDataService, FontScaleService){
+        constructor(
+            $scope, 
+            $element, 
+            ViewStateService, 
+            ConfigProviderService, 
+            SoundHandlerService,
+            SsffDataService, 
+            FontScaleService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             this.ViewStateService = ViewStateService;
@@ -38,11 +54,11 @@ let EpgGridCanvasComponent = {
             this._inited = false;
         };
 
-        $postLink = function(){
+        $postLink (){
             this.canvas = this.$element.find('canvas')[0];
         };
         
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             //
             if(this._inited){
                 // redraw on all changes
@@ -52,14 +68,14 @@ let EpgGridCanvasComponent = {
         };
         
 
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         };
 
         /**
          * drawing method to drawEpgGrid
          */
-        private drawEpgGrid = function () {
+        private drawEpgGrid () {
 
             var ctx = this.canvas.getContext('2d');
             let tr = this.ConfigProviderService.getSsffTrackConfig('EPG'); // SIC SIC SIC hardcoded for now although it might stay that way because it only is allowed to draw epg data anyway
@@ -101,7 +117,7 @@ let EpgGridCanvasComponent = {
                 this.FontScaleService.drawUndistortedTextTwoLines(ctx, 'EPG', 'Frame:' + curFrame, parseInt(styles.fontInputSize.slice(0, -2)) * 3 / 4, styles.fontInputFamily, 5, 0, styles.colorBlack, true);
             }
         };
-    }
+    }]
 }
 
 angular.module('emuwebApp')

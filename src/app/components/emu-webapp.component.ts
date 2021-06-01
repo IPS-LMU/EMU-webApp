@@ -343,7 +343,34 @@ let EmuWebAppComponent = {
         labelGetUrl: '<',
         labelType: '<'
     },
-    controller: class EmuWebAppController{
+    controller: [
+		'$scope',
+		'$element',
+		'$window',
+		'$document',
+		'$location',
+		'$timeout',
+		'ViewStateService',
+		'HistoryService',
+		'IoHandlerService',
+		'SoundHandlerService',
+		'ConfigProviderService',
+		'FontScaleService',
+		'SsffDataService',
+		'LevelService',
+		'TextGridParserService',
+		'WavParserService',
+		'DrawHelperService',
+		'ValidationService',
+		'AppcacheHandlerService',
+		'LoadedMetaDataService',
+		'DbObjLoadSaveService',
+		'AppStateService',
+		'DataService',
+		'ModalService',
+		'BrowserDetectorService',
+		'HierarchyLayoutService',
+		class EmuWebAppController{
         private $scope;
         private $element;
         private $window;
@@ -1472,7 +1499,7 @@ let EmuWebAppComponent = {
 			return(localStorage.getItem('showHierarchyPathCanvas') == 'true')
 		};
 
-    }
+    }]
 
 }
 

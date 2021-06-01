@@ -19,7 +19,12 @@ let PerspectivesSideBarComponent = {
     bindings: {
 
     },
-    controller: class PerspectivesSideBarController{
+    controller: [
+        '$element', 
+        '$animate', 
+        'ConfigProviderService', 
+        'ViewStateService',
+        class PerspectivesSideBarController{
         private $element;
         private $animate;
         private ConfigProviderService;
@@ -27,7 +32,12 @@ let PerspectivesSideBarComponent = {
 
         private _inited;
 
-        constructor($element, $animate, ConfigProviderService, ViewStateService){
+        constructor(
+            $element, 
+            $animate, 
+            ConfigProviderService, 
+            ViewStateService
+            ){
             this.$element = $element;
             this.$animate = $animate;
             this.ConfigProviderService = ConfigProviderService;
@@ -36,14 +46,14 @@ let PerspectivesSideBarComponent = {
             this._inited = false;
         }
 
-        $postLink = function(){            
+        $postLink (){            
         };
         
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             //
             if(this._inited){}
         }
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         };
 
@@ -68,7 +78,7 @@ let PerspectivesSideBarComponent = {
 		 * function to get color of current perspecitve in ul
 		 * @param persp json object of current perspective containing name attribute
 		 */
-		private getPerspectiveColor(persp) {
+		private getPerspectiveColor (persp) {
 			var cl;
 			if (this.ViewStateService.curPerspectiveIdx === -1 || persp.name === this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].name) {
 				cl = 'emuwebapp-curSelPerspLi';
@@ -78,7 +88,7 @@ let PerspectivesSideBarComponent = {
 			return cl;
         };
 
-        private toggleShow(){
+        private toggleShow (){
             // console.log("toggleshow")
             if(this.ViewStateService.getPerspectivesSideBarOpen()){
                 this.$animate.addClass(this.$element.find('nav')[0], 'emuwebapp-expandWidthTo200px');
@@ -88,7 +98,7 @@ let PerspectivesSideBarComponent = {
                 this.$animate.addClass(this.$element.find('nav')[0], 'emuwebapp-shrinkWidthTo0px');
             }
         }
-    }
+    }]
 }
 
 angular.module('emuwebApp')

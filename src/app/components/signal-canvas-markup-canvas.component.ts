@@ -22,7 +22,16 @@ let SignalCanvasMarkupCanvasComponent = {
         viewPortSelectEnd: '<',
         curBndl: '<'
     },
-    controller: class SignalCanvasMarkusCanvasController{
+    controller: [
+        '$scope', 
+        '$element', 
+        'ViewStateService', 
+        'ConfigProviderService', 
+        'SsffDataService', 
+        'DrawHelperService', 
+        'HistoryService', 
+        'SoundHandlerService',
+        class SignalCanvasMarkusCanvasController{
         
         private $scope;
         private $element;
@@ -48,7 +57,16 @@ let SignalCanvasMarkupCanvasComponent = {
 
         private _inited = false;
         
-        constructor($scope, $element, ViewStateService, ConfigProviderService, SsffDataService, DrawHelperService, HistoryService, SoundHandlerService){
+        constructor(
+            $scope, 
+            $element, 
+            ViewStateService, 
+            ConfigProviderService, 
+            SsffDataService, 
+            DrawHelperService, 
+            HistoryService, 
+            SoundHandlerService
+            ){
             this.$element = $element;
             this.$scope = $scope;
             this.ViewStateService = ViewStateService;
@@ -61,7 +79,7 @@ let SignalCanvasMarkupCanvasComponent = {
             this.drawCrossHairs = false;
     
         }
-        $postLink = function(){
+        $postLink (){
             this.canvas = this.$element.find('canvas')[0];
             this.ctx = this.canvas.getContext('2d');
             
@@ -74,7 +92,7 @@ let SignalCanvasMarkupCanvasComponent = {
                     this.ViewStateService.select(
                         this.ViewStateService.curViewPort.movingS, 
                         this.ViewStateService.curViewPort.movingE);
-                    this.drawMarkup(event);
+                    this.drawMarkup();
                     this.$scope.$apply();
                 }
             });
@@ -91,7 +109,7 @@ let SignalCanvasMarkupCanvasComponent = {
                     if(curSample >= this.ViewStateService.curViewPort.selectE - selectDist/2){
                         this.ViewStateService.curViewPort.selectE = curSample;
                     }
-                    this.drawMarkup(event);
+                    this.drawMarkup();
                     this.$scope.$apply();
                 }
             });
@@ -217,7 +235,7 @@ let SignalCanvasMarkupCanvasComponent = {
                     if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
                         if (!this.ViewStateService.getdragBarActive()) {
                             if (this.ViewStateService.getPermission('labelAction')) {
-                                this.drawMarkup(event, false);
+                                this.drawMarkup();
                                 this.ViewStateService.curMouseTrackName = undefined;
                             }
                         }
@@ -227,7 +245,7 @@ let SignalCanvasMarkupCanvasComponent = {
             
         };
         
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             if(this._inited){
                 //
                 if(changes.curBndl){
@@ -257,11 +275,11 @@ let SignalCanvasMarkupCanvasComponent = {
             }
         }
 
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         };
 
-        private drawMarkup(event, leave) {
+        private drawMarkup () {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             // draw current viewport selected
             if (this.trackName === 'OSCI') {
@@ -305,7 +323,7 @@ let SignalCanvasMarkupCanvasComponent = {
             this.DrawHelperService.drawMovingBoundaryLine(this.ctx);
         };
 
-        private setSelectDrag = function (event) {
+        private setSelectDrag (event) {
             let curMouseSample = Math.round(this.ViewStateService.getX(event) * this.ViewStateService.getSamplesPerPixelVal(event) + this.ViewStateService.curViewPort.sS);
             if (curMouseSample > this.ViewStateService.curViewPort.movingS) {
                 this.ViewStateService.curViewPort.movingE = curMouseSample;
@@ -318,14 +336,14 @@ let SignalCanvasMarkupCanvasComponent = {
       /**
         *
         */
-       private drawPlayHead = function () {
+       private drawPlayHead () {
         this.drawMarkup();
         var posS = this.ViewStateService.getPos(this.canvas.width, this.ViewStateService.playHeadAnimationInfos.sS);
         var posCur = this.ViewStateService.getPos(this.canvas.width, this.ViewStateService.playHeadAnimationInfos.curS);
         this.ctx.fillStyle = styles.colorTransparentLightGrey;
         this.ctx.fillRect(posS, 0, posCur - posS, this.canvas.height);
     };
-    }
+    }]
 }
 
 angular.module('emuwebApp')

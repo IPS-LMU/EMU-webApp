@@ -26,7 +26,14 @@ let OsciOverviewComponent = {
         viewPortSampleEnd: '<',
         curBndl: '<'
     },
-    controller: class OsciOverviewComponent{
+    controller: [
+        '$scope', 
+        '$element', 
+        'ViewStateService', 
+        'SoundHandlerService', 
+        'DrawHelperService', 
+        'ConfigProviderService',
+        class OsciOverviewComponent{
         private $scope;
         private $element;
         private ViewStateService;
@@ -39,9 +46,17 @@ let OsciOverviewComponent = {
         private backgroundCanvas;
         private startSample;
         private envelopeHasBeenDrawn;
+        private curBndl;
         private _inited;
 
-        constructor($scope, $element, ViewStateService, SoundHandlerService, DrawHelperService, ConfigProviderService){
+        constructor(
+            $scope, 
+            $element, 
+            ViewStateService, 
+            SoundHandlerService, 
+            DrawHelperService, 
+            ConfigProviderService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             this.ViewStateService =ViewStateService;
@@ -62,7 +77,7 @@ let OsciOverviewComponent = {
             this._inited = false;
         }
         
-        $postLink = function(){
+        $postLink (){
             this.canvas = this.$element.find('canvas')[0];
             this.markupCanvas = this.$element.find('canvas')[1];
 
@@ -130,7 +145,7 @@ let OsciOverviewComponent = {
 
         }
 
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             //
             if(this._inited){
                 //
@@ -157,13 +172,13 @@ let OsciOverviewComponent = {
                 }
             }
         };
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
         };
         /**
          *
          */
-        private drawPreview() {
+        private drawPreview () {
             if (!$.isEmptyObject(this.SoundHandlerService.audioBuffer)) {
                 if (!this.envelopeHasBeenDrawn) {
                     this.envelopeHasBeenDrawn = true;
@@ -180,7 +195,7 @@ let OsciOverviewComponent = {
          * the information that is specified in
          * the viewport
          */
-        private drawVpOsciMarkup() {
+        private drawVpOsciMarkup () {
             var ctx = this.markupCanvas.getContext('2d');
             var posS = (this.markupCanvas.width / this.SoundHandlerService.audioBuffer.length) * this.ViewStateService.curViewPort.sS;
             var posE = (this.markupCanvas.width / this.SoundHandlerService.audioBuffer.length) * this.ViewStateService.curViewPort.eS;
@@ -197,7 +212,7 @@ let OsciOverviewComponent = {
             ctx.closePath();
             ctx.stroke();
         };
-    }
+    }]
 }
 
 angular.module('emuwebApp')

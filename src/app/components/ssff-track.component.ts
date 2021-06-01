@@ -44,16 +44,26 @@ let SsffTrackComponent = {
         viewPortSelectStart: '<',
         viewPortSelectEnd: '<'
     },
-    controller: class OsciController{
+    controller: [
+        '$element', 
+        'ConfigProviderService', 
+        'SsffDataService', 
+        'DrawHelperService',
+        class OsciController{
         private $element;
         private ConfigProviderService;
         private SsffDataService;
         private DrawHelperService;
 
         private ctx;
-        private _intited;
+        private _inited;
         
-        constructor($element, ConfigProviderService, SsffDataService, DrawHelperService){
+        constructor(
+            $element, 
+            ConfigProviderService, 
+            SsffDataService, 
+            DrawHelperService
+            ){
             this.$element = $element;
             this.ConfigProviderService = ConfigProviderService;
             this.SsffDataService = SsffDataService;
@@ -61,12 +71,12 @@ let SsffTrackComponent = {
             
         };
         
-        $postLink = function(){
+        $postLink (){
             this.ctx = this.$element.find('canvas')[2].getContext("2d");
             
         };
 
-        $onChanges = function (changes) {
+        $onChanges (changes) {
             //
             if(this._inited){                
                 //
@@ -88,11 +98,11 @@ let SsffTrackComponent = {
             
         };
         
-        $onInit = function() {
+        $onInit () {
             this._inited = true;
 
         };
-    }
+    }]
 }
 
 

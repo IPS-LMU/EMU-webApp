@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.3.6.9000
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- fixed bad handling of URL parameter when only an audio file is given in settings dialog
+
 ## Version 1.3.6
 
 ### new features / performance tweaks / improvements
