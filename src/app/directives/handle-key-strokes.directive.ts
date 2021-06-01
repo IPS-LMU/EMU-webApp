@@ -3,7 +3,8 @@ import * as angular from 'angular';
 import styles from '../../styles/EMUwebAppDesign.scss';
 
 angular.module('emuwebApp')
-	.directive('handleglobalkeystrokes', function ($timeout, ViewStateService, ModalService, HierarchyManipulationService, SoundHandlerService, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService, DbObjLoadSaveService) {
+	.directive('handleglobalkeystrokes', ['$timeout', 'ViewStateService', 'ModalService', 'HierarchyManipulationService', 'SoundHandlerService', 'ConfigProviderService', 'HistoryService', 'LevelService', 'DataService', 'LinkService', 'AnagestService', 'DbObjLoadSaveService', 
+		function ($timeout, ViewStateService, ModalService, HierarchyManipulationService, SoundHandlerService, ConfigProviderService, HistoryService, LevelService, DataService, LinkService, AnagestService, DbObjLoadSaveService) {
 		return {
 			restrict: 'A',
 			link: function postLink(scope) {
@@ -1218,4 +1219,4 @@ angular.module('emuwebApp')
 				);
 			}
 		};
-	});
+	}]);

@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('dragout', function ($window, DataService, LoadedMetaDataService, BrowserDetectorService, ConfigProviderService) {
+	.directive('dragout', ['$window', 'DataService', 'LoadedMetaDataService', 'BrowserDetectorService', 'ConfigProviderService', 
+		function ($window, DataService, LoadedMetaDataService, BrowserDetectorService, ConfigProviderService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -91,4 +92,4 @@ angular.module('emuwebApp')
 				);
 			}
 		};
-	});
+	}]);

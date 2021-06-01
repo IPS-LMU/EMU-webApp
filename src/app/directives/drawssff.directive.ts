@@ -3,7 +3,8 @@ import * as angular from 'angular';
 import styles from '../../styles/EMUwebAppDesign.scss';
 
 angular.module('emuwebApp')
-	.directive('drawssff', function ($timeout, ViewStateService, ConfigProviderService, SsffDataService, HistoryService, FontScaleService, LoadedMetaDataService) {
+	.directive('drawssff', ['$timeout', 'ViewStateService', 'ConfigProviderService', 'SsffDataService', 'HistoryService', 'FontScaleService', 'LoadedMetaDataService',
+		function ($timeout, ViewStateService, ConfigProviderService, SsffDataService, HistoryService, FontScaleService, LoadedMetaDataService) {
 		return {
 			restrict: 'A',
 			scope: {},
@@ -282,4 +283,4 @@ angular.module('emuwebApp')
 				}; //function
 			}
 		};
-	});
+	}]);

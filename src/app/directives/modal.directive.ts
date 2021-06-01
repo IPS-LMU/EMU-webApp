@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('modal', function ($animate, ModalService) {
+	.directive('modal', ['$animate', 'ModalService', 
+		function ($animate, ModalService) {
 		return {
 			restrict: 'E',
 			templateUrl: 'views/modal.html',
@@ -35,4 +36,4 @@ angular.module('emuwebApp')
 				});
 			}
 		};
-	});
+	}]);

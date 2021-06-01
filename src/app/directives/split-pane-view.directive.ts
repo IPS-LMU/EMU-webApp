@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('bgSplitter', function ($rootScope, ViewStateService) {
+	.directive('bgSplitter', ['$rootScope', 'ViewStateService', 
+		function ($rootScope, ViewStateService) {
 		return {
 			restrict: 'E',
 			replace: true,
@@ -10,7 +11,7 @@ angular.module('emuwebApp')
 				showTwoDimCans: '@'
 			},
 			template: '<div class="emuwebapp-split-panes vertical" ng-transclude></div>',
-			controller: function ($scope) {
+			controller: ['$scope', function ($scope) {
 				$scope.panes = [];
 				$scope.bottomRightResizePane = undefined;
 
@@ -25,7 +26,7 @@ angular.module('emuwebApp')
 				this.setBottomRightResizePane = function (pane) {
 					$scope.bottomRightResizePane = pane;
 				};
-			},
+			}],
 			link: function (scope, element, attrs) {
 				var dragBottomRightResizePaneTopResizer = false;
 				var dragBottomRightResizePaneLeftResizer = false;
@@ -199,7 +200,7 @@ angular.module('emuwebApp')
 				});
 			}
 		};
-	})
+	}])
 	.directive('bgPane', function () {
 		return {
 			restrict: 'E',

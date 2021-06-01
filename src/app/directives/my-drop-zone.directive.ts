@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.directive('myDropZone', function ($animate, $compile, DragnDropService, BrowserDetectorService, AppStateService, ModalService) {
+	.directive('myDropZone', ['$animate', '$compile', 'DragnDropService', 'BrowserDetectorService', 'AppStateService', 'ModalService',
+		function ($animate, $compile, DragnDropService, BrowserDetectorService, AppStateService, ModalService) {
 		return {
 			template: /*html*/`
 			<div id="dropzone" class="emuwebapp-dropzone" ng-class="dropClass">
@@ -247,4 +248,4 @@ angular.module('emuwebApp')
 
 			}
 		};
-	});
+	}]);
