@@ -11,7 +11,8 @@ import styles from '../../styles/EMUwebAppDesign.scss';
  * Controller of the emuwebApp
  */
 angular.module('emuwebApp')
-	.controller('ManualCtrl', function ($scope, ConfigProviderService) {
+	.controller('ManualCtrl', ['$scope', 'ConfigProviderService', 
+	function ($scope, ConfigProviderService) {
 		$scope.listOfMarkdownFiles = [{
 			title: 'Introduction',
 			url: 'manual/Introduction.md'
@@ -46,4 +47,4 @@ angular.module('emuwebApp')
 			};
 		};
 
-	});
+	}]);

@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('TabbedCtrl', function ($scope, $timeout, ConfigProviderService, ValidationService, ViewStateService, ModalService) {
+	.controller('TabbedCtrl', ['$scope', '$timeout', 'ConfigProviderService', 'ValidationService', 'ViewStateService', 'ModalService',
+		function ($scope, $timeout, ConfigProviderService, ValidationService, ViewStateService, ModalService) {
 		$scope.cps = ConfigProviderService;
 		$scope.vs = ViewStateService;
 
@@ -195,4 +196,4 @@ angular.module('emuwebApp')
 
 		$scope.onClickTab($scope.tree[0]);
 		$scope.init();
-	});
+	}]);

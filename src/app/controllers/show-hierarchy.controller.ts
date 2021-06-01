@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('ShowhierarchyCtrl', function ($scope, ViewStateService, HistoryService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
+	.controller('ShowhierarchyCtrl', ['$scope', 'ViewStateService', 'HistoryService', 'ModalService', 'ConfigProviderService', 'LevelService', 'HierarchyLayoutService', 'StandardFuncsService',
+		function ($scope, ViewStateService, HistoryService, ModalService, ConfigProviderService, LevelService, HierarchyLayoutService, StandardFuncsService) {
 
 		// Scope data
 
@@ -106,4 +107,4 @@ angular.module('emuwebApp')
 		$scope.cancel = function () {
 			ModalService.close();
 		};
-	});
+	}]);

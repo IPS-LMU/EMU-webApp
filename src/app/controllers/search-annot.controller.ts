@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('searchAnnotCtrl', function ($scope, ModalService, ViewStateService, HierarchyLayoutService, LevelService, LoadedMetaDataService, ConfigProviderService, StandardFuncsService, DataService) {
+	.controller('searchAnnotCtrl', ['$scope', 'ModalService', 'ViewStateService', 'HierarchyLayoutService', 'LevelService', 'LoadedMetaDataService', 'ConfigProviderService', 'StandardFuncsService', 'DataService',
+		function ($scope, ModalService, ViewStateService, HierarchyLayoutService, LevelService, LoadedMetaDataService, ConfigProviderService, StandardFuncsService, DataService) {
 
 		$scope.vs = ViewStateService;
 
@@ -117,4 +118,4 @@ angular.module('emuwebApp')
 			ModalService.close();
 		};
 
-	});
+	}]);

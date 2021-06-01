@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('ExportCtrl', function ($scope, $window, ModalService, BrowserDetectorService, ViewStateService, HistoryService) {
+	.controller('ExportCtrl', ['$scope', '$window', 'ModalService', 'BrowserDetectorService', 'ViewStateService', 'HistoryService', 
+		function ($scope, $window, ModalService, BrowserDetectorService, ViewStateService, HistoryService) {
 
 		$scope.firefox = BrowserDetectorService.isBrowser.Firefox();
 
@@ -81,4 +82,4 @@ angular.module('emuwebApp')
 //			}
 			$scope.updateHistoryService();
 		};
-	});
+	}]);

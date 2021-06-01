@@ -3,7 +3,8 @@ import * as showdown from 'showdown';
 import { version } from "../../../package.json";
 
 angular.module('emuwebApp')
-.controller('TabbedHelpCtrl', function ($scope, $sce, ConfigProviderService, IoHandlerService) {
+.controller('TabbedHelpCtrl', ['$scope', '$sce', 'ConfigProviderService', 'IoHandlerService',
+	function ($scope, $sce, ConfigProviderService, IoHandlerService) {
 	$scope.cps = ConfigProviderService;
 	$scope.tree = [];
 	$scope.converter = new showdown.Converter();
@@ -39,4 +40,4 @@ angular.module('emuwebApp')
 			}
 			return false;
 		};
-	});
+	}]);

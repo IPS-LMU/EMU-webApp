@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 
 angular.module('emuwebApp')
-	.controller('ModalCtrl', function ($scope, ArrayHelperService, BrowserDetectorService, ModalService, ViewStateService, LevelService, HistoryService, ConfigProviderService) {
+	.controller('ModalCtrl', ['$scope', 'ArrayHelperService', 'BrowserDetectorService', 'ModalService', 'ViewStateService', 'LevelService', 'HistoryService', 'ConfigProviderService',
+		function ($scope, ArrayHelperService, BrowserDetectorService, ModalService, ViewStateService, LevelService, HistoryService, ConfigProviderService) {
 
 		$scope.cps = ConfigProviderService;
 		$scope.vs = ViewStateService;
@@ -117,4 +118,4 @@ angular.module('emuwebApp')
 			ModalService.close();
 		};
 
-	});
+	}]);
