@@ -4,6 +4,8 @@
 
 ### new features / performance tweaks / improvements
 
+- increased text height by 2px for better scroll-bar clearance on non-OSX systems (closes #225)
+
 ### bug fixes
 
 - fixed bad handling of URL parameter when only an audio file is given in settings dialog
