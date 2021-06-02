@@ -787,10 +787,10 @@ let EmuWebAppComponent = {
 							this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
 						}
 
-					}, function (errMess) {
+					}, (errMess) => {
 						this.ModalService.open('views/error.html', 'Could not get embedded_config.json: ' + errMess);
 					});
-				}, function (errMess) {
+				}, (errMess) => {
 					this.ModalService.open('views/error.html', 'Could not get audio file:' + this.ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
 				});
 			}
@@ -1316,7 +1316,7 @@ let EmuWebAppComponent = {
 						});
 					}
 
-				}, function (err) {
+				}, (err) => {
 					this.ModalService.open('views/error.html', 'Error loading DB config of ' + nameOfDB + ': ' + err.data + ' STATUS: ' + err.status).then(() => {
 						this.AppStateService.resetToInitState();
 					});
