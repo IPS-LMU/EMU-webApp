@@ -10,11 +10,23 @@ let SsffTrackComponent = {
         width="4096">
         </canvas>
         
+        <!--
         <canvas 
         class="emuwebapp-timelineCanvasSSFF" 
         width="4096" 
         drawssff ssff-trackname="{{$ctrl.trackName}}">
         </canvas>
+        -->
+        <ssff-canvas
+        track-name="$ctrl.trackName"
+        all-ssff-data="$ctrl.SsffDataService.data"
+        view-port-sample-start="$ctrl.viewPortSampleStart"
+        view-port-sample-end="$ctrl.viewPortSampleEnd"
+        cur-bndl="$ctrl.curBundl"
+        cur-mouse-x="$ctrl.curMouseX"
+        cur-mouse-y="$ctrl.curMouseY"
+        ></ssff-canvas>
+
         
         <signal-canvas-markup-canvas
         track-name="$ctrl.trackName"

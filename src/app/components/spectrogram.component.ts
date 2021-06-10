@@ -22,6 +22,7 @@ let SpectrogramComponent = {
         
         <ssff-canvas
         track-name="$ctrl.trackName"
+        all-ssff-data="$ctrl.SsffDataService.data"
         view-port-sample-start="$ctrl.viewPortSampleStart"
         view-port-sample-end="$ctrl.viewPortSampleEnd"
         cur-bndl="$ctrl.curBundl"
@@ -71,6 +72,7 @@ let SpectrogramComponent = {
         '$timeout', 
         'ViewStateService', 
         'ConfigProviderService', 
+        'SsffDataService',
         'DrawHelperService', 
         'FontScaleService', 
         'SoundHandlerService', 
@@ -80,6 +82,7 @@ let SpectrogramComponent = {
         private $timeout;
         private ViewStateService;
         private ConfigProviderService;
+        private SsffDataService;
         private DrawHelperService;
         private FontScaleService;
         private SoundHandlerService;
@@ -96,11 +99,14 @@ let SpectrogramComponent = {
         private context;
         private markupCtx;
 
+        private trackConfig;
+
         constructor(
             $element, 
             $timeout, 
             ViewStateService, 
             ConfigProviderService, 
+            SsffDataService,
             DrawHelperService, 
             FontScaleService, 
             SoundHandlerService, 
@@ -110,6 +116,7 @@ let SpectrogramComponent = {
             this.$timeout = $timeout;
             this.ViewStateService = ViewStateService;
             this.ConfigProviderService = ConfigProviderService;
+            this.SsffDataService = SsffDataService;
             this.DrawHelperService = DrawHelperService;
             this.FontScaleService = FontScaleService;
             this.SoundHandlerService = SoundHandlerService;
@@ -122,6 +129,7 @@ let SpectrogramComponent = {
             // default alpha for Window Function
 			this.alpha = 0.16;
 			this.devicePixelRatio = window.devicePixelRatio || 1;
+
         }
         $postLink (){
             // select the needed DOM elements from the template

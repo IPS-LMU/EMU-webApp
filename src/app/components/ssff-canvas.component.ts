@@ -12,6 +12,7 @@ let SsffCanvasComponent = {
     `,
     bindings: {
         trackName: '<',
+        allSsffData: '<',
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<',
         curBndl: '<',
@@ -41,6 +42,7 @@ let SsffCanvasComponent = {
         private canvas;
         private ctx;
         private trackName;
+        private allSsffData;
         private _inited = false;
 
         constructor(
@@ -69,8 +71,7 @@ let SsffCanvasComponent = {
         }
         $onChanges (changes) {
             if(this._inited){
-                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl){
-                    console.log(changes);
+                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.allSsffData){
                     this.handleUpdate();
                 }
                 if(changes.curMouseX || changes.curMouseY){
@@ -86,9 +87,8 @@ let SsffCanvasComponent = {
         */
         private handleUpdate () {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            console.log(this.SsffDataService.data);
-            if (!$.isEmptyObject(this.SsffDataService.data)) {
-                if (this.SsffDataService.data.length !== 0) {
+            if (!$.isEmptyObject(this.allSsffData)) {
+                if (this.allSsffData.length !== 0) {
                     this.assignmentTrackName = '';
                     // check assignments (= overlays)
                     this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].signalCanvases.assign.forEach((assignment) => {
