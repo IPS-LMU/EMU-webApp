@@ -5,6 +5,7 @@
 ### new features / performance tweaks / improvements
 
 - increased text height by 2px for better scroll-bar clearance on non-OSX systems (closes #225)
+- better visibility of track names & min/max values due to color change (fixes #295)
 
 ### bug fixes
 

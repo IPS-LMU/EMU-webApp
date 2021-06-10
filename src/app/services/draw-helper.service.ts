@@ -782,8 +782,8 @@ class DrawHelperService{
 
 	public drawMinMaxAndName(ctx, trackName, min, max, round) {
 		// ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-		ctx.strokeStyle = styles.colorBlack;
-		ctx.fillStyle = styles.colorBlack;
+		ctx.strokeStyle = styles.colorBlue;
+		ctx.fillStyle = styles.colorBlue;
 
 		var fontSize = parseInt(styles.fontSmallSize.slice(0, -2));
 
@@ -804,16 +804,16 @@ class DrawHelperService{
 
 		// draw trackName
 		if (trackName !== '') {
-			this.FontScaleService.drawUndistortedText(ctx, trackName, fontSize, styles.fontSmallFamily, 0, ctx.canvas.height / 2 - fontSize * scaleY / 2, styles.colorBlack, true);
+			this.FontScaleService.drawUndistortedText(ctx, trackName, fontSize, styles.fontSmallFamily, 0, ctx.canvas.height / 2 - fontSize * scaleY / 2, styles.colorBlue, true);
 		}
 
 		// draw min/max vals
 		if (max !== undefined) {
-			this.FontScaleService.drawUndistortedText(ctx, 'max: ' + this.MathHelperService.roundToNdigitsAfterDecPoint(max, round), smallFontSize, styles.fontSmallFamily, 5, 5, styles.colorGrey, true);
+			this.FontScaleService.drawUndistortedText(ctx, 'max: ' + this.MathHelperService.roundToNdigitsAfterDecPoint(max, round), smallFontSize, styles.fontSmallFamily, 5, 5, styles.colorBlue, true);
 		}
 		// draw min/max vals
 		if (min !== undefined) {
-			this.FontScaleService.drawUndistortedText(ctx, 'min: ' + this.MathHelperService.roundToNdigitsAfterDecPoint(min, round), smallFontSize, styles.fontSmallFamily, 5, ctx.canvas.height - th - 5, styles.colorGrey, true);
+			this.FontScaleService.drawUndistortedText(ctx, 'min: ' + this.MathHelperService.roundToNdigitsAfterDecPoint(min, round), smallFontSize, styles.fontSmallFamily, 5, ctx.canvas.height - th - 5, styles.colorBlue, true);
 		}
 	};
 
