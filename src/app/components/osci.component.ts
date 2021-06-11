@@ -12,11 +12,24 @@ let OsciComponent = {
     class="emuwebapp-timelineCanvasMain" 
     width="4096"></canvas>
     
+    <!--
     <canvas 
     class="emuwebapp-timelineCanvasSSFF" 
     width="4096" 
     drawssff 
     ssff-trackname="{{$ctrl.trackName}}"></canvas>
+    -->
+
+    <ssff-canvas
+    track-name="$ctrl.trackName"
+    all-ssff-data="$ctrl.SsffDataService.data"
+    view-port-sample-start="$ctrl.viewPortSampleStart"
+    view-port-sample-end="$ctrl.viewPortSampleEnd"
+    cur-bndl="$ctrl.curBundl"
+    cur-mouse-x="$ctrl.curMouseX"
+    cur-mouse-y="$ctrl.curMouseY"
+    ></ssff-canvas>
+
 
     <signal-canvas-markup-canvas
     track-name="$ctrl.trackName"
@@ -55,6 +68,7 @@ let OsciComponent = {
         'ViewStateService', 
         'SoundHandlerService', 
         'ConfigProviderService', 
+        'SsffDataService',
         'DrawHelperService', 
         'LoadedMetaDataService',
         class OsciController{
@@ -64,6 +78,7 @@ let OsciComponent = {
         private ViewStateService;
         private SoundHandlerService;
         private ConfigProviderService;
+        private SsffDataService;
         private DrawHelperService;
         private LoadedMetaDataService;
         
@@ -79,6 +94,7 @@ let OsciComponent = {
             ViewStateService, 
             SoundHandlerService, 
             ConfigProviderService, 
+            SsffDataService,
             DrawHelperService, 
             LoadedMetaDataService
             ){
@@ -88,6 +104,7 @@ let OsciComponent = {
             this.ViewStateService = ViewStateService;
             this.SoundHandlerService = SoundHandlerService;
             this.ConfigProviderService = ConfigProviderService;
+            this.SsffDataService = SsffDataService;
             this.DrawHelperService = DrawHelperService;
             this.LoadedMetaDataService = LoadedMetaDataService;
             

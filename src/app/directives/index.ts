@@ -1,5 +1,4 @@
 import "./dragout.directive";
-import "./drawssff.directive";
 import "./handle-key-strokes.directive";
 import "./large-text-field-input.directive";
 import "./line-chart.directive";

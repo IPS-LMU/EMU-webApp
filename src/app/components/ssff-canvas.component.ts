@@ -12,7 +12,7 @@ let SsffCanvasComponent = {
     `,
     bindings: {
         trackName: '<',
-        allSsffData: '<',
+        allSsffData: '<', // this is only used to trigger a paint on load
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<',
         curBndl: '<',

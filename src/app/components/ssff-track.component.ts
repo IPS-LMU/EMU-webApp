@@ -17,6 +17,7 @@ let SsffTrackComponent = {
         drawssff ssff-trackname="{{$ctrl.trackName}}">
         </canvas>
         -->
+        
         <ssff-canvas
         track-name="$ctrl.trackName"
         all-ssff-data="$ctrl.SsffDataService.data"

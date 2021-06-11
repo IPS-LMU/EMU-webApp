@@ -14,11 +14,13 @@ let SpectrogramComponent = {
         class="emuwebapp-timelineCanvasMain" 
         width="4096"></canvas>
         
-       <!-- <canvas 
+       <!-- 
+       <canvas 
         class="emuwebapp-timelineCanvasSSFF" 
         width="4096" 
         drawssff 
-        ssff-trackname="{{$ctrl.trackName}}"></canvas>-->
+        ssff-trackname="{{$ctrl.trackName}}"></canvas>
+        -->
         
         <ssff-canvas
         track-name="$ctrl.trackName"
