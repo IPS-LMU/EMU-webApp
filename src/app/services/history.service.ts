@@ -5,7 +5,7 @@ export class HistoryService {
 	
 	//////////////////////////////////////////
 	// new dual stack implementation
-	
+	// private dep. injected vars
 	private $log; 
 	private $compile;
 	private $sce;
@@ -17,12 +17,13 @@ export class HistoryService {
 	private SoundHandlerService;
 	private LoadedMetaDataService;
 	
-	// private vars
-	private movesAwayFromLastSave = 0;
+	// private misc vars
 	private undoStack = [];
 	private redoStack = [];
 	private curChangeObj = {};
-	
+	// public vars
+	public movesAwayFromLastSave = 0;
+
 	constructor($log, $compile, $sce, SsffDataService, LevelService, LinkService, ConfigProviderService, ViewStateService, SoundHandlerService, LoadedMetaDataService){
 		this.$log = $log; 
 		this.$compile = $compile;

@@ -1,8 +1,12 @@
 # What's New
 
-## Version 1.3.6.9000
+## Version 1.3.7
 
 ### new features / performance tweaks / improvements
+
+- increased text height by 2px for better scroll-bar clearance on non-OSX systems (closes #225)
+- better visibility of track names & min/max values due to color change (fixes #295)
+- minification on build working again (fairly large perf. gains)
 
 ### bug fixes
 

@@ -26,6 +26,7 @@ let SsffTrackComponent = {
         cur-bndl="$ctrl.curBundl"
         cur-mouse-x="$ctrl.curMouseX"
         cur-mouse-y="$ctrl.curMouseY"
+        moves-away-from-last-save="$ctrl.HistoryService.movesAwayFromLastSave"
         ></ssff-canvas>
 
         
@@ -62,11 +63,13 @@ let SsffTrackComponent = {
         'ConfigProviderService', 
         'SsffDataService', 
         'DrawHelperService',
+        'HistoryService',
         class OsciController{
         private $element;
         private ConfigProviderService;
         private SsffDataService;
         private DrawHelperService;
+        private HistoryService;
 
         private ctx;
         private _inited;
@@ -75,12 +78,14 @@ let SsffTrackComponent = {
             $element, 
             ConfigProviderService, 
             SsffDataService, 
-            DrawHelperService
+            DrawHelperService, 
+            HistoryService,
             ){
             this.$element = $element;
             this.ConfigProviderService = ConfigProviderService;
             this.SsffDataService = SsffDataService;
             this.DrawHelperService = DrawHelperService;
+            this.HistoryService = HistoryService;
             
         };
         

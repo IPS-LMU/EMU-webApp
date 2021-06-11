@@ -30,6 +30,7 @@ let SpectrogramComponent = {
         cur-bndl="$ctrl.curBundl"
         cur-mouse-x="$ctrl.curMouseX"
         cur-mouse-y="$ctrl.curMouseY"
+        moves-away-from-last-save="$ctrl.HistoryService.movesAwayFromLastSave"
         ></ssff-canvas>
 
         <signal-canvas-markup-canvas
@@ -79,6 +80,7 @@ let SpectrogramComponent = {
         'FontScaleService', 
         'SoundHandlerService', 
         'MathHelperService',
+        'HistoryService',
         class SpectrogramController{
         private $element;
         private $timeout;
@@ -89,6 +91,7 @@ let SpectrogramComponent = {
         private FontScaleService;
         private SoundHandlerService;
         private MathHelperService;
+        private HistoryService;
         
         private _inited;
 
@@ -112,7 +115,8 @@ let SpectrogramComponent = {
             DrawHelperService, 
             FontScaleService, 
             SoundHandlerService, 
-            MathHelperService
+            MathHelperService,
+            HistoryService
             ){
             this.$element = $element;
             this.$timeout = $timeout;
@@ -123,6 +127,7 @@ let SpectrogramComponent = {
             this.FontScaleService = FontScaleService;
             this.SoundHandlerService = SoundHandlerService;
             this.MathHelperService = MathHelperService;
+            this.HistoryService = HistoryService;
             this._inited = false;
 
     		// Spectro Worker

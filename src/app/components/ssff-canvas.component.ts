@@ -17,7 +17,8 @@ let SsffCanvasComponent = {
         viewPortSampleEnd: '<',
         curBndl: '<',
         curMouseX: '<',
-        curMouseY: '<'
+        curMouseY: '<',
+        movesAwayFromLastSave: '<' // this is only used to trigger a repaint
     },
     controller: [
         '$scope', 
@@ -25,7 +26,6 @@ let SsffCanvasComponent = {
         'ViewStateService', 
         'ConfigProviderService', 
         'SsffDataService', 
-        'HistoryService',
         'FontScaleService', 
         'LoadedMetaDataService',
         class SsffCanvasController{
@@ -34,7 +34,6 @@ let SsffCanvasComponent = {
         private ViewStateService;
         private ConfigProviderService;
         private SsffDataService;
-        private HistoryService;
         private FontScaleService;
         private LoadedMetaDataService;
         
@@ -51,7 +50,6 @@ let SsffCanvasComponent = {
             ViewStateService, 
             ConfigProviderService, 
             SsffDataService, 
-            HistoryService,
             FontScaleService, 
             LoadedMetaDataService
             ){
@@ -60,7 +58,6 @@ let SsffCanvasComponent = {
             this.ViewStateService = ViewStateService;
             this.ConfigProviderService = ConfigProviderService;
             this.SsffDataService = SsffDataService;
-            this.HistoryService = HistoryService;
             this.FontScaleService = FontScaleService;
             this.LoadedMetaDataService = LoadedMetaDataService;
     
@@ -71,7 +68,7 @@ let SsffCanvasComponent = {
         }
         $onChanges (changes) {
             if(this._inited){
-                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.allSsffData){
+                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curBndl || changes.allSsffData || changes.movesAwayFromLastSave){
                     this.handleUpdate();
                 }
                 if(changes.curMouseX || changes.curMouseY){
