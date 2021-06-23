@@ -8,8 +8,7 @@ let EmuWebAppComponent = {
     template: /*html*/`
     <div
     class="emuwebapp-main" 
-    id="MainCtrl" 
-    handleglobalkeystrokes>
+    id="MainCtrl">
         <!-- start: modal -->
         <modal></modal>
         <!-- end: modal -->
@@ -370,6 +369,7 @@ let EmuWebAppComponent = {
 		'ModalService',
 		'BrowserDetectorService',
 		'HierarchyLayoutService',
+		'HandleGlobalKeyStrokes',
 		class EmuWebAppController{
         private $scope;
         private $element;
@@ -397,6 +397,7 @@ let EmuWebAppComponent = {
         private ModalService;
         private BrowserDetectorService;
 		private HierarchyLayoutService;
+		private HandleGlobalKeyStrokes;
 
         // init vars
 		private connectBtnLabel;
@@ -437,7 +438,8 @@ let EmuWebAppComponent = {
             DataService,
             ModalService,
             BrowserDetectorService,
-			HierarchyLayoutService){
+			HierarchyLayoutService,
+			HandleGlobalKeyStrokes){
             
                 this.$scope = $scope;
                 this.$element = $element;
@@ -465,6 +467,7 @@ let EmuWebAppComponent = {
                 this.ModalService = ModalService;
                 this.BrowserDetectorService = BrowserDetectorService;
                 this.HierarchyLayoutService = HierarchyLayoutService;
+				this.HandleGlobalKeyStrokes = HandleGlobalKeyStrokes;
 
             	// init vars
 		        this.connectBtnLabel = 'connect';
@@ -491,6 +494,9 @@ let EmuWebAppComponent = {
 
                 // call function on init
 		        this.loadDefaultConfig();
+
+				// bind keys
+				this.HandleGlobalKeyStrokes.bindGlobalKeys();
 
         };
 

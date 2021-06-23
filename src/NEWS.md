@@ -1,5 +1,14 @@
 # What's New
 
+## Version 1.3.7.9000
+
+### new features / performance tweaks / improvements
+
+- handleglobalkeystrokes is now a service
+
+
+### bug fixes
+
 ## Version 1.3.7
 
 ### new features / performance tweaks / improvements

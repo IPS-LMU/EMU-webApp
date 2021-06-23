@@ -12,6 +12,7 @@ import "./drag-n-drop.service";
 import "./draw-helper.service";
 import "./esps-parser.service";
 import "./font-scale.service";
+import "./handleglobalkeystrokes.service";
 import "./hierarchy-layout.service";
 import "./hierarchy-manipulation.service";
 import "./history.service";
