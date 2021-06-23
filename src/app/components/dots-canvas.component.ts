@@ -19,7 +19,16 @@ let DotsCanvasComponent = {
         viewPortSampleStart: '<',
         viewPortSampleEnd: '<'
     },
-    controller: class DotsCanvasController {
+    controller: [
+        '$scope', 
+        '$element', 
+        'ViewStateService', 
+        'ConfigProviderService', 
+        'SoundHandlerService', 
+        'SsffDataService', 
+        'FontScaleService', 
+        'MathHelperService',
+        class DotsCanvasController {
         private $scope;
         private $element;
         private ViewStateService;
@@ -41,7 +50,16 @@ let DotsCanvasComponent = {
 
         private _inited; 
 
-        constructor($scope, $element, ViewStateService, ConfigProviderService, SoundHandlerService, SsffDataService, FontScaleService, MathHelperService){
+        constructor(
+            $scope, 
+            $element, 
+            ViewStateService, 
+            ConfigProviderService, 
+            SoundHandlerService, 
+            SsffDataService, 
+            FontScaleService, 
+            MathHelperService
+            ){
             this.$scope = $scope;
             this.$element = $element;
             this.ViewStateService = ViewStateService;
