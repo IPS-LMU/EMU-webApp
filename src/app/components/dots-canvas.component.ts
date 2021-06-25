@@ -435,7 +435,7 @@ let DotsCanvasComponent = {
             });
             return(0);
         };
-    }
+    }]
 }
 
 angular.module('emuwebApp')

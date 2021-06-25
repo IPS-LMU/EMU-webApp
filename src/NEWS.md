@@ -5,9 +5,11 @@
 ### new features / performance tweaks / improvements
 
 - handleglobalkeystrokes is now a service
-
+- LargeTextFieldInputDirective stub class is now a component
 
 ### bug fixes
+
+- fixed broken dotsCanvas component (minification issue)
 
 ## Version 1.3.7
 
