@@ -1,6 +1,7 @@
 import "./hierarchy-path-canvas.component";
 import "./level.component";
 import "./large-text-field-input.component";
+import "./line-chart.component"
 import "./bundlelist-sidebar.component";
 import "./emuhierarchy.component";
 import "./settings.component";
