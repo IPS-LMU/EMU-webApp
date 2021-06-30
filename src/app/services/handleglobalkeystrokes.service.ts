@@ -64,12 +64,12 @@ class HandleGlobalKeyStrokes{
         });
 
         $(document).on('keydown', (e) => {
-            if (!this.BrowserDetectorService.isBrowser.Firefox()) {
+            // if (!this.BrowserDetectorService.isBrowser.Firefox()) {
                 var code = (e.keyCode ? e.keyCode : e.which);
                 if (code === 8 || code === 9 || code === 27 || code === 37 || code === 38 || code === 39 || code === 40 || code === 32) {
                     this.applyKeyCode(code, e);
                 }
-            }
+            // }
         });
 
         $(document).on('keypress', (e) => {

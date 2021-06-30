@@ -1,6 +1,6 @@
 {
   "name": "emuwebapp",
-  "version": "1.3.7",
+  "version": "1.3.8",
   "description": "The EMU-webApp is an online and offline Web-App for labeling, visualizing and correcting speech and derived speech data.",
   "main": "app/scripts/app.js",
   "author": "Raphael Winkelmann, Georg Raess",

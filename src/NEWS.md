@@ -1,6 +1,6 @@
 # What's New
 
-## Version 1.3.7.9000
+## Version 1.3.8
 
 ### new features / performance tweaks / improvements
 
@@ -11,6 +11,7 @@
 
 - fixed broken dotsCanvas component (minification issue)
 - fixed bad correction of ID to Id in refactor (fixes #299)
+- fixed blocking of handling keyb. short-cuts under Firefox
 
 ## Version 1.3.7
 
