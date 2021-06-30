@@ -1,0 +1,42 @@
+[{
+  "title": "EMU-webApp",
+  "url": "manual/Introduction.md",
+  "nodes": [
+    {
+      "title": "What's New",
+      "url": "NEWS.md"
+    },
+    {
+      "title": "Keyboard Shortcuts",
+      "url": "views/helpTabs/keys.html"
+    },
+    {
+      "title": "General Usage",
+      "url": "manual/GeneralUsage/GeneralUsage.md"
+    },
+    {
+      "title": "Getting Help",
+      "url": false,
+      "nodes": [
+        {
+          "title": "Manual",
+          "url": false,
+          "nodes": [
+            {
+              "title": "WebSocket Protocol",
+              "url": "manual/EMU-webAppWebsocketProtocol/EMU-webApp-websocket-protocol-0_0_2.md"
+            },
+            {
+              "title": "URL Parameters",
+              "url": "manual/URLparameters.md"
+            }
+          ]
+        },
+        {
+          "title": "FAQ",
+          "url": "manual/FAQs.md"
+        }
+      ]
+    }
+  ]
+}]

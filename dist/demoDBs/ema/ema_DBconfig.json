@@ -1,0 +1,249 @@
+{
+	"name": "ema",
+	"UUID": "6e384990-91cf-481a-8a81-e31da0832d64",
+	"mediafileExtension": "wav",
+	"ssffTrackDefinitions": [{
+		"name": "tt_posz",
+		"columnName": "tt_posz",
+		"fileExtension": "t_tip"
+	}, {
+		"name": "tt_posy",
+		"columnName": "tt_posy",
+		"fileExtension": "t_tip"
+	}, {
+		"name": "tb_posz",
+		"columnName": "tb_posz",
+		"fileExtension": "t_back"
+	}, {
+		"name": "tb_posy",
+		"columnName": "tb_posy",
+		"fileExtension": "t_back"
+	}, {
+		"name": "tm_posz",
+		"columnName": "tm_posz",
+		"fileExtension": "t_mid"
+	}, {
+		"name": "tm_posy",
+		"columnName": "tm_posy",
+		"fileExtension": "t_mid"
+	}, {
+		"name": "ul_posz",
+		"columnName": "ul_posz",
+		"fileExtension": "upper_lip"
+	}, {
+		"name": "ul_posy",
+		"columnName": "ul_posy",
+		"fileExtension": "upper_lip"
+	}, {
+		"name": "ll_posz",
+		"columnName": "ll_posz",
+		"fileExtension": "lower_lip"
+	}, {
+		"name": "ll_posy",
+		"columnName": "ll_posy",
+		"fileExtension": "lower_lip"
+	}, {
+		"name": "jw_posz",
+		"columnName": "jw_posz",
+		"fileExtension": "jaw"
+	}, {
+		"name": "jw_posy",
+		"columnName": "jw_posy",
+		"fileExtension": "jaw"
+	}, {
+		"name": "FORMANTS",
+		"columnName": "fm",
+		"fileExtension": "fms"
+	}],
+	"levelDefinitions": [{
+		"name": "Word",
+		"type": "ITEM",
+		"attributeDefinitions": [{
+			"name": "Word",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "Segment",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "Segment",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "TT",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "TT",
+			"type": "STRING"
+		}]
+	}, {
+		"name": "TB",
+		"type": "SEGMENT",
+		"attributeDefinitions": [{
+			"name": "TB",
+			"type": "STRING"
+		}]
+	}],
+	"linkDefinitions": [{
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Word",
+		"sublevelName": "Segment"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "Segment",
+		"sublevelName": "TT"
+	}, {
+		"type": "ONE_TO_MANY",
+		"superlevelName": "TT",
+		"sublevelName": "TB"
+	}],
+	"EMUwebAppConfig": {
+		"perspectives": [{
+			"name": "default",
+			"signalCanvases": {
+				"order": [
+					"OSCI",
+					"SPEC",
+					"tt_posz"
+				],
+				"assign": [],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": [
+					"Segment",
+					"TT",
+					"TB"
+				]
+			},
+			"twoDimCanvases": {
+				"order": ["DOTS"],
+				"twoDimDrawingDefinitions": [{
+					"name": "DOTS",
+					"dots": [{
+						"name": "tt",
+						"xSsffTrack": "tt_posy",
+						"xContourNr": 0,
+						"ySsffTrack": "tt_posz",
+						"yContourNr": 0,
+						"color": "rgb(255,0,0)"
+					}, {
+						"name": "tm",
+						"xSsffTrack": "tm_posy",
+						"xContourNr": 0,
+						"ySsffTrack": "tm_posz",
+						"yContourNr": 0,
+						"color": "rgb(255,255,255)"
+					}, {
+						"name": "tb",
+						"xSsffTrack": "tb_posy",
+						"xContourNr": 0,
+						"ySsffTrack": "tb_posz",
+						"yContourNr": 0,
+						"color": "rgb(255,255,255)"
+					}, {
+						"name": "ul",
+						"xSsffTrack": "ul_posy",
+						"xContourNr": 0,
+						"ySsffTrack": "ul_posz",
+						"yContourNr": 0,
+						"color": "rgb(255,255,255)"
+					}, {
+						"name": "ll",
+						"xSsffTrack": "ll_posy",
+						"xContourNr": 0,
+						"ySsffTrack": "ll_posz",
+						"yContourNr": 0,
+						"color": "rgb(255,255,255)"
+					}, {
+						"name": "jw",
+						"xSsffTrack": "jw_posy",
+						"xContourNr": 0,
+						"ySsffTrack": "jw_posz",
+						"yContourNr": 0,
+						"color": "rgb(255,255,255)"
+					}],
+					"connectLines": [{
+						"fromDot": "tt",
+						"toDot": "tm",
+						"color": "rgb(255,255,255)"
+					}, {
+						"fromDot": "tm",
+						"toDot": "tb",
+						"color": "rgb(255,255,255)"
+					}, {
+						"fromDot": "ul",
+						"toDot": "ll",
+						"color": "rgb(255,255,255)"
+					}],
+					"staticDots": []
+				}]
+			}
+		}, {
+			"name": "showFormants",
+			"signalCanvases": {
+				"order": [
+					"OSCI",
+					"SPEC"
+				],
+				"assign": [{
+					"signalCanvasName": "SPEC",
+					"ssffTrackName": "FORMANTS"
+				}],
+				"contourLims": []
+			},
+			"levelCanvases": {
+				"order": [
+					"Segment",
+					"TT",
+					"TB"
+				]
+			},
+			"twoDimCanvases": {
+				"order": ["DOTS"],
+				"twoDimDrawingDefinitions": [{
+					"name": "DOTS",
+					"dots": [{
+						"name": "f1/f2",
+						"xSsffTrack": "FORMANTS",
+						"xContourNr": 0,
+						"ySsffTrack": "FORMANTS",
+						"yContourNr": 1,
+						"color": "rgb(255,0,0)"
+					}, {
+						"name": "f2/f3",
+						"xSsffTrack": "FORMANTS",
+						"xContourNr": 1,
+						"ySsffTrack": "FORMANTS",
+						"yContourNr": 2,
+						"color": "rgb(255,0,0)"
+					}, {
+						"name": "f3/f4",
+						"xSsffTrack": "FORMANTS",
+						"xContourNr": 2,
+						"ySsffTrack": "FORMANTS",
+						"yContourNr": 3,
+						"color": "rgb(255,0,0)"
+					}],
+					"connectLines": [],
+					"staticDots": [{
+						"name": "static square (no real meaning)",
+						"xNameCoordinate": 1200,
+						"yNameCoordinate": 2000,
+						"xCoordinates": [300, 300, 900, 900, 300],
+						"yCoordinates": [880, 2540, 2540, 880, 880],
+						"connect": true,
+						"color": "rgb(0,0,255)"
+					}]
+
+				}]
+			}
+		}],
+		"activeButtons": {
+			"saveBundle": false
+		},
+		"restrictions": {
+			"showPerspectivesSidebar": true
+		}
+	}
+}

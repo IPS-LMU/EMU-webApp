@@ -1,0 +1,155 @@
+{
+	"description": "Schema for database config file for the EMU systems",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"UUID": {
+			"type": "string",
+			"pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+		},
+		"levelDefinitions": {
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"type": {
+							"enum": ["ITEM", "EVENT", "SEGMENT"]
+						}
+					},
+					"labelDefinitions": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"legalValues": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"minItems": 1
+					}
+				}
+			}
+		},
+		"linkDefinitions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"superlevelName": {
+						"type": "string"
+					},
+					"sublevelName": {
+						"type": "string"
+					},
+					"type": {
+						"type": {
+							"enum": ["ONE_TO_ONE", "ONE_TO_MANY", "MANY_TO_MANY"]
+						}
+					}
+				}
+			}
+		},
+		"mediafileExtension": {
+			"type": {
+				"enum": ["wav"]
+			}
+		},
+		"ssffTracks": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"fileExtension": {
+						"type": "string"
+					},
+					"columnName": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"EMUwebAppConfig": {
+			"perspectives": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"signalCanvases": {
+							"type": "object",
+							"properties": {
+								"order": {
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"type": "string"
+									}
+								},
+								"assign": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"SPEC": {
+												"type": "string"
+											},
+											"OSCI": {
+												"type": "string"
+											}
+										}
+									}
+								},
+								"contourLims": {
+									"type": "array",
+									"items": {
+										"type": "object"
+									}
+								}
+							}
+						},
+						"levelCanvases": {
+							"type": "object",
+							"properties": {
+								"order": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"twoDcanvases": {
+							"type": "object",
+							"properties": {
+								"show": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"minItems": 1
+			}
+		}
+	},
+	"required": ["name", "UUID"]
+}

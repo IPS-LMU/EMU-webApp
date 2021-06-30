@@ -1,0 +1,53 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"description": "Schema for DBconfig files for the EMU system",
+	"type": "object",
+	"properties": {
+		"mediaFile": {
+			"type": "object",
+			"properties": {
+				"encoding": {
+					"enum": ["BASE64", "GETURL"]
+				},
+				"data": {
+					"type": "string"
+				}
+			},
+			"required": ["encoding", "data"],
+			"additionalProperties": false
+		},
+		"annotation": {
+			"$ref": "schemaFiles/annotationFileSchema.json"
+		},
+		"ssffFiles": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"encoding": {
+						"enum": ["BASE64", "GETURL", "ARRAYBUFFER"]
+					},
+					"data": {
+						"type": "string"
+					},
+					"fileExtension": {
+						"type": "string"
+					}
+				},
+				"required": ["encoding", "data", "fileExtension"],
+				"additionalProperties": false
+			}
+		},
+	  	"session":{
+		  "type": "string"
+		},
+	  	"finishedEditing":{
+		  "type": "boolean"
+		},
+	  	"comment":{
+			"type": "string"
+	  	}
+	},
+	"required": ["annotation", "ssffFiles"],
+	"additionalProperties": false
+}
