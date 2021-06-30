@@ -5,7 +5,16 @@ angular.module('emuwebApp')
 		function ($animate, ModalService) {
 		return {
 			restrict: 'E',
-			templateUrl: 'views/modal.html',
+			template: /*html*/`
+			<div id="modalDialog" class="emuwebapp-modal">
+				<div ng-if="modal.isOpen">
+					<button title="Close" id="modal-close" class="emuwebapp-close-button" ng-click="modal.close()" ng-hide="force">
+						<i class="material-icons">cancel</i>
+					</button>
+					<p class="emuwebapp-modal-inner" ng-include="templateUrl"></p>
+				</div>
+			</div>
+			`,
 			replace: true,
 			scope: {},
 			link: function (scope, element) {

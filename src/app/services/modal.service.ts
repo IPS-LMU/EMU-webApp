@@ -91,6 +91,9 @@ class ModalService{
 		this.ViewStateService.setEditing(false);
 		this.ViewStateService.setState(this.ViewStateService.prevState);
 		this.isOpen = false;
+		if (this.ViewStateService.hierarchyState.isShown()) {
+			this.ViewStateService.hierarchyState.toggleHierarchy();
+		}
 		this.defer.resolve(status);
 	};
 	
@@ -141,4 +144,9 @@ class ModalService{
 * Service in the emuwebApp.
 */
 angular.module('emuwebApp')
-.service('ModalService', ['$q', 'ArrayHelperService', 'ViewStateService', ModalService])
+.service('ModalService', [
+	'$q', 
+	'ArrayHelperService', 
+	'ViewStateService', 
+	ModalService
+])
