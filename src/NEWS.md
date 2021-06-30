@@ -10,6 +10,7 @@
 ### bug fixes
 
 - fixed broken dotsCanvas component (minification issue)
+- fixed bad correction of ID to Id in refactor (fixes #299)
 
 ## Version 1.3.7
 

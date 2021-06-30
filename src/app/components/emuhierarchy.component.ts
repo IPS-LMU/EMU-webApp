@@ -350,15 +350,17 @@ let EmuHierarchyComponent = {
 		
 		public checkLink (event) {
 			if (event.shiftKey && !this.shiftMode) {
-				if (this.ViewStateService.hierarchyState.newLinkFromId === undefined) {
-					this.ViewStateService.hierarchyState.newLinkFromId = this.ViewStateService.hierarchyState.selectedItemID;
+				if (this.ViewStateService.hierarchyState.newLinkFromID === undefined) {
+					this.ViewStateService.hierarchyState.newLinkFromID = this.ViewStateService.hierarchyState.selectedItemID;
 					this.shiftMode = true;
+					// this.newLinkSrc = this.LevelService.getItemByID(this.ViewStateService.hierarchyState.newLinkFromID);
+					// this.render();
 				}
 			}
 			if (!event.shiftKey && this.shiftMode) {
 				this.shiftMode = false;
-				var linkObj = this.HierarchyManipulationService.addLink(this.ViewStateService.hierarchyState.path, this.ViewStateService.hierarchyState.newLinkFromID, this.ViewStateService.hierarchyState.selectedItemId);
-				this.ViewStateService.hierarchyState.newLinkFromId = undefined;
+				var linkObj = this.HierarchyManipulationService.addLink(this.ViewStateService.hierarchyState.path, this.ViewStateService.hierarchyState.newLinkFromID, this.ViewStateService.hierarchyState.selectedItemID);
+				this.ViewStateService.hierarchyState.newLinkFromID = undefined;
 				if (linkObj !== null) {
 					this.HistoryService.addObjToUndoStack({
 						type: 'HIERARCHY',
