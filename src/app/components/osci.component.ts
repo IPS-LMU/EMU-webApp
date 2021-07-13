@@ -131,7 +131,7 @@ let OsciComponent = {
                     this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, true);
                 }
                 //
-                if(changes.curChannel || changes.viewPortSampleStart || changes.viewPortSampleEnd){
+                if(changes.viewPortSampleStart || changes.viewPortSampleEnd || changes.curChannel){
                     this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, false);
                 }
             }

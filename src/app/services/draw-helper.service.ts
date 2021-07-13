@@ -293,11 +293,11 @@ class DrawHelperService{
 		var maxMaxPeak = -Infinity;
 
 		for(var i = Math.round(startPeakWinIdx); i < Math.round(endPeakWinIdx); i++){
-			if (this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i] > maxMaxPeak) {
-				maxMaxPeak = this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][i];
+			if (this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].maxPeaks[winIdx][i] > maxMaxPeak) {
+				maxMaxPeak = this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].maxPeaks[winIdx][i];
 			}
-			if (this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i] < minMinPeak) {
-				minMinPeak = this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][i];
+			if (this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].minPeaks[winIdx][i] < minMinPeak) {
+				minMinPeak = this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].minPeaks[winIdx][i];
 			}
 		}
 
@@ -362,8 +362,8 @@ class DrawHelperService{
 			
 			var peakIdx = Math.round(startPeakWinIdx);
 			ctx.beginPath();
-			yMax = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
-			yMin = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+			yMax = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+			yMin = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
 			ctx.moveTo(0, yMax);
 			// ctx.lineTo(0, yMin);
 			yMaxPrev = yMax;
@@ -376,8 +376,8 @@ class DrawHelperService{
 				// calculate cur pixel sample time
 				sT = this.ViewStateService.calcSampleTime(curSample);
 				peakIdx = Math.round(sT * pps);
-				yMax = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
-				yMin = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[0].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+				yMax = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].maxPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
+				yMin = ((allPeakVals.maxMaxPeak - this.osciPeaks.channelOsciPeaks[this.ViewStateService.osciSettings.curChannel].minPeaks[winIdx][peakIdx]) / (allPeakVals.maxMaxPeak - allPeakVals.minMinPeak)) * canvas.height;
 				// draw connection to previous peaks (neccesary to avoid gaps in osci when maxMaxPeak === minMinPeak)
 				ctx.moveTo(curPxIdx-1, yMaxPrev);
 				ctx.lineTo(curPxIdx-1, yMax);
