@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.3.9
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- fixed bad extraction of channel data in draw-helper service (switching which channels to draw now works again)
+
 ## Version 1.3.8
 
 ### new features / performance tweaks / improvements
