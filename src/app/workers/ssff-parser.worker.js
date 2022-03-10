@@ -384,7 +384,7 @@ SsffParserWorker.prototype = {
 						return ({
 							'status': {
 								'type': 'ERROR',
-								'message': 'Unsupported column type! Only DOUBLE, FLOAT, SHORT, BYTE column types are currently supported in file with fileExtension ' + name
+								'message': 'Unsupported column type! Only DOUBLE, FLOAT, SHORT, LONG, BYTE column types are currently supported in file with fileExtension ' + name
 							}
 						});
 					}
@@ -421,8 +421,16 @@ SsffParserWorker.prototype = {
 			var failed = false;
 
 			jso.Columns.forEach((col) => {
-				if (col.ssffdatatype === 'SHORT') {
+				if (col.ssffdatatype === 'BYTE') {
+					bytePerTime += col.length;
+				} else if (col.ssffdatatype === 'SHORT') {
 					bytePerTime += 2 * col.length;
+				} else if (col.ssffdatatype === 'LONG') {
+					bytePerTime += 4 * col.length;
+				} else if (col.ssffdatatype === 'FLOAT') {
+					bytePerTime += 4 * col.length;
+				} else if (col.ssffdatatype === 'DOUBLE') {
+					bytePerTime += 8 * col.length;
 				} else {
 					failed = true;
 				}
@@ -433,43 +441,64 @@ SsffParserWorker.prototype = {
 				return ({
 					'status': {
 						'type': 'ERROR',
-						'message': 'Unsupported column type! Only SHORT columns supported for now!'
+						'message': 'Unsupported SSFF column type! Only DOUBLE, FLOAT, LONG, SHORT, BYTE columns supported,'
 					}
 				});
+			} else {
+				var byteSizeOfDataBuffer = bytePerTime * jso.Columns[0].values.length;
+
+				var dataBuff = new ArrayBuffer(byteSizeOfDataBuffer);
+				var dataBuffView = new DataView(dataBuff);
+
+				// convert buffer to header
+				var ssffBufView = new Uint8Array(global.stringToUint(headerStr));
+
+				// loop through vals and append array of each column to ssffBufView
+				var byteOffSet = 0;
+				jso.Columns[0].values.forEach((curArray, curArrayIDX) => {
+					jso.Columns.forEach((curCol) => {
+						if (curCol.ssffdatatype === 'BYTE') {
+							curCol.values[curArrayIDX].forEach((val) => {
+								dataBuffView.setInt8(byteOffSet, val, true);
+								byteOffSet += 1;
+							});
+						} else if (curCol.ssffdatatype === 'SHORT') {
+							curCol.values[curArrayIDX].forEach((val) => {
+								dataBuffView.setInt16(byteOffSet, val, true);
+								byteOffSet += 2;
+							});
+						} else if (curCol.ssffdatatype === 'LONG') {
+							curCol.values[curArrayIDX].forEach((val) => {
+								dataBuffView.setInt32(byteOffSet, val, true);
+								byteOffSet += 4;
+							});
+						} else if (curCol.ssffdatatype === 'FLOAT') {
+							curCol.values[curArrayIDX].forEach((val) => {
+								dataBuffView.setFloat32(byteOffSet, val, true);
+								byteOffSet += 4;
+							});
+						} else if (curCol.ssffdatatype === 'DOUBLE') {
+							curCol.values[curArrayIDX].forEach((val) => {
+								dataBuffView.setFloat64(byteOffSet, val, true);
+								byteOffSet += 8;
+							});
+						} else {
+							failed = true;
+						}
+					});
+				});
+
+				// check if failed
+				if (failed) {
+					return ({
+						'status': {
+							'type': 'ERROR',
+							'message': 'Unsupported column type discovered when writing SSFF data; this is not expected behaviour.'
+						}
+					});
+				}
 			}
 
-			var byteSizeOfDataBuffer = bytePerTime * jso.Columns[0].values.length;
-
-			var dataBuff = new ArrayBuffer(byteSizeOfDataBuffer);
-			var dataBuffView = new DataView(dataBuff);
-
-			// convert buffer to header
-			var ssffBufView = new Uint8Array(global.stringToUint(headerStr));
-
-			// loop through vals and append array of each column to ssffBufView
-			var byteOffSet = 0;
-			jso.Columns[0].values.forEach((curArray, curArrayIDX) => {
-				jso.Columns.forEach((curCol) => {
-					if (curCol.ssffdatatype === 'SHORT') {
-						curCol.values[curArrayIDX].forEach((val) => {
-							dataBuffView.setInt16(byteOffSet, val, true);
-							byteOffSet += 2;
-						});
-					} else {
-						failed = true;
-					}
-				});
-			});
-
-			// check if failed
-			if (failed) {
-				return ({
-					'status': {
-						'type': 'ERROR',
-						'message': 'Unsupported column type! Only SHORT columns supported for now!'
-					}
-				});
-			}
 			// concatenate header with data
 			var tmp = new Uint8Array(dataBuffView.buffer);
 			ssffBufView = new global.Uint8Concat(ssffBufView, tmp);
