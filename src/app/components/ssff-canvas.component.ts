@@ -197,8 +197,8 @@ let SsffCanvasComponent = {
                         }
                         if (contColors !== undefined) {
                             if (contColors.colors[contourNr] !== undefined) {
-                                this.ctx.strokeStyle = contColors.colors[contourNr];
-                                this.ctx.fillStyle = contColors.colors[contourNr];
+                                this.ctx.strokeStyle = this.ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
+                                this.ctx.fillStyle = this.ConfigProviderService.vals.perspectives[ViewStateService.curPerspectiveIdx].signalCanvases.contourColors[0].colors[contourNr];
                             }
                         }
                         
