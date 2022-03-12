@@ -282,38 +282,57 @@ let SignalCanvasMarkupCanvasComponent = {
         private drawMarkup () {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             // draw current viewport selected
+            var minVal = 0;
+            var maxVal = 0;
+	        var unit = '';	
             if (this.trackName === 'OSCI') {
                 this.DrawHelperService.drawViewPortTimes(this.ctx, true);
                 this.DrawHelperService.drawCurViewPortSelected(this.ctx, true);
             } else if (this.trackName === 'SPEC') {
+                minVal = this.ViewStateService.spectroSettings.rangeFrom;
+                maxVal = this.ViewStateService.spectroSettings.rangeTo;
+		        unit = 'Hz';
                 this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
                 this.DrawHelperService.drawMinMaxAndName(
                     this.ctx, 
                     '', 
-                    this.ViewStateService.spectroSettings.rangeFrom, 
-                    this.ViewStateService.spectroSettings.rangeTo, 
+                    minVal, 
+                    maxVal, 
                     2);
             } else {
                 var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
-                var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+                var minMaxValLims = this.ConfigProviderService.getValueLimsOfTrack(this.trackName); 
+		        if(!angular.equals(minMaxValLims, {})){
+			        minVal = minMaxValLims.minVal;
+			        maxVal = minMaxValLims.maxVal;
+			        if(minMaxValLims.unit !== undefined){
+				        unit = minMaxValLims.unit;
+			        }
+		        } else {
+			        var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+			        if(typeof col !== "undefined"){
+                        minVal = col._minVal;
+                    	maxVal = col._maxVal;
+			    }
+		    }
                 this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
-                if(typeof col !== "undefined"){
+                if(maxVal > 0){
                     this.DrawHelperService.drawMinMaxAndName(
                         this.ctx, 
                         this.trackName, 
-                        col._minVal, 
-                        col._maxVal, 
+                        minVal, 
+                        maxVal, 
                         2);
                 }
             }
             if(this.drawCrossHairs){
-                this.DrawHelperService.drawCrossHairs(
+		this.DrawHelperService.drawCrossHairs(
                     this.ctx, 
                     this.curMouseX,
                     this.curMouseY, 
-                    this.ViewStateService.spectroSettings.rangeFrom, 
-                    this.ViewStateService.spectroSettings.rangeTo, 
-                    'Hz', 
+                    minVal, 
+                    maxVal, 
+                    unit, 
                     this.trackName);
             } else {
                 this.DrawHelperService.drawCrossHairX(this.ctx, this.curMouseX);
