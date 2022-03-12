@@ -722,40 +722,35 @@ class DrawHelperService{
 					ctx.stroke();
 				} else {
 					// draw min max an name of track
-					var tr = this.ConfigProviderService.getSsffTrackConfig(trackname);
-					var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-
-					if(typeof col !== "undefined"){
-						mouseFreq = col._maxVal - (mouseY / ctx.canvas.height * (col._maxVal - col._minVal));
-						mouseFreq = this.MathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
-						this.FontScaleService.drawUndistortedText(
-							ctx, 
-							mouseFreq, 
-							fontSize, 
-							styles.fontSmallFamily, 
-							5, 
-							y, 
-							styles.colorTransparentRed, 
-							true);
-						this.FontScaleService.drawUndistortedText(
-							ctx, 
-							mouseFreq, 
-							fontSize, 
-							styles.fontSmallFamily, 
-							ctx.canvas.width - 5 - tW, 
-							y, 
-							styles.colorTransparentRed, 
-							true);
-						ctx.beginPath();
-						ctx.moveTo(0, mouseY);
-						ctx.lineTo(5, mouseY + 5);
-						ctx.moveTo(0, mouseY);
-						ctx.lineTo(ctx.canvas.width, mouseY);
-						ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
-						ctx.moveTo(mouseX, 0);
-						ctx.lineTo(mouseX, ctx.canvas.height);
-						ctx.stroke();
-					}
+					mouseFreq = max - (mouseY / ctx.canvas.height * (max - min));
+					mouseFreq = this.MathHelperService.roundToNdigitsAfterDecPoint(mouseFreq, 2); // crop
+					this.FontScaleService.drawUndistortedText(
+						ctx, 
+						mouseFreq + unit, 
+						fontSize, 
+						styles.fontSmallFamily, 
+						5, 
+						y, 
+						styles.colorTransparentRed, 
+						true);
+					this.FontScaleService.drawUndistortedText(
+						ctx, 
+						mouseFreq + unit,  
+						fontSize, 
+						styles.fontSmallFamily, 
+						ctx.canvas.width - 5 - tW, 
+						y, 
+						styles.colorTransparentRed, 
+						true);
+					ctx.beginPath();
+					ctx.moveTo(0, mouseY);
+					ctx.lineTo(5, mouseY + 5);
+					ctx.moveTo(0, mouseY);
+					ctx.lineTo(ctx.canvas.width, mouseY);
+					ctx.lineTo(ctx.canvas.width - 5, mouseY + 5);
+					ctx.moveTo(mouseX, 0);
+					ctx.lineTo(mouseX, ctx.canvas.height);
+					ctx.stroke();
 				}
 			}
 			this.FontScaleService.drawUndistortedTextTwoLines(
