@@ -154,7 +154,8 @@
 				"minMaxValLims":[{
 					"ssffTrackName": "fundFreq",
 					"minVal": 0,
-					"maxVal": 200
+					"maxVal": 200,
+					"unit": "Hz"
 				}],
 				"horizontalLines": [{
                     "ssffTrackName": "fundFreq",
