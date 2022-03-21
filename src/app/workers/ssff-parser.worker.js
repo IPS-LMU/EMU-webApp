@@ -455,31 +455,37 @@ SsffParserWorker.prototype = {
 
 				// loop through vals and append array of each column to ssffBufView
 				var byteOffSet = 0;
+				var littleEndian;
+				if (machineID === 'Machine IBM-PC\n') {
+					littleEndian = true;
+				} else {
+					littleEndian = false;
+				}
 				jso.Columns[0].values.forEach((curArray, curArrayIDX) => {
 					jso.Columns.forEach((curCol) => {
 						if (curCol.ssffdatatype === 'BYTE') {
 							curCol.values[curArrayIDX].forEach((val) => {
-								dataBuffView.setInt8(byteOffSet, val, true);
+								dataBuffView.setInt8(byteOffSet, val);
 								byteOffSet += 1;
 							});
 						} else if (curCol.ssffdatatype === 'SHORT') {
 							curCol.values[curArrayIDX].forEach((val) => {
-								dataBuffView.setInt16(byteOffSet, val, true);
+								dataBuffView.setInt16(byteOffSet, val, littleEndian);
 								byteOffSet += 2;
 							});
 						} else if (curCol.ssffdatatype === 'LONG') {
 							curCol.values[curArrayIDX].forEach((val) => {
-								dataBuffView.setInt32(byteOffSet, val, true);
+								dataBuffView.setInt32(byteOffSet, val, littleEndian);
 								byteOffSet += 4;
 							});
 						} else if (curCol.ssffdatatype === 'FLOAT') {
 							curCol.values[curArrayIDX].forEach((val) => {
-								dataBuffView.setFloat32(byteOffSet, val, true);
+								dataBuffView.setFloat32(byteOffSet, val, littleEndian);
 								byteOffSet += 4;
 							});
 						} else if (curCol.ssffdatatype === 'DOUBLE') {
 							curCol.values[curArrayIDX].forEach((val) => {
-								dataBuffView.setFloat64(byteOffSet, val, true);
+								dataBuffView.setFloat64(byteOffSet, val, littleEndian);
 								byteOffSet += 8;
 							});
 						} else {
