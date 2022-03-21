@@ -23,7 +23,6 @@ Visit [this URL](http://ips-lmu.github.io/EMU-webApp/) and click the `open demo 
 ## Tools for development
 
 * install [nodejs and npm](http://nodejs.org/)
-* install `compass` and `sass` with `gem install sass` and `gem install compass`
 * clone this repo with `git clone https://github.com/IPS-LMU/EMU-webApp.git`
 * navigate to the freshly cloned repo (the folder is usually named `EMU-webApp`) and install dependencies with the command `npm install`
 * run development server `http://localhost:9000`  with `npm run start`
