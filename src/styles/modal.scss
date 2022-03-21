@@ -14,7 +14,7 @@
     z-index: 99998;
     opacity:0;
     pointer-events: none;
-    @include vendor-prefix(transition, "opacity "+$animation-period/2+"ms ease-in");
+    @include vendor-prefix(transition, "opacity "+calc($animation-period / 2)+"ms ease-in");
     > div {
         width: 84%;
         height: 90%;
