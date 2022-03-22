@@ -1,5 +1,18 @@
 # What's New
 
+## Version 1.4.0
+
+### new features / performance tweaks / improvements
+
+- replaced node-sass with dart-sass
+- updated a few dependencies
+
+### bug fixes
+
+- SSFF parser worker can now save BYTE, LONG, FLOAT, and DOUBLE in addition to SHORT; can also save big-endian (fixes #308; thanks @samgregory)
+- Fix assigning colors to individual signalCanvas contours (fixes #303; thanks @samgregory)
+- Crosshair now reports correct y value when minMaxValLims is set (fixes #296; thanks @samgregory)
+
 ## Version 1.3.9
 
 ### new features / performance tweaks / improvements
