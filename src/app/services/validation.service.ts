@@ -292,10 +292,8 @@ class ValidationService{
 				name: s.config.url,
 				data: s.data
 			});
-			// add annotationFileSchema to tv4 for de-referencing $ref
-			if (s.config.url === 'schemaFiles/annotationFileSchema.json') {
-				tv4.addSchema(s.config.url, s.data);
-			}
+			// add schema data to tv4 for de-referencing $ref
+			tv4.addSchema(s.config.url, s.data);
 		});
 	};
 	

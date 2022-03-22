@@ -17,7 +17,7 @@
 			"additionalProperties": false
 		},
 		"annotation": {
-			"$ref": "schemaFiles/annotationFileSchema.json"
+			"$ref": "annotationFileSchema.json"
 		},
 		"ssffFiles": {
 			"type": "array",
