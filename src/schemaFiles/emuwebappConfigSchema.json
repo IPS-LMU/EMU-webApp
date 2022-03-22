@@ -254,6 +254,28 @@
 									"additionalProperties": false
 								}
 							},
+							"minMaxValLims": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"ssffTrackName": {
+											"type": "string"
+										},
+										"minVal": {
+											"type": "number"
+										},
+										"maxVal": {
+											"type": "number"
+										},
+										"unit": {
+											"type": "string"
+										}
+									},
+									"required": ["ssffTrackName", "minVal", "maxVal"],
+									"additionalProperties": false
+								}
+							},
 							"horizontalLines": {
 								"type": "array",
 								"items": {
@@ -314,7 +336,7 @@
 							}
 						},
 						"required": ["order", "assign", "contourLims"],
-						"additionalProperties": true
+						"additionalProperties": false
 					},
 					"hierarchyPathCanvases": {
 						"type": "object",
