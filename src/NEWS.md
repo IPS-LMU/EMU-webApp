@@ -1,5 +1,15 @@
 # What's New
 
+## Version 1.5.0
+
+### bug fixes
+
+- Correction tool now works correctly when `Start_Time` of SSFF track is not 0
+- When `Start_Time` is not 0, the part of the SSFF track in the left part of the viewport was not displayed
+- Fixed schema validation error (#315)
+- The schema for `signalCanvases` does not allow additional properties anymore
+- Some new features were not reflected in `emuwebappConfigSchema`
+
 ## Version 1.4.0
 
 ### new features / performance tweaks / improvements
