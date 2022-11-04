@@ -284,14 +284,14 @@ let SignalCanvasMarkupCanvasComponent = {
             // draw current viewport selected
             var minVal = 0;
             var maxVal = 0;
-	        var unit = '';	
+            var unit = '';
             if (this.trackName === 'OSCI') {
                 this.DrawHelperService.drawViewPortTimes(this.ctx, true);
                 this.DrawHelperService.drawCurViewPortSelected(this.ctx, true);
             } else if (this.trackName === 'SPEC') {
                 minVal = this.ViewStateService.spectroSettings.rangeFrom;
                 maxVal = this.ViewStateService.spectroSettings.rangeTo;
-		        unit = 'Hz';
+                unit = 'Hz';
                 this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
                 this.DrawHelperService.drawMinMaxAndName(
                     this.ctx, 
@@ -302,19 +302,19 @@ let SignalCanvasMarkupCanvasComponent = {
             } else {
                 var tr = this.ConfigProviderService.getSsffTrackConfig(this.trackName);
                 var minMaxValLims = this.ConfigProviderService.getValueLimsOfTrack(this.trackName); 
-		        if(!angular.equals(minMaxValLims, {})){
-			        minVal = minMaxValLims.minVal;
-			        maxVal = minMaxValLims.maxVal;
-			        if(minMaxValLims.unit !== undefined){
-				        unit = minMaxValLims.unit;
-			        }
-		        } else {
-			        var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
-			        if(typeof col !== "undefined"){
+                if(!angular.equals(minMaxValLims, {})){
+                    minVal = minMaxValLims.minVal;
+                    maxVal = minMaxValLims.maxVal;
+                    if(minMaxValLims.unit !== undefined){
+                        unit = minMaxValLims.unit;
+                    }
+                } else {
+                    var col = this.SsffDataService.getColumnOfTrack(tr.name, tr.columnName);
+                    if(typeof col !== "undefined"){
                         minVal = col._minVal;
-                    	maxVal = col._maxVal;
-			    }
-		    }
+                        maxVal = col._maxVal;
+                    }
+                }
                 this.DrawHelperService.drawCurViewPortSelected(this.ctx, false);
                 if(maxVal > 0){
                     this.DrawHelperService.drawMinMaxAndName(
@@ -326,7 +326,7 @@ let SignalCanvasMarkupCanvasComponent = {
                 }
             }
             if(this.drawCrossHairs){
-		this.DrawHelperService.drawCrossHairs(
+                this.DrawHelperService.drawCrossHairs(
                     this.ctx, 
                     this.curMouseX,
                     this.curMouseY, 
