@@ -2,6 +2,10 @@
 
 ## Version 1.5.0
 
+### new features / performance tweaks / improvements
+
+- Updated a few dependencies
+
 ### bug fixes
 
 - Correction tool now works correctly when `Start_Time` of SSFF track is not 0
