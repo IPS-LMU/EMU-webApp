@@ -153,31 +153,18 @@ let SignalCanvasMarkupCanvasComponent = {
                                             var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
                                             var curMouseTime = startTimeVP + (this.ViewStateService.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
                                             var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
-                                            var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
                                             if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
                                                 //console.log('early return');
                                                 return;
                                             }
                                             this.ViewStateService.curPreselColumnSample = curMouseSample - colStartSampleNr;
-                                            var x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * this.canvas.width;
-                                            var y = this.canvas.height - curSampleArrs[this.ViewStateService.curPreselColumnSample][this.ViewStateService.curCorrectionToolNr - 1] / (this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.spectroSettings.rangeFrom) * this.canvas.height;
-
-                                            // draw sample
-                                            this.ctx.strokeStyle = 'black';
-                                            this.ctx.fillStyle = 'black';
-                                            this.ctx.beginPath();
-                                            this.ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                                            this.ctx.closePath();
-                                            this.ctx.stroke();
-                                            this.ctx.fill();
-
 
                                             if (event.shiftKey) {
                                                 var oldValue = angular.copy(curSampleArrs[this.ViewStateService.curPreselColumnSample][this.ViewStateService.curCorrectionToolNr - 1]);
                                                 var newValue = this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.getY(event) / event.originalEvent.target.height * this.ViewStateService.spectroSettings.rangeTo; // SIC only using rangeTo
 
                                                 curSampleArrs[this.ViewStateService.curPreselColumnSample][this.ViewStateService.curCorrectionToolNr - 1] = this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.getY(event) / event.originalEvent.target.height * this.ViewStateService.spectroSettings.rangeTo;
-                                                var updateObj = this.HistoryService.updateCurChangeObj({
+                                                this.HistoryService.updateCurChangeObj({
                                                     'type': 'SSFF',
                                                     'trackName': this.formantCorrectionTrack.name,
                                                     'sampleBlockIdx': colStartSampleNr + this.ViewStateService.curPreselColumnSample,
@@ -185,23 +172,6 @@ let SignalCanvasMarkupCanvasComponent = {
                                                     'oldValue': oldValue,
                                                     'newValue': newValue
                                                 });
-
-                                                //draw updateObj as overlay
-                                                for (var key in updateObj) {
-                                                    curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
-                                                    x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * this.canvas.width;
-                                                    y = this.canvas.height - updateObj[key].newValue / (this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.spectroSettings.rangeFrom) * this.canvas.height;
-
-                                                    // draw sample
-                                                    this.ctx.strokeStyle = 'red';
-                                                    this.ctx.fillStyle = 'red';
-                                                    // this.ctx.lineWidth = 4;
-                                                    this.ctx.beginPath();
-                                                    this.ctx.arc(x, y - 1, 2, 0, 2 * Math.PI, false);
-                                                    this.ctx.closePath();
-                                                    this.ctx.stroke();
-                                                    this.ctx.fill();
-                                                }
                                             }
                                         }
                                     }
@@ -329,6 +299,48 @@ let SignalCanvasMarkupCanvasComponent = {
                     this.trackName);
             } else {
                 this.DrawHelperService.drawCrossHairX(this.ctx, this.curMouseX);
+            }
+            if (this.formantCorrectionTrack) {
+                // While a formant is being corrected, highlight both the new and the old value
+
+                let curChangeObj = this.HistoryService.curChangeObj;
+                let sRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(this.formantCorrectionTrack.name);
+
+                for (let key in curChangeObj) {
+                    let currentSampleTime = (1 / sRaSt.sampleRate * curChangeObj[key].sampleBlockIdx) + sRaSt.startTime;
+                    let x =
+                        (currentSampleTime - this.ViewStateService.getViewPortStartTime())
+                        / (this.ViewStateService.getViewPortEndTime() - this.ViewStateService.getViewPortStartTime())
+                        * this.canvas.width;
+                    let yNew =
+                        this.canvas.height
+                        - curChangeObj[key].newValue
+                        / (this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.spectroSettings.rangeFrom)
+                        * this.canvas.height;
+                    let yOld =
+                        this.canvas.height
+                        - curChangeObj[key].oldValue
+                        / (this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.spectroSettings.rangeFrom)
+                        * this.canvas.height;
+
+                    // draw new value
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.fillStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, yNew - 1, 2, 0, 2 * Math.PI, false);
+                    this.ctx.closePath();
+                    this.ctx.stroke();
+                    this.ctx.fill();
+
+                    // draw old value
+                    this.ctx.strokeStyle = 'red';
+                    this.ctx.fillStyle = 'red';
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, yOld - 1, 2, 0, 2 * Math.PI, false);
+                    this.ctx.closePath();
+                    this.ctx.stroke();
+                    this.ctx.fill();
+                }
             }
 
             // draw moving boundary line if moving
