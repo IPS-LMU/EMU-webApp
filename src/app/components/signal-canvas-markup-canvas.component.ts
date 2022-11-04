@@ -48,9 +48,7 @@ let SignalCanvasMarkupCanvasComponent = {
         private canvas;
         private ctx;
 
-        private tr; 
-        private col; 
-        private sRaSt;
+        private formantCorrectionTrack;
 
         private curMouseY;
         private drawCrossHairs;
@@ -142,21 +140,20 @@ let SignalCanvasMarkupCanvasComponent = {
                                 if (this.SsffDataService.data.length !== 0) {
                                     if (!this.ViewStateService.getdragBarActive()) {
                                         if (this.ViewStateService.curCorrectionToolNr !== undefined && !this.ViewStateService.getdragBarActive() && !$.isEmptyObject(this.ConfigProviderService.getAssignment(this.trackName))) {
-                                            // var col = SsffDataService.data[0].Columns[0];
-                                            if (this.tr === undefined) {
-                                                this.tr = this.ConfigProviderService.getSsffTrackConfig('FORMANTS');
+                                            if (this.formantCorrectionTrack === undefined) {
+                                                this.formantCorrectionTrack = this.ConfigProviderService.getSsffTrackConfig('FORMANTS');
                                             }
-                                            this.col = this.SsffDataService.getColumnOfTrack(this.tr.name, this.tr.columnName);
-                                            this.sRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(this.tr.name);
+                                            var col = this.SsffDataService.getColumnOfTrack(this.formantCorrectionTrack.name, this.formantCorrectionTrack.columnName);
+                                            var sRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(this.formantCorrectionTrack.name);
                                             var startTimeVP = this.ViewStateService.getViewPortStartTime();
                                             var endTimeVP = this.ViewStateService.getViewPortEndTime();
-                                            var colStartSampleNr = Math.round(startTimeVP * this.sRaSt.sampleRate + this.sRaSt.startTime);
-                                            var colEndSampleNr = Math.round(endTimeVP * this.sRaSt.sampleRate + this.sRaSt.startTime);
+                                            var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
+                                            var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
                                             var nrOfSamples = colEndSampleNr - colStartSampleNr;
-                                            var curSampleArrs = this.col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
+                                            var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
                                             var curMouseTime = startTimeVP + (this.ViewStateService.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
-                                            var curMouseSample = Math.round((curMouseTime + this.sRaSt.startTime) * this.sRaSt.sampleRate) - 1; //-1 for in view correction
-                                            var curMouseSampleTime = (1 / this.sRaSt.sampleRate * curMouseSample) + this.sRaSt.startTime;
+                                            var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
+                                            var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
                                             if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
                                                 //console.log('early return');
                                                 return;
@@ -182,7 +179,7 @@ let SignalCanvasMarkupCanvasComponent = {
                                                 curSampleArrs[this.ViewStateService.curPreselColumnSample][this.ViewStateService.curCorrectionToolNr - 1] = this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.getY(event) / event.originalEvent.target.height * this.ViewStateService.spectroSettings.rangeTo;
                                                 var updateObj = this.HistoryService.updateCurChangeObj({
                                                     'type': 'SSFF',
-                                                    'trackName': this.tr.name,
+                                                    'trackName': this.formantCorrectionTrack.name,
                                                     'sampleBlockIdx': colStartSampleNr + this.ViewStateService.curPreselColumnSample,
                                                     'sampleIdx': this.ViewStateService.curCorrectionToolNr - 1,
                                                     'oldValue': oldValue,
@@ -191,7 +188,7 @@ let SignalCanvasMarkupCanvasComponent = {
 
                                                 //draw updateObj as overlay
                                                 for (var key in updateObj) {
-                                                    curMouseSampleTime = (1 / this.sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + this.sRaSt.startTime;
+                                                    curMouseSampleTime = (1 / sRaSt.sampleRate * updateObj[key].sampleBlockIdx) + sRaSt.startTime;
                                                     x = (curMouseSampleTime - startTimeVP) / (endTimeVP - startTimeVP) * this.canvas.width;
                                                     y = this.canvas.height - updateObj[key].newValue / (this.ViewStateService.spectroSettings.rangeTo - this.ViewStateService.spectroSettings.rangeFrom) * this.canvas.height;
 
@@ -251,11 +248,7 @@ let SignalCanvasMarkupCanvasComponent = {
                 if(changes.curBndl){
                     if (!$.isEmptyObject(this.SsffDataService.data)) {
                         if (this.SsffDataService.data.length !== 0) {
-                            this.tr = this.ConfigProviderService.getSsffTrackConfig('FORMANTS');
-                            if (this.tr !== undefined) {
-                                this.col = this.SsffDataService.getColumnOfTrack(this.tr.name, this.tr.columnName);
-                                this.sRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(this.tr.name);
-                            }
+                            this.formantCorrectionTrack = this.ConfigProviderService.getSsffTrackConfig('FORMANTS');
                         }
                     }
                 }
