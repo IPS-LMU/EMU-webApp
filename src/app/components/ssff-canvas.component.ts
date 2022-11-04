@@ -142,9 +142,9 @@ let SsffCanvasComponent = {
             
             var startTimeVP = ViewStateService.getViewPortStartTime();
             var endTimeVP = ViewStateService.getViewPortEndTime();
-            var colStartSampleNr = Math.round(startTimeVP * sR + sT);
-            var colEndSampleNr = Math.round(endTimeVP * sR + sT);
-            var nrOfSamples = colEndSampleNr - colStartSampleNr;
+            var colStartSampleNr = Math.max(0, Math.ceil((startTimeVP - sT) * sR));
+            var colEndSampleNr = Math.min(Math.floor((endTimeVP - sT) * sR), col.values.length - 1);
+            var nrOfSamples = colEndSampleNr - colStartSampleNr + 1;
             var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
             
             // draw horizontal lines

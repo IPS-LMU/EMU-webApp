@@ -147,12 +147,13 @@ let SignalCanvasMarkupCanvasComponent = {
                                             var sRaSt = this.SsffDataService.getSampleRateAndStartTimeOfTrack(this.formantCorrectionTrack.name);
                                             var startTimeVP = this.ViewStateService.getViewPortStartTime();
                                             var endTimeVP = this.ViewStateService.getViewPortEndTime();
-                                            var colStartSampleNr = Math.round(startTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-                                            var colEndSampleNr = Math.round(endTimeVP * sRaSt.sampleRate + sRaSt.startTime);
-                                            var nrOfSamples = colEndSampleNr - colStartSampleNr;
+                                            var colStartSampleNr = Math.max(0, Math.ceil((startTimeVP - sRaSt.startTime) * sRaSt.sampleRate));
+                                            var colEndSampleNr = Math.min(Math.floor((endTimeVP - sRaSt.startTime) * sRaSt.sampleRate), col.values.length - 1);
+                                            var nrOfSamples = colEndSampleNr - colStartSampleNr + 1;
                                             var curSampleArrs = col.values.slice(colStartSampleNr, colStartSampleNr + nrOfSamples);
                                             var curMouseTime = startTimeVP + (this.ViewStateService.getX(event) / event.originalEvent.target.width) * (endTimeVP - startTimeVP);
-                                            var curMouseSample = Math.round((curMouseTime + sRaSt.startTime) * sRaSt.sampleRate) - 1; //-1 for in view correction
+                                            var curMouseSample = Math.round((curMouseTime - sRaSt.startTime) * sRaSt.sampleRate);
+                                            var curMouseSampleTime = (1 / sRaSt.sampleRate * curMouseSample) + sRaSt.startTime;
                                             if (curMouseSample - colStartSampleNr < 0 || curMouseSample - colStartSampleNr >= curSampleArrs.length) {
                                                 //console.log('early return');
                                                 return;
