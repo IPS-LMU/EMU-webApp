@@ -1,5 +1,15 @@
 # What's New
 
+## Version 1.5.1
+
+### new features / performance tweaks / improvements
+
+- allow databases that test the beta feature of using Rda alongside SSFF to be loaded instead of causing a schema violation
+
+### bug fixes
+
+- fix snap to level above/below feature: the neighbor level is now determined by what the user actually sees, and no longer by the order of the levels array in the `_annot.json`
+
 ## Version 1.5.0
 
 ### new features / performance tweaks / improvements
