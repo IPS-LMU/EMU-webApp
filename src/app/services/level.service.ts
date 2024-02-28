@@ -1201,31 +1201,43 @@ class LevelService{
 		
 		this.DataService.getLevelData().forEach((thisTd, tIdx) => {
 			if (thisTd.name === levelName) {
+				var currentPerspective = this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx];
+				var levelOrder = currentPerspective.levelCanvases.order;
+				var levelIndex = levelOrder.indexOf(levelName);
+				var neighborLevelName;
+				
 				if (toTop) {
-					if (tIdx >= 1) {
-						neighTd = this.DataService.getLevelData()[tIdx - 1];
+					if (levelIndex >= 1) {
+						neighborLevelName = levelOrder[levelIndex - 1];
 					} else {
 						return false;
 					}
 				} else {
-					if (tIdx < this.DataService.getLevelData().length - 1) {
-						neighTd = this.DataService.getLevelData()[tIdx + 1];
+					if (levelIndex < levelOrder.length - 1) {
+						neighborLevelName = levelOrder[levelIndex + 1];
 					} else {
 						return false;
 					}
 				}
-				neighTd.items.forEach((itm) => {
-					if (neighTd.type === 'SEGMENT') {
-						sampleTarget = itm.sampleStart;
-					} else if (neighTd.type === 'EVENT') {
-						sampleTarget = itm.samplePoint;
-					}
-					absDist = Math.abs(sample - sampleTarget);
-					
-					if (absDist < absMinDist) {
+				
+				this.DataService.getLevelData().forEach((neighborLevelData) => {
+					if (neighborLevelData.name === neighborLevelName) {
+						neighTd = neighborLevelData;
 						
-						absMinDist = absDist;
-						minDist = sampleTarget - sample;
+						neighTd.items.forEach((itm) => {
+							if (neighTd.type === 'SEGMENT') {
+								sampleTarget = itm.sampleStart;
+							} else if (neighTd.type === 'EVENT') {
+								sampleTarget = itm.samplePoint;
+							}
+							absDist = Math.abs(sample - sampleTarget);
+							
+							if (absDist < absMinDist) {
+								
+								absMinDist = absDist;
+								minDist = sampleTarget - sample;
+							}
+						});
 					}
 				});
 			}
