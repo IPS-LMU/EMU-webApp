@@ -22,6 +22,9 @@
 					"fileExtension": {
 						"type": "string"
 					},
+					"fileFormat": {
+						"enum": ["ssff", "Rda"]
+					},
 					"name": {
 						"type": "string"
 					}
