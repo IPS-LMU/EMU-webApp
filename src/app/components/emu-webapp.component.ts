@@ -42,6 +42,12 @@ let EmuWebAppComponent = {
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.openMenu && !$ctrl.ViewStateService.bundleListSideBarDisabled"
                 ng-click="$ctrl.ViewStateService.toggleBundleListSideBar($ctrl.styles.animation.period);" 
                 style="float:left"><i class="material-icons">menu</i></button>
+
+                <button class="emuwebapp-mini-btn left"
+                ng-show="$ctrl.ConfigProviderService.vals.activeButtons.saveBundle && $ctrl.ViewStateService.bundleListSideBarDisabled"
+                ng-click="$ctrl.DbObjLoadSaveService.saveBundle();"
+                ng-style="$ctrl.getUnsavedChangesColor()"
+                style="float:left"><i class="material-icons">save</i> Save</button>
                 
                 <button class="emuwebapp-mini-btn left" 
                 ng-show="$ctrl.ConfigProviderService.vals.activeButtons.addLevelSeg" 
@@ -1101,6 +1107,15 @@ let EmuWebAppComponent = {
 		private cursorOutOfTextField() {
 			this.ViewStateService.setcursorInTextField(false);
 		};
+
+		private getUnsavedChangesColor() {
+			if (this.HistoryService.movesAwayFromLastSave !== 0) {
+				return {
+					'background-color': '#f00',
+					'color': 'white'
+				};
+			}
+		}
 
 		/////////////////////////////////////////
 		// handle button clicks
