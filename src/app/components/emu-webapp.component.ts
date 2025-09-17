@@ -19,8 +19,8 @@ let EmuWebAppComponent = {
 		></new-version-hint>
         <!-- end: hint -->
         <!-- start: left side menu bar -->
-		<!-- ng-if="$ctrl.ViewStateService.bundleListSideBarOpen" -->
 		<bundle-list-side-bar 
+		ng-if="!$ctrl.ViewStateService.bundleListSideBarDisabled"
 		open="$ctrl.ViewStateService.bundleListSideBarOpen">
 		</bundle-list-side-bar>
         <!-- end: left side menu bar -->
@@ -39,7 +39,7 @@ let EmuWebAppComponent = {
             <div class="emuwebapp-top-menu">
                 <button class="emuwebapp-button-icon" 
                 id="bundleListSideBarOpen" 
-                ng-show="$ctrl.ConfigProviderService.vals.activeButtons.openMenu" 
+                ng-show="$ctrl.ConfigProviderService.vals.activeButtons.openMenu && !$ctrl.ViewStateService.bundleListSideBarDisabled"
                 ng-click="$ctrl.ViewStateService.toggleBundleListSideBar($ctrl.styles.animation.period);" 
                 style="float:left"><i class="material-icons">menu</i></button>
                 
@@ -490,6 +490,9 @@ let EmuWebAppComponent = {
                     ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
                     ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
                     ConfigProviderService.embeddedVals.fromUrlParams = true;
+                }
+                if (searchObject.hasOwnProperty("disableBundleListSidebar")) {
+                    this.ViewStateService.bundleListSideBarDisabled = true;
                 }
 
                 // call function on init
