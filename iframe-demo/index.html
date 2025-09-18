@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iframe Demo</title>
+    <style>
+        html, body {
+            height:100%;
+            display: flex;
+            flex:auto;
+            flex-direction: column;
+        }
+
+        .flex {
+            display: flex;
+            flex:auto;
+            flex-direction: column;
+            height:100%;
+        }
+        #wrapper{
+            height:100%;
+            width: 100%;
+        }
+
+        .sidebar {
+            height:100%;
+            background-color: ghostwhite;
+            float: left;
+            padding:5px;
+            border-top: 1px solid gray;
+            border-left: 1px solid gray;
+            border-bottom: 1px solid gray;
+            width: 300px;
+        }
+
+        .iframe-wrapper{
+            border-top: 1px solid gray;
+            border-right: 1px solid gray;
+            border-bottom: 1px solid gray;
+        }
+
+        .clearfix{
+            clear: both;
+        }
+
+        #applyButton{
+            width:100%;
+            padding: 5px;
+        }
+
+        iframe{
+            border: none;
+        }
+
+        .options{
+            padding-bottom: 20px;
+        }
+
+        .options .option{
+            padding-bottom: 10px;
+        }
+
+        input[type=text]{
+            padding:5px;
+            display:block;
+        }
+    </style>
+    <script type="module">
+        const emuWebAppURL = "http://localhost:9000/";
+
+        const options = {
+          disableSidebar: true,
+          saveToWindowParent: true,
+          audioGetUrl: "http://localhost:7283/msajc003.wav",
+          labelGetUrl:  "http://localhost:7283/msajc003_annot.json",
+          labelType: "annotJSON"
+        }
+
+        let iframe, applyButton, disableSidebarOption, saveToWindowParentOption, labelTypeOption;
+
+        /**
+         * returns a string representing query parameters and their values without empty values.
+         * @param params
+         */
+        export function stringifyQueryParams(params) {
+          if (!params) {
+            return '';
+          }
+
+          const strArray = [];
+
+          for (const key of Object.keys(params)) {
+            let value = params[key];
+            if (value !== undefined) {
+              if (typeof value !== 'string' && Array.isArray(value)) {
+                value = value.join(',');
+              }
+              strArray.push(`${key}=${encodeURIComponent(value)}`);
+            }
+          }
+
+          return strArray.length > 0 ? `?${strArray.join('&')}` : '';
+        }
+
+        function applyOptions() {
+          options.disableSidebar = disableSidebarOption.checked;
+          options.saveToWindowParent = saveToWindowParentOption.checked;
+          options.labelType = labelTypeOption.value;
+          iframe.src = `${emuWebAppURL}${stringifyQueryParams(options)}`;
+        }
+
+        function onWindowMessageRetrieved(event) {
+          if (event?.data?.data) {
+            // valid data object
+            console.log(`----\n${new Date().toLocaleString()}: Received new data from iframe:`);
+            console.log(event.data.data);
+            console.log("----")
+          }
+        }
+
+        function initialize() {
+          iframe = document.getElementsByTagName("iframe")[0];
+          window.addEventListener("message", onWindowMessageRetrieved);
+
+          applyButton = document.getElementById("applyButton");
+          applyButton.addEventListener("click", applyOptions);
+
+          // options
+          disableSidebarOption = document.getElementById("disableSidebarOption");
+          disableSidebarOption.checked = options.disableSidebar;
+          saveToWindowParentOption = document.getElementById("saveToWindowParentOption");
+          saveToWindowParentOption.checked = options.saveToWindowParent;
+          labelTypeOption = document.getElementById("labelTypeOption");
+          labelTypeOption.value = options.labelType;
+        }
+
+        function afterDocumentLoaded() {
+          initialize();
+          applyOptions();
+        }
+
+        window.addEventListener("load", afterDocumentLoaded);
+    </script>
+</head>
+<body>
+    <h2>iframe demo</h2>
+<div id="wrapper">
+    <div class="sidebar">
+        <h4>Options</h4>
+        <div class="options">
+            <div class="option">
+                <label for="disableSidebarOption">Disable sidebar</label> <input type="checkbox" id="disableSidebarOption"/>
+            </div>
+            <div class="option">
+                <label for="saveToWindowParentOption">Save to window parent</label> <input type="checkbox" id="saveToWindowParentOption"/>
+            </div>
+            <div class="option">
+                <label for="labelTypeOption" style="display: block;">Label type:</label>
+                <input type="text" id="labelTypeOption" placeholder="label type"/>
+            </div>
+        </div>
+        <button id="applyButton">Apply</button>
+    </div>
+    <div class="iframe-wrapper flex">
+        <iframe class="flex"></iframe>
+    </div>
+    <div class="clearfix"></div>
+</div>
+</body>
+</html>

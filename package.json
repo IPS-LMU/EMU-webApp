@@ -38,6 +38,7 @@
     "comlink": "^4.2.0",
     "core-js": "^2.4.1",
     "d3": "^5.0.0",
+    "http-server": "^14.1.1",
     "jquery": "^3.5.0",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.0.0",
@@ -94,6 +95,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
+    "start:iframe-demo": "http-server iframe-demo --cors -p 7283 -c-1",
     "build": "rimraf dist/* && webpack --config webpack.prod.js",
     "build-start": "rimraf dist/* && webpack --config webpack.prod.js && serve -l 9000 ./dist/",
     "test": "karma start test/karma.conf.js"
