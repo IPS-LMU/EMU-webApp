@@ -69,14 +69,14 @@
         const emuWebAppURL = "http://localhost:9000/";
 
         const options = {
-          disableSidebar: true,
+          disableBundleListSidebar: true,
           saveToWindowParent: true,
           audioGetUrl: "http://localhost:7283/msajc003.wav",
           labelGetUrl:  "http://localhost:7283/msajc003_annot.json",
           labelType: "annotJSON"
         }
 
-        let iframe, applyButton, disableSidebarOption, saveToWindowParentOption, labelTypeOption;
+        let iframe, applyButton, disableBundleListSidebarOption, saveToWindowParentOption, labelTypeOption;
 
         /**
          * returns a string representing query parameters and their values without empty values.
@@ -95,6 +95,9 @@
               if (typeof value !== 'string' && Array.isArray(value)) {
                 value = value.join(',');
               }
+              if (typeof value == 'boolean' && value == false) {
+                continue;
+              }
               strArray.push(`${key}=${encodeURIComponent(value)}`);
             }
           }
@@ -103,17 +106,17 @@
         }
 
         function applyOptions() {
-          options.disableSidebar = disableSidebarOption.checked;
+          options.disableBundleListSidebar = disableBundleListSidebarOption.checked;
           options.saveToWindowParent = saveToWindowParentOption.checked;
           options.labelType = labelTypeOption.value;
           iframe.src = `${emuWebAppURL}${stringifyQueryParams(options)}`;
         }
 
         function onWindowMessageRetrieved(event) {
-          if (event?.data?.data) {
+          if (event?.data) {
             // valid data object
             console.log(`----\n${new Date().toLocaleString()}: Received new data from iframe:`);
-            console.log(event.data.data);
+            console.log(event.data);
             console.log("----")
           }
         }
@@ -126,8 +129,8 @@
           applyButton.addEventListener("click", applyOptions);
 
           // options
-          disableSidebarOption = document.getElementById("disableSidebarOption");
-          disableSidebarOption.checked = options.disableSidebar;
+          disableBundleListSidebarOption = document.getElementById("disableBundleListSidebarOption");
+          disableBundleListSidebarOption.checked = options.disableBundleListSidebar;
           saveToWindowParentOption = document.getElementById("saveToWindowParentOption");
           saveToWindowParentOption.checked = options.saveToWindowParent;
           labelTypeOption = document.getElementById("labelTypeOption");
@@ -149,7 +152,7 @@
         <h4>Options</h4>
         <div class="options">
             <div class="option">
-                <label for="disableSidebarOption">Disable sidebar</label> <input type="checkbox" id="disableSidebarOption"/>
+                <label for="disableBundleListSidebarOption">Disable sidebar</label> <input type="checkbox" id="disableBundleListSidebarOption"/>
             </div>
             <div class="option">
                 <label for="saveToWindowParentOption">Save to window parent</label> <input type="checkbox" id="saveToWindowParentOption"/>
