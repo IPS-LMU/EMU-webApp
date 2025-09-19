@@ -58,7 +58,6 @@ class ViewStateService{
 	private curTaskPercCompl;
 	private curPerspectiveIdx;
 	private mouseInEmuWebApp;
-	private focusOnEmuWebApp;
 	private lastKeyCode;
 	private lastUpdate;
 	private url;
@@ -213,7 +212,6 @@ class ViewStateService{
 		this.curTaskPercCompl = 0;
 		this.curPerspectiveIdx = -1;
 		this.mouseInEmuWebApp = false;
-		this.focusOnEmuWebApp = true;
 		this.lastKeyCode = undefined;
 		this.lastUpdate = undefined;
 		this.url = undefined;

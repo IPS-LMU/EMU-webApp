@@ -541,26 +541,6 @@ let EmuWebAppComponent = {
 				}
             });
 
-            // bind focus check for mouse on window and document ( mouse inside )
-            angular.element(this.$window).bind('blur', () => {
-                this.ViewStateService.focusOnEmuWebApp = false;
-            });
-
-            // bind focus check for mouse on window and document ( mouse inside )
-            angular.element(this.$document).bind('blur', () => {
-                this.ViewStateService.focusOnEmuWebApp = false;
-            });
-
-            // bind blur check for mouse on window and document ( mouse outside )
-            angular.element(this.$window).bind('focus', () => {
-                this.ViewStateService.focusOnEmuWebApp = true;
-            });
-
-            // bind blur check for mouse on window and document ( mouse outside )
-            angular.element(this.$document).bind('focus', () => {
-                this.ViewStateService.focusOnEmuWebApp = true;
-            });
-
             // Take care of preventing navigation out of app (only if something is loaded, not in embedded mode and not developing (auto connecting))
             window.onbeforeunload = () => {
                 if (this.ConfigProviderService.embeddedVals.audioGetUrl === '' && 

@@ -99,7 +99,7 @@ let LevelCanvasMarkupCanvasComponent = {
             //
             this.$element.bind('mousemove', (event) => {
                 var moveLine, moveBy;
-                if (this.ViewStateService.focusOnEmuWebApp) {
+                if (document.hasFocus()) {
                     if (!this.ViewStateService.getdragBarActive()) {
                         moveLine = true;
                         var samplesPerPixel = this.ViewStateService.getSamplesPerPixelVal(event);
