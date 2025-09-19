@@ -16,6 +16,7 @@ export class HistoryService {
 	private ViewStateService;
 	private SoundHandlerService;
 	private LoadedMetaDataService;
+	private PublisherService;
 	
 	// private misc vars
 	private undoStack = [];
@@ -24,7 +25,7 @@ export class HistoryService {
 	// public vars
 	public movesAwayFromLastSave = 0;
 
-	constructor($log, $compile, $sce, SsffDataService, LevelService, LinkService, ConfigProviderService, ViewStateService, SoundHandlerService, LoadedMetaDataService){
+	constructor($log, $compile, $sce, SsffDataService, LevelService, LinkService, ConfigProviderService, ViewStateService, SoundHandlerService, LoadedMetaDataService, PublisherService){
 		this.$log = $log; 
 		this.$compile = $compile;
 		this.$sce = $sce;
@@ -35,6 +36,7 @@ export class HistoryService {
 		this.ViewStateService = ViewStateService;
 		this.SoundHandlerService = SoundHandlerService;
 		this.LoadedMetaDataService = LoadedMetaDataService;
+		this.PublisherService = PublisherService;
 	}
 	
 	// applyChanges should be called by undo redo functions
@@ -343,6 +345,7 @@ export class HistoryService {
 		if (!$.isEmptyObject(this.curChangeObj)) {
 			this.undoStack.push(this.curChangeObj);
 			this.movesAwayFromLastSave += 1;
+			this.PublisherService.publishUnsavedBundleToParentWindow();
 		}
 		this.$log.info(this.curChangeObj);
 		// reset this.curChangeObj
@@ -361,6 +364,7 @@ export class HistoryService {
 		if (!$.isEmptyObject(tmpObj)) {
 			this.undoStack.push(tmpObj);
 			this.movesAwayFromLastSave += 1;
+			this.PublisherService.publishUnsavedBundleToParentWindow();
 		}
 		// reset this.curChangeObj
 		this.curChangeObj = {};
@@ -377,6 +381,7 @@ export class HistoryService {
 			// remove old
 			this.undoStack.pop();
 			this.movesAwayFromLastSave -= 1;
+			this.PublisherService.publishUnsavedBundleToParentWindow();
 		}
 		
 	}
@@ -389,6 +394,7 @@ export class HistoryService {
 			this.applyChange(oldChangeObj, false);
 			this.redoStack.pop();
 			this.movesAwayFromLastSave += 1;
+			this.PublisherService.publishUnsavedBundleToParentWindow();
 		}
 	}
 	
@@ -425,4 +431,4 @@ export class HistoryService {
 }
 
 angular.module('emuwebApp')
-.service('HistoryService', ['$log', '$compile', '$sce', 'SsffDataService', 'LevelService', 'LinkService', 'ConfigProviderService', 'ViewStateService', 'SoundHandlerService', 'LoadedMetaDataService', HistoryService])
+.service('HistoryService', ['$log', '$compile', '$sce', 'SsffDataService', 'LevelService', 'LinkService', 'ConfigProviderService', 'ViewStateService', 'SoundHandlerService', 'LoadedMetaDataService', 'PublisherService', HistoryService])

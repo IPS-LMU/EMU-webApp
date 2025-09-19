@@ -22,6 +22,7 @@ import "./link.service";
 import "./loaded-meta-data.service";
 import "./math-helper.service";
 import "./modal.service";
+import "./publisher.service";
 import "./sound-handler.service";
 import "./ssff-data.service";
 import "./ssff-parser.service";

@@ -350,6 +350,7 @@ class IoHandlerService{
 		var def = this.$q.defer();
 		getProm = def.promise;
 		window.parent.postMessage({
+			trigger: "manualSave",
 			data: bundleData
 		}, '*');
 		def.resolve();
