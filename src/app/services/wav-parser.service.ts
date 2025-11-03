@@ -155,7 +155,7 @@ class WavParserService{
         headerInfos.BlockAlign = curBufferView[0];
         
         // BitsPerSample
-        curBinIdx = fmtBinIdx + 12; // 34
+        curBinIdx = fmtBinIdx + 22; // 34
         curBuffer = buf.subarray(curBinIdx, 2);
         curBufferView = new Uint16Array(curBuffer);
         headerInfos.BitsPerSample = curBufferView[0];
@@ -164,7 +164,7 @@ class WavParserService{
         
         // look for data chunk size
         var foundChunk = false;
-        var dataBinIdx = fmtBinIdx + 14; // 36
+        var dataBinIdx = fmtBinIdx + 24; // 36
         while(!foundChunk){
             curBuffer = buf.subarray(dataBinIdx, 4);
             curBufferView = new Uint8Array(curBuffer);
