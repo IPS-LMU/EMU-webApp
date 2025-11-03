@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.5.3
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- Fix build error from 1.5.2
+
 ## Version 1.5.2
 
 ### new features / performance tweaks / improvements
