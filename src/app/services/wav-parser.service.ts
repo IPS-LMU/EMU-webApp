@@ -112,12 +112,12 @@ class WavParserService{
         curBuffer = buf.subarray(curBinIdx, 2);
         curBufferView = new Uint16Array(curBuffer);
         headerInfos.AudioFormat = curBufferView[0];
-        if ([0, 1].indexOf(headerInfos.AudioFormat) === -1) {
+        if ([0, 1, 3].indexOf(headerInfos.AudioFormat) === -1) { // 1 is int/PCM, 3 is IEEE754, 0 is unknown. Why do we support unknown?
             // console.error('Wav read error: AudioFormat not 1');
             return ({
                 'status': {
                     'type': 'ERROR',
-                    'message': 'Wav read error: AudioFormat not 0 or 1 but ' + headerInfos.AudioFormat
+                    'message': 'Wav read error: AudioFormat not 0 or 1 or 3 but ' + headerInfos.AudioFormat
                 }
             });
         }
