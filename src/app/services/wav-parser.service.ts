@@ -36,6 +36,8 @@ class WavParserService{
         var headerInfos = {} as any;
         
         var curBinIdx, curBuffer, curBufferView;
+
+        var extensibleWave = false;
         
         // ChunkId == RIFF CHECK
         curBinIdx = 0;
@@ -112,6 +114,28 @@ class WavParserService{
         curBuffer = buf.subarray(curBinIdx, 2);
         curBufferView = new Uint16Array(curBuffer);
         headerInfos.AudioFormat = curBufferView[0];
+        if (headerInfos.AudioFormat === 65534) { // 65534 means this is a Extensible Wave-Format and we have to look somewhere else for the actual format
+            console.log("This wave file is an Extensible Wave");
+            extensibleWave = true;
+            curBinIdx = fmtBinIdx + 24; // 36
+            curBuffer = buf.subarray(curBinIdx, 2);
+            curBufferView = new Uint16Array(curBuffer);
+            const sizeOfExtensibleWavHeader = curBufferView[0];
+            console.log("Found sizeOfExtensibleWavHeader", sizeOfExtensibleWavHeader);
+            if (sizeOfExtensibleWavHeader >= 22) {
+                curBinIdx = fmtBinIdx + 32; // 44;
+                curBuffer = buf.subarray(curBinIdx, 2);
+                curBufferView = new Uint16Array(curBuffer);
+                headerInfos.AudioFormat = curBufferView[0];
+                // There is a 16-byte GUID; but like SoX, we only look at the first two bytes.
+                // Looking at Chapter 4 of RFC 2361 [0], we could also check
+                // that the last bytes translate to a GUID template like this:
+                // {XXXXXXXX-0000-0010-8000-00AA00389B71}. But being more
+                // thorough than SoX seems unnecessary here.
+                // [0] https://www.rfc-editor.org/rfc/rfc2361
+                console.log("The AudioFormat is (only the first two of 16 bytes are used, like in SoX)", headerInfos.AudioFormat);
+            }
+        }
         if ([0, 1, 3].indexOf(headerInfos.AudioFormat) === -1) { // 1 is int/PCM, 3 is IEEE754, 0 is unknown. Why do we support unknown?
             // console.error('Wav read error: AudioFormat not 1');
             return ({
@@ -164,7 +188,7 @@ class WavParserService{
         
         // look for data chunk size
         var foundChunk = false;
-        var dataBinIdx = fmtBinIdx + 24; // 36
+        var dataBinIdx = fmtBinIdx + 24; // 36 // if extensibleWave == true, we could skip a few more bytes. but let’s keep the code simpler, instead.
         while(!foundChunk){
             curBuffer = buf.subarray(dataBinIdx, 4);
             curBufferView = new Uint8Array(curBuffer);
