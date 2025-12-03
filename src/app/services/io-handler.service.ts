@@ -361,7 +361,18 @@ class IoHandlerService{
 	// }
 	
 	return getProm;
-};	
+};
+
+
+public listenForMessages(callback){
+    this.onMessageCallback = callback;
+    window.addEventListener("message", this.onMessage);
+}
+
+private onMessageCallback = (event) => {};
+private onMessage = (event) =>{
+    this.onMessageCallback(event);
+}
 
 
 /**
@@ -393,8 +404,8 @@ public parseLabelFile(string, annotates, name, fileType) {
 		prom = this.TextGridParserService.asyncParseTextGrid(string, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTEXTGRID');
 	} else if (fileType === 'annotJSON') {
 		var def = this.$q.defer();
-		prom = def.promise;
 		def.resolve(angular.fromJson(string));
+        prom = def.promise;
 	}
 	
 	return prom;
