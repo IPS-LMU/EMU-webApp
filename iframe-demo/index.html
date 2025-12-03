@@ -66,17 +66,21 @@
         }
     </style>
     <script type="module">
-        const emuWebAppURL = "http://localhost:9000/";
+        const emuWebAppURL = "http://127.0.0.1:9000/";
+        let iframeLoaded = false;
 
         const options = {
           disableBundleListSidebar: true,
           saveToWindowParent: true,
-          audioGetUrl: "http://localhost:7283/msajc003.wav",
-          labelGetUrl:  "http://localhost:7283/msajc003_annot.json",
-          labelType: "annotJSON"
-        }
+          labelType: "annotJSON",
+          listenForMessages: false,
+        };
 
-        let iframe, applyButton, disableBundleListSidebarOption, saveToWindowParentOption, labelTypeOption;
+        const audioGetUrl = "http://127.0.0.1:7283/msajc003.wav";
+        const labelGetUrl = "http://127.0.0.1:7283/msajc003_annot.json";
+
+        let audioFileBuffer, annotation;
+        let iframe, applyButton, disableBundleListSidebarOption, saveToWindowParentOption, labelTypeOption, audioFileOption, transcriptFileOption, listenForMessagesOption;
 
         /**
          * returns a string representing query parameters and their values without empty values.
@@ -95,7 +99,7 @@
               if (typeof value !== 'string' && Array.isArray(value)) {
                 value = value.join(',');
               }
-              if (typeof value == 'boolean' && value == false) {
+              if (typeof value == 'boolean' && value === false) {
                 continue;
               }
               strArray.push(`${key}=${encodeURIComponent(value)}`);
@@ -109,10 +113,22 @@
           options.disableBundleListSidebar = disableBundleListSidebarOption.checked;
           options.saveToWindowParent = saveToWindowParentOption.checked;
           options.labelType = labelTypeOption.value;
-          iframe.src = `${emuWebAppURL}${stringifyQueryParams(options)}`;
+
+          if (!iframeLoaded) {
+            iframe.removeEventListener("load", onIFrameLoaded);
+            iframe.addEventListener("load", onIFrameLoaded);
+            iframe.src = `${emuWebAppURL}${stringifyQueryParams(!options.listenForMessages ? {
+              ...options,
+              audioGetUrl,
+              labelGetUrl
+            } : {listenForMessages: true})}`;
+          } else {
+            sendOptionsToIFrame();
+          }
         }
 
         function onWindowMessageRetrieved(event) {
+          console.log(event);
           if (event?.data) {
             // valid data object
             console.log(`----\n${new Date().toLocaleString()}: Received new data from iframe:`);
@@ -131,15 +147,81 @@
           // options
           disableBundleListSidebarOption = document.getElementById("disableBundleListSidebarOption");
           disableBundleListSidebarOption.checked = options.disableBundleListSidebar;
+
           saveToWindowParentOption = document.getElementById("saveToWindowParentOption");
           saveToWindowParentOption.checked = options.saveToWindowParent;
+
           labelTypeOption = document.getElementById("labelTypeOption");
           labelTypeOption.value = options.labelType;
+
+          audioFileOption = document.getElementById("audioFileOption");
+          audioFileOption.addEventListener("change", onAudioFileChange);
+
+          transcriptFileOption = document.getElementById("transcriptFileOption");
+          transcriptFileOption.addEventListener("change", onTranscriptFileChange);
+
+          listenForMessagesOption = document.getElementById("listenForMessagesOption");
+          listenForMessagesOption.addEventListener("change", onListenForMessagesOptionChange);
+        }
+
+        function onListenForMessagesOptionChange(event) {
+          iframeLoaded = false;
+          options.listenForMessages = event.target.checked;
+          const fileInputs = document.getElementById("fileInputs");
+          fileInputs.style.display = event.target.checked ? "block" : "none";
         }
 
         function afterDocumentLoaded() {
           initialize();
           applyOptions();
+        }
+
+        function onIFrameLoaded() {
+          setTimeout(() => {
+            sendOptionsToIFrame();
+            iframeLoaded = true;
+          }, 1000)
+        }
+
+        function sendOptionsToIFrame(){
+          iframe.contentWindow.postMessage({
+            type: "command",
+            command: "load",
+            params: options,
+            audioArrayBuffer: audioFileBuffer,
+            annotation: annotation
+          }, "*");
+        }
+
+        async function onAudioFileChange(event) {
+          const file = event.target.files[0];
+          audioFileBuffer = await readFile(file, "arraybuffer");
+        }
+
+        async function onTranscriptFileChange(event) {
+          const file = event.target.files[0];
+          const annotJSONText = await readFile(file, "text");
+          try {
+            annotation = JSON.parse(annotJSONText);
+          } catch(e){
+            alert("Invalid JSON file");
+            console.error(e);
+          }
+        }
+
+        async function readFile(blob, type){
+          return new Promise(function(resolve,reject){
+            const reader = new FileReader();
+            reader.addEventListener("load", function(){
+              resolve(reader.result);
+            });
+            reader.addEventListener("error", reject);
+            if (type === "text") {
+              reader.readAsText(blob, "utf-8");
+            } else {
+              reader.readAsArrayBuffer(blob);
+            }
+          });
         }
 
         window.addEventListener("load", afterDocumentLoaded);
@@ -160,6 +242,19 @@
             <div class="option">
                 <label for="labelTypeOption" style="display: block;">Label type:</label>
                 <input type="text" id="labelTypeOption" placeholder="label type"/>
+            </div>
+            <div class="option">
+                <label for="listenForMessagesOption">Listen for messages</label> <input type="checkbox" id="listenForMessagesOption"/>
+            </div>
+            <div id="fileInputs" style="display:none;">
+                <div class="option">
+                    <label for="audioFileOption" style="display: block;">Audio file:</label>
+                    <input type="file" id="audioFileOption"/>
+                </div>
+                <div class="option">
+                    <label for="transcriptFileOption" style="display: block;">Transcript file:</label>
+                    <input type="file" id="transcriptFileOption"/>
+                </div>
             </div>
         </div>
         <button id="applyButton">Apply</button>

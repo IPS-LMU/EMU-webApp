@@ -491,14 +491,21 @@ let EmuWebAppComponent = {
 
             	// check if URL parameters are set -> if so set embedded flags! SIC this should probably be moved to loadFilesForEmbeddedApp
 		        var searchObject = this.$location.search();
-                if (searchObject.audioGetUrl && searchObject.labelGetUrl && searchObject.labelType) {
+
+                if (searchObject.audioGetUrl && searchObject.labelGetUrl) {
                     ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
                     ConfigProviderService.embeddedVals.labelGetUrl = searchObject.labelGetUrl;
-                    ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
-                    ConfigProviderService.embeddedVals.fromUrlParams = true;
                 }
+
                 if (searchObject.hasOwnProperty("disableBundleListSidebar")) {
                     this.ViewStateService.bundleListSideBarDisabled = true;
+                }
+                ConfigProviderService.embeddedVals.listenForMessages = searchObject.listenForMessages === "true";
+                ConfigProviderService.embeddedVals.labelType = searchObject.labelType;
+                ConfigProviderService.embeddedVals.saveToWindowParent = searchObject.saveToWindowParent === "true";
+
+                if (searchObject.labelType) {
+                    ConfigProviderService.embeddedVals.fromUrlParams = true;
                 }
 
                 // call function on init
@@ -613,183 +620,211 @@ let EmuWebAppComponent = {
 		 */
 		private loadFilesForEmbeddedApp() {
             var searchObject = this.$location.search();
-			if (searchObject.audioGetUrl || searchObject.bndlJsonGetUrl) {
-				if(searchObject.audioGetUrl){
+
+            if (searchObject.listenForMessages) {
+                this.IoHandlerService.listenForMessages((event) => {
+                    if (event.data.type === "command" && event.data.command === "load") {
+                        if(event.data.params) {
+                            if (event.data.params.disableBundleListSidebar) {
+                                this.ViewStateService.bundleListSideBarDisabled = true;
+                            }
+                            this.ConfigProviderService.embeddedVals.labelType = event.data.params.labelType ?? this.ConfigProviderService.embeddedVals.labelType;
+                            this.ConfigProviderService.embeddedVals.saveToWindowParent = event.data.params.saveToWindowParent ?? this.ConfigProviderService.embeddedVals.saveToWindowParent;
+                        }
+
+                        if (event.data.audioArrayBuffer) {
+                           this.readAudioOrBundleData({
+                               data: event.data.audioArrayBuffer
+                           }, searchObject, event.data.annotation);
+                        }
+                    }
+                });
+            } else if (searchObject.audioGetUrl || searchObject.bndlJsonGetUrl) {
+				if (searchObject.audioGetUrl) {
                     this.ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
                     this.ConfigProviderService.vals.activeButtons.openDemoDB = false;
                     var promise = this.IoHandlerService.httpGetPath(
                     	this.ConfigProviderService.embeddedVals.audioGetUrl,
 						'arraybuffer'
 					);
-				}else{
+				} else {
                     var promise = this.IoHandlerService.httpGetPath(searchObject.bndlJsonGetUrl, "application/json");
 				}
 
 				promise.then((data) => {
-					this.ViewStateService.showDropZone = false;
-					// set bundle name
-					var tmp = this.ConfigProviderService.embeddedVals.audioGetUrl;
-					this.LoadedMetaDataService.setCurBndlName(tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length));
-
-					//hide menu
-					if (this.ViewStateService.getBundleListSideBarOpen()) {
-						if(searchObject.saveToWindowParent !== "true"){
-							this.ViewStateService.toggleBundleListSideBar(styles.animationPeriod);
-						}
-					}
-
-					this.ViewStateService.somethingInProgressTxt = 'Loading DB config...';
-
-					// test if DBconfigGetUrl is set if so use it
-					var DBconfigGetUrl;
-					if (searchObject.DBconfigGetUrl){
-						DBconfigGetUrl = searchObject.DBconfigGetUrl;
-					}else{
-						DBconfigGetUrl = 'configFiles/embedded_emuwebappConfig.json';
-					}
-					
-					// then get the DBconfigFile
-					this.IoHandlerService.httpGetPath(DBconfigGetUrl).then(async (resp) => {
-						// first element of perspectives is default perspective
-						this.ViewStateService.curPerspectiveIdx = 0;
-						this.ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
-						// validate emuwebappConfigSchema
-						var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', this.ConfigProviderService.vals);
-						if (validRes === true) {
-							// turn of keybinding only on mouseover
-							if (this.ConfigProviderService.embeddedVals.fromUrlParams) {
-								this.ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
-							}
-
-							this.ConfigProviderService.curDbConfig = resp.data;
-							
-							// validate DBconfigFileSchema!
-							validRes = this.ValidationService.validateJSO('DBconfigFileSchema', this.ConfigProviderService.curDbConfig);
-							
-							if (validRes === true) {
-								if(searchObject.saveToWindowParent === "true"){
-									this.ConfigProviderService.vals.activeButtons.saveBundle = true;
-								}
-								var bndlList = [{'session': 'File(s)', 'name': 'from URL parameters'}];
-								this.LoadedMetaDataService.setBundleList(bndlList);
-								this.LoadedMetaDataService.setCurBndl(bndlList[0]);
-
-								// set wav file
-								this.ViewStateService.somethingInProgress = true;
-								this.ViewStateService.somethingInProgressTxt = 'Parsing WAV file...';
-
-								if(searchObject.audioGetUrl){
-									this.WavParserService.parseWavAudioBuf(data.data).then((messWavParser) => {
-										var audioBuffer = messWavParser;
-										this.ViewStateService.curViewPort.sS = 0;
-										this.ViewStateService.curViewPort.eS = audioBuffer.length;
-										this.ViewStateService.resetSelect();
-										this.SoundHandlerService.audioBuffer = audioBuffer;
-
-										var respType;
-										if(this.ConfigProviderService.embeddedVals.labelType === 'TEXTGRID'){
-											respType = 'text';
-										}else{
-											// setting everything to text because the BAS webservices somehow respond with a
-											// 200 (== successful response) but the data field is empty
-											respType = 'text';
-										}
-										// get + parse file
-										if(searchObject.labelGetUrl){
-											this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.labelGetUrl, respType).then((data2) => {
-												this.ViewStateService.somethingInProgressTxt = 'Parsing ' + this.ConfigProviderService.embeddedVals.labelType + ' file...';
-												this.IoHandlerService.parseLabelFile(data2.data, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', this.ConfigProviderService.embeddedVals.labelType).then(async (parseMess) => {
-
-													var annot = parseMess;
-													this.DataService.setData(annot);
-
-													// if no DBconfigGetUrl is given generate levelDefs and co. from annotation
-													if (!searchObject.DBconfigGetUrl){
-
-														var lNames = [];
-														var levelDefs = [];
-														for(var i = 0, len = annot.levels.length; i < len; i++){
-															var l = annot.levels[i];
-															lNames.push(l.name);
-															var attrDefs = [];
-															for(var j = 0, len2 = l.items[0].labels.length; j < len2; j++){
-																attrDefs.push({
-																	'name': l.items[0].labels[j].name,
-																	'type': 'string'
-																});
-															}
-															levelDefs.push({
-																'name': l.name,
-																'type': l.type,
-																'attributeDefinitions': attrDefs
-															})
-														}
-
-														this.ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
-														this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
-														// extract levels containing time to display as levelCanvases 
-														let lNamesWithTime = [];
-
-														levelDefs.forEach((ld) => {
-															if(ld.type !== 'ITEM'){
-																lNamesWithTime.push(ld.name)
-															}
-														})
-														this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNamesWithTime;
-
-														let hierarchyWorker = await new HierarchyWorker();
-														let linkDefs = await hierarchyWorker.guessLinkDefinitions(annot);
-														this.ConfigProviderService.curDbConfig.linkDefinitions = linkDefs;
-														this.ConfigProviderService.vals.activeButtons.showHierarchy = true;
-
-													}
-
-													this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
-
-													this.ViewStateService.somethingInProgressTxt = 'Done!';
-													this.ViewStateService.somethingInProgress = false;
-													this.ViewStateService.setState('labeling');
-
-												}, function (errMess) {
-													this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
-												});
-
-											}, function (errMess) {
-												this.ModalService.open('views/error.html', 'Could not get label file: ' + this.ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
-											});
-										}else{
-											// hide download + search buttons
-											this.ConfigProviderService.vals.activeButtons.downloadAnnotation = false;
-											this.ConfigProviderService.vals.activeButtons.downloadTextGrid = false;
-											this.ConfigProviderService.vals.activeButtons.search = false;
-											this.ViewStateService.somethingInProgressTxt = 'Done!';
-											this.ViewStateService.somethingInProgress = false;
-											this.ViewStateService.setState('labeling');
-										}
-
-
-									}, function (errMess) {
-										this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
-									});
-                                }else{
-                                    this.DbObjLoadSaveService.loadBundle({name: 'fromURLparams'}, searchObject.bndlJsonGetUrl);
-								}
-
-							} else {
-								this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4));
-							}
-						} else {
-							this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
-						}
-
-					}, (errMess) => {
-						this.ModalService.open('views/error.html', 'Could not get embedded_config.json: ' + errMess);
-					});
+                    this.readAudioOrBundleData(data, searchObject, undefined);
 				}, (errMess) => {
 					this.ModalService.open('views/error.html', 'Could not get audio file:' + this.ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
 				});
 			}
 		};
+
+        private readAudioOrBundleData = (data, searchObject, annotation) => {
+            this.ViewStateService.showDropZone = false;
+            // set bundle name
+            var tmp = this.ConfigProviderService.embeddedVals.audioGetUrl;
+            this.LoadedMetaDataService.setCurBndlName(tmp.substr(0, tmp.lastIndexOf('.')).substr(tmp.lastIndexOf('/') + 1, tmp.length));
+
+            //hide menu
+            if (this.ViewStateService.getBundleListSideBarOpen()) {
+                if(!this.ConfigProviderService.embeddedVals.saveToWindowParent){
+                    this.ViewStateService.toggleBundleListSideBar(styles.animationPeriod);
+                }
+            }
+
+            this.ViewStateService.somethingInProgressTxt = 'Loading DB config...';
+
+            // test if DBconfigGetUrl is set if so use it
+            var DBconfigGetUrl;
+            if (searchObject.DBconfigGetUrl){
+                DBconfigGetUrl = searchObject.DBconfigGetUrl;
+            }else{
+                DBconfigGetUrl = 'configFiles/embedded_emuwebappConfig.json';
+            }
+
+            // then get the DBconfigFile
+            this.IoHandlerService.httpGetPath(DBconfigGetUrl).then(async (resp) => {
+                // first element of perspectives is default perspective
+                this.ViewStateService.curPerspectiveIdx = 0;
+                this.ConfigProviderService.setVals(resp.data.EMUwebAppConfig);
+                // validate emuwebappConfigSchema
+                var validRes = this.ValidationService.validateJSO('emuwebappConfigSchema', this.ConfigProviderService.vals);
+                if (validRes === true) {
+                    // turn of keybinding only on mouseover
+                    if (this.ConfigProviderService.embeddedVals.fromUrlParams) {
+                        this.ConfigProviderService.vals.main.catchMouseForKeyBinding = false;
+                    }
+
+                    this.ConfigProviderService.curDbConfig = resp.data;
+
+                    // validate DBconfigFileSchema!
+                    validRes = this.ValidationService.validateJSO('DBconfigFileSchema', this.ConfigProviderService.curDbConfig);
+
+                    if (validRes === true) {
+                        if(this.ConfigProviderService.embeddedVals.saveToWindowParent === "true"){
+                            this.ConfigProviderService.vals.activeButtons.saveBundle = true;
+                        }
+                        var bndlList = [{'session': 'File(s)', 'name': 'from URL parameters'}];
+                        this.LoadedMetaDataService.setBundleList(bndlList);
+                        this.LoadedMetaDataService.setCurBndl(bndlList[0]);
+
+                        // set wav file
+                        this.ViewStateService.somethingInProgress = true;
+                        this.ViewStateService.somethingInProgressTxt = 'Parsing WAV file...';
+
+                        if (searchObject.audioGetUrl || searchObject.listenForMessages) {
+                            this.WavParserService.parseWavAudioBuf(data.data).then((messWavParser) => {
+                                var audioBuffer = messWavParser;
+                                this.ViewStateService.curViewPort.sS = 0;
+                                this.ViewStateService.curViewPort.eS = audioBuffer.length;
+                                this.ViewStateService.resetSelect();
+                                this.SoundHandlerService.audioBuffer = audioBuffer;
+
+                                var respType;
+                                if(this.ConfigProviderService.embeddedVals.labelType === 'TEXTGRID'){
+                                    respType = 'text';
+                                } else {
+                                    // setting everything to text because the BAS webservices somehow respond with a
+                                    // 200 (== successful response) but the data field is empty
+                                    respType = 'text';
+                                }
+                                // get + parse file
+                                if(searchObject.listenForMessages && annotation){
+                                    this.readLabelBuffer({
+                                        data: annotation
+                                    }, searchObject);
+                                } else if(searchObject.labelGetUrl) {
+                                    this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.labelGetUrl, respType).then((data2) => {
+                                        this.readLabelBuffer(data2, searchObject);
+                                    }).catch((errMess) => {
+                                        this.ModalService.open('views/error.html', 'Could not get label file: ' + this.ConfigProviderService.embeddedVals.labelGetUrl + ' ERROR ' + JSON.stringify(errMess.message, null, 4));
+                                    });
+                                } else{
+                                    // hide download + search buttons
+                                    this.ConfigProviderService.vals.activeButtons.downloadAnnotation = false;
+                                    this.ConfigProviderService.vals.activeButtons.downloadTextGrid = false;
+                                    this.ConfigProviderService.vals.activeButtons.search = false;
+                                    this.ViewStateService.somethingInProgressTxt = 'Done!';
+                                    this.ViewStateService.somethingInProgress = false;
+                                    this.ViewStateService.setState('labeling');
+                                }
+                            }).catch((errMess) => {
+                                console.error(errMess);
+                                this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess?.status ? errMess.status.message : errMess.message);
+                            });
+                        }else{
+                            this.DbObjLoadSaveService.loadBundle({name: 'fromURLparams'}, searchObject.bndlJsonGetUrl);
+                        }
+
+                    } else {
+                        this.ModalService.open('views/error.html', 'Error validating / checking DBconfig: ' + JSON.stringify(validRes, null, 4));
+                    }
+                } else {
+                    this.ModalService.open('views/error.html', 'Error validating ConfigProviderService.vals (emuwebappConfig data) after applying changes of newly loaded config (most likely due to wrong entry...): ' + JSON.stringify(validRes, null, 4));
+                }
+
+            }, (errMess) => {
+                this.ModalService.open('views/error.html', 'Could not get embedded_config.json: ' + errMess);
+            });
+        }
+
+        private readLabelBuffer = (data, searchObject) => {
+            this.ViewStateService.somethingInProgressTxt = 'Parsing ' + this.ConfigProviderService.embeddedVals.labelType + ' file...';
+            this.IoHandlerService.parseLabelFile(data.data, this.ConfigProviderService.embeddedVals.labelGetUrl, 'embeddedTextGrid', this.ConfigProviderService.embeddedVals.labelType).then(async (parseMess) => {
+                var annot = parseMess;
+                this.DataService.setData(annot);
+
+                // if no DBconfigGetUrl is given generate levelDefs and co. from annotation
+                if (!searchObject.DBconfigGetUrl){
+
+                    var lNames = [];
+                    var levelDefs = [];
+                    for(var i = 0, len = annot.levels.length; i < len; i++){
+                        var l = annot.levels[i];
+                        lNames.push(l.name);
+                        var attrDefs = [];
+                        for(var j = 0, len2 = l.items[0].labels.length; j < len2; j++){
+                            attrDefs.push({
+                                'name': l.items[0].labels[j].name,
+                                'type': 'string'
+                            });
+                        }
+                        levelDefs.push({
+                            'name': l.name,
+                            'type': l.type,
+                            'attributeDefinitions': attrDefs
+                        })
+                    }
+
+                    this.ConfigProviderService.curDbConfig.levelDefinitions = levelDefs;
+                    this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
+                    // extract levels containing time to display as levelCanvases
+                    let lNamesWithTime = [];
+
+                    levelDefs.forEach((ld) => {
+                        if(ld.type !== 'ITEM'){
+                            lNamesWithTime.push(ld.name)
+                        }
+                    })
+                    this.ConfigProviderService.vals.perspectives[this.ViewStateService.curPerspectiveIdx].levelCanvases.order = lNamesWithTime;
+
+                    let hierarchyWorker = await new HierarchyWorker();
+                    let linkDefs = await hierarchyWorker.guessLinkDefinitions(annot);
+                    this.ConfigProviderService.curDbConfig.linkDefinitions = linkDefs;
+                    this.ConfigProviderService.vals.activeButtons.showHierarchy = true;
+
+                }
+
+                this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
+
+                this.ViewStateService.somethingInProgressTxt = 'Done!';
+                this.ViewStateService.somethingInProgress = false;
+                this.ViewStateService.setState('labeling');
+
+            }, function (errMess) {
+                this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
+            });
+        }
 
 		/**
 		 * init load of config files
