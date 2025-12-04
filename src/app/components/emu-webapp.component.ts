@@ -701,7 +701,7 @@ let EmuWebAppComponent = {
                     validRes = this.ValidationService.validateJSO('DBconfigFileSchema', this.ConfigProviderService.curDbConfig);
 
                     if (validRes === true) {
-                        if(this.ConfigProviderService.embeddedVals.saveToWindowParent === "true"){
+                        if(this.ConfigProviderService.embeddedVals.saveToWindowParent) {
                             this.ConfigProviderService.vals.activeButtons.saveBundle = true;
                         }
                         var bndlList = [{'session': 'File(s)', 'name': 'from URL parameters'}];
