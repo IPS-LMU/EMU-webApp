@@ -61,7 +61,7 @@ SpectroDrawingWorker.prototype = {
 		global.heatMapColorAnchors = [
 			[255, 0, 0],
 			[0, 255, 0],
-			[0, 0, 0]
+			[200, 200, 200]
 		];
 		global.samplesPerPxl = 0;
 		global.sampleRate = 0;
@@ -460,7 +460,6 @@ SpectroDrawingWorker.prototype = {
 								global.resultImgArr[index + 1] = hmVals.g;
 								global.resultImgArr[index + 2] = hmVals.b;
 								global.resultImgArr[index + 3] = global.transparency;
-
 							} else {
 								global.resultImgArr[index + 0] = rgb;
 								global.resultImgArr[index + 1] = rgb;

@@ -2,262 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./index.css">
+    <script src="./index.mjs" type="module" defer></script>
     <title>iframe Demo</title>
-    <style>
-        html, body {
-            height:100%;
-            display: flex;
-            flex:auto;
-            flex-direction: column;
-        }
-
-        .flex {
-            display: flex;
-            flex:auto;
-            flex-direction: column;
-            height:100%;
-        }
-        #wrapper{
-            height:100%;
-            width: 100%;
-        }
-
-        .sidebar {
-            height:100%;
-            background-color: ghostwhite;
-            float: left;
-            padding:5px;
-            border-top: 1px solid gray;
-            border-left: 1px solid gray;
-            border-bottom: 1px solid gray;
-            width: 300px;
-        }
-
-        .iframe-wrapper{
-            border-top: 1px solid gray;
-            border-right: 1px solid gray;
-            border-bottom: 1px solid gray;
-        }
-
-        .clearfix{
-            clear: both;
-        }
-
-        #applyButton{
-            width:100%;
-            padding: 5px;
-        }
-
-        iframe{
-            border: none;
-        }
-
-        .options{
-            padding-bottom: 20px;
-        }
-
-        .options .option{
-            padding-bottom: 10px;
-        }
-
-        input[type=text]{
-            padding:5px;
-            display:block;
-        }
-    </style>
-    <script type="module">
-        const emuWebAppURL = "http://127.0.0.1:9000/";
-        let iframeLoaded = false;
-
-        const options = {
-          disableBundleListSidebar: true,
-          saveToWindowParent: true,
-          labelType: "annotJSON",
-          listenForMessages: false,
-        };
-
-        const audioGetUrl = "http://127.0.0.1:7283/msajc003.wav";
-        const labelGetUrl = "http://127.0.0.1:7283/msajc003_annot.json";
-
-        let audioFileBuffer, annotation;
-        let iframe, applyButton, disableBundleListSidebarOption, saveToWindowParentOption, labelTypeOption, audioFileOption, transcriptFileOption, listenForMessagesOption;
-
-        /**
-         * returns a string representing query parameters and their values without empty values.
-         * @param params
-         */
-        export function stringifyQueryParams(params) {
-          if (!params) {
-            return '';
-          }
-
-          const strArray = [];
-
-          for (const key of Object.keys(params)) {
-            let value = params[key];
-            if (value !== undefined) {
-              if (typeof value !== 'string' && Array.isArray(value)) {
-                value = value.join(',');
-              }
-              if (typeof value == 'boolean' && value === false) {
-                continue;
-              }
-              strArray.push(`${key}=${encodeURIComponent(value)}`);
-            }
-          }
-
-          return strArray.length > 0 ? `?${strArray.join('&')}` : '';
-        }
-
-        function applyOptions() {
-          options.disableBundleListSidebar = disableBundleListSidebarOption.checked;
-          options.saveToWindowParent = saveToWindowParentOption.checked;
-          options.labelType = labelTypeOption.value;
-
-          if (!iframeLoaded) {
-            iframe.removeEventListener("load", onIFrameLoaded);
-            iframe.addEventListener("load", onIFrameLoaded);
-            iframe.src = `${emuWebAppURL}${stringifyQueryParams(!options.listenForMessages ? {
-              ...options,
-              audioGetUrl,
-              labelGetUrl
-            } : {listenForMessages: true})}`;
-          } else {
-            sendOptionsToIFrame();
-          }
-        }
-
-        function onWindowMessageRetrieved(event) {
-          console.log(event);
-          if (event?.data) {
-            // valid data object
-            console.log(`----\n${new Date().toLocaleString()}: Received new data from iframe:`);
-            console.log(event.data);
-            console.log("----")
-          }
-        }
-
-        function initialize() {
-          iframe = document.getElementsByTagName("iframe")[0];
-          window.addEventListener("message", onWindowMessageRetrieved);
-
-          applyButton = document.getElementById("applyButton");
-          applyButton.addEventListener("click", applyOptions);
-
-          // options
-          disableBundleListSidebarOption = document.getElementById("disableBundleListSidebarOption");
-          disableBundleListSidebarOption.checked = options.disableBundleListSidebar;
-
-          saveToWindowParentOption = document.getElementById("saveToWindowParentOption");
-          saveToWindowParentOption.checked = options.saveToWindowParent;
-
-          labelTypeOption = document.getElementById("labelTypeOption");
-          labelTypeOption.value = options.labelType;
-
-          audioFileOption = document.getElementById("audioFileOption");
-          audioFileOption.addEventListener("change", onAudioFileChange);
-
-          transcriptFileOption = document.getElementById("transcriptFileOption");
-          transcriptFileOption.addEventListener("change", onTranscriptFileChange);
-
-          listenForMessagesOption = document.getElementById("listenForMessagesOption");
-          listenForMessagesOption.addEventListener("change", onListenForMessagesOptionChange);
-        }
-
-        function onListenForMessagesOptionChange(event) {
-          iframeLoaded = false;
-          options.listenForMessages = event.target.checked;
-          const fileInputs = document.getElementById("fileInputs");
-          fileInputs.style.display = event.target.checked ? "block" : "none";
-        }
-
-        function afterDocumentLoaded() {
-          initialize();
-          applyOptions();
-        }
-
-        function onIFrameLoaded() {
-          setTimeout(() => {
-            sendOptionsToIFrame();
-            iframeLoaded = true;
-          }, 1000)
-        }
-
-        function sendOptionsToIFrame(){
-          iframe.contentWindow.postMessage({
-            type: "command",
-            command: "load",
-            params: options,
-            audioArrayBuffer: audioFileBuffer,
-            annotation: annotation
-          }, "*");
-        }
-
-        async function onAudioFileChange(event) {
-          const file = event.target.files[0];
-          audioFileBuffer = await readFile(file, "arraybuffer");
-        }
-
-        async function onTranscriptFileChange(event) {
-          const file = event.target.files[0];
-          const annotJSONText = await readFile(file, "text");
-          try {
-            annotation = JSON.parse(annotJSONText);
-          } catch(e){
-            alert("Invalid JSON file");
-            console.error(e);
-          }
-        }
-
-        async function readFile(blob, type){
-          return new Promise(function(resolve,reject){
-            const reader = new FileReader();
-            reader.addEventListener("load", function(){
-              resolve(reader.result);
-            });
-            reader.addEventListener("error", reject);
-            if (type === "text") {
-              reader.readAsText(blob, "utf-8");
-            } else {
-              reader.readAsArrayBuffer(blob);
-            }
-          });
-        }
-
-        window.addEventListener("load", afterDocumentLoaded);
-    </script>
 </head>
-<body>
-    <h2>iframe demo</h2>
+<body class="p-4 d-flex flex-auto flex-column h-100">
+<h2 class="display-4">Iframe Demo</h2>
 <div id="wrapper">
-    <div class="sidebar">
-        <h4>Options</h4>
-        <div class="options">
-            <div class="option">
-                <label for="disableBundleListSidebarOption">Disable sidebar</label> <input type="checkbox" id="disableBundleListSidebarOption"/>
+    <div class="sidebar p-4">
+        <div class="card shadow mb-3">
+            <div class="card-header">
+                Options
             </div>
-            <div class="option">
-                <label for="saveToWindowParentOption">Save to window parent</label> <input type="checkbox" id="saveToWindowParentOption"/>
-            </div>
-            <div class="option">
-                <label for="labelTypeOption" style="display: block;">Label type:</label>
-                <input type="text" id="labelTypeOption" placeholder="label type"/>
-            </div>
-            <div class="option">
-                <label for="listenForMessagesOption">Listen for messages</label> <input type="checkbox" id="listenForMessagesOption"/>
-            </div>
-            <div id="fileInputs" style="display:none;">
+            <div class="card-body">
                 <div class="option">
-                    <label for="audioFileOption" style="display: block;">Audio file:</label>
-                    <input type="file" id="audioFileOption"/>
+                    <label for="disableBundleListSidebarOption">Disable sidebar</label> <input type="checkbox"
+                                                                                               id="disableBundleListSidebarOption"/>
                 </div>
                 <div class="option">
-                    <label for="transcriptFileOption" style="display: block;">Transcript file:</label>
-                    <input type="file" id="transcriptFileOption"/>
+                    <label for="saveToWindowParentOption">Save to window parent</label> <input type="checkbox"
+                                                                                               id="saveToWindowParentOption"/>
+                </div>
+                <div class="mb-2">
+                    <label for="labelTypeOption" class="form-label">Label type:</label>
+                    <input class="form-control form-control-sm" type="text" placeholder="label type"
+                           id="labelTypeOption">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="listenForMessagesOption">
+                    <label class="form-check-label" for="listenForMessagesOption">
+                        Listen for messages
+                    </label>
+                </div>
+                <div id="fileInputs" style="display:none;" class="mt-2">
+                    <div class="mb-2">
+                        <label for="audioFileOption" class="form-label">Audio file:</label>
+                        <input class="form-control form-control-sm" id="audioFileOption" type="file">
+                    </div>
+                    <div class="mb-2">
+                        <label for="transcriptFileOption" class="form-label">Transcript file:</label>
+                        <input class="form-control form-control-sm" id="transcriptFileOption" type="file">
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button id="applyButton" class="btn btn-sm btn-primary">Apply Options</button>
+            </div>
+        </div>
+
+        <div class="card shadow mb-3">
+            <div class="card-header">
+                Styles
+            </div>
+            <div class="card-body">
+                <p id="styleBlockingMessage">Check "listen for messages" option and click "Apply options" first.</p>
+
+                <div style="display: none;" id="styleOptions" class="list-group">
+                </div>
+                <div class="mt-3" id="spectrogramOptionsWrapper" style="display:none;">
+                    <div class="mb-2 fw-bold">Spectrogram - Heatmap Colors</div>
+                    <div class="list-group px-0" id="spectrogramOptions">
+                    </div>
                 </div>
             </div>
         </div>
-        <button id="applyButton">Apply</button>
     </div>
     <div class="iframe-wrapper flex">
         <iframe class="flex"></iframe>

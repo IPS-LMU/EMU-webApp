@@ -258,6 +258,12 @@ let LevelCanvasMarkupCanvasComponent = {
                 this.ViewStateService.movingBoundary = false;
                 this.setLastMove(event, true);
             });
+
+            this.ViewStateService.updateRequest$.subscribe({
+                next: () => {
+                    this.$scope.$apply();
+                }
+            })
         }
 
                //////////////////////////////////////

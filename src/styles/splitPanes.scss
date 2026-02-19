@@ -10,26 +10,26 @@
     top: calc(100% - 200px);
     height: 200px;
     width: 200px;
-    background-color: $color-grey;
-    color: $color-black;
-    box-shadow: -4px -4px 18px -4px $color-transparent-black;
+    background-color: var(--color-grey);
+    color: var(--color-black);
+    box-shadow: -4px -4px 18px -4px var(--color-transparent-black);
     border-radius: 0;
     z-index: 1000000;
     .corner {
         position: absolute;
         height: 10px;
         width: 10px;
-        border-top: 1px solid $color-grey;
-        border-left: 1px solid $color-grey;
+        border-top: 1px solid var(--color-grey);
+        border-left: 1px solid var(--color-grey);
         cursor: nwse-resize;
         background: linear-gradient(135deg,
-            $color-white 30%,
-            $color-black 30%, $color-black 40%,
-            $color-white 40%, $color-white 50%,
-            $color-black 50%, $color-black 60%,
-            $color-white 60%, $color-white 70%,
-            $color-black 70%, $color-black 80%,
-            $color-white 80%
+            var(--color-white) 30%,
+            var(--color-black) 30%, var(--color-black) 40%,
+            var(--color-white) 40%, var(--color-white) 50%,
+            var(--color-black) 50%, var(--color-black) 60%,
+            var(--color-white) 60%, var(--color-white) 70%,
+            var(--color-black) 70%, var(--color-black) 80%,
+            var(--color-white) 80%
         );
     }
     .topBorder {
@@ -37,9 +37,9 @@
         left: 10px;
         height: 10px;
         width: calc(100% - 10px);
-        background-color: $color-grey;
-        border-top: 1px solid $color-black;
-        border-bottom: 1px solid $color-black;
+        background-color: var(--color-grey);
+        border-top: 1px solid var(--color-black);
+        border-bottom: 1px solid var(--color-black);
         cursor: ns-resize;
     }
     .leftBorder{
@@ -47,9 +47,9 @@
         height: calc(100% - 10px);
         top: 10px;
         width: 10px;
-        background-color: $color-grey;
-        border-left: 1px solid $color-black;
-        border-right: 1px solid $color-black;
+        background-color: var(--color-grey);
+        border-left: 1px solid var(--color-black);
+        border-right: 1px solid var(--color-black);
         cursor: ew-resize;
     }
 }
@@ -60,7 +60,7 @@
     bottom: 0px;
     position: absolute;
     > .emuwebapp-split-handler {
-        background: $color-grey;
+        background: var(--color-grey);
         position: absolute;
         z-index: 999;
     }
@@ -82,7 +82,7 @@
         height: 100%;
         left: 50%;
         right: 0px;
-        border-left: 1px solid $color-white;
+        border-left: 1px solid var(--color-white);
     }
 /* Vertical */
     &.vertical > .emuwebapp-split-handler {
@@ -107,9 +107,9 @@
             width: 20px;
             background: linear-gradient(180deg,
                 transparent, transparent 20%,
-                $color-white 20%, $color-white 35%,
+                var(--color-white) 20%, var(--color-white) 35%,
                 transparent 35%, transparent 65%,
-                $color-white 65%, $color-white 80%,
+                var(--color-white) 65%, var(--color-white) 80%,
                 transparent 80%, transparent 100%
             );
         }

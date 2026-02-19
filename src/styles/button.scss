@@ -5,8 +5,8 @@
 .emuwebapp-nav-wrap {
 	z-index: 99999;
 	.emuwebapp-dropdown-container:hover .emuwebapp-mini-btn {
-	    background: $color-black;
-	    color: $color-white;
+	    background: var(--color-black);
+	    color: var(--color-white);
 	}
 	ul {
 		list-style:none;
@@ -15,7 +15,7 @@
 			position:absolute;
 			top:100%;
 			left:0;
-			background: $color-white;
+			background: var(--color-white);
 			margin:0;
 			margin-left: 2px;
 			ul {
@@ -49,12 +49,12 @@
 	overflow: scroll;
 	padding:0;
 	margin:0;
-	border: 1px $color-darkGrey;
+	border: 1px var(--color-dark-grey);
 	outline: none;
 	resize: none;
 	white-space: nowrap;
-	background-color: $color-yellow;
-	box-shadow: 0 0 15px $color-darkGrey;
+	background-color: var(--color-yellow);
+	box-shadow: 0 0 15px var(--color-dark-grey);
 	vertical-align: middle !important;
 	overflow-x: hidden;
 	overflow-y: hidden;
@@ -64,8 +64,8 @@
 	display: inline-block;
     background: transparent;
     border-radius: 0;
-    border: 1px solid $color-black;
-    color: $color-black;
+    border: 1px solid var(--color-black);
+    color: var(--color-black);
     text-decoration: none;
     text-align: center;
     margin: 0;
@@ -75,8 +75,8 @@
     outline: none;
     @extend .emuwebapp-font-small;
     &:hover:enabled {
-		background-color: $color-black;
-		color: $color-white;
+		background-color: var(--color-black);
+		color: var(--color-white);
 	}
 	&:disabled {
 	    pointer-events: none;
@@ -85,8 +85,8 @@
     }
 	&:active {
 		top:1px;
-		background-color: $color-white;
-		color: $color-black;
+		background-color: var(--color-white);
+		color: var(--color-black);
     }
 }
 
@@ -96,13 +96,13 @@
     height: 22px;
     position: relative;
     top: -2px;
-    background: $color-blue;
-    border: 1px solid $color-blue;
-    color: $color-black;
+    background: var(--color-blue);
+    border: 1px solid var(--color-blue);
+    color: var(--color-black);
 	&:hover {
-    	background: $color-blue;
-	    border: 1px solid $color-blue;
-    	color: $color-white;
+    	background: var(--color-blue);
+	    border: 1px solid var(--color-blue);
+    	color: var(--color-white);
     }    
 }
 
@@ -110,7 +110,7 @@
     display:inline-block;
     position: relative;
 	background: transparent;
-	color: $color-black;
+	color: var(--color-black);
 	border: 0;
     width: 40px;
     height: 40px;
@@ -125,13 +125,13 @@
 			height:35px;
 		}
 		&:active {
-			background: $color-black;
+			background: var(--color-black);
 		}
 		&:focus {
 			outline: none;
 		}
 		&:hover {
-			color: $color-white;
-			background-color: $color-black;
+			color: var(--color-white);
+			background-color: var(--color-black);
 		}
 }

@@ -10,7 +10,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: $color-transparent-black;
+    background: var(--color-transparent-black);
     z-index: 99998;
     opacity:0;
     pointer-events: none;
@@ -27,7 +27,7 @@
     .emuwebapp-close-button {
         background: transparent;
         border: none;
-        color: $color-black;
+        color: var(--color-black);
         position: absolute;
         right: 0px;
         text-align: center;
@@ -43,14 +43,14 @@
    .emuwebapp-add-signal {
    		clear: both;
    		display: inline-block;
-    	background: $color-white;
+    	background: var(--color-white);
         text-decoration: none;
         font-weight: bold;
-        @include vendor-prefix(box-shadow, "1px 1px 3px "+$color-transparent-grey);
+        @include vendor-prefix(box-shadow, "1px 1px 3px "+var(--color-transparent-grey));
         @include vendor-prefix(border-radius, "15px");
         z-index: 99999;
         &:hover {
-            background: $color-blue;
+            background: var(--color-blue);
             text-decoration: none;
         }
         img {
@@ -89,7 +89,7 @@
     	margin-left: 25%;	
     	li {
     	    list-style-type: none;
-    	    background-color: $color-blue;
+    	    background-color: var(--color-blue);
     	    margin: 10px;
     	    padding: 3px; 
     	}
@@ -113,19 +113,19 @@
 
     > .emuwebapp-modal-header {
 		position: absolute;
-		background-color: $color-blue;
+		background-color: var(--color-blue);
 		height: 60px;
 		left:0;
 		top:0;
 		width: 100%;
 		h2 {
 			padding-top: 17px;
-			color: $color-black;
+			color: var(--color-black);
 			@extend .emuwebapp-font-large;
 		}
 		h3 {
 			padding-top: 17px;
-			color: $color-black;
+			color: var(--color-black);
 			@extend .emuwebapp-font-large;
 		}
 	}
@@ -152,18 +152,18 @@
 	clear: both;
 	overflow-y: auto;
     overflow-x: hidden;
-    background-color: $color-darkGrey;
-    color: $color-white;
+    background-color: var(--color-dark-grey);
+    color: var(--color-white);
     /*
 	&::-webkit-scrollbar {
 		width: 17px;  /!* for vertical scrollbars *!/
 		height: 0px; /!* for horizontal scrollbars *!/
 	}
 	&::-webkit-scrollbar-track {
-		background: $color-blue;
+		background: var(--color-blue);
 	}
 	&::-webkit-scrollbar-thumb {
-		background: $color-lightGrey;
+		background: var(--color-light-grey);
 	}
     */
 	select {
@@ -182,14 +182,14 @@
 }
 
 .emuwebapp-modal-hierarchy {
-    background: $color-lightGrey;
+    background: var(--color-light-grey);
 }
 
 .emuwebapp-modal-footer {
     height: 60px;
     width:100%;
     position: absolute;
-    background-color: $color-blue;
+    background-color: var(--color-blue);
     left: 0;
     bottom: 0;
     button {
@@ -203,8 +203,8 @@
     bottom: 0px;
     padding-bottom: 10px;
     button {
-        color: $color-white;
-        background-color: $color-black;
+        color: var(--color-white);
+        background-color: var(--color-black);
         &:hover{
             filter: invert(100%);
         }

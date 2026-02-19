@@ -161,7 +161,6 @@ class="emuwebapp-canvasSelectors"
             this.backgroundCanvas = {
                 'background': styles.colorBlack
             };
-
         };
         
         $postLink() {
@@ -281,6 +280,17 @@ class="emuwebapp-canvasSelectors"
                 // console.log('event: ', evt)
                 this.drawLevelDetails();
                 this.drawLevelMarkup();
+            });
+            this.ViewStateService.updateRequest$.subscribe({
+                next: () => {
+                    if (this._inited) {
+                        this.drawLevelDetails();
+                        this.drawLevelMarkup();
+                        this.backgroundCanvas = {
+                            'background': styles.colorBlack
+                        };
+                    }
+                }
             })
 
         }

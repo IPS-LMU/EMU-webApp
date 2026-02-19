@@ -1,0 +1,69 @@
+html, body {
+  height: 100%;
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  height: 100%;
+}
+
+#wrapper {
+  height:500px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+}
+
+.sidebar {
+  height: 100%;
+  background-color: white;
+  float: left;
+  border-top: 1px solid lightblue;
+  border-left: 1px solid lightblue;
+  border-bottom: 1px solid lightblue;
+  width: 25%;
+  border-radius: 10px 0 0 10px;
+  overflow-y: auto;
+}
+
+.iframe-wrapper {
+  border-top: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.clearfix {
+  clear: both;
+}
+
+#applyButton {
+  width: 100%;
+  padding: 5px;
+}
+
+iframe {
+  border: none;
+}
+
+.options {
+  padding-bottom: 20px;
+}
+
+.options .option {
+  padding-bottom: 10px;
+}
+
+input[type=text] {
+  padding: 5px;
+  display: block;
+}
+
+.opacity-10 {
+  opacity: 0.1;
+}

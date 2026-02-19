@@ -11,8 +11,8 @@
 .emuwebapp-bundle-outer {
     height: 100%;
     width: 240px;
-    background: $color-grey;
-    color: $color-white;
+    background: var(--color-grey);
+    color: var(--color-white);
     margin-left: 0;
     padding-bottom: 500px;
     @extend .emuwebapp-font-input;
@@ -34,21 +34,21 @@
         padding-top: 6px;
         padding-bottom: 6px;
         margin: 0;
-        border-bottom:thin solid $color-black;
+        border-bottom:thin solid var(--color-black);
     }
     > div {
         height: 100%;
-        border-right:thin solid $color-black;
+        border-right:thin solid var(--color-black);
         @extend .emuwebapp-font-small;
     }
     .emuwebapp-filter {
         outline: none;
         border: 0 none;
-        color: $color-white;
-        background-color: $color-black;
+        color: var(--color-white);
+        background-color: var(--color-black);
         width: 75%;
         padding: 6px 15px 7px 35px;
-        @include vendor-prefix(box-shadow, "0 1px 0 "+$color-transparent-grey+", 0 1px 3px "+$color-transparent-black+" inset");
+        @include vendor-prefix(box-shadow, "0 1px 0 "+var(--color-transparent-grey)+" 0 1px 3px "+ var(--color-transparent-black)+" inset");
         @include vendor-prefix(transition, "all "+$animation-period+"ms ease 0s");
         @include vendor-prefix(border-radius, "20px");
         @extend .emuwebapp-font-small;
@@ -66,11 +66,11 @@
 			height: 0;
 		}
 		&::-webkit-scrollbar-track {
-			background: $color-lightGrey;
+			background: var(--color-light-grey);
 		}
 		&::-webkit-scrollbar-thumb {
 			border-radius: 8px;
-			border: 2px solid $color-lightGrey; /* should match background, can't be transparent */
+			border: 2px solid var(--color-light-grey); /* should match background, can't be transparent */
 			background-color: rgba(0, 0, 0, .5);
 		}    
         .emuwebapp-bundle-session {
@@ -80,7 +80,7 @@
             position: relative;
             cursor: pointer;
             &:hover{
-                background-color: $color-transparent-lightGrey;
+                background-color: var(--color-transparent-light-grey);
             }
             div {
                overflow-x: auto;
@@ -104,17 +104,17 @@
         background: transparent;
         color: white;
         border-radius: 25%;
-        border:2px solid $color-white;
+        border:2px solid var(--color-white);
         font-size: 15px;
         &:hover{
-            background-color: $color-transparent-grey;
+            background-color: var(--color-transparent-grey);
         }
         &:focus{
             outline:0;
         }
         &:disabled{
-            color: $color-transparent-grey;
-            border:2px solid $color-transparent-grey;
+            color: var(--color-transparent-grey);
+            border:2px solid var(--color-transparent-grey);
         }
     }
 }
@@ -155,12 +155,12 @@
     position: absolute;
     background-color:transparent;
     border-style:none;
-    color: $color-white;
+    color: var(--color-white);
     top: 2px;
     right: 2px;
     &:hover {
-        color: $color-black;
-        background-color: $color-white;
+        color: var(--color-black);
+        background-color: var(--color-white);
     }
 }
 

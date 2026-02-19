@@ -120,7 +120,7 @@ let OsciComponent = {
         
         $onChanges = function (changes) {
             //
-            if(this._inited){
+            if(this._inited) {
                 //
                 if(changes.timelineSize){
                     this.$timeout(this.redraw, styles.animationPeriod);
@@ -135,11 +135,16 @@ let OsciComponent = {
                     this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, false);
                 }
             }
-            
         };
         
         $onInit = function() {
             this._inited = true;
+            this.ViewStateService.updateRequest$.subscribe({
+                next: () => {
+                    this.$timeout(this.redraw, styles.animationPeriod);
+                    this.DrawHelperService.freshRedrawDrawOsciOnCanvas(this.canvas, this.viewPortSampleStart, this.viewPortSampleEnd, true);
+                }
+            });
         };
         
 

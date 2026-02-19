@@ -15,7 +15,7 @@ export interface I_globalScss {
   colorTransparentYellow: string;
   animationPeriod: string;
   fontSmallFamily: string;
-  fontSmallSize: string;
+  fontSmallSize : string;
   fontSmallWeight: string;
   fontLargeFamily: string;
   fontLargeSize: string;

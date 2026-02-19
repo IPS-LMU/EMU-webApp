@@ -96,6 +96,12 @@ let DotsCanvasComponent = {
 
         $onInit = function() {
             this._inited = true;
+
+            this.ViewStateService.updateRequest$.subscribe({
+                next: () => {
+                    this.$scope.$apply();
+                }
+            });
         };
 
         private resetValues (): void {

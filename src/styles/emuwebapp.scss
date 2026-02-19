@@ -29,7 +29,7 @@
     height: 100%;
     min-height: 100%;
     position: absolute;
-    background-color: $color-darkGrey;
+    background-color: var(--color-dark-grey);
     text-align: center;
     overflow:hidden;
     @include vendor-prefix(user-select, "none");
@@ -47,7 +47,7 @@
 		    flex-direction: column;
         > .emuwebapp-top-menu {
           height:40px;
-          background: $color-blue;
+          background: var(--color-blue);
           @include vendor-prefix(touch-callout, none);
           text-align:left;
           z-index: 5;
@@ -55,7 +55,7 @@
         > .emuwebapp-bottom-menu {
           width:100%;
           height:87px;
-          background: $color-blue;
+          background: var(--color-blue);
           @include vendor-prefix(touch-callout, none);
           text-align:left;
           padding-left:5px;
@@ -110,8 +110,8 @@
       z-index: 99999 !important;
     }
     .emuwebapp-dropdown-container:hover #demoDB {
-        background-color: $color-white;
-        color: $color-black;
+        background-color: var(--color-white);
+        color: var(--color-black);
     }
     #emuwebapp-dropdown-arrow:after {
         content: '\25B8';
@@ -120,15 +120,15 @@
         content: '\25BE';
     }
     .emuwebapp-dropdown-menu {
-        background: $color-white;
+        background: var(--color-white);
         list-style: none outside none;
         margin: 0;
         margin-left: -1px;
         padding: 0;
         border-spacing: 0;
-        border-left: 1px solid $color-blue;
-        border-right: 1px solid $color-blue;
-        border-bottom: 1px solid $color-blue;
+        border-left: 1px solid var(--color-blue);
+        border-right: 1px solid var(--color-blue);
+        border-bottom: 1px solid var(--color-blue);
         overflow: hidden;
         li {
             @extend .emuwebapp-font-small;
@@ -139,16 +139,16 @@
         }
 
         li:hover {
-            color: $color-blue;
+            color: var(--color-blue);
             cursor: pointer;
         }
 
     }
     a:link {
-        color: $color-blue;
+        color: var(--color-blue);
     }
     a:hover {
-        color: $color-white;
+        color: var(--color-white);
     }
     a:visited {
         color: lightgray;

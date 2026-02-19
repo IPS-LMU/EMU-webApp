@@ -154,27 +154,40 @@ let OsciOverviewComponent = {
                 }
                 //
                 if(changes.curBndl){
-                    this.envelopeHasBeenDrawn = false;
-                    this.backgroundCanvas = {
-                        'background': styles.colorBlack,
-                        'border': '1px solid gray',
-                        'width': '100%',
-                        'height': '100%'
-                    };
-                    this.drawPreview();
-                    //clear on empty bundle name
-					if (Object.keys(this.curBndl).length === 0 && this.curBndl.constructor === Object) {
-						var ctx = this.canvas.getContext('2d');
-						var ctxMarkup = this.markupCanvas.getContext('2d');
-						ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-						ctxMarkup.clearRect(0, 0, this.canvas.width, this.canvas.height);
-					}
+                    this.redraw();
                 }
             }
         };
         $onInit () {
             this._inited = true;
+
+            this.ViewStateService.updateRequest$.subscribe({
+                next: () => {
+                    this.redraw();
+                    this.$scope.$apply();
+                }
+            });
         };
+
+        private redraw() {
+            this.envelopeHasBeenDrawn = false;
+            this.backgroundCanvas = {
+                'background': styles.colorBlack,
+                'border': '1px solid gray',
+                'width': '100%',
+                'height': '100%'
+            };
+            this.drawPreview();
+            //clear on empty bundle name
+            if (Object.keys(this.curBndl).length === 0 && this.curBndl.constructor === Object) {
+                var ctx = this.canvas.getContext('2d');
+                var ctxMarkup = this.markupCanvas.getContext('2d');
+                ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                ctxMarkup.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+
+        }
+
         /**
          *
          */

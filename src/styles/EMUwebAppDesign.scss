@@ -1,14 +1,14 @@
-$color-black: #000;
-$color-white: #fff;
+$color-black: #000000;
+$color-white: #ffffff;
+$color-red: #ff0000;
 $color-blue: #0DC5FF;
-$color-red: #f00;
-$color-yellow: #ff0;
+$color-yellow: #ffff00;
 $color-green: #eeff41;
 $color-grey: #424242;
-$color-lightGrey: #E7E7E7;
-$color-darkGrey: #303030;
+$color-light-grey: #E7E7E7;
+$color-dark-grey: #303030;
 $color-transparent-grey: rgba(22, 22, 22, 0.1);
-$color-transparent-lightGrey: rgba(152, 152, 152, 0.18);
+$color-transparent-light-grey: rgba(152, 152, 152, 0.18);
 $color-transparent-black: rgba(0, 0, 0, 0.7);
 $color-transparent-red: rgba(255, 0, 0, 0.95);
 $color-transparent-yellow: rgba(255, 255, 22, 0.35);
@@ -26,6 +26,35 @@ $font-code-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 $font-code-size: 14px;
 $font-code-weight: 600;
 
+:root {
+    --color-black: #{$color-black};
+    --color-white: #{$color-white};
+    --color-red: #{$color-red};
+    --color-blue: #{$color-blue};
+    --color-yellow: #{$color-yellow};
+    --color-green: #{$color-green};
+    --color-grey: #{$color-grey};
+    --color-light-grey: #{$color-light-grey};
+    --color-dark-grey: #{$color-dark-grey};
+    --color-transparent-grey: #{$color-transparent-grey};
+    --color-transparent-light-grey: #{$color-transparent-light-grey};
+    --color-transparent-black: #{$color-transparent-black};
+    --color-transparent-red: #{$color-transparent-red};
+    --color-transparent-yellow: #{$color-transparent-yellow};
+    --animation-period: #{$animation-period};
+    --font-small-family: #{$font-small-family};
+    --font-small-size: #{$font-small-size};
+    --font-small-weight: #{$font-small-weight};
+    --font-large-family: #{$font-large-family};
+    --font-large-size: #{$font-large-size};
+    --font-large-weight: #{$font-large-weight};
+    --font-input-family: #{$font-input-family};
+    --font-input-size: #{$font-input-size};
+    --font-input-weight: #{$font-input-weight};
+    --font-code-family: #{$font-code-family};
+    --font-code-size: #{$font-code-size};
+    --font-code-weight: #{$font-code-weight};
+}
 
 // Here's the export you add.
 :export {
@@ -36,10 +65,10 @@ $font-code-weight: 600;
     colorYellow: $color-yellow;
     colorGreen: $color-green;
     colorGrey: $color-grey;
-    colorLightGrey: $color-lightGrey;
-    colorDarkGrey: $color-darkGrey;
+    colorLightGrey: $color-light-grey;
+    colorDarkGrey: $color-dark-grey;
     colorTransparentGrey: $color-transparent-grey;
-    colorTransparentLightGrey: $color-transparent-lightGrey;
+    colorTransparentLightGrey: $color-transparent-light-grey;
     colorTransparentBlack: $color-transparent-black;
     colorTransparentRed: $color-transparent-red;
     colorTransparentYellow: $color-transparent-yellow;

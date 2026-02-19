@@ -1,22 +1,22 @@
 @import 'EMUwebAppDesign';
 
 .emuwebapp-font-small {
-    font-family: $font-small-family;
-    font-size: $font-small-size;
-    font-weight: $font-small-weight;
+    font-family: var(--font-small-family);
+    font-size: var(--font-small-size);
+    font-weight: var(--font-small-weight);
 }
 .emuwebapp-font-large {
-    font-family: $font-large-family;
-    font-size: $font-large-size;
-    font-weight: $font-large-weight;
+    font-family: var(--font-large-family);
+    font-size: var(--font-large-size);
+    font-weight: var(--font-large-weight);
 }
 .emuwebapp-font-code {
-    font-family: $font-code-family;
-    font-size: $font-code-size;
-    font-weight: $font-code-weight;
+    font-family: var(--font-code-family);
+    font-size: var(--font-code-size);
+    font-weight: var(--font-code-weight);
 }
 .emuwebapp-font-input {
-    font-family: $font-input-family;
-    font-size: $font-input-size;
-    font-weight: $font-input-weight;
+    font-family: var(--font-input-family);
+    font-size: var(--font-input-size);
+    font-weight: var(--font-input-weight);
 }
