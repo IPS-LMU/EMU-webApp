@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import {Observable, Subject} from 'rxjs';
 
 class ViewStateService{
 	private $rootScope;
@@ -23,9 +24,8 @@ class ViewStateService{
 	// twoDim types enum
 	private myTwoDimType;
 	
-	
-	
-	
+	public readonly updateRequest$ = new Subject<void>();
+
 	private timelineSize;
 	private somethingInProgress;
 	private somethingInProgressTxt
@@ -144,6 +144,11 @@ class ViewStateService{
 		this.curLevelAttrDefs = [];
 		// initialize on init
 		this.initialize();
+	}
+
+	public update() {
+		this.updateRequest$.next();
+		this.$rootScope.$apply();
 	}
 	
 	initialize() {

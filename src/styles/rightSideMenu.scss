@@ -12,16 +12,16 @@
     height: -webkit-calc(100% - 133px);
     height: calc(100% - 133px);
     width: 200px;
-    background-color: $color-grey;
-    color: $color-white;
-    border-left: thin solid $color-black;
+    background-color: var(--color-grey);
+    color: var(--color-white);
+    border-left: thin solid var(--color-black);
     z-index: 1000;
     @extend .emuwebapp-font-small;
     h3{
         font-size: 1.5em;
         padding-top: 15px;
         padding-bottom: 15px;
-        border-bottom: thin solid $color-black;
+        border-bottom: thin solid var(--color-black);
         overflow: hidden;
     }
     ul{
@@ -35,12 +35,12 @@
         left: -24px;
         height: 24px;
         width: 24px;
-        color: $color-white;
+        color: var(--color-white);
         background: transparent;
-        @include vendor-prefix(box-shadow, "-2px 1px 5px "+$color-transparent-black);
+        @include vendor-prefix(box-shadow, "-2px 1px 5px "+var(--color-transparent-black));
         border-style: solid;
         border-width: 1px 0 1px 1px;
-        border-color: $color-white;
+        border-color: var(--color-white);
         z-index: 2001;
         img{
             width: 10px;
@@ -52,32 +52,32 @@
             filter: invert(100%);
         }
         &:active {
-            background: $color-white;
+            background: var(--color-white);
         }
         &:focus {
             outline: none;
         }
         &:hover {
-            background-color: $color-black;
+            background-color: var(--color-black);
             filter: invert(100%);
         }
     }
     .emuwebapp-curSelPerspLi{
-        border-bottom:thin solid $color-transparent-grey;
+        border-bottom:thin solid var(--color-transparent-grey);
         padding: 10px !important;
         margin: 4px !important;
         font-size: 1.2em;
         background-color: #999;
-        color: $color-black;
+        color: var(--color-black);
     }
     .emuwebapp-perspLi{
-        border-bottom:thin solid $color-transparent-grey;
+        border-bottom:thin solid var(--color-transparent-grey);
         padding: 10px !important;
         margin: 4px !important;
         font-size: 1.2em;
         overflow: hidden;
         &:hover{
-            background-color: $color-transparent-lightGrey;
+            background-color: var(--color-transparent-light-grey);
         }
     }
 }

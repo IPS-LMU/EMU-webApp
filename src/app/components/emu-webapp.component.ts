@@ -2,6 +2,10 @@ import * as angular from 'angular';
 
 import { HierarchyWorker } from '../workers/hierarchy.worker';
 import styles from '../../styles/EMUwebAppDesign.scss';
+import {
+    WindowMessageCommandLoad, WindowMessageCommandSetStyle
+} from '../interfaces/window-message-command.interface';
+import {version} from "../../../package.json";
 
 let EmuWebAppComponent = {
     selector: "emuwebapp",
@@ -622,23 +626,12 @@ let EmuWebAppComponent = {
             var searchObject = this.$location.search();
 
             if (searchObject.listenForMessages) {
-                this.IoHandlerService.listenForMessages((event) => {
-                    if (event.data.type === "command" && event.data.command === "load") {
-                        if(event.data.params) {
-                            if (event.data.params.disableBundleListSidebar) {
-                                this.ViewStateService.bundleListSideBarDisabled = true;
-                            }
-                            this.ConfigProviderService.embeddedVals.labelType = event.data.params.labelType ?? this.ConfigProviderService.embeddedVals.labelType;
-                            this.ConfigProviderService.embeddedVals.saveToWindowParent = event.data.params.saveToWindowParent ?? this.ConfigProviderService.embeddedVals.saveToWindowParent;
-                        }
-
-                        if (event.data.audioArrayBuffer) {
-                           this.readAudioOrBundleData({
-                               data: event.data.audioArrayBuffer
-                           }, searchObject, event.data.annotation);
-                        }
-                    }
+                this.IoHandlerService.listenForMessages((event)=>{
+                    this.listenForMessages(event, searchObject);
                 });
+                window.parent.postMessage({
+                    trigger: "listening"
+                }, "*");
             } else if (searchObject.audioGetUrl || searchObject.bndlJsonGetUrl) {
 				if (searchObject.audioGetUrl) {
                     this.ConfigProviderService.embeddedVals.audioGetUrl = searchObject.audioGetUrl;
@@ -658,6 +651,102 @@ let EmuWebAppComponent = {
 				});
 			}
 		};
+
+        private listenForMessages = (event, searchObject) => {
+            if (event.data.type === "command") {
+                if (event.data?.params) {
+                    if (event.data.command === "load") {
+                        const command = event.data as WindowMessageCommandLoad;
+                        this.ConfigProviderService.embeddedVals.labelType = command.params.labelType ?? this.ConfigProviderService.embeddedVals.labelType;
+                        this.ConfigProviderService.embeddedVals.saveToWindowParent = command.params.saveToWindowParent ?? this.ConfigProviderService.embeddedVals.saveToWindowParent;
+                        this.ViewStateService.bundleListSideBarDisabled = command.params.disableBundleListSidebar ?? false;
+
+                        if (command.params.audioArrayBuffer) {
+                            this.readAudioOrBundleData({
+                                data: command.params.audioArrayBuffer
+                            }, searchObject, command.params.annotation);
+
+                        } else if (command.params["audioGetUrl"] || command.params["labelGetUrl"]) {
+                            const promises = [];
+                            if (command.params.audioGetUrl) {
+                                this.ConfigProviderService.embeddedVals.audioGetUrl = command.params.audioGetUrl;
+                                this.ConfigProviderService.vals.activeButtons.openDemoDB = false;
+                                promises.push(this.IoHandlerService.httpGetPath(
+                                    this.ConfigProviderService.embeddedVals.audioGetUrl,
+                                    'arraybuffer'
+                                ));
+                            }
+
+                            if (command.params.labelGetUrl) {
+                                this.ConfigProviderService.embeddedVals.labelGetURL = command.params.labelGetUrl;
+                                promises.push(this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.labelGetURL, "application/json"));
+                            }
+
+                            Promise.all(promises).then((data) => {
+                                this.readAudioOrBundleData(data[0], searchObject, data[1].data);
+                            }, (errMess) => {
+                                this.ModalService.open('views/error.html', 'Could not get audio file:' + this.ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
+                            });
+                        }
+
+                        if (command.params["styles"]) {
+                            this.setStyle(command.params.styles);
+                        }
+                    } else if (event.data.command === "set_style") {
+                        const command = event.data as WindowMessageCommandSetStyle;
+                        this.setStyle(command.params);
+                    }
+                } else {
+                    // command without parameters
+                    if(event.data.command === "get_version") {
+                        window.parent.postMessage({
+                            command: "get_version",
+                            type: "response",
+                            data: version
+                        }, "*");
+                    } else  if(event.data.command === "get_style") {
+                        window.parent.postMessage({
+                            command: "get_style",
+                            type: "response",
+                            data: styles
+                        }, "*");
+                    }
+                }
+            }
+        };
+
+        private setStyle(params){
+            const styleParams = {};
+            for (const key of Object.keys(params)) {
+                if(params[key] !== undefined && params[key] !== null) {
+                    const newKey = key.replace(/-(.)/g, (g0, g1) => g1.toUpperCase());
+                    styleParams[newKey] = params[key];
+                }
+            }
+            Object.assign(styles, styleParams);
+
+            const customVariables = ["spectrogram"];
+            const cssStyles = [];
+            for (const key of Object.keys(params)) {
+                if(params[key] !== undefined && params[key] !== null) {
+                    if (!customVariables.some( a=> a === key)) {
+                        const styleValue = params[key];
+                        const cssVariable = `--${key.replace(/([ABCDEFGHIJKLMOPQRSTUVWXY])/g, (g0, g1) => `-${g1.toLowerCase()}`)}`;
+                        cssStyles.push(`${cssVariable}: ${styleValue} !important`);
+                    } else {
+                        if (key === "spectrogram") {
+                            if (Object.keys(params["spectrogram"]).some( a=> a === "heatMapColorAnchors")) {
+                                this.ViewStateService.spectroSettings.drawHeatMapColors = true;
+                                this.ViewStateService.spectroSettings.heatMapColorAnchors = params["spectrogram"]["heatMapColorAnchors"];
+                            }
+                        }
+                    }
+                }
+            }
+
+            document.body.setAttribute("style", cssStyles.join(";"));
+            this.ViewStateService.update();
+        }
 
         private readAudioOrBundleData = (data, searchObject, annotation) => {
             this.ViewStateService.showDropZone = false;

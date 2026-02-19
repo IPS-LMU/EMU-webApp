@@ -8,8 +8,8 @@
     ############################### */
 
 .emuwebapp-progressBar {
-    background-color: $color-grey;
-    color: $color-white;
+    background-color: var(--color-grey);
+    color: var(--color-white);
     width: 100%;
     height: 20px;
     @extend .emuwebapp-font-input;
@@ -17,47 +17,47 @@
 
     background-image: -webkit-linear-gradient(
         -45deg,
-        $color-black 25%,
+        var(--color-black) 25%,
         transparent 25%,
         transparent 50%,
-        $color-black 50%,
-        $color-black 75%,
+        var(--color-black) 50%,
+        var(--color-black) 75%,
         transparent 75%,
         transparent
     );
     background-image: -moz-linear-gradient(
         -45deg,
-        $color-black 25%,
+        var(--color-black) 25%,
         transparent 25%,
         transparent 50%,
-        $color-black 50%,
-        $color-black 75%,
+        var(--color-black) 50%,
+        var(--color-black) 75%,
         transparent 75%,
         transparent
     );
     background-image: -ms-linear-gradient(
         -45deg,
-        $color-black 25%,
+        var(--color-black) 25%,
         transparent 25%,
         transparent 50%,
-        $color-black 50%,
-        $color-black 75%,
+        var(--color-black) 50%,
+        var(--color-black) 75%,
         transparent 75%,
         transparent
     );
     background-image: linear-gradient(
         -45deg,
-        $color-black 25%,
+        var(--color-black) 25%,
         transparent 25%,
         transparent 50%,
-        $color-black 50%,
-        $color-black 75%,
+        var(--color-black) 50%,
+        var(--color-black) 75%,
         transparent 75%,
         transparent
     );
     @include vendor-prefix(background-size, "50px 50px");
     @include vendor-prefix(animation, "emuwebapp-move 2s linear infinite");
-    @include vendor-prefix(box-shadow, "inset 0 6px 6px "+$color-transparent-lightGrey);
+    @include vendor-prefix(box-shadow, "inset 0 6px 6px "+var(--color-transparent-light-grey));
     overflow: hidden;
 }
 

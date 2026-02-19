@@ -178,6 +178,14 @@ let SpectrogramComponent = {
 
         $onInit () {
             this._inited = true;
+
+            this.ViewStateService.updateRequest$.subscribe({
+                next: () => {
+                    console.log("REFRESH SPECTO");
+                    this.setupEvent();
+                    this.redraw();
+                }
+            });
         }
 
         ///////////////
@@ -198,15 +206,16 @@ let SpectrogramComponent = {
 
         private killSpectroRenderingThread () {
             this.context.fillStyle = styles.colorBlack;
+            this.context.clearRect(0, 0, this.canvas0.width, this.canvas0.height);
             this.context.fillRect(0, 0, this.canvas0.width, this.canvas0.height);
             // draw current viewport selected
             this.FontScaleService.drawUndistortedText(
-                this.context, 
-                'rendering...', 
-                parseInt(styles.fontSmallSize.slice(0, -2)) * 0.75, 
-                styles.fontSmallFamily, 
-                10, 
-                50, 
+                this.context,
+                'rendering...',
+                parseInt(styles.fontSmallSize.slice(0, -2)) * 0.75,
+                styles.fontSmallFamily,
+                10,
+                50,
                 styles.colorBlack, true);
             if (this.primeWorker !== null) {
                 this.primeWorker.kill();
@@ -233,6 +242,11 @@ let SpectrogramComponent = {
         private startSpectroRenderingThread (buffer) {
             if (buffer.length > 0) {
                 this.primeWorker = new SpectroDrawingWorker();
+                this.primeWorker.heatMapColorAnchors = [
+                    [255, 0, 0],
+                    [0, 255, 0],
+                    [200, 200, 200]
+                ];
                 var parseData = [];
                 var fftN = this.MathHelperService.calcClosestPowerOf2Gt(this.SoundHandlerService.audioBuffer.sampleRate * this.ViewStateService.spectroSettings.windowSizeInSecs);
                 // fftN must be greater than 512 (leads to better resolution of spectrogram)

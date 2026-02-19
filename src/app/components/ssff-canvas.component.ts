@@ -78,6 +78,13 @@ let SsffCanvasComponent = {
         }
         $onInit () {
             this._inited = true;
+
+            this.ViewStateService.updateRequest$.subscribe({
+                next: () => {
+                    this.handleUpdate();
+                    this.$scope.$apply();
+                }
+            });
         };
         /**
         *

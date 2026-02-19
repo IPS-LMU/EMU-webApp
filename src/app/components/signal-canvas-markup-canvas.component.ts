@@ -241,6 +241,12 @@ let SignalCanvasMarkupCanvasComponent = {
 
         $onInit () {
             this._inited = true;
+            this.ViewStateService.updateRequest$.subscribe({
+                next: ()=> {
+                    this.drawMarkup();
+                    this.$scope.$apply();
+                }
+            })
         };
 
         private drawMarkup () {

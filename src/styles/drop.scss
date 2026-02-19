@@ -4,10 +4,10 @@
 
 .emuwebapp-dropzone {
     height: 80%;
-    border: 1px dashed $color-black;
+    border: 1px dashed var(--color-black);
     border-radius: 8px;
     text-align: center;
-    color: $color-lightGrey;
+    color: var(--color-light-grey);
     padding: 15px;
     margin: 15px;
     line-height: 1.5;

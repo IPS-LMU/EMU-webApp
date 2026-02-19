@@ -76,8 +76,8 @@
     height:12%; 
     width:100%; 
     margin: 0;
-    background-color: $color-blue;
-    border-bottom: 1px solid $color-darkGrey;
+    background-color: var(--color-blue);
+    border-bottom: 1px solid var(--color-dark-grey);
 }
 
 .emuwebapp-tutorial-head img {
