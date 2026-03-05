@@ -74,3 +74,6 @@ autoprefixer
 #/dist
 /.tmp
 /.sass-cache
+
+# iframe
+/iframe-demo/bootstrap

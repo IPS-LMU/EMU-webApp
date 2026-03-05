@@ -52,6 +52,7 @@
     "@material/button": "^5.1.0",
     "angular-mocks": "^1.8.0",
     "autoprefixer": "^6.5.3",
+    "bootstrap": "^5.3.8",
     "comlink-loader": "^2.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
@@ -94,6 +95,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "postinstall": "echo \"Copy bootstrap css to iframe folder...\" && rm -rf iframe-demo/bootstrap &> /tmp/null && cp -rf node_modules/bootstrap/dist iframe-demo/bootstrap",
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "start:iframe-demo": "http-server iframe-demo --cors -p 7283 -c-1",
     "build": "rimraf dist/* && webpack --config webpack.prod.js",
