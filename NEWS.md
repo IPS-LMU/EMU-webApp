@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.5.4
+
+### new features / performance tweaks / improvements
+
+- In EMBEDDED mode, allow data and style updates pushed from parent window
+
+### bug fixes
+
 ## Version 1.5.3
 
 ### new features / performance tweaks / improvements
