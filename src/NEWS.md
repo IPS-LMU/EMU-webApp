@@ -1,5 +1,13 @@
 # What's New
 
+## Version 1.5.5
+
+### new features / performance tweaks / improvements
+
+### bug fixes
+
+- Bugfix: audioGetUrl not working without labelGetUrl in window message load command
+
 ## Version 1.5.4
 
 ### new features / performance tweaks / improvements
