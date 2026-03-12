@@ -683,7 +683,7 @@ let EmuWebAppComponent = {
                             }
 
                             Promise.all(promises).then((data) => {
-                                this.readAudioOrBundleData(data[0], searchObject, data[1].data);
+                                this.readAudioOrBundleData(data[0], searchObject, data.length > 1 ? data[1].data: undefined);
                             }, (errMess) => {
                                 this.ModalService.open('views/error.html', 'Could not get audio file:' + this.ConfigProviderService.embeddedVals.audioGetUrl + ' ERROR: ' + JSON.stringify(errMess, null, 4));
                             });
