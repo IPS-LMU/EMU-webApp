@@ -659,6 +659,7 @@ let EmuWebAppComponent = {
                         const command = event.data as WindowMessageCommandLoad;
                         this.ConfigProviderService.embeddedVals.labelType = command.params.labelType ?? this.ConfigProviderService.embeddedVals.labelType;
                         this.ConfigProviderService.embeddedVals.saveToWindowParent = command.params.saveToWindowParent ?? this.ConfigProviderService.embeddedVals.saveToWindowParent;
+                        this.ConfigProviderService.embeddedVals.labelGetUrl = command.params.labelGetUrl;
                         this.ViewStateService.bundleListSideBarDisabled = command.params.disableBundleListSidebar ?? false;
 
                         if (command.params.audioArrayBuffer) {
@@ -678,8 +679,7 @@ let EmuWebAppComponent = {
                             }
 
                             if (command.params.labelGetUrl) {
-                                this.ConfigProviderService.embeddedVals.labelGetURL = command.params.labelGetUrl;
-                                promises.push(this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.labelGetURL, "application/json"));
+                                promises.push(this.IoHandlerService.httpGetPath(this.ConfigProviderService.embeddedVals.labelGetUrl, "application/json"));
                             }
 
                             Promise.all(promises).then((data) => {
