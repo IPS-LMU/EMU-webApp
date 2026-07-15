@@ -904,11 +904,12 @@ let EmuWebAppComponent = {
 
                 }
 
-                this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
-
-                this.ViewStateService.somethingInProgressTxt = 'Done!';
-                this.ViewStateService.somethingInProgress = false;
-                this.ViewStateService.setState('labeling');
+                this.$timeout(()=> {
+                    this.ViewStateService.setCurLevelAttrDefs(this.ConfigProviderService.curDbConfig.levelDefinitions);
+                    this.ViewStateService.somethingInProgressTxt = 'Done!';
+                    this.ViewStateService.somethingInProgress = false;
+                    this.ViewStateService.setState('labeling');
+                })
 
             }, function (errMess) {
                 this.ModalService.open('views/error.html', 'Error parsing wav file: ' + errMess.status.message);
