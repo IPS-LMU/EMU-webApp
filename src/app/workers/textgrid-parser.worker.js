@@ -153,15 +153,16 @@ TextGridParserWorker.prototype = {
 							value: lab
 						});
 
-						labelJSO.levels[labelJSO.levels.length - 1].items.push({
-							id: global.localID,
-							sampleStart: itemST,
-							sampleDur: itemET - itemST - 1,
-							labels: labs
-						});
-
-						++global.localID;
-
+						var sampleDur = itemET - itemST - 1
+						if (sampleDur > -1) {
+							labelJSO.levels[labelJSO.levels.length - 1].items.push({
+								id: global.localID,
+								sampleStart: itemST,
+								sampleDur: sampleDur,
+								labels: labs
+							});
+							++global.localID;
+						}
 					} else if (labelJSO.levels.length > 0 && labelJSO.levels[labelJSO.levels.length - 1].type === 'EVENT' && cL.indexOf('points') === 0 && cL.indexOf('points:') !== 0) {
 						// parse point level event
 						eT = lines[i + 1].split(/=/)[1] * sampleRate;
